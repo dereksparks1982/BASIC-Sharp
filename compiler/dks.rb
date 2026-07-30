@@ -56,6 +56,7 @@ end
 puts "DKScript Ruby Bootstrap Compiler v#{DKScript::VERSION}"
 puts "file: #{path}"
 puts "statements: #{program.statements.length}"
+puts "kinds: #{program.kind_definitions.length}"
 puts "definitions: #{program.definitions.length}"
 puts "facts: #{program.facts.length}"
 puts "events: #{program.event_rules.length}"

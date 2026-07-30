@@ -1,6 +1,6 @@
 DEFINE
-<a guard named henry.
+[a guard named henry].
 
 WHEN
-<player attacks henry
-<thne> (damage henry.
+[player attacks henry
+<thne> (damage henry].

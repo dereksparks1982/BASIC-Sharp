@@ -17,13 +17,20 @@ class TestIROutput < Minitest::Test
   end
 
   def test_emits_versioned_ir
-    assert_equal '0.1.07', @ir.fetch('version')
+    assert_equal '0.1.08', @ir.fetch('version')
     assert_equal 'dkir.debug.json', @ir.fetch('format')
   end
 
+  def test_emits_user_defined_kinds
+    dragon = @ir.fetch('kinds').first
+
+    assert_equal 'dragon', dragon.fetch('name')
+    assert_equal 'creature', dragon.fetch('parent')
+  end
+
   def test_emits_objects_facts_and_rules
-    assert_equal 5, @ir.fetch('objects').length
-    assert_equal 3, @ir.fetch('facts').length
+    assert_equal 6, @ir.fetch('objects').length
+    assert_equal 4, @ir.fetch('facts').length
     assert_equal 2, @ir.fetch('events').length
     assert_equal 1, @ir.fetch('if_rules').length
   end
@@ -42,7 +49,7 @@ class TestIROutput < Minitest::Test
     change_action = @ir.fetch('events').last.fetch('then').last
 
     assert_equal 'change', change_action.fetch('action')
-    assert_equal 'henry', change_action.fetch('target').fetch('name')
+    assert_equal 'ember', change_action.fetch('target').fetch('name')
     assert_equal 'state', change_action.fetch('to').fetch('kind')
     assert_equal 'angry', change_action.fetch('to').fetch('name')
   end

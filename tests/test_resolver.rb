@@ -22,8 +22,8 @@ class TestResolver < Minitest::Test
 ")
     assert_empty warnings, warnings.map(&:to_s).join("
 ")
-    assert_equal 5, document.objects.length
-    assert_equal ['player', 'north door', 'brass key', 'oak table', 'henry'], document.objects.map { |object| object['name'] }
+    assert_equal 6, document.objects.length
+    assert_equal ['player', 'ember', 'north door', 'brass key', 'oak table', 'henry'], document.objects.map { |object| object['name'] }
   end
 
   def test_normalizes_event_verbs
@@ -51,10 +51,10 @@ class TestResolver < Minitest::Test
   def test_warns_about_unresolved_definite_kind
     document = resolve(<<~DKS)
       DEFINE
-      <a key named brass key.
+      [a key named brass key].
 
       START
-      <brass key is on the table.
+      [brass key is on the table].
     DKS
 
     warnings = document.diagnostics.select { |diagnostic| diagnostic.severity == 'warning' }.map(&:message)
@@ -68,12 +68,12 @@ class TestResolver < Minitest::Test
   def test_reports_ambiguous_definite_kind
     document = resolve(<<~DKS)
       DEFINE
-      <a door named north door
-      <a door named cellar door.
+      [a door named north door
+      a door named cellar door].
 
       IF
-      <the door is locked
-      <then> (unlock the door.
+      [the door is locked
+      <then> (unlock the door].
     DKS
 
     messages = document.diagnostics.map(&:message)
@@ -84,14 +84,14 @@ class TestResolver < Minitest::Test
   def test_reports_unknown_action_and_state
     document = resolve(<<~DKS)
       DEFINE
-      <a guard named henry.
+      [a guard named henry].
 
       START
-      <henry is sleepy.
+      [henry is sleepy].
 
       WHEN
-      <player attacks henry
-      <then> (explode henry.
+      [player attacks henry
+      <then> (explode henry].
     DKS
 
     errors = document.diagnostics.select { |diagnostic| diagnostic.severity == 'error' }.map(&:message)

@@ -1,6 +1,13 @@
 {
-  "version": "0.1.07",
+  "version": "0.1.08",
   "format": "dkir.debug.json",
+  "kinds": [
+    {
+      "name": "dragon",
+      "parent": "creature",
+      "line_number": 2
+    }
+  ],
   "objects": [
     {
       "name": "player",
@@ -9,33 +16,59 @@
       "line_number": null
     },
     {
+      "name": "ember",
+      "kind": "dragon",
+      "builtin": false,
+      "line_number": 5
+    },
+    {
       "name": "north door",
       "kind": "door",
       "builtin": false,
-      "line_number": 2
+      "line_number": 6
     },
     {
       "name": "brass key",
       "kind": "key",
       "builtin": false,
-      "line_number": 3
+      "line_number": 7
     },
     {
       "name": "oak table",
       "kind": "table",
       "builtin": false,
-      "line_number": 4
+      "line_number": 8
     },
     {
       "name": "henry",
       "kind": "guard",
       "builtin": false,
-      "line_number": 5
+      "line_number": 9
     }
   ],
   "facts": [
     {
-      "line_number": 8,
+      "line_number": 12,
+      "subject": {
+        "type": "object",
+        "text": "ember",
+        "name": "ember",
+        "object_kind": "dragon"
+      },
+      "relation": "is",
+      "value": {
+        "kind": "state",
+        "name": "alive"
+      },
+      "raw": {
+        "subject": "ember",
+        "relation": "is",
+        "value": "alive",
+        "line_number": 12
+      }
+    },
+    {
+      "line_number": 13,
       "subject": {
         "type": "object",
         "text": "north door",
@@ -51,11 +84,11 @@
         "subject": "north door",
         "relation": "is",
         "value": "locked",
-        "line_number": 8
+        "line_number": 13
       }
     },
     {
-      "line_number": 9,
+      "line_number": 14,
       "subject": {
         "type": "object",
         "text": "brass key",
@@ -74,11 +107,11 @@
         "subject": "brass key",
         "relation": "is",
         "value": "on the table",
-        "line_number": 9
+        "line_number": 14
       }
     },
     {
-      "line_number": 10,
+      "line_number": 15,
       "subject": {
         "type": "object",
         "text": "henry",
@@ -94,13 +127,13 @@
         "subject": "henry",
         "relation": "is",
         "value": "calm",
-        "line_number": 10
+        "line_number": 15
       }
     }
   ],
   "events": [
     {
-      "line_number": 12,
+      "line_number": 17,
       "when": {
         "raw": "player takes brass key",
         "actor": {
@@ -119,7 +152,7 @@
       },
       "then": [
         {
-          "line_number": 14,
+          "line_number": 19,
           "action": "carry",
           "target": {
             "type": "object",
@@ -131,9 +164,9 @@
       ]
     },
     {
-      "line_number": 20,
+      "line_number": 25,
       "when": {
-        "raw": "player attacks henry",
+        "raw": "player attacks ember",
         "actor": {
           "type": "object",
           "text": "player",
@@ -143,30 +176,30 @@
         "action": "attack",
         "target": {
           "type": "object",
-          "text": "henry",
-          "name": "henry",
-          "object_kind": "guard"
+          "text": "ember",
+          "name": "ember",
+          "object_kind": "dragon"
         }
       },
       "then": [
         {
-          "line_number": 22,
+          "line_number": 27,
           "action": "damage",
           "target": {
             "type": "object",
-            "text": "henry",
-            "name": "henry",
-            "object_kind": "guard"
+            "text": "ember",
+            "name": "ember",
+            "object_kind": "dragon"
           }
         },
         {
-          "line_number": 23,
+          "line_number": 28,
           "action": "change",
           "target": {
             "type": "object",
-            "text": "henry",
-            "name": "henry",
-            "object_kind": "guard"
+            "text": "ember",
+            "name": "ember",
+            "object_kind": "dragon"
           },
           "to": {
             "kind": "state",
@@ -178,7 +211,7 @@
   ],
   "if_rules": [
     {
-      "line_number": 16,
+      "line_number": 21,
       "if": {
         "raw": "north door is locked",
         "subject": {
@@ -195,7 +228,7 @@
       },
       "then": [
         {
-          "line_number": 18,
+          "line_number": 23,
           "action": "unlock",
           "target": {
             "type": "object",

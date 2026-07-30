@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module DKScript
-  VERSION = '0.1.07'
+  VERSION = '0.1.08'
 
   Statement = Struct.new(:starter, :children, :line_number, keyword_init: true) do
     def to_h
@@ -23,6 +23,12 @@ module DKScript
         action: action,
         terminal: terminal
       }
+    end
+  end
+
+  KindDefinition = Struct.new(:name, :parent, :line_number, keyword_init: true) do
+    def to_h
+      { name: name, parent: parent, line_number: line_number }
     end
   end
 
@@ -56,11 +62,12 @@ module DKScript
     end
   end
 
-  Program = Struct.new(:statements, :definitions, :facts, :event_rules, :if_rules, :diagnostics, keyword_init: true) do
+  Program = Struct.new(:statements, :kind_definitions, :definitions, :facts, :event_rules, :if_rules, :diagnostics, keyword_init: true) do
     def to_h
       {
         version: VERSION,
         statements: statements.map(&:to_h),
+        kind_definitions: kind_definitions.map(&:to_h),
         definitions: definitions.map(&:to_h),
         facts: facts.map(&:to_h),
         event_rules: event_rules.map(&:to_h),

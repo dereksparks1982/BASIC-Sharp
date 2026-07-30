@@ -19,6 +19,7 @@ module DKScript
     def resolve
       IR::Document.new(
         version: VERSION,
+        kinds: resolve_kinds,
         objects: resolve_objects,
         facts: program.facts.map { |fact| resolve_fact(fact) },
         events: program.event_rules.map { |rule| resolve_event_rule(rule) },
@@ -39,6 +40,16 @@ module DKScript
         clean << diagnostic
       end.sort_by do |diagnostic|
         [diagnostic.line_number || 0, diagnostic.severity == 'error' ? 0 : 1, diagnostic.message]
+      end
+    end
+
+    def resolve_kinds
+      program.kind_definitions.map do |kind|
+        {
+          'name' => normalize_name(kind.name),
+          'parent' => normalize_name(kind.parent),
+          'line_number' => kind.line_number
+        }
       end
     end
 

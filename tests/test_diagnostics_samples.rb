@@ -66,7 +66,7 @@ class TestDiagnosticsSamples < Minitest::Test
 
   def test_bad_line_command_sample_reports_only_the_typo
     assert_no_duplicate_diagnostics('bad_line_command.dks')
-    assert_equal ["unknown line command '<thne>'; did you mean <then>?"], messages_for('bad_line_command.dks', severity: 'error')
+    assert_equal ["unknown Result '<thne>'; did you mean <then>?"], messages_for('bad_line_command.dks', severity: 'error')
     assert_empty messages_for('bad_line_command.dks', severity: 'warning')
   end
 end
