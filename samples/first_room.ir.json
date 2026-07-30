@@ -1,0 +1,208 @@
+{
+  "version": "0.1.04",
+  "format": "dkir.debug.json",
+  "objects": [
+    {
+      "name": "player",
+      "kind": "person",
+      "builtin": true,
+      "line_number": null
+    },
+    {
+      "name": "north door",
+      "kind": "door",
+      "builtin": false,
+      "line_number": 2
+    },
+    {
+      "name": "brass key",
+      "kind": "key",
+      "builtin": false,
+      "line_number": 3
+    },
+    {
+      "name": "henry",
+      "kind": "guard",
+      "builtin": false,
+      "line_number": 4
+    }
+  ],
+  "facts": [
+    {
+      "line_number": 7,
+      "subject": {
+        "type": "object",
+        "text": "north door",
+        "name": "north door",
+        "object_kind": "door"
+      },
+      "relation": "is",
+      "value": {
+        "kind": "state",
+        "name": "locked"
+      },
+      "raw": {
+        "subject": "north door",
+        "relation": "is",
+        "value": "locked",
+        "line_number": 7
+      }
+    },
+    {
+      "line_number": 8,
+      "subject": {
+        "type": "object",
+        "text": "brass key",
+        "name": "brass key",
+        "object_kind": "key"
+      },
+      "relation": "on",
+      "target": {
+        "type": "kind",
+        "text": "the table",
+        "kind_name": "table",
+        "candidates": [
+
+        ]
+      },
+      "raw": {
+        "subject": "brass key",
+        "relation": "is",
+        "value": "on the table",
+        "line_number": 8
+      }
+    },
+    {
+      "line_number": 9,
+      "subject": {
+        "type": "object",
+        "text": "henry",
+        "name": "henry",
+        "object_kind": "guard"
+      },
+      "relation": "is",
+      "value": {
+        "kind": "state",
+        "name": "calm"
+      },
+      "raw": {
+        "subject": "henry",
+        "relation": "is",
+        "value": "calm",
+        "line_number": 9
+      }
+    }
+  ],
+  "events": [
+    {
+      "line_number": 11,
+      "when": {
+        "raw": "player takes brass key",
+        "actor": {
+          "type": "object",
+          "text": "player",
+          "name": "player",
+          "object_kind": "person"
+        },
+        "action": "take",
+        "target": {
+          "type": "object",
+          "text": "brass key",
+          "name": "brass key",
+          "object_kind": "key"
+        }
+      },
+      "then": [
+        {
+          "line_number": 13,
+          "action": "carry",
+          "target": {
+            "type": "object",
+            "text": "brass key",
+            "name": "brass key",
+            "object_kind": "key"
+          }
+        }
+      ]
+    },
+    {
+      "line_number": 19,
+      "when": {
+        "raw": "player attacks henry",
+        "actor": {
+          "type": "object",
+          "text": "player",
+          "name": "player",
+          "object_kind": "person"
+        },
+        "action": "attack",
+        "target": {
+          "type": "object",
+          "text": "henry",
+          "name": "henry",
+          "object_kind": "guard"
+        }
+      },
+      "then": [
+        {
+          "line_number": 21,
+          "action": "damage",
+          "target": {
+            "type": "object",
+            "text": "henry",
+            "name": "henry",
+            "object_kind": "guard"
+          }
+        },
+        {
+          "line_number": 22,
+          "action": "change",
+          "target": {
+            "type": "object",
+            "text": "henry",
+            "name": "henry",
+            "object_kind": "guard"
+          },
+          "to": {
+            "kind": "state",
+            "name": "angry"
+          }
+        }
+      ]
+    }
+  ],
+  "if_rules": [
+    {
+      "line_number": 15,
+      "if": {
+        "raw": "north door is locked",
+        "subject": {
+          "type": "object",
+          "text": "north door",
+          "name": "north door",
+          "object_kind": "door"
+        },
+        "relation": "is",
+        "value": {
+          "kind": "state",
+          "name": "locked"
+        }
+      },
+      "then": [
+        {
+          "line_number": 17,
+          "action": "unlock",
+          "target": {
+            "type": "object",
+            "text": "north door",
+            "name": "north door",
+            "object_kind": "door"
+          }
+        }
+      ]
+    }
+  ],
+  "diagnostics": [
+
+  ]
+}

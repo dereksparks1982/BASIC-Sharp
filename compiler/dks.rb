@@ -3,20 +3,40 @@
 
 require 'json'
 require_relative 'parser'
+require_relative 'resolver'
+require_relative 'ir_emitter'
 
 if ARGV.empty?
-  warn 'Usage: ruby compiler/dks.rb samples/first_room.dks [--json]'
+  warn 'Usage: ruby compiler/dks.rb samples/first_room.dks [--json|--emit-ast|--emit-ir] [--out path]'
   exit 64
 end
 
-path = ARGV[0]
-json = ARGV.include?('--json')
-source = File.read(path)
-program = DKScript::Parser.new(source).parse
+path = ARGV.find { |arg| !arg.start_with?('--') }
+out_index = ARGV.index('--out')
+out_path = out_index ? ARGV[out_index + 1] : nil
+emit_ast = ARGV.include?('--json') || ARGV.include?('--emit-ast')
+emit_ir = ARGV.include?('--emit-ir')
 
-if json
-  puts JSON.pretty_generate(program.to_h)
+unless path && File.file?(path)
+  warn "DKScript source file not found: #{path || '(none)'}"
+  exit 66
+end
+
+source = File.read(path)
+parser = DKScript::Parser.new(source)
+program = parser.parse
+resolved = DKScript::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
+
+if emit_ast
+  output = JSON.pretty_generate(program.to_h)
+  out_path ? File.write(out_path, "#{output}\n") : puts(output)
   exit(program.diagnostics.any? { |d| d.severity == 'error' } ? 1 : 0)
+end
+
+if emit_ir
+  emitter = DKScript::IREmitter.new(resolved)
+  out_path ? emitter.write(out_path) : puts(emitter.to_json)
+  exit(resolved.error_count.positive? ? 1 : 0)
 end
 
 puts "DKScript Ruby Bootstrap Compiler v#{DKScript::VERSION}"
@@ -26,12 +46,15 @@ puts "definitions: #{program.definitions.length}"
 puts "facts: #{program.facts.length}"
 puts "events: #{program.event_rules.length}"
 puts "if rules: #{program.if_rules.length}"
-puts "actions: #{program.event_rules.sum { |r| r.actions.length } + program.if_rules.sum { |r| r.actions.length }}"
-puts "errors: #{program.diagnostics.count { |d| d.severity == 'error' }}"
-puts "warnings: #{program.diagnostics.count { |d| d.severity == 'warning' }}"
+puts "objects: #{resolved.objects.length}"
+puts "actions: #{program.event_rules.sum { |rule| rule.actions.length } + program.if_rules.sum { |rule| rule.actions.length }}"
+puts "errors: #{resolved.error_count}"
+puts "warnings: #{resolved.warning_count}"
 
-unless program.diagnostics.empty?
+unless resolved.diagnostics.empty?
   puts
   puts 'Diagnostics:'
-  program.diagnostics.each { |diagnostic| puts "  #{diagnostic}" }
+  resolved.diagnostics.each { |diagnostic| puts "  #{diagnostic}" }
 end
+
+exit(resolved.error_count.positive? ? 1 : 0)
