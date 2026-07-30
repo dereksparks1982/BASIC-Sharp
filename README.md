@@ -1,4 +1,4 @@
-# DKScript Ruby Bootstrap Compiler v0.1.05
+# DKScript Ruby Bootstrap Compiler v0.1.06
 
 **The scripting language for non-programmers.**
 
@@ -54,6 +54,7 @@ ruby tests/test_first_room.rb
 ruby tests/test_resolver.rb
 ruby tests/test_ir_output.rb
 ruby tests/test_cli_output.rb
+ruby tests/test_diagnostics_samples.rb
 ```
 
 ## What this build does
@@ -68,6 +69,8 @@ ruby tests/test_cli_output.rb
 - Warns when a definite reference such as `the table` names a known kind but no matching object was defined.
 - Adds safer `--out` file writing for AST and DKIR output.
 - Emits a human-readable DKIR debug JSON dump for future runtime work.
+- Adds bad-script samples for unknown objects, unknown kinds, unknown states, unknown actions, ambiguous references, and bad line commands.
+- Adds a diagnostics sample test harness so compiler errors stay understandable for non-programmers.
 
 ## What this build does not do
 
@@ -77,3 +80,17 @@ ruby tests/test_cli_output.rb
 - No DK Engine.
 - No Godot integration.
 - No full Inform/TADS dictionary import yet.
+
+
+## Bad-script diagnostic samples
+
+v0.1.06 adds small broken `.dks` files under `samples/errors/`. These are not game content. They are compiler teaching targets: each one proves DKScript explains a mistake in plain words instead of failing like a cryptic machine cave.
+
+Examples covered:
+
+- `unknown_object.dks`
+- `unknown_kind.dks`
+- `unknown_state.dks`
+- `unknown_action.dks`
+- `ambiguous_door.dks`
+- `bad_line_command.dks`

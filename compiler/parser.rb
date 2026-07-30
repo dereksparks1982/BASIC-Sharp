@@ -101,6 +101,9 @@ module DKScript
       if (match = body.match(/\A([a-z]+)>\s*(.*)\z/))
         raw_command = match[1].strip.downcase
         line_command = LINE_COMMAND_ALIASES.fetch(raw_command, raw_command)
+        unless LINE_COMMAND_ALIASES.key?(raw_command)
+          diagnostics.error(line.number, "unknown line command '<#{raw_command}>'; did you mean <then>?")
+        end
         body = match[2].strip
       elsif body.start_with?('<')
         diagnostics.error(line.number, 'line command tags must look like <then>')

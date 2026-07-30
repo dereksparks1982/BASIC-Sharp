@@ -27,7 +27,7 @@ class TestCLIOutput < Minitest::Test
       assert_includes stdout, "wrote: #{out_path}"
       assert File.file?(out_path), 'expected --out to create the IR file'
       json = JSON.parse(File.read(out_path))
-      assert_equal '0.1.05', json.fetch('version')
+      assert_equal '0.1.06', json.fetch('version')
     end
   end
 

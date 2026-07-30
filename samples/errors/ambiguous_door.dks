@@ -1,0 +1,7 @@
+DEFINE
+<a door named north door
+<a door named cellar door.
+
+IF
+<the door is locked
+<then> (unlock the door.
