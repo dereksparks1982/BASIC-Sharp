@@ -14,7 +14,7 @@ class TestIdentityMigration < Minitest::Test
   def test_basic_sharp_is_the_only_active_ruby_namespace
     assert Object.const_defined?(:BasicSharp)
     refute Object.const_defined?(:DKScript)
-    assert_equal '0.1.19', BasicSharp::VERSION
+    assert_equal '0.1.20', BasicSharp::VERSION
   end
 
   def test_new_compiler_paths_exist_and_retired_paths_are_gone
@@ -38,7 +38,7 @@ class TestIdentityMigration < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BASIC# Ruby Bootstrap Compiler v0.1.19'
+    assert_includes stdout, 'BASIC# Ruby Bootstrap Compiler v0.1.20'
     refute_includes stdout, 'DKScript Ruby Bootstrap Compiler'
 
     run_stdout, run_stderr, run_status = Open3.capture3(
@@ -50,12 +50,12 @@ class TestIdentityMigration < Minitest::Test
     )
 
     assert run_status.success?, run_stderr
-    assert_includes run_stdout, 'BASIC# Runtime v0.1.19'
+    assert_includes run_stdout, 'BASIC# Runtime v0.1.20'
     refute_includes run_stdout, 'DKScript Runtime'
   end
 
-  def test_v0_1_13_saved_dkir_still_runs
-    path = File.join(ROOT, 'tests/fixtures/first_room_v0_1_13.ir.json')
+  def test_v0_1_13_saved_bsir_still_runs
+    path = File.join(ROOT, 'tests/fixtures/first_room_v0_1_13.bsir.json')
     document = JSON.parse(File.read(path))
     assert_equal '0.1.13', document.fetch('version')
 

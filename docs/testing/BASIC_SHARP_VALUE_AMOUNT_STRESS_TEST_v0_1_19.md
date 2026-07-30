@@ -6,7 +6,7 @@
 - 512 direct guards.
 - 256 inherited captains.
 - 768 Things selected by `every guard`.
-- 100 repeated amount events per source and saved-DKIR path.
+- 100 repeated amount events per source and saved-BSharp IR path.
 - 76,800 explicit amount mutations per path.
 - 76,800 exact value assignments per path.
 
@@ -22,7 +22,7 @@ Set action ordering: PASS
 Missing-value atomicity: PASS
 Overflow atomicity: PASS
 No hidden health subtraction: PASS
-Source and saved-DKIR parity: PASS
+Source and saved-BSharp IR parity: PASS
 Separate runtime isolation: PASS
 Deterministic final world: PASS
 VALUE-AND-AMOUNT STRESS TEST: PASS

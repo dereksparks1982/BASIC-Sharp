@@ -57,7 +57,7 @@ It is not parser-only punctuation.
 
 No creator syntax changed in v0.1.13.
 
-The parser and resolver remain responsible for producing language-neutral DKIR.
+The parser and resolver remain responsible for producing language-neutral BSharp IR.
 
 The v0.1.13 stress suite proves the parser and resolver can process hundreds of definitions and feed deterministic runtime execution.
 

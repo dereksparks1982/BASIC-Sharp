@@ -41,16 +41,16 @@ v0.1.10
 
 ## Completed changes
 
-- Updated compiler and DKIR version to `0.1.10`.
+- Updated compiler and BSharp IR version to `0.1.10`.
 - Added runtime matching from a named Thing to a direct Kind written in a Trigger, such as `henry` matching `a guard`.
 - Added Trigger context that remembers the selected Thing.
 - Added runtime resolution of `that guard` to the guard selected by the matched Trigger.
 - Preserved exact normalized event matching for existing rules.
 - Added plain runtime errors for unknown Things supplied to a Kind Trigger.
 - Added plain runtime errors when a supplied Thing has the wrong Kind.
-- Preserved source execution and saved-DKIR execution parity.
+- Preserved source execution and saved-BSharp IR execution parity.
 - Expanded the sample with one Kind Trigger while keeping the exact Ember Trigger.
-- Added runtime, command-line, and DKIR tests.
+- Added runtime, command-line, and BSharp IR tests.
 - Updated the README, parser contract, runtime contract, roadmap, cumulative handoff, changelog, patch notes, session log, validation record, changed-files record, and patch manifest.
 
 ## Excluded work
@@ -80,10 +80,10 @@ docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_10.txt
 ```bash
 for file in compiler/*.rb; do ruby -c "$file"; done
 ruby compiler/basic_sharp.rb samples/first_room.bsharp
-ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.bsir.json
 ruby compiler/basic_sharp.rb samples/first_room.bsharp --run "player attacks henry"
 ruby compiler/basic_sharp.rb samples/first_room.bsharp --run "player attacks ember"
-ruby compiler/basic_sharp.rb samples/first_room.ir.json --run "player attacks henry"
+ruby compiler/basic_sharp.rb samples/first_room.bsir.json --run "player attacks henry"
 ruby -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_relative file }'
 ```
 
@@ -92,13 +92,13 @@ ruby -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_relati
 - Accepted v0.1.09 baseline reconstruction: PASS, 35 runs, 138 assertions, 0 failures, 0 errors, 0 skips.
 - Ruby syntax checks: PASS for every compiler file.
 - Main sample compilation: PASS, 0 errors, 0 warnings.
-- DKIR output generation: PASS.
+- BSharp IR output generation: PASS.
 - Named guard to `a guard` matching: PASS.
 - `that guard` resolving to Henry: PASS.
 - Exact Ember event matching: PASS.
 - Unknown Thing message: PASS.
 - Wrong Kind message: PASS.
-- Existing-DKIR Trigger-context proof: PASS.
+- Existing-BSharp IR Trigger-context proof: PASS.
 - Full v0.1.10 automated suite: PASS, 41 runs, 178 assertions, 0 failures, 0 errors, 0 skips.
 - Changed-files overlay validation: PASS against a clean reconstruction of accepted v0.1.09.
 
@@ -109,7 +109,7 @@ ruby -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_relati
 - The first matching WHEN rule runs. A full multi-rule event policy is not part of this build.
 - Event text still uses the current small event-word reader.
 - IF rules still run once during startup only.
-- DKIR remains readable debug information, not final bytecode.
+- BSharp IR remains readable debug information, not final bytecode.
 
 ## Rollback point
 

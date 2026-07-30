@@ -37,7 +37,7 @@ BASIC# Runtime Stress Test v0.1.15
 Things: 504
 Events per execution path: 10,003
 Total event executions: 20,006
-Source and saved DKIR parity: PASS
+Source and saved BSharp IR parity: PASS
 Separate runtime isolation: PASS
 Unknown Thing explanation: PASS
 Inherited Kind matching: PASS
@@ -56,16 +56,16 @@ STRESS TEST: PASS
 - Nearest compatible Kind priority: PASS.
 - `that Kind` context with descendant Thing: PASS.
 - Descendant resolver candidates: PASS.
-- Source-built and saved-DKIR parity: PASS.
-- Accepted v0.1.13 saved-DKIR compatibility: PASS.
+- Source-built and saved-BSharp IR parity: PASS.
+- Accepted v0.1.13 saved-BSharp IR compatibility: PASS.
 
 ## Family safety proofs
 
 - Unknown source parent diagnostic: PASS.
 - Second direct parent rejection: PASS.
 - Source circular-family diagnostic with loop path: PASS.
-- Saved-DKIR unknown-parent rejection: PASS.
-- Saved-DKIR circular-family rejection with loop path: PASS.
+- Saved-BSharp IR unknown-parent rejection: PASS.
+- Saved-BSharp IR circular-family rejection with loop path: PASS.
 
 ## Compiler smoke test
 

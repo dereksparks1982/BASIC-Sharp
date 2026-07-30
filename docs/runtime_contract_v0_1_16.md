@@ -2,7 +2,7 @@
 
 ## Runtime initialization
 
-1. Read and validate the DKIR document shape.
+1. Read and validate the BSharp IR document shape.
 2. Read every Kind entry in source order.
 3. Reject malformed, missing, empty, non-text, duplicate, conflicting, unknown-parent, or circular Kind entries.
 4. Build one validated Kind-distance index.
@@ -41,7 +41,7 @@ This priority is a tested contract, not an incidental implementation detail.
 
 ## Compatibility
 
-Valid saved DKIR from v0.1.13 and v0.1.15 remains executable.
+Valid saved BSharp IR from v0.1.13 and v0.1.15 remains executable.
 
 ## Limits
 

@@ -24,7 +24,7 @@ BASIC# Language Foundation and Historical BASIC Research
 - Grok analysis supplied by the owner.
 - 1965 GE/Dartmouth BASIC manual.
 - 1987 ANSI Full BASIC standard.
-- Current compiler, runtime, tests, sample, and DKIR.
+- Current compiler, runtime, tests, sample, and BSharp IR.
 
 ## Baseline decision
 
@@ -41,7 +41,7 @@ v0.1.11 was therefore built as a cumulative changed-files package from accepted 
 - Added future ASK, trace, recovery, hidden internal area, capitalization, spacing, and example-first roadmap lanes.
 - Logged Grok's outside analysis and project decisions.
 - Preserved the Copilot project brief.
-- Updated current contracts, roadmap, handoff, README, version records, tests, DKIR, validation, manifest, and package records.
+- Updated current contracts, roadmap, handoff, README, version records, tests, BSharp IR, validation, manifest, and package records.
 - Added no language behavior.
 
 ## Correction protection

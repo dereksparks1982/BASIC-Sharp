@@ -325,10 +325,10 @@ v0.1.09 can:
 
 - read source
 - reject malformed source
-- build DKIR
-- save DKIR as JSON
+- build BSharp IR
+- save BSharp IR as JSON
 - load source into the runtime
-- load saved DKIR into the runtime
+- load saved BSharp IR into the runtime
 - create defined Things
 - apply `START`
 - receive an exact event
@@ -356,9 +356,9 @@ World state showed:
 ember: kind=dragon; states=angry; damage=1
 ```
 
-Source execution and saved DKIR execution produced the same result.
+Source execution and saved BSharp IR execution produced the same result.
 
-That source-to-DKIR-to-runtime separation is intentional.
+That source-to-BSharp IR-to-runtime separation is intentional.
 
 ---
 
@@ -408,7 +408,7 @@ v0.1.10 is meant to:
 - preserve exact event matching
 - reject unknown Things
 - reject Things of the wrong Kind
-- add source, DKIR, runtime, and command-line tests
+- add source, BSharp IR, runtime, and command-line tests
 
 No new syntax or official words were supposed to be added.
 
@@ -423,14 +423,14 @@ parser
 ↓
 meaning checks
 ↓
-DKIR
+BSharp IR
 ↓
 runtime
 ↓
 world state changes
 ```
 
-Current DKIR is JSON-based and should remain language-neutral.
+Current BSharp IR is JSON-based and should remain language-neutral.
 
 Ruby-specific objects or tricks should not become part of the language’s meaning.
 
@@ -451,7 +451,7 @@ Triggers
 ↓
 Official words
 ↓
-DKIR
+BSharp IR
 ↓
 First runtime
 ↓
@@ -489,7 +489,7 @@ Memory system
 ↓
 Standard BASIC# library
 ↓
-DK Engine bridge
+game-engine bridge
 ↓
 DK Engine
 ↓
@@ -773,7 +773,7 @@ Which current or planned features are most likely to make BASIC# too technical f
 
 ## 3. Runtime direction
 
-Is the current path from source to DKIR to runtime to later bytecode and VM technically sound?
+Is the current path from source to BSharp IR to runtime to later bytecode and VM technically sound?
 
 ## 4. Ruby bootstrap
 

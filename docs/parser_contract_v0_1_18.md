@@ -49,4 +49,4 @@ BASIC# reports why instead of guessing group-event or all-versus-any condition m
 
 ## Version
 
-All newly emitted DKIR reports version `0.1.18`.
+All newly emitted BSharp IR reports version `0.1.18`.

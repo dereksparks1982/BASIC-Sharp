@@ -1,6 +1,6 @@
 {
-  "version": "0.1.19",
-  "format": "dkir.debug.json",
+  "version": "0.1.17",
+  "format": "bsir.debug.json",
   "kinds": [
     {
       "name": "creature",
@@ -226,8 +226,7 @@
             "text": "ember",
             "name": "ember",
             "object_kind": "wyrm"
-          },
-          "amount": 1
+          }
         },
         {
           "line_number": 32,
@@ -276,8 +275,7 @@
             "text": "that creature",
             "selector": "that",
             "kind_name": "creature"
-          },
-          "amount": 1
+          }
         },
         {
           "line_number": 37,
@@ -325,8 +323,7 @@
             "text": "that guard",
             "selector": "that",
             "kind_name": "guard"
-          },
-          "amount": 1
+          }
         },
         {
           "line_number": 42,
@@ -400,8 +397,7 @@
             "text": "player",
             "name": "player",
             "object_kind": "person"
-          },
-          "amount": 1
+          }
         }
       ]
     }

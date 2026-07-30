@@ -8,7 +8,7 @@ module BasicSharp
       def to_h
         {
           version: version,
-          format: 'dkir.debug.json',
+          format: 'bsir.debug.json',
           kinds: kinds,
           objects: objects,
           facts: facts,

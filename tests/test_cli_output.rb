@@ -12,7 +12,7 @@ class TestCLIOutput < Minitest::Test
 
   def test_emit_ir_out_writes_file_and_creates_parent_directory
     Dir.mktmpdir do |dir|
-      out_path = File.join(dir, 'nested', 'first_room.ir.json')
+      out_path = File.join(dir, 'nested', 'first_room.bsir.json')
       stdout, stderr, status = Open3.capture3(
         RUBY,
         File.join(ROOT, 'compiler/basic_sharp.rb'),
@@ -27,7 +27,7 @@ class TestCLIOutput < Minitest::Test
       assert_includes stdout, "wrote: #{out_path}"
       assert File.file?(out_path), 'expected --out to create the IR file'
       json = JSON.parse(File.read(out_path))
-      assert_equal '0.1.19', json.fetch('version')
+      assert_equal '0.1.20', json.fetch('version')
     end
   end
 
@@ -42,7 +42,7 @@ class TestCLIOutput < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BASIC# Runtime v0.1.19'
+    assert_includes stdout, 'BASIC# Runtime v0.1.20'
     assert_includes stdout, 'matched: yes'
     assert_includes stdout, 'what matched:'
     assert_includes stdout, 'player attacks ember'
@@ -69,9 +69,9 @@ class TestCLIOutput < Minitest::Test
     assert_includes stderr, 'Missing event after --run'
   end
 
-  def test_run_executes_existing_dkir_json
+  def test_run_executes_existing_bsir_json
     Dir.mktmpdir do |dir|
-      path = File.join(dir, 'first_room.ir.json')
+      path = File.join(dir, 'first_room.bsir.json')
       _emit_stdout, emit_stderr, emit_status = Open3.capture3(
         RUBY,
         File.join(ROOT, 'compiler/basic_sharp.rb'),
@@ -93,7 +93,7 @@ class TestCLIOutput < Minitest::Test
       )
 
       assert status.success?, stderr
-      assert_includes stdout, 'BASIC# Runtime v0.1.19'
+      assert_includes stdout, 'BASIC# Runtime v0.1.20'
       assert_includes stdout, 'matched: yes'
       assert_includes stdout, 'what matched:'
       assert_includes stdout, 'player attacks a guard'
@@ -130,7 +130,7 @@ class TestCLIOutput < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BASIC# Runtime v0.1.19'
+    assert_includes stdout, 'BASIC# Runtime v0.1.20'
     assert_includes stdout, 'matched: yes'
     assert_includes stdout, 'what matched:'
     assert_includes stdout, 'player attacks a guard'

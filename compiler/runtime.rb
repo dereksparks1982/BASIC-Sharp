@@ -6,7 +6,15 @@ require_relative 'ast_nodes'
 require_relative 'dictionary'
 
 module BasicSharp
+  class RetiredDKIRFormatError < ArgumentError; end
+
   class Runtime
+    RETIRED_DKIR_MESSAGE = [
+      'This file uses the retired DKIR format.',
+      'BASIC# v0.1.20 uses BSharp IR.',
+      'Recompile the original .bsharp source to create a new BSIR file.'
+    ].join("\n").freeze
+
     MAX_WHOLE_NUMBER = 2_147_483_647
     VALUE_NAME_PATTERN = /\A[a-z][a-z0-9]*\z/
 
@@ -157,17 +165,19 @@ module BasicSharp
 
     def validate_ir!
       format = normalize(@ir['format'])
-      unless format == 'dkir.debug.json'
+      raise RetiredDKIRFormatError, RETIRED_DKIR_MESSAGE if format == 'dkir.debug.json'
+
+      unless format == 'bsir.debug.json'
         shown = @ir['format'] || '(missing)'
-        raise ArgumentError, "DKIR format '#{shown}' is not supported"
+        raise ArgumentError, "BSharp IR format '#{shown}' is not supported"
       end
 
       %w[kinds objects facts events if_rules diagnostics].each do |name|
         value = @ir[name]
-        raise ArgumentError, "DKIR '#{name}' must be a list" unless value.is_a?(Array)
+        raise ArgumentError, "BSharp IR '#{name}' must be a list" unless value.is_a?(Array)
       end
 
-      raise ArgumentError, 'DKIR contains errors and cannot run' if ir_errors.any?
+      raise ArgumentError, 'BSharp IR contains errors and cannot run' if ir_errors.any?
     end
 
     def ir_errors
@@ -335,7 +345,7 @@ Choose one starting amount."
         event: 'WHEN',
         condition: 'IF',
         action: 'Action target'
-      }.fetch(location, 'DKIR')
+      }.fetch(location, 'BSharp IR')
     end
 
 
@@ -432,7 +442,7 @@ Choose one starting amount."
     def create_things
       @ir.fetch('objects', []).each do |object|
         name = normalize(object.fetch('name'))
-        raise ArgumentError, "DKIR has more than one Thing named '#{name}'" if @objects.key?(name)
+        raise ArgumentError, "BSharp IR has more than one Thing named '#{name}'" if @objects.key?(name)
 
         kind = normalize(object.fetch('kind'))
         unless @known_kinds.include?(kind)

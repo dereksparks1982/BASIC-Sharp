@@ -278,13 +278,13 @@ class TestValuesAndAmounts < Minitest::Test
     assert_equal MAX, thing(machine.snapshot, 'henry').fetch('values').fetch('score')
   end
 
-  def test_source_and_saved_dkir_value_execution_are_identical
+  def test_source_and_saved_bsir_value_execution_are_identical
     source = base_source(actions: ['(damage every guard by 3', '(change health of every guard to 7'])
     document = resolve(source)
     source_machine = BasicSharp::Runtime.new(document)
 
     Dir.mktmpdir do |dir|
-      path = File.join(dir, 'values.ir.json')
+      path = File.join(dir, 'values.bsir.json')
       File.write(path, "#{BasicSharp::IREmitter.new(document).to_json}\n")
       saved_machine = BasicSharp::Runtime.load(path)
 
@@ -306,7 +306,7 @@ class TestValuesAndAmounts < Minitest::Test
   end
 
   def test_old_saved_damage_action_without_amount_still_means_one
-    document = JSON.parse(File.read(File.expand_path('fixtures/first_room_v0_1_17.ir.json', __dir__)))
+    document = JSON.parse(File.read(File.expand_path('fixtures/first_room_v0_1_17.bsir.json', __dir__)))
     damage = document.fetch('events').find { |rule| rule.dig('when', 'raw') == 'player attacks a guard' }.fetch('then').first
     refute damage.key?('amount')
 
@@ -314,7 +314,7 @@ class TestValuesAndAmounts < Minitest::Test
     assert_equal 1, thing(result.fetch('state'), 'henry').fetch('damage')
   end
 
-  def test_saved_dkir_rejects_malformed_numeric_shapes_before_start
+  def test_saved_bsir_rejects_malformed_numeric_shapes_before_start
     base = JSON.parse(BasicSharp::IREmitter.new(resolve(base_source(actions: ['(damage henry by 3']))).to_json)
     mutations = {
       'Damage amount must be a whole number' => ->(doc) { doc.fetch('events').first.fetch('then').first['amount'] = '3' },
@@ -332,7 +332,7 @@ class TestValuesAndAmounts < Minitest::Test
     end
   end
 
-  def test_saved_dkir_rejects_duplicate_starting_values
+  def test_saved_bsir_rejects_duplicate_starting_values
     document = JSON.parse(BasicSharp::IREmitter.new(resolve(base_source(actions: ['(damage henry']))).to_json)
     document.fetch('facts') << Marshal.load(Marshal.dump(document.fetch('facts').first))
 

@@ -49,7 +49,7 @@ that guard means henry
 - Named Things may satisfy direct Kind Triggers.
 - Trigger context remembers the selected Thing during that event.
 - `(damage`, `(change`, `(carry`, and `(unlock` keep their current behavior.
-- Source and saved DKIR produce the same result.
+- Source and saved BSharp IR produce the same result.
 
 ## No runtime expansion in v0.1.11
 

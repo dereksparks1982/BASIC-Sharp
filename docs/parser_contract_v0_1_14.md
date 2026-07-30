@@ -23,7 +23,7 @@ Creator source extension: .bsharp
 - `then` and `than` remain accepted equivalents.
 - `there` and `their` remain accepted equivalents where already supported.
 - Official words retain their creator-facing opening `(`.
-- User-defined direct Kind parents remain represented in DKIR.
+- User-defined direct Kind parents remain represented in BSharp IR.
 
 ## Explicit non-change
 

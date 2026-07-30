@@ -23,9 +23,9 @@ v0.1.18 Multiple Selected Things and Deterministic Set Actions
 - Action-line-before-next-line ordering.
 - Singular `that Kind` context preservation.
 - Empty-set notices and unsupported-position diagnostics.
-- Strict saved-DKIR set validation.
+- Strict saved-BSharp IR set validation.
 - Bounded human traces and complete structured results.
-- Source/saved-DKIR parity.
+- Source/saved-BSharp IR parity.
 - v0.1.13, v0.1.15, v0.1.16, and v0.1.17 fixture compatibility.
 
 ## Validation

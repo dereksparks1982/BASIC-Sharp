@@ -1,6 +1,6 @@
 BUILD_HANDSHAKE_v0_1_10.md
 BUILD_HANDSHAKE_v0_1_11.md
-DK_PATCH_MANIFEST.json
+BASIC_SHARP_PATCH_MANIFEST.json
 README.md
 compiler/ast_nodes.rb
 compiler/runtime.rb
@@ -25,7 +25,7 @@ docs/session_logs/BASIC_SHARP_v0_1_11_SESSION_LOG.md
 docs/validation/BASIC_SHARP_VALIDATION_v0_1_10.md
 docs/validation/BASIC_SHARP_VALIDATION_v0_1_11.md
 samples/first_room.bsharp
-samples/first_room.ir.json
+samples/first_room.bsir.json
 tests/test_cli_output.rb
 tests/test_first_room.rb
 tests/test_ir_output.rb

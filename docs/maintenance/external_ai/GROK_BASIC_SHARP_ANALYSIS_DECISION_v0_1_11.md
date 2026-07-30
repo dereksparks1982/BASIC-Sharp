@@ -12,11 +12,11 @@
 Grok described the existing work as a disciplined language kernel and highlighted:
 
 - incremental construction instead of premature feature growth;
-- source and DKIR execution parity;
+- source and BSharp IR execution parity;
 - explicit official words;
 - useful diagnostics and tests;
 - Ruby as a practical bootstrap;
-- the importance of keeping DKIR independent from Ruby;
+- the importance of keeping BSharp IR independent from Ruby;
 - contextual Trigger matching as a major language-feel milestone;
 - the danger of natural wording becoming unpredictable;
 - the value of example-first teaching and plain errors.
@@ -25,9 +25,9 @@ Grok described the existing work as a disciplined language kernel and highlighte
 
 The following claims agree with project evidence:
 
-- v0.1.09 executes both source and saved DKIR.
+- v0.1.09 executes both source and saved BSharp IR.
 - Current runtime behavior is covered by automated tests.
-- DKIR is already a useful separation between source understanding and execution.
+- BSharp IR is already a useful separation between source understanding and execution.
 - Ruby is suitable temporary scaffolding.
 - Contextual Trigger matching is an important step toward natural cause and effect.
 - Public simplicity requires strict, dependable machinery underneath.
@@ -39,9 +39,9 @@ The following claims agree with project evidence:
 
 Accepted. Ruby conveniences must not define BASIC# language law.
 
-### Keep DKIR language-neutral
+### Keep BSharp IR language-neutral
 
-Accepted. DKIR should record BASIC# meaning rather than Ruby object behavior.
+Accepted. BSharp IR should record BASIC# meaning rather than Ruby object behavior.
 
 ### Delay self-hosting
 

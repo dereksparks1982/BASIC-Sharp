@@ -5,14 +5,14 @@
 
 ## Purpose
 
-The Ruby bootstrap runtime executes current BASIC# DKIR while keeping the creator-facing language simple.
+The Ruby bootstrap runtime executes current BASIC# BSharp IR while keeping the creator-facing language simple.
 
 ## Current startup behavior
 
 The runtime:
 
-1. validates the DKIR format and required lists;
-2. rejects DKIR containing compiler errors;
+1. validates the BSharp IR format and required lists;
+2. rejects BSharp IR containing compiler errors;
 3. creates each Thing once;
 4. rejects duplicate normalized Thing names;
 5. applies START Facts;
@@ -61,7 +61,7 @@ v0.1.13 stress tests prove this boundary.
 (unlock
 ```
 
-DKIR stores the word name without `(`. BASIC# source keeps `(` as the creator-facing visual guide.
+BSharp IR stores the word name without `(`. BASIC# source keeps `(` as the creator-facing visual guide.
 
 ## Current matching priority
 
@@ -83,10 +83,10 @@ If both could match, the exact Trigger runs.
 
 The runtime now rejects:
 
-- missing or unsupported DKIR format;
+- missing or unsupported BSharp IR format;
 - required top-level runtime fields that are not lists;
 - duplicate Thing names;
-- DKIR containing error diagnostics;
+- BSharp IR containing error diagnostics;
 - unknown runtime official words.
 
 ## Stress boundary
@@ -95,7 +95,7 @@ Validated default standalone load:
 
 ```text
 504 Things
-20,004 total event executions across source and saved-DKIR paths
+20,004 total event executions across source and saved-BSharp IR paths
 ```
 
 Validated automated suite:
@@ -117,4 +117,4 @@ Validated automated suite:
 - no runtime-created Things;
 - no creator-facing amounts;
 - no save/load world format;
-- DKIR debug JSON is not bytecode.
+- BSharp IR debug JSON is not bytecode.

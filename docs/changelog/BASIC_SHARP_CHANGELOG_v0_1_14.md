@@ -9,5 +9,5 @@
 - Renamed active documentation files carrying the retired label.
 - Preserved former names inside explicitly marked historical records.
 - Imported the complete Company Bible set and added a BASIC# carryover record.
-- Added identity migration and v0.1.13 DKIR compatibility tests.
-- Preserved all language grammar, runtime meaning, stress behavior, and DKIR format from v0.1.13.
+- Added identity migration and v0.1.13 BSharp IR compatibility tests.
+- Preserved all language grammar, runtime meaning, stress behavior, and BSharp IR format from v0.1.13.

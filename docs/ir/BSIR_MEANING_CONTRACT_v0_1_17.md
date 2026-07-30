@@ -1,11 +1,11 @@
-# DKIR Meaning Contract v0.1.17
+# BSharp IR Meaning Contract v0.1.17
 
 ## Format
 
 The readable bootstrap format remains:
 
 ```text
-dkir.debug.json
+bsir.debug.json
 ```
 
 v0.1.17 does not add a new IF field or redesign the schema.
@@ -25,14 +25,14 @@ Existing entries retain this shape:
 The semantic change is runtime-side:
 
 - rules preserve source order;
-- condition active state is runtime session memory, not stored in DKIR;
+- condition active state is runtime session memory, not stored in BSharp IR;
 - false-to-true transitions wake rules;
 - false conditions re-arm rules;
-- source-built and saved-DKIR execution must produce identical IF traces and worlds.
+- source-built and saved-BSharp IR execution must produce identical IF traces and worlds.
 
 ## Session-only data
 
-The following are never serialized into accepted DKIR:
+The following are never serialized into accepted BSharp IR:
 
 - IF active bits;
 - seen loop signatures;
@@ -40,7 +40,7 @@ The following are never serialized into accepted DKIR:
 - current event context;
 - current IF trace.
 
-Loading the same valid DKIR into two Runtime instances must create separate IF memory.
+Loading the same valid BSharp IR into two Runtime instances must create separate IF memory.
 
 ## Compatibility
 

@@ -280,13 +280,13 @@ class TestIfBehavior < Minitest::Test
     assert_equal 1, second_result.fetch('if_rules').length
   end
 
-  def test_source_and_saved_dkir_keep_if_trace_and_world_parity
+  def test_source_and_saved_bsir_keep_if_trace_and_world_parity
     document = resolve(reactivation_source)
     source_machine = BasicSharp::Runtime.new(document)
     source_result = source_machine.run_event('player attacks ember')
 
     Dir.mktmpdir do |dir|
-      path = File.join(dir, 'reactive_if.ir.json')
+      path = File.join(dir, 'reactive_if.bsir.json')
       File.write(path, "#{BasicSharp::IREmitter.new(document).to_json}\n")
       saved_machine = BasicSharp::Runtime.load(path)
       saved_result = saved_machine.run_event('player attacks ember')

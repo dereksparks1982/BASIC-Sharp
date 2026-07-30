@@ -5,26 +5,26 @@ BUILD_HANDSHAKE_v0_1_17.md
 docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_17.txt
 docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_17.md
 docs/hand_off/BASIC_SHARP_v0_1_17_NEW_THREAD_HANDOFF.md
-docs/ir/DKIR_MEANING_CONTRACT_v0_1_17.md
+docs/ir/BSIR_MEANING_CONTRACT_v0_1_17.md
 docs/parser_contract_v0_1_17.md
 docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_17.md
 docs/runtime_contract_v0_1_17.md
 docs/session_logs/BASIC_SHARP_v0_1_17_SESSION_LOG.md
 docs/testing/BASIC_SHARP_IF_RULE_STRESS_TEST_v0_1_17.md
 docs/validation/BASIC_SHARP_VALIDATION_v0_1_17.md
-tests/fixtures/first_room_v0_1_16.ir.json
+tests/fixtures/first_room_v0_1_16.bsir.json
 tests/test_if_behavior.rb
 tools/if_rule_stress.rb
 
 Modified paths:
-DK_PATCH_MANIFEST.json
+BASIC_SHARP_PATCH_MANIFEST.json
 README.md
 compiler/ast_nodes.rb
 compiler/runtime.rb
 docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
 docs/roadmap/BASIC_SHARP_ROADMAP.md
 samples/first_room.bsharp
-samples/first_room.ir.json
+samples/first_room.bsir.json
 tests/test_cli_output.rb
 tests/test_first_room.rb
 tests/test_identity_migration.rb

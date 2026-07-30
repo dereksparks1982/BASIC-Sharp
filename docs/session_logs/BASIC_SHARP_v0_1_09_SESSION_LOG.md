@@ -13,7 +13,7 @@ Accepted v0.1.08 at commit `d6c92d1`, tag `v0.1.08`.
 
 ## Owner-approved direction
 
-Build the first runtime execution layer over the existing DKIR. Add no new syntax, no new official words, no Kind Families, and no dictionary changes.
+Build the first runtime execution layer over the existing BSharp IR. Add no new syntax, no new official words, no Kind Families, and no dictionary changes.
 
 ## Work completed
 

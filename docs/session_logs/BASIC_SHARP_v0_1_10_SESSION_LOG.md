@@ -23,7 +23,7 @@ Runtime Trigger Context
 - Updated runtime event matching.
 - Added per-event Trigger context.
 - Added contextual official-word resolution.
-- Expanded source, DKIR, runtime, and command-line proofs.
+- Expanded source, BSharp IR, runtime, and command-line proofs.
 - Updated all required version records.
 - Built and validated a changed-files-only package.
 

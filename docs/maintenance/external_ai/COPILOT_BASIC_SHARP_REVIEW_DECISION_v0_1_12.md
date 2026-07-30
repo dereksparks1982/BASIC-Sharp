@@ -9,9 +9,9 @@ The owner supplied Copilot with the BASIC# project brief and requested an honest
 Copilot correctly identified:
 
 - BASIC# already has a coherent beginner-first identity.
-- The source -> meaning checks -> DKIR -> runtime -> later bytecode/VM road is sound.
+- The source -> meaning checks -> BSharp IR -> runtime -> later bytecode/VM road is sound.
 - Ruby must remain literal, replaceable scaffolding.
-- BASIC# meaning must live in language-neutral rules and DKIR, not Ruby tricks.
+- BASIC# meaning must live in language-neutral rules and BSharp IR, not Ruby tricks.
 - Context, Kind families, values, time, repetition, and groups can become simplicity traps.
 - Runtime explanations should say what matched, what was understood, and what changed.
 - A stable meaning specification is required before bytecode and the VM.

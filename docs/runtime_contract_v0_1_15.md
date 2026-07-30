@@ -2,7 +2,7 @@
 
 ## Scope
 
-v0.1.15 makes the direct parent relationships already stored in DKIR active during runtime matching.
+v0.1.15 makes the direct parent relationships already stored in BSharp IR active during runtime matching.
 
 ## Kind family walking
 
@@ -62,19 +62,19 @@ Incompatible Kind:
 north door is a door, not a creature
 ```
 
-Broken saved DKIR parent:
+Broken saved BSharp IR parent:
 
 ```text
 Kind family is broken: shade has unknown parent missing kind
 ```
 
-Circular saved DKIR family:
+Circular saved BSharp IR family:
 
 ```text
 Kind family has a loop: creature -> thing -> wyrm -> dragon -> creature
 ```
 
-## DKIR validation
+## BSharp IR validation
 
 The Runtime requires `kinds` to be a list, alongside the other runtime lists.
 
@@ -95,9 +95,9 @@ The Runtime rejects:
 
 ## Compatibility
 
-- Source-built and saved-DKIR execution must remain identical.
-- The accepted v0.1.13 saved-DKIR fixture remains executable.
-- Old DKIR receives only the ancestry it actually stores. The Runtime does not invent missing parents.
+- Source-built and saved-BSharp IR execution must remain identical.
+- The accepted v0.1.13 saved-BSharp IR fixture remains executable.
+- Old BSharp IR receives only the ancestry it actually stores. The Runtime does not invent missing parents.
 
 ## Explicit exclusions
 

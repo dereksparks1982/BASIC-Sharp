@@ -8,7 +8,7 @@ BASIC# received its first heavy runtime pressure test.
 ```text
 504 Things
 20,004 event executions
-source and saved DKIR parity: PASS
+source and saved BSharp IR parity: PASS
 runtime isolation: PASS
 deterministic final world: PASS
 ```
@@ -25,9 +25,9 @@ Automated suite:
 
 The build also adds:
 
-- a formal DKIR meaning contract;
+- a formal BSharp IR meaning contract;
 - duplicate Thing protection;
-- malformed DKIR format protection;
+- malformed BSharp IR format protection;
 - Claude review decisions;
 - Lisp research;
 - the protected rule that `(` in `(damage` is a visual guide for the creator;

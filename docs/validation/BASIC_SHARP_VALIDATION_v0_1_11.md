@@ -88,9 +88,9 @@ ember: kind=dragon; states=angry; damage=1
 
 Result: PASS.
 
-## Saved DKIR proof
+## Saved BSharp IR proof
 
-Running `player attacks henry` from `samples/first_room.ir.json` produced the same Henry state as source execution.
+Running `player attacks henry` from `samples/first_room.bsir.json` produced the same Henry state as source execution.
 
 Result: PASS.
 
@@ -137,7 +137,7 @@ Confirmed:
 - direct project-root layout;
 - no wrapper directory;
 - no deletion request;
-- manifest format `DK_CHANGED_FILES_PATCH`;
+- manifest format `BASIC_SHARP_CHANGED_FILES_PATCH`;
 - manifest format version 1;
 - every listed file present;
 - every listed byte count correct;
@@ -145,7 +145,7 @@ Confirmed:
 - compiler proof passed;
 - Henry Trigger-context proof passed;
 - exact Ember regression passed;
-- saved DKIR proof passed;
+- saved BSharp IR proof passed;
 - full suite passed with 41 runs and 178 assertions.
 
 Result: PASS.

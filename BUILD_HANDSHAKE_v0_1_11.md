@@ -51,7 +51,7 @@ v0.1.11
 - Logged and evaluated Grok's outside analysis.
 - Preserved the Copilot project brief in project documentation.
 - Carried v0.1.10 Runtime Trigger Context forward cumulatively.
-- Advanced compiler and DKIR version to 0.1.11.
+- Advanced compiler and BSharp IR version to 0.1.11.
 - Updated README, contracts, roadmap, cumulative handoff, changelog, patch notes, session log, validation, changed-files record, and manifest.
 
 ## Excluded work
@@ -80,10 +80,10 @@ docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_11.txt
 ```bash
 for file in compiler/*.rb; do ruby -c "$file"; done
 ruby compiler/basic_sharp.rb samples/first_room.bsharp
-ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.bsir.json
 ruby compiler/basic_sharp.rb samples/first_room.bsharp --run "player attacks henry"
 ruby compiler/basic_sharp.rb samples/first_room.bsharp --run "player attacks ember"
-ruby compiler/basic_sharp.rb samples/first_room.ir.json --run "player attacks henry"
+ruby compiler/basic_sharp.rb samples/first_room.bsir.json --run "player attacks henry"
 ruby -w -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_relative file }'
 ```
 
@@ -95,7 +95,7 @@ ruby -w -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_rel
 - Henry direct-Kind Trigger proof: PASS.
 - `that guard` context proof: PASS.
 - Exact Ember event regression: PASS.
-- Saved DKIR proof: PASS.
+- Saved BSharp IR proof: PASS.
 - Full v0.1.11 automated suite with Ruby warnings enabled: PASS, 41 runs, 178 assertions, 0 failures, 0 errors, 0 skips.
 - Documentation presence checks: PASS.
 - Cumulative overlay onto a clean accepted v0.1.09 reconstruction: PASS.
@@ -109,7 +109,7 @@ ruby -w -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_rel
 - One selected Thing is stored per Kind during one event.
 - The first matching WHEN rule runs.
 - IF rules still run once during startup.
-- DKIR is not bytecode.
+- BSharp IR is not bytecode.
 
 ## Rollback point
 

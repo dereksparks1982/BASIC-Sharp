@@ -42,9 +42,9 @@ v0.1.09
 ## Completed changes
 
 - Updated compiler and runtime version to `0.1.09`.
-- Added `compiler/runtime.rb` as the first executable DKIR runtime.
-- Added loading and execution of existing DKIR JSON files.
-- Added creation of all resolved Things from DKIR.
+- Added `compiler/runtime.rb` as the first executable BSharp IR runtime.
+- Added loading and execution of existing BSharp IR JSON files.
+- Added creation of all resolved Things from BSharp IR.
 - Added application of START Facts.
 - Added one-pass IF checking after START Facts.
 - Added exact normalized matching for one supplied WHEN Trigger.
@@ -53,7 +53,7 @@ v0.1.09
 - Added plain world-state output after execution.
 - Changed the sample starting condition from `ember is alive` to `ember is calm` so the runtime proof shows a meaningful change to angry.
 - Corrected current user-facing compiler messages to call `<then>` a Connector and `(damage` an official word.
-- Added runtime, command-line, DKIR-loading, and state-change tests.
+- Added runtime, command-line, BSharp IR-loading, and state-change tests.
 - Added current contracts, patch notes, changelog, validation record, roadmap, session log, and cumulative handoff.
 
 ## Excluded work
@@ -82,10 +82,10 @@ docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_09.txt
 ```bash
 for file in compiler/*.rb; do ruby -c "$file"; done
 ruby compiler/basic_sharp.rb samples/first_room.bsharp
-ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.bsir.json
 ruby compiler/basic_sharp.rb samples/first_room.bsharp --run "player attacks ember"
 ruby compiler/basic_sharp.rb samples/first_room.bsharp --run "player takes brass key"
-ruby compiler/basic_sharp.rb samples/first_room.ir.json --run "player attacks ember"
+ruby compiler/basic_sharp.rb samples/first_room.bsir.json --run "player attacks ember"
 ruby -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_relative file }'
 ```
 
@@ -94,10 +94,10 @@ ruby -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_relati
 - Accepted v0.1.08 baseline reconstruction: PASS, 27 runs, 95 assertions, 0 failures, 0 errors, 0 skips.
 - Ruby syntax checks: PASS for every compiler file.
 - Main sample compilation: PASS, 0 errors, 0 warnings.
-- DKIR output generation: PASS.
+- BSharp IR output generation: PASS.
 - Source-to-runtime attack proof: PASS.
 - Source-to-runtime carry proof: PASS.
-- Existing-DKIR-to-runtime attack proof: PASS.
+- Existing-BSharp IR-to-runtime attack proof: PASS.
 - Full v0.1.09 automated suite: PASS, 35 runs, 138 assertions, 0 failures, 0 errors, 0 skips.
 - Changed-files package overlay validation: PASS against a clean reconstruction of accepted v0.1.08; 35 runs, 138 assertions, 0 failures, 0 errors, 0 skips.
 
@@ -107,7 +107,7 @@ ruby -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_relati
 - Event-selected references such as `that guard` are not yet carried into Connector lines.
 - `(damage` records a runtime damage count of one per execution. A complete health model is not part of this build.
 - IF rules run once during startup only.
-- DKIR remains a readable debug structure, not final bytecode.
+- BSharp IR remains a readable debug structure, not final bytecode.
 
 ## Rollback point
 

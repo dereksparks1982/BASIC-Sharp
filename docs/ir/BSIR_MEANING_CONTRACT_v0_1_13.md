@@ -1,25 +1,25 @@
-# DKIR Meaning Contract v0.1.13
+# BSharp IR Meaning Contract v0.1.13
 
 ## Purpose
 
-DKIR is the structured record of what the BASIC# bootstrap compiler understood.
+BSharp IR is the structured record of what the BASIC# bootstrap compiler understood.
 
 ```text
 BASIC# source
 -> parser
 -> meaning checks
--> DKIR
+-> BSharp IR
 -> runtime
 ```
 
-DKIR is not Ruby source, not a Ruby object model, and not final bytecode. It is a language-neutral bridge that a later BASIC# compiler and virtual machine must be able to reproduce.
+BSharp IR is not Ruby source, not a Ruby object model, and not final bytecode. It is a language-neutral bridge that a later BASIC# compiler and virtual machine must be able to reproduce.
 
 ## Current format
 
 ```json
 {
   "version": "0.1.13",
-  "format": "dkir.debug.json",
+  "format": "bsir.debug.json",
   "kinds": [],
   "objects": [],
   "facts": [],
@@ -32,7 +32,7 @@ DKIR is not Ruby source, not a Ruby object model, and not final bytecode. It is 
 The runtime requires `format` to equal:
 
 ```text
-dkir.debug.json
+bsir.debug.json
 ```
 
 The following top-level fields must be lists:
@@ -49,9 +49,9 @@ diagnostics
 
 ## Version
 
-`version` records the compiler language version that emitted the DKIR.
+`version` records the compiler language version that emitted the BSharp IR.
 
-v0.1.13 does not yet promise permanent cross-version compatibility. A future compatibility policy must be decided before DKIR becomes a public long-term save format or bytecode replacement.
+v0.1.13 does not yet promise permanent cross-version compatibility. A future compatibility policy must be decided before BSharp IR becomes a public long-term save format or bytecode replacement.
 
 ## Kinds
 
@@ -197,7 +197,7 @@ carry
 unlock
 ```
 
-DKIR stores their names without the creator-facing opening `(` because DKIR records meaning rather than source decoration.
+BSharp IR stores their names without the creator-facing opening `(` because BSharp IR records meaning rather than source decoration.
 
 The source form remains:
 
@@ -214,16 +214,16 @@ The opening `(` is an intentional visual guide for the creator.
 
 Each diagnostic records a compiler error or warning.
 
-DKIR containing an error diagnostic cannot run.
+BSharp IR containing an error diagnostic cannot run.
 
 ## Runtime hardening in v0.1.13
 
 The runtime now rejects:
 
-- a missing or unsupported DKIR format;
+- a missing or unsupported BSharp IR format;
 - top-level runtime lists that are not lists;
 - more than one normalized Thing with the same name;
-- DKIR containing compiler errors;
+- BSharp IR containing compiler errors;
 - unknown official words encountered at runtime.
 
 ## Stability boundary

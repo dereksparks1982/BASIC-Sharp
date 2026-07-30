@@ -67,13 +67,13 @@ docs/audit/BASIC_SHARP_v0_1_13_REJECTED_PACKAGE_AUDIT.md
 - Prove event context stays local.
 - Prove separate Runtime instances do not share state.
 - Prove deterministic execution.
-- Prove source and saved-DKIR parity under long event sequences.
+- Prove source and saved-BSharp IR parity under long event sequences.
 - Add reusable `tools/runtime_stress.rb`.
 - Add focused automated stress suite.
-- Reject duplicate DKIR Thing names.
-- Reject missing or unsupported DKIR format.
-- Require runtime top-level DKIR fields to be lists.
-- Add formal DKIR meaning contract.
+- Reject duplicate BSharp IR Thing names.
+- Reject missing or unsupported BSharp IR format.
+- Require runtime top-level BSharp IR fields to be lists.
+- Add formal BSharp IR meaning contract.
 - Log and evaluate Claude's review.
 - Add Lisp research.
 - Record `(` as the creator-facing visual guide for official words.
@@ -105,7 +105,7 @@ tests/test_cli_output.rb
 tests/test_ir_output.rb
 tests/test_runtime_stress.rb
 tools/runtime_stress.rb
-samples/first_room.ir.json
+samples/first_room.bsir.json
 ```
 
 The authoritative full path list is:
@@ -116,7 +116,7 @@ docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_13.txt
 
 ## Risks
 
-- DKIR validation is stricter; manually written JSON without the supported format is rejected.
+- BSharp IR validation is stricter; manually written JSON without the supported format is rejected.
 - Duplicate normalized Thing names are rejected instead of silently overwriting.
 - Direct Kind matching does not yet follow Kind Families.
 - Exact rules are checked before direct-Kind rules.
@@ -124,8 +124,8 @@ docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_13.txt
 - One selected Thing is stored per Kind during one event.
 - IF rules still run once during startup.
 - Damage remains an internal integer count without creator-facing amount syntax.
-- DKIR remains debug JSON rather than bytecode.
-- Long-term DKIR version compatibility is not frozen.
+- BSharp IR remains debug JSON rather than bytecode.
+- Long-term BSharp IR version compatibility is not frozen.
 
 ## Rollback and repair plan
 
@@ -142,10 +142,10 @@ No accepted commit is removed. The rejected v0.1.13 candidate was never committe
 ```bash
 for file in compiler/*.rb tools/*.rb; do ruby -c "$file"; done
 ruby compiler/basic_sharp.rb samples/first_room.bsharp
-ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.bsir.json
 ruby compiler/basic_sharp.rb samples/first_room.bsharp --run "player attacks henry"
 ruby compiler/basic_sharp.rb samples/first_room.bsharp --run "player attacks ember"
-ruby compiler/basic_sharp.rb samples/first_room.ir.json --run "player attacks henry"
+ruby compiler/basic_sharp.rb samples/first_room.bsir.json --run "player attacks henry"
 ruby -w -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_relative file }'
 ruby tools/runtime_stress.rb
 ```
@@ -157,7 +157,7 @@ Ruby syntax: PASS
 Compiler sample: PASS
 Compiler errors: 0
 Compiler warnings: 0
-Source/saved-DKIR trace parity: PASS
+Source/saved-BSharp IR trace parity: PASS
 Automated suite: 54 runs, 4,330 assertions
 Failures: 0
 Errors: 0
@@ -177,7 +177,7 @@ Required checks:
 - direct project-root layout;
 - no wrapper folder;
 - no deletion request;
-- manifest format `DK_CHANGED_FILES_PATCH` version 1;
+- manifest format `BASIC_SHARP_CHANGED_FILES_PATCH` version 1;
 - no unchanged v0.1.12 path in the archive;
 - every packaged file listed in the changed-files record;
 - every non-manifest file listed with exact byte count and SHA-256;

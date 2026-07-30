@@ -92,6 +92,6 @@ there / their
 
 The first pair is active in Result markers. The second pair is recorded in the core dictionary as the same approved location word for later language growth.
 
-## DKIR
+## BSharp IR
 
 User-defined Kinds are emitted in the `kinds` array with their parent and source line.

@@ -10,6 +10,6 @@
 - Added `that guard` runtime resolution.
 - Preserved exact event matching.
 - Added plain unknown-Thing and wrong-Kind messages.
-- Preserved source and saved-DKIR parity.
+- Preserved source and saved-BSharp IR parity.
 - Added no syntax and no official words.
 - Automated validation reached 41 runs and 178 assertions with zero failures and zero errors.

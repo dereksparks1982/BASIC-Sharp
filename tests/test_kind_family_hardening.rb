@@ -118,7 +118,7 @@ class TestKindFamilyHardening < Minitest::Test
     refute_includes heir.fetch('states'), 'hostile'
   end
 
-  def test_malformed_saved_dkir_kind_entries_are_rejected_plainly
+  def test_malformed_saved_bsir_kind_entries_are_rejected_plainly
     cases = [
       [[42], 'Kind family entry 1 must describe one Kind'],
       [[{ 'parent' => 'thing' }], 'Kind family entry 1 is missing its Kind name'],
@@ -159,7 +159,7 @@ class TestKindFamilyHardening < Minitest::Test
     end
   end
 
-  def test_saved_dkir_rejects_a_thing_whose_kind_is_unknown
+  def test_saved_bsir_rejects_a_thing_whose_kind_is_unknown
     document = base_document
     henry = document.fetch(:objects).find { |object| object.fetch('name') == 'henry' }
     henry['kind'] = 'wyrm'
@@ -168,15 +168,16 @@ class TestKindFamilyHardening < Minitest::Test
     assert_equal 'henry says it is a wyrm, but wyrm is not a known Kind', error.message
   end
 
-  def test_accepted_saved_dkir_fixtures_still_run
+  def test_accepted_saved_bsir_fixtures_still_run
     root = File.expand_path('..', __dir__)
 
     {
-      '0.1.13' => File.join(root, 'tests/fixtures/first_room_v0_1_13.ir.json'),
-      '0.1.15' => File.join(root, 'tests/fixtures/first_room_v0_1_15.ir.json'),
-      '0.1.16' => File.join(root, 'tests/fixtures/first_room_v0_1_16.ir.json'),
-      '0.1.17' => File.join(root, 'tests/fixtures/first_room_v0_1_17.ir.json'),
-      '0.1.18' => File.join(root, 'tests/fixtures/first_room_v0_1_18.ir.json')
+      '0.1.13' => File.join(root, 'tests/fixtures/first_room_v0_1_13.bsir.json'),
+      '0.1.15' => File.join(root, 'tests/fixtures/first_room_v0_1_15.bsir.json'),
+      '0.1.16' => File.join(root, 'tests/fixtures/first_room_v0_1_16.bsir.json'),
+      '0.1.17' => File.join(root, 'tests/fixtures/first_room_v0_1_17.bsir.json'),
+      '0.1.18' => File.join(root, 'tests/fixtures/first_room_v0_1_18.bsir.json'),
+      '0.1.19' => File.join(root, 'tests/fixtures/first_room_v0_1_19.bsir.json')
     }.each do |version, path|
       document = JSON.parse(File.read(path))
       assert_equal version, document.fetch('version')

@@ -5,7 +5,7 @@
 
 ## Purpose
 
-v0.1.05 tightens semantic diagnostics and makes DKIR debug output easier to save from the command line.
+v0.1.05 tightens semantic diagnostics and makes BSharp IR debug output easier to save from the command line.
 
 This build keeps the same three visible compiler layers:
 
@@ -48,16 +48,16 @@ Because exactly one table exists, `the table` resolves to `oak table`.
 
 ## Commands
 
-Emit DKIR debug JSON to the terminal:
+Emit BSharp IR debug JSON to the terminal:
 
 ```bash
 ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir
 ```
 
-Write DKIR debug JSON to a file:
+Write BSharp IR debug JSON to a file:
 
 ```bash
-ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.bsir.json
 ```
 
 Write AST JSON to a file:

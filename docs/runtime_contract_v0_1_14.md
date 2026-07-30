@@ -21,11 +21,11 @@ Banner: BASIC# Runtime v0.1.14
 - `(damage`, `(change`, `(carry`, and `(unlock` retain their accepted behavior.
 - Unknown Thing and wrong-Kind explanations remain plain language.
 - Separate Runtime instances do not share state.
-- Source-built and saved-DKIR execution remain equivalent.
+- Source-built and saved-BSharp IR execution remain equivalent.
 
-## DKIR compatibility
+## BSharp IR compatibility
 
-The runtime continues to accept `dkir.debug.json`. A saved v0.1.13 DKIR fixture is included and tested. The version field identifies the producing compiler but does not prevent v0.1.14 from executing that accepted document.
+The runtime continues to accept `bsir.debug.json`. A saved v0.1.13 BSharp IR fixture is included and tested. The version field identifies the producing compiler but does not prevent v0.1.14 from executing that accepted document.
 
 ## Explicit non-change
 

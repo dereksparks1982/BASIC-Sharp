@@ -38,7 +38,7 @@ that guard means henry
 ## Matching rules
 
 1. Exact event text is checked first so existing rules keep working.
-2. When exact text does not match, the runtime compares the incoming event with the Trigger parts stored in DKIR.
+2. When exact text does not match, the runtime compares the incoming event with the Trigger parts stored in BSharp IR.
 3. A named Thing may satisfy `a guard` only when that Thing exists and its direct Kind is `guard`.
 4. The selected Thing is remembered for the current event.
 5. `that guard` uses the remembered guard.
@@ -64,7 +64,7 @@ ember is a dragon, not a guard
 - IF rules still run once after START.
 - Exact WHEN events still work.
 - `(damage`, `(change`, `(carry`, and `(unlock` keep their v0.1.09 behavior.
-- Source and saved DKIR produce the same Trigger-context result.
+- Source and saved BSharp IR produce the same Trigger-context result.
 
 ## Not included
 

@@ -82,9 +82,9 @@ what happened:
 
 Result: PASS.
 
-## Saved DKIR proof
+## Saved BSharp IR proof
 
-Running `player attacks henry` from `samples/first_room.ir.json` produced the same trace and state as source execution.
+Running `player attacks henry` from `samples/first_room.bsir.json` produced the same trace and state as source execution.
 
 Result: PASS.
 
@@ -129,7 +129,7 @@ Confirmed:
 - direct project-root layout;
 - no wrapper directory;
 - no deletion request;
-- manifest format `DK_CHANGED_FILES_PATCH`;
+- manifest format `BASIC_SHARP_CHANGED_FILES_PATCH`;
 - manifest format version 1;
 - all 20 packaged files present;
 - every manifest byte count correct;
@@ -137,7 +137,7 @@ Confirmed:
 - compiler proof passed;
 - Henry trace passed;
 - exact Ember trace passed;
-- source and saved-DKIR trace outputs matched;
+- source and saved-BSharp IR trace outputs matched;
 - full suite passed with 42 runs and 252 assertions.
 
 Result: PASS.

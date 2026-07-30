@@ -16,7 +16,7 @@ BUILD_HANDSHAKE_v0_1_15.md
 docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_15.txt
 docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_15.md
 docs/hand_off/BASIC_SHARP_v0_1_15_NEW_THREAD_HANDOFF.md
-docs/ir/DKIR_MEANING_CONTRACT_v0_1_15.md
+docs/ir/BSIR_MEANING_CONTRACT_v0_1_15.md
 docs/parser_contract_v0_1_15.md
 docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_15.md
 docs/runtime_contract_v0_1_15.md
@@ -25,7 +25,7 @@ docs/validation/BASIC_SHARP_VALIDATION_v0_1_15.md
 
 MODIFIED
 --------
-DK_PATCH_MANIFEST.json
+BASIC_SHARP_PATCH_MANIFEST.json
 README.md
 compiler/ast_nodes.rb
 compiler/dictionary.rb
@@ -34,7 +34,7 @@ compiler/runtime.rb
 docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
 docs/roadmap/BASIC_SHARP_ROADMAP.md
 samples/first_room.bsharp
-samples/first_room.ir.json
+samples/first_room.bsir.json
 tests/test_cli_output.rb
 tests/test_first_room.rb
 tests/test_identity_migration.rb

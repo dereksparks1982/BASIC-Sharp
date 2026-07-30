@@ -95,7 +95,7 @@ source_machine = BasicSharp::Runtime.new(document)
 isolated_machine = BasicSharp::Runtime.new(document)
 
 Dir.mktmpdir do |dir|
-  path = File.join(dir, 'values.ir.json')
+  path = File.join(dir, 'values.bsir.json')
   File.write(path, "#{BasicSharp::IREmitter.new(document).to_json}\n")
   saved_machine = BasicSharp::Runtime.load(path)
 
@@ -166,7 +166,7 @@ Dir.mktmpdir do |dir|
   assert_stress(thing(overflow_result.fetch('state'), 'henry').fetch('damage') == MAX - 5, 'overflow partially mutated first target')
   assert_stress(thing(overflow_result.fetch('state'), 'otto').fetch('damage') == 2, 'overflow partially mutated later target')
 
-  old_document = JSON.parse(File.read(File.expand_path('../tests/fixtures/first_room_v0_1_17.ir.json', __dir__)))
+  old_document = JSON.parse(File.read(File.expand_path('../tests/fixtures/first_room_v0_1_17.bsir.json', __dir__)))
   old_result = BasicSharp::Runtime.new(old_document).run_event('player attacks henry')
   assert_stress(thing(old_result.fetch('state'), 'henry').fetch('damage') == 1, 'old damage action did not default to one')
 
@@ -187,7 +187,7 @@ Dir.mktmpdir do |dir|
   puts "Explicit amount mutations per path: #{MATCHING_THINGS * REPEATED_EVENTS}"
   puts "Exact value assignments per path: #{MATCHING_THINGS * REPEATED_EVENTS}"
   puts format('Source path seconds: %.3f', source_seconds)
-  puts format('Saved DKIR path seconds: %.3f', saved_seconds)
+  puts format('Saved BSharp IR path seconds: %.3f', saved_seconds)
   puts 'Default damage amount compatibility: PASS'
   puts 'Explicit damage amounts: PASS'
   puts 'Generic Thing values: PASS'
@@ -197,7 +197,7 @@ Dir.mktmpdir do |dir|
   puts 'Missing-value atomicity: PASS'
   puts 'Overflow atomicity: PASS'
   puts 'No hidden health subtraction: PASS'
-  puts 'Source and saved-DKIR parity: PASS'
+  puts 'Source and saved-BSharp IR parity: PASS'
   puts 'Separate runtime isolation: PASS'
   puts 'Deterministic final world: PASS'
   puts 'VALUE-AND-AMOUNT STRESS TEST: PASS'

@@ -37,7 +37,7 @@ BASIC# Runtime Stress Test v0.1.14
 Things: 504
 Events per execution path: 10,002
 Total event executions: 20,004
-Source and saved DKIR parity: PASS
+Source and saved BSharp IR parity: PASS
 Separate runtime isolation: PASS
 Unknown Thing explanation: PASS
 Wrong Kind explanation: PASS
@@ -59,7 +59,7 @@ STRESS TEST: PASS
 
 ## Compatibility validation
 
-A saved v0.1.13 `dkir.debug.json` fixture executed through the v0.1.14 runtime and produced the expected direct-Kind Trigger match, selected-Thing context, damage, and state change.
+A saved v0.1.13 `bsir.debug.json` fixture executed through the v0.1.14 runtime and produced the expected direct-Kind Trigger match, selected-Thing context, damage, and state change.
 
 ## Result
 

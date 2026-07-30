@@ -53,25 +53,25 @@ The final corrected archive was rebuilt from an exact v0.1.12-to-v0.1.13 file co
 - owner terminal validation and Git acceptance for v0.1.12;
 - owner terminal validation from the rejected v0.1.13 install;
 - Claude review supplied by Derek;
-- current runtime, parser, resolver, DKIR, sample, and automated suite;
+- current runtime, parser, resolver, BSharp IR, sample, and automated suite;
 - historical BASIC and Lisp research decisions.
 
 ## Work completed
 
 - Advanced version to 0.1.13.
-- Added runtime DKIR validation.
+- Added runtime BSharp IR validation.
 - Added duplicate Thing rejection.
 - Added reusable stress tool.
 - Added twelve focused automated stress tests.
 - Reached 4,330 total assertions.
 - Ran 20,004 default standalone event executions.
-- Proved source and saved-DKIR parity.
+- Proved source and saved-BSharp IR parity.
 - Proved deterministic execution.
 - Proved event-context isolation.
 - Proved separate Runtime isolation.
 - Proved exact Trigger priority.
 - Proved repeated damage trace accuracy.
-- Added formal DKIR meaning contract.
+- Added formal BSharp IR meaning contract.
 - Added Claude decision record.
 - Added Lisp research.
 - Added official-word visual-guide document.
@@ -81,21 +81,21 @@ The final corrected archive was rebuilt from an exact v0.1.12-to-v0.1.13 file co
 
 ## Goblins found and repaired
 
-### Duplicate DKIR Thing overwrite risk
+### Duplicate BSharp IR Thing overwrite risk
 
-Manually altered DKIR could contain two Things with the same normalized name. The runtime previously could silently replace the first with the second.
+Manually altered BSharp IR could contain two Things with the same normalized name. The runtime previously could silently replace the first with the second.
 
 Repair:
 
 ```text
-DKIR has more than one Thing named 'guard 1'
+BSharp IR has more than one Thing named 'guard 1'
 ```
 
 The runtime now rejects the duplicate.
 
-### Missing DKIR format risk
+### Missing BSharp IR format risk
 
-The runtime now rejects DKIR without the supported `dkir.debug.json` format rather than assuming the document is valid.
+The runtime now rejects BSharp IR without the supported `bsir.debug.json` format rather than assuming the document is valid.
 
 ### Changed-files packaging contamination
 

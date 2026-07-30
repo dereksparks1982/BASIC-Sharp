@@ -8,7 +8,7 @@ Corrected incremental changed-files-only patch over accepted v0.1.12
 Files new or changed from v0.1.12:
 
 BUILD_HANDSHAKE_v0_1_13.md
-DK_PATCH_MANIFEST.json
+BASIC_SHARP_PATCH_MANIFEST.json
 README.md
 compiler/ast_nodes.rb
 compiler/runtime.rb
@@ -17,7 +17,7 @@ docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_13.txt
 docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_13.md
 docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
 docs/hand_off/BASIC_SHARP_v0_1_13_NEW_THREAD_HANDOFF.md
-docs/ir/DKIR_MEANING_CONTRACT_v0_1_13.md
+docs/ir/BSIR_MEANING_CONTRACT_v0_1_13.md
 docs/language/BASIC_SHARP_OFFICIAL_WORD_VISUAL_GUIDE_v0_1_13.md
 docs/maintenance/external_ai/CLAUDE_BASIC_SHARP_REVIEW_DECISION_v0_1_13.md
 docs/parser_contract_v0_1_13.md
@@ -28,7 +28,7 @@ docs/runtime_contract_v0_1_13.md
 docs/session_logs/BASIC_SHARP_v0_1_13_SESSION_LOG.md
 docs/testing/BASIC_SHARP_RUNTIME_STRESS_TEST_v0_1_13.md
 docs/validation/BASIC_SHARP_VALIDATION_v0_1_13.md
-samples/first_room.ir.json
+samples/first_room.bsir.json
 tests/test_cli_output.rb
 tests/test_ir_output.rb
 tests/test_runtime_stress.rb

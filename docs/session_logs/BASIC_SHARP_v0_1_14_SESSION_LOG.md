@@ -19,7 +19,7 @@
 - Renamed compiler, IR source, creator samples, documentation paths, namespace, banners, commands, and current handoffs.
 - Added historical naming notes to pre-migration records rather than scrubbing them.
 - Imported 73 supplied Company Bible files and added one BASIC# carryover file.
-- Added identity migration tests and a saved v0.1.13 DKIR compatibility fixture.
+- Added identity migration tests and a saved v0.1.13 BSharp IR compatibility fixture.
 - Preserved runtime and parser behavior.
 
 ## Validation

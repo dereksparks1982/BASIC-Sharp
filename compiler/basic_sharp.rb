@@ -10,7 +10,7 @@ require_relative 'runtime'
 
 if ARGV.empty?
   warn 'Usage: ruby compiler/basic_sharp.rb source.bsharp [--json|--emit-ast|--emit-ir] [--out path] [--run "event"]'
-  warn '   or: ruby compiler/basic_sharp.rb existing.ir.json --run "event"'
+  warn '   or: ruby compiler/basic_sharp.rb existing.bsir.json --run "event"'
   exit 64
 end
 
@@ -59,8 +59,11 @@ if run_index && File.extname(path).downcase == '.json'
     result = runtime.run_event(run_event)
     puts runtime.report(result)
     exit(result.fetch('matched') ? 0 : 1)
+  rescue BasicSharp::RetiredDKIRFormatError => error
+    warn error.message
+    exit 1
   rescue JSON::ParserError, ArgumentError, KeyError => error
-    warn "DKIR cannot run: #{error.message}"
+    warn "BSharp IR cannot run: #{error.message}"
     exit 1
   end
 end

@@ -102,9 +102,9 @@ henry is now angry
 
 Result: PASS.
 
-## Source and saved DKIR trace parity
+## Source and saved BSharp IR trace parity
 
-Running `player attacks henry` from source and from `samples/first_room.ir.json` produced identical runtime reports.
+Running `player attacks henry` from source and from `samples/first_room.bsir.json` produced identical runtime reports.
 
 Result: PASS.
 
@@ -138,7 +138,7 @@ Observed:
 BASIC# Runtime Stress Test v0.1.13
 Things: 504
 Events per execution path: 10002
-Source and saved DKIR parity: PASS
+Source and saved BSharp IR parity: PASS
 Separate runtime isolation: PASS
 Unknown Thing explanation: PASS
 Wrong Kind explanation: PASS
@@ -169,11 +169,11 @@ Confirmed:
 - selected context staying inside one event;
 - fresh Runtime isolation;
 - deterministic final worlds;
-- long source/saved-DKIR parity;
+- long source/saved-BSharp IR parity;
 - unknown Thing explanation;
 - wrong Kind explanation;
 - duplicate Thing rejection;
-- missing DKIR format rejection.
+- missing BSharp IR format rejection.
 
 Result: PASS.
 
@@ -182,13 +182,13 @@ Result: PASS.
 Duplicate Thing test:
 
 ```text
-DKIR has more than one Thing named 'guard 1'
+BSharp IR has more than one Thing named 'guard 1'
 ```
 
 Missing format test:
 
 ```text
-DKIR format '(missing)' is not supported
+BSharp IR format '(missing)' is not supported
 ```
 
 Both are rejected before execution.
@@ -204,13 +204,13 @@ Confirmed:
 - direct project-root layout;
 - no wrapper folder;
 - no deletion request;
-- manifest format `DK_CHANGED_FILES_PATCH` version 1;
+- manifest format `BASIC_SHARP_CHANGED_FILES_PATCH` version 1;
 - no unchanged v0.1.12 file in the payload;
 - ZIP file set equals the authoritative changed-files record;
 - manifest byte counts and SHA-256 values match every non-manifest file;
 - applying the corrected payload to clean v0.1.12 reproduces the intended v0.1.13 tree;
 - compiler proof passes with zero errors and warnings;
-- source and saved-DKIR trace parity passes;
+- source and saved-BSharp IR trace parity passes;
 - 54-run automated suite passes;
 - standalone 20,004-event stress test passes.
 
@@ -221,7 +221,7 @@ Result: PASS.
 Confirmed present:
 
 - v0.1.13 build handshake;
-- formal DKIR meaning contract;
+- formal BSharp IR meaning contract;
 - runtime stress-test record;
 - Claude review decision record;
 - Lisp research;

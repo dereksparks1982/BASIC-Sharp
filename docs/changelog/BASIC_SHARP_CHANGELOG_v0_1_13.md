@@ -7,9 +7,9 @@
 
 - Added reusable high-volume runtime stress runner.
 - Added focused automated stress coverage.
-- Added duplicate normalized Thing-name protection for DKIR.
-- Added DKIR format and top-level structure validation.
-- Added the first formal DKIR meaning contract.
+- Added duplicate normalized Thing-name protection for BSharp IR.
+- Added BSharp IR format and top-level structure validation.
+- Added the first formal BSharp IR meaning contract.
 - Recorded Claude review decisions.
 - Added Lisp research relevant to BASIC#.
 - Recorded `(` as a creator-facing visual guide for official words.

@@ -27,7 +27,7 @@ BASIC# should favor a small set of obvious official words over hundreds of unrel
 
 Lisp's program-as-data tradition supports the broader idea that a language can inspect structured meaning.
 
-BASIC# can use DKIR and future ASK-style tools to explain:
+BASIC# can use BSharp IR and future ASK-style tools to explain:
 
 ```text
 why henry became angry
@@ -60,7 +60,7 @@ BASIC# should also keep memory management under the hood. The creator should not
 
 Lisp history shows that internal notation and creator-facing notation do not have to be the same.
 
-BASIC# source should remain near-plain and readable. DKIR, bytecode, and VM structures may be stricter underneath.
+BASIC# source should remain near-plain and readable. BSharp IR, bytecode, and VM structures may be stricter underneath.
 
 ## Ideas not adopted as creator requirements
 

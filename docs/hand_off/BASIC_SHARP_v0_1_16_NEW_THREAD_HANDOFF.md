@@ -37,9 +37,9 @@ Kind-family stress PASS
 - 256-level iterative ancestry proof.
 - 64-overlapping-Trigger stress proof.
 - Exact, nearest, and equal-distance source-order priority contracts.
-- Strict malformed saved-DKIR Kind validation.
+- Strict malformed saved-BSharp IR Kind validation.
 - Unknown Thing-Kind validation.
-- v0.1.13 and v0.1.15 saved-DKIR compatibility.
+- v0.1.13 and v0.1.15 saved-BSharp IR compatibility.
 
 ## Exclusions
 

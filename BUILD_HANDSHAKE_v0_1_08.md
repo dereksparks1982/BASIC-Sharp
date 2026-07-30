@@ -47,7 +47,7 @@ DKScript_Ruby_Bootstrap_Compiler_v0_1_08_BODY_STRUCTURE_AND_USER_KINDS_CHANGED_F
 - Added the `KINDS` Head.
 - Added user-defined Kind declarations such as `dragon is a creature`.
 - Added parent-Kind validation and duplicate-Kind errors.
-- Added user-defined Kinds to the AST and DKIR debug JSON.
+- Added user-defined Kinds to the AST and BSharp IR debug JSON.
 - Kept `<then>` and `<than>` as equivalent Results.
 - Added the approved `there / their` location-word pair to the core dictionary.
 - Updated compiler messages to use Head, Body, Kind, Thing, Fact, Trigger, Result, Order, and End.
@@ -78,7 +78,7 @@ compiler/parser.rb
 compiler/resolver.rb
 docs/parser_contract_v0_1_08.md
 samples/first_room.bsharp
-samples/first_room.ir.json
+samples/first_room.bsir.json
 samples/errors/ambiguous_door.bsharp
 samples/errors/bad_line_command.bsharp
 samples/errors/old_structure.bsharp
@@ -103,7 +103,7 @@ ruby -c compiler/basic_sharp_ir.rb
 ruby -c compiler/parser.rb
 ruby -c compiler/resolver.rb
 ruby compiler/basic_sharp.rb samples/first_room.bsharp
-ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.bsir.json
 ruby tests/test_first_room.rb
 ruby tests/test_resolver.rb
 ruby tests/test_ir_output.rb
@@ -115,17 +115,17 @@ ruby tests/test_diagnostics_samples.rb
 
 - Ruby checks: PASS.
 - Main sample: PASS, 0 errors, 0 warnings.
-- DKIR output: PASS.
+- BSharp IR output: PASS.
 - All test files: PASS.
 - Old structure rejection test: PASS.
-- User Kind registration and DKIR emission: PASS.
+- User Kind registration and BSharp IR emission: PASS.
 - `<then>` and `<than>` Result handling: PASS.
 
 ## Known risks
 
 - User Kind declarations currently support one-word Kind names and one-word parent names.
 - `there / their` is recorded for later language use but no current statement depends on that location word.
-- DKIR remains a human-readable debug format, not final runtime bytecode.
+- BSharp IR remains a human-readable debug format, not final runtime bytecode.
 
 ## Rollback point
 
@@ -135,4 +135,4 @@ git checkout v0.1.07
 
 ## Current continuation point
 
-The compiler can next add inheritance-aware Kind behavior, richer Kind declarations, or begin the first small DKIR runtime skeleton after Derek chooses the direction.
+The compiler can next add inheritance-aware Kind behavior, richer Kind declarations, or begin the first small BSharp IR runtime skeleton after Derek chooses the direction.

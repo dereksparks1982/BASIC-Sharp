@@ -74,9 +74,9 @@ ember: kind=dragon; states=angry; damage=1
 
 Result: PASS.
 
-## Saved DKIR proof
+## Saved BSharp IR proof
 
-Running `player attacks henry` from `samples/first_room.ir.json` produced the same Henry state as source execution.
+Running `player attacks henry` from `samples/first_room.bsir.json` produced the same Henry state as source execution.
 
 Result: PASS.
 

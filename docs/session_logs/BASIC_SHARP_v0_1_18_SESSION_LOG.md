@@ -11,7 +11,7 @@ Multiple Selected Things and Deterministic Set Actions.
 - Added multi-target execution for four executable official words.
 - Preserved singular event context.
 - Added empty-set behavior, bounded trace, and complete structured results.
-- Added source and saved-DKIR position validation.
+- Added source and saved-BSharp IR position validation.
 - Added focused tests, sample, compatibility fixture, and stress tooling.
 - Updated version surfaces, contracts, roadmap, handoffs, validation, and manifest.
 

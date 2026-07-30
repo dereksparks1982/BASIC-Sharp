@@ -10,4 +10,4 @@
 - Expanded resolver Kind candidates to include descendants.
 - Allowed a known rootless built-in Kind to receive one direct parent through the existing declaration form.
 - Added plain-language unknown-parent, duplicate-parent, and circular-family protection.
-- Preserved source and saved-DKIR parity and accepted v0.1.13 DKIR compatibility.
+- Preserved source and saved-BSharp IR parity and accepted v0.1.13 BSharp IR compatibility.

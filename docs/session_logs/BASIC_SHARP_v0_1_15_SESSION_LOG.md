@@ -18,7 +18,7 @@
 - Walk the existing one-parent Kind chain during matching.
 - Preserve exact and direct-Kind behavior.
 - Match parent, grandparent, and root Kinds.
-- Preserve source/saved-DKIR parity.
+- Preserve source/saved-BSharp IR parity.
 - Reject broken ancestry safely and plainly.
 - Add no multiple inheritance or unrelated language features.
 
@@ -31,8 +31,8 @@
 - Added nearest-compatible-Kind Trigger selection.
 - Added descendant candidates for Kind selectors.
 - Expanded the sample to prove exact and inherited Trigger behavior together.
-- Expanded the stress world so hundreds of descendant Things exercise inherited matching through source and saved DKIR.
-- Added parser, resolver, DKIR, CLI, runtime, and stress regression tests.
+- Expanded the stress world so hundreds of descendant Things exercise inherited matching through source and saved BSharp IR.
+- Added parser, resolver, BSharp IR, CLI, runtime, and stress regression tests.
 
 ## Internal validation
 
@@ -49,7 +49,7 @@
 10,003 events per execution path
 20,006 total event executions
 Inherited Kind matching: PASS
-Source and saved DKIR parity: PASS
+Source and saved BSharp IR parity: PASS
 STRESS TEST: PASS
 ```
 

@@ -7,7 +7,7 @@ BUILD_HANDSHAKE_v0_1_19.md
 docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_19.txt
 docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_19.md
 docs/hand_off/BASIC_SHARP_v0_1_19_NEW_THREAD_HANDOFF.md
-docs/ir/DKIR_MEANING_CONTRACT_v0_1_19.md
+docs/ir/BSIR_MEANING_CONTRACT_v0_1_19.md
 docs/parser_contract_v0_1_19.md
 docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_19.md
 docs/runtime_contract_v0_1_19.md
@@ -15,13 +15,13 @@ docs/session_logs/BASIC_SHARP_v0_1_19_SESSION_LOG.md
 docs/testing/BASIC_SHARP_VALUE_AMOUNT_STRESS_TEST_v0_1_19.md
 docs/validation/BASIC_SHARP_VALIDATION_v0_1_19.md
 samples/values_and_amounts.bsharp
-samples/values_and_amounts.ir.json
-tests/fixtures/first_room_v0_1_18.ir.json
+samples/values_and_amounts.bsir.json
+tests/fixtures/first_room_v0_1_18.bsir.json
 tests/test_values_and_amounts.rb
 tools/value_amount_stress.rb
 
 MODIFIED
-DK_PATCH_MANIFEST.json
+BASIC_SHARP_PATCH_MANIFEST.json
 README.md
 compiler/ast_nodes.rb
 compiler/parser.rb
@@ -29,8 +29,8 @@ compiler/resolver.rb
 compiler/runtime.rb
 docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
 docs/roadmap/BASIC_SHARP_ROADMAP.md
-samples/every_guard.ir.json
-samples/first_room.ir.json
+samples/every_guard.bsir.json
+samples/first_room.bsir.json
 tests/test_cli_output.rb
 tests/test_identity_migration.rb
 tests/test_ir_output.rb

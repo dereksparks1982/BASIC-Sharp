@@ -49,8 +49,8 @@ BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_14_TECHNICAL_IDENTITY_MIGRATION_AND_COM
 - Added the BASIC# Company Bible carryover record, making 74 project Bible files.
 - Corrected current documentation to recognize accepted v0.1.13 commit `3ae88bb` and tag `v0.1.13`.
 - Added migration-specific automated tests.
-- Added a v0.1.13 saved-DKIR compatibility fixture.
-- Preserved the `dkir.debug.json` format and runtime meaning.
+- Added a v0.1.13 saved-BSharp IR compatibility fixture.
+- Preserved the `bsir.debug.json` format and runtime meaning.
 - Added a one-command migration installer inside the package.
 
 ## Explicit exclusions
@@ -64,7 +64,7 @@ BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_14_TECHNICAL_IDENTITY_MIGRATION_AND_COM
 
 ## Changed files and deletions
 
-The complete machine-readable list is in `DK_PATCH_MANIFEST.json`.
+The complete machine-readable list is in `BASIC_SHARP_PATCH_MANIFEST.json`.
 The human-readable list is:
 
 ```text
@@ -93,10 +93,10 @@ Focused stress:
 
 ```text
 504 Things
-10,002 events through source-built DKIR
-10,002 events through saved DKIR
+10,002 events through source-built BSharp IR
+10,002 events through saved BSharp IR
 20,004 total event executions
-source/saved-DKIR parity: PASS
+source/saved-BSharp IR parity: PASS
 separate runtime isolation: PASS
 unknown Thing explanation: PASS
 wrong Kind explanation: PASS
@@ -110,7 +110,7 @@ Additional proofs:
 - `.bsharp` is the active creator source extension.
 - No project filename uses the retired technical label.
 - Compiler and runtime banners display BASIC# v0.1.14.
-- A saved v0.1.13 DKIR document still executes correctly.
+- A saved v0.1.13 BSharp IR document still executes correctly.
 - The Company Bible is present in project documentation.
 
 ## Known risks
@@ -118,7 +118,7 @@ Additional proofs:
 - The `#` in the project folder must remain quoted in shell commands.
 - Open terminals, editor workspaces, or bookmarks may still point to the former folder path after migration.
 - Historical documents intentionally retain former names inside their contents as audit history.
-- DKIR remains a debug format whose long-term compatibility is not yet frozen.
+- BSharp IR remains a debug format whose long-term compatibility is not yet frozen.
 
 ## Rollback point
 

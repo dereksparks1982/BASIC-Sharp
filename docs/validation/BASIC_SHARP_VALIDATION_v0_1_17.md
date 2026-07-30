@@ -21,7 +21,7 @@ PASS
 ```text
 504 Things
 10,003 events per path
-source/saved-DKIR parity PASS
+source/saved-BSharp IR parity PASS
 runtime isolation PASS
 deterministic final world PASS
 STRESS TEST PASS
@@ -45,7 +45,7 @@ KIND-FAMILY STRESS TEST PASS
 128-rule cascade PASS
 1,000 unrelated events PASS
 100 reactivation cycles PASS
-source/saved-DKIR parity PASS
+source/saved-BSharp IR parity PASS
 runtime isolation PASS
 deterministic replay PASS
 loop protection PASS
@@ -55,9 +55,9 @@ IF-RULE STRESS TEST PASS
 ## Compatibility
 
 ```text
-v0.1.13 saved DKIR PASS
-v0.1.15 saved DKIR PASS
-v0.1.16 saved DKIR PASS
+v0.1.13 saved BSharp IR PASS
+v0.1.15 saved BSharp IR PASS
+v0.1.16 saved BSharp IR PASS
 ```
 
 ## Result

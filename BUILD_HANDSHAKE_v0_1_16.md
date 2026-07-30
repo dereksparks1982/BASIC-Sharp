@@ -21,9 +21,9 @@
 - Added parser dictionary family-cache invalidation.
 - Locked exact, nearest-Kind, and equal-distance source-order Trigger priority.
 - Added a dedicated Kind-family stress runner with 64 overlapping ancestor Triggers, 500 descendant Things, and 2,000 repeated events per execution path.
-- Added strict plain-language validation for malformed, missing, empty, non-text, duplicate, conflicting, unknown-parent, and circular saved-DKIR Kind entries.
+- Added strict plain-language validation for malformed, missing, empty, non-text, duplicate, conflicting, unknown-parent, and circular saved-BSharp IR Kind entries.
 - Added rejection for Things claiming unknown Kinds.
-- Added v0.1.15 saved-DKIR compatibility fixture beside the existing v0.1.13 fixture.
+- Added v0.1.15 saved-BSharp IR compatibility fixture beside the existing v0.1.13 fixture.
 
 ## Excluded work
 
@@ -56,7 +56,7 @@ Kind-family stress: PASS
 64 overlapping ancestor Triggers
 500 descendant Things
 2,000 repeated events per execution path
-source/saved-DKIR parity
+source/saved-BSharp IR parity
 deterministic replay
 runtime isolation
 ```
@@ -66,7 +66,7 @@ runtime isolation
 - No known test or stress failure.
 - The family-distance index intentionally uses memory proportional to the total stored ancestry.
 - Timing is observational only and is not a hard acceptance gate.
-- Duplicate identical Kind entries in saved DKIR are now rejected rather than silently ignored.
+- Duplicate identical Kind entries in saved BSharp IR are now rejected rather than silently ignored.
 
 ## Rollback point
 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module BasicSharp
-  VERSION = '0.1.19'
+  VERSION = '0.1.20'
 
   Statement = Struct.new(:starter, :children, :line_number, keyword_init: true) do
     def to_h

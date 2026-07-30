@@ -135,7 +135,7 @@ samples/errors/unknown_kind.bsharp
 samples/errors/unknown_object.bsharp
 samples/errors/unknown_state.bsharp
 samples/first_room.bsharp
-tests/fixtures/first_room_v0_1_13.ir.json
+tests/fixtures/first_room_v0_1_13.bsir.json
 tests/test_identity_migration.rb
 
 MODIFIED
@@ -151,7 +151,7 @@ BUILD_HANDSHAKE_v0_1_10.md
 BUILD_HANDSHAKE_v0_1_11.md
 BUILD_HANDSHAKE_v0_1_12.md
 BUILD_HANDSHAKE_v0_1_13.md
-DK_PATCH_MANIFEST.json
+BASIC_SHARP_PATCH_MANIFEST.json
 README.md
 compiler/ast_nodes.rb
 compiler/diagnostics.rb
@@ -180,7 +180,7 @@ docs/runtime_contract_v0_1_11.md
 docs/runtime_contract_v0_1_12.md
 docs/runtime_contract_v0_1_13.md
 docs/testing/BASIC_SHARP_RUNTIME_STRESS_TEST_v0_1_13.md
-samples/first_room.ir.json
+samples/first_room.bsir.json
 tests/test_cli_output.rb
 tests/test_diagnostics_samples.rb
 tests/test_first_room.rb

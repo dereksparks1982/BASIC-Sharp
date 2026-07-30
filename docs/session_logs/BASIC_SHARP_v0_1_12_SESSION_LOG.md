@@ -19,7 +19,7 @@ Plain-Language Runtime Trace
 ## Prebuild records read
 
 - Active Company Bible and available addenda.
-- Accepted v0.1.11 build handshake, handoff, roadmap, parser contract, runtime contract, validation, manifest, README, compiler, runtime, tests, sample, and DKIR.
+- Accepted v0.1.11 build handshake, handoff, roadmap, parser contract, runtime contract, validation, manifest, README, compiler, runtime, tests, sample, and BSharp IR.
 - Copilot review supplied by the owner.
 - Existing BASIC# language foundation and historical BASIC research.
 
@@ -40,7 +40,7 @@ working tree clean
 - Added per-event official-word change explanations.
 - Updated command-line runtime reporting.
 - Preserved old `ran`, `context`, error, and world-state data.
-- Added source and saved-DKIR trace tests.
+- Added source and saved-BSharp IR trace tests.
 - Added exact-event and carry change tests.
 - Advanced version to 0.1.12.
 - Recorded the non-programmer doctrine.

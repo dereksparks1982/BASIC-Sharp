@@ -47,10 +47,10 @@ v0.1.12
 - Shows what `that guard` means.
 - Shows each event official word and immediate world change.
 - Preserved exact matching and direct Kind Trigger behavior.
-- Preserved source and saved-DKIR parity.
+- Preserved source and saved-BSharp IR parity.
 - Recorded: “A script language made for non-programmers, by non-programmers.”
 - Logged Copilot review decisions.
-- Advanced compiler and DKIR version to 0.1.12.
+- Advanced compiler and BSharp IR version to 0.1.12.
 - Updated README, contracts, roadmap, handoff, changelog, patch notes, session log, validation, changed-files record, and manifest.
 
 ## Excluded work
@@ -78,10 +78,10 @@ docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_12.txt
 ```bash
 for file in compiler/*.rb; do ruby -c "$file"; done
 ruby compiler/basic_sharp.rb samples/first_room.bsharp
-ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.bsir.json
 ruby compiler/basic_sharp.rb samples/first_room.bsharp --run "player attacks henry"
 ruby compiler/basic_sharp.rb samples/first_room.bsharp --run "player attacks ember"
-ruby compiler/basic_sharp.rb samples/first_room.ir.json --run "player attacks henry"
+ruby compiler/basic_sharp.rb samples/first_room.bsir.json --run "player attacks henry"
 ruby -w -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_relative file }'
 ```
 
@@ -92,7 +92,7 @@ ruby -w -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_rel
 - Compiler sample: PASS, 0 errors, 0 warnings.
 - Henry plain-language trace: PASS.
 - Exact Ember trace regression: PASS.
-- Saved DKIR trace parity: PASS.
+- Saved BSharp IR trace parity: PASS.
 - Full v0.1.12 suite with Ruby warnings: PASS, 42 runs, 252 assertions, 0 failures, 0 errors, 0 skips.
 - Documentation presence checks: PASS.
 - Clean v0.1.11 overlay and final ZIP checks: recorded in validation document after packaging.
@@ -104,7 +104,7 @@ ruby -w -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_rel
 - Runtime Kind matching remains direct only.
 - One selected Thing is stored per Kind during one event.
 - The first matching WHEN rule runs.
-- DKIR is not bytecode.
+- BSharp IR is not bytecode.
 
 ## Rollback point
 

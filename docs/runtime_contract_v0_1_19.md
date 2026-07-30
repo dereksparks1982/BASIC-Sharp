@@ -41,4 +41,4 @@ Amount actions report old and new values. Structured results retain value name, 
 
 ## Compatibility
 
-Older valid damage actions with no `amount` mean one. Valid accepted DKIR fixtures from v0.1.13, v0.1.15, v0.1.16, v0.1.17, and v0.1.18 remain executable.
+Older valid damage actions with no `amount` mean one. Valid accepted BSharp IR fixtures from v0.1.13, v0.1.15, v0.1.16, v0.1.17, and v0.1.18 remain executable.

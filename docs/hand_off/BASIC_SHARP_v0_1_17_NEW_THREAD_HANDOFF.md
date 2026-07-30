@@ -24,7 +24,7 @@ v0.1.17 Reactive IF Rules and Loop Protection
 - Source-order IF cascades.
 - Repeating-state and firing-limit loop protection.
 - Plain IF trace.
-- Source/saved-DKIR parity.
+- Source/saved-BSharp IR parity.
 - v0.1.13, v0.1.15, and v0.1.16 fixture compatibility.
 
 ## Validation

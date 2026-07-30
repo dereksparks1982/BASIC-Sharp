@@ -31,12 +31,12 @@ DKScript_Ruby_Bootstrap_Compiler_v0_1_05_SEMANTIC_DIAGNOSTICS_AND_IR_FILE_OUTPUT
 - Resolved `the table` to the single defined table object when exactly one table exists.
 - Added semantic warning for unresolved definite references such as `the table` when no table object exists.
 - Improved unknown reference wording.
-- Added safer `--out` handling with parent-directory creation for AST and DKIR output.
+- Added safer `--out` handling with parent-directory creation for AST and BSharp IR output.
 - Added an explicit error when `--out` is missing its path.
 - Added CLI tests for IR file output and missing `--out` path.
 - Updated resolver and IR tests for v0.1.05.
 - Added v0.1.05 parser contract documentation.
-- Generated updated `samples/first_room.ir.json`.
+- Generated updated `samples/first_room.bsir.json`.
 
 ## Excluded work
 
@@ -58,7 +58,7 @@ DKScript_Ruby_Bootstrap_Compiler_v0_1_05_SEMANTIC_DIAGNOSTICS_AND_IR_FILE_OUTPUT
 - `compiler/resolver.rb`
 - `docs/parser_contract_v0_1_05.md`
 - `samples/first_room.bsharp`
-- `samples/first_room.ir.json`
+- `samples/first_room.bsir.json`
 - `tests/test_first_room.rb`
 - `tests/test_resolver.rb`
 - `tests/test_ir_output.rb`
@@ -71,7 +71,7 @@ Run from project root after applying over v0.1.04:
 ```bash
 ruby compiler/basic_sharp.rb samples/first_room.bsharp
 ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir
-ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.bsir.json
 ruby tests/test_first_room.rb
 ruby tests/test_resolver.rb
 ruby tests/test_ir_output.rb
@@ -84,7 +84,7 @@ Expected: compiler reports zero errors and zero warnings for `samples/first_room
 
 - `ruby compiler/basic_sharp.rb samples/first_room.bsharp`: PASS, 0 errors, 0 warnings.
 - `ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir`: PASS.
-- `ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json`: PASS.
+- `ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.bsir.json`: PASS.
 - `ruby tests/test_first_room.rb`: PASS.
 - `ruby tests/test_resolver.rb`: PASS.
 - `ruby tests/test_ir_output.rb`: PASS.
@@ -92,7 +92,7 @@ Expected: compiler reports zero errors and zero warnings for `samples/first_room
 
 ## Known risks
 
-- DKIR is still a debug JSON dump for inspection only. It is not the final DKScript bytecode or permanent file format.
+- BSharp IR is still a debug JSON dump for inspection only. It is not the final DKScript bytecode or permanent file format.
 - Event parsing is intentionally simple. It only normalizes basic trailing-s verbs such as `takes` and `attacks`.
 - Definite reference resolution only handles the simple case where exactly one object of a kind exists.
 - Unresolved definite references are warnings in this build, not hard errors. This can be made stricter later.
@@ -106,4 +106,4 @@ git checkout v0.1.04
 
 ## Current continuation point
 
-Next build should start the first tiny runtime skeleton that loads DKIR debug output into an in-memory world state and applies START facts. It should not build the DK Engine yet.
+Next build should start the first tiny runtime skeleton that loads BSharp IR debug output into an in-memory world state and applies START facts. It should not build the DK Engine yet.

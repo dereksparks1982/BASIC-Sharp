@@ -143,15 +143,15 @@ saved_snapshot = nil
 saved_cascade = nil
 saved_seconds = Benchmark.realtime do
   Dir.mktmpdir do |dir|
-    path = File.join(dir, 'if_rule_stress.ir.json')
+    path = File.join(dir, 'if_rule_stress.bsir.json')
     File.write(path, "#{BasicSharp::IREmitter.new(resolved).to_json}\n")
     saved_machine = BasicSharp::Runtime.load(path)
     saved_snapshot, saved_cascade = run_sequence(saved_machine)
   end
 end
 
-raise 'source and saved DKIR produced different worlds' unless source_snapshot == saved_snapshot
-raise 'source and saved DKIR produced different IF traces' unless source_cascade.fetch('if_rules') == saved_cascade.fetch('if_rules')
+raise 'source and saved BSharp IR produced different worlds' unless source_snapshot == saved_snapshot
+raise 'source and saved BSharp IR produced different IF traces' unless source_cascade.fetch('if_rules') == saved_cascade.fetch('if_rules')
 
 replay = BasicSharp::Runtime.new(resolved)
 replay_snapshot, = run_sequence(replay)
@@ -171,12 +171,12 @@ puts "Affected Things: #{CHAIN_RULES}"
 puts "Unrelated events after settling: #{UNRELATED_EVENTS}"
 puts "False-to-true reactivation cycles: #{REACTIVATION_CYCLES}"
 puts format('Source path seconds: %.3f', source_seconds)
-puts format('Saved DKIR path seconds: %.3f', saved_seconds)
+puts format('Saved BSharp IR path seconds: %.3f', saved_seconds)
 puts "#{CHAIN_RULES}-rule cascade: PASS"
 puts 'Source order: PASS'
 puts 'No repeated firing while true: PASS'
 puts 'Reactivation after false: PASS'
-puts 'Source and saved-DKIR parity: PASS'
+puts 'Source and saved-BSharp IR parity: PASS'
 puts 'Separate runtime isolation: PASS'
 puts 'Deterministic final world: PASS'
 puts 'Loop protection: PASS'

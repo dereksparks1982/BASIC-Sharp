@@ -82,7 +82,7 @@ Run from project root:
 ```bash
 ruby compiler/basic_sharp.rb samples/first_room.bsharp
 ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir
-ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.bsir.json
 ruby tests/test_first_room.rb
 ruby tests/test_resolver.rb
 ruby tests/test_ir_output.rb

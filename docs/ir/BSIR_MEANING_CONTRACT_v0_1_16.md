@@ -1,8 +1,8 @@
-# DKIR Meaning Contract v0.1.16
+# BSharp IR Meaning Contract v0.1.16
 
 ## Status
 
-DKIR remains readable debug JSON. It is not final bytecode.
+BSharp IR remains readable debug JSON. It is not final bytecode.
 
 ## Required top-level lists
 
@@ -57,4 +57,4 @@ ember says it is a wyrm, but wyrm is not a known Kind
 
 ## Compatibility
 
-The runtime accepts valid v0.1.13 and v0.1.15 DKIR fixtures. Stricter rejection applies only to malformed documents that were never valid language truth.
+The runtime accepts valid v0.1.13 and v0.1.15 BSharp IR fixtures. Stricter rejection applies only to malformed documents that were never valid language truth.

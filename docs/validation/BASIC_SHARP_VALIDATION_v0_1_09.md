@@ -49,10 +49,10 @@ warnings: 0
 
 Result: PASS.
 
-## DKIR proof
+## BSharp IR proof
 
 ```bash
-ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.bsir.json
 ```
 
 Result: PASS.
@@ -72,10 +72,10 @@ north door: kind=door; states=unlocked
 
 Result: PASS.
 
-## Runtime proof from existing DKIR
+## Runtime proof from existing BSharp IR
 
 ```bash
-ruby compiler/basic_sharp.rb samples/first_room.ir.json --run "player attacks ember"
+ruby compiler/basic_sharp.rb samples/first_room.bsir.json --run "player attacks ember"
 ```
 
 Result: PASS.
@@ -114,5 +114,5 @@ Result: PASS.
 - Compiler proof after clean overlay: PASS, 0 errors, 0 warnings.
 - Runtime attack proof after clean overlay: PASS.
 - Runtime carry proof after clean overlay: PASS.
-- Existing DKIR runtime proof after clean overlay: PASS.
+- Existing BSharp IR runtime proof after clean overlay: PASS.
 - Full suite after clean overlay: PASS, 35 runs, 138 assertions, 0 failures, 0 errors, 0 skips.

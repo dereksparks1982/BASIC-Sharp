@@ -22,11 +22,11 @@ working tree clean
 - Read the accepted v0.1.15 continuation records.
 - Added parser dictionary family-cache invalidation.
 - Added runtime Kind-distance indexing.
-- Hardened saved-DKIR Kind entry validation.
+- Hardened saved-BSharp IR Kind entry validation.
 - Added unknown Thing-Kind validation.
-- Added deep-family, tie-order, malformed-DKIR, and compatibility tests.
+- Added deep-family, tie-order, malformed-BSharp IR, and compatibility tests.
 - Added the dedicated Kind-family stress tool.
-- Updated current contracts, roadmap, handoff, README, version surfaces, and generated sample DKIR.
+- Updated current contracts, roadmap, handoff, README, version surfaces, and generated sample BSharp IR.
 - Kept all creator-facing syntax unchanged.
 
 ## Internal result

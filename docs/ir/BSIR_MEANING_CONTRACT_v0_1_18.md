@@ -1,11 +1,11 @@
-# DKIR Meaning Contract v0.1.18
+# BSharp IR Meaning Contract v0.1.18
 
 ## Format
 
 The readable bootstrap format remains:
 
 ```text
-dkir.debug.json
+bsir.debug.json
 ```
 
 ## Multiple-selection reference
@@ -35,11 +35,11 @@ It is invalid in START facts, WHEN actor/target references, and IF conditions.
 
 ## Determinism
 
-Source-built and saved-DKIR execution must return identical ordered selections, steps, traces, and final world state.
+Source-built and saved-BSharp IR execution must return identical ordered selections, steps, traces, and final world state.
 
 ## Session-only data
 
-Current set snapshots and event context are not written back into DKIR.
+Current set snapshots and event context are not written back into BSharp IR.
 
 ## Compatibility
 

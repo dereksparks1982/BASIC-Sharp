@@ -47,7 +47,7 @@ Those were already part of the accepted v0.1.12 baseline and did not belong in a
 
 - BASIC# source compilation
 - plain-language runtime tracing
-- source and saved-DKIR parity
+- source and saved-BSharp IR parity
 - the 54-run automated suite
 - the 20,004-event standalone stress test
 

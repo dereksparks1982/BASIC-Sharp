@@ -7,13 +7,13 @@
 
 v0.1.09 is the first bridge from "DKScript understands the script" to "DKScript performs the script."
 
-The runtime consumes the existing DKIR debug structure. It does not invent a second language or bypass the compiler.
+The runtime consumes the existing BSharp IR debug structure. It does not invent a second language or bypass the compiler.
 
 ## Starting sequence
 
 ```text
-1. Load DKIR.
-2. Reject DKIR that contains compiler errors.
+1. Load BSharp IR.
+2. Reject BSharp IR that contains compiler errors.
 3. Create every defined Thing.
 4. Apply every START Fact.
 5. Check the existing IF rules once.
@@ -30,10 +30,10 @@ The runtime consumes the existing DKIR debug structure. It does not invent a sec
 ruby compiler/basic_sharp.rb samples/first_room.bsharp --run "player attacks ember"
 ```
 
-Run an existing DKIR file directly:
+Run an existing BSharp IR file directly:
 
 ```bash
-ruby compiler/basic_sharp.rb samples/first_room.ir.json --run "player attacks ember"
+ruby compiler/basic_sharp.rb samples/first_room.bsir.json --run "player attacks ember"
 ```
 
 ## Official words executed in this build

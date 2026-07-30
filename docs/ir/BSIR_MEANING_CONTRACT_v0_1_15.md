@@ -1,14 +1,14 @@
-# DKIR Meaning Contract v0.1.15
+# BSharp IR Meaning Contract v0.1.15
 
 ## Purpose
 
-DKIR remains the language-neutral record of what the BASIC# bootstrap compiler understood.
+BSharp IR remains the language-neutral record of what the BASIC# bootstrap compiler understood.
 
 ```text
 BASIC# source
 -> parser
 -> meaning checks
--> DKIR
+-> BSharp IR
 -> runtime
 ```
 
@@ -19,7 +19,7 @@ It is readable debug JSON, not Ruby source and not final bytecode.
 ```json
 {
   "version": "0.1.15",
-  "format": "dkir.debug.json",
+  "format": "bsir.debug.json",
   "kinds": [],
   "objects": [],
   "facts": [],
@@ -49,11 +49,11 @@ v0.1.15 activates the transitive meaning of those links. The Runtime may follow:
 wyrm -> dragon -> creature -> thing
 ```
 
-The DKIR still stores only direct links. It does not duplicate every ancestor onto every Thing.
+The BSharp IR still stores only direct links. It does not duplicate every ancestor onto every Thing.
 
 ## Kind integrity
 
-The Runtime rejects DKIR with:
+The Runtime rejects BSharp IR with:
 
 - missing Kind names;
 - missing parents;
@@ -111,6 +111,6 @@ Frozen for v0.1.15:
 Not frozen permanently:
 
 - multiple inheritance;
-- public long-term DKIR compatibility;
+- public long-term BSharp IR compatibility;
 - bytecode layout;
 - values, queues, and save-state representation.

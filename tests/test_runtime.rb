@@ -141,9 +141,9 @@ class TestRuntime < Minitest::Test
     assert_equal before, result.fetch('state')
   end
 
-  def test_loads_existing_dkir_json_and_keeps_trigger_context
+  def test_loads_existing_bsir_json_and_keeps_trigger_context
     Dir.mktmpdir do |dir|
-      path = File.join(dir, 'first_room.ir.json')
+      path = File.join(dir, 'first_room.bsir.json')
       File.write(path, "#{BasicSharp::IREmitter.new(resolved_sample).to_json}\n")
       machine = BasicSharp::Runtime.load(path)
       result = machine.run_event('player attacks henry')
@@ -259,7 +259,7 @@ class TestRuntime < Minitest::Test
     assert_empty result.fetch('context')
   end
 
-  def test_saved_dkir_rejects_unknown_kind_parent_plainly
+  def test_saved_bsir_rejects_unknown_kind_parent_plainly
     document = resolved_sample.to_h
     document.fetch(:kinds) << { 'name' => 'shade', 'parent' => 'missing kind', 'line_number' => 1 }
 
@@ -267,7 +267,7 @@ class TestRuntime < Minitest::Test
     assert_equal 'Kind family is broken: shade has unknown parent missing kind', error.message
   end
 
-  def test_saved_dkir_rejects_kind_family_loop_with_path
+  def test_saved_bsir_rejects_kind_family_loop_with_path
     document = resolved_sample.to_h
     document.fetch(:kinds) << { 'name' => 'thing', 'parent' => 'wyrm', 'line_number' => 1 }
 

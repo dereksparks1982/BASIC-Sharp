@@ -26,8 +26,8 @@
 - Preserved deterministic multiple selections and singular `that Kind` context.
 - Added full-set preflight so missing values and overflow never partially mutate a selection.
 - Preserved health independently from damage; no hidden combat formula was introduced.
-- Added strict saved-DKIR numeric validation before START mutation.
-- Preserved old saved-DKIR damage actions without `amount` as one damage.
+- Added strict saved-BSharp IR numeric validation before START mutation.
+- Preserved old saved-BSharp IR damage actions without `amount` as one damage.
 - Added value samples, tests, v0.1.18 compatibility fixture, and a 1,024-Thing value-and-amount stress lane.
 
 ## Excluded work
@@ -72,7 +72,7 @@ Value-and-amount stress: PASS
 missing-value atomicity
 overflow atomicity
 no hidden health subtraction
-source/saved-DKIR parity
+source/saved-BSharp IR parity
 runtime isolation
 deterministic replay
 ```

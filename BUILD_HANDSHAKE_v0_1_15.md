@@ -41,9 +41,9 @@ BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_15_INHERITED_KIND_MATCHING_CHANGED_FILE
 - Expanded resolver Kind candidates to include descendants.
 - Allowed known rootless built-in Kinds to receive one direct parent through existing syntax.
 - Rejected second parents and circular source families plainly.
-- Rejected unknown and circular parent chains in saved DKIR safely.
-- Preserved source and saved-DKIR parity.
-- Preserved accepted v0.1.13 saved-DKIR execution.
+- Rejected unknown and circular parent chains in saved BSharp IR safely.
+- Preserved source and saved-BSharp IR parity.
+- Preserved accepted v0.1.13 saved-BSharp IR execution.
 
 ## Explicit exclusions
 
@@ -65,11 +65,11 @@ BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_15_INHERITED_KIND_MATCHING_CHANGED_FILE
 
 ```text
 504 Things
-10,003 events through source-built DKIR
-10,003 events through saved DKIR
+10,003 events through source-built BSharp IR
+10,003 events through saved BSharp IR
 20,006 total event executions
 Inherited Kind matching: PASS
-source/saved-DKIR parity: PASS
+source/saved-BSharp IR parity: PASS
 separate runtime isolation: PASS
 deterministic final world: PASS
 ```
@@ -77,9 +77,9 @@ deterministic final world: PASS
 ## Known risks
 
 - A broad ancestor Trigger can overlap a nearer Kind Trigger. v0.1.15 resolves this by choosing the nearest family distance.
-- Old DKIR receives only the parent links it stores. Missing historical parent declarations are not invented.
+- Old BSharp IR receives only the parent links it stores. Missing historical parent declarations are not invented.
 - The current model remains single-parent only.
-- DKIR remains a debug contract whose permanent public compatibility is not yet frozen.
+- BSharp IR remains a debug contract whose permanent public compatibility is not yet frozen.
 - The `#` in the project path must remain quoted in shell commands.
 
 ## Rollback point

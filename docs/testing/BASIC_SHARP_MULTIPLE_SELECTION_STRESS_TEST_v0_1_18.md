@@ -9,8 +9,8 @@
 768 Things selected by every guard
 100 repeated multi-target events per execution path
 76,800 per-target mutations per execution path
-source-built DKIR path
-saved-DKIR path
+source-built BSharp IR path
+saved-BSharp IR path
 ```
 
 ## Required proofs
@@ -25,7 +25,7 @@ Singular 'that Kind' context preserved: PASS
 Empty selection handling: PASS
 Bounded human trace: PASS
 Complete structured results: PASS
-Source and saved-DKIR parity: PASS
+Source and saved-BSharp IR parity: PASS
 Separate runtime isolation: PASS
 Deterministic final world: PASS
 MULTIPLE-SELECTION STRESS TEST: PASS

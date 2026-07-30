@@ -17,8 +17,8 @@ stress table
 stress door
 504 total Things
 
-10,002 events through source-built DKIR
-10,002 events through saved DKIR
+10,002 events through source-built BSharp IR
+10,002 events through saved BSharp IR
 20,004 total event executions
 ```
 
@@ -33,15 +33,15 @@ The v0.1.13 automated stress tests cover:
 - selected-Thing context remaining local;
 - separate runtimes not sharing state;
 - deterministic worlds from identical starts and events;
-- long source-versus-saved-DKIR event sequences;
+- long source-versus-saved-BSharp IR event sequences;
 - unknown Thing explanations under load;
 - wrong Kind explanations under load;
 - repeated damage counts remaining exact;
 - trace text remaining truthful after repeated events;
 - carry relation changes;
 - startup IF and unlock behavior;
-- duplicate DKIR Thing rejection;
-- missing/unsupported DKIR format rejection.
+- duplicate BSharp IR Thing rejection;
+- missing/unsupported BSharp IR format rejection.
 
 ## Standalone command
 
@@ -64,7 +64,7 @@ These environment controls belong to the developer tool only. They are not BASIC
 
 - no Ruby warnings;
 - no test failures, errors, or skips;
-- source and saved DKIR final worlds match;
+- source and saved BSharp IR final worlds match;
 - fresh runtimes begin fresh;
 - wrong and unknown Things remain clearly explained;
 - repeated runs remain deterministic;

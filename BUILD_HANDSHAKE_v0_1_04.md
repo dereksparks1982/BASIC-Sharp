@@ -23,7 +23,7 @@ DKScript_Ruby_Bootstrap_Compiler_v0_1_04_SEMANTIC_RESOLVER_AND_IR_OUTPUT_CHANGED
 
 - Updated compiler version to `0.1.04`.
 - Added semantic resolver.
-- Added DKIR debug document structure.
+- Added BSharp IR debug document structure.
 - Added IR emitter.
 - Added `--emit-ir` compiler option.
 - Preserved `--json` and added `--emit-ast` alias for AST output.
@@ -52,7 +52,7 @@ DKScript_Ruby_Bootstrap_Compiler_v0_1_04_SEMANTIC_RESOLVER_AND_IR_OUTPUT_CHANGED
 - `compiler/ir_emitter.rb`
 - `compiler/resolver.rb`
 - `docs/parser_contract_v0_1_04.md`
-- `samples/first_room.ir.json`
+- `samples/first_room.bsir.json`
 - `tests/test_resolver.rb`
 - `tests/test_ir_output.rb`
 
@@ -63,7 +63,7 @@ Run from package root after applying over v0.1.03:
 ```bash
 ruby compiler/basic_sharp.rb samples/first_room.bsharp
 ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir
-ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.bsir.json
 ruby tests/test_first_room.rb
 ruby tests/test_resolver.rb
 ruby tests/test_ir_output.rb
@@ -81,7 +81,7 @@ Expected: compiler reports zero errors and zero warnings for `samples/first_room
 
 ## Known risks
 
-- DKIR is a debug JSON dump for inspection only. It is not the final DKScript bytecode or permanent file format.
+- BSharp IR is a debug JSON dump for inspection only. It is not the final DKScript bytecode or permanent file format.
 - Event parsing is intentionally simple. It only normalizes basic trailing-s verbs such as `takes` and `attacks`.
 - Resolver allows known kinds such as `the table` even when no specific table object was defined, to keep the first sample permissive.
 - Natural-language resolution is still strict and small by design.
@@ -94,4 +94,4 @@ git checkout v0.1.03
 
 ## Current continuation point
 
-Next build should add the first runtime skeleton that can load DKIR debug output into an in-memory world state and apply START facts. It should not build the DK Engine yet.
+Next build should add the first runtime skeleton that can load BSharp IR debug output into an in-memory world state and apply START facts. It should not build the DK Engine yet.

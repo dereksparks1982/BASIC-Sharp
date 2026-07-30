@@ -5,7 +5,7 @@
 
 ## Purpose
 
-v0.1.04 keeps the Ruby Stage 0 compiler front end and adds the first semantic resolver plus a human-readable DKIR debug dump.
+v0.1.04 keeps the Ruby Stage 0 compiler front end and adds the first semantic resolver plus a human-readable BSharp IR debug dump.
 
 The compiler now has three visible layers:
 
@@ -38,7 +38,7 @@ WHEN
 ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir
 ```
 
-This emits DKIR debug JSON. JSON is temporary scaffolding, not the final soul of DKScript.
+This emits BSharp IR debug JSON. JSON is temporary scaffolding, not the final soul of DKScript.
 
 ## Semantic resolver responsibilities
 

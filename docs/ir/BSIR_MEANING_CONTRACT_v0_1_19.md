@@ -1,4 +1,4 @@
-# DKIR Meaning Contract v0.1.19
+# BSharp IR Meaning Contract v0.1.19
 
 ## Starting value
 

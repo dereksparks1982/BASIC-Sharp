@@ -88,7 +88,7 @@ These explanations are runtime output, not new BASIC# syntax or official words.
 - Named Things may satisfy direct Kind Triggers.
 - Trigger context remembers one selected Thing per Kind during that event.
 - `(damage`, `(change`, `(carry`, and `(unlock` keep their current behavior.
-- Source and saved DKIR produce the same trace and state.
+- Source and saved BSharp IR produce the same trace and state.
 - Existing world-state output remains available.
 
 ## Excluded

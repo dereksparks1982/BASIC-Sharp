@@ -37,7 +37,7 @@ singular context PASS
 empty set PASS
 bounded trace PASS
 complete structured results PASS
-source/saved-DKIR parity PASS
+source/saved-BSharp IR parity PASS
 runtime isolation PASS
 deterministic final world PASS
 MULTIPLE-SELECTION STRESS TEST PASS
@@ -46,10 +46,10 @@ MULTIPLE-SELECTION STRESS TEST PASS
 ## Compatibility
 
 ```text
-v0.1.13 saved DKIR PASS
-v0.1.15 saved DKIR PASS
-v0.1.16 saved DKIR PASS
-v0.1.17 saved DKIR PASS
+v0.1.13 saved BSharp IR PASS
+v0.1.15 saved BSharp IR PASS
+v0.1.16 saved BSharp IR PASS
+v0.1.17 saved BSharp IR PASS
 ```
 
 ## Result

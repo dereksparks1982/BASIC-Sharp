@@ -18,7 +18,7 @@ Total events per execution path: 2,002
 - An exact named-Thing Trigger wins before all Kind Triggers.
 - The first source rule wins an equal-distance tie.
 - `that Kind` stays bound to the correct descendant Thing.
-- Source-built and saved-DKIR executions produce identical worlds.
+- Source-built and saved-BSharp IR executions produce identical worlds.
 - Replaying the same world and events is deterministic.
 - Separate runtime instances share no mutable world state.
 

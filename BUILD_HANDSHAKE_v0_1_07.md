@@ -49,7 +49,7 @@ DKScript_Ruby_Bootstrap_Compiler_v0_1_07_DIAGNOSTIC_DEDUPING_AND_CASCADE_CLEANUP
 - Strengthened diagnostics sample tests to require exact one-error behavior for unknown object, unknown kind, unknown state, unknown action, and bad line command samples.
 - Preserved two separate ambiguous-door errors because `the door` appears on two separate source lines.
 - Updated README and parser contract documentation.
-- Refreshed sample DKIR output to version `0.1.07`.
+- Refreshed sample BSharp IR output to version `0.1.07`.
 
 ## Excluded work
 
@@ -71,7 +71,7 @@ compiler/diagnostics.rb
 compiler/parser.rb
 compiler/resolver.rb
 docs/parser_contract_v0_1_07.md
-samples/first_room.ir.json
+samples/first_room.bsir.json
 tests/test_cli_output.rb
 tests/test_diagnostics_samples.rb
 tests/test_ir_output.rb
@@ -84,7 +84,7 @@ Run from project root after applying over v0.1.06:
 ```bash
 ruby compiler/basic_sharp.rb samples/first_room.bsharp
 ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir
-ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.bsir.json
 ruby tests/test_first_room.rb
 ruby tests/test_resolver.rb
 ruby tests/test_ir_output.rb
@@ -96,7 +96,7 @@ ruby tests/test_diagnostics_samples.rb
 
 - `ruby compiler/basic_sharp.rb samples/first_room.bsharp`: PASS, 0 errors, 0 warnings.
 - `ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir`: PASS.
-- `ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json`: PASS.
+- `ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.bsir.json`: PASS.
 - `ruby tests/test_first_room.rb`: PASS.
 - `ruby tests/test_resolver.rb`: PASS.
 - `ruby tests/test_ir_output.rb`: PASS.
@@ -106,7 +106,7 @@ ruby tests/test_diagnostics_samples.rb
 
 ## Known risks
 
-- DKIR is still a debug JSON dump for inspection only. It is not final bytecode.
+- BSharp IR is still a debug JSON dump for inspection only. It is not final bytecode.
 - Diagnostics are now cleaner but still minimal.
 - Unknown-line-command recovery assumes an action-looking mistyped command was meant to be `<then>`.
 - Natural-language resolution is still strict and small by design.
@@ -119,4 +119,4 @@ git checkout v0.1.06
 
 ## Current continuation point
 
-Next build can start the first tiny runtime skeleton that loads DKIR debug output into an in-memory world state and applies START facts, or can continue sharpening non-programmer diagnostics if Derek wants more compiler teeth first.
+Next build can start the first tiny runtime skeleton that loads BSharp IR debug output into an in-memory world state and applies START facts, or can continue sharpening non-programmer diagnostics if Derek wants more compiler teeth first.

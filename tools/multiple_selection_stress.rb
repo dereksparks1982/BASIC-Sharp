@@ -80,13 +80,13 @@ source_machine = BasicSharp::Runtime.new(document)
 isolated_machine = BasicSharp::Runtime.new(document)
 
 Dir.mktmpdir do |dir|
-  path = File.join(dir, 'multiple_selection.ir.json')
+  path = File.join(dir, 'multiple_selection.bsir.json')
   File.write(path, "#{BasicSharp::IREmitter.new(document).to_json}\n")
   saved_machine = BasicSharp::Runtime.load(path)
 
   source_first, source_state, source_seconds = run_repeated(source_machine)
   saved_first, saved_state, saved_seconds = run_repeated(saved_machine)
-  assert_stress(source_first == saved_first, 'source and saved DKIR first set results differ')
+  assert_stress(source_first == saved_first, 'source and saved BSharp IR first set results differ')
 
   direct_targets = source_first.fetch('selections').first.fetch('targets')
   assert_stress(source_first.fetch('state').length == TOTAL_THINGS, 'total Thing count changed')
@@ -99,7 +99,7 @@ Dir.mktmpdir do |dir|
   assert_stress(thing(source_state, 'guard 1').fetch('damage') == REPEATED_EVENTS, 'direct guard damage count was wrong')
   assert_stress(thing(source_state, "captain #{CAPTAINS}").fetch('damage') == REPEATED_EVENTS, 'inherited captain damage count was wrong')
   assert_stress(!thing(source_state, 'key 1').key?('damage'), 'unrelated Thing was mutated')
-  assert_stress(source_state == saved_state, 'source and saved DKIR final states differ')
+  assert_stress(source_state == saved_state, 'source and saved BSharp IR final states differ')
 
   report = source_machine.report(source_first)
   assert_stress(report.include?("every guard selected #{MATCHING_THINGS} Things:"), 'large selection summary was not bounded')
@@ -113,7 +113,7 @@ Dir.mktmpdir do |dir|
   assert_stress(source_context.fetch('selections').first.fetch('targets').length == MATCHING_THINGS, 'plural action did not keep full selection')
   assert_stress(thing(source_context.fetch('state'), 'guard 512').fetch('states') == ['angry'], 'that guard did not remain singular')
   assert_stress(thing(source_context.fetch('state'), 'guard 511').fetch('states').empty?, 'plural action corrupted singular that guard context')
-  assert_stress(source_context == saved_context, 'source and saved DKIR context results differ')
+  assert_stress(source_context == saved_context, 'source and saved BSharp IR context results differ')
 
   empty = source_machine.run_event('player speaks alarm bell')
   assert_stress(empty.fetch('matched'), 'empty-set event did not match')
@@ -138,7 +138,7 @@ Dir.mktmpdir do |dir|
   puts "Repeated multi-target events per path: #{REPEATED_EVENTS}"
   puts "Per-target mutations per path: #{MATCHING_THINGS * REPEATED_EVENTS}"
   puts format('Source path seconds: %.3f', source_seconds)
-  puts format('Saved DKIR path seconds: %.3f', saved_seconds)
+  puts format('Saved BSharp IR path seconds: %.3f', saved_seconds)
   puts 'Direct Kind selection: PASS'
   puts 'Inherited Kind selection: PASS'
   puts 'Definition-order selection: PASS'
@@ -148,7 +148,7 @@ Dir.mktmpdir do |dir|
   puts 'Empty selection handling: PASS'
   puts 'Bounded human trace: PASS'
   puts 'Complete structured results: PASS'
-  puts 'Source and saved DKIR parity: PASS'
+  puts 'Source and saved BSharp IR parity: PASS'
   puts 'Separate runtime isolation: PASS'
   puts 'Deterministic final world: PASS'
   puts 'MULTIPLE-SELECTION STRESS TEST: PASS'

@@ -184,13 +184,13 @@ class TestRuntimeStress < Minitest::Test
     assert_equal ['calm'], thing(second.snapshot, 'guard 1').fetch('states')
   end
 
-  def test_source_and_saved_dkir_remain_identical_after_long_sequence
+  def test_source_and_saved_bsir_remain_identical_after_long_sequence
     source = stress_source(guards: 40, dragons: 10)
     resolved = resolve(source)
     source_machine = BasicSharp::Runtime.new(resolved)
 
     Dir.mktmpdir do |dir|
-      path = File.join(dir, 'stress.ir.json')
+      path = File.join(dir, 'stress.bsir.json')
       File.write(path, "#{BasicSharp::IREmitter.new(resolved).to_json}\n")
       ir_machine = BasicSharp::Runtime.load(path)
 
@@ -254,20 +254,20 @@ class TestRuntimeStress < Minitest::Test
     assert_includes report, 'guard 8: kind=guard; states=angry; damage=75'
   end
 
-  def test_duplicate_dkir_thing_names_are_rejected_instead_of_overwritten
+  def test_duplicate_bsir_thing_names_are_rejected_instead_of_overwritten
     document = resolve(stress_source(guards: 2, dragons: 1)).to_h
     duplicate = document.fetch(:objects).find { |object| object.fetch('name') == 'guard 1' }.dup
     document.fetch(:objects) << duplicate
 
     error = assert_raises(ArgumentError) { BasicSharp::Runtime.new(document) }
-    assert_equal "DKIR has more than one Thing named 'guard 1'", error.message
+    assert_equal "BSharp IR has more than one Thing named 'guard 1'", error.message
   end
 
-  def test_missing_or_wrong_dkir_format_is_rejected
+  def test_missing_or_wrong_bsir_format_is_rejected
     document = resolve(stress_source(guards: 2, dragons: 1)).to_h
     document.delete(:format)
 
     error = assert_raises(ArgumentError) { BasicSharp::Runtime.new(document) }
-    assert_equal "DKIR format '(missing)' is not supported", error.message
+    assert_equal "BSharp IR format '(missing)' is not supported", error.message
   end
 end

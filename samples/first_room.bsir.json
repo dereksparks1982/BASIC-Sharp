@@ -1,11 +1,21 @@
 {
-  "version": "0.1.13",
-  "format": "dkir.debug.json",
+  "version": "0.1.20",
+  "format": "bsir.debug.json",
   "kinds": [
+    {
+      "name": "creature",
+      "parent": "thing",
+      "line_number": 2
+    },
     {
       "name": "dragon",
       "parent": "creature",
-      "line_number": 2
+      "line_number": 3
+    },
+    {
+      "name": "wyrm",
+      "parent": "dragon",
+      "line_number": 4
     }
   ],
   "objects": [
@@ -17,43 +27,49 @@
     },
     {
       "name": "ember",
-      "kind": "dragon",
+      "kind": "wyrm",
       "builtin": false,
-      "line_number": 5
+      "line_number": 7
+    },
+    {
+      "name": "cinder",
+      "kind": "wyrm",
+      "builtin": false,
+      "line_number": 8
     },
     {
       "name": "north door",
       "kind": "door",
       "builtin": false,
-      "line_number": 6
+      "line_number": 9
     },
     {
       "name": "brass key",
       "kind": "key",
       "builtin": false,
-      "line_number": 7
+      "line_number": 10
     },
     {
       "name": "oak table",
       "kind": "table",
       "builtin": false,
-      "line_number": 8
+      "line_number": 11
     },
     {
       "name": "henry",
       "kind": "guard",
       "builtin": false,
-      "line_number": 9
+      "line_number": 12
     }
   ],
   "facts": [
     {
-      "line_number": 12,
+      "line_number": 15,
       "subject": {
         "type": "object",
         "text": "ember",
         "name": "ember",
-        "object_kind": "dragon"
+        "object_kind": "wyrm"
       },
       "relation": "is",
       "value": {
@@ -64,11 +80,31 @@
         "subject": "ember",
         "relation": "is",
         "value": "calm",
-        "line_number": 12
+        "line_number": 15
       }
     },
     {
-      "line_number": 13,
+      "line_number": 16,
+      "subject": {
+        "type": "object",
+        "text": "cinder",
+        "name": "cinder",
+        "object_kind": "wyrm"
+      },
+      "relation": "is",
+      "value": {
+        "kind": "state",
+        "name": "calm"
+      },
+      "raw": {
+        "subject": "cinder",
+        "relation": "is",
+        "value": "calm",
+        "line_number": 16
+      }
+    },
+    {
+      "line_number": 17,
       "subject": {
         "type": "object",
         "text": "north door",
@@ -84,11 +120,11 @@
         "subject": "north door",
         "relation": "is",
         "value": "locked",
-        "line_number": 13
+        "line_number": 17
       }
     },
     {
-      "line_number": 14,
+      "line_number": 18,
       "subject": {
         "type": "object",
         "text": "brass key",
@@ -107,11 +143,11 @@
         "subject": "brass key",
         "relation": "is",
         "value": "on the table",
-        "line_number": 14
+        "line_number": 18
       }
     },
     {
-      "line_number": 15,
+      "line_number": 19,
       "subject": {
         "type": "object",
         "text": "henry",
@@ -127,13 +163,13 @@
         "subject": "henry",
         "relation": "is",
         "value": "calm",
-        "line_number": 15
+        "line_number": 19
       }
     }
   ],
   "events": [
     {
-      "line_number": 17,
+      "line_number": 21,
       "when": {
         "raw": "player takes brass key",
         "actor": {
@@ -152,7 +188,7 @@
       },
       "then": [
         {
-          "line_number": 19,
+          "line_number": 23,
           "action": "carry",
           "target": {
             "type": "object",
@@ -164,7 +200,7 @@
       ]
     },
     {
-      "line_number": 25,
+      "line_number": 29,
       "when": {
         "raw": "player attacks ember",
         "actor": {
@@ -178,28 +214,29 @@
           "type": "object",
           "text": "ember",
           "name": "ember",
-          "object_kind": "dragon"
+          "object_kind": "wyrm"
         }
       },
       "then": [
         {
-          "line_number": 27,
+          "line_number": 31,
           "action": "damage",
           "target": {
             "type": "object",
             "text": "ember",
             "name": "ember",
-            "object_kind": "dragon"
-          }
+            "object_kind": "wyrm"
+          },
+          "amount": 1
         },
         {
-          "line_number": 28,
+          "line_number": 32,
           "action": "change",
           "target": {
             "type": "object",
             "text": "ember",
             "name": "ember",
-            "object_kind": "dragon"
+            "object_kind": "wyrm"
           },
           "to": {
             "kind": "state",
@@ -209,7 +246,57 @@
       ]
     },
     {
-      "line_number": 29,
+      "line_number": 34,
+      "when": {
+        "raw": "player attacks a creature",
+        "actor": {
+          "type": "object",
+          "text": "player",
+          "name": "player",
+          "object_kind": "person"
+        },
+        "action": "attack",
+        "target": {
+          "type": "kind_one",
+          "text": "a creature",
+          "selector": "a",
+          "kind_name": "creature",
+          "candidates": [
+            "ember",
+            "cinder"
+          ]
+        }
+      },
+      "then": [
+        {
+          "line_number": 36,
+          "action": "damage",
+          "target": {
+            "type": "previous",
+            "text": "that creature",
+            "selector": "that",
+            "kind_name": "creature"
+          },
+          "amount": 1
+        },
+        {
+          "line_number": 37,
+          "action": "change",
+          "target": {
+            "type": "previous",
+            "text": "that creature",
+            "selector": "that",
+            "kind_name": "creature"
+          },
+          "to": {
+            "kind": "state",
+            "name": "angry"
+          }
+        }
+      ]
+    },
+    {
+      "line_number": 39,
       "when": {
         "raw": "player attacks a guard",
         "actor": {
@@ -231,17 +318,18 @@
       },
       "then": [
         {
-          "line_number": 31,
+          "line_number": 41,
           "action": "damage",
           "target": {
             "type": "previous",
             "text": "that guard",
             "selector": "that",
             "kind_name": "guard"
-          }
+          },
+          "amount": 1
         },
         {
-          "line_number": 32,
+          "line_number": 42,
           "action": "change",
           "target": {
             "type": "previous",
@@ -259,7 +347,7 @@
   ],
   "if_rules": [
     {
-      "line_number": 21,
+      "line_number": 25,
       "if": {
         "raw": "north door is locked",
         "subject": {
@@ -276,7 +364,7 @@
       },
       "then": [
         {
-          "line_number": 23,
+          "line_number": 27,
           "action": "unlock",
           "target": {
             "type": "object",
@@ -284,6 +372,36 @@
             "name": "north door",
             "object_kind": "door"
           }
+        }
+      ]
+    },
+    {
+      "line_number": 44,
+      "if": {
+        "raw": "cinder is angry",
+        "subject": {
+          "type": "object",
+          "text": "cinder",
+          "name": "cinder",
+          "object_kind": "wyrm"
+        },
+        "relation": "is",
+        "value": {
+          "kind": "state",
+          "name": "angry"
+        }
+      },
+      "then": [
+        {
+          "line_number": 46,
+          "action": "damage",
+          "target": {
+            "type": "object",
+            "text": "player",
+            "name": "player",
+            "object_kind": "person"
+          },
+          "amount": 1
         }
       ]
     }

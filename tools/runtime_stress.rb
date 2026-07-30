@@ -108,7 +108,7 @@ end
 
 ir_seconds = Benchmark.realtime do
   Dir.mktmpdir do |dir|
-    path = File.join(dir, 'runtime_stress.ir.json')
+    path = File.join(dir, 'runtime_stress.bsir.json')
     File.write(path, "#{BasicSharp::IREmitter.new(resolved).to_json}\n")
     ir_machine = BasicSharp::Runtime.load(path)
     run_events(ir_machine)
@@ -117,7 +117,7 @@ end
 
 source_snapshot = source_machine.snapshot
 ir_snapshot = ir_machine.snapshot
-raise 'source and saved DKIR produced different worlds' unless source_snapshot == ir_snapshot
+raise 'source and saved BSharp IR produced different worlds' unless source_snapshot == ir_snapshot
 
 fresh = BasicSharp::Runtime.new(resolved)
 raise 'state leaked into a fresh runtime' if thing(fresh.snapshot, 'guard 1').key?('damage')
@@ -136,8 +136,8 @@ puts "BASIC# Runtime Stress Test v#{BasicSharp::VERSION}"
 puts "Things: #{GUARDS + DRAGONS + 4}"
 puts "Events per execution path: #{EVENTS + 3}"
 puts format('Source path seconds: %.3f', source_seconds)
-puts format('Saved DKIR path seconds: %.3f', ir_seconds)
-puts 'Source and saved DKIR parity: PASS'
+puts format('Saved BSharp IR path seconds: %.3f', ir_seconds)
+puts 'Source and saved BSharp IR parity: PASS'
 puts 'Separate runtime isolation: PASS'
 puts 'Unknown Thing explanation: PASS'
 puts 'Inherited Kind matching: PASS'

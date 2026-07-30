@@ -4,7 +4,7 @@
 
 For an action target `every K`, the runtime selects every loaded Thing whose direct Kind or inherited Kind family matches K.
 
-Selection order is `objects` order in DKIR, normally creator DEFINE order. The built-in player remains first if it is a valid member.
+Selection order is `objects` order in BSharp IR, normally creator DEFINE order. The built-in player remains first if it is a valid member.
 
 Serialized `candidates` are ignored as authority. Selection is recalculated from loaded Things and the validated Kind-distance index.
 
@@ -59,8 +59,8 @@ IF trace entries may also contain `selections` when an IF action uses `every Kin
 
 ## Validation before mutation
 
-Saved DKIR rejects malformed set references, unsupported selectors, missing/non-text/empty Kind names, unknown Kinds, and set references in unsupported positions before START facts mutate the world.
+Saved BSharp IR rejects malformed set references, unsupported selectors, missing/non-text/empty Kind names, unknown Kinds, and set references in unsupported positions before START facts mutate the world.
 
 ## Compatibility
 
-Valid saved DKIR fixtures from v0.1.13, v0.1.15, v0.1.16, and v0.1.17 remain executable.
+Valid saved BSharp IR fixtures from v0.1.13, v0.1.15, v0.1.16, and v0.1.17 remain executable.

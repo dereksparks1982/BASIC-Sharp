@@ -26,7 +26,7 @@
 - Added plain diagnostics for unsupported set use in START, WHEN Triggers, and IF conditions.
 - Added plain correction for unbound `a Kind` action targets.
 - Ignored serialized candidate lists as runtime authority.
-- Added strict saved-DKIR set-reference validation before START mutations.
+- Added strict saved-BSharp IR set-reference validation before START mutations.
 - Added bounded human traces with complete structured result lists.
 - Added a focused sample, tests, v0.1.17 compatibility fixture, and 1,024-Thing stress lane.
 
@@ -60,7 +60,7 @@ Multiple-selection stress: PASS
 76,800 per-target mutations per path
 bounded human trace
 complete structured results
-source/saved-DKIR parity
+source/saved-BSharp IR parity
 runtime isolation
 deterministic replay
 ```

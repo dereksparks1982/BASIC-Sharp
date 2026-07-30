@@ -26,7 +26,7 @@
 - Added plain startup and event-time IF traces.
 - Added repeating-world detection and a scaled firing guard.
 - Added a 128-rule IF stress lane.
-- Added v0.1.16 saved-DKIR compatibility coverage.
+- Added v0.1.16 saved-BSharp IR compatibility coverage.
 
 ## Excluded work
 
@@ -66,7 +66,7 @@ IF-rule stress: PASS
 128 chained IF rules
 1,000 unrelated events after settling
 100 false-to-true reactivation cycles
-source/saved-DKIR parity
+source/saved-BSharp IR parity
 runtime isolation
 deterministic replay
 loop protection

@@ -33,7 +33,7 @@ The parser and resolver information for `a guard` and `that guard` remains uncha
 
 No syntax change was made.
 
-The version advances because the compiler/runtime package and emitted DKIR are versioned together.
+The version advances because the compiler/runtime package and emitted BSharp IR are versioned together.
 
 ## Preserved rules
 

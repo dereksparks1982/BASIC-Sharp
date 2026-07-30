@@ -147,15 +147,15 @@ saved_snapshot = nil
 saved_last = nil
 saved_seconds = Benchmark.realtime do
   Dir.mktmpdir do |dir|
-    path = File.join(dir, 'kind_family_stress.ir.json')
+    path = File.join(dir, 'kind_family_stress.bsir.json')
     File.write(path, "#{BasicSharp::IREmitter.new(resolved).to_json}\n")
     saved_machine = BasicSharp::Runtime.load(path)
     saved_snapshot, saved_last = run_sequence(saved_machine)
   end
 end
 
-raise 'source and saved DKIR produced different worlds' unless source_snapshot == saved_snapshot
-raise 'source and saved DKIR produced different final contexts' unless source_last.fetch('context') == saved_last.fetch('context')
+raise 'source and saved BSharp IR produced different worlds' unless source_snapshot == saved_snapshot
+raise 'source and saved BSharp IR produced different final contexts' unless source_last.fetch('context') == saved_last.fetch('context')
 
 replay = BasicSharp::Runtime.new(resolved)
 replay_snapshot, = run_sequence(replay)
@@ -171,14 +171,14 @@ puts "Descendant Things: #{THINGS}"
 puts "Repeated events per execution path: #{EVENTS}"
 puts "Total events per execution path: #{EVENTS + 2}"
 puts format('Source path seconds: %.3f', source_seconds)
-puts format('Saved DKIR path seconds: %.3f', saved_seconds)
+puts format('Saved BSharp IR path seconds: %.3f', saved_seconds)
 puts '256-level ancestry: PASS' if DEPTH >= 256
 puts 'Overlapping ancestor Trigger priority: PASS'
 puts 'Exact Trigger priority: PASS'
 puts 'Nearest Kind priority: PASS'
 puts 'Same-distance source-order priority: PASS'
 puts 'Event context isolation: PASS'
-puts 'Source and saved-DKIR parity: PASS'
+puts 'Source and saved-BSharp IR parity: PASS'
 puts 'Deterministic replay: PASS'
 puts 'Separate runtime isolation: PASS'
 puts 'KIND-FAMILY STRESS TEST: PASS'

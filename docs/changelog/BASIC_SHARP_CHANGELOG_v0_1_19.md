@@ -16,4 +16,4 @@
 - Old damage actions mean one.
 - Damage does not change health automatically.
 - State change syntax and meaning.
-- Inherited Kind matching, deterministic set ordering, singular context, reactive IF, loop protection, source/saved-DKIR parity, and accepted older fixtures.
+- Inherited Kind matching, deterministic set ordering, singular context, reactive IF, loop protection, source/saved-BSharp IR parity, and accepted older fixtures.

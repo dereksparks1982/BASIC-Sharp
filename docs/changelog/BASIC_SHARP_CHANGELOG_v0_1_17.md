@@ -10,7 +10,7 @@
 - Repeating-state and scaled firing loop protection.
 - Focused IF behavior test suite.
 - 128-rule IF stress runner.
-- v0.1.16 saved-DKIR fixture.
+- v0.1.16 saved-BSharp IR fixture.
 
 ## Changed
 
@@ -23,5 +23,5 @@
 - Existing IF syntax.
 - Exact and inherited WHEN matching.
 - Source order.
-- Source/saved-DKIR parity.
-- v0.1.13, v0.1.15, and v0.1.16 valid saved-DKIR compatibility.
+- Source/saved-BSharp IR parity.
+- v0.1.13, v0.1.15, and v0.1.16 valid saved-BSharp IR compatibility.

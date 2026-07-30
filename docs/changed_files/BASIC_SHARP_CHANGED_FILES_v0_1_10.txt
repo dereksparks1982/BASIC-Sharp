@@ -1,5 +1,5 @@
 BUILD_HANDSHAKE_v0_1_10.md
-DK_PATCH_MANIFEST.json
+BASIC_SHARP_PATCH_MANIFEST.json
 README.md
 compiler/ast_nodes.rb
 compiler/runtime.rb
@@ -13,7 +13,7 @@ docs/runtime_contract_v0_1_10.md
 docs/session_logs/BASIC_SHARP_v0_1_10_SESSION_LOG.md
 docs/validation/BASIC_SHARP_VALIDATION_v0_1_10.md
 samples/first_room.bsharp
-samples/first_room.ir.json
+samples/first_room.bsir.json
 tests/test_cli_output.rb
 tests/test_first_room.rb
 tests/test_ir_output.rb

@@ -10,7 +10,7 @@ The review discussed the BASIC# project through the v0.1.12 candidate brief, whi
 
 ## Strong findings accepted
 
-- Create a formal DKIR meaning contract while DKIR is still small.
+- Create a formal BSharp IR meaning contract while BSharp IR is still small.
 - Keep Ruby literal, explicit, and replaceable.
 - Do not allow Ruby closures, symbols, metaprogramming, or other conveniences to define BASIC# meaning.
 - Use one direct parent per Kind when Kind Families are implemented.
@@ -66,7 +66,7 @@ The official-word mark remains protected.
 
 ## Speculation not adopted as project truth
 
-- an arbitrary multi-year estimate for the DK Engine bridge;
+- an arbitrary multi-year estimate for the game-engine bridge;
 - stale version recommendations;
 - treating self-hosting as optional when it remains an owner goal.
 
@@ -74,12 +74,12 @@ The official-word mark remains protected.
 
 v0.1.13 includes:
 
-- formal DKIR meaning contract;
+- formal BSharp IR meaning contract;
 - official-word visual-guide document;
 - Lisp research;
 - focused runtime stress testing;
 - context isolation proof;
-- duplicate DKIR Thing protection;
-- DKIR format/list validation.
+- duplicate BSharp IR Thing protection;
+- BSharp IR format/list validation.
 
 No syntax or new official word was added.

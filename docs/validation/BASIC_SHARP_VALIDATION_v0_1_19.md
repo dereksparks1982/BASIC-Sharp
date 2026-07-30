@@ -28,11 +28,11 @@ Value-and-amount stress: PASS
 ## Compatibility
 
 ```text
-v0.1.13 saved DKIR: PASS
-v0.1.15 saved DKIR: PASS
-v0.1.16 saved DKIR: PASS
-v0.1.17 saved DKIR: PASS
-v0.1.18 saved DKIR: PASS
+v0.1.13 saved BSharp IR: PASS
+v0.1.15 saved BSharp IR: PASS
+v0.1.16 saved BSharp IR: PASS
+v0.1.17 saved BSharp IR: PASS
+v0.1.18 saved BSharp IR: PASS
 Old damage action without amount defaults to one: PASS
 ```
 
@@ -48,8 +48,8 @@ Deterministic set order: PASS
 Missing-value atomicity: PASS
 Overflow atomicity: PASS
 No hidden health subtraction: PASS
-Malformed numeric DKIR rejected before START mutation: PASS
-Source/saved-DKIR parity: PASS
+Malformed numeric BSharp IR rejected before START mutation: PASS
+Source/saved-BSharp IR parity: PASS
 Runtime isolation: PASS
 Deterministic replay: PASS
 ```

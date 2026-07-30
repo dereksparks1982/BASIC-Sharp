@@ -17,7 +17,7 @@ When the condition becomes false, the rule re-arms. It may wake again on a later
 
 ## Execution order
 
-1. Validate DKIR.
+1. Validate BSharp IR.
 2. Load Kind families.
 3. Create Things.
 4. Apply all START facts.
@@ -81,4 +81,4 @@ steps
 
 ## Compatibility
 
-Valid saved DKIR fixtures from v0.1.13, v0.1.15, and v0.1.16 remain executable.
+Valid saved BSharp IR fixtures from v0.1.13, v0.1.15, and v0.1.16 remain executable.

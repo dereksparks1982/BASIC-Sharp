@@ -12,6 +12,6 @@
 - Logged and evaluated Grok's outside analysis.
 - Preserved the Copilot review brief inside project documentation.
 - Carried v0.1.10 Runtime Trigger Context forward cumulatively from accepted v0.1.09.
-- Advanced compiler and DKIR version to 0.1.11.
+- Advanced compiler and BSharp IR version to 0.1.11.
 - Added no syntax and no official words.
 - Automated validation remained at 41 runs and 178 assertions with zero failures and zero errors.

@@ -259,7 +259,7 @@ class TestMultipleSelection < Minitest::Test
     assert_equal ['henry', 'otto'], entry.fetch('selections').first.fetch('targets')
   end
 
-  def test_saved_dkir_ignores_stale_candidates_and_recalculates_from_loaded_things
+  def test_saved_bsir_ignores_stale_candidates_and_recalculates_from_loaded_things
     document = resolve(base_source).to_h
     target = document.fetch(:events).first.fetch('then').first.fetch('target')
     target['candidates'] = ['not real', 'otto']
@@ -268,12 +268,12 @@ class TestMultipleSelection < Minitest::Test
     assert_equal ['henry', 'mara', 'otto'], result.fetch('selections').first.fetch('targets')
   end
 
-  def test_source_and_saved_dkir_set_execution_are_identical
+  def test_source_and_saved_bsir_set_execution_are_identical
     document = resolve(base_source(actions: ['(damage every guard', '(change every guard to angry']))
     source_machine = BasicSharp::Runtime.new(document)
 
     Dir.mktmpdir do |dir|
-      path = File.join(dir, 'every_guard.ir.json')
+      path = File.join(dir, 'every_guard.bsir.json')
       File.write(path, "#{BasicSharp::IREmitter.new(document).to_json}\n")
       saved_machine = BasicSharp::Runtime.load(path)
 
@@ -318,7 +318,7 @@ class TestMultipleSelection < Minitest::Test
     assert_equal 1, thing(result.fetch('state'), 'guard 20').fetch('damage')
   end
 
-  def test_saved_dkir_rejects_missing_nontext_empty_unknown_and_wrong_selector_set_references
+  def test_saved_bsir_rejects_missing_nontext_empty_unknown_and_wrong_selector_set_references
     mutations = {
       'Set reference is missing its Kind name' => ->(target) { target.delete('kind_name') },
       'Set reference has a Kind name that is not text' => ->(target) { target['kind_name'] = 7 },
@@ -337,7 +337,7 @@ class TestMultipleSelection < Minitest::Test
     end
   end
 
-  def test_saved_dkir_rejects_set_reference_outside_action_position_before_start_mutation
+  def test_saved_bsir_rejects_set_reference_outside_action_position_before_start_mutation
     document = JSON.parse(BasicSharp::IREmitter.new(resolve(base_source)).to_json)
     document.fetch('facts') << {
       'subject' => {
@@ -351,7 +351,7 @@ class TestMultipleSelection < Minitest::Test
     assert_includes error.message, 'START still describes one Thing at a time'
   end
 
-  def test_saved_dkir_rejects_unbound_single_kind_action_target_plainly
+  def test_saved_bsir_rejects_unbound_single_kind_action_target_plainly
     document = JSON.parse(BasicSharp::IREmitter.new(resolve(base_source)).to_json)
     document.fetch('events').first.fetch('then').first['target'] = {
       'type' => 'kind_one',

@@ -80,7 +80,7 @@ The hard reset restores all tracked files to the accepted v0.1.12 baseline. The 
 ruby compiler/basic_sharp.rb samples/first_room.bsharp && \
 ruby compiler/basic_sharp.rb samples/first_room.bsharp --run "player attacks henry" && \
 ruby compiler/basic_sharp.rb samples/first_room.bsharp --run "player attacks ember" && \
-ruby compiler/basic_sharp.rb samples/first_room.ir.json --run "player attacks henry" && \
+ruby compiler/basic_sharp.rb samples/first_room.bsir.json --run "player attacks henry" && \
 ruby -w -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_relative file }' && \
 ruby tools/runtime_stress.rb
 ```
@@ -99,8 +99,8 @@ Expected standalone stress result:
 
 ```text
 504 Things
-10,002 events through source-built DKIR
-10,002 events through saved DKIR
+10,002 events through source-built BSharp IR
+10,002 events through saved BSharp IR
 20,004 total event executions
 STRESS TEST: PASS
 ```
@@ -109,12 +109,12 @@ STRESS TEST: PASS
 
 - preserves v0.1.12 plain-language tracing;
 - adds reusable high-volume runtime stress testing;
-- proves source and saved-DKIR parity over long event sequences;
+- proves source and saved-BSharp IR parity over long event sequences;
 - proves runtime isolation and deterministic results;
 - protects selected-Thing context from leaking between events;
-- rejects duplicate normalized Thing names in DKIR;
-- rejects missing or unsupported DKIR formats;
-- adds the first formal DKIR meaning contract;
+- rejects duplicate normalized Thing names in BSharp IR;
+- rejects missing or unsupported BSharp IR formats;
+- adds the first formal BSharp IR meaning contract;
 - records Claude review decisions and Lisp research;
 - records the creator-facing purpose of `(`;
 - adds no new BASIC# syntax or official words.
@@ -128,7 +128,7 @@ STRESS TEST: PASS
 - no time or repetition feature;
 - no ASK implementation;
 - no technical rename;
-- no bytecode, VM, DK Engine bridge, or self-hosting work.
+- no bytecode, VM, game-engine bridge, or self-hosting work.
 
 ## Acceptance step after owner validation
 

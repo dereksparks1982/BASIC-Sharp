@@ -1,6 +1,6 @@
 {
-  "version": "0.1.19",
-  "format": "dkir.debug.json",
+  "version": "0.1.20",
+  "format": "bsir.debug.json",
   "kinds": [
     {
       "name": "captain",

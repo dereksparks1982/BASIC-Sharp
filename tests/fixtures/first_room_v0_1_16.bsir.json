@@ -1,6 +1,6 @@
 {
   "version": "0.1.16",
-  "format": "dkir.debug.json",
+  "format": "bsir.debug.json",
   "kinds": [
     {
       "name": "creature",

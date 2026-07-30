@@ -40,4 +40,4 @@ brass key is on oak table
 
 ## Version
 
-All newly emitted DKIR reports version `0.1.17`.
+All newly emitted BSharp IR reports version `0.1.17`.
