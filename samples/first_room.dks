@@ -1,6 +1,7 @@
 DEFINE
 <a door named north door
 <a key named brass key
+<a table named oak table
 <a guard named henry.
 
 START

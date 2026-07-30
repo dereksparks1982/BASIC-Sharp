@@ -1,5 +1,5 @@
 {
-  "version": "0.1.04",
+  "version": "0.1.05",
   "format": "dkir.debug.json",
   "objects": [
     {
@@ -21,15 +21,21 @@
       "line_number": 3
     },
     {
+      "name": "oak table",
+      "kind": "table",
+      "builtin": false,
+      "line_number": 4
+    },
+    {
       "name": "henry",
       "kind": "guard",
       "builtin": false,
-      "line_number": 4
+      "line_number": 5
     }
   ],
   "facts": [
     {
-      "line_number": 7,
+      "line_number": 8,
       "subject": {
         "type": "object",
         "text": "north door",
@@ -45,11 +51,11 @@
         "subject": "north door",
         "relation": "is",
         "value": "locked",
-        "line_number": 7
+        "line_number": 8
       }
     },
     {
-      "line_number": 8,
+      "line_number": 9,
       "subject": {
         "type": "object",
         "text": "brass key",
@@ -58,22 +64,21 @@
       },
       "relation": "on",
       "target": {
-        "type": "kind",
+        "type": "object",
         "text": "the table",
-        "kind_name": "table",
-        "candidates": [
-
-        ]
+        "name": "oak table",
+        "object_kind": "table",
+        "matched_by_kind": true
       },
       "raw": {
         "subject": "brass key",
         "relation": "is",
         "value": "on the table",
-        "line_number": 8
+        "line_number": 9
       }
     },
     {
-      "line_number": 9,
+      "line_number": 10,
       "subject": {
         "type": "object",
         "text": "henry",
@@ -89,13 +94,13 @@
         "subject": "henry",
         "relation": "is",
         "value": "calm",
-        "line_number": 9
+        "line_number": 10
       }
     }
   ],
   "events": [
     {
-      "line_number": 11,
+      "line_number": 12,
       "when": {
         "raw": "player takes brass key",
         "actor": {
@@ -114,7 +119,7 @@
       },
       "then": [
         {
-          "line_number": 13,
+          "line_number": 14,
           "action": "carry",
           "target": {
             "type": "object",
@@ -126,7 +131,7 @@
       ]
     },
     {
-      "line_number": 19,
+      "line_number": 20,
       "when": {
         "raw": "player attacks henry",
         "actor": {
@@ -145,7 +150,7 @@
       },
       "then": [
         {
-          "line_number": 21,
+          "line_number": 22,
           "action": "damage",
           "target": {
             "type": "object",
@@ -155,7 +160,7 @@
           }
         },
         {
-          "line_number": 22,
+          "line_number": 23,
           "action": "change",
           "target": {
             "type": "object",
@@ -173,7 +178,7 @@
   ],
   "if_rules": [
     {
-      "line_number": 15,
+      "line_number": 16,
       "if": {
         "raw": "north door is locked",
         "subject": {
@@ -190,7 +195,7 @@
       },
       "then": [
         {
-          "line_number": 17,
+          "line_number": 18,
           "action": "unlock",
           "target": {
             "type": "object",

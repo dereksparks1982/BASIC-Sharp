@@ -17,15 +17,25 @@ class TestIROutput < Minitest::Test
   end
 
   def test_emits_versioned_ir
-    assert_equal '0.1.04', @ir.fetch('version')
+    assert_equal '0.1.05', @ir.fetch('version')
     assert_equal 'dkir.debug.json', @ir.fetch('format')
   end
 
   def test_emits_objects_facts_and_rules
-    assert_equal 4, @ir.fetch('objects').length
+    assert_equal 5, @ir.fetch('objects').length
     assert_equal 3, @ir.fetch('facts').length
     assert_equal 2, @ir.fetch('events').length
     assert_equal 1, @ir.fetch('if_rules').length
+  end
+
+  def test_definite_kind_relation_target_resolves_to_single_object
+    table_fact = @ir.fetch('facts').find { |fact| fact.fetch('relation') == 'on' }
+    target = table_fact.fetch('target')
+
+    assert_equal 'object', target.fetch('type')
+    assert_equal 'the table', target.fetch('text')
+    assert_equal 'oak table', target.fetch('name')
+    assert_equal true, target.fetch('matched_by_kind')
   end
 
   def test_change_action_emits_target_and_state

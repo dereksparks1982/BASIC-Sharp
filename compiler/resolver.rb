@@ -191,7 +191,7 @@ module DKScript
       return reference('object', original, 'name' => original, 'object_kind' => dictionary.object_kind(original)) if dictionary.known_object?(original)
       return reference('kind', original, 'kind_name' => original, 'candidates' => dictionary.objects_by_kind(original)) if dictionary.known_kind?(original)
 
-      diagnostics.error(line_number, "unknown object or kind '#{original}'")
+      diagnostics.error(line_number, "unknown reference '#{original}': not a defined object and not a known kind")
       reference('unknown', original)
     end
 
@@ -207,10 +207,11 @@ module DKScript
           return reference('ambiguous', original, 'kind_name' => stripped, 'candidates' => candidates)
         end
 
-        return reference('kind', original, 'kind_name' => stripped, 'candidates' => [])
+        diagnostics.warning(line_number, "unresolved definite reference '#{original}': no #{stripped} object was defined")
+        return reference('unresolved', original, 'selector' => 'the', 'kind_name' => stripped, 'candidates' => [], 'reason' => 'no_defined_object')
       end
 
-      diagnostics.error(line_number, "unknown object or kind '#{original}'")
+      diagnostics.error(line_number, "unknown reference '#{original}': not a defined object and not a known kind")
       reference('unknown', original)
     end
 

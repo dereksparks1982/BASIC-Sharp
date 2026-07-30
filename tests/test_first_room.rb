@@ -11,7 +11,7 @@ class TestFirstRoom < Minitest::Test
 
   def test_parses_statement_counts
     assert_equal 5, @program.statements.length
-    assert_equal 3, @program.definitions.length
+    assert_equal 4, @program.definitions.length
     assert_equal 3, @program.facts.length
     assert_equal 2, @program.event_rules.length
     assert_equal 1, @program.if_rules.length
@@ -21,6 +21,7 @@ class TestFirstRoom < Minitest::Test
     names = @program.definitions.map(&:name)
     assert_includes names, 'north door'
     assert_includes names, 'brass key'
+    assert_includes names, 'oak table'
     assert_includes names, 'henry'
   end
 
@@ -31,6 +32,7 @@ class TestFirstRoom < Minitest::Test
 
   def test_no_errors
     errors = @program.diagnostics.select { |d| d.severity == 'error' }
-    assert_empty errors, errors.map(&:to_s).join("\n")
+    assert_empty errors, errors.map(&:to_s).join("
+")
   end
 end

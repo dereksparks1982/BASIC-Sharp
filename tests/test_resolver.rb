@@ -11,14 +11,19 @@ class TestResolver < Minitest::Test
     DKScript::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
   end
 
-  def test_resolves_sample_without_errors
+  def test_resolves_sample_without_errors_or_warnings
     source = File.read(File.expand_path('../samples/first_room.dks', __dir__))
     document = resolve(source)
-    errors = document.diagnostics.select { |diagnostic| diagnostic.severity == 'error' }
 
-    assert_empty errors, errors.map(&:to_s).join("\n")
-    assert_equal 4, document.objects.length
-    assert_equal %w[player north\ door brass\ key henry], document.objects.map { |object| object['name'] }
+    errors = document.diagnostics.select { |diagnostic| diagnostic.severity == 'error' }
+    warnings = document.diagnostics.select { |diagnostic| diagnostic.severity == 'warning' }
+
+    assert_empty errors, errors.map(&:to_s).join("
+")
+    assert_empty warnings, warnings.map(&:to_s).join("
+")
+    assert_equal 5, document.objects.length
+    assert_equal ['player', 'north door', 'brass key', 'oak table', 'henry'], document.objects.map { |object| object['name'] }
   end
 
   def test_normalizes_event_verbs
@@ -30,6 +35,34 @@ class TestResolver < Minitest::Test
 
     assert_equal 'take', first_event.fetch('action')
     assert_equal 'attack', second_event.fetch('action')
+  end
+
+  def test_resolves_the_table_when_one_table_exists
+    source = File.read(File.expand_path('../samples/first_room.dks', __dir__))
+    document = resolve(source)
+    table_fact = document.facts.find { |fact| fact.fetch('relation') == 'on' }
+    target = table_fact.fetch('target')
+
+    assert_equal 'object', target.fetch('type')
+    assert_equal 'oak table', target.fetch('name')
+    assert_equal true, target.fetch('matched_by_kind')
+  end
+
+  def test_warns_about_unresolved_definite_kind
+    document = resolve(<<~DKS)
+      DEFINE
+      <a key named brass key.
+
+      START
+      <brass key is on the table.
+    DKS
+
+    warnings = document.diagnostics.select { |diagnostic| diagnostic.severity == 'warning' }.map(&:message)
+    assert_includes warnings, "unresolved definite reference 'the table': no table object was defined"
+
+    table_fact = document.facts.first
+    assert_equal 'unresolved', table_fact.fetch('target').fetch('type')
+    assert_equal 'no_defined_object', table_fact.fetch('target').fetch('reason')
   end
 
   def test_reports_ambiguous_definite_kind
@@ -44,7 +77,8 @@ class TestResolver < Minitest::Test
     DKS
 
     messages = document.diagnostics.map(&:message)
-    assert messages.any? { |message| message.include?('which door?') }, messages.join("\n")
+    assert messages.any? { |message| message.include?('which door?') }, messages.join("
+")
   end
 
   def test_reports_unknown_action_and_state

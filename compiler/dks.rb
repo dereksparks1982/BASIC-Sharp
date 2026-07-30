@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require 'json'
+require 'fileutils'
 require_relative 'parser'
 require_relative 'resolver'
 require_relative 'ir_emitter'
@@ -17,9 +18,22 @@ out_path = out_index ? ARGV[out_index + 1] : nil
 emit_ast = ARGV.include?('--json') || ARGV.include?('--emit-ast')
 emit_ir = ARGV.include?('--emit-ir')
 
+if out_index && (out_path.nil? || out_path.start_with?('--'))
+  warn 'Missing output path after --out'
+  exit 64
+end
+
 unless path && File.file?(path)
   warn "DKScript source file not found: #{path || '(none)'}"
   exit 66
+end
+
+def write_output(path, content)
+  dir = File.dirname(path)
+  FileUtils.mkdir_p(dir) unless dir == '.' || Dir.exist?(dir)
+  File.write(path, "#{content}
+")
+  puts "wrote: #{path}"
 end
 
 source = File.read(path)
@@ -29,7 +43,7 @@ resolved = DKScript::SemanticResolver.new(program, dictionary: parser.dictionary
 
 if emit_ast
   output = JSON.pretty_generate(program.to_h)
-  out_path ? File.write(out_path, "#{output}\n") : puts(output)
+  out_path ? write_output(out_path, output) : puts(output)
   exit(program.diagnostics.any? { |d| d.severity == 'error' } ? 1 : 0)
 end
 
