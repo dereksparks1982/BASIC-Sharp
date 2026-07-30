@@ -1,0 +1,22 @@
+DEFINE
+<a door named north door
+<a key named brass key
+<a guard named henry.
+
+START
+<north door is locked
+<brass key is on the table
+<henry is calm.
+
+WHEN
+<player takes brass key
+<then> (carry brass key.
+
+IF
+<north door is locked
+<then> (unlock north door.
+
+WHEN
+<player attacks henry
+<then> (damage henry
+<then> (change henry to angry.
