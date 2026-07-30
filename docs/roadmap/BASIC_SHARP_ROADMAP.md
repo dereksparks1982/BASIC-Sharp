@@ -10,9 +10,9 @@ BASIC# source
 -> runtime Trigger context
 -> plain-language runtime trace
 -> focused runtime stress and DKIR contract
--> technical identity migration and Company Bible integration  [CURRENT: v0.1.14]
+-> technical identity migration and Company Bible integration
+-> inherited Kind matching  [CURRENT CANDIDATE: v0.1.15]
 -> owner validation and acceptance
--> inherited Kind matching
 -> Kind-family stress and hardening
 -> runtime expansion
 -> stable meaning specification
@@ -34,60 +34,49 @@ BASIC# source
 - One-pass startup IF checking.
 - Exact one-event WHEN matching.
 - Executable official words: `(damage`, `(change`, `(carry`, `(unlock`.
-- Named Thing matching for `a guard` and other direct Kinds.
-- Per-event context for `that guard`.
+- Named Thing matching for `a guard` and other Kinds.
+- Per-event context for `that guard` and inherited `that Kind` references.
 - Plain unknown-Thing and wrong-Kind runtime errors.
 - BASIC# public and technical identity.
 - Complete Company Bible integration.
-- Historical BASIC, Lisp, and external review records.
-- Formal DKIR meaning contract.
+- Formal DKIR meaning contracts.
 - Focused runtime stress runner and automated stress suite.
 - Duplicate Thing and invalid DKIR-format protection.
+- Direct, parent, grandparent, and root inherited Kind matching.
+- Exact Trigger priority and nearest compatible Kind priority.
+- Unknown-parent and circular-family protection.
 
-## Immediate next language feature after v0.1.14 acceptance
+## Immediate next build after v0.1.15 acceptance
 
-### Inherited Kind Matching
+### Kind-Family Stress and Hardening
 
-The declaration form already exists:
+The next build should attack the new inheritance machinery rather than immediately stacking another feature on top of it.
 
-```text
-KINDS
-[creature is a thing
-dragon is a creature
-wyrm is a dragon].
-```
+Likely focus:
 
-The missing behavior is runtime family walking:
+- deep but bounded parent chains;
+- many overlapping ancestor Triggers;
+- direct-versus-parent-versus-root priority under load;
+- duplicate and malformed Kind entries in saved DKIR;
+- deterministic source-order tie behavior;
+- many descendant Things selected repeatedly;
+- performance measurements for family walking;
+- plain explanations remaining stable under failure;
+- no unrelated language expansion.
 
-```text
-wyrm -> dragon -> creature -> thing
-```
-
-The future build should provide:
-
-- one direct parent per Kind;
-- direct and inherited Trigger matching;
-- exact Trigger priority preserved;
-- plain unknown-parent explanation;
-- plain circular-family explanation showing the loop;
-- source and saved-DKIR parity;
-- no multiple inheritance;
-- no creator-facing programming terminology required.
-
-The exact build must still be proposed and explicitly approved.
+The exact build still requires a full proposal and Derek's explicit approval.
 
 ## Near-term lane
 
-1. Inherited Kind Matching.
-2. Kind-family stress and repair.
-3. More complete IF behavior.
-4. Multiple selected Things.
-5. Formal values and amounts.
-6. Event ordering and queue design.
-7. Save/load world state.
-8. ASK-style introspection.
-9. Runtime recovery.
-10. Stable meaning specification gate.
+1. Kind-family stress and hardening.
+2. More complete IF behavior.
+3. Multiple selected Things.
+4. Formal values and amounts.
+5. Event ordering and queue design.
+6. Save/load world state.
+7. ASK-style introspection.
+8. Runtime recovery.
+9. Stable meaning specification gate.
 
 ## Protected design rules
 
@@ -101,3 +90,4 @@ The exact build must still be proposed and explicitly approved.
 - `there` and `their` are identical where already supported.
 - Ruby is scaffolding, not BASIC# syntax or meaning.
 - No new official word enters casually.
+- One Kind has one direct parent until Derek explicitly approves otherwise.

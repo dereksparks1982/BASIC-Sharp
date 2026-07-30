@@ -26,7 +26,7 @@ class TestRuntimeStress < Minitest::Test
   def stress_source(guards: GUARD_COUNT, dragons: DRAGON_COUNT)
     definitions = []
     guards.times { |index| definitions << "a guard named guard #{index + 1}" }
-    dragons.times { |index| definitions << "a dragon named dragon #{index + 1}" }
+    dragons.times { |index| definitions << "a wyrm named dragon #{index + 1}" }
     definitions << 'a key named stress key'
     definitions << 'a table named stress table'
     definitions << 'a door named stress door'
@@ -44,7 +44,9 @@ class TestRuntimeStress < Minitest::Test
 
     <<~DKS
       KINDS
-      [dragon is a creature].
+      [creature is a thing
+      dragon is a creature
+      wyrm is a dragon].
 
       DEFINE
       [#{definitions.join("\n")}].
@@ -68,6 +70,11 @@ class TestRuntimeStress < Minitest::Test
       [player attacks dragon 1
       <then> (damage dragon 1
       <then> (change dragon 1 to angry].
+
+      WHEN
+      [player attacks a creature
+      <then> (damage that creature
+      <then> (change that creature to angry].
 
       WHEN
       [player takes stress key
@@ -100,6 +107,20 @@ class TestRuntimeStress < Minitest::Test
     assert_equal ['a guard means guard 299', 'that guard means guard 299'], result.fetch('understood')
     assert_equal 1, guard.fetch('damage')
     assert_equal ['angry'], guard.fetch('states')
+  end
+
+
+  def test_hundreds_of_descendants_match_ancestor_kind_under_load
+    machine = runtime_from_source
+    result = machine.run_event('player attacks dragon 199')
+    descendant = thing(result.fetch('state'), 'dragon 199')
+
+    assert_equal true, result.fetch('matched')
+    assert_equal 'player attacks a creature', result.fetch('matched_when')
+    assert_equal({ 'creature' => 'dragon 199' }, result.fetch('context'))
+    assert_equal ['a creature means dragon 199', 'that creature means dragon 199'], result.fetch('understood')
+    assert_equal 1, descendant.fetch('damage')
+    assert_equal ['angry'], descendant.fetch('states')
   end
 
   def test_exact_trigger_wins_before_kind_trigger
@@ -196,12 +217,16 @@ class TestRuntimeStress < Minitest::Test
     machine = runtime_from_source
 
     unknown = machine.run_event('player attacks missing guard')
-    wrong_kind = machine.run_event('player attacks dragon 2')
+    inherited = machine.run_event('player attacks dragon 2')
+    wrong_kind = machine.run_event('player attacks stress door')
 
     assert_equal false, unknown.fetch('matched')
     assert_equal "event Thing 'missing guard' is not defined", unknown.fetch('error')
+    assert_equal true, inherited.fetch('matched')
+    assert_equal 'player attacks a creature', inherited.fetch('matched_when')
+    assert_equal({ 'creature' => 'dragon 2' }, inherited.fetch('context'))
     assert_equal false, wrong_kind.fetch('matched')
-    assert_equal 'dragon 2 is a dragon, not a guard', wrong_kind.fetch('error')
+    assert_equal 'stress door is a door, not a guard', wrong_kind.fetch('error')
   end
 
   def test_carry_and_starting_if_remain_correct_in_large_world

@@ -2,13 +2,15 @@
 
 module BasicSharp
   class CoreDictionary
+    BUILTIN_KINDS = %w[
+      thing place actor person creature door container supporter key weapon food clothing device guard table
+    ].freeze
     CONFUSED_WORDS = { 'there' => 'there', 'their' => 'there' }.freeze
+
     attr_reader :kinds, :kind_parents, :states, :actions, :relations, :objects
 
     def initialize
-      @kinds = %w[
-        thing place actor person creature door container supporter key weapon food clothing device guard table
-      ]
+      @kinds = BUILTIN_KINDS.dup
       @kind_parents = {}
       @states = %w[
         open closed locked unlocked alive dead calm angry friendly hostile visible hidden carried dropped broken whole on off
@@ -21,7 +23,6 @@ module BasicSharp
       add_object('player', 'person')
     end
 
-
     def add_kind(name, parent)
       normalized_name = normalize(name)
       normalized_parent = normalize(parent)
@@ -33,6 +34,41 @@ module BasicSharp
       @kind_parents[normalize(name)]
     end
 
+    def kind_family(name)
+      family = []
+      seen = {}
+      current = normalize(name)
+
+      while current && !current.empty? && !seen[current]
+        family << current
+        seen[current] = true
+        current = kind_parent(current)
+      end
+
+      family
+    end
+
+    def kind_matches?(actual_kind, expected_kind)
+      expected = normalize(expected_kind)
+      kind_family(actual_kind).include?(expected)
+    end
+
+    def kind_cycle_with(name, parent)
+      normalized_name = normalize(name)
+      current = normalize(parent)
+      path = [normalized_name]
+      seen = {}
+
+      until current.nil? || current.empty? || seen[current]
+        path << current
+        return path if current == normalized_name
+
+        seen[current] = true
+        current = kind_parent(current)
+      end
+
+      nil
+    end
 
     def normalize_confused_word(word)
       normalized = normalize(word)
@@ -64,13 +100,12 @@ module BasicSharp
     end
 
     def ambiguous_type?(kind)
-      matches = objects_by_kind(kind)
-      matches.length > 1
+      objects_by_kind(kind).length > 1
     end
 
     def objects_by_kind(kind)
-      normalized = normalize(kind)
-      @objects.select { |_name, object_kind| object_kind == normalized }.keys
+      expected = normalize(kind)
+      @objects.select { |_name, object_kind| kind_matches?(object_kind, expected) }.keys
     end
 
     private

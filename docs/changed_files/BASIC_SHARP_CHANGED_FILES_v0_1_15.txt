@@ -1,0 +1,58 @@
+BASIC# v0.1.15
+Inherited Kind Matching
+
+Package: BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_15_INHERITED_KIND_MATCHING_CHANGED_FILES_ONLY.zip
+Required base: v0.1.14; commit 49f00f1; tag v0.1.14
+Project path: /home/dereksparks1982/DKLab/Projects/BASIC#
+
+Added paths: 10
+Modified paths: 18
+Deleted paths: 0
+Total project path changes: 28
+
+ADDED
+-----
+BUILD_HANDSHAKE_v0_1_15.md
+docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_15.txt
+docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_15.md
+docs/hand_off/BASIC_SHARP_v0_1_15_NEW_THREAD_HANDOFF.md
+docs/ir/DKIR_MEANING_CONTRACT_v0_1_15.md
+docs/parser_contract_v0_1_15.md
+docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_15.md
+docs/runtime_contract_v0_1_15.md
+docs/session_logs/BASIC_SHARP_v0_1_15_SESSION_LOG.md
+docs/validation/BASIC_SHARP_VALIDATION_v0_1_15.md
+
+MODIFIED
+--------
+DK_PATCH_MANIFEST.json
+README.md
+compiler/ast_nodes.rb
+compiler/dictionary.rb
+compiler/parser.rb
+compiler/runtime.rb
+docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
+docs/roadmap/BASIC_SHARP_ROADMAP.md
+samples/first_room.bsharp
+samples/first_room.ir.json
+tests/test_cli_output.rb
+tests/test_first_room.rb
+tests/test_identity_migration.rb
+tests/test_ir_output.rb
+tests/test_resolver.rb
+tests/test_runtime.rb
+tests/test_runtime_stress.rb
+tools/runtime_stress.rb
+
+DELETED
+-------
+None.
+
+PACKAGE UTILITY
+---------------
+APPLY_BASIC_SHARP_v0_1_15.sh (streams from the ZIP; not installed into the project)
+
+VALIDATION
+----------
+73 runs, 4,421 assertions, 0 failures, 0 errors, 0 skips
+504 Things, 20,006 total event executions, Inherited Kind matching: PASS, STRESS TEST: PASS

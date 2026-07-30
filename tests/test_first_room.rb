@@ -10,15 +10,17 @@ class TestFirstRoom < Minitest::Test
   end
 
   def test_parses_statement_counts
-    assert_equal 7, @program.statements.length
-    assert_equal 5, @program.definitions.length
-    assert_equal 4, @program.facts.length
-    assert_equal 3, @program.event_rules.length
+    assert_equal 8, @program.statements.length
+    assert_equal 6, @program.definitions.length
+    assert_equal 5, @program.facts.length
+    assert_equal 4, @program.event_rules.length
     assert_equal 1, @program.if_rules.length
   end
 
   def test_definitions_feed_dictionary
     names = @program.definitions.map(&:name)
+    assert_includes names, 'ember'
+    assert_includes names, 'cinder'
     assert_includes names, 'north door'
     assert_includes names, 'brass key'
     assert_includes names, 'oak table'
@@ -27,7 +29,7 @@ class TestFirstRoom < Minitest::Test
 
   def test_actions_are_detected
     actions = @program.event_rules.flat_map(&:actions) + @program.if_rules.flat_map(&:actions)
-    assert_equal %w[carry damage change damage change unlock], actions.map(&:verb)
+    assert_equal %w[carry damage change damage change damage change unlock], actions.map(&:verb)
   end
 
   def test_no_errors
@@ -54,6 +56,46 @@ class TestBodyStructureAndKinds < Minitest::Test
     assert_equal ['dragon'], program.kind_definitions.map(&:name)
     assert_equal ['ember'], program.definitions.map(&:name)
     assert_empty program.diagnostics.select { |d| d.severity == 'error' }
+  end
+
+
+  def test_existing_builtin_kind_can_receive_one_direct_parent
+    program = parse(<<~DKS)
+      KINDS
+      [creature is a thing
+      dragon is a creature
+      wyrm is a dragon].
+
+      DEFINE
+      [a wyrm named ember].
+    DKS
+
+    assert_equal %w[creature dragon wyrm], program.kind_definitions.map(&:name)
+    assert_equal %w[thing creature dragon], program.kind_definitions.map(&:parent)
+    assert_empty program.diagnostics.select { |d| d.severity == 'error' }
+  end
+
+  def test_kind_can_have_only_one_direct_parent
+    program = parse(<<~DKS)
+      KINDS
+      [creature is a thing
+      creature is a place].
+    DKS
+
+    errors = program.diagnostics.select { |d| d.severity == 'error' }.map(&:message)
+    assert_includes errors, "kind 'creature' already has parent 'thing'"
+  end
+
+  def test_kind_family_loop_is_rejected_with_the_loop_shown
+    program = parse(<<~DKS)
+      KINDS
+      [creature is a thing
+      dragon is a creature
+      thing is a dragon].
+    DKS
+
+    errors = program.diagnostics.select { |d| d.severity == 'error' }.map(&:message)
+    assert_includes errors, 'Kind family has a loop: thing -> dragon -> creature -> thing'
   end
 
   def test_than_is_accepted_as_then_result

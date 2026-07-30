@@ -22,8 +22,8 @@ class TestResolver < Minitest::Test
 ")
     assert_empty warnings, warnings.map(&:to_s).join("
 ")
-    assert_equal 6, document.objects.length
-    assert_equal ['player', 'ember', 'north door', 'brass key', 'oak table', 'henry'], document.objects.map { |object| object['name'] }
+    assert_equal 7, document.objects.length
+    assert_equal ['player', 'ember', 'cinder', 'north door', 'brass key', 'oak table', 'henry'], document.objects.map { |object| object['name'] }
   end
 
   def test_normalizes_event_verbs
@@ -98,4 +98,39 @@ class TestResolver < Minitest::Test
     assert_includes errors, "unknown state 'sleepy'"
     assert_includes errors, "unknown official word '(explode'"
   end
+
+  def test_inherited_kind_selector_finds_descendant_object
+    document = resolve(<<~DKS)
+      KINDS
+      [creature is a thing
+      dragon is a creature
+      wyrm is a dragon].
+
+      DEFINE
+      [a wyrm named ember].
+
+      IF
+      [the creature is calm
+      <then> (damage the creature].
+    DKS
+
+    subject = document.if_rules.first.dig('if', 'subject')
+    assert_equal 'object', subject.fetch('type')
+    assert_equal 'ember', subject.fetch('name')
+    assert_equal true, subject.fetch('matched_by_kind')
+
+    parser = BasicSharp::Parser.new(<<~DKS)
+      KINDS
+      [creature is a thing
+      dragon is a creature
+      wyrm is a dragon].
+
+      DEFINE
+      [a wyrm named ember].
+    DKS
+    parser.parse
+    assert_equal ['ember'], parser.dictionary.objects_by_kind('creature')
+    assert_equal ['ember'], parser.dictionary.objects_by_kind('thing')
+  end
+
 end

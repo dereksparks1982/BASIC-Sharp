@@ -1,8 +1,11 @@
 KINDS
-[dragon is a creature].
+[creature is a thing
+dragon is a creature
+wyrm is a dragon].
 
 DEFINE
-[a dragon named ember
+[a wyrm named ember
+a wyrm named cinder
 a door named north door
 a key named brass key
 a table named oak table
@@ -10,6 +13,7 @@ a guard named henry].
 
 START
 [ember is calm
+cinder is calm
 north door is locked
 brass key is on the table
 henry is calm].
@@ -26,6 +30,12 @@ WHEN
 [player attacks ember
 <than> (damage ember
 <then> (change ember to angry].
+
+WHEN
+[player attacks a creature
+<then> (damage that creature
+<then> (change that creature to angry].
+
 WHEN
 [player attacks a guard
 <then> (damage that guard

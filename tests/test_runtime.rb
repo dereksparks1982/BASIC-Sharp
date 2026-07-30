@@ -32,7 +32,7 @@ class TestRuntime < Minitest::Test
     machine = runtime
     state = machine.snapshot
 
-    assert_equal 6, state.length
+    assert_equal 7, state.length
     assert_equal ['calm'], thing(state, 'ember').fetch('states')
     assert_equal ['unlocked'], thing(state, 'north door').fetch('states')
     assert_equal({ 'on' => 'oak table' }, thing(state, 'brass key').fetch('relations'))
@@ -177,6 +177,102 @@ class TestRuntime < Minitest::Test
     assert_includes report, '  henry damage is now 1'
     assert_includes report, '  (change henry to angry'
     assert_includes report, '  henry is now angry'
+  end
+
+
+  def test_wyrm_matches_parent_grandparent_and_root_triggers
+    source = <<~DKS
+      KINDS
+      [creature is a thing
+      dragon is a creature
+      wyrm is a dragon].
+
+      DEFINE
+      [a wyrm named ember].
+
+      WHEN
+      [player takes a wyrm
+      <then> (damage that wyrm].
+
+      WHEN
+      [player attacks a dragon
+      <then> (damage that dragon].
+
+      WHEN
+      [player speaks a creature
+      <then> (damage that creature].
+
+      WHEN
+      [player gives a thing
+      <then> (damage that thing].
+    DKS
+    machine = BasicSharp::Runtime.new(resolve(source))
+
+    direct = machine.run_event('player takes ember')
+    parent = machine.run_event('player attacks ember')
+    grandparent = machine.run_event('player speaks ember')
+    root = machine.run_event('player gives ember')
+
+    assert_equal 'player takes a wyrm', direct.fetch('matched_when')
+    assert_equal({ 'wyrm' => 'ember' }, direct.fetch('context'))
+    assert_equal 'player attacks a dragon', parent.fetch('matched_when')
+    assert_equal({ 'dragon' => 'ember' }, parent.fetch('context'))
+    assert_equal 'player speaks a creature', grandparent.fetch('matched_when')
+    assert_equal({ 'creature' => 'ember' }, grandparent.fetch('context'))
+    assert_equal 'player gives a thing', root.fetch('matched_when')
+    assert_equal({ 'thing' => 'ember' }, root.fetch('context'))
+    assert_equal 4, thing(root.fetch('state'), 'ember').fetch('damage')
+  end
+
+  def test_nearest_kind_trigger_wins_over_more_distant_ancestor
+    machine = BasicSharp::Runtime.new(resolve(<<~DKS))
+      KINDS
+      [creature is a thing
+      dragon is a creature
+      wyrm is a dragon].
+
+      DEFINE
+      [a wyrm named ember].
+
+      WHEN
+      [player attacks a creature
+      <then> (change that creature to hostile].
+
+      WHEN
+      [player attacks a dragon
+      <then> (change that dragon to angry].
+    DKS
+
+    result = machine.run_event('player attacks ember')
+    ember = thing(result.fetch('state'), 'ember')
+
+    assert_equal 'player attacks a dragon', result.fetch('matched_when')
+    assert_equal({ 'dragon' => 'ember' }, result.fetch('context'))
+    assert_equal ['angry'], ember.fetch('states')
+  end
+
+  def test_exact_trigger_still_wins_over_inherited_kind_trigger
+    machine = runtime
+    result = machine.run_event('player attacks ember')
+
+    assert_equal 'player attacks ember', result.fetch('matched_when')
+    assert_empty result.fetch('context')
+  end
+
+  def test_saved_dkir_rejects_unknown_kind_parent_plainly
+    document = resolved_sample.to_h
+    document.fetch(:kinds) << { 'name' => 'shade', 'parent' => 'missing kind', 'line_number' => 1 }
+
+    error = assert_raises(ArgumentError) { BasicSharp::Runtime.new(document) }
+    assert_equal 'Kind family is broken: shade has unknown parent missing kind', error.message
+  end
+
+  def test_saved_dkir_rejects_kind_family_loop_with_path
+    document = resolved_sample.to_h
+    document.fetch(:kinds) << { 'name' => 'thing', 'parent' => 'wyrm', 'line_number' => 1 }
+
+    error = assert_raises(ArgumentError) { BasicSharp::Runtime.new(document) }
+    assert_equal 'Kind family has a loop: creature -> thing -> wyrm -> dragon -> creature', error.message
   end
 
 end

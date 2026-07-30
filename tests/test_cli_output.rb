@@ -27,7 +27,7 @@ class TestCLIOutput < Minitest::Test
       assert_includes stdout, "wrote: #{out_path}"
       assert File.file?(out_path), 'expected --out to create the IR file'
       json = JSON.parse(File.read(out_path))
-      assert_equal '0.1.14', json.fetch('version')
+      assert_equal '0.1.15', json.fetch('version')
     end
   end
 
@@ -42,7 +42,7 @@ class TestCLIOutput < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BASIC# Runtime v0.1.14'
+    assert_includes stdout, 'BASIC# Runtime v0.1.15'
     assert_includes stdout, 'matched: yes'
     assert_includes stdout, 'what matched:'
     assert_includes stdout, 'player attacks ember'
@@ -51,7 +51,7 @@ class TestCLIOutput < Minitest::Test
     assert_includes stdout, 'ember damage is now 1'
     assert_includes stdout, '(change ember to angry'
     assert_includes stdout, 'ember is now angry'
-    assert_includes stdout, 'ember: kind=dragon; states=angry; damage=1'
+    assert_includes stdout, 'ember: kind=wyrm; states=angry; damage=1'
     assert_includes stdout, 'north door: kind=door; states=unlocked'
   end
 
@@ -93,7 +93,7 @@ class TestCLIOutput < Minitest::Test
       )
 
       assert status.success?, stderr
-      assert_includes stdout, 'BASIC# Runtime v0.1.14'
+      assert_includes stdout, 'BASIC# Runtime v0.1.15'
       assert_includes stdout, 'matched: yes'
       assert_includes stdout, 'what matched:'
       assert_includes stdout, 'player attacks a guard'
@@ -130,7 +130,7 @@ class TestCLIOutput < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BASIC# Runtime v0.1.14'
+    assert_includes stdout, 'BASIC# Runtime v0.1.15'
     assert_includes stdout, 'matched: yes'
     assert_includes stdout, 'what matched:'
     assert_includes stdout, 'player attacks a guard'
@@ -158,6 +158,26 @@ class TestCLIOutput < Minitest::Test
     refute status.success?
     assert_includes stdout, 'matched: no'
     assert_includes stdout, "error: event Thing 'ghost' is not defined"
+  end
+
+
+  def test_run_matches_wyrm_to_ancestor_creature_trigger
+    stdout, stderr, status = Open3.capture3(
+      RUBY,
+      File.join(ROOT, 'compiler/basic_sharp.rb'),
+      File.join(ROOT, 'samples/first_room.bsharp'),
+      '--run',
+      'player attacks cinder',
+      chdir: ROOT
+    )
+
+    assert status.success?, stderr
+    assert_includes stdout, 'what matched:'
+    assert_includes stdout, 'player attacks a creature'
+    assert_includes stdout, 'a creature means cinder'
+    assert_includes stdout, 'that creature means cinder'
+    assert_includes stdout, 'cinder damage is now 1'
+    assert_includes stdout, 'cinder is now angry'
   end
 
 end

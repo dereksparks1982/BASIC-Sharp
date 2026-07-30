@@ -3,6 +3,7 @@
 require 'json'
 require 'set'
 require_relative 'ast_nodes'
+require_relative 'dictionary'
 
 module BasicSharp
   class Runtime
@@ -39,7 +40,9 @@ module BasicSharp
 
       @objects = {}
       @object_order = []
+      @kind_parents = {}
       @startup_ran = []
+      load_kind_families
       create_things
       apply_start_facts
       run_starting_if_rules
@@ -136,7 +139,7 @@ module BasicSharp
         raise ArgumentError, "DKIR format '#{shown}' is not supported"
       end
 
-      %w[objects facts events if_rules diagnostics].each do |name|
+      %w[kinds objects facts events if_rules diagnostics].each do |name|
         value = @ir[name]
         raise ArgumentError, "DKIR '#{name}' must be a list" unless value.is_a?(Array)
       end
@@ -146,6 +149,55 @@ module BasicSharp
 
     def ir_errors
       @ir.fetch('diagnostics', []).select { |diagnostic| diagnostic['severity'] == 'error' }
+    end
+
+
+    def load_kind_families
+      known_kinds = CoreDictionary::BUILTIN_KINDS.to_h { |kind| [kind, true] }
+
+      @ir.fetch('kinds', []).each do |entry|
+        name = normalize(entry['name'])
+        parent = normalize(entry['parent'])
+        raise ArgumentError, 'DKIR Kind name cannot be empty' if name.empty?
+        raise ArgumentError, "DKIR Kind '#{name}' has no parent" if parent.empty?
+
+        if @kind_parents.key?(name)
+          previous = @kind_parents.fetch(name)
+          raise ArgumentError, "Kind '#{name}' has more than one parent: #{previous}, #{parent}" unless previous == parent
+
+          next
+        end
+
+        @kind_parents[name] = parent
+        known_kinds[name] = true
+      end
+
+      @kind_parents.each do |name, parent|
+        next if known_kinds[parent]
+
+        raise ArgumentError, "Kind family is broken: #{name} has unknown parent #{parent}"
+      end
+
+      validate_kind_family_loops!
+    end
+
+    def validate_kind_family_loops!
+      @kind_parents.each_key do |starting_kind|
+        path = []
+        positions = {}
+        current = starting_kind
+
+        while current && @kind_parents.key?(current)
+          if positions.key?(current)
+            cycle = path[positions.fetch(current)..] + [current]
+            raise ArgumentError, "Kind family has a loop: #{cycle.join(' -> ')}"
+          end
+
+          positions[current] = path.length
+          path << current
+          current = @kind_parents[current]
+        end
+      end
     end
 
     def create_things
@@ -218,14 +270,24 @@ module BasicSharp
       return { 'rule' => exact, 'context' => {}, 'error' => nil } if exact
 
       best_error = nil
+      best_match = nil
+      best_distance = nil
+
       @ir.fetch('events', []).each do |rule|
         attempt = match_event_rule(rule, event_text)
-        return attempt if attempt['rule']
+        if attempt['rule']
+          distance = attempt.fetch('kind_distance', 0)
+          if best_match.nil? || distance < best_distance
+            best_match = attempt
+            best_distance = distance
+          end
+          next
+        end
 
         best_error ||= attempt['error'] if attempt['same_event_shape']
       end
 
-      { 'rule' => nil, 'context' => {}, 'error' => best_error }
+      best_match || { 'rule' => nil, 'context' => {}, 'error' => best_error }
     end
 
 
@@ -269,7 +331,14 @@ module BasicSharp
       context = {}
       bind_context(context, actor_match)
       bind_context(context, target_match)
-      { 'rule' => rule, 'context' => context, 'error' => nil, 'same_event_shape' => true }
+      kind_distance = actor_match.fetch('kind_distance', 0) + target_match.fetch('kind_distance', 0)
+      {
+        'rule' => rule,
+        'context' => context,
+        'error' => nil,
+        'same_event_shape' => true,
+        'kind_distance' => kind_distance
+      }
     end
 
     def parse_event_text(event_text, expected_action)
@@ -295,7 +364,7 @@ module BasicSharp
     end
 
     def match_event_reference(reference, supplied_text)
-      return { 'matched' => supplied_text.empty?, 'context_kind' => nil, 'name' => nil, 'error' => nil } unless reference
+      return { 'matched' => supplied_text.empty?, 'context_kind' => nil, 'name' => nil, 'error' => nil, 'kind_distance' => 0 } unless reference
 
       type = normalize(reference['type'])
       supplied = normalize(supplied_text)
@@ -303,12 +372,12 @@ module BasicSharp
       case type
       when 'object'
         expected = normalize(reference['name'] || reference['text'])
-        return { 'matched' => supplied == expected, 'context_kind' => nil, 'name' => expected, 'error' => nil }
+        return { 'matched' => supplied == expected, 'context_kind' => nil, 'name' => expected, 'error' => nil, 'kind_distance' => 0 }
       when 'kind_one', 'kind'
         match_kind_reference(reference, supplied)
       else
         expected = normalize(reference['name'] || reference['text'])
-        { 'matched' => supplied == expected, 'context_kind' => nil, 'name' => expected, 'error' => nil }
+        { 'matched' => supplied == expected, 'context_kind' => nil, 'name' => expected, 'error' => nil, 'kind_distance' => 0 }
       end
     end
 
@@ -325,16 +394,41 @@ module BasicSharp
       end
 
       actual_kind = thing.fetch('kind')
-      unless actual_kind == kind
+      distance = kind_distance(actual_kind, kind)
+      unless distance
         return {
           'matched' => false,
           'context_kind' => kind,
           'name' => supplied,
-          'error' => "#{supplied} is a #{actual_kind}, not a #{kind}"
+          'error' => "#{supplied} is a #{actual_kind}, not a #{kind}",
+          'kind_distance' => 0
         }
       end
 
-      { 'matched' => true, 'context_kind' => kind, 'name' => supplied, 'error' => nil }
+      {
+        'matched' => true,
+        'context_kind' => kind,
+        'name' => supplied,
+        'error' => nil,
+        'kind_distance' => distance
+      }
+    end
+
+
+    def kind_distance(actual_kind, expected_kind)
+      actual = normalize(actual_kind)
+      expected = normalize(expected_kind)
+      distance = 0
+      current = actual
+
+      loop do
+        return distance if current == expected
+
+        current = @kind_parents[current]
+        return nil unless current
+
+        distance += 1
+      end
     end
 
     def bind_context(context, match)

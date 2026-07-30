@@ -171,8 +171,15 @@ module BasicSharp
             next
           end
 
-          if dictionary.known_kind?(name)
-            diagnostics.error(child.line_number, "kind '#{name}' already exists")
+          existing_parent = dictionary.kind_parent(name)
+          if existing_parent
+            diagnostics.error(child.line_number, "kind '#{name}' already has parent '#{existing_parent}'")
+            next
+          end
+
+          cycle = dictionary.kind_cycle_with(name, parent)
+          if cycle
+            diagnostics.error(child.line_number, "Kind family has a loop: #{cycle.join(' -> ')}")
             next
           end
 

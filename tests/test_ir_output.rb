@@ -17,21 +17,25 @@ class TestIROutput < Minitest::Test
   end
 
   def test_emits_versioned_ir
-    assert_equal '0.1.14', @ir.fetch('version')
+    assert_equal '0.1.15', @ir.fetch('version')
     assert_equal 'dkir.debug.json', @ir.fetch('format')
   end
 
-  def test_emits_user_defined_kinds
-    dragon = @ir.fetch('kinds').first
-
-    assert_equal 'dragon', dragon.fetch('name')
-    assert_equal 'creature', dragon.fetch('parent')
+  def test_emits_kind_parent_chain
+    assert_equal(
+      [
+        ['creature', 'thing'],
+        ['dragon', 'creature'],
+        ['wyrm', 'dragon']
+      ],
+      @ir.fetch('kinds').map { |kind| [kind.fetch('name'), kind.fetch('parent')] }
+    )
   end
 
   def test_emits_objects_facts_and_rules
-    assert_equal 6, @ir.fetch('objects').length
-    assert_equal 4, @ir.fetch('facts').length
-    assert_equal 3, @ir.fetch('events').length
+    assert_equal 7, @ir.fetch('objects').length
+    assert_equal 5, @ir.fetch('facts').length
+    assert_equal 4, @ir.fetch('events').length
     assert_equal 1, @ir.fetch('if_rules').length
   end
 
@@ -64,6 +68,17 @@ class TestIROutput < Minitest::Test
     assert_equal ['henry'], trigger_target.fetch('candidates')
     assert_equal 'previous', damage_target.fetch('type')
     assert_equal 'guard', damage_target.fetch('kind_name')
+  end
+
+
+  def test_inherited_kind_trigger_keeps_descendant_candidates
+    event = @ir.fetch('events').find { |item| item.dig('when', 'raw') == 'player attacks a creature' }
+    target = event.dig('when', 'target')
+
+    assert_equal 'kind_one', target.fetch('type')
+    assert_equal 'creature', target.fetch('kind_name')
+    assert_equal %w[ember cinder], target.fetch('candidates')
+    assert_equal 'previous', event.fetch('then').first.fetch('target').fetch('type')
   end
 
 end
