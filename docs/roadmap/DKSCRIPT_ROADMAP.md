@@ -10,9 +10,9 @@ BASIC# source
 -> first runtime execution
 -> runtime Trigger context
 -> BASIC# identity and beginner-first foundation
--> plain-language runtime trace  [CURRENT: v0.1.12]
--> focused runtime stress test
--> repair anything exposed
+-> plain-language runtime trace
+-> focused runtime stress test and DKIR contract  [CURRENT: v0.1.13]
+-> owner validation and acceptance
 -> Kind Families
 -> runtime expansion
 -> stable meaning specification
@@ -33,38 +33,54 @@ BASIC# source
 - First runtime Thing creation and START Fact application.
 - One-pass IF checking.
 - Exact one-event WHEN matching.
-- First executable official words: `(damage`, `(change`, `(carry`, `(unlock`.
+- Executable official words: `(damage`, `(change`, `(carry`, `(unlock`.
 - Named Thing matching for `a guard` and other direct Kinds.
 - Per-event context for `that guard`.
 - Plain unknown-Thing and wrong-Kind runtime errors.
-- Public language name recorded as BASIC#.
-- Owner doctrine recorded: “A script language made for non-programmers, by non-programmers.”
-- Historical BASIC research and outside Grok and Copilot reviews logged.
-- Plain-language runtime trace for matches, selected Things, official words, and immediate changes.
+- Public language name BASIC#.
+- Non-programmer doctrine.
+- Historical BASIC, Lisp, Grok, Copilot, and Claude review records.
+- Plain-language runtime tracing.
+- Formal DKIR meaning contract.
+- Focused runtime stress runner and automated stress suite.
+- Duplicate Thing and invalid DKIR-format protection.
+- Official rule: `(` is a creator-facing visual guide for official words.
 
-## Immediate next work
+## v0.1.13 stress gate
 
-### v0.1.13 Focused Runtime Stress Test
+Default standalone stress:
 
-The stress test should pressure only working features:
+```text
+504 Things
+20,004 total event executions across two execution paths
+```
 
-- hundreds of defined Things;
-- many Things of the same Kind;
-- exact and Kind-based Triggers together;
-- thousands of repeated event runs;
-- repeated `(damage` and `(change`;
-- `(carry` relation changes;
-- unknown Things and wrong Kinds;
+Automated suite:
+
+```text
+54 runs
+4,330 assertions
+0 failures
+0 errors
+0 skips
+```
+
+The stress gate covers:
+
+- exact and direct-Kind Trigger priority;
+- repeated event execution;
+- context isolation;
+- separate runtime isolation;
+- deterministic results;
 - source and saved-DKIR parity;
-- no state leaking between separate runtime sessions;
-- deterministic results from identical worlds and events;
-- plain trace correctness under repeated execution.
+- truthful repeated-damage tracing;
+- carry and startup unlock behavior;
+- plain wrong/unknown Thing explanations;
+- malformed DKIR hardening.
 
-The stress package should add tests and reports, not new syntax.
+## Immediate next work after acceptance
 
-If the stress test exposes a defect, the next version repairs that defect before Kind Families.
-
-## Kind Families after stress testing
+### Kind Families
 
 ```text
 KINDS
@@ -73,52 +89,68 @@ dragon is a creature
 wyrm is a dragon].
 ```
 
-The creator should understand the family without being taught inheritance terminology.
+Required beginner-facing behavior:
 
-Required behavior:
-
-- one clear parent per Kind;
-- direct and family lookup;
+- one direct parent per Kind;
+- direct and family matching;
+- no multiple inheritance;
 - plain unknown-parent explanation;
-- plain circular-family explanation;
-- source and DKIR parity.
+- plain circular-family explanation that shows the actual loop;
+- source and DKIR parity;
+- no creator-facing inheritance terminology required.
 
-## Later runtime lanes
+The exact Kind Families build scope must still be stated and approved before implementation.
 
-- Multiple selected Things.
-- More complete state and relation handling.
-- Expanded IF behavior.
-- Multiple matching rules and event ordering.
-- Event queue and repeated event processing.
-- Values and amounts.
-- Timing and repetition.
-- Groups and collections.
-- Runtime save and load.
-- ASK-style introspection.
-- Understandable runtime recovery.
-- Bytecode and BASIC# VM.
+## Near-term foundation lane
+
+After Kind Families:
+
+1. Kind-family stress and repair.
+2. More complete IF behavior.
+3. Multiple selected Things.
+4. Formal values and amounts.
+5. Event ordering and queue design.
+6. Save/load world state.
+7. ASK-style introspection.
+8. Runtime recovery.
+9. Stable meaning specification gate.
+
+## Important foundation decisions still open
+
+- capitalization tolerance;
+- harmless source spacing tolerance;
+- creator-defined reusable words;
+- values and amount syntax;
+- time wording;
+- repetition wording;
+- group wording;
+- multiple selected-Thing wording;
+- long-term DKIR version compatibility.
+
+## Later runtime and machine lanes
+
+- Strings and text manipulation.
+- Collections or another beginner-safe structured-data model.
+- Files and DKIR access.
+- Memory lifetime system.
+- Standard BASIC# library.
+- Bytecode.
+- BASIC# virtual machine.
 - DK Engine bridge.
-- Small complete proof game.
-- BASIC# compiler written in BASIC#.
+- DK Engine systems.
+- BASIC# self-hosting compiler.
 
-## Pre-bytecode protection
+## Protected design rules
 
-Before bytecode and the VM, BASIC# needs a stable meaning specification covering:
-
-- Head and Body behavior;
-- Kind and Thing behavior;
-- Trigger selection;
-- Connector behavior;
-- official word behavior;
-- DKIR meaning.
-
-This must protect the working language, not trigger a giant rewrite.
-
-## Locked protections after v0.1.12
-
-- No duplicate natural-language and traditional-syntax versions.
-- No creator-facing compiler jargon.
-- No hidden Ruby semantics becoming BASIC# law.
-- No new official words without owner approval.
-- No technical rename without a separate migration.
-- No feature is complete until the creator can understand what happened.
+- BASIC# is a scripting language made for non-programmers, by non-programmers.
+- The compiler and engine do the heavy lifting.
+- The creator enjoys the ride.
+- `[` touches the first Body word.
+- `(damage` is the official word.
+- `(` is a creator-facing visual guide.
+- `<then>` is a Connector, not the result.
+- `then` and `than` are identical.
+- `there` and `their` are identical.
+- No rejected terms such as Action Target or Order.
+- Ruby is scaffolding, not BASIC# syntax or meaning.
+- No new official word enters casually.

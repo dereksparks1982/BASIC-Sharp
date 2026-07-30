@@ -2,110 +2,167 @@
   "format": "DK_CHANGED_FILES_PATCH",
   "format_version": 1,
   "project": "BASIC# language / DKScript Ruby Bootstrap Compiler",
-  "package_name": "DKScript_Ruby_Bootstrap_Compiler_v0_1_12_PLAIN_LANGUAGE_RUNTIME_TRACE_CHANGED_FILES_ONLY.zip",
-  "required_base": "accepted v0.1.11, commit 9fb30ae, tag v0.1.11",
-  "target_version": "v0.1.12",
-  "title": "Plain-Language Runtime Trace",
+  "package_name": "DKScript_Ruby_Bootstrap_Compiler_v0_1_13_FOCUSED_RUNTIME_STRESS_TEST_AND_CONTRACT_HARDENING_CORRECTED_CHANGED_FILES_ONLY.zip",
+  "required_base": "accepted v0.1.12 Plain-Language Runtime Trace; commit 25c9265; tag v0.1.12",
+  "base_validation": "42 runs, 252 assertions, 0 failures, 0 errors, 0 skips; owner-run twice on 2026-07-30",
+  "target_version": "v0.1.13",
+  "title": "Focused Runtime Stress Test and Contract Hardening",
+  "package_status": "corrected candidate; owner validation pending",
   "direct_project_root_payload": true,
   "changed_files_only": true,
+  "incremental_from_base": true,
   "cumulative_from_accepted_base": false,
   "manifest_excluded_from_own_hash_list": true,
+  "changed_path_count_including_manifest": 26,
   "deletions": [],
+  "rejected_package_audit": "docs/audit/DKSCRIPT_v0_1_13_REJECTED_PACKAGE_AUDIT.md",
+  "new_thread_handoff": "docs/hand_off/DKSCRIPT_v0_1_13_NEW_THREAD_HANDOFF.md",
+  "internal_validation": {
+    "ruby_syntax": "PASS",
+    "compiler_errors": 0,
+    "compiler_warnings": 0,
+    "tests": {
+      "runs": 54,
+      "assertions": 4330,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "stress": {
+      "things": 504,
+      "events_per_path": 10002,
+      "total_event_executions": 20004,
+      "result": "PASS"
+    },
+    "source_saved_dkir_parity": "PASS",
+    "separate_runtime_isolation": "PASS",
+    "deterministic_final_world": "PASS"
+  },
   "files": [
     {
-      "path": "BUILD_HANDSHAKE_v0_1_12.md",
-      "bytes": 3203,
-      "sha256": "1bb47d47c5409510e119a1a8a1f297ceaa0b020611299a2e1e8fc42fea12fbdb"
+      "path": "BUILD_HANDSHAKE_v0_1_13.md",
+      "bytes": 6371,
+      "sha256": "e34a7e4c6b22cccd5fdff7f4423c5d8715bff60ad34ada2c8677453aea67051c"
     },
     {
       "path": "README.md",
-      "bytes": 3748,
-      "sha256": "5e50f78a66fc9a8787cc2c35846b96c6ed6b6e5753f1acbec362d29153aecf25"
+      "bytes": 5123,
+      "sha256": "d12b70cd7b750308818cadce194cc82532810cd47c60f80b80c270b2dc0e7ab1"
     },
     {
       "path": "compiler/ast_nodes.rb",
       "bytes": 2242,
-      "sha256": "a903b5c507218c044fe6935f849ba08437f9027c3749a8d1a72e2003301597ea"
+      "sha256": "55b9161413516144174ad2925957c9bd2bd94690dbbb3f32c16ba3600b931675"
     },
     {
       "path": "compiler/runtime.rb",
-      "bytes": 14211,
-      "sha256": "cec23804756d7c0fbbd6c6852e76df80558faf6fcf4d0032e4f4eb6bb62dd07e"
+      "bytes": 14760,
+      "sha256": "2b54ac00e99b70884b7b5022a7fea7804a7a1bbb145c8c8583f0d53154fe2fe7"
     },
     {
-      "path": "docs/changed_files/DKSCRIPT_CHANGED_FILES_v0_1_12.txt",
-      "bytes": 728,
-      "sha256": "af24eb7508c343d6b809dbe5aa21f49917b08536de555bee533f0f56dc9e7f0c"
+      "path": "docs/audit/DKSCRIPT_v0_1_13_REJECTED_PACKAGE_AUDIT.md",
+      "bytes": 2292,
+      "sha256": "94a180d1dfdd7125a3194c75b6b4f112cb8966d8d06ba172feb701a17019b591"
     },
     {
-      "path": "docs/changelog/DKSCRIPT_CHANGELOG_v0_1_12.md",
-      "bytes": 666,
-      "sha256": "bed86947eeda95925c978a972ac87df2aa5b536800c24e561bea41631e7db340"
+      "path": "docs/changed_files/DKSCRIPT_CHANGED_FILES_v0_1_13.txt",
+      "bytes": 1415,
+      "sha256": "447d48c4e250954d0cf7f9b03648bb5d7ffe92d2a1cffc506541ae165426e9a8"
+    },
+    {
+      "path": "docs/changelog/DKSCRIPT_CHANGELOG_v0_1_13.md",
+      "bytes": 1055,
+      "sha256": "9a90dd6f380a1daf481c880557282705c4d0a7de01545a5f0796f7667af5a3aa"
     },
     {
       "path": "docs/hand_off/DKSCRIPT_MASTER_THREAD_HANDOFF.md",
-      "bytes": 3403,
-      "sha256": "24acb085b6cb2f8ac52b6676d0669bd93b55230c96aecd6762c10b290af800eb"
+      "bytes": 5954,
+      "sha256": "ea804b36d6eeb58b5b6fd84055c0204823d625acc36541b6db9e8f486b991227"
     },
     {
-      "path": "docs/language/BASIC_SHARP_NON_PROGRAMMER_DOCTRINE_v0_1_12.md",
-      "bytes": 1690,
-      "sha256": "021c693dbc6b7d3c5af24d4b3bd6027fa76dd9e94cf4ae1243208aba9edfdd39"
+      "path": "docs/hand_off/DKSCRIPT_v0_1_13_NEW_THREAD_HANDOFF.md",
+      "bytes": 4396,
+      "sha256": "3a5ba9f8ac2faf1eacaa4202eba2f7a10b62ed65de635c84e946ba72f47aa25a"
     },
     {
-      "path": "docs/maintenance/external_ai/COPILOT_BASIC_SHARP_REVIEW_DECISION_v0_1_12.md",
-      "bytes": 1776,
-      "sha256": "e340b3091700abdf2941c766905ea344c1af83867be9380d2399a0fdaa9cfde6"
+      "path": "docs/ir/DKIR_MEANING_CONTRACT_v0_1_13.md",
+      "bytes": 4322,
+      "sha256": "9c0e97e12f21157735abed5934da3cfce4ee28fe5ba595f493f6eea171c80d7c"
     },
     {
-      "path": "docs/parser_contract_v0_1_12.md",
-      "bytes": 1131,
-      "sha256": "ff5d2fef387634992f1be5d31709a2a39f3801f4a63f36c8da9352d4d884a991"
+      "path": "docs/language/BASIC_SHARP_OFFICIAL_WORD_VISUAL_GUIDE_v0_1_13.md",
+      "bytes": 1624,
+      "sha256": "614ef5edc7eef90fa613d434ad87ba5f78b2bd4bd6075e62085dbf3e40a5c248"
     },
     {
-      "path": "docs/patch_notes/DKSCRIPT_PATCH_NOTES_v0_1_12.md",
-      "bytes": 533,
-      "sha256": "1a4e36e7b1f08b16ce740dd27d56e26536d6dee8f0a64b1179c5d1a4457bb356"
+      "path": "docs/maintenance/external_ai/CLAUDE_BASIC_SHARP_REVIEW_DECISION_v0_1_13.md",
+      "bytes": 2694,
+      "sha256": "5663dd7c78767a2a2905e8e06e24a8f740346179b386c2dd846cf50ad91504c7"
+    },
+    {
+      "path": "docs/parser_contract_v0_1_13.md",
+      "bytes": 1135,
+      "sha256": "7b1d15313370d6854adff224e932f0a1e0b1433f6855b60a246cdead2d8d757d"
+    },
+    {
+      "path": "docs/patch_notes/DKSCRIPT_PATCH_NOTES_v0_1_13.md",
+      "bytes": 845,
+      "sha256": "e4b835dccf01d113f356aaad583b2b717dad1009b1103ebb713294757d837b09"
+    },
+    {
+      "path": "docs/research/BASIC_SHARP_LISP_RESEARCH_v0_1_13.md",
+      "bytes": 2115,
+      "sha256": "bbf8cd45faacaf3d41d7d3f83b050d4c021e7ec4d13c12cfee569f957e494c0e"
     },
     {
       "path": "docs/roadmap/DKSCRIPT_ROADMAP.md",
-      "bytes": 3728,
-      "sha256": "1e3fd31d999f26638256cc8d7709efc660f3cb58d4d43c00e7162b82e450d566"
+      "bytes": 4152,
+      "sha256": "c81cb4b8f907abf9258898f11d5510ee50b824cf33a8047fbf1cacd89660430c"
     },
     {
-      "path": "docs/runtime_contract_v0_1_12.md",
-      "bytes": 2026,
-      "sha256": "6ab6dfad4ba804155fead8cec4834ae3374e01c5cb4e26e7e6dab225469b2420"
+      "path": "docs/runtime_contract_v0_1_13.md",
+      "bytes": 2265,
+      "sha256": "bcdce9f096c6d0473f9a1f6912beb8fdf89735eec65126ffdc0e5de92ebad418"
     },
     {
-      "path": "docs/session_logs/DKSCRIPT_v0_1_12_SESSION_LOG.md",
-      "bytes": 1986,
-      "sha256": "8ac49e2e18a98f836ba28c83f65c0c2b2e8ed24dc59f978fc19a6007e310a098"
+      "path": "docs/session_logs/DKSCRIPT_v0_1_13_SESSION_LOG.md",
+      "bytes": 3906,
+      "sha256": "798477420f66a4fd7af2344df0fa980505a60aa7944c3ee40293500dccb9749d"
     },
     {
-      "path": "docs/validation/DKSCRIPT_VALIDATION_v0_1_12.md",
-      "bytes": 2554,
-      "sha256": "e1b1cf44208ae8e905877b874f6fb69b2c1fba36760448044b19533b4e2adf6d"
+      "path": "docs/testing/BASIC_SHARP_RUNTIME_STRESS_TEST_v0_1_13.md",
+      "bytes": 1876,
+      "sha256": "efbdfca323cf560c5896c43024d12e30dfad2f1130b6a16fa0d37a3bc0f4c838"
+    },
+    {
+      "path": "docs/validation/DKSCRIPT_VALIDATION_v0_1_13.md",
+      "bytes": 4469,
+      "sha256": "5848547714cb44d28c4666e5a08898383b5c12d2dfa317f1179b8a05842d0f23"
     },
     {
       "path": "samples/first_room.ir.json",
       "bytes": 6072,
-      "sha256": "4a56ab6fc8eb4a2d2a7cac6700059b1fd1fff9e6eab44d8ce2cecadb434da4d7"
+      "sha256": "9f40eba2272c80a71e094f50bf6e57dd3ac4e2f0b27948ff4f79eca0f58e61f6"
     },
     {
       "path": "tests/test_cli_output.rb",
       "bytes": 5098,
-      "sha256": "8ef1bc75a5be89fde64d9c6de2d0b3c48ea510db211dd8d065f1779e7376464e"
+      "sha256": "cd94e7385818d782eb2077454035cddd47834773ac0c9c8e55857a5c0845a15d"
     },
     {
       "path": "tests/test_ir_output.rb",
       "bytes": 2571,
-      "sha256": "3a7042a376643a4cb3cba68ffef6039fd45badbe610acf0ce55eeaadf539fbe4"
+      "sha256": "a1709960e079522e170b3f19809f98ce989e692067a3d0b36f03b4138c756cdf"
     },
     {
-      "path": "tests/test_runtime.rb",
-      "bytes": 6341,
-      "sha256": "75d8e32c50c4984a648f7ee9ad990b158dc51d40c155de3ed1f7a1a1bcb1e416"
+      "path": "tests/test_runtime_stress.rb",
+      "bytes": 8749,
+      "sha256": "1c74a804906043cd8965b037da518b56bdad99e4acaac5545e4fa0c3ff91a28e"
+    },
+    {
+      "path": "tools/runtime_stress.rb",
+      "bytes": 3923,
+      "sha256": "dbddcd5913bea79261c053bc21b156d0a03a40171d85cef2066274cf4b53dcdf"
     }
   ]
 }

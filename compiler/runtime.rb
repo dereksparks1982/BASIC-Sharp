@@ -35,7 +35,7 @@ module DKScript
 
     def initialize(document)
       @ir = stringify_keys(document.respond_to?(:to_h) ? document.to_h : document)
-      raise ArgumentError, 'DKIR contains errors and cannot run' if ir_errors.any?
+      validate_ir!
 
       @objects = {}
       @object_order = []
@@ -128,6 +128,22 @@ module DKScript
 
     private
 
+
+    def validate_ir!
+      format = normalize(@ir['format'])
+      unless format == 'dkir.debug.json'
+        shown = @ir['format'] || '(missing)'
+        raise ArgumentError, "DKIR format '#{shown}' is not supported"
+      end
+
+      %w[objects facts events if_rules diagnostics].each do |name|
+        value = @ir[name]
+        raise ArgumentError, "DKIR '#{name}' must be a list" unless value.is_a?(Array)
+      end
+
+      raise ArgumentError, 'DKIR contains errors and cannot run' if ir_errors.any?
+    end
+
     def ir_errors
       @ir.fetch('diagnostics', []).select { |diagnostic| diagnostic['severity'] == 'error' }
     end
@@ -135,6 +151,8 @@ module DKScript
     def create_things
       @ir.fetch('objects', []).each do |object|
         name = normalize(object.fetch('name'))
+        raise ArgumentError, "DKIR has more than one Thing named '#{name}'" if @objects.key?(name)
+
         @object_order << name
         @objects[name] = {
           'name' => name,

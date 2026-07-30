@@ -4,77 +4,22 @@
 
 **Public language name:** BASIC#  
 **Bootstrap project:** DKScript Ruby Bootstrap Compiler  
-**Current candidate version:** v0.1.12  
-**Build:** Plain-Language Runtime Trace  
-**Required installation base:** accepted v0.1.11, commit `9fb30ae`, tag `v0.1.11`  
-**Package type:** changed-files-only, direct project-root payload  
-**Package:** `DKScript_Ruby_Bootstrap_Compiler_v0_1_12_PLAIN_LANGUAGE_RUNTIME_TRACE_CHANGED_FILES_ONLY.zip`  
+**Accepted baseline:** v0.1.12 Plain-Language Runtime Trace  
+**Accepted commit:** `25c9265`  
+**Accepted tag:** `v0.1.12`  
+**Current candidate:** v0.1.13 Focused Runtime Stress Test and Contract Hardening  
+**Candidate status:** corrected package built; owner validation pending  
+**Required installation base:** exact `v0.1.12` tag  
+**Package type:** incremental changed-files-only, direct project-root payload  
+**Corrected package:** `DKScript_Ruby_Bootstrap_Compiler_v0_1_13_FOCUSED_RUNTIME_STRESS_TEST_AND_CONTRACT_HARDENING_CORRECTED_CHANGED_FILES_ONLY.zip`  
 **Project path:** `/home/dereksparks1982/DKLab/Projects/DKScript`  
 **Download path:** `/home/dereksparks1982/Downloads/`
 
-## Accepted baseline
+## Baseline truth
 
-v0.1.11 is owner-validated and accepted.
+Derek installed, validated, committed, and tagged v0.1.12.
 
-```text
-41 runs
-178 assertions
-0 failures
-0 errors
-0 skips
-commit: 9fb30ae
-tag: v0.1.11
-```
-
-## v0.1.12 completed work
-
-- Added plain-language runtime tracing.
-- Shows the matched `WHEN`.
-- Shows what `a guard` meant.
-- Shows what `that guard` meant.
-- Shows each event official word that ran.
-- Shows the immediate change caused by each event word.
-- Preserved exact matching.
-- Preserved direct Kind Trigger matching.
-- Preserved source and saved-DKIR trace/state parity.
-- Recorded: “A script language made for non-programmers, by non-programmers.”
-- Logged Copilot's review and the accepted decisions.
-- Advanced compiler and DKIR version to 0.1.12.
-- Added no syntax or official words.
-
-## Current trace proof
-
-```text
-event: player attacks henry
-matched: yes
-what matched:
-  player attacks a guard
-what I understood:
-  a guard means henry
-  that guard means henry
-what happened:
-  (damage henry
-  henry damage is now 1
-  (change henry to angry
-  henry is now angry
-```
-
-## Excluded
-
-- No Kind Families.
-- No inherited Kind matching.
-- No multiple selected Things.
-- No event queue.
-- No ASK execution.
-- No recovery syntax.
-- No timing or repetition.
-- No capitalization or spacing behavior change.
-- No bytecode, VM, engine bridge, or self-hosting work.
-- No technical rename.
-
-## Validation
-
-Internal validation:
+Owner validation was run twice on 2026-07-30. Both runs reported:
 
 ```text
 42 runs
@@ -84,36 +29,154 @@ Internal validation:
 0 skips
 ```
 
-Ruby syntax, compiler sample, Henry trace, Ember trace, saved DKIR trace, and direct-root package checks are required to remain clean.
+Accepted Git state:
 
-## Known risks
+```text
+commit 25c9265
+tag v0.1.12
+branch main
+working tree clean
+```
 
-- Runtime report output changed, so outside tools scraping old headings may require adjustment.
-- Direct Kind matching remains direct only.
+## Rejected v0.1.13 package history
+
+A previously supplied v0.1.13 archive was installed and fully tested. Runtime behavior passed:
+
+```text
+54 runs
+4,330 assertions
+0 failures
+0 errors
+0 skips
+20,004 standalone event executions
+STRESS TEST: PASS
+```
+
+However, the archive was rejected because it included unchanged v0.1.12 files while claiming to be an incremental changed-files-only package. The code was not accepted, committed, or tagged.
+
+This failure is preserved at:
+
+```text
+docs/audit/DKSCRIPT_v0_1_13_REJECTED_PACKAGE_AUDIT.md
+```
+
+The rejected package must not be used as a baseline.
+
+## Corrected v0.1.13 package
+
+The corrected archive was rebuilt from a direct comparison against a clean v0.1.12 tree. It contains only files that are new or changed from v0.1.12.
+
+Before installation, restore the project to the accepted tag:
+
+```bash
+git reset --hard v0.1.12
+```
+
+Then apply the corrected package and rerun the complete validation sequence from `BUILD_HANDSHAKE_v0_1_13.md`.
+
+## v0.1.13 completed work
+
+- Preserves v0.1.12 plain-language runtime tracing.
+- Adds focused high-volume runtime stress tests.
+- Adds reusable `tools/runtime_stress.rb`.
+- Tests hundreds of Things and thousands of events.
+- Proves exact Trigger priority over direct-Kind Trigger matching.
+- Proves selected-Thing context does not leak between events.
+- Proves separate Runtime instances do not share state.
+- Proves deterministic results from identical worlds and events.
+- Proves source-built and saved-DKIR execution parity under long sequences.
+- Rejects duplicate normalized DKIR Thing names.
+- Rejects missing or unsupported DKIR format.
+- Requires runtime top-level DKIR fields to be lists.
+- Adds the first formal DKIR meaning contract.
+- Records Claude review decisions.
+- Adds Lisp research relevant to BASIC#.
+- Records `(` as a creator-facing official-word visual guide.
+- Adds no new creator syntax or official words.
+
+## Internal stress proof
+
+```text
+54 runs
+4,330 assertions
+0 failures
+0 errors
+0 skips
+
+504 Things
+10,002 events through source-built DKIR
+10,002 events through saved DKIR
+20,004 total event executions
+STRESS TEST: PASS
+```
+
+## Protected language decisions
+
+- BASIC# is a scripting language made for non-programmers, by non-programmers.
+- The compiler and engine do the heavy lifting.
+- The creator enjoys the ride.
+- `(` in `(damage` exists as a visual guide for the creator.
+- `(damage` is the official word.
+- `ember` is a defined Thing that follows the word.
+- `<then>` is a Connector.
+- Damage happening is the result.
+- `[` touches the first Body word.
+- Ruby remains temporary scaffolding.
+- Context such as `that guard` lives only inside one event execution.
+
+## Excluded work
+
+- No Kind Families.
+- No multiple inheritance.
+- No multiple selected Things.
+- No event queue.
+- No creator-facing values or amounts.
+- No time or repetition language feature.
+- No ASK implementation.
+- No capitalization or source-spacing behavior change.
+- No technical rename.
+- No bytecode, VM, DK Engine bridge, or self-hosting implementation.
+
+## Known risks and limits
+
+- Direct Kind matching does not yet walk Kind families.
+- Exact rules are checked before direct-Kind rules.
+- The first matching rule runs.
 - One selected Thing is stored per Kind during one event.
-- The first matching WHEN rule runs.
 - IF rules still run once during startup.
-- DKIR remains debug JSON, not bytecode.
+- Damage remains an internal integer count without creator-facing amount syntax.
+- DKIR remains debug JSON rather than bytecode.
+- Long-term DKIR version compatibility is not frozen.
 
 ## Rollback point
 
 ```bash
-git checkout v0.1.11
+git reset --hard v0.1.12
 ```
 
-## Continuation point
+## Current continuation point
 
-After owner installation and acceptance of v0.1.12:
+1. Derek restores the project to `v0.1.12`.
+2. Derek installs the corrected v0.1.13 package.
+3. Derek runs the normal suite and standalone stress test.
+4. If all results pass, commit and tag v0.1.13.
+5. In the next thread, prepare the exact v0.1.14 proposal and wait for explicit build approval.
 
-1. commit and tag v0.1.12;
-2. build v0.1.13 Focused Runtime Stress Test;
-3. repair anything exposed before Kind Families.
+## Dedicated tomorrow handoff
+
+```text
+docs/hand_off/DKSCRIPT_v0_1_13_NEW_THREAD_HANDOFF.md
+```
 
 ## Cumulative History
 
+### v0.1.13 - 2026-07-30
+
+Focused Runtime Stress Test and Contract Hardening. The first archives were rejected for base/package-scope errors. The final corrected archive is a true incremental patch over v0.1.12. Owner validation of the corrected archive remains pending.
+
 ### v0.1.12 - 2026-07-30
 
-Plain-Language Runtime Trace. Added understandable match, selection, and world-change explanations. Recorded the non-programmer doctrine and Copilot review decision.
+Plain-Language Runtime Trace. Owner-validated twice, accepted at commit `25c9265`, and tagged `v0.1.12`.
 
 ### v0.1.11 - 2026-07-30
 
