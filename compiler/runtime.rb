@@ -28,7 +28,7 @@ module BasicSharp
       'off' => 'on'
     }.freeze
 
-    attr_reader :startup_ran
+    attr_reader :startup_ran, :startup_if_rules, :startup_if_error
 
     def self.load(path)
       new(JSON.parse(File.read(path)))
@@ -44,10 +44,16 @@ module BasicSharp
       @known_kinds = Set.new(CoreDictionary::BUILTIN_KINDS)
       @kind_distance_index = {}
       @startup_ran = []
+      @startup_if_rules = []
+      @startup_if_error = nil
+      @if_active = Array.new(@ir.fetch('if_rules', []).length, false)
       load_kind_families
       create_things
       apply_start_facts
-      run_starting_if_rules
+      startup_settlement = settle_if_rules(cause: 'START')
+      @startup_if_rules = startup_settlement.fetch('rules')
+      @startup_if_error = startup_settlement['error']
+      @startup_ran = @startup_if_rules.flat_map { |entry| entry.fetch('steps').map { |step| step.fetch('word') } }
     end
 
     def run_event(text)
@@ -58,26 +64,19 @@ module BasicSharp
       rule = match.fetch('rule')
       context = match.fetch('context')
       actor = reference_name(rule.dig('when', 'actor'), context: context)
-      steps = rule.fetch('then', []).filter_map do |word|
-        changes = []
-        description = run_official_word(word, actor: actor, context: context, changes: changes)
-        next unless description
-
-        {
-          'word' => description,
-          'change' => changes.first
-        }
-      end
+      steps = run_action_list(rule.fetch('then', []), actor: actor, context: context)
+      if_settlement = settle_if_rules(cause: 'event')
 
       result(
         event_text,
         true,
         steps.map { |step| step.fetch('word') },
         context,
-        nil,
+        if_settlement['error'],
         matched_when: normalize(rule.dig('when', 'raw')),
         understood: context_explanations(rule, context),
-        steps: steps
+        steps: steps,
+        if_rules: if_settlement.fetch('rules')
       )
     end
 
@@ -113,10 +112,11 @@ module BasicSharp
         event_result.fetch('understood').each { |line| lines << "  #{line}" }
       end
 
-      unless startup_ran.empty?
-        lines << 'starting rules:'
-        startup_ran.each { |word| lines << "  #{word}" }
+      unless startup_if_rules.empty?
+        lines << 'starting IF rules:'
+        append_if_rule_report(lines, startup_if_rules)
       end
+      lines << "starting IF error: #{startup_if_error}" if startup_if_error
 
       unless event_result.fetch('steps', []).empty?
         lines << 'what happened:'
@@ -124,6 +124,11 @@ module BasicSharp
           lines << "  #{step.fetch('word')}"
           lines << "  #{step.fetch('change')}" if step['change']
         end
+      end
+
+      unless event_result.fetch('if_rules', []).empty?
+        lines << 'IF rules:'
+        append_if_rule_report(lines, event_result.fetch('if_rules'))
       end
 
       lines << 'world state:'
@@ -285,15 +290,91 @@ module BasicSharp
       end
     end
 
-    def run_starting_if_rules
-      @ir.fetch('if_rules', []).each do |rule|
-        next unless condition_true?(rule['if'])
+    def settle_if_rules(cause:)
+      rules = @ir.fetch('if_rules', [])
+      return { 'rules' => [], 'error' => nil } if rules.empty?
 
-        rule.fetch('then', []).each do |word|
-          description = run_official_word(word, actor: nil, context: {}, changes: nil)
-          startup_ran << description if description
+      fired = []
+      fired_indexes = Set.new
+      initially_true = rules.map { |rule| condition_true?(rule['if']) }
+      seen = nil
+      firing_limit = [256, rules.length * 8].max
+      condition_trail = []
+
+      loop do
+        fired_this_pass = false
+
+        rules.each_with_index do |rule, index|
+          current = condition_true?(rule['if'])
+          unless current
+            @if_active[index] = false
+            next
+          end
+          next if @if_active[index]
+
+          if fired.length >= firing_limit
+            return { 'rules' => fired, 'error' => if_loop_error(condition_trail) }
+          end
+
+          seen ||= { if_world_signature => true }
+          @if_active[index] = true
+          steps = run_action_list(rule.fetch('then', []), actor: nil, context: {})
+          condition = normalize(rule.dig('if', 'raw'))
+          reason = if initially_true[index] && !fired_indexes.include?(index)
+                     cause == 'START' ? 'was true after START' : 'became true after the event'
+                   else
+                     'became true'
+                   end
+          fired << {
+            'condition' => condition,
+            'reason' => reason,
+            'steps' => steps
+          }
+          fired_indexes.add(index)
+          condition_trail << condition
+          condition_trail.shift while condition_trail.length > 3
+          fired_this_pass = true
+
+          rearm_false_if_rules!
+          signature = if_world_signature
+          if seen.key?(signature)
+            return { 'rules' => fired, 'error' => if_loop_error(condition_trail) }
+          end
+          seen[signature] = true
         end
+
+        break unless fired_this_pass
       end
+
+      { 'rules' => fired, 'error' => nil }
+    end
+
+    def run_action_list(words, actor:, context:)
+      words.filter_map do |word|
+        changes = []
+        description = run_official_word(word, actor: actor, context: context, changes: changes)
+        next unless description
+
+        {
+          'word' => description,
+          'change' => changes.first
+        }
+      end
+    end
+
+    def rearm_false_if_rules!
+      @ir.fetch('if_rules', []).each_with_index do |rule, index|
+        @if_active[index] = false unless condition_true?(rule['if'])
+      end
+    end
+
+    def if_world_signature
+      JSON.generate([snapshot, @if_active])
+    end
+
+    def if_loop_error(condition_trail)
+      shown = condition_trail.empty? ? ['IF conditions repeated'] : condition_trail
+      "IF rules kept waking each other.\n\n#{shown.join("\n")}\n\nBASIC# stopped this chain so it would not run forever."
     end
 
     def condition_true?(condition)
@@ -565,7 +646,7 @@ module BasicSharp
       normalize(reference['name'] || reference['text'])
     end
 
-    def result(event_text, matched, ran, context, error, matched_when: nil, understood: [], steps: [])
+    def result(event_text, matched, ran, context, error, matched_when: nil, understood: [], steps: [], if_rules: [])
       {
         'event' => event_text,
         'matched' => matched,
@@ -573,10 +654,22 @@ module BasicSharp
         'understood' => understood,
         'ran' => ran,
         'steps' => steps,
+        'if_rules' => if_rules,
         'context' => context,
         'error' => error,
         'state' => snapshot
       }
+    end
+
+    def append_if_rule_report(lines, entries)
+      entries.each do |entry|
+        lines << "  #{entry.fetch('condition')} #{entry.fetch('reason')}"
+        lines << '  ran:'
+        entry.fetch('steps').each do |step|
+          lines << "    #{step.fetch('word')}"
+          lines << "    #{step.fetch('change')}" if step['change']
+        end
+      end
     end
 
     def format_thing(thing)

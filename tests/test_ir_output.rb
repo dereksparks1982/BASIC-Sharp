@@ -17,7 +17,7 @@ class TestIROutput < Minitest::Test
   end
 
   def test_emits_versioned_ir
-    assert_equal '0.1.16', @ir.fetch('version')
+    assert_equal '0.1.17', @ir.fetch('version')
     assert_equal 'dkir.debug.json', @ir.fetch('format')
   end
 
@@ -36,7 +36,7 @@ class TestIROutput < Minitest::Test
     assert_equal 7, @ir.fetch('objects').length
     assert_equal 5, @ir.fetch('facts').length
     assert_equal 4, @ir.fetch('events').length
-    assert_equal 1, @ir.fetch('if_rules').length
+    assert_equal 2, @ir.fetch('if_rules').length
   end
 
   def test_definite_kind_relation_target_resolves_to_single_object

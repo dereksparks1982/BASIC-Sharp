@@ -27,7 +27,7 @@ class TestCLIOutput < Minitest::Test
       assert_includes stdout, "wrote: #{out_path}"
       assert File.file?(out_path), 'expected --out to create the IR file'
       json = JSON.parse(File.read(out_path))
-      assert_equal '0.1.16', json.fetch('version')
+      assert_equal '0.1.17', json.fetch('version')
     end
   end
 
@@ -42,7 +42,7 @@ class TestCLIOutput < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BASIC# Runtime v0.1.16'
+    assert_includes stdout, 'BASIC# Runtime v0.1.17'
     assert_includes stdout, 'matched: yes'
     assert_includes stdout, 'what matched:'
     assert_includes stdout, 'player attacks ember'
@@ -93,7 +93,7 @@ class TestCLIOutput < Minitest::Test
       )
 
       assert status.success?, stderr
-      assert_includes stdout, 'BASIC# Runtime v0.1.16'
+      assert_includes stdout, 'BASIC# Runtime v0.1.17'
       assert_includes stdout, 'matched: yes'
       assert_includes stdout, 'what matched:'
       assert_includes stdout, 'player attacks a guard'
@@ -130,7 +130,7 @@ class TestCLIOutput < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BASIC# Runtime v0.1.16'
+    assert_includes stdout, 'BASIC# Runtime v0.1.17'
     assert_includes stdout, 'matched: yes'
     assert_includes stdout, 'what matched:'
     assert_includes stdout, 'player attacks a guard'
@@ -178,6 +178,9 @@ class TestCLIOutput < Minitest::Test
     assert_includes stdout, 'that creature means cinder'
     assert_includes stdout, 'cinder damage is now 1'
     assert_includes stdout, 'cinder is now angry'
+    assert_includes stdout, 'IF rules:'
+    assert_includes stdout, 'cinder is angry became true after the event'
+    assert_includes stdout, 'player damage is now 1'
   end
 
 end

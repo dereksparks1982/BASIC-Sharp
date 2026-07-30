@@ -173,7 +173,8 @@ class TestKindFamilyHardening < Minitest::Test
 
     {
       '0.1.13' => File.join(root, 'tests/fixtures/first_room_v0_1_13.ir.json'),
-      '0.1.15' => File.join(root, 'tests/fixtures/first_room_v0_1_15.ir.json')
+      '0.1.15' => File.join(root, 'tests/fixtures/first_room_v0_1_15.ir.json'),
+      '0.1.16' => File.join(root, 'tests/fixtures/first_room_v0_1_16.ir.json')
     }.each do |version, path|
       document = JSON.parse(File.read(path))
       assert_equal version, document.fetch('version')

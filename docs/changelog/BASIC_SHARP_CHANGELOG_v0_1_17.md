@@ -1,0 +1,27 @@
+# BASIC# Changelog v0.1.17
+
+## Added
+
+- Reactive false-to-true IF wake-up behavior.
+- IF re-arming after a condition becomes false.
+- START and event-time IF settling.
+- Deterministic IF cascades in source order.
+- Plain IF trace entries with reason, actions, and world changes.
+- Repeating-state and scaled firing loop protection.
+- Focused IF behavior test suite.
+- 128-rule IF stress runner.
+- v0.1.16 saved-DKIR fixture.
+
+## Changed
+
+- The runtime now settles IF after START and after a complete matched WHEN action list.
+- Sample `first_room.bsharp` now demonstrates a reactive IF after Cinder becomes angry.
+- Active version surfaces now report v0.1.17.
+
+## Preserved
+
+- Existing IF syntax.
+- Exact and inherited WHEN matching.
+- Source order.
+- Source/saved-DKIR parity.
+- v0.1.13, v0.1.15, and v0.1.16 valid saved-DKIR compatibility.

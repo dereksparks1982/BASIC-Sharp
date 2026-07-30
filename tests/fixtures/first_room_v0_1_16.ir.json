@@ -1,5 +1,5 @@
 {
-  "version": "0.1.17",
+  "version": "0.1.16",
   "format": "dkir.debug.json",
   "kinds": [
     {
@@ -368,35 +368,6 @@
             "text": "north door",
             "name": "north door",
             "object_kind": "door"
-          }
-        }
-      ]
-    },
-    {
-      "line_number": 44,
-      "if": {
-        "raw": "cinder is angry",
-        "subject": {
-          "type": "object",
-          "text": "cinder",
-          "name": "cinder",
-          "object_kind": "wyrm"
-        },
-        "relation": "is",
-        "value": {
-          "kind": "state",
-          "name": "angry"
-        }
-      },
-      "then": [
-        {
-          "line_number": 46,
-          "action": "damage",
-          "target": {
-            "type": "object",
-            "text": "player",
-            "name": "player",
-            "object_kind": "person"
           }
         }
       ]

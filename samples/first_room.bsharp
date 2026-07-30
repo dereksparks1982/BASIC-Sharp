@@ -40,3 +40,7 @@ WHEN
 [player attacks a guard
 <then> (damage that guard
 <then> (change that guard to angry].
+
+IF
+[cinder is angry
+<then> (damage player].
