@@ -1,4 +1,4 @@
-# DKScript Ruby Bootstrap Compiler v0.1.06
+# DKScript Ruby Bootstrap Compiler v0.1.07
 
 **The scripting language for non-programmers.**
 
@@ -71,6 +71,9 @@ ruby tests/test_diagnostics_samples.rb
 - Emits a human-readable DKIR debug JSON dump for future runtime work.
 - Adds bad-script samples for unknown objects, unknown kinds, unknown states, unknown actions, ambiguous references, and bad line commands.
 - Adds a diagnostics sample test harness so compiler errors stay understandable for non-programmers.
+- Deduplicates diagnostics so the same mistake is not reported twice.
+- Cleans parser-to-resolver cascades so syntax recovery does not create noisy follow-up errors.
+- Keeps diagnostics ordered by source line, with errors before warnings on the same line.
 
 ## What this build does not do
 
@@ -84,7 +87,11 @@ ruby tests/test_diagnostics_samples.rb
 
 ## Bad-script diagnostic samples
 
-v0.1.06 adds small broken `.dks` files under `samples/errors/`. These are not game content. They are compiler teaching targets: each one proves DKScript explains a mistake in plain words instead of failing like a cryptic machine cave.
+v0.1.06 added small broken `.dks` files under `samples/errors/`.
+
+v0.1.07 cleans the diagnostic output from those samples so each mistake is reported once, in plain language.
+
+The error samples are not game content. They are compiler teaching targets: each one proves DKScript explains a mistake in plain words instead of failing like a cryptic machine cave.
 
 Examples covered:
 

@@ -14,43 +14,59 @@ class TestDiagnosticsSamples < Minitest::Test
     DKScript::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
   end
 
-  def messages_for(name)
-    resolve_sample(name).diagnostics.map(&:message)
+  def diagnostics_for(name)
+    resolve_sample(name).diagnostics
   end
 
-  def test_unknown_object_sample_reports_plain_reference_error
-    messages = messages_for('unknown_object.dks')
-
-    assert messages.any? { |message| message.include?("unknown reference 'ghost'") }, messages.join("\n")
+  def messages_for(name, severity: nil)
+    diagnostics_for(name)
+      .select { |diagnostic| severity.nil? || diagnostic.severity == severity }
+      .map(&:message)
   end
 
-  def test_unknown_kind_sample_reports_unknown_kind
-    messages = messages_for('unknown_kind.dks')
+  def assert_no_duplicate_diagnostics(name)
+    diagnostics = diagnostics_for(name)
+    keys = diagnostics.map(&:key)
 
-    assert messages.any? { |message| message == "unknown kind 'dragon'" }, messages.join("\n")
+    assert_equal keys.uniq, keys, "duplicate diagnostics in #{name}: #{diagnostics.map(&:to_s).join("
+")}"
   end
 
-  def test_unknown_state_sample_reports_unknown_state
-    messages = messages_for('unknown_state.dks')
-
-    assert messages.any? { |message| message == "unknown state 'sleepy'" }, messages.join("\n")
+  def test_unknown_object_sample_reports_one_plain_reference_error
+    assert_no_duplicate_diagnostics('unknown_object.dks')
+    assert_equal ["unknown reference 'ghost': not a defined object and not a known kind"], messages_for('unknown_object.dks', severity: 'error')
+    assert_empty messages_for('unknown_object.dks', severity: 'warning')
   end
 
-  def test_unknown_action_sample_reports_unknown_action
-    messages = messages_for('unknown_action.dks')
-
-    assert messages.any? { |message| message == "unknown action 'explode'" }, messages.join("\n")
+  def test_unknown_kind_sample_reports_unknown_kind_once
+    assert_no_duplicate_diagnostics('unknown_kind.dks')
+    assert_equal ["unknown kind 'dragon'"], messages_for('unknown_kind.dks', severity: 'error')
+    assert_empty messages_for('unknown_kind.dks', severity: 'warning')
   end
 
-  def test_ambiguous_door_sample_reports_choices
-    messages = messages_for('ambiguous_door.dks')
-
-    assert messages.any? { |message| message == 'which door? found: north door, cellar door' }, messages.join("\n")
+  def test_unknown_state_sample_reports_unknown_state_once
+    assert_no_duplicate_diagnostics('unknown_state.dks')
+    assert_equal ["unknown state 'sleepy'"], messages_for('unknown_state.dks', severity: 'error')
+    assert_empty messages_for('unknown_state.dks', severity: 'warning')
   end
 
-  def test_bad_line_command_sample_reports_then_suggestion
-    messages = messages_for('bad_line_command.dks')
+  def test_unknown_action_sample_reports_unknown_action_once
+    assert_no_duplicate_diagnostics('unknown_action.dks')
+    assert_equal ["unknown action 'explode'"], messages_for('unknown_action.dks', severity: 'error')
+    assert_empty messages_for('unknown_action.dks', severity: 'warning')
+  end
 
-    assert messages.any? { |message| message == "unknown line command '<thne>'; did you mean <then>?" }, messages.join("\n")
+  def test_ambiguous_door_sample_reports_both_ambiguous_lines
+    assert_no_duplicate_diagnostics('ambiguous_door.dks')
+    diagnostics = diagnostics_for('ambiguous_door.dks')
+
+    assert_equal [5, 7], diagnostics.map(&:line_number)
+    assert_equal ['which door? found: north door, cellar door', 'which door? found: north door, cellar door'], diagnostics.map(&:message)
+  end
+
+  def test_bad_line_command_sample_reports_only_the_typo
+    assert_no_duplicate_diagnostics('bad_line_command.dks')
+    assert_equal ["unknown line command '<thne>'; did you mean <then>?"], messages_for('bad_line_command.dks', severity: 'error')
+    assert_empty messages_for('bad_line_command.dks', severity: 'warning')
   end
 end

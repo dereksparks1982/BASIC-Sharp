@@ -2,6 +2,10 @@
 
 module DKScript
   Diagnostic = Struct.new(:severity, :line_number, :message, keyword_init: true) do
+    def key
+      [severity, line_number, message]
+    end
+
     def to_h
       { severity: severity, line_number: line_number, message: message }
     end
@@ -17,14 +21,15 @@ module DKScript
 
     def initialize
       @items = []
+      @seen = {}
     end
 
     def error(line_number, message)
-      @items << Diagnostic.new(severity: 'error', line_number: line_number, message: message)
+      add('error', line_number, message)
     end
 
     def warning(line_number, message)
-      @items << Diagnostic.new(severity: 'warning', line_number: line_number, message: message)
+      add('warning', line_number, message)
     end
 
     def any_errors?
@@ -32,7 +37,23 @@ module DKScript
     end
 
     def to_h
-      @items.map(&:to_h)
+      ordered_items.map(&:to_h)
+    end
+
+    private
+
+    def add(severity, line_number, message)
+      diagnostic = Diagnostic.new(severity: severity, line_number: line_number, message: message)
+      return if @seen[diagnostic.key]
+
+      @seen[diagnostic.key] = true
+      @items << diagnostic
+    end
+
+    def ordered_items
+      @items.sort_by do |diagnostic|
+        [diagnostic.line_number || 0, diagnostic.severity == 'error' ? 0 : 1, diagnostic.message]
+      end
     end
   end
 end

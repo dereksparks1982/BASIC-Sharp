@@ -23,11 +23,24 @@ module DKScript
         facts: program.facts.map { |fact| resolve_fact(fact) },
         events: program.event_rules.map { |rule| resolve_event_rule(rule) },
         if_rules: program.if_rules.map { |rule| resolve_if_rule(rule) },
-        diagnostics: program.diagnostics + diagnostics.items
+        diagnostics: clean_diagnostics(program.diagnostics + diagnostics.items)
       )
     end
 
     private
+
+    def clean_diagnostics(items)
+      seen = {}
+      items.each_with_object([]) do |diagnostic, clean|
+        key = [diagnostic.severity, diagnostic.line_number, diagnostic.message]
+        next if seen[key]
+
+        seen[key] = true
+        clean << diagnostic
+      end.sort_by do |diagnostic|
+        [diagnostic.line_number || 0, diagnostic.severity == 'error' ? 0 : 1, diagnostic.message]
+      end
+    end
 
     def resolve_objects
       objects = [{ 'name' => 'player', 'kind' => 'person', 'builtin' => true, 'line_number' => nil }]

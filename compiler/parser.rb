@@ -100,11 +100,14 @@ module DKScript
       # is therefore parsed after the child marker as 'then> (damage henry'.
       if (match = body.match(/\A([a-z]+)>\s*(.*)\z/))
         raw_command = match[1].strip.downcase
-        line_command = LINE_COMMAND_ALIASES.fetch(raw_command, raw_command)
-        unless LINE_COMMAND_ALIASES.key?(raw_command)
-          diagnostics.error(line.number, "unknown line command '<#{raw_command}>'; did you mean <then>?")
-        end
         body = match[2].strip
+        line_command = LINE_COMMAND_ALIASES[raw_command]
+        unless line_command
+          diagnostics.error(line.number, "unknown line command '<#{raw_command}>'; did you mean <then>?")
+          # Recover as <then> when the rest of the line is clearly an action.
+          # This avoids a second, confusing "missing <then>" cascade error.
+          line_command = body.start_with?('(') ? 'then' : raw_command
+        end
       elsif body.start_with?('<')
         diagnostics.error(line.number, 'line command tags must look like <then>')
       end
@@ -113,7 +116,6 @@ module DKScript
         match = body.match(/\A\((\w+)\b\s*(.*)\z/)
         if match
           action = match[1].downcase
-          diagnostics.warning(line.number, "unknown action '#{action}'") unless dictionary.known_action?(action)
         else
           diagnostics.error(line.number, 'action markers must look like (damage target')
         end
@@ -132,7 +134,6 @@ module DKScript
 
         kind = match[1].downcase
         name = match[2].strip.downcase
-        diagnostics.warning(child.line_number, "unknown kind '#{kind}'") unless dictionary.known_kind?(kind)
         dictionary.add_object(name, kind)
         Definition.new(kind: kind, name: name, line_number: child.line_number)
       end
@@ -155,8 +156,6 @@ module DKScript
       subject = match[1].strip.downcase
       relation = match[2].downcase
       value = match[3].strip.downcase
-      validate_subject(child.line_number, subject)
-      validate_fact_value(child.line_number, value)
       Fact.new(subject: subject, relation: relation, value: value, line_number: child.line_number)
     end
 
@@ -192,8 +191,6 @@ module DKScript
       verb = match[1].downcase
       rest = match[2].strip.downcase
       target, tail = split_action_rest(rest)
-      diagnostics.warning(child.line_number, "unknown action '#{verb}'") unless dictionary.known_action?(verb)
-      validate_subject(child.line_number, target) if target && !target.empty? && !%w[that every a the].include?(target)
       ActionCall.new(verb: verb, target: target, tail: tail, line_number: child.line_number)
     end
 
@@ -207,22 +204,5 @@ module DKScript
       end
     end
 
-    def validate_subject(line_number, subject)
-      normalized = subject.sub(/\Athe\s+/, '').sub(/\Aa\s+/, '').sub(/\Aevery\s+/, '').strip
-      return if normalized.empty?
-      return if normalized.start_with?('that ')
-      return if dictionary.known_object?(normalized)
-      return if dictionary.known_kind?(normalized)
-
-      # Multiword names may be declared later in DEFINE; this warning keeps the first compiler forgiving.
-      diagnostics.warning(line_number, "unknown object or kind '#{subject}'")
-    end
-
-    def validate_fact_value(line_number, value)
-      return if dictionary.known_state?(value)
-      return if value.include?(' ')
-
-      diagnostics.warning(line_number, "unknown state '#{value}'")
-    end
   end
 end
