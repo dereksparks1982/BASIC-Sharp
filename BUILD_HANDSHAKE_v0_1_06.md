@@ -1,5 +1,8 @@
 # DKScript Build Handshake v0.1.06
 
+> **Historical naming note:** This record predates the v0.1.14 technical identity migration. At the time recorded below, BASIC# still used the working technical name `DKScript`. Old package names, commands, paths, and Git messages are preserved as audit history.
+
+
 ## Project
 
 DKScript Ruby Bootstrap Compiler
@@ -65,21 +68,21 @@ compiler/ast_nodes.rb
 compiler/parser.rb
 docs/parser_contract_v0_1_06.md
 samples/first_room.ir.json
-samples/errors/unknown_object.dks
-samples/errors/unknown_kind.dks
-samples/errors/unknown_state.dks
-samples/errors/unknown_action.dks
-samples/errors/ambiguous_door.dks
-samples/errors/bad_line_command.dks
+samples/errors/unknown_object.bsharp
+samples/errors/unknown_kind.bsharp
+samples/errors/unknown_state.bsharp
+samples/errors/unknown_action.bsharp
+samples/errors/ambiguous_door.bsharp
+samples/errors/bad_line_command.bsharp
 tests/test_diagnostics_samples.rb
 ```
 
 ## Validation commands
 
 ```bash
-ruby compiler/dks.rb samples/first_room.dks
-ruby compiler/dks.rb samples/first_room.dks --emit-ir
-ruby compiler/dks.rb samples/first_room.dks --emit-ir --out samples/first_room.ir.json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json
 ruby tests/test_first_room.rb
 ruby tests/test_resolver.rb
 ruby tests/test_ir_output.rb

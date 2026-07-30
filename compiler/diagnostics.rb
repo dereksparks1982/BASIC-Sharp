@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module DKScript
+module BasicSharp
   Diagnostic = Struct.new(:severity, :line_number, :message, keyword_init: true) do
     def key
       [severity, line_number, message]

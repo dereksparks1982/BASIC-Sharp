@@ -6,13 +6,13 @@ require_relative '../compiler/resolver'
 
 class TestResolver < Minitest::Test
   def resolve(source)
-    parser = DKScript::Parser.new(source)
+    parser = BasicSharp::Parser.new(source)
     program = parser.parse
-    DKScript::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
+    BasicSharp::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
   end
 
   def test_resolves_sample_without_errors_or_warnings
-    source = File.read(File.expand_path('../samples/first_room.dks', __dir__))
+    source = File.read(File.expand_path('../samples/first_room.bsharp', __dir__))
     document = resolve(source)
 
     errors = document.diagnostics.select { |diagnostic| diagnostic.severity == 'error' }
@@ -27,7 +27,7 @@ class TestResolver < Minitest::Test
   end
 
   def test_normalizes_event_verbs
-    source = File.read(File.expand_path('../samples/first_room.dks', __dir__))
+    source = File.read(File.expand_path('../samples/first_room.bsharp', __dir__))
     document = resolve(source)
 
     first_event = document.events.first.fetch('when')
@@ -38,7 +38,7 @@ class TestResolver < Minitest::Test
   end
 
   def test_resolves_the_table_when_one_table_exists
-    source = File.read(File.expand_path('../samples/first_room.dks', __dir__))
+    source = File.read(File.expand_path('../samples/first_room.bsharp', __dir__))
     document = resolve(source)
     table_fact = document.facts.find { |fact| fact.fetch('relation') == 'on' }
     target = table_fact.fetch('target')

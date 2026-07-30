@@ -4,7 +4,7 @@ require 'json'
 require 'set'
 require_relative 'ast_nodes'
 
-module DKScript
+module BasicSharp
   class Runtime
     OPPOSITE_STATES = {
       'open' => 'closed',
@@ -93,7 +93,7 @@ module DKScript
 
     def report(event_result)
       lines = []
-      lines << "DKScript Runtime v#{VERSION}"
+      lines << "BASIC# Runtime v#{VERSION}"
       lines << "event: #{event_result.fetch('event')}"
       lines << "matched: #{event_result.fetch('matched') ? 'yes' : 'no'}"
       lines << "error: #{event_result.fetch('error')}" if event_result['error']

@@ -1,5 +1,8 @@
 # DKScript Parser Contract v0.1.04
 
+> **Historical naming note:** This record predates the v0.1.14 technical identity migration. At the time recorded below, BASIC# still used the working technical name `DKScript`. Old package names, commands, paths, and Git messages are preserved as audit history.
+
+
 ## Purpose
 
 v0.1.04 keeps the Ruby Stage 0 compiler front end and adds the first semantic resolver plus a human-readable DKIR debug dump.
@@ -32,7 +35,7 @@ WHEN
 ## New command
 
 ```bash
-ruby compiler/dks.rb samples/first_room.dks --emit-ir
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir
 ```
 
 This emits DKIR debug JSON. JSON is temporary scaffolding, not the final soul of DKScript.

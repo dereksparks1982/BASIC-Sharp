@@ -1,5 +1,8 @@
 # DKScript Parser/Semantic Contract v0.1.06
 
+> **Historical naming note:** This record predates the v0.1.14 technical identity migration. At the time recorded below, BASIC# still used the working technical name `DKScript`. Old package names, commands, paths, and Git messages are preserved as audit history.
+
+
 ## Build name
 
 DKScript Ruby Bootstrap Compiler v0.1.06  
@@ -50,12 +53,12 @@ These files intentionally contain mistakes. They are compiler teaching targets, 
 Samples added:
 
 ```text
-unknown_object.dks
-unknown_kind.dks
-unknown_state.dks
-unknown_action.dks
-ambiguous_door.dks
-bad_line_command.dks
+unknown_object.bsharp
+unknown_kind.bsharp
+unknown_state.bsharp
+unknown_action.bsharp
+ambiguous_door.bsharp
+bad_line_command.bsharp
 ```
 
 A new test harness validates these samples:
@@ -107,9 +110,9 @@ unknown line command '<thne>'; did you mean <then>?
 Run from the DKScript project root:
 
 ```bash
-ruby compiler/dks.rb samples/first_room.dks
-ruby compiler/dks.rb samples/first_room.dks --emit-ir
-ruby compiler/dks.rb samples/first_room.dks --emit-ir --out samples/first_room.ir.json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json
 ruby tests/test_first_room.rb
 ruby tests/test_resolver.rb
 ruby tests/test_ir_output.rb

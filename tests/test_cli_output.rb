@@ -15,8 +15,8 @@ class TestCLIOutput < Minitest::Test
       out_path = File.join(dir, 'nested', 'first_room.ir.json')
       stdout, stderr, status = Open3.capture3(
         RUBY,
-        File.join(ROOT, 'compiler/dks.rb'),
-        File.join(ROOT, 'samples/first_room.dks'),
+        File.join(ROOT, 'compiler/basic_sharp.rb'),
+        File.join(ROOT, 'samples/first_room.bsharp'),
         '--emit-ir',
         '--out',
         out_path,
@@ -27,22 +27,22 @@ class TestCLIOutput < Minitest::Test
       assert_includes stdout, "wrote: #{out_path}"
       assert File.file?(out_path), 'expected --out to create the IR file'
       json = JSON.parse(File.read(out_path))
-      assert_equal '0.1.13', json.fetch('version')
+      assert_equal '0.1.14', json.fetch('version')
     end
   end
 
   def test_run_executes_one_event_and_prints_changed_world_state
     stdout, stderr, status = Open3.capture3(
       RUBY,
-      File.join(ROOT, 'compiler/dks.rb'),
-      File.join(ROOT, 'samples/first_room.dks'),
+      File.join(ROOT, 'compiler/basic_sharp.rb'),
+      File.join(ROOT, 'samples/first_room.bsharp'),
       '--run',
       'player attacks ember',
       chdir: ROOT
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'DKScript Runtime v0.1.13'
+    assert_includes stdout, 'BASIC# Runtime v0.1.14'
     assert_includes stdout, 'matched: yes'
     assert_includes stdout, 'what matched:'
     assert_includes stdout, 'player attacks ember'
@@ -58,8 +58,8 @@ class TestCLIOutput < Minitest::Test
   def test_run_requires_an_event
     _stdout, stderr, status = Open3.capture3(
       RUBY,
-      File.join(ROOT, 'compiler/dks.rb'),
-      File.join(ROOT, 'samples/first_room.dks'),
+      File.join(ROOT, 'compiler/basic_sharp.rb'),
+      File.join(ROOT, 'samples/first_room.bsharp'),
       '--run',
       chdir: ROOT
     )
@@ -74,8 +74,8 @@ class TestCLIOutput < Minitest::Test
       path = File.join(dir, 'first_room.ir.json')
       _emit_stdout, emit_stderr, emit_status = Open3.capture3(
         RUBY,
-        File.join(ROOT, 'compiler/dks.rb'),
-        File.join(ROOT, 'samples/first_room.dks'),
+        File.join(ROOT, 'compiler/basic_sharp.rb'),
+        File.join(ROOT, 'samples/first_room.bsharp'),
         '--emit-ir',
         '--out',
         path,
@@ -85,7 +85,7 @@ class TestCLIOutput < Minitest::Test
 
       stdout, stderr, status = Open3.capture3(
         RUBY,
-        File.join(ROOT, 'compiler/dks.rb'),
+        File.join(ROOT, 'compiler/basic_sharp.rb'),
         path,
         '--run',
         'player attacks henry',
@@ -93,7 +93,7 @@ class TestCLIOutput < Minitest::Test
       )
 
       assert status.success?, stderr
-      assert_includes stdout, 'DKScript Runtime v0.1.13'
+      assert_includes stdout, 'BASIC# Runtime v0.1.14'
       assert_includes stdout, 'matched: yes'
       assert_includes stdout, 'what matched:'
       assert_includes stdout, 'player attacks a guard'
@@ -108,8 +108,8 @@ class TestCLIOutput < Minitest::Test
   def test_missing_out_path_exits_with_usage_error
     _stdout, stderr, status = Open3.capture3(
       RUBY,
-      File.join(ROOT, 'compiler/dks.rb'),
-      File.join(ROOT, 'samples/first_room.dks'),
+      File.join(ROOT, 'compiler/basic_sharp.rb'),
+      File.join(ROOT, 'samples/first_room.bsharp'),
       '--emit-ir',
       '--out',
       chdir: ROOT
@@ -122,15 +122,15 @@ class TestCLIOutput < Minitest::Test
   def test_run_matches_named_guard_to_kind_trigger
     stdout, stderr, status = Open3.capture3(
       RUBY,
-      File.join(ROOT, 'compiler/dks.rb'),
-      File.join(ROOT, 'samples/first_room.dks'),
+      File.join(ROOT, 'compiler/basic_sharp.rb'),
+      File.join(ROOT, 'samples/first_room.bsharp'),
       '--run',
       'player attacks henry',
       chdir: ROOT
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'DKScript Runtime v0.1.13'
+    assert_includes stdout, 'BASIC# Runtime v0.1.14'
     assert_includes stdout, 'matched: yes'
     assert_includes stdout, 'what matched:'
     assert_includes stdout, 'player attacks a guard'
@@ -148,8 +148,8 @@ class TestCLIOutput < Minitest::Test
   def test_run_reports_unknown_thing_for_kind_trigger
     stdout, _stderr, status = Open3.capture3(
       RUBY,
-      File.join(ROOT, 'compiler/dks.rb'),
-      File.join(ROOT, 'samples/first_room.dks'),
+      File.join(ROOT, 'compiler/basic_sharp.rb'),
+      File.join(ROOT, 'samples/first_room.bsharp'),
       '--run',
       'player attacks ghost',
       chdir: ROOT

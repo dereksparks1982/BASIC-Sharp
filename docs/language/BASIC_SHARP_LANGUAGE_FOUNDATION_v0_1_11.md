@@ -1,5 +1,8 @@
 # BASIC# Language Foundation v0.1.11
 
+> **Historical naming note:** This record predates the v0.1.14 technical identity migration. At the time recorded below, BASIC# still used the working technical name `DKScript`. Old package names, commands, paths, and Git messages are preserved as audit history.
+
+
 ## Name
 
 The owner-selected public language name is:

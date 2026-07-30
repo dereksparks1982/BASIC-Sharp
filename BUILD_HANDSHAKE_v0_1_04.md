@@ -1,5 +1,8 @@
 # DKScript Build Handshake v0.1.04
 
+> **Historical naming note:** This record predates the v0.1.14 technical identity migration. At the time recorded below, BASIC# still used the working technical name `DKScript`. Old package names, commands, paths, and Git messages are preserved as audit history.
+
+
 ## Project
 
 DKScript
@@ -44,8 +47,8 @@ DKScript_Ruby_Bootstrap_Compiler_v0_1_04_SEMANTIC_RESOLVER_AND_IR_OUTPUT_CHANGED
 - `README.md`
 - `BUILD_HANDSHAKE_v0_1_04.md`
 - `compiler/ast_nodes.rb`
-- `compiler/dks.rb`
-- `compiler/dks_ir.rb`
+- `compiler/basic_sharp.rb`
+- `compiler/basic_sharp_ir.rb`
 - `compiler/ir_emitter.rb`
 - `compiler/resolver.rb`
 - `docs/parser_contract_v0_1_04.md`
@@ -58,20 +61,20 @@ DKScript_Ruby_Bootstrap_Compiler_v0_1_04_SEMANTIC_RESOLVER_AND_IR_OUTPUT_CHANGED
 Run from package root after applying over v0.1.03:
 
 ```bash
-ruby compiler/dks.rb samples/first_room.dks
-ruby compiler/dks.rb samples/first_room.dks --emit-ir
-ruby compiler/dks.rb samples/first_room.dks --emit-ir --out samples/first_room.ir.json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json
 ruby tests/test_first_room.rb
 ruby tests/test_resolver.rb
 ruby tests/test_ir_output.rb
 ```
 
-Expected: compiler reports zero errors and zero warnings for `samples/first_room.dks`; all tests pass.
+Expected: compiler reports zero errors and zero warnings for `samples/first_room.bsharp`; all tests pass.
 
 ## Validation result from package creation
 
-- `ruby compiler/dks.rb samples/first_room.dks`: PASS, 0 errors, 0 warnings.
-- `ruby compiler/dks.rb samples/first_room.dks --emit-ir`: PASS.
+- `ruby compiler/basic_sharp.rb samples/first_room.bsharp`: PASS, 0 errors, 0 warnings.
+- `ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir`: PASS.
 - `ruby tests/test_first_room.rb`: PASS.
 - `ruby tests/test_resolver.rb`: PASS.
 - `ruby tests/test_ir_output.rb`: PASS.

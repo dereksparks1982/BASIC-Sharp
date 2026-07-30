@@ -75,5 +75,5 @@ These environment controls belong to the developer tool only. They are not BASIC
 The final observed result is recorded in:
 
 ```text
-docs/validation/DKSCRIPT_VALIDATION_v0_1_13.md
+docs/validation/BASIC_SHARP_VALIDATION_v0_1_13.md
 ```

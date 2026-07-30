@@ -2,9 +2,9 @@
 
 require 'json'
 require 'fileutils'
-require_relative 'dks_ir'
+require_relative 'basic_sharp_ir'
 
-module DKScript
+module BasicSharp
   class IREmitter
     def initialize(document)
       @document = document

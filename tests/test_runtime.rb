@@ -10,18 +10,18 @@ require_relative '../compiler/runtime'
 
 class TestRuntime < Minitest::Test
   def resolve(source)
-    parser = DKScript::Parser.new(source)
+    parser = BasicSharp::Parser.new(source)
     program = parser.parse
-    DKScript::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
+    BasicSharp::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
   end
 
   def resolved_sample
-    source = File.read(File.expand_path('../samples/first_room.dks', __dir__))
+    source = File.read(File.expand_path('../samples/first_room.bsharp', __dir__))
     resolve(source)
   end
 
   def runtime
-    DKScript::Runtime.new(resolved_sample)
+    BasicSharp::Runtime.new(resolved_sample)
   end
 
   def thing(snapshot, name)
@@ -96,7 +96,7 @@ class TestRuntime < Minitest::Test
   end
 
   def test_kind_trigger_reports_wrong_kind
-    machine = DKScript::Runtime.new(resolve(<<~DKS))
+    machine = BasicSharp::Runtime.new(resolve(<<~DKS))
       KINDS
       [dragon is a creature].
 
@@ -144,8 +144,8 @@ class TestRuntime < Minitest::Test
   def test_loads_existing_dkir_json_and_keeps_trigger_context
     Dir.mktmpdir do |dir|
       path = File.join(dir, 'first_room.ir.json')
-      File.write(path, "#{DKScript::IREmitter.new(resolved_sample).to_json}\n")
-      machine = DKScript::Runtime.load(path)
+      File.write(path, "#{BasicSharp::IREmitter.new(resolved_sample).to_json}\n")
+      machine = BasicSharp::Runtime.load(path)
       result = machine.run_event('player attacks henry')
 
       assert_equal true, result.fetch('matched')

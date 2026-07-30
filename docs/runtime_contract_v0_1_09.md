@@ -1,5 +1,8 @@
 # DKScript Runtime Contract v0.1.09
 
+> **Historical naming note:** This record predates the v0.1.14 technical identity migration. At the time recorded below, BASIC# still used the working technical name `DKScript`. Old package names, commands, paths, and Git messages are preserved as audit history.
+
+
 ## Purpose
 
 v0.1.09 is the first bridge from "DKScript understands the script" to "DKScript performs the script."
@@ -24,13 +27,13 @@ The runtime consumes the existing DKIR debug structure. It does not invent a sec
 ## Command
 
 ```bash
-ruby compiler/dks.rb samples/first_room.dks --run "player attacks ember"
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --run "player attacks ember"
 ```
 
 Run an existing DKIR file directly:
 
 ```bash
-ruby compiler/dks.rb samples/first_room.ir.json --run "player attacks ember"
+ruby compiler/basic_sharp.rb samples/first_room.ir.json --run "player attacks ember"
 ```
 
 ## Official words executed in this build

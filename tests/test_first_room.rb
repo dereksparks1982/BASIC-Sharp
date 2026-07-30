@@ -5,8 +5,8 @@ require_relative '../compiler/parser'
 
 class TestFirstRoom < Minitest::Test
   def setup
-    @source = File.read(File.expand_path('../samples/first_room.dks', __dir__))
-    @program = DKScript::Parser.new(@source).parse
+    @source = File.read(File.expand_path('../samples/first_room.bsharp', __dir__))
+    @program = BasicSharp::Parser.new(@source).parse
   end
 
   def test_parses_statement_counts
@@ -39,7 +39,7 @@ end
 
 class TestBodyStructureAndKinds < Minitest::Test
   def parse(source)
-    DKScript::Parser.new(source).parse
+    BasicSharp::Parser.new(source).parse
   end
 
   def test_user_defined_kind_is_registered_before_define
@@ -80,7 +80,7 @@ end
 
 class TestApprovedWordPairs < Minitest::Test
   def test_there_and_their_share_the_location_word
-    dictionary = DKScript::CoreDictionary.new
+    dictionary = BasicSharp::CoreDictionary.new
 
     assert_equal 'there', dictionary.normalize_confused_word('there')
     assert_equal 'there', dictionary.normalize_confused_word('their')

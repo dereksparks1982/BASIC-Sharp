@@ -1,5 +1,8 @@
 # DKScript Runtime Contract v0.1.10
 
+> **Historical naming note:** This record predates the v0.1.14 technical identity migration. At the time recorded below, BASIC# still used the working technical name `DKScript`. Old package names, commands, paths, and Git messages are preserved as audit history.
+
+
 ## Purpose
 
 v0.1.10 lets a WHEN Trigger select a named Thing by Kind and lets Connector lines use that same Thing.

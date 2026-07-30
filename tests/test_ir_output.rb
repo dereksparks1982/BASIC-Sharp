@@ -8,16 +8,16 @@ require_relative '../compiler/ir_emitter'
 
 class TestIROutput < Minitest::Test
   def setup
-    source = File.read(File.expand_path('../samples/first_room.dks', __dir__))
-    parser = DKScript::Parser.new(source)
+    source = File.read(File.expand_path('../samples/first_room.bsharp', __dir__))
+    parser = BasicSharp::Parser.new(source)
     program = parser.parse
-    document = DKScript::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
-    @json = DKScript::IREmitter.new(document).to_json
+    document = BasicSharp::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
+    @json = BasicSharp::IREmitter.new(document).to_json
     @ir = JSON.parse(@json)
   end
 
   def test_emits_versioned_ir
-    assert_equal '0.1.13', @ir.fetch('version')
+    assert_equal '0.1.14', @ir.fetch('version')
     assert_equal 'dkir.debug.json', @ir.fetch('format')
   end
 

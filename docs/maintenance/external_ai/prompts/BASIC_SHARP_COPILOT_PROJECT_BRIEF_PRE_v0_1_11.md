@@ -1,5 +1,8 @@
 # Preserved Copilot Review Brief
 
+> **Historical naming note:** This record predates the v0.1.14 technical identity migration. At the time recorded below, BASIC# still used the working technical name `DKScript`. Old package names, commands, paths, and Git messages are preserved as audit history.
+
+
 This is the project brief prepared for Copilot before the v0.1.11 documentation build. It is preserved as an outside-review request snapshot and may contain pre-v0.1.11 status wording.
 
 # BASIC# Project Brief for Copilot Review

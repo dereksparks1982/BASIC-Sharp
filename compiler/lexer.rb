@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module DKScript
+module BasicSharp
   class Lexer
     Line = Struct.new(:number, :raw, :text, keyword_init: true)
 

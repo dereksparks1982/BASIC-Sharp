@@ -1,5 +1,8 @@
 # DKScript Build Handshake v0.1.08
 
+> **Historical naming note:** This record predates the v0.1.14 technical identity migration. At the time recorded below, BASIC# still used the working technical name `DKScript`. Old package names, commands, paths, and Git messages are preserved as audit history.
+
+
 ## Project
 
 DKScript Ruby Bootstrap Compiler
@@ -69,20 +72,20 @@ README.md
 BUILD_HANDSHAKE_v0_1_08.md
 compiler/ast_nodes.rb
 compiler/dictionary.rb
-compiler/dks.rb
-compiler/dks_ir.rb
+compiler/basic_sharp.rb
+compiler/basic_sharp_ir.rb
 compiler/parser.rb
 compiler/resolver.rb
 docs/parser_contract_v0_1_08.md
-samples/first_room.dks
+samples/first_room.bsharp
 samples/first_room.ir.json
-samples/errors/ambiguous_door.dks
-samples/errors/bad_line_command.dks
-samples/errors/old_structure.dks
-samples/errors/unknown_action.dks
-samples/errors/unknown_kind.dks
-samples/errors/unknown_object.dks
-samples/errors/unknown_state.dks
+samples/errors/ambiguous_door.bsharp
+samples/errors/bad_line_command.bsharp
+samples/errors/old_structure.bsharp
+samples/errors/unknown_action.bsharp
+samples/errors/unknown_kind.bsharp
+samples/errors/unknown_object.bsharp
+samples/errors/unknown_state.bsharp
 tests/test_cli_output.rb
 tests/test_diagnostics_samples.rb
 tests/test_first_room.rb
@@ -95,12 +98,12 @@ tests/test_resolver.rb
 ```bash
 ruby -c compiler/ast_nodes.rb
 ruby -c compiler/dictionary.rb
-ruby -c compiler/dks.rb
-ruby -c compiler/dks_ir.rb
+ruby -c compiler/basic_sharp.rb
+ruby -c compiler/basic_sharp_ir.rb
 ruby -c compiler/parser.rb
 ruby -c compiler/resolver.rb
-ruby compiler/dks.rb samples/first_room.dks
-ruby compiler/dks.rb samples/first_room.dks --emit-ir --out samples/first_room.ir.json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json
 ruby tests/test_first_room.rb
 ruby tests/test_resolver.rb
 ruby tests/test_ir_output.rb

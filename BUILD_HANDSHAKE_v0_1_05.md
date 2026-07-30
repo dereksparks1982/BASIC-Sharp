@@ -1,5 +1,8 @@
 # DKScript Build Handshake v0.1.05
 
+> **Historical naming note:** This record predates the v0.1.14 technical identity migration. At the time recorded below, BASIC# still used the working technical name `DKScript`. Old package names, commands, paths, and Git messages are preserved as audit history.
+
+
 ## Project
 
 DKScript
@@ -50,11 +53,11 @@ DKScript_Ruby_Bootstrap_Compiler_v0_1_05_SEMANTIC_DIAGNOSTICS_AND_IR_FILE_OUTPUT
 - `README.md`
 - `BUILD_HANDSHAKE_v0_1_05.md`
 - `compiler/ast_nodes.rb`
-- `compiler/dks.rb`
+- `compiler/basic_sharp.rb`
 - `compiler/ir_emitter.rb`
 - `compiler/resolver.rb`
 - `docs/parser_contract_v0_1_05.md`
-- `samples/first_room.dks`
+- `samples/first_room.bsharp`
 - `samples/first_room.ir.json`
 - `tests/test_first_room.rb`
 - `tests/test_resolver.rb`
@@ -66,22 +69,22 @@ DKScript_Ruby_Bootstrap_Compiler_v0_1_05_SEMANTIC_DIAGNOSTICS_AND_IR_FILE_OUTPUT
 Run from project root after applying over v0.1.04:
 
 ```bash
-ruby compiler/dks.rb samples/first_room.dks
-ruby compiler/dks.rb samples/first_room.dks --emit-ir
-ruby compiler/dks.rb samples/first_room.dks --emit-ir --out samples/first_room.ir.json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json
 ruby tests/test_first_room.rb
 ruby tests/test_resolver.rb
 ruby tests/test_ir_output.rb
 ruby tests/test_cli_output.rb
 ```
 
-Expected: compiler reports zero errors and zero warnings for `samples/first_room.dks`; all tests pass.
+Expected: compiler reports zero errors and zero warnings for `samples/first_room.bsharp`; all tests pass.
 
 ## Validation result from package creation
 
-- `ruby compiler/dks.rb samples/first_room.dks`: PASS, 0 errors, 0 warnings.
-- `ruby compiler/dks.rb samples/first_room.dks --emit-ir`: PASS.
-- `ruby compiler/dks.rb samples/first_room.dks --emit-ir --out samples/first_room.ir.json`: PASS.
+- `ruby compiler/basic_sharp.rb samples/first_room.bsharp`: PASS, 0 errors, 0 warnings.
+- `ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir`: PASS.
+- `ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json`: PASS.
 - `ruby tests/test_first_room.rb`: PASS.
 - `ruby tests/test_resolver.rb`: PASS.
 - `ruby tests/test_ir_output.rb`: PASS.

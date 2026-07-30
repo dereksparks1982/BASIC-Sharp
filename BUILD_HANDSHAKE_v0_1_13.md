@@ -1,5 +1,8 @@
 # DKScript Build Handshake v0.1.13
 
+> **Historical naming note:** This record predates the v0.1.14 technical identity migration. At the time recorded below, BASIC# still used the working technical name `DKScript`. Old package names, commands, paths, and Git messages are preserved as audit history.
+
+
 ## Project
 
 BASIC# language using the DKScript Ruby Bootstrap Compiler
@@ -40,7 +43,7 @@ Earlier v0.1.13 archives are rejected. One was installed and passed all runtime 
 The failure record is preserved at:
 
 ```text
-docs/audit/DKSCRIPT_v0_1_13_REJECTED_PACKAGE_AUDIT.md
+docs/audit/BASIC_SHARP_v0_1_13_REJECTED_PACKAGE_AUDIT.md
 ```
 
 ## Active project path
@@ -108,7 +111,7 @@ samples/first_room.ir.json
 The authoritative full path list is:
 
 ```text
-docs/changed_files/DKSCRIPT_CHANGED_FILES_v0_1_13.txt
+docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_13.txt
 ```
 
 ## Risks
@@ -138,11 +141,11 @@ No accepted commit is removed. The rejected v0.1.13 candidate was never committe
 
 ```bash
 for file in compiler/*.rb tools/*.rb; do ruby -c "$file"; done
-ruby compiler/dks.rb samples/first_room.dks
-ruby compiler/dks.rb samples/first_room.dks --emit-ir --out samples/first_room.ir.json
-ruby compiler/dks.rb samples/first_room.dks --run "player attacks henry"
-ruby compiler/dks.rb samples/first_room.dks --run "player attacks ember"
-ruby compiler/dks.rb samples/first_room.ir.json --run "player attacks henry"
+ruby compiler/basic_sharp.rb samples/first_room.bsharp
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --run "player attacks henry"
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --run "player attacks ember"
+ruby compiler/basic_sharp.rb samples/first_room.ir.json --run "player attacks henry"
 ruby -w -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_relative file }'
 ruby tools/runtime_stress.rb
 ```
@@ -194,7 +197,7 @@ Pending. The rejected package passed, but the corrected archive must be applied 
 3. Apply the corrected package.
 4. Run the complete validation command.
 5. If it passes, commit and tag v0.1.13.
-6. Resume tomorrow using `docs/hand_off/DKSCRIPT_v0_1_13_NEW_THREAD_HANDOFF.md`.
+6. Resume tomorrow using `docs/hand_off/BASIC_SHARP_v0_1_13_NEW_THREAD_HANDOFF.md`.
 7. Do not begin v0.1.14 without an exact proposal and Derek's explicit approval.
 
 ## Required input and artifacts for continuation

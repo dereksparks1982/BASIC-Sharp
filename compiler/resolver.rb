@@ -2,9 +2,9 @@
 
 require_relative 'diagnostics'
 require_relative 'dictionary'
-require_relative 'dks_ir'
+require_relative 'basic_sharp_ir'
 
-module DKScript
+module BasicSharp
   class SemanticResolver
     RELATIONAL_FACT_PREFIXES = %w[in on].freeze
 

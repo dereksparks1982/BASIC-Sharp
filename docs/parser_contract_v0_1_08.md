@@ -1,5 +1,8 @@
 # DKScript Parser Contract v0.1.08
 
+> **Historical naming note:** This record predates the v0.1.14 technical identity migration. At the time recorded below, BASIC# still used the working technical name `DKScript`. Old package names, commands, paths, and Git messages are preserved as audit history.
+
+
 ## Build name
 
 Body Structure and User Kinds

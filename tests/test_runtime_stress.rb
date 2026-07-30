@@ -14,9 +14,9 @@ class TestRuntimeStress < Minitest::Test
   REPEATED_EVENT_COUNT = 2_000
 
   def resolve(source)
-    parser = DKScript::Parser.new(source)
+    parser = BasicSharp::Parser.new(source)
     program = parser.parse
-    resolved = DKScript::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
+    resolved = BasicSharp::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
     errors = resolved.diagnostics.select { |diagnostic| diagnostic.severity == 'error' }
     raise "stress source did not resolve: #{errors.map(&:message).join('; ')}" unless errors.empty?
 
@@ -76,7 +76,7 @@ class TestRuntimeStress < Minitest::Test
   end
 
   def runtime_from_source(guards: GUARD_COUNT, dragons: DRAGON_COUNT)
-    DKScript::Runtime.new(resolve(stress_source(guards: guards, dragons: dragons)))
+    BasicSharp::Runtime.new(resolve(stress_source(guards: guards, dragons: dragons)))
   end
 
   def thing(snapshot, name)
@@ -166,12 +166,12 @@ class TestRuntimeStress < Minitest::Test
   def test_source_and_saved_dkir_remain_identical_after_long_sequence
     source = stress_source(guards: 40, dragons: 10)
     resolved = resolve(source)
-    source_machine = DKScript::Runtime.new(resolved)
+    source_machine = BasicSharp::Runtime.new(resolved)
 
     Dir.mktmpdir do |dir|
       path = File.join(dir, 'stress.ir.json')
-      File.write(path, "#{DKScript::IREmitter.new(resolved).to_json}\n")
-      ir_machine = DKScript::Runtime.load(path)
+      File.write(path, "#{BasicSharp::IREmitter.new(resolved).to_json}\n")
+      ir_machine = BasicSharp::Runtime.load(path)
 
       events = []
       500.times do |index|
@@ -234,7 +234,7 @@ class TestRuntimeStress < Minitest::Test
     duplicate = document.fetch(:objects).find { |object| object.fetch('name') == 'guard 1' }.dup
     document.fetch(:objects) << duplicate
 
-    error = assert_raises(ArgumentError) { DKScript::Runtime.new(document) }
+    error = assert_raises(ArgumentError) { BasicSharp::Runtime.new(document) }
     assert_equal "DKIR has more than one Thing named 'guard 1'", error.message
   end
 
@@ -242,7 +242,7 @@ class TestRuntimeStress < Minitest::Test
     document = resolve(stress_source(guards: 2, dragons: 1)).to_h
     document.delete(:format)
 
-    error = assert_raises(ArgumentError) { DKScript::Runtime.new(document) }
+    error = assert_raises(ArgumentError) { BasicSharp::Runtime.new(document) }
     assert_equal "DKIR format '(missing)' is not supported", error.message
   end
 end

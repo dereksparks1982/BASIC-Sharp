@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module DKScript
+module BasicSharp
   class CoreDictionary
     CONFUSED_WORDS = { 'there' => 'there', 'their' => 'there' }.freeze
     attr_reader :kinds, :kind_parents, :states, :actions, :relations, :objects

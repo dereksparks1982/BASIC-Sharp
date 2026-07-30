@@ -1,5 +1,8 @@
 # DKScript Parser Contract v0.1.07
 
+> **Historical naming note:** This record predates the v0.1.14 technical identity migration. At the time recorded below, BASIC# still used the working technical name `DKScript`. Old package names, commands, paths, and Git messages are preserved as audit history.
+
+
 ## Build name
 
 Diagnostic Deduping + Cascade Cleanup
@@ -25,37 +28,37 @@ v0.1.06 proved that bad DKScript samples produce errors. v0.1.07 makes those err
 
 ## Sample behavior
 
-`bad_line_command.dks` now reports only:
+`bad_line_command.bsharp` now reports only:
 
 ```text
 ERROR: line 6: unknown line command '<thne>'; did you mean <then>?
 ```
 
-`unknown_action.dks` now reports only:
+`unknown_action.bsharp` now reports only:
 
 ```text
 ERROR: line 6: unknown action 'explode'
 ```
 
-`unknown_kind.dks` now reports only:
+`unknown_kind.bsharp` now reports only:
 
 ```text
 ERROR: line 2: unknown kind 'dragon'
 ```
 
-`unknown_object.dks` now reports only:
+`unknown_object.bsharp` now reports only:
 
 ```text
 ERROR: line 2: unknown reference 'ghost': not a defined object and not a known kind
 ```
 
-`unknown_state.dks` now reports only:
+`unknown_state.bsharp` now reports only:
 
 ```text
 ERROR: line 5: unknown state 'sleepy'
 ```
 
-`ambiguous_door.dks` still reports two errors because the ambiguous phrase occurs twice on two separate lines:
+`ambiguous_door.bsharp` still reports two errors because the ambiguous phrase occurs twice on two separate lines:
 
 ```text
 ERROR: line 5: which door? found: north door, cellar door
@@ -77,9 +80,9 @@ ERROR: line 7: which door? found: north door, cellar door
 Run from project root:
 
 ```bash
-ruby compiler/dks.rb samples/first_room.dks
-ruby compiler/dks.rb samples/first_room.dks --emit-ir
-ruby compiler/dks.rb samples/first_room.dks --emit-ir --out samples/first_room.ir.json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json
 ruby tests/test_first_room.rb
 ruby tests/test_resolver.rb
 ruby tests/test_ir_output.rb

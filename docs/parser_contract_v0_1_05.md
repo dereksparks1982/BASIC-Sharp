@@ -1,5 +1,8 @@
 # DKScript Parser Contract v0.1.05
 
+> **Historical naming note:** This record predates the v0.1.14 technical identity migration. At the time recorded below, BASIC# still used the working technical name `DKScript`. Old package names, commands, paths, and Git messages are preserved as audit history.
+
+
 ## Purpose
 
 v0.1.05 tightens semantic diagnostics and makes DKIR debug output easier to save from the command line.
@@ -48,19 +51,19 @@ Because exactly one table exists, `the table` resolves to `oak table`.
 Emit DKIR debug JSON to the terminal:
 
 ```bash
-ruby compiler/dks.rb samples/first_room.dks --emit-ir
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir
 ```
 
 Write DKIR debug JSON to a file:
 
 ```bash
-ruby compiler/dks.rb samples/first_room.dks --emit-ir --out samples/first_room.ir.json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ir --out samples/first_room.ir.json
 ```
 
 Write AST JSON to a file:
 
 ```bash
-ruby compiler/dks.rb samples/first_room.dks --emit-ast --out samples/first_room.ast.json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-ast --out samples/first_room.ast.json
 ```
 
 If `--out` is provided without a following path, the compiler exits with usage error 64.

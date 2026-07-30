@@ -1,5 +1,8 @@
 # DKScript Build Handshake v0.1.03
 
+> **Historical naming note:** This record predates the v0.1.14 technical identity migration. At the time recorded below, BASIC# still used the working technical name `DKScript`. Old package names, commands, paths, and Git messages are preserved as audit history.
+
+
 ## Project
 
 DKScript
@@ -20,7 +23,7 @@ DKScript_Ruby_Bootstrap_Compiler_v0_1_03.zip
 
 - Added first Ruby bootstrap compiler prototype.
 - Added lexer, parser, AST node structures, core dictionary, and diagnostics.
-- Added first sample DKScript file: `samples/first_room.dks`.
+- Added first sample DKScript file: `samples/first_room.bsharp`.
 - Added parser contract documentation.
 - Added Minitest parser validation.
 - Confirmed no Godot path. Compiler-first, runtime second, DK Engine after.
@@ -43,8 +46,8 @@ DKScript_Ruby_Bootstrap_Compiler_v0_1_03.zip
 - `compiler/dictionary.rb`
 - `compiler/lexer.rb`
 - `compiler/parser.rb`
-- `compiler/dks.rb`
-- `samples/first_room.dks`
+- `compiler/basic_sharp.rb`
+- `samples/first_room.bsharp`
 - `tests/test_first_room.rb`
 - `docs/parser_contract_v0_1_03.md`
 
@@ -53,8 +56,8 @@ DKScript_Ruby_Bootstrap_Compiler_v0_1_03.zip
 Run from package root:
 
 ```bash
-ruby compiler/dks.rb samples/first_room.dks
-ruby compiler/dks.rb samples/first_room.dks --json
+ruby compiler/basic_sharp.rb samples/first_room.bsharp
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --json
 ruby tests/test_first_room.rb
 ```
 

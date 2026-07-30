@@ -66,9 +66,9 @@ def source_text
 end
 
 def resolve(source)
-  parser = DKScript::Parser.new(source)
+  parser = BasicSharp::Parser.new(source)
   program = parser.parse
-  resolved = DKScript::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
+  resolved = BasicSharp::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
   errors = resolved.diagnostics.select { |diagnostic| diagnostic.severity == 'error' }
   raise errors.map(&:message).join("\n") unless errors.empty?
 
@@ -94,15 +94,15 @@ source_machine = nil
 ir_machine = nil
 source_seconds = Benchmark.realtime do
   resolved = resolve(source)
-  source_machine = DKScript::Runtime.new(resolved)
+  source_machine = BasicSharp::Runtime.new(resolved)
   run_events(source_machine)
 end
 
 ir_seconds = Benchmark.realtime do
   Dir.mktmpdir do |dir|
     path = File.join(dir, 'runtime_stress.ir.json')
-    File.write(path, "#{DKScript::IREmitter.new(resolved).to_json}\n")
-    ir_machine = DKScript::Runtime.load(path)
+    File.write(path, "#{BasicSharp::IREmitter.new(resolved).to_json}\n")
+    ir_machine = BasicSharp::Runtime.load(path)
     run_events(ir_machine)
   end
 end
@@ -111,7 +111,7 @@ source_snapshot = source_machine.snapshot
 ir_snapshot = ir_machine.snapshot
 raise 'source and saved DKIR produced different worlds' unless source_snapshot == ir_snapshot
 
-fresh = DKScript::Runtime.new(resolved)
+fresh = BasicSharp::Runtime.new(resolved)
 raise 'state leaked into a fresh runtime' if thing(fresh.snapshot, 'guard 1').key?('damage')
 
 unknown = fresh.run_event('player attacks missing guard')
@@ -120,7 +120,7 @@ raise 'unknown Thing stress check failed' unless unknown['error'] == "event Thin
 wrong = fresh.run_event('player attacks dragon 2')
 raise 'wrong Kind stress check failed' unless wrong['error'] == 'dragon 2 is a dragon, not a guard'
 
-puts "BASIC# Runtime Stress Test v#{DKScript::VERSION}"
+puts "BASIC# Runtime Stress Test v#{BasicSharp::VERSION}"
 puts "Things: #{GUARDS + DRAGONS + 4}"
 puts "Events per execution path: #{EVENTS + 2}"
 puts format('Source path seconds: %.3f', source_seconds)

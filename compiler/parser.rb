@@ -5,7 +5,7 @@ require_relative 'diagnostics'
 require_relative 'dictionary'
 require_relative 'lexer'
 
-module DKScript
+module BasicSharp
   class Parser
     STATEMENT_STARTERS = %w[START DEFINE KINDS WORLD STATES RELATIONS ACTIONS WHEN IF WHILE OTHERWISE].freeze
     RESULT_ALIASES = { 'than' => 'then', 'then' => 'then' }.freeze
