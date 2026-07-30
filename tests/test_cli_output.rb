@@ -27,7 +27,7 @@ class TestCLIOutput < Minitest::Test
       assert_includes stdout, "wrote: #{out_path}"
       assert File.file?(out_path), 'expected --out to create the IR file'
       json = JSON.parse(File.read(out_path))
-      assert_equal '0.1.09', json.fetch('version')
+      assert_equal '0.1.11', json.fetch('version')
     end
   end
 
@@ -42,7 +42,7 @@ class TestCLIOutput < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'DKScript Runtime v0.1.09'
+    assert_includes stdout, 'DKScript Runtime v0.1.11'
     assert_includes stdout, 'matched: yes'
     assert_includes stdout, '(damage ember'
     assert_includes stdout, '(change ember to angry'
@@ -88,7 +88,7 @@ class TestCLIOutput < Minitest::Test
       )
 
       assert status.success?, stderr
-      assert_includes stdout, 'DKScript Runtime v0.1.09'
+      assert_includes stdout, 'DKScript Runtime v0.1.11'
       assert_includes stdout, 'matched: yes'
       assert_includes stdout, 'ember: kind=dragon; states=angry; damage=1'
     end
@@ -108,4 +108,37 @@ class TestCLIOutput < Minitest::Test
     assert_equal 64, status.exitstatus
     assert_includes stderr, 'Missing output path after --out'
   end
+  def test_run_matches_named_guard_to_kind_trigger
+    stdout, stderr, status = Open3.capture3(
+      RUBY,
+      File.join(ROOT, 'compiler/dks.rb'),
+      File.join(ROOT, 'samples/first_room.dks'),
+      '--run',
+      'player attacks henry',
+      chdir: ROOT
+    )
+
+    assert status.success?, stderr
+    assert_includes stdout, 'DKScript Runtime v0.1.11'
+    assert_includes stdout, 'matched: yes'
+    assert_includes stdout, '(damage henry'
+    assert_includes stdout, '(change henry to angry'
+    assert_includes stdout, 'henry: kind=guard; states=angry; damage=1'
+  end
+
+  def test_run_reports_unknown_thing_for_kind_trigger
+    stdout, _stderr, status = Open3.capture3(
+      RUBY,
+      File.join(ROOT, 'compiler/dks.rb'),
+      File.join(ROOT, 'samples/first_room.dks'),
+      '--run',
+      'player attacks ghost',
+      chdir: ROOT
+    )
+
+    refute status.success?
+    assert_includes stdout, 'matched: no'
+    assert_includes stdout, "error: event Thing 'ghost' is not defined"
+  end
+
 end

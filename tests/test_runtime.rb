@@ -9,11 +9,15 @@ require_relative '../compiler/ir_emitter'
 require_relative '../compiler/runtime'
 
 class TestRuntime < Minitest::Test
-  def resolved_sample
-    source = File.read(File.expand_path('../samples/first_room.dks', __dir__))
+  def resolve(source)
     parser = DKScript::Parser.new(source)
     program = parser.parse
     DKScript::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
+  end
+
+  def resolved_sample
+    source = File.read(File.expand_path('../samples/first_room.dks', __dir__))
+    resolve(source)
   end
 
   def runtime
@@ -35,15 +39,60 @@ class TestRuntime < Minitest::Test
     assert_equal ['(unlock north door'], machine.startup_ran
   end
 
-  def test_attack_event_runs_damage_and_change
+  def test_exact_attack_event_still_runs_damage_and_change
     machine = runtime
     result = machine.run_event('player attacks ember')
     ember = thing(result.fetch('state'), 'ember')
 
     assert_equal true, result.fetch('matched')
     assert_equal ['(damage ember', '(change ember to angry'], result.fetch('ran')
+    assert_empty result.fetch('context')
+    assert_nil result.fetch('error')
     assert_equal 1, ember.fetch('damage')
     assert_equal ['angry'], ember.fetch('states')
+  end
+
+  def test_kind_trigger_selects_henry_and_that_guard_uses_henry
+    machine = runtime
+    result = machine.run_event('player attacks henry')
+    henry = thing(result.fetch('state'), 'henry')
+
+    assert_equal true, result.fetch('matched')
+    assert_equal({ 'guard' => 'henry' }, result.fetch('context'))
+    assert_equal ['(damage henry', '(change henry to angry'], result.fetch('ran')
+    assert_nil result.fetch('error')
+    assert_equal 1, henry.fetch('damage')
+    assert_equal ['angry'], henry.fetch('states')
+  end
+
+  def test_kind_trigger_reports_unknown_thing
+    machine = runtime
+    result = machine.run_event('player attacks ghost')
+
+    assert_equal false, result.fetch('matched')
+    assert_equal "event Thing 'ghost' is not defined", result.fetch('error')
+    assert_empty result.fetch('ran')
+  end
+
+  def test_kind_trigger_reports_wrong_kind
+    machine = DKScript::Runtime.new(resolve(<<~DKS))
+      KINDS
+      [dragon is a creature].
+
+      DEFINE
+      [a guard named henry
+      a dragon named ember].
+
+      WHEN
+      [player attacks a guard
+      <then> (damage that guard].
+    DKS
+
+    result = machine.run_event('player attacks ember')
+
+    assert_equal false, result.fetch('matched')
+    assert_equal 'ember is a dragon, not a guard', result.fetch('error')
+    assert_empty result.fetch('ran')
   end
 
   def test_take_event_runs_carry
@@ -63,18 +112,20 @@ class TestRuntime < Minitest::Test
 
     assert_equal false, result.fetch('matched')
     assert_empty result.fetch('ran')
+    assert_nil result.fetch('error')
     assert_equal before, result.fetch('state')
   end
 
-  def test_loads_existing_dkir_json
+  def test_loads_existing_dkir_json_and_keeps_trigger_context
     Dir.mktmpdir do |dir|
       path = File.join(dir, 'first_room.ir.json')
       File.write(path, "#{DKScript::IREmitter.new(resolved_sample).to_json}\n")
       machine = DKScript::Runtime.load(path)
-      result = machine.run_event('player attacks ember')
+      result = machine.run_event('player attacks henry')
 
       assert_equal true, result.fetch('matched')
-      assert_equal 1, thing(result.fetch('state'), 'ember').fetch('damage')
+      assert_equal({ 'guard' => 'henry' }, result.fetch('context'))
+      assert_equal 1, thing(result.fetch('state'), 'henry').fetch('damage')
     end
   end
 end

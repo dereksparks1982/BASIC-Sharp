@@ -26,3 +26,7 @@ WHEN
 [player attacks ember
 <than> (damage ember
 <then> (change ember to angry].
+WHEN
+[player attacks a guard
+<then> (damage that guard
+<then> (change that guard to angry].

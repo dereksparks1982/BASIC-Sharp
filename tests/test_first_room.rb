@@ -10,10 +10,10 @@ class TestFirstRoom < Minitest::Test
   end
 
   def test_parses_statement_counts
-    assert_equal 6, @program.statements.length
+    assert_equal 7, @program.statements.length
     assert_equal 5, @program.definitions.length
     assert_equal 4, @program.facts.length
-    assert_equal 2, @program.event_rules.length
+    assert_equal 3, @program.event_rules.length
     assert_equal 1, @program.if_rules.length
   end
 
@@ -27,7 +27,7 @@ class TestFirstRoom < Minitest::Test
 
   def test_actions_are_detected
     actions = @program.event_rules.flat_map(&:actions) + @program.if_rules.flat_map(&:actions)
-    assert_equal %w[carry damage change unlock], actions.map(&:verb)
+    assert_equal %w[carry damage change damage change unlock], actions.map(&:verb)
   end
 
   def test_no_errors

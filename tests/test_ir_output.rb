@@ -17,7 +17,7 @@ class TestIROutput < Minitest::Test
   end
 
   def test_emits_versioned_ir
-    assert_equal '0.1.09', @ir.fetch('version')
+    assert_equal '0.1.11', @ir.fetch('version')
     assert_equal 'dkir.debug.json', @ir.fetch('format')
   end
 
@@ -31,7 +31,7 @@ class TestIROutput < Minitest::Test
   def test_emits_objects_facts_and_rules
     assert_equal 6, @ir.fetch('objects').length
     assert_equal 4, @ir.fetch('facts').length
-    assert_equal 2, @ir.fetch('events').length
+    assert_equal 3, @ir.fetch('events').length
     assert_equal 1, @ir.fetch('if_rules').length
   end
 
@@ -46,11 +46,24 @@ class TestIROutput < Minitest::Test
   end
 
   def test_change_action_emits_target_and_state
-    change_action = @ir.fetch('events').last.fetch('then').last
+    event = @ir.fetch('events').find { |item| item.dig('when', 'raw') == 'player attacks ember' }
+    change_action = event.fetch('then').last
 
     assert_equal 'change', change_action.fetch('action')
     assert_equal 'ember', change_action.fetch('target').fetch('name')
     assert_equal 'state', change_action.fetch('to').fetch('kind')
     assert_equal 'angry', change_action.fetch('to').fetch('name')
   end
+  def test_contextual_guard_reference_is_preserved_in_ir
+    event = @ir.fetch('events').find { |item| item.dig('when', 'raw') == 'player attacks a guard' }
+    trigger_target = event.dig('when', 'target')
+    damage_target = event.fetch('then').first.fetch('target')
+
+    assert_equal 'kind_one', trigger_target.fetch('type')
+    assert_equal 'guard', trigger_target.fetch('kind_name')
+    assert_equal ['henry'], trigger_target.fetch('candidates')
+    assert_equal 'previous', damage_target.fetch('type')
+    assert_equal 'guard', damage_target.fetch('kind_name')
+  end
+
 end
