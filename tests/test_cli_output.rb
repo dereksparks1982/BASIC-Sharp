@@ -27,7 +27,7 @@ class TestCLIOutput < Minitest::Test
       assert_includes stdout, "wrote: #{out_path}"
       assert File.file?(out_path), 'expected --out to create the IR file'
       json = JSON.parse(File.read(out_path))
-      assert_equal '0.1.11', json.fetch('version')
+      assert_equal '0.1.12', json.fetch('version')
     end
   end
 
@@ -42,10 +42,15 @@ class TestCLIOutput < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'DKScript Runtime v0.1.11'
+    assert_includes stdout, 'DKScript Runtime v0.1.12'
     assert_includes stdout, 'matched: yes'
+    assert_includes stdout, 'what matched:'
+    assert_includes stdout, 'player attacks ember'
+    assert_includes stdout, 'what happened:'
     assert_includes stdout, '(damage ember'
+    assert_includes stdout, 'ember damage is now 1'
     assert_includes stdout, '(change ember to angry'
+    assert_includes stdout, 'ember is now angry'
     assert_includes stdout, 'ember: kind=dragon; states=angry; damage=1'
     assert_includes stdout, 'north door: kind=door; states=unlocked'
   end
@@ -83,14 +88,20 @@ class TestCLIOutput < Minitest::Test
         File.join(ROOT, 'compiler/dks.rb'),
         path,
         '--run',
-        'player attacks ember',
+        'player attacks henry',
         chdir: ROOT
       )
 
       assert status.success?, stderr
-      assert_includes stdout, 'DKScript Runtime v0.1.11'
+      assert_includes stdout, 'DKScript Runtime v0.1.12'
       assert_includes stdout, 'matched: yes'
-      assert_includes stdout, 'ember: kind=dragon; states=angry; damage=1'
+      assert_includes stdout, 'what matched:'
+      assert_includes stdout, 'player attacks a guard'
+      assert_includes stdout, 'a guard means henry'
+      assert_includes stdout, 'that guard means henry'
+      assert_includes stdout, 'henry damage is now 1'
+      assert_includes stdout, 'henry is now angry'
+      assert_includes stdout, 'henry: kind=guard; states=angry; damage=1'
     end
   end
 
@@ -119,10 +130,18 @@ class TestCLIOutput < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'DKScript Runtime v0.1.11'
+    assert_includes stdout, 'DKScript Runtime v0.1.12'
     assert_includes stdout, 'matched: yes'
+    assert_includes stdout, 'what matched:'
+    assert_includes stdout, 'player attacks a guard'
+    assert_includes stdout, 'what I understood:'
+    assert_includes stdout, 'a guard means henry'
+    assert_includes stdout, 'that guard means henry'
+    assert_includes stdout, 'what happened:'
     assert_includes stdout, '(damage henry'
+    assert_includes stdout, 'henry damage is now 1'
     assert_includes stdout, '(change henry to angry'
+    assert_includes stdout, 'henry is now angry'
     assert_includes stdout, 'henry: kind=guard; states=angry; damage=1'
   end
 

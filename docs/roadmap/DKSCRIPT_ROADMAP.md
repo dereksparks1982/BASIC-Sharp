@@ -9,9 +9,13 @@ BASIC# source
 -> DKIR
 -> first runtime execution
 -> runtime Trigger context
--> BASIC# identity and beginner-first roadmap  [CURRENT: v0.1.11]
+-> BASIC# identity and beginner-first foundation
+-> plain-language runtime trace  [CURRENT: v0.1.12]
+-> focused runtime stress test
+-> repair anything exposed
 -> Kind Families
 -> runtime expansion
+-> stable meaning specification
 -> bytecode
 -> BASIC# VM
 -> DK Engine bridge
@@ -34,13 +38,33 @@ BASIC# source
 - Per-event context for `that guard`.
 - Plain unknown-Thing and wrong-Kind runtime errors.
 - Public language name recorded as BASIC#.
-- Beginner-first creator doctrine recorded.
-- Historical BASIC research and outside Grok analysis logged.
-- Copilot review brief preserved in project documentation.
+- Owner doctrine recorded: “A script language made for non-programmers, by non-programmers.”
+- Historical BASIC research and outside Grok and Copilot reviews logged.
+- Plain-language runtime trace for matches, selected Things, official words, and immediate changes.
 
-## Immediate next proposed build
+## Immediate next work
 
-v0.1.12 Kind Families:
+### v0.1.13 Focused Runtime Stress Test
+
+The stress test should pressure only working features:
+
+- hundreds of defined Things;
+- many Things of the same Kind;
+- exact and Kind-based Triggers together;
+- thousands of repeated event runs;
+- repeated `(damage` and `(change`;
+- `(carry` relation changes;
+- unknown Things and wrong Kinds;
+- source and saved-DKIR parity;
+- no state leaking between separate runtime sessions;
+- deterministic results from identical worlds and events;
+- plain trace correctness under repeated execution.
+
+The stress package should add tests and reports, not new syntax.
+
+If the stress test exposes a defect, the next version repairs that defect before Kind Families.
+
+## Kind Families after stress testing
 
 ```text
 KINDS
@@ -49,17 +73,15 @@ dragon is a creature
 wyrm is a dragon].
 ```
 
-The goal is to let a wyrm satisfy a dragon or creature requirement through a validated family chain.
+The creator should understand the family without being taught inheritance terminology.
 
-Required design before implementation:
+Required behavior:
 
-- direct and inherited family lookup;
-- unknown parent explanation;
-- circular family explanation;
-- source and DKIR parity;
-- no creator-facing inheritance jargon required.
-
-This build is proposed only. It is not approved by v0.1.11.
+- one clear parent per Kind;
+- direct and family lookup;
+- plain unknown-parent explanation;
+- plain circular-family explanation;
+- source and DKIR parity.
 
 ## Later runtime lanes
 
@@ -68,31 +90,35 @@ This build is proposed only. It is not approved by v0.1.11.
 - Expanded IF behavior.
 - Multiple matching rules and event ordering.
 - Event queue and repeated event processing.
+- Values and amounts.
 - Timing and repetition.
+- Groups and collections.
 - Runtime save and load.
+- ASK-style introspection.
+- Understandable runtime recovery.
 - Bytecode and BASIC# VM.
 - DK Engine bridge.
 - Small complete proof game.
 - BASIC# compiler written in BASIC#.
 
-## Beginner-first lanes recorded from historical research
+## Pre-bytecode protection
 
-- ASK-style world and execution introspection.
-- Plain visible execution tracing.
-- Understandable runtime recovery.
-- Internal capability areas hidden from ordinary creators.
-- Capitalization tolerance review.
-- Harmless spacing tolerance review.
-- Example-first beginner lessons.
+Before bytecode and the VM, BASIC# needs a stable meaning specification covering:
 
-These are roadmap entries, not implemented language rules.
+- Head and Body behavior;
+- Kind and Thing behavior;
+- Trigger selection;
+- Connector behavior;
+- official word behavior;
+- DKIR meaning.
 
-## Locked protections after v0.1.11
+This must protect the working language, not trigger a giant rewrite.
 
-- No return to Godot as the permanent platform.
-- No duplicate natural-language and traditional-language syntax.
-- No silent rewriting of the creator's source.
-- No new official word without an explicit language decision.
-- No technical rename of repository, commands, Ruby modules, or packages without a separate approved migration.
-- No duplicate language dictionary.
-- The compiler and engine carry complexity; the creator-facing language stays understandable.
+## Locked protections after v0.1.12
+
+- No duplicate natural-language and traditional-syntax versions.
+- No creator-facing compiler jargon.
+- No hidden Ruby semantics becoming BASIC# law.
+- No new official words without owner approval.
+- No technical rename without a separate migration.
+- No feature is complete until the creator can understand what happened.

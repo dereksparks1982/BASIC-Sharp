@@ -45,7 +45,16 @@ class TestRuntime < Minitest::Test
     ember = thing(result.fetch('state'), 'ember')
 
     assert_equal true, result.fetch('matched')
+    assert_equal 'player attacks ember', result.fetch('matched_when')
     assert_equal ['(damage ember', '(change ember to angry'], result.fetch('ran')
+    assert_equal(
+      [
+        { 'word' => '(damage ember', 'change' => 'ember damage is now 1' },
+        { 'word' => '(change ember to angry', 'change' => 'ember is now angry' }
+      ],
+      result.fetch('steps')
+    )
+    assert_empty result.fetch('understood')
     assert_empty result.fetch('context')
     assert_nil result.fetch('error')
     assert_equal 1, ember.fetch('damage')
@@ -58,8 +67,17 @@ class TestRuntime < Minitest::Test
     henry = thing(result.fetch('state'), 'henry')
 
     assert_equal true, result.fetch('matched')
+    assert_equal 'player attacks a guard', result.fetch('matched_when')
     assert_equal({ 'guard' => 'henry' }, result.fetch('context'))
+    assert_equal ['a guard means henry', 'that guard means henry'], result.fetch('understood')
     assert_equal ['(damage henry', '(change henry to angry'], result.fetch('ran')
+    assert_equal(
+      [
+        { 'word' => '(damage henry', 'change' => 'henry damage is now 1' },
+        { 'word' => '(change henry to angry', 'change' => 'henry is now angry' }
+      ],
+      result.fetch('steps')
+    )
     assert_nil result.fetch('error')
     assert_equal 1, henry.fetch('damage')
     assert_equal ['angry'], henry.fetch('states')
@@ -71,6 +89,9 @@ class TestRuntime < Minitest::Test
 
     assert_equal false, result.fetch('matched')
     assert_equal "event Thing 'ghost' is not defined", result.fetch('error')
+    assert_nil result.fetch('matched_when')
+    assert_empty result.fetch('understood')
+    assert_empty result.fetch('steps')
     assert_empty result.fetch('ran')
   end
 
@@ -102,6 +123,10 @@ class TestRuntime < Minitest::Test
 
     assert_equal true, result.fetch('matched')
     assert_equal ['(carry brass key'], result.fetch('ran')
+    assert_equal(
+      [{ 'word' => '(carry brass key', 'change' => 'brass key is now carried by player' }],
+      result.fetch('steps')
+    )
     assert_equal({ 'carried by' => 'player' }, key.fetch('relations'))
   end
 
@@ -124,8 +149,34 @@ class TestRuntime < Minitest::Test
       result = machine.run_event('player attacks henry')
 
       assert_equal true, result.fetch('matched')
+      assert_equal 'player attacks a guard', result.fetch('matched_when')
       assert_equal({ 'guard' => 'henry' }, result.fetch('context'))
+      assert_equal ['a guard means henry', 'that guard means henry'], result.fetch('understood')
+      assert_equal(
+        [
+          { 'word' => '(damage henry', 'change' => 'henry damage is now 1' },
+          { 'word' => '(change henry to angry', 'change' => 'henry is now angry' }
+        ],
+        result.fetch('steps')
+      )
       assert_equal 1, thing(result.fetch('state'), 'henry').fetch('damage')
     end
   end
+  def test_plain_language_report_explains_kind_match_and_changes
+    machine = runtime
+    result = machine.run_event('player attacks henry')
+    report = machine.report(result)
+
+    assert_includes report, 'what matched:'
+    assert_includes report, '  player attacks a guard'
+    assert_includes report, 'what I understood:'
+    assert_includes report, '  a guard means henry'
+    assert_includes report, '  that guard means henry'
+    assert_includes report, 'what happened:'
+    assert_includes report, '  (damage henry'
+    assert_includes report, '  henry damage is now 1'
+    assert_includes report, '  (change henry to angry'
+    assert_includes report, '  henry is now angry'
+  end
+
 end

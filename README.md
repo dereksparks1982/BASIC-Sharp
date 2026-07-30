@@ -1,14 +1,16 @@
-# BASIC# Language Foundation / DKScript Ruby Bootstrap Compiler v0.1.11
+# BASIC# / DKScript Ruby Bootstrap Compiler v0.1.12
 
 **Public language name:** BASIC#  
 **Pronounced:** Basic Sharp  
 **Current technical bootstrap name:** DKScript
 
-BASIC# is a new beginner-first language. The current Ruby compiler is temporary construction scaffolding. The creator writes clear world-language while the compiler, runtime, future virtual machine, and engine carry the mechanical weight.
+> A script language made for non-programmers, by non-programmers.
 
-> The creator should be able to drive, make simple repairs, and enjoy the ride without becoming the mechanic who built the engine.
+BASIC# is being built from scratch for people who do not already think like programmers. The creator describes what exists and what should happen. The compiler, runtime, future virtual machine, and engine carry the mechanical weight.
 
-The repository, command names, Ruby module names, package prefix, and current compiler banner remain `DKScript` in v0.1.11. Their technical rename is deliberately deferred to a separate owner-approved migration so this documentation build does not destabilize the working compiler.
+> The compiler and engine do the heavy lifting. The creator enjoys the ride.
+
+The repository, command names, Ruby module names, package prefix, and current compiler banner remain `DKScript` in v0.1.12. Their technical rename remains a separate owner-approved migration.
 
 ## Compile the sample
 
@@ -16,13 +18,7 @@ The repository, command names, Ruby module names, package prefix, and current co
 ruby compiler/dks.rb samples/first_room.dks
 ```
 
-## Run an exact WHEN event
-
-```bash
-ruby compiler/dks.rb samples/first_room.dks --run "player attacks ember"
-```
-
-## Run a Kind Trigger
+## Run a Kind Trigger with a plain-language trace
 
 ```bash
 ruby compiler/dks.rb samples/first_room.dks --run "player attacks henry"
@@ -37,7 +33,30 @@ WHEN
 <then> (change that guard to angry].
 ```
 
-When the event says `player attacks henry`, the runtime confirms that Henry is a guard, remembers Henry for that Trigger, and uses Henry wherever the Connector lines say `that guard`.
+The runtime now explains the ride:
+
+```text
+what matched:
+  player attacks a guard
+what I understood:
+  a guard means henry
+  that guard means henry
+what happened:
+  (damage henry
+  henry damage is now 1
+  (change henry to angry
+  henry is now angry
+```
+
+The creator does not need to learn terms such as binding, scope, or pattern matching.
+
+## Run an exact event
+
+```bash
+ruby compiler/dks.rb samples/first_room.dks --run "player attacks ember"
+```
+
+Exact events also show what matched and what changed.
 
 ## Run an existing DKIR file
 
@@ -45,7 +64,7 @@ When the event says `player attacks henry`, the runtime confirms that Henry is a
 ruby compiler/dks.rb samples/first_room.ir.json --run "player attacks henry"
 ```
 
-This proves that saved DKIR keeps the Trigger context information needed by the runtime.
+Source and saved DKIR produce the same trace and the same world state.
 
 ## Emit parser AST JSON
 
@@ -110,18 +129,17 @@ End           ].
 (unlock
 ```
 
-## What v0.1.11 records
+## What v0.1.12 adds
 
-- The owner-selected public language name is BASIC#.
-- BASIC# remains a new language that follows its own rules.
-- The compiler and engine do the heavy lifting while the creator enjoys the ride.
-- Historical BASIC research is preserved without copying traditional BASIC syntax.
-- ASK-style introspection, visible execution tracing, plain recovery, hidden internal modules, and example-first teaching are recorded as future lanes.
-- Capitalization and harmless-spacing tolerance are recorded for later design review, not silently implemented.
-- Grok's outside analysis is logged and evaluated.
-- The Copilot project brief is preserved inside project documentation.
-- v0.1.10 Runtime Trigger Context is carried forward unchanged.
-- No new syntax or official words are added.
+- Plain-language runtime tracing.
+- The matched `WHEN`.
+- The Thing selected by a direct Kind Trigger.
+- The meaning of `that guard`.
+- Each event official word that ran.
+- The immediate world change caused by each event word.
+- Source and saved-DKIR trace parity.
+- The owner doctrine: “A script language made for non-programmers, by non-programmers.”
+- A decision record for Copilot's review.
 
 ## Run all tests
 
@@ -131,14 +149,13 @@ ruby -w -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_rel
 
 ## Not included
 
-- No repository, file, Ruby module, or command rename.
 - No new syntax.
 - No new official words.
-- No dictionary replacement or duplicate dictionary.
 - No Kind Families.
 - No multiple selected Things.
 - No event queue.
 - No ASK syntax.
-- No trace interface.
 - No recovery syntax.
+- No capitalization or spacing behavior change.
 - No bytecode, VM, DK Engine, or Studio implementation.
+- No technical rename from DKScript to BASIC#.

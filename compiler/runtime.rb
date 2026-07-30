@@ -50,11 +50,30 @@ module DKScript
       match = find_event_match(event_text)
       return result(event_text, false, [], {}, match && match['error']) unless match && match['rule']
 
-      actor = reference_name(match['rule'].dig('when', 'actor'), context: match['context'])
-      ran = match['rule'].fetch('then', []).filter_map do |word|
-        run_official_word(word, actor: actor, context: match['context'])
+      rule = match.fetch('rule')
+      context = match.fetch('context')
+      actor = reference_name(rule.dig('when', 'actor'), context: context)
+      steps = rule.fetch('then', []).filter_map do |word|
+        changes = []
+        description = run_official_word(word, actor: actor, context: context, changes: changes)
+        next unless description
+
+        {
+          'word' => description,
+          'change' => changes.first
+        }
       end
-      result(event_text, true, ran, match['context'], nil)
+
+      result(
+        event_text,
+        true,
+        steps.map { |step| step.fetch('word') },
+        context,
+        nil,
+        matched_when: normalize(rule.dig('when', 'raw')),
+        understood: context_explanations(rule, context),
+        steps: steps
+      )
     end
 
     def snapshot
@@ -79,14 +98,27 @@ module DKScript
       lines << "matched: #{event_result.fetch('matched') ? 'yes' : 'no'}"
       lines << "error: #{event_result.fetch('error')}" if event_result['error']
 
+      if event_result['matched_when']
+        lines << 'what matched:'
+        lines << "  #{event_result.fetch('matched_when')}"
+      end
+
+      unless event_result.fetch('understood', []).empty?
+        lines << 'what I understood:'
+        event_result.fetch('understood').each { |line| lines << "  #{line}" }
+      end
+
       unless startup_ran.empty?
         lines << 'starting rules:'
         startup_ran.each { |word| lines << "  #{word}" }
       end
 
-      unless event_result.fetch('ran').empty?
-        lines << 'event words:'
-        event_result.fetch('ran').each { |word| lines << "  #{word}" }
+      unless event_result.fetch('steps', []).empty?
+        lines << 'what happened:'
+        event_result.fetch('steps').each do |step|
+          lines << "  #{step.fetch('word')}"
+          lines << "  #{step.fetch('change')}" if step['change']
+        end
       end
 
       lines << 'world state:'
@@ -139,7 +171,7 @@ module DKScript
         next unless condition_true?(rule['if'])
 
         rule.fetch('then', []).each do |word|
-          description = run_official_word(word, actor: nil, context: {})
+          description = run_official_word(word, actor: nil, context: {}, changes: nil)
           startup_ran << description if description
         end
       end
@@ -297,29 +329,60 @@ module DKScript
       { 'rule' => nil, 'context' => {}, 'error' => nil, 'same_event_shape' => false }
     end
 
-    def run_official_word(word, actor:, context:)
+    def context_explanations(rule, context)
+      explanations = []
+      when_part = rule.fetch('when')
+
+      [when_part['actor'], when_part['target']].compact.each do |reference|
+        next unless kind_reference?(reference)
+
+        kind = normalize(reference['kind_name'])
+        name = context[kind]
+        explanations << "#{normalize(reference['text'])} means #{name}" if name
+      end
+
+      rule.fetch('then', []).each do |word|
+        reference = word['target']
+        next unless normalize(reference && reference['type']) == 'previous'
+
+        kind = normalize(reference['kind_name'])
+        name = context[kind]
+        explanations << "#{normalize(reference['text'])} means #{name}" if name
+      end
+
+      explanations.uniq
+    end
+
+    def run_official_word(word, actor:, context:, changes:)
       name = normalize(word['action'])
       target = thing_for_reference(word['target'], context: context)
       return nil unless target
 
+      target_name = target.fetch('name')
       case name
       when 'damage'
         target['damage'] += 1
-        "(damage #{target.fetch('name')}"
+        changes << "#{target_name} damage is now #{target.fetch('damage')}" if changes
+        "(damage #{target_name}"
       when 'change'
         state = word.dig('to', 'name') || word.dig('to', 'text')
         return nil unless state
 
-        set_state(target, state)
-        "(change #{target.fetch('name')} to #{normalize(state)}"
+        state_name = normalize(state)
+        set_state(target, state_name)
+        changes << "#{target_name} is now #{state_name}" if changes
+        "(change #{target_name} to #{state_name}"
       when 'carry'
+        carrier = actor || 'player'
         target.fetch('relations').delete('on')
         target.fetch('relations').delete('in')
-        target.fetch('relations')['carried by'] = actor || 'player'
-        "(carry #{target.fetch('name')}"
+        target.fetch('relations')['carried by'] = carrier
+        changes << "#{target_name} is now carried by #{carrier}" if changes
+        "(carry #{target_name}"
       when 'unlock'
         set_state(target, 'unlocked')
-        "(unlock #{target.fetch('name')}"
+        changes << "#{target_name} is now unlocked" if changes
+        "(unlock #{target_name}"
       else
         raise ArgumentError, "runtime does not know how to run (#{name}"
       end
@@ -351,11 +414,14 @@ module DKScript
       normalize(reference['name'] || reference['text'])
     end
 
-    def result(event_text, matched, ran, context, error)
+    def result(event_text, matched, ran, context, error, matched_when: nil, understood: [], steps: [])
       {
         'event' => event_text,
         'matched' => matched,
+        'matched_when' => matched_when,
+        'understood' => understood,
         'ran' => ran,
+        'steps' => steps,
         'context' => context,
         'error' => error,
         'state' => snapshot
