@@ -2,93 +2,109 @@
 
 ## Current transfer state
 
-**Project:** BASIC# Ruby Bootstrap Compiler
-**Accepted baseline:** v0.1.14 Technical Identity Migration and Company Bible Integration
-**Accepted commit:** `49f00f1`
-**Accepted tag:** `v0.1.14`
-**Current candidate:** v0.1.15 Inherited Kind Matching
-**Candidate status:** built and internally validated; owner installation and acceptance pending
-**Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_15_INHERITED_KIND_MATCHING_CHANGED_FILES_ONLY.zip`
+**Project:** BASIC# Ruby Bootstrap Compiler  
+**Accepted baseline:** v0.1.15 Inherited Kind Matching  
+**Accepted commit:** `a672c49`  
+**Accepted tag:** `v0.1.15`  
+**Current candidate:** v0.1.16 Kind-Family Stress and Hardening  
+**Candidate status:** built and internally validated; owner installation and acceptance pending  
 **Project path:** `/home/dereksparks1982/DKLab/Projects/BASIC#`
 
-## v0.1.15 completed work
+## v0.1.16 completed work
 
-- Activates the parent relationships already stored by `KINDS`.
-- Matches a Thing by direct Kind and every stored ancestor.
-- Preserves exact named-Thing Trigger priority.
-- Chooses the nearest compatible Kind Trigger before source-order tie breaking.
-- Keeps `that Kind` context local to one event.
-- Includes descendant Things in resolver Kind candidates.
-- Allows one parent to be assigned to a known rootless built-in Kind through the existing declaration form.
-- Rejects second parents, unknown parents, and circular families plainly.
-- Validates malformed saved-DKIR families before execution.
-- Preserves source/saved-DKIR parity and accepted v0.1.13 DKIR compatibility.
+- Builds a validated Kind-distance index once when a runtime starts.
+- Keeps family walking iterative and proves a 256-level chain.
+- Invalidates parser dictionary family caches when a parent is added.
+- Locks exact Trigger priority.
+- Locks nearest compatible Kind priority.
+- Locks first-source-rule priority for equal-distance Kind Triggers.
+- Adds a dedicated 64-Trigger, 500-Thing, 2,000-event-per-path family stress lane.
+- Rejects malformed Kind entries that are missing, empty, non-text, duplicate, conflicting, unknown-parent, or circular.
+- Rejects a Thing that claims an unknown Kind.
+- Preserves valid v0.1.13 and v0.1.15 saved DKIR.
+- Preserves source/saved-DKIR parity, deterministic replay, and separate runtime isolation.
 
 ## Internal validation
 
 ```text
-73 runs
-4,421 assertions
+79 runs
+4,473 assertions
 0 failures
 0 errors
 0 skips
 ```
 
+Existing runtime stress:
+
 ```text
 504 Things
-10,003 events through source-built DKIR
-10,003 events through saved DKIR
+10,003 events per path
 20,006 total event executions
-Inherited Kind matching: PASS
-STRESS TEST: PASS
+PASS
 ```
 
-## Protected language truth
+Kind-family stress:
 
-- BASIC# is a scripting language made for non-programmers, by non-programmers.
-- `KINDS` and direct parent declarations existed before v0.1.15.
-- v0.1.15 activates inheritance. It does not add a different `KINDS` language.
-- One Kind has one direct parent.
-- `(` is a creator-facing visual guide in official words such as `(damage`.
-- `<then>` is a Connector.
-- `[` touches the first Body word.
-- Ruby remains bootstrap scaffolding, not BASIC# meaning.
+```text
+256-level ancestry
+64 overlapping ancestor Triggers
+500 descendant Things
+2,000 repeated events per path
+exact priority PASS
+nearest priority PASS
+same-distance source order PASS
+source/saved-DKIR parity PASS
+deterministic replay PASS
+```
 
-## Explicit exclusions
+## Important language truth
 
-- No multiple inheritance.
-- No standalone root-declaration syntax.
-- No new Heads or official words.
-- No values, time, event queue, ASK, bytecode, VM, engine bridge, or self-hosting work.
+- `KINDS` existed before v0.1.15.
+- v0.1.15 activated inherited matching.
+- v0.1.16 hardens and stress-tests that meaning; it does not add a new Kind syntax.
+- One Kind still has one direct parent.
+- Exact named-Thing Triggers win before Kind Triggers.
+- The nearest compatible Kind wins.
+- Source order breaks equal-distance ties.
 
-## Known risks
+## Excluded from v0.1.16
 
-- Broad ancestor rules can overlap specific rules. The nearest family distance now decides.
-- Old DKIR receives only ancestry actually stored in that document.
-- Permanent public DKIR compatibility is not yet frozen.
-- Shell commands must quote the `BASIC#` path.
+- Multiple inheritance.
+- New `KINDS` syntax.
+- New Heads, Connectors, or official words.
+- Expanded IF behavior.
+- Multiple selected Things.
+- Values or amounts.
+- Event queues, time, repetition, save/load, ASK, bytecode, VM, engine bridge, or self-hosting.
 
 ## Rollback point
 
 ```text
-commit: 49f00f1
-tag: v0.1.14
-path: /home/dereksparks1982/DKLab/Projects/BASIC#
+commit a672c49
+tag v0.1.15
 ```
 
 ## Current continuation point
 
-1. Derek applies the v0.1.15 changed-files-only package.
+1. Derek applies the v0.1.16 changed-files-only package.
 2. Derek reviews installer validation.
 3. Derek accepts or rejects the candidate.
-4. If accepted, commit and tag v0.1.15.
-5. Then prepare the exact v0.1.16 Kind-Family Stress and Hardening proposal and wait for approval.
+4. If accepted, commit and tag v0.1.16.
+5. Present the full v0.1.17 proposal before any further build.
+
+## Next planned lane
+
+The roadmap points toward **More Complete IF Behavior**, but its exact semantics, files, risks, rollback, validation, and package name must be proposed for Derek's review before implementation.
 
 ## Cumulative history
 
+### v0.1.16 - 2026-07-30
+
+Kind-Family Stress and Hardening. Candidate built and internally validated; owner acceptance pending.
+
 ### v0.1.15 - 2026-07-30
 
-Inherited Kind Matching. Candidate built and internally validated; owner acceptance pending.
+Inherited Kind Matching. Accepted at commit `a672c49`, tag `v0.1.15`.
 
 ### v0.1.14 - 2026-07-30
 
@@ -105,15 +121,3 @@ Plain-Language Runtime Trace. Accepted at commit `25c9265`, tag `v0.1.12`.
 ### v0.1.11 - 2026-07-30
 
 BASIC# Language Foundation and Historical BASIC Research. Accepted at commit `9fb30ae`, tag `v0.1.11`.
-
-### v0.1.10 - 2026-07-29
-
-Runtime Trigger Context.
-
-### v0.1.09 - 2026-07-29
-
-First Runtime Execution.
-
-### v0.1.08 - 2026-07-29
-
-Body Structure and User Kinds. Accepted at commit `d6c92d1`, tag `v0.1.08`.

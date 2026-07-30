@@ -1,17 +1,17 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.15
+# BASIC# Ruby Bootstrap Compiler v0.1.16
 
-**Language name:** BASIC#
-**Pronounced:** Basic Sharp
-**Ruby namespace:** `BasicSharp`
+**Language name:** BASIC#  
+**Pronounced:** Basic Sharp  
+**Ruby namespace:** `BasicSharp`  
 **Creator source extension:** `.bsharp`
 
 > A scripting language made for non-programmers, by non-programmers.
 
-BASIC# lets a creator describe what exists and what should happen without first becoming a conventional programmer. The compiler, runtime, future virtual machine, and engine carry the mechanical weight.
+BASIC# lets a creator describe what exists and what should happen without first becoming a conventional programmer. The compiler and runtime carry the mechanical weight.
 
 > The compiler and engine do the heavy lifting. The creator enjoys the ride.
 
-v0.1.15 gives the existing `KINDS` parent declarations real runtime meaning. A Thing can now answer to its direct Kind and every stored parent above it.
+v0.1.16 hardens the inherited Kind machinery added in v0.1.15. It adds a validated family-distance index, strict saved-DKIR family checks, deep-chain proofs, deterministic priority tests, and a dedicated Kind-family stress lane.
 
 ## Inherited Kind example
 
@@ -29,7 +29,7 @@ WHEN
 <then> (damage that creature].
 ```
 
-The event below now matches because a wyrm belongs to the creature family:
+The event below matches because a wyrm belongs to the creature family:
 
 ```text
 player attacks ember
@@ -41,7 +41,7 @@ BASIC# follows:
 wyrm -> dragon -> creature -> thing
 ```
 
-Exact named-Thing Triggers still win first. Among Kind Triggers, the nearest matching Kind wins. Source order breaks ties at the same family distance.
+Exact named-Thing Triggers win first. Among Kind Triggers, the nearest compatible Kind wins. Source order breaks equal-distance ties.
 
 ## Current Heads
 
@@ -88,7 +88,7 @@ ruby compiler/basic_sharp.rb samples/first_room.bsharp --run "player attacks emb
 ruby compiler/basic_sharp.rb samples/first_room.ir.json --run "player attacks cinder"
 ```
 
-The v0.1.15 runtime remains compatible with the accepted saved v0.1.13 DKIR fixture.
+The v0.1.16 runtime remains compatible with accepted saved-DKIR fixtures from v0.1.13 and v0.1.15.
 
 ## Run the complete test suite
 
@@ -102,7 +102,7 @@ ruby -w -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_rel
 ruby tools/runtime_stress.rb
 ```
 
-Default stress load:
+Default runtime stress load:
 
 ```text
 504 Things
@@ -110,6 +110,24 @@ Default stress load:
 10,003 events through saved DKIR
 20,006 total event executions
 ```
+
+## Run the Kind-family stress test
+
+```bash
+ruby tools/kind_family_stress.rb
+```
+
+Default Kind-family stress load:
+
+```text
+256-level Kind chain
+64 overlapping ancestor Triggers
+500 descendant Things
+2,000 repeated events through source-built DKIR
+2,000 repeated events through saved DKIR
+```
+
+Timing is reported for observation only. Correct behavior is not rejected merely because a machine is slower.
 
 ## Company Bible
 
@@ -124,27 +142,27 @@ Read it end-to-end before proposing or building the next BASIC# version.
 ## Contracts
 
 ```text
-docs/parser_contract_v0_1_15.md
-docs/runtime_contract_v0_1_15.md
-docs/ir/DKIR_MEANING_CONTRACT_v0_1_15.md
+docs/parser_contract_v0_1_16.md
+docs/runtime_contract_v0_1_16.md
+docs/ir/DKIR_MEANING_CONTRACT_v0_1_16.md
 ```
 
 DKIR remains readable debug JSON rather than final bytecode.
 
-## What v0.1.15 changes
+## What v0.1.16 changes
 
-- Walks the existing one-parent Kind chain during Trigger matching.
-- Lets descendant Things match direct parents, grandparents, and the stored root.
-- Preserves exact named-Thing Trigger priority.
-- Prefers the nearest compatible Kind Trigger over a more distant ancestor.
-- Keeps `that Kind` context bound to the Thing selected by the Trigger.
-- Lets resolver Kind selectors include descendant Things.
-- Rejects unknown Kind parents and circular Kind families in plain language.
-- Preserves source and saved-DKIR execution parity.
+- Precomputes validated Kind-to-ancestor distances once per runtime.
+- Invalidates parser-side Kind-family caches whenever a parent is added.
+- Proves iterative matching through a 256-level family chain.
+- Proves nearest, exact, and equal-distance source-order priority.
+- Rejects malformed, duplicate, conflicting, unknown-parent, circular, and non-text Kind entries in saved DKIR.
+- Rejects Things that claim an unknown Kind.
+- Preserves source and saved-DKIR parity, deterministic replay, and per-event context isolation.
+- Preserves valid v0.1.13 and v0.1.15 saved DKIR.
 
 ## Not included
 
+- No new `KINDS` syntax.
 - No multiple inheritance.
-- No standalone root-declaration syntax.
-- No new Heads or official words.
+- No new Heads, Connectors, or official words.
 - No values, amounts, time, repetition, event queue, ASK, bytecode, VM, engine bridge, or self-hosting work.

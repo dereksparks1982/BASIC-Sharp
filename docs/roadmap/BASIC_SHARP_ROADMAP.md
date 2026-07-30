@@ -11,9 +11,9 @@ BASIC# source
 -> plain-language runtime trace
 -> focused runtime stress and DKIR contract
 -> technical identity migration and Company Bible integration
--> inherited Kind matching  [CURRENT CANDIDATE: v0.1.15]
+-> inherited Kind matching
+-> Kind-family stress and hardening  [CURRENT CANDIDATE: v0.1.16]
 -> owner validation and acceptance
--> Kind-family stress and hardening
 -> runtime expansion
 -> stable meaning specification
 -> bytecode
@@ -27,56 +27,56 @@ BASIC# source
 
 - Controlled Body structure using `[` and `].`.
 - Heads, Kinds, Things, Facts, Triggers, Connectors, and official words.
-- User-defined direct Kinds and stored direct parent relationships.
+- User-defined direct Kinds and one stored direct parent per Kind.
 - Plain-language diagnostics and duplicate-diagnostic cleanup.
 - DKIR debug JSON emission.
 - First runtime Thing creation and START Fact application.
 - One-pass startup IF checking.
-- Exact one-event WHEN matching.
+- Exact and Kind-based one-event WHEN matching.
 - Executable official words: `(damage`, `(change`, `(carry`, `(unlock`.
-- Named Thing matching for `a guard` and other Kinds.
-- Per-event context for `that guard` and inherited `that Kind` references.
+- Per-event context for `that Kind` references.
 - Plain unknown-Thing and wrong-Kind runtime errors.
 - BASIC# public and technical identity.
 - Complete Company Bible integration.
 - Formal DKIR meaning contracts.
 - Focused runtime stress runner and automated stress suite.
-- Duplicate Thing and invalid DKIR-format protection.
 - Direct, parent, grandparent, and root inherited Kind matching.
 - Exact Trigger priority and nearest compatible Kind priority.
 - Unknown-parent and circular-family protection.
+- Iterative 256-level ancestry proof.
+- Validated Kind-distance lookup index.
+- Deterministic same-distance source-order contract.
+- Strict malformed saved-DKIR Kind-family rejection.
+- v0.1.13 and v0.1.15 saved-DKIR compatibility.
 
-## Immediate next build after v0.1.15 acceptance
+## Immediate next build after v0.1.16 acceptance
 
-### Kind-Family Stress and Hardening
+### More Complete IF Behavior
 
-The next build should attack the new inheritance machinery rather than immediately stacking another feature on top of it.
+The next likely lane is to make IF useful beyond its current one-pass startup check while preserving plain creator-facing meaning.
 
-Likely focus:
+Possible focus for proposal review:
 
-- deep but bounded parent chains;
-- many overlapping ancestor Triggers;
-- direct-versus-parent-versus-root priority under load;
-- duplicate and malformed Kind entries in saved DKIR;
-- deterministic source-order tie behavior;
-- many descendant Things selected repeatedly;
-- performance measurements for family walking;
-- plain explanations remaining stable under failure;
-- no unrelated language expansion.
+- clearly defined times when IF rules are checked;
+- stable rule order;
+- state changes triggering appropriate checks without uncontrolled loops;
+- plain traces explaining which Fact caused a rule to run;
+- source and saved-DKIR parity;
+- bounded execution and loop protection;
+- no event queue or time system unless separately approved.
 
-The exact build still requires a full proposal and Derek's explicit approval.
+The exact v0.1.17 scope still requires a full proposal and Derek's explicit approval.
 
 ## Near-term lane
 
-1. Kind-family stress and hardening.
-2. More complete IF behavior.
-3. Multiple selected Things.
-4. Formal values and amounts.
-5. Event ordering and queue design.
-6. Save/load world state.
-7. ASK-style introspection.
-8. Runtime recovery.
-9. Stable meaning specification gate.
+1. More complete IF behavior.
+2. Multiple selected Things.
+3. Formal values and amounts.
+4. Event ordering and queue design.
+5. Save/load world state.
+6. ASK-style introspection.
+7. Runtime recovery.
+8. Stable meaning specification gate.
 
 ## Protected design rules
 

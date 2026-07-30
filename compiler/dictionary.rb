@@ -12,6 +12,7 @@ module BasicSharp
     def initialize
       @kinds = BUILTIN_KINDS.dup
       @kind_parents = {}
+      @kind_family_cache = {}
       @states = %w[
         open closed locked unlocked alive dead calm angry friendly hostile visible hidden carried dropped broken whole on off
       ]
@@ -28,6 +29,7 @@ module BasicSharp
       normalized_parent = normalize(parent)
       @kinds << normalized_name unless @kinds.include?(normalized_name)
       @kind_parents[normalized_name] = normalized_parent
+      @kind_family_cache.clear
     end
 
     def kind_parent(name)
@@ -35,17 +37,8 @@ module BasicSharp
     end
 
     def kind_family(name)
-      family = []
-      seen = {}
-      current = normalize(name)
-
-      while current && !current.empty? && !seen[current]
-        family << current
-        seen[current] = true
-        current = kind_parent(current)
-      end
-
-      family
+      normalized = normalize(name)
+      @kind_family_cache[normalized] ||= build_kind_family(normalized).freeze
     end
 
     def kind_matches?(actual_kind, expected_kind)
@@ -109,6 +102,20 @@ module BasicSharp
     end
 
     private
+
+    def build_kind_family(name)
+      family = []
+      seen = {}
+      current = name
+
+      while current && !current.empty? && !seen[current]
+        family << current
+        seen[current] = true
+        current = kind_parent(current)
+      end
+
+      family
+    end
 
     def normalize(word)
       word.to_s.strip.downcase

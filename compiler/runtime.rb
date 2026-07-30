@@ -41,6 +41,8 @@ module BasicSharp
       @objects = {}
       @object_order = []
       @kind_parents = {}
+      @known_kinds = Set.new(CoreDictionary::BUILTIN_KINDS)
+      @kind_distance_index = {}
       @startup_ran = []
       load_kind_families
       create_things
@@ -153,32 +155,54 @@ module BasicSharp
 
 
     def load_kind_families
-      known_kinds = CoreDictionary::BUILTIN_KINDS.to_h { |kind| [kind, true] }
+      @ir.fetch('kinds', []).each_with_index do |entry, index|
+        position = index + 1
+        unless entry.is_a?(Hash)
+          raise ArgumentError, "Kind family entry #{position} must describe one Kind"
+        end
 
-      @ir.fetch('kinds', []).each do |entry|
-        name = normalize(entry['name'])
-        parent = normalize(entry['parent'])
-        raise ArgumentError, 'DKIR Kind name cannot be empty' if name.empty?
-        raise ArgumentError, "DKIR Kind '#{name}' has no parent" if parent.empty?
+        name = kind_entry_text(entry, 'name', position, 'Kind name')
+        parent = kind_entry_text(entry, 'parent', position, 'parent Kind')
 
         if @kind_parents.key?(name)
           previous = @kind_parents.fetch(name)
-          raise ArgumentError, "Kind '#{name}' has more than one parent: #{previous}, #{parent}" unless previous == parent
+          if previous == parent
+            raise ArgumentError, "Kind family has a duplicate: #{name} is listed more than once"
+          end
 
-          next
+          raise ArgumentError, "Kind family conflicts: #{name} has more than one parent: #{previous} and #{parent}"
         end
 
         @kind_parents[name] = parent
-        known_kinds[name] = true
+        @known_kinds.add(name)
       end
 
       @kind_parents.each do |name, parent|
-        next if known_kinds[parent]
+        next if @known_kinds.include?(parent)
 
         raise ArgumentError, "Kind family is broken: #{name} has unknown parent #{parent}"
       end
 
       validate_kind_family_loops!
+      build_kind_distance_index!
+    end
+
+    def kind_entry_text(entry, key, position, label)
+      unless entry.key?(key)
+        raise ArgumentError, "Kind family entry #{position} is missing its #{label}"
+      end
+
+      value = entry[key]
+      unless value.is_a?(String)
+        raise ArgumentError, "Kind family entry #{position} has a #{label} that is not text"
+      end
+
+      normalized = normalize(value)
+      if normalized.empty?
+        raise ArgumentError, "Kind family entry #{position} has an empty #{label}"
+      end
+
+      normalized
     end
 
     def validate_kind_family_loops!
@@ -200,15 +224,40 @@ module BasicSharp
       end
     end
 
+    def build_kind_distance_index!
+      index = {}
+
+      @known_kinds.each do |kind|
+        distances = {}
+        current = kind
+        distance = 0
+
+        while current
+          distances[current] = distance
+          current = @kind_parents[current]
+          distance += 1
+        end
+
+        index[kind] = distances.freeze
+      end
+
+      @kind_distance_index = index.freeze
+    end
+
     def create_things
       @ir.fetch('objects', []).each do |object|
         name = normalize(object.fetch('name'))
         raise ArgumentError, "DKIR has more than one Thing named '#{name}'" if @objects.key?(name)
 
+        kind = normalize(object.fetch('kind'))
+        unless @known_kinds.include?(kind)
+          raise ArgumentError, "#{name} says it is a #{kind}, but #{kind} is not a known Kind"
+        end
+
         @object_order << name
         @objects[name] = {
           'name' => name,
-          'kind' => normalize(object.fetch('kind')),
+          'kind' => kind,
           'builtin' => object.fetch('builtin', false),
           'states' => Set.new,
           'relations' => {},
@@ -418,17 +467,7 @@ module BasicSharp
     def kind_distance(actual_kind, expected_kind)
       actual = normalize(actual_kind)
       expected = normalize(expected_kind)
-      distance = 0
-      current = actual
-
-      loop do
-        return distance if current == expected
-
-        current = @kind_parents[current]
-        return nil unless current
-
-        distance += 1
-      end
+      @kind_distance_index.fetch(actual, {}).fetch(expected, nil)
     end
 
     def bind_context(context, match)

@@ -2,11 +2,11 @@
   "format": "DK_CHANGED_FILES_PATCH",
   "format_version": 1,
   "project": "BASIC# Ruby Bootstrap Compiler",
-  "package_name": "BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_15_INHERITED_KIND_MATCHING_CHANGED_FILES_ONLY.zip",
-  "required_base": "accepted v0.1.14 Technical Identity Migration and Company Bible Integration; commit 49f00f1; tag v0.1.14",
-  "base_validation": "61 runs, 4360 assertions, 0 failures, 0 errors, 0 skips; 504 Things; 20004 total event executions; stress PASS",
-  "target_version": "v0.1.15",
-  "title": "Inherited Kind Matching",
+  "package_name": "BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_16_KIND_FAMILY_STRESS_AND_HARDENING_CHANGED_FILES_ONLY.zip",
+  "required_base": "accepted v0.1.15 Inherited Kind Matching; commit a672c49; tag v0.1.15",
+  "base_validation": "73 runs, 4421 assertions, 0 failures, 0 errors, 0 skips; 504 Things; 20006 total event executions; inherited Kind stress PASS",
+  "target_version": "v0.1.16",
+  "title": "Kind-Family Stress and Hardening",
   "package_status": "candidate built and internally validated; owner installation and acceptance pending",
   "direct_project_root_payload": true,
   "changed_files_only": true,
@@ -15,171 +15,47 @@
   "manifest_excluded_from_own_hash_list": true,
   "project_path": "/home/dereksparks1982/DKLab/Projects/BASIC#",
   "package_utility_files": [
-    "APPLY_BASIC_SHARP_v0_1_15.sh"
+    "APPLY_BASIC_SHARP_v0_1_16.sh"
   ],
-  "added_path_count": 10,
-  "modified_path_count": 18,
+  "added_path_count": 14,
+  "modified_path_count": 11,
   "deleted_path_count": 0,
-  "changed_path_count_including_manifest": 28,
+  "changed_path_count_including_manifest": 25,
   "added_paths": [
-    "BUILD_HANDSHAKE_v0_1_15.md",
-    "docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_15.txt",
-    "docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_15.md",
-    "docs/hand_off/BASIC_SHARP_v0_1_15_NEW_THREAD_HANDOFF.md",
-    "docs/ir/DKIR_MEANING_CONTRACT_v0_1_15.md",
-    "docs/parser_contract_v0_1_15.md",
-    "docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_15.md",
-    "docs/runtime_contract_v0_1_15.md",
-    "docs/session_logs/BASIC_SHARP_v0_1_15_SESSION_LOG.md",
-    "docs/validation/BASIC_SHARP_VALIDATION_v0_1_15.md"
+    "BUILD_HANDSHAKE_v0_1_16.md",
+    "docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_16.txt",
+    "docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_16.md",
+    "docs/hand_off/BASIC_SHARP_v0_1_16_NEW_THREAD_HANDOFF.md",
+    "docs/ir/DKIR_MEANING_CONTRACT_v0_1_16.md",
+    "docs/parser_contract_v0_1_16.md",
+    "docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_16.md",
+    "docs/runtime_contract_v0_1_16.md",
+    "docs/session_logs/BASIC_SHARP_v0_1_16_SESSION_LOG.md",
+    "docs/testing/BASIC_SHARP_KIND_FAMILY_STRESS_TEST_v0_1_16.md",
+    "docs/validation/BASIC_SHARP_VALIDATION_v0_1_16.md",
+    "tests/fixtures/first_room_v0_1_15.ir.json",
+    "tests/test_kind_family_hardening.rb",
+    "tools/kind_family_stress.rb"
   ],
   "modified_paths": [
     "DK_PATCH_MANIFEST.json",
     "README.md",
     "compiler/ast_nodes.rb",
     "compiler/dictionary.rb",
-    "compiler/parser.rb",
     "compiler/runtime.rb",
     "docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md",
     "docs/roadmap/BASIC_SHARP_ROADMAP.md",
-    "samples/first_room.bsharp",
     "samples/first_room.ir.json",
     "tests/test_cli_output.rb",
-    "tests/test_first_room.rb",
     "tests/test_identity_migration.rb",
-    "tests/test_ir_output.rb",
-    "tests/test_resolver.rb",
-    "tests/test_runtime.rb",
-    "tests/test_runtime_stress.rb",
-    "tools/runtime_stress.rb"
+    "tests/test_ir_output.rb"
   ],
   "deletions": [],
   "base_files": [
     {
       "path": "DK_PATCH_MANIFEST.json",
-      "bytes": 36997,
-      "sha256": "72c49f625efcabcce480644d246ade7182c0e6b72af4b4cdc5a470b632f672f9"
-    },
-    {
-      "path": "README.md",
-      "bytes": 3445,
-      "sha256": "faaeaf5b8e7efa3e7cf204b7bdebd0751cb68fb5837c9822d76d1c4c3a0e0ee8"
-    },
-    {
-      "path": "compiler/ast_nodes.rb",
-      "bytes": 2244,
-      "sha256": "8a3a246a13cbb7c118a1033131254223898e1929fd023dfddf44eefbd4a3bab7"
-    },
-    {
-      "path": "compiler/dictionary.rb",
-      "bytes": 2302,
-      "sha256": "54f93ea96ff328abdbfbe1a3336b803c458c380b6b1555a070da05e2c8533c4d"
-    },
-    {
-      "path": "compiler/parser.rb",
-      "bytes": 8422,
-      "sha256": "a8c013896bc45f475debf72707e7a218405601fd5bc7fa8e56cc7b6abe2ac629"
-    },
-    {
-      "path": "compiler/runtime.rb",
-      "bytes": 14760,
-      "sha256": "3ecc4bd4302d44e19609a275e7acb57696de2aea0b8084b89900bd1cb2e63d88"
-    },
-    {
-      "path": "docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md",
-      "bytes": 3717,
-      "sha256": "22a17f8c5f9a125fb137d740d9dced13128a221346329ce5e7e7b752bd909e2b"
-    },
-    {
-      "path": "docs/roadmap/BASIC_SHARP_ROADMAP.md",
-      "bytes": 3034,
-      "sha256": "4f25c7e80a423ada28acc7607e02ed91a264170fb1c7c97d5e4428a6e7733b9a"
-    },
-    {
-      "path": "samples/first_room.bsharp",
-      "bytes": 520,
-      "sha256": "4e65bfd550834638036cd86a8e98e9745eb1814b33d5bd75b6430f0789251a0c"
-    },
-    {
-      "path": "samples/first_room.ir.json",
-      "bytes": 6068,
-      "sha256": "8ca92f629bb920f1db859e30b15c0a4d393cff75c66545b2c6784ac61ed97c0d"
-    },
-    {
-      "path": "tests/test_cli_output.rb",
-      "bytes": 5177,
-      "sha256": "46b60adef9396a1fee9d24a0459ff67e061c714d3a2f3cf56c9cbbc608b1f8de"
-    },
-    {
-      "path": "tests/test_first_room.rb",
-      "bytes": 2614,
-      "sha256": "4b85d167bfd0b86fd85542caa7f6d3689725ae5d63be0a5e32f6ad3dd0a7f9ce"
-    },
-    {
-      "path": "tests/test_identity_migration.rb",
-      "bytes": 3473,
-      "sha256": "c2266a9948d6913989b8863e114f51ba2c0e70fbcb8efc89232db2e97244ed40"
-    },
-    {
-      "path": "tests/test_ir_output.rb",
-      "bytes": 2580,
-      "sha256": "b7764868553d59af95612e7b0b605129abceeb8ecc2a38fd5eb0bde1ae12880e"
-    },
-    {
-      "path": "tests/test_resolver.rb",
-      "bytes": 3258,
-      "sha256": "6cafcdb0688234437a9e650b4175864de25776d95ef28fb7dc7c354600bd3a6f"
-    },
-    {
-      "path": "tests/test_runtime.rb",
-      "bytes": 6356,
-      "sha256": "97c5a6648280055b67f7822f23394124b5ac7c5af8e4f69b207cf09c87af98da"
-    },
-    {
-      "path": "tests/test_runtime_stress.rb",
-      "bytes": 8765,
-      "sha256": "232d1a9bf78958c25a6dacefec05b642a59201860d8cc7eec37c1814288c718c"
-    },
-    {
-      "path": "tools/runtime_stress.rb",
-      "bytes": 3937,
-      "sha256": "94dfead2eb2fcc2ba57fb1a986f240a55c587108830d2645c71f3ba34daec4c5"
-    }
-  ],
-  "master_handoff": "docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md",
-  "new_thread_handoff": "docs/hand_off/BASIC_SHARP_v0_1_15_NEW_THREAD_HANDOFF.md",
-  "internal_validation": {
-    "ruby_syntax": "PASS",
-    "compiler_errors": 0,
-    "compiler_warnings": 0,
-    "tests": {
-      "runs": 73,
-      "assertions": 4421,
-      "failures": 0,
-      "errors": 0,
-      "skips": 0
-    },
-    "stress": {
-      "things": 504,
-      "events_per_path": 10003,
-      "total_event_executions": 20006,
-      "result": "PASS"
-    },
-    "direct_parent_matching": "PASS",
-    "inherited_parent_grandparent_root_matching": "PASS",
-    "exact_trigger_priority": "PASS",
-    "nearest_kind_priority": "PASS",
-    "source_saved_dkir_parity": "PASS",
-    "v0_1_13_saved_dkir_compatibility": "PASS",
-    "unknown_parent_and_cycle_protection": "PASS",
-    "separate_runtime_isolation": "PASS",
-    "deterministic_final_world": "PASS"
-  },
-  "files": [
-    {
-      "path": "BUILD_HANDSHAKE_v0_1_15.md",
-      "bytes": 2846,
-      "sha256": "5272fe6317a624b4250ceaec14feaa91ad89d37630c36ff4294be62e7b0fa2dd"
+      "bytes": 10632,
+      "sha256": "63799c4e14ee0510e91084ef00061e146bd1d0975498366ca0c54ab19524baf8"
     },
     {
       "path": "README.md",
@@ -197,24 +73,9 @@
       "sha256": "1b89789b245dedf494250f080ff54131ec3b1ef113c2c40c3bcda06435bab309"
     },
     {
-      "path": "compiler/parser.rb",
-      "bytes": 8699,
-      "sha256": "0b6f194e7c2047d82a1caf2d15990d9c49701e80b20ca6d91688f740e22ae7e7"
-    },
-    {
       "path": "compiler/runtime.rb",
       "bytes": 17354,
       "sha256": "9e8f8d3c59addaf35adff0b6fb6df8da00f0bacc192f505bbf5caada6b8e1a2c"
-    },
-    {
-      "path": "docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_15.txt",
-      "bytes": 1589,
-      "sha256": "c9d3a885c63b2462e32401ec0d757f0287081dcff3682ca7d3ddb2914a23cbed"
-    },
-    {
-      "path": "docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_15.md",
-      "bytes": 691,
-      "sha256": "69788dc0e923d51a34c1516a3f27f0f3d330b3ff9c5847aecf78e999671d6e5a"
     },
     {
       "path": "docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md",
@@ -222,49 +83,9 @@
       "sha256": "13c5d1b9b4922b38010ba6011dfaa79250a3f553d60f5ae92fa35698d94c62f9"
     },
     {
-      "path": "docs/hand_off/BASIC_SHARP_v0_1_15_NEW_THREAD_HANDOFF.md",
-      "bytes": 1235,
-      "sha256": "f1df91c8bce234341cc381f90181ee210c9631852dd9374f1ad49ec34d589f26"
-    },
-    {
-      "path": "docs/ir/DKIR_MEANING_CONTRACT_v0_1_15.md",
-      "bytes": 2169,
-      "sha256": "c1006dcc6ce5c357e2985b1806b9f29657e8fe703ddd1a6994455a07e257170f"
-    },
-    {
-      "path": "docs/parser_contract_v0_1_15.md",
-      "bytes": 1752,
-      "sha256": "b15fed1dc87cc7220661973b0bebd49ff6915a88f2291ef4f90d49019793bdc0"
-    },
-    {
-      "path": "docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_15.md",
-      "bytes": 578,
-      "sha256": "6d4bcfba253275010f9132dc54814ebd497a91f9a00bace57ea74608a4457223"
-    },
-    {
       "path": "docs/roadmap/BASIC_SHARP_ROADMAP.md",
       "bytes": 3243,
       "sha256": "bfb3c4045cd52a712cd7a67af3bf5e079129a42a87b07dbcb4222a0b4f1975dd"
-    },
-    {
-      "path": "docs/runtime_contract_v0_1_15.md",
-      "bytes": 2171,
-      "sha256": "41ba2e7f177a77844a723bd70226001c22374a568ab27f943adabe92bb7ab2e3"
-    },
-    {
-      "path": "docs/session_logs/BASIC_SHARP_v0_1_15_SESSION_LOG.md",
-      "bytes": 1834,
-      "sha256": "279628f3225fe13cc9e64b5ec4608a04fb08b5d9de543eeb685e5261ce87f8d0"
-    },
-    {
-      "path": "docs/validation/BASIC_SHARP_VALIDATION_v0_1_15.md",
-      "bytes": 1761,
-      "sha256": "7fd395b8ddab721ae2da2039d3d35544541b448e0b7a397c258d611e0a6eaa63"
-    },
-    {
-      "path": "samples/first_room.bsharp",
-      "bytes": 693,
-      "sha256": "ac011b52e8b62ad76f03f0402367acbfe11b306c80f4b7534568ac661fd61eb6"
     },
     {
       "path": "samples/first_room.ir.json",
@@ -277,11 +98,6 @@
       "sha256": "04dee29c18225023c9aaecedaad25a12a04914f74c614eabeb2a48e13c247c4b"
     },
     {
-      "path": "tests/test_first_room.rb",
-      "bytes": 3866,
-      "sha256": "782254c3f56cc50f338b93b3a819076dea54ad9086caa478701c9b534a2b1525"
-    },
-    {
       "path": "tests/test_identity_migration.rb",
       "bytes": 3473,
       "sha256": "dddaed5e0d30774e26e10bfe5423098222e68adc6f4b36e736e7abc797ccca49"
@@ -290,26 +106,166 @@
       "path": "tests/test_ir_output.rb",
       "bytes": 3121,
       "sha256": "68db115d1cd7908e79e6d5a92a49638a32b6e49b5aca2a0d5e9a2f0e900b3737"
+    }
+  ],
+  "master_handoff": "docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md",
+  "new_thread_handoff": "docs/hand_off/BASIC_SHARP_v0_1_16_NEW_THREAD_HANDOFF.md",
+  "internal_validation": {
+    "ruby_syntax": "PASS",
+    "compiler_errors": 0,
+    "compiler_warnings": 0,
+    "tests": {
+      "runs": 79,
+      "assertions": 4473,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "runtime_stress": {
+      "things": 504,
+      "events_per_path": 10003,
+      "total_event_executions": 20006,
+      "result": "PASS"
+    },
+    "kind_family_stress": {
+      "kind_depth": 256,
+      "overlapping_ancestor_triggers": 64,
+      "descendant_things": 500,
+      "repeated_events_per_path": 2000,
+      "total_events_per_path": 2002,
+      "result": "PASS"
+    },
+    "exact_trigger_priority": "PASS",
+    "nearest_kind_priority": "PASS",
+    "same_distance_source_order_priority": "PASS",
+    "source_saved_dkir_parity": "PASS",
+    "v0_1_13_saved_dkir_compatibility": "PASS",
+    "v0_1_15_saved_dkir_compatibility": "PASS",
+    "malformed_kind_entry_protection": "PASS",
+    "unknown_thing_kind_protection": "PASS",
+    "separate_runtime_isolation": "PASS",
+    "deterministic_replay": "PASS"
+  },
+  "files": [
+    {
+      "path": "BUILD_HANDSHAKE_v0_1_16.md",
+      "bytes": 2929,
+      "sha256": "7403e9e10fd502146951de02bfe253c234cce02e12f2164f624e5935623a5fce"
     },
     {
-      "path": "tests/test_resolver.rb",
-      "bytes": 4142,
-      "sha256": "aefb488f34d42d5458532862dfd2997ee0b4e731d0757a3987c02e5594372ba0"
+      "path": "README.md",
+      "bytes": 4041,
+      "sha256": "9a7bf2992dfb440a160409668ff52b2df0c5d5c7b842e83978163d328c7cad1d"
     },
     {
-      "path": "tests/test_runtime.rb",
-      "bytes": 9555,
-      "sha256": "fe49f9f3bd10600f42257ebcda285e7ed3b530ef3ff61891b97b09e2ecbcb12a"
+      "path": "compiler/ast_nodes.rb",
+      "bytes": 2244,
+      "sha256": "20449c7edd5b03b26c84ce0a0aadb7bc4ea7a7a6b2a23a5d5a7436a3c3789e78"
     },
     {
-      "path": "tests/test_runtime_stress.rb",
-      "bytes": 9844,
-      "sha256": "d904e9a41fcf6d1f5d6ef853af5e049a470017d10b87880d3d5531edd31ec164"
+      "path": "compiler/dictionary.rb",
+      "bytes": 3352,
+      "sha256": "ad15b2f5145094244a5e62a253e0ab0b3482cb98e8625102594b46b065e1975d"
     },
     {
-      "path": "tools/runtime_stress.rb",
-      "bytes": 4471,
-      "sha256": "1dfdf212d58a558de8a91ef78e6482b6459ad031e58c6b00f517eac52ca611a3"
+      "path": "compiler/runtime.rb",
+      "bytes": 18553,
+      "sha256": "c04c4a16859723516e2e2a36e03613e82ef7b748ef11e32391da10d733fb93a1"
+    },
+    {
+      "path": "docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_16.txt",
+      "bytes": 1194,
+      "sha256": "9aa462e3f0f47ebe010f4368a9e471e4b86a314c713af5f0d1d53cd15b02be4e"
+    },
+    {
+      "path": "docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_16.md",
+      "bytes": 619,
+      "sha256": "0ef34efc6d387e906cab044f88e6b2bca9e10ad42433b94825543599c8c1ff7e"
+    },
+    {
+      "path": "docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md",
+      "bytes": 3621,
+      "sha256": "e92b7e78066b69238373e1801c6000a2ac042195c617f1a02573219f984a624c"
+    },
+    {
+      "path": "docs/hand_off/BASIC_SHARP_v0_1_16_NEW_THREAD_HANDOFF.md",
+      "bytes": 1212,
+      "sha256": "b170d8ec1910aa5a90b7b7abdf504a629e1b7121ed1bdadff703508cf633b628"
+    },
+    {
+      "path": "docs/ir/DKIR_MEANING_CONTRACT_v0_1_16.md",
+      "bytes": 1311,
+      "sha256": "fbc2a115e6857cb786b426e82b0d21e97b3aa2e3bc4efb6b569bf3162b476176"
+    },
+    {
+      "path": "docs/parser_contract_v0_1_16.md",
+      "bytes": 998,
+      "sha256": "5a2ab23340ecf5ebb5594f03f3335f8c36bec0f6af48517a76eedaf73bbae83e"
+    },
+    {
+      "path": "docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_16.md",
+      "bytes": 400,
+      "sha256": "66ff8592f97b648bede97e5b2cc7d4c86272a66611d90667e171d9dac8411b07"
+    },
+    {
+      "path": "docs/roadmap/BASIC_SHARP_ROADMAP.md",
+      "bytes": 3281,
+      "sha256": "ab04e388c0aefbf70975e5635da27e7dd6e2c1dee7e8a8d4319b729c05a8d6b6"
+    },
+    {
+      "path": "docs/runtime_contract_v0_1_16.md",
+      "bytes": 1379,
+      "sha256": "ce1b8f070291367bb7f6b7a0fc9478d4a09c79a2a59940a4123205ad28555339"
+    },
+    {
+      "path": "docs/session_logs/BASIC_SHARP_v0_1_16_SESSION_LOG.md",
+      "bytes": 958,
+      "sha256": "0afe794a72897454939e10e709d7efb946672dd1e67e5d6338f4a174d75c6746"
+    },
+    {
+      "path": "docs/testing/BASIC_SHARP_KIND_FAMILY_STRESS_TEST_v0_1_16.md",
+      "bytes": 1032,
+      "sha256": "ea4387a49fac109fa81873c0ac7f56db4268d9d176a464efa75ea853d42d2310"
+    },
+    {
+      "path": "docs/validation/BASIC_SHARP_VALIDATION_v0_1_16.md",
+      "bytes": 1545,
+      "sha256": "621c0347bcef29c9ee08dca3c9d127aa5a701fdc618d19d67729bfac9ed2112c"
+    },
+    {
+      "path": "samples/first_room.ir.json",
+      "bytes": 7873,
+      "sha256": "7e30a1a0662b9bdf4df7843805707bfdab81a2c5e806e2e662c6e76ad2b1e389"
+    },
+    {
+      "path": "tests/fixtures/first_room_v0_1_15.ir.json",
+      "bytes": 7873,
+      "sha256": "a9e312fa398343d1209838db2e83b03e4b3c4567f801b51033ba31765669b45d"
+    },
+    {
+      "path": "tests/test_cli_output.rb",
+      "bytes": 5819,
+      "sha256": "be179c4611005970a27214dc203057a5679dd53c190937956caa26c7fe84a698"
+    },
+    {
+      "path": "tests/test_identity_migration.rb",
+      "bytes": 3473,
+      "sha256": "1b83b49e81a3e9934bf9e4cc6a6ca58536b790d7311077dfc14e8482f603d045"
+    },
+    {
+      "path": "tests/test_ir_output.rb",
+      "bytes": 3121,
+      "sha256": "f4bd5d084f16c1a8a8da52ddb3d2b489e9a9a19805d247a0ca3c31c47a3ea315"
+    },
+    {
+      "path": "tests/test_kind_family_hardening.rb",
+      "bytes": 6864,
+      "sha256": "ec6c1fb234b6ffb122215c618bf22e4d07eeeb9dbb0de0dee3a31f4afe46813e"
+    },
+    {
+      "path": "tools/kind_family_stress.rb",
+      "bytes": 6274,
+      "sha256": "835171a98d3bef9305aff8f144a63ccf14e5517c341e00caac3f4fef1891aa8e"
     }
   ]
 }
