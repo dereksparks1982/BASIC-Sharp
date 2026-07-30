@@ -1,0 +1,57 @@
+# BASIC# Validation v0.1.18
+
+## Ruby syntax
+
+```text
+PASS
+```
+
+## Complete suite
+
+```text
+114 runs
+4,637 assertions
+0 failures
+0 errors
+0 skips
+```
+
+## Existing stress lanes
+
+```text
+Runtime stress PASS
+Kind-family stress PASS
+IF-rule stress PASS
+```
+
+## Multiple-selection stress
+
+```text
+1,024 total Things
+768 direct and inherited matches
+100 repeated multi-target events per path
+76,800 per-target mutations per path
+definition order PASS
+action-line order PASS
+singular context PASS
+empty set PASS
+bounded trace PASS
+complete structured results PASS
+source/saved-DKIR parity PASS
+runtime isolation PASS
+deterministic final world PASS
+MULTIPLE-SELECTION STRESS TEST PASS
+```
+
+## Compatibility
+
+```text
+v0.1.13 saved DKIR PASS
+v0.1.15 saved DKIR PASS
+v0.1.16 saved DKIR PASS
+v0.1.17 saved DKIR PASS
+```
+
+## Result
+
+Candidate internally validated. Owner installation and acceptance remain required before commit and tag.

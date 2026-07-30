@@ -49,6 +49,7 @@ module BasicSharp
       @if_active = Array.new(@ir.fetch('if_rules', []).length, false)
       load_kind_families
       create_things
+      validate_reference_contracts!
       apply_start_facts
       startup_settlement = settle_if_rules(cause: 'START')
       @startup_if_rules = startup_settlement.fetch('rules')
@@ -64,7 +65,8 @@ module BasicSharp
       rule = match.fetch('rule')
       context = match.fetch('context')
       actor = reference_name(rule.dig('when', 'actor'), context: context)
-      steps = run_action_list(rule.fetch('then', []), actor: actor, context: context)
+      selections = []
+      steps = run_action_list(rule.fetch('then', []), actor: actor, context: context, selections: selections)
       if_settlement = settle_if_rules(cause: 'event')
 
       result(
@@ -76,6 +78,7 @@ module BasicSharp
         matched_when: normalize(rule.dig('when', 'raw')),
         understood: context_explanations(rule, context),
         steps: steps,
+        selections: selections,
         if_rules: if_settlement.fetch('rules')
       )
     end
@@ -112,6 +115,11 @@ module BasicSharp
         event_result.fetch('understood').each { |line| lines << "  #{line}" }
       end
 
+      unless event_result.fetch('selections', []).empty?
+        lines << 'what I selected:'
+        append_selection_report(lines, event_result.fetch('selections'), indent: '  ')
+      end
+
       unless startup_if_rules.empty?
         lines << 'starting IF rules:'
         append_if_rule_report(lines, startup_if_rules)
@@ -120,10 +128,7 @@ module BasicSharp
 
       unless event_result.fetch('steps', []).empty?
         lines << 'what happened:'
-        event_result.fetch('steps').each do |step|
-          lines << "  #{step.fetch('word')}"
-          lines << "  #{step.fetch('change')}" if step['change']
-        end
+        append_steps_report(lines, event_result.fetch('steps'), indent: '  ')
       end
 
       unless event_result.fetch('if_rules', []).empty?
@@ -156,6 +161,90 @@ module BasicSharp
 
     def ir_errors
       @ir.fetch('diagnostics', []).select { |diagnostic| diagnostic['severity'] == 'error' }
+    end
+
+    def validate_reference_contracts!
+      @ir.fetch('facts', []).each do |fact|
+        validate_reference!(fact['subject'], location: :start)
+        validate_reference!(fact['target'], location: :start) if fact['target']
+      end
+
+      @ir.fetch('events', []).each do |rule|
+        when_part = rule.fetch('when')
+        validate_reference!(when_part['actor'], location: :event)
+        validate_reference!(when_part['target'], location: :event) if when_part['target']
+        rule.fetch('then', []).each { |word| validate_action_reference!(word) }
+      end
+
+      @ir.fetch('if_rules', []).each do |rule|
+        condition = rule.fetch('if')
+        validate_reference!(condition['subject'], location: :condition)
+        validate_reference!(condition['target'], location: :condition) if condition['target']
+        rule.fetch('then', []).each { |word| validate_action_reference!(word) }
+      end
+    end
+
+    def validate_action_reference!(word)
+      reference = word['target']
+      return unless reference
+
+      validate_reference!(reference, location: :action)
+
+      type = normalize(reference['type'])
+      return unless %w[kind_one kind].include?(type)
+
+      kind = normalize(reference['kind_name'] || reference['text']).sub(/\Aa\s+/, '')
+      raise ArgumentError,
+            "BASIC# cannot choose one #{kind} here.\n\nName the #{kind}, use 'that #{kind}' after selecting one in WHEN,\nor use 'every #{kind}' for all #{kind} Things."
+    end
+
+    def validate_reference!(reference, location:)
+      unless reference.is_a?(Hash)
+        raise ArgumentError, "#{reference_location_name(location)} reference must describe a Thing"
+      end
+
+      return unless normalize(reference['type']) == 'kind_set'
+
+      selector = reference['selector']
+      unless selector.is_a?(String)
+        raise ArgumentError, 'Set reference is missing its text selector'
+      end
+      unless normalize(selector) == 'every'
+        raise ArgumentError, "Set reference selector '#{selector}' is not supported; use 'every'"
+      end
+
+      unless reference.key?('kind_name')
+        raise ArgumentError, 'Set reference is missing its Kind name'
+      end
+
+      kind_value = reference['kind_name']
+      unless kind_value.is_a?(String)
+        raise ArgumentError, 'Set reference has a Kind name that is not text'
+      end
+
+      kind = normalize(kind_value)
+      raise ArgumentError, 'Set reference has an empty Kind name' if kind.empty?
+      raise ArgumentError, "Set reference uses unknown Kind '#{kind}'" unless @known_kinds.include?(kind)
+
+      case location
+      when :action
+        nil
+      when :event
+        raise ArgumentError, "'every #{kind}' can be used as an action target after <then>.\n\nWHEN still describes one event Thing."
+      when :start
+        raise ArgumentError, "'every #{kind}' can be used as an action target after <then>.\n\nSTART still describes one Thing at a time."
+      when :condition
+        raise ArgumentError, "'every #{kind}' is not yet supported inside an IF condition.\n\nBASIC# would need to know whether you mean every #{kind} or any #{kind}."
+      end
+    end
+
+    def reference_location_name(location)
+      {
+        start: 'START',
+        event: 'WHEN',
+        condition: 'IF',
+        action: 'Action target'
+      }.fetch(location, 'DKIR')
     end
 
 
@@ -318,7 +407,8 @@ module BasicSharp
 
           seen ||= { if_world_signature => true }
           @if_active[index] = true
-          steps = run_action_list(rule.fetch('then', []), actor: nil, context: {})
+          selections = []
+          steps = run_action_list(rule.fetch('then', []), actor: nil, context: {}, selections: selections)
           condition = normalize(rule.dig('if', 'raw'))
           reason = if initially_true[index] && !fired_indexes.include?(index)
                      cause == 'START' ? 'was true after START' : 'became true after the event'
@@ -328,7 +418,8 @@ module BasicSharp
           fired << {
             'condition' => condition,
             'reason' => reason,
-            'steps' => steps
+            'steps' => steps,
+            'selections' => selections
           }
           fired_indexes.add(index)
           condition_trail << condition
@@ -349,17 +440,45 @@ module BasicSharp
       { 'rules' => fired, 'error' => nil }
     end
 
-    def run_action_list(words, actor:, context:)
-      words.filter_map do |word|
-        changes = []
-        description = run_official_word(word, actor: actor, context: context, changes: changes)
-        next unless description
+    def run_action_list(words, actor:, context:, selections: [])
+      steps = []
 
-        {
-          'word' => description,
-          'change' => changes.first
-        }
+      words.each do |word|
+        selection = action_selection(word['target'], context: context)
+        if selection['set']
+          selections << selection.except('things')
+        end
+
+        targets = selection.fetch('things')
+        if targets.empty?
+          next unless selection['set']
+
+          action = normalize(word['action'])
+          text = selection.fetch('text')
+          steps << {
+            'word' => "(#{action} #{text}",
+            'notice_lines' => [
+              "#{text} found no Things",
+              "(#{action} had nothing to act on"
+            ],
+            'targets' => []
+          }
+          next
+        end
+
+        targets.each do |target|
+          changes = []
+          description = run_official_word(word, target: target, actor: actor, changes: changes)
+          next unless description
+
+          steps << {
+            'word' => description,
+            'change' => changes.first
+          }
+        end
       end
+
+      steps
     end
 
     def rearm_false_if_rules!
@@ -585,11 +704,35 @@ module BasicSharp
       explanations.uniq
     end
 
-    def run_official_word(word, actor:, context:, changes:)
-      name = normalize(word['action'])
-      target = thing_for_reference(word['target'], context: context)
-      return nil unless target
+    def action_selection(reference, context:)
+      if reference.is_a?(Hash) && normalize(reference['type']) == 'kind_set'
+        kind = normalize(reference['kind_name'])
+        names = @object_order.select do |name|
+          thing = @objects.fetch(name)
+          !kind_distance(thing.fetch('kind'), kind).nil?
+        end
+        return {
+          'set' => true,
+          'text' => "every #{kind}",
+          'kind_name' => kind,
+          'targets' => names,
+          'count' => names.length,
+          'things' => names.map { |name| @objects.fetch(name) }
+        }
+      end
 
+      target = thing_for_reference(reference, context: context)
+      {
+        'set' => false,
+        'text' => normalize(reference && reference['text']),
+        'targets' => target ? [target.fetch('name')] : [],
+        'count' => target ? 1 : 0,
+        'things' => target ? [target] : []
+      }
+    end
+
+    def run_official_word(word, target:, actor:, changes:)
+      name = normalize(word['action'])
       target_name = target.fetch('name')
       case name
       when 'damage'
@@ -646,7 +789,7 @@ module BasicSharp
       normalize(reference['name'] || reference['text'])
     end
 
-    def result(event_text, matched, ran, context, error, matched_when: nil, understood: [], steps: [], if_rules: [])
+    def result(event_text, matched, ran, context, error, matched_when: nil, understood: [], steps: [], selections: [], if_rules: [])
       {
         'event' => event_text,
         'matched' => matched,
@@ -654,6 +797,7 @@ module BasicSharp
         'understood' => understood,
         'ran' => ran,
         'steps' => steps,
+        'selections' => selections,
         'if_rules' => if_rules,
         'context' => context,
         'error' => error,
@@ -664,12 +808,41 @@ module BasicSharp
     def append_if_rule_report(lines, entries)
       entries.each do |entry|
         lines << "  #{entry.fetch('condition')} #{entry.fetch('reason')}"
+        unless entry.fetch('selections', []).empty?
+          lines << '  selected:'
+          append_selection_report(lines, entry.fetch('selections'), indent: '    ')
+        end
         lines << '  ran:'
-        entry.fetch('steps').each do |step|
-          lines << "    #{step.fetch('word')}"
-          lines << "    #{step.fetch('change')}" if step['change']
+        append_steps_report(lines, entry.fetch('steps'), indent: '    ')
+      end
+    end
+
+    def append_selection_report(lines, selections, indent:)
+      selections.each do |selection|
+        text = selection.fetch('text')
+        targets = selection.fetch('targets')
+        count = selection.fetch('count')
+
+        if count.zero?
+          lines << "#{indent}#{text} found no Things"
+        elsif count <= 12
+          lines << "#{indent}#{text} means #{targets.join(', ')}"
+        else
+          lines << "#{indent}#{text} selected #{count} Things:"
+          lines << "#{indent}  #{targets.first(12).join(', ')}"
+          lines << "#{indent}  and #{count - 12} more"
         end
       end
+    end
+
+    def append_steps_report(lines, steps, indent:)
+      visible = steps.length > 12 ? steps.first(12) : steps
+      visible.each do |step|
+        lines << "#{indent}#{step.fetch('word')}"
+        lines << "#{indent}#{step.fetch('change')}" if step['change']
+        step.fetch('notice_lines', []).each { |notice| lines << "#{indent}#{notice}" }
+      end
+      lines << "#{indent}and #{steps.length - 12} more action results" if steps.length > 12
     end
 
     def format_thing(thing)

@@ -84,16 +84,16 @@ module BasicSharp
         target_text = match[2]
         return {
           'line_number' => fact.line_number,
-          'subject' => resolve_reference(fact.subject, fact.line_number),
+          'subject' => resolve_reference(fact.subject, fact.line_number, usage: :start),
           'relation' => relation,
-          'target' => resolve_reference(target_text, fact.line_number),
+          'target' => resolve_reference(target_text, fact.line_number, usage: :start),
           'raw' => fact.to_h
         }
       end
 
       {
         'line_number' => fact.line_number,
-        'subject' => resolve_reference(fact.subject, fact.line_number),
+        'subject' => resolve_reference(fact.subject, fact.line_number, usage: :start),
         'relation' => fact.relation,
         'value' => resolve_state_or_phrase(value, fact.line_number),
         'raw' => fact.to_h
@@ -134,9 +134,9 @@ module BasicSharp
 
       {
         'raw' => normalize_name(text),
-        'actor' => resolve_reference(actor_text, line_number),
+        'actor' => resolve_reference(actor_text, line_number, usage: :event),
         'action' => action,
-        'target' => target_text.empty? ? nil : resolve_reference(target_text, line_number)
+        'target' => target_text.empty? ? nil : resolve_reference(target_text, line_number, usage: :event)
       }
     end
 
@@ -146,7 +146,7 @@ module BasicSharp
       resolved = {
         'line_number' => action.line_number,
         'action' => normalize_verb(action.verb),
-        'target' => action.target.to_s.empty? ? nil : resolve_reference(action.target, action.line_number)
+        'target' => action.target.to_s.empty? ? nil : resolve_reference(action.target, action.line_number, usage: :action_target)
       }
 
       if (match = action.tail.to_s.match(/\Ato\s+(.+)\z/))
@@ -171,21 +171,21 @@ module BasicSharp
       if (target_match = value.match(/\A(#{RELATIONAL_FACT_PREFIXES.join('|')})\s+(.+)\z/))
         return {
           'raw' => normalize_name(text),
-          'subject' => resolve_reference(subject, line_number),
+          'subject' => resolve_reference(subject, line_number, usage: :condition),
           'relation' => target_match[1],
-          'target' => resolve_reference(target_match[2], line_number)
+          'target' => resolve_reference(target_match[2], line_number, usage: :condition)
         }
       end
 
       {
         'raw' => normalize_name(text),
-        'subject' => resolve_reference(subject, line_number),
+        'subject' => resolve_reference(subject, line_number, usage: :condition),
         'relation' => relation,
         'value' => resolve_state_or_phrase(value, line_number)
       }
     end
 
-    def resolve_reference(text, line_number)
+    def resolve_reference(text, line_number, usage: nil)
       original = normalize_name(text)
       return reference('empty', original) if original.empty?
 
@@ -198,12 +198,14 @@ module BasicSharp
       if original.start_with?('every ')
         kind = original.sub(/\Aevery\s+/, '')
         diagnostics.error(line_number, "unknown kind '#{kind}'") unless dictionary.known_kind?(kind)
+        diagnose_kind_set_usage(original, line_number, usage)
         return reference('kind_set', original, 'selector' => 'every', 'kind_name' => kind, 'candidates' => dictionary.objects_by_kind(kind))
       end
 
       if original.start_with?('a ')
         kind = original.sub(/\Aa\s+/, '')
         diagnostics.error(line_number, "unknown kind '#{kind}'") unless dictionary.known_kind?(kind)
+        diagnose_unbound_single_action(kind, line_number) if usage == :action_target
         return reference('kind_one', original, 'selector' => 'a', 'kind_name' => kind, 'candidates' => dictionary.objects_by_kind(kind))
       end
 
@@ -213,10 +215,41 @@ module BasicSharp
       end
 
       return reference('object', original, 'name' => original, 'object_kind' => dictionary.object_kind(original)) if dictionary.known_object?(original)
-      return reference('kind', original, 'kind_name' => original, 'candidates' => dictionary.objects_by_kind(original)) if dictionary.known_kind?(original)
+      if dictionary.known_kind?(original)
+        diagnose_unbound_single_action(original, line_number) if usage == :action_target
+        return reference('kind', original, 'kind_name' => original, 'candidates' => dictionary.objects_by_kind(original))
+      end
 
       diagnostics.error(line_number, "unknown reference '#{original}': not a defined object and not a known kind")
       reference('unknown', original)
+    end
+
+    def diagnose_kind_set_usage(original, line_number, usage)
+      kind = original.sub(/\Aevery\s+/, '')
+      case usage
+      when :event
+        diagnostics.error(
+          line_number,
+          "'#{original}' can be used as an action target after <then>.\n\nWHEN still describes one event Thing."
+        )
+      when :start
+        diagnostics.error(
+          line_number,
+          "'#{original}' can be used as an action target after <then>.\n\nSTART still describes one Thing at a time."
+        )
+      when :condition
+        diagnostics.error(
+          line_number,
+          "'#{original}' is not yet supported inside an IF condition.\n\nBASIC# would need to know whether you mean every #{kind} or any #{kind}."
+        )
+      end
+    end
+
+    def diagnose_unbound_single_action(kind, line_number)
+      diagnostics.error(
+        line_number,
+        "BASIC# cannot choose one #{kind} here.\n\nName the #{kind}, use 'that #{kind}' after selecting one in WHEN,\nor use 'every #{kind}' for all #{kind} Things."
+      )
     end
 
     def resolve_definite_reference(original, stripped, line_number)

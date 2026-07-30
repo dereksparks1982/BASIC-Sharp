@@ -168,13 +168,14 @@ class TestKindFamilyHardening < Minitest::Test
     assert_equal 'henry says it is a wyrm, but wyrm is not a known Kind', error.message
   end
 
-  def test_v0_1_13_and_v0_1_15_saved_dkir_fixtures_still_run
+  def test_accepted_saved_dkir_fixtures_still_run
     root = File.expand_path('..', __dir__)
 
     {
       '0.1.13' => File.join(root, 'tests/fixtures/first_room_v0_1_13.ir.json'),
       '0.1.15' => File.join(root, 'tests/fixtures/first_room_v0_1_15.ir.json'),
-      '0.1.16' => File.join(root, 'tests/fixtures/first_room_v0_1_16.ir.json')
+      '0.1.16' => File.join(root, 'tests/fixtures/first_room_v0_1_16.ir.json'),
+      '0.1.17' => File.join(root, 'tests/fixtures/first_room_v0_1_17.ir.json')
     }.each do |version, path|
       document = JSON.parse(File.read(path))
       assert_equal version, document.fetch('version')

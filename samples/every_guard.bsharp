@@ -1,0 +1,31 @@
+KINDS
+[captain is a guard].
+
+DEFINE
+[a guard named henry
+a captain named mara
+a guard named otto
+a device named brass bell
+a door named north door
+a door named south door
+a key named brass key
+a key named iron key].
+
+START
+[henry is calm
+mara is calm
+otto is calm
+north door is locked
+south door is locked].
+
+WHEN
+[player sounds brass bell
+<then> (damage every guard
+<then> (change every guard to angry
+<then> (carry every key
+<then> (unlock every door].
+
+WHEN
+[player attacks a guard
+<then> (damage every guard
+<then> (change that guard to hostile].
