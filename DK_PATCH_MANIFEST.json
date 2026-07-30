@@ -2,11 +2,11 @@
   "format": "DK_CHANGED_FILES_PATCH",
   "format_version": 1,
   "project": "BASIC# Ruby Bootstrap Compiler",
-  "package_name": "BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_18_MULTIPLE_SELECTED_THINGS_AND_DETERMINISTIC_SET_ACTIONS_CHANGED_FILES_ONLY.zip",
-  "required_base": "accepted v0.1.17 Reactive IF Rules and Loop Protection; commit 78fa0c3; tag v0.1.17",
-  "base_validation": "95 runs, 4546 assertions, 0 failures, 0 errors, 0 skips; runtime, Kind-family, and IF-rule stress PASS",
-  "target_version": "v0.1.18",
-  "title": "Multiple Selected Things and Deterministic Set Actions",
+  "package_name": "BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_19_WHOLE_NUMBER_VALUES_AND_DAMAGE_AMOUNTS_CHANGED_FILES_ONLY.zip",
+  "required_base": "accepted v0.1.18 Multiple Selected Things and Deterministic Set Actions; commit 05eaf68; tag v0.1.18",
+  "base_validation": "114 runs, 4637 assertions, 0 failures, 0 errors, 0 skips; runtime, Kind-family, IF-rule, and multiple-selection stress PASS",
+  "target_version": "v0.1.19",
+  "title": "Whole-Number Values and Damage Amounts",
   "package_status": "candidate built and internally validated; owner installation and acceptance pending",
   "direct_project_root_payload": true,
   "changed_files_only": true,
@@ -15,55 +15,58 @@
   "manifest_excluded_from_own_hash_list": true,
   "project_path": "/home/dereksparks1982/DKLab/Projects/BASIC#",
   "package_utility_files": [
-    "APPLY_BASIC_SHARP_v0_1_18.sh"
+    "APPLY_BASIC_SHARP_v0_1_19.sh"
   ],
   "added_path_count": 16,
-  "modified_path_count": 12,
+  "modified_path_count": 15,
   "deleted_path_count": 0,
-  "changed_path_count_including_manifest": 28,
+  "changed_path_count_including_manifest": 31,
   "added_paths": [
-    "BUILD_HANDSHAKE_v0_1_18.md",
-    "docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_18.txt",
-    "docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_18.md",
-    "docs/hand_off/BASIC_SHARP_v0_1_18_NEW_THREAD_HANDOFF.md",
-    "docs/ir/DKIR_MEANING_CONTRACT_v0_1_18.md",
-    "docs/parser_contract_v0_1_18.md",
-    "docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_18.md",
-    "docs/runtime_contract_v0_1_18.md",
-    "docs/session_logs/BASIC_SHARP_v0_1_18_SESSION_LOG.md",
-    "docs/testing/BASIC_SHARP_MULTIPLE_SELECTION_STRESS_TEST_v0_1_18.md",
-    "docs/validation/BASIC_SHARP_VALIDATION_v0_1_18.md",
-    "samples/every_guard.bsharp",
-    "samples/every_guard.ir.json",
-    "tests/fixtures/first_room_v0_1_17.ir.json",
-    "tests/test_multiple_selection.rb",
-    "tools/multiple_selection_stress.rb"
+    "BUILD_HANDSHAKE_v0_1_19.md",
+    "docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_19.txt",
+    "docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_19.md",
+    "docs/hand_off/BASIC_SHARP_v0_1_19_NEW_THREAD_HANDOFF.md",
+    "docs/ir/DKIR_MEANING_CONTRACT_v0_1_19.md",
+    "docs/parser_contract_v0_1_19.md",
+    "docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_19.md",
+    "docs/runtime_contract_v0_1_19.md",
+    "docs/session_logs/BASIC_SHARP_v0_1_19_SESSION_LOG.md",
+    "docs/testing/BASIC_SHARP_VALUE_AMOUNT_STRESS_TEST_v0_1_19.md",
+    "docs/validation/BASIC_SHARP_VALIDATION_v0_1_19.md",
+    "samples/values_and_amounts.bsharp",
+    "samples/values_and_amounts.ir.json",
+    "tests/fixtures/first_room_v0_1_18.ir.json",
+    "tests/test_values_and_amounts.rb",
+    "tools/value_amount_stress.rb"
   ],
   "modified_paths": [
     "DK_PATCH_MANIFEST.json",
     "README.md",
     "compiler/ast_nodes.rb",
+    "compiler/parser.rb",
     "compiler/resolver.rb",
     "compiler/runtime.rb",
     "docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md",
     "docs/roadmap/BASIC_SHARP_ROADMAP.md",
+    "samples/every_guard.ir.json",
     "samples/first_room.ir.json",
     "tests/test_cli_output.rb",
     "tests/test_identity_migration.rb",
     "tests/test_ir_output.rb",
-    "tests/test_kind_family_hardening.rb"
+    "tests/test_kind_family_hardening.rb",
+    "tools/multiple_selection_stress.rb"
   ],
   "deletions": [],
   "master_handoff": "docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md",
-  "new_thread_handoff": "docs/hand_off/BASIC_SHARP_v0_1_18_NEW_THREAD_HANDOFF.md",
+  "new_thread_handoff": "docs/hand_off/BASIC_SHARP_v0_1_19_NEW_THREAD_HANDOFF.md",
   "internal_validation": {
     "ruby_syntax": "PASS",
     "ruby_warnings": 0,
     "compiler_errors": 0,
     "compiler_warnings": 0,
     "tests": {
-      "runs": 114,
-      "assertions": 4637,
+      "runs": 135,
+      "assertions": 4717,
       "failures": 0,
       "errors": 0,
       "skips": 0
@@ -91,34 +94,193 @@
     },
     "multiple_selection_stress": {
       "total_things": 1024,
-      "direct_guards": 512,
-      "inherited_captains": 256,
       "selected_things": 768,
       "repeated_events_per_path": 100,
       "per_target_mutations_per_path": 76800,
       "result": "PASS"
     },
-    "direct_kind_selection": "PASS",
-    "inherited_kind_selection": "PASS",
-    "definition_order_selection": "PASS",
-    "action_line_ordering": "PASS",
-    "singular_context_preserved": "PASS",
-    "empty_selection_handling": "PASS",
-    "bounded_human_trace": "PASS",
-    "complete_structured_results": "PASS",
+    "value_amount_stress": {
+      "total_things": 1024,
+      "selected_things": 768,
+      "repeated_events_per_path": 100,
+      "explicit_amount_mutations_per_path": 76800,
+      "exact_value_assignments_per_path": 76800,
+      "result": "PASS"
+    },
+    "default_damage_compatibility": "PASS",
+    "whole_number_values": "PASS",
+    "explicit_damage_amounts": "PASS",
+    "exact_value_assignment": "PASS",
+    "exact_value_if_reactivity": "PASS",
+    "missing_value_atomicity": "PASS",
+    "overflow_atomicity": "PASS",
+    "no_hidden_health_subtraction": "PASS",
     "source_saved_dkir_parity": "PASS",
     "v0_1_13_saved_dkir_compatibility": "PASS",
     "v0_1_15_saved_dkir_compatibility": "PASS",
     "v0_1_16_saved_dkir_compatibility": "PASS",
     "v0_1_17_saved_dkir_compatibility": "PASS",
+    "v0_1_18_saved_dkir_compatibility": "PASS",
     "separate_runtime_isolation": "PASS",
     "deterministic_replay": "PASS"
   },
   "files": [
     {
-      "path": "BUILD_HANDSHAKE_v0_1_18.md",
-      "bytes": 3147,
-      "sha256": "f316cc035f254e7f84e34dea041e5ef46e3dbd9129e4281de375ec47445e045a"
+      "path": "BUILD_HANDSHAKE_v0_1_19.md",
+      "bytes": 3798,
+      "sha256": "b601ac1cae07e1b73d8624e80349c5cd48d7ced20fd1ae18f5b364e15c17521e"
+    },
+    {
+      "path": "README.md",
+      "bytes": 5046,
+      "sha256": "4f268295f9a75ad738ccf298f3e53fd513dd2e4d5dca2c6c133b8f794a026fb9"
+    },
+    {
+      "path": "compiler/ast_nodes.rb",
+      "bytes": 2244,
+      "sha256": "3634310ec3727b1e8b4d29370289de5af4dce60dab986729704cdc01cf5681ae"
+    },
+    {
+      "path": "compiler/parser.rb",
+      "bytes": 8938,
+      "sha256": "f30a3a48b699f23b86c555bcb0fff995915566cdaab8986a0f1a703acf1cee34"
+    },
+    {
+      "path": "compiler/resolver.rb",
+      "bytes": 17476,
+      "sha256": "1825958b6f9e5ac3b14934cf66086494374398cfb4810466902bc0f89acef02e"
+    },
+    {
+      "path": "compiler/runtime.rb",
+      "bytes": 35435,
+      "sha256": "32e4987445c444fb0d758aae4962df8298ce108cea795a0e18059cee49424748"
+    },
+    {
+      "path": "docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_19.txt",
+      "bytes": 1516,
+      "sha256": "915df4a5259eac3bf5f1f589a523344408da8289c26142404a84eb6e4bc2dd96"
+    },
+    {
+      "path": "docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_19.md",
+      "bytes": 673,
+      "sha256": "e411f8b482dce0ef7faafe83bfc6f27e24b8561817984c50b1720cc0644ec31b"
+    },
+    {
+      "path": "docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md",
+      "bytes": 3059,
+      "sha256": "07e8c890a8f8a1822ac32193f53c71d5be6d0e9e24940dea60e13fd61006c5e8"
+    },
+    {
+      "path": "docs/hand_off/BASIC_SHARP_v0_1_19_NEW_THREAD_HANDOFF.md",
+      "bytes": 1241,
+      "sha256": "31319a80b1fec8b73a0ba1233b67b4b05fa7cbd917e01ff40021db5d447e5284"
+    },
+    {
+      "path": "docs/ir/DKIR_MEANING_CONTRACT_v0_1_19.md",
+      "bytes": 1151,
+      "sha256": "b2a2d9d9c3c6587b9bc5685e67a006fb1daa56f56843874cbd7223f960a6b352"
+    },
+    {
+      "path": "docs/parser_contract_v0_1_19.md",
+      "bytes": 1158,
+      "sha256": "08d5d45d9dd900de3fb7906db7e508cdd6e80d61f2449f2ebda3893a1c0a74ca"
+    },
+    {
+      "path": "docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_19.md",
+      "bytes": 517,
+      "sha256": "cdf63927d4107e42d97503f6fd350cf739105ab025d97992c0d16f5cb9712f87"
+    },
+    {
+      "path": "docs/roadmap/BASIC_SHARP_ROADMAP.md",
+      "bytes": 3172,
+      "sha256": "c5f8b2de997d1f08a006d3ca0f81199eed2a22ed8f2f6b8c50f8a2fc663813a5"
+    },
+    {
+      "path": "docs/runtime_contract_v0_1_19.md",
+      "bytes": 1633,
+      "sha256": "19e967d3da4cf27c8cd2291baed96d3b3564c0fbbdcaf98bc5d102c016f3ad31"
+    },
+    {
+      "path": "docs/session_logs/BASIC_SHARP_v0_1_19_SESSION_LOG.md",
+      "bytes": 701,
+      "sha256": "fdedf100fbfcd6deab1b10cebc7b76e5640cb0dd17f437dea190cf20d2437d04"
+    },
+    {
+      "path": "docs/testing/BASIC_SHARP_VALUE_AMOUNT_STRESS_TEST_v0_1_19.md",
+      "bytes": 814,
+      "sha256": "c14a5506f68b82e3b998422c09887a48c27633f1831a3244805a66fc10560ee2"
+    },
+    {
+      "path": "docs/validation/BASIC_SHARP_VALIDATION_v0_1_19.md",
+      "bytes": 1007,
+      "sha256": "ce851245411eeec790ac21749bc77302291f1849312749e6847d8ce734d2b27a"
+    },
+    {
+      "path": "samples/every_guard.ir.json",
+      "bytes": 6492,
+      "sha256": "e7d408fa36492dbb6fd2daac92a9717c6272919a4278c1adad93361f75e57a5c"
+    },
+    {
+      "path": "samples/first_room.ir.json",
+      "bytes": 8579,
+      "sha256": "c0a75bfa126d3053ebc3e93068d9fdd70ffe905643198271dab680caaf906b86"
+    },
+    {
+      "path": "samples/values_and_amounts.bsharp",
+      "bytes": 419,
+      "sha256": "5e1e0684e0e14c980cf43146a5d13973299471bd48aaaa772b37d7addd3fc168"
+    },
+    {
+      "path": "samples/values_and_amounts.ir.json",
+      "bytes": 4844,
+      "sha256": "11fda31f43d024c7cd071cfe8198c7498e3b30095756ebd2fe3899dea26a0c02"
+    },
+    {
+      "path": "tests/fixtures/first_room_v0_1_18.ir.json",
+      "bytes": 8487,
+      "sha256": "006147ef52651199e58713a3f7bb2df72393d23569d223580a727d91c6817b83"
+    },
+    {
+      "path": "tests/test_cli_output.rb",
+      "bytes": 5986,
+      "sha256": "800d9405e85b290ca763b9b00992c05aceab60d632366265e84f6bbc5d855ac1"
+    },
+    {
+      "path": "tests/test_identity_migration.rb",
+      "bytes": 3473,
+      "sha256": "580ed67e46e232d9f86cb7f5886ab4e65153d79bdc923ad3e13c3c58243e7e1c"
+    },
+    {
+      "path": "tests/test_ir_output.rb",
+      "bytes": 3121,
+      "sha256": "af15f1dc86729d52d9dd985dfcb4b95463cdfed82f443b39744090d141ce0394"
+    },
+    {
+      "path": "tests/test_kind_family_hardening.rb",
+      "bytes": 7093,
+      "sha256": "757a7c73e9cfbdae5aa1548e3bd7f1a2b54cdf0a05ec7702cc1071cb3f0cae49"
+    },
+    {
+      "path": "tests/test_values_and_amounts.rb",
+      "bytes": 13213,
+      "sha256": "89201fbafa21d82a6ac4084e7949df1b4a53f785623a0dfc7eefb6c03bafe415"
+    },
+    {
+      "path": "tools/multiple_selection_stress.rb",
+      "bytes": 7027,
+      "sha256": "028c5574cfe0c0fcecdbd8cc6893df0e67d6131af951e3351a6015f76420c7fb"
+    },
+    {
+      "path": "tools/value_amount_stress.rb",
+      "bytes": 8293,
+      "sha256": "024c29338bdca9577afcbd0a0c7cfb34f5ad0a1a11c757042746186742e49878"
+    }
+  ],
+  "base_files": [
+    {
+      "path": "DK_PATCH_MANIFEST.json",
+      "bytes": 10873,
+      "sha256": "949c0048c979c84982d92da64fe86fe0af4e9e7f1a8eb079f08f85a9d0fa7ba5"
     },
     {
       "path": "README.md",
@@ -131,6 +293,11 @@
       "sha256": "cdcd4fc3a4ef357218f37f635798a13eb916b290eea8885515d32035ba550b42"
     },
     {
+      "path": "compiler/parser.rb",
+      "bytes": 8699,
+      "sha256": "0b6f194e7c2047d82a1caf2d15990d9c49701e80b20ca6d91688f740e22ae7e7"
+    },
+    {
       "path": "compiler/resolver.rb",
       "bytes": 11362,
       "sha256": "9fe84eb78db6995d8589ef25fba53bdeffd9d00011a1687ac1bcc25d35e998ad"
@@ -141,69 +308,14 @@
       "sha256": "346544dd69d3749b418ddde2622fe54fa3f956d4b125058de486125ac61739a4"
     },
     {
-      "path": "docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_18.txt",
-      "bytes": 1162,
-      "sha256": "de24fa0ab1d619d4f9c461ceb06f8bfa5c9ba8da63e8eb3d6e64dbd1cbb960f7"
-    },
-    {
-      "path": "docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_18.md",
-      "bytes": 925,
-      "sha256": "f52350f0ce6f4d79f45df19002101294f29f80117a096cde12109dbddc5e017a"
-    },
-    {
       "path": "docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md",
       "bytes": 2676,
       "sha256": "56e45927d0cc4b66289e89eda0a0ebe17f38228dc4c5a0ec6d76e9b7634f14af"
     },
     {
-      "path": "docs/hand_off/BASIC_SHARP_v0_1_18_NEW_THREAD_HANDOFF.md",
-      "bytes": 1154,
-      "sha256": "3868e93b47045eab50eb6575ed42a63e8c99f27bef379e1d098f9f7c2c68af7f"
-    },
-    {
-      "path": "docs/ir/DKIR_MEANING_CONTRACT_v0_1_18.md",
-      "bytes": 1111,
-      "sha256": "06f71141298764b5fac0e6b1d7dc7a4187285fe8f883a68fd07b28536206fd5d"
-    },
-    {
-      "path": "docs/parser_contract_v0_1_18.md",
-      "bytes": 1134,
-      "sha256": "d96f70c7fdd2b688d26ae840cacfac7eb1bccd6a32df58b0e7f896f0d02f613a"
-    },
-    {
-      "path": "docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_18.md",
-      "bytes": 573,
-      "sha256": "ab53088888eff985b0824eefd0b67b7ce4315687b59c7d9efaa320ff914ec6f3"
-    },
-    {
       "path": "docs/roadmap/BASIC_SHARP_ROADMAP.md",
       "bytes": 2512,
       "sha256": "24d6cbd0050bff89dfaff35565bf348ea19d89612ab52626787f4153b30ae1fe"
-    },
-    {
-      "path": "docs/runtime_contract_v0_1_18.md",
-      "bytes": 1831,
-      "sha256": "eb172db0eda6491415748974799b8bb4129a84441f67abd3911f11775ec771f6"
-    },
-    {
-      "path": "docs/session_logs/BASIC_SHARP_v0_1_18_SESSION_LOG.md",
-      "bytes": 801,
-      "sha256": "90580331c1172905261ed5eca3c406270bece142332b51803d3f67ca0a3e1bc3"
-    },
-    {
-      "path": "docs/testing/BASIC_SHARP_MULTIPLE_SELECTION_STRESS_TEST_v0_1_18.md",
-      "bytes": 814,
-      "sha256": "112b0a65e7753842388ac28f6e66c6557310c70594de1c1c7feab720001f2cac"
-    },
-    {
-      "path": "docs/validation/BASIC_SHARP_VALIDATION_v0_1_18.md",
-      "bytes": 923,
-      "sha256": "5658973944913cba1b5a2f1efa748d84e7b3a5e0f450962aed7982fcfd7732d8"
-    },
-    {
-      "path": "samples/every_guard.bsharp",
-      "bytes": 551,
-      "sha256": "43ea6e4dc2c090330f6ab69e619cf1aadc4411e1e9b2cd7479a40f1961049e42"
     },
     {
       "path": "samples/every_guard.ir.json",
@@ -214,11 +326,6 @@
       "path": "samples/first_room.ir.json",
       "bytes": 8487,
       "sha256": "006147ef52651199e58713a3f7bb2df72393d23569d223580a727d91c6817b83"
-    },
-    {
-      "path": "tests/fixtures/first_room_v0_1_17.ir.json",
-      "bytes": 8487,
-      "sha256": "bfdc135be8a2485c2cb365efb7992224db859319930b76ef9f54b32911d036d5"
     },
     {
       "path": "tests/test_cli_output.rb",
@@ -241,76 +348,9 @@
       "sha256": "b2d226549178562c4615c43181d98b205865e1805e46327e00ae86613e27ccbb"
     },
     {
-      "path": "tests/test_multiple_selection.rb",
-      "bytes": 12652,
-      "sha256": "34f48b54d6231ec656b18dd78b98eeab0d6b5bf0997e6d7ac1b6dffd968386ab"
-    },
-    {
       "path": "tools/multiple_selection_stress.rb",
       "bytes": 7011,
       "sha256": "82cea5c3a99aed83d992a6b3e25e20b4a536d5133b13849e6b89beb745a67611"
-    }
-  ],
-  "base_files": [
-    {
-      "path": "DK_PATCH_MANIFEST.json",
-      "bytes": 10254,
-      "sha256": "c3c88d22c93020f5c1f29abc3ae1b0e12985351ae68b26b40b5c8eecfad35fb3"
-    },
-    {
-      "path": "README.md",
-      "bytes": 3413,
-      "sha256": "1ef397f205059ef27fdfdb48a053f45f240fa4b3130bf6b368c72217dcf21cc4"
-    },
-    {
-      "path": "compiler/ast_nodes.rb",
-      "bytes": 2244,
-      "sha256": "923487a0bd7c2e2b78f92a02331b6cf9655b3acfc4ebe975b74d686176fd47de"
-    },
-    {
-      "path": "compiler/resolver.rb",
-      "bytes": 9896,
-      "sha256": "de6a7a97a1fe4bc9c28ec17ae3e4ebacbd570246ee17998456487f4e84c98f87"
-    },
-    {
-      "path": "compiler/runtime.rb",
-      "bytes": 21947,
-      "sha256": "b2d53e38ede685f47c927374fbbfd78f2c32f7c99e8ad1742fab1c490d619f33"
-    },
-    {
-      "path": "docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md",
-      "bytes": 2242,
-      "sha256": "0afcaabe4b4c8bea5177b9886f00aaef1ec9fae1b5aafbe29bcad98e620ae1ac"
-    },
-    {
-      "path": "docs/roadmap/BASIC_SHARP_ROADMAP.md",
-      "bytes": 2124,
-      "sha256": "36762e32a3a1cb9fbb34460fcc787aeca21bbf9a4d7268890913ff9cbe3c2c57"
-    },
-    {
-      "path": "samples/first_room.ir.json",
-      "bytes": 8487,
-      "sha256": "bfdc135be8a2485c2cb365efb7992224db859319930b76ef9f54b32911d036d5"
-    },
-    {
-      "path": "tests/test_cli_output.rb",
-      "bytes": 5986,
-      "sha256": "444aa9a0882a23e4484783761496592fca9a3f7715ace4c962fabd53c3e412c0"
-    },
-    {
-      "path": "tests/test_identity_migration.rb",
-      "bytes": 3473,
-      "sha256": "7d8858b968d867a29f2ca964e3d864246f8e672644fc34724b7ed2948ba4052a"
-    },
-    {
-      "path": "tests/test_ir_output.rb",
-      "bytes": 3121,
-      "sha256": "cfcfac0c8fe54b571a0e77f10bb0a007f89ef4644e7dd85eee55e9b72d127cbe"
-    },
-    {
-      "path": "tests/test_kind_family_hardening.rb",
-      "bytes": 6944,
-      "sha256": "4e8b9efb050e8a1dd9cbe0070474fd9cbf5a41b978f0edadd71813cfac6beac8"
     }
   ]
 }

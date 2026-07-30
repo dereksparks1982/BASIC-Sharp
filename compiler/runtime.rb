@@ -7,6 +7,9 @@ require_relative 'dictionary'
 
 module BasicSharp
   class Runtime
+    MAX_WHOLE_NUMBER = 2_147_483_647
+    VALUE_NAME_PATTERN = /\A[a-z][a-z0-9]*\z/
+
     OPPOSITE_STATES = {
       'open' => 'closed',
       'closed' => 'open',
@@ -50,6 +53,7 @@ module BasicSharp
       load_kind_families
       create_things
       validate_reference_contracts!
+      validate_numeric_contracts!
       apply_start_facts
       startup_settlement = settle_if_rules(cause: 'START')
       @startup_if_rules = startup_settlement.fetch('rules')
@@ -66,15 +70,20 @@ module BasicSharp
       context = match.fetch('context')
       actor = reference_name(rule.dig('when', 'actor'), context: context)
       selections = []
-      steps = run_action_list(rule.fetch('then', []), actor: actor, context: context, selections: selections)
-      if_settlement = settle_if_rules(cause: 'event')
+      action_result = run_action_list(rule.fetch('then', []), actor: actor, context: context, selections: selections)
+      steps = action_result.fetch('steps')
+      if_settlement = if action_result['error']
+                        { 'rules' => [], 'error' => nil }
+                      else
+                        settle_if_rules(cause: 'event')
+                      end
 
       result(
         event_text,
         true,
         steps.map { |step| step.fetch('word') },
         context,
-        if_settlement['error'],
+        action_result['error'] || if_settlement['error'],
         matched_when: normalize(rule.dig('when', 'raw')),
         understood: context_explanations(rule, context),
         steps: steps,
@@ -91,9 +100,11 @@ module BasicSharp
           'kind' => thing.fetch('kind'),
           'builtin' => thing.fetch('builtin'),
           'states' => thing.fetch('states').to_a.sort,
-          'relations' => thing.fetch('relations').sort.to_h
+          'relations' => thing.fetch('relations').sort.to_h,
+          'values' => thing.fetch('values').sort.to_h
         }
-        entry['damage'] = thing.fetch('damage') if thing.fetch('damage').positive?
+        damage = thing.fetch('values').fetch('damage', 0)
+        entry['damage'] = damage if damage.positive?
         entry
       end
     end
@@ -238,6 +249,86 @@ module BasicSharp
       end
     end
 
+    def validate_numeric_contracts!
+      starting_values = {}
+
+      @ir.fetch('facts', []).each_with_index do |fact, index|
+        next unless normalize(fact['relation']) == 'has'
+
+        value_name = validate_value_name_field!(fact, 'value_name', "START value entry #{index + 1}")
+        amount = validate_whole_number_field!(fact, 'amount', minimum: 0, label: "START #{value_name} amount")
+        subject_name = reference_name(fact['subject'])
+        next unless subject_name
+
+        key = [subject_name, value_name]
+        if starting_values.key?(key)
+          raise ArgumentError, "#{subject_name} already has a starting #{value_name} value.
+Choose one starting amount."
+        end
+        starting_values[key] = amount
+      end
+
+      @ir.fetch('events', []).each do |rule|
+        rule.fetch('then', []).each { |word| validate_numeric_action!(word) }
+      end
+
+      @ir.fetch('if_rules', []).each do |rule|
+        condition = rule.fetch('if')
+        if normalize(condition['relation']) == 'has'
+          value_name = validate_value_name_field!(condition, 'value_name', 'IF value condition')
+          validate_whole_number_field!(condition, 'amount', minimum: 0, label: "IF #{value_name} amount")
+        end
+        rule.fetch('then', []).each { |word| validate_numeric_action!(word) }
+      end
+    end
+
+    def validate_numeric_action!(word)
+      action = normalize(word['action'])
+      if action == 'damage'
+        return unless word.key?('amount')
+
+        validate_whole_number_field!(word, 'amount', minimum: 1, label: 'Damage amount')
+        return
+      end
+
+      return unless action == 'change'
+
+      numeric_shape = word.key?('value_name') || word.key?('to_amount')
+      return unless numeric_shape
+
+      value_name = validate_value_name_field!(word, 'value_name', 'Value change')
+      validate_whole_number_field!(word, 'to_amount', minimum: 0, label: "New #{value_name} amount")
+      raise ArgumentError, 'Value change cannot also contain a state target' if word.key?('to')
+    end
+
+    def validate_value_name_field!(entry, key, label)
+      raise ArgumentError, "#{label} is missing its value name" unless entry.key?(key)
+
+      value = entry[key]
+      raise ArgumentError, "#{label} has a value name that is not text" unless value.is_a?(String)
+
+      normalized = normalize(value)
+      raise ArgumentError, "#{label} has an empty value name" if normalized.empty?
+      unless VALUE_NAME_PATTERN.match?(normalized)
+        raise ArgumentError, "Value name '#{normalized}' must be one plain word"
+      end
+
+      normalized
+    end
+
+    def validate_whole_number_field!(entry, key, minimum:, label:)
+      raise ArgumentError, "#{label} is missing" unless entry.key?(key)
+
+      amount = entry[key]
+      raise ArgumentError, "#{label} must be a whole number" unless amount.is_a?(Integer)
+      raise ArgumentError, "#{label} must be at least #{minimum}" if amount < minimum
+      if amount > MAX_WHOLE_NUMBER
+        raise ArgumentError, "#{label} cannot be greater than #{MAX_WHOLE_NUMBER}"
+      end
+
+      amount
+    end
+
     def reference_location_name(location)
       {
         start: 'START',
@@ -355,6 +446,7 @@ module BasicSharp
           'builtin' => object.fetch('builtin', false),
           'states' => Set.new,
           'relations' => {},
+          'values' => { 'damage' => 0 },
           'damage' => 0
         }
       end
@@ -364,6 +456,14 @@ module BasicSharp
       @ir.fetch('facts', []).each do |fact|
         subject = thing_for_reference(fact['subject'])
         next unless subject
+
+        if normalize(fact['relation']) == 'has'
+          value_name = normalize(fact['value_name'])
+          amount = fact['amount']
+          subject.fetch('values')[value_name] = amount
+          subject['damage'] = amount if value_name == 'damage'
+          next
+        end
 
         if fact['target']
           target_name = reference_name(fact['target'])
@@ -408,7 +508,8 @@ module BasicSharp
           seen ||= { if_world_signature => true }
           @if_active[index] = true
           selections = []
-          steps = run_action_list(rule.fetch('then', []), actor: nil, context: {}, selections: selections)
+          action_result = run_action_list(rule.fetch('then', []), actor: nil, context: {}, selections: selections)
+          steps = action_result.fetch('steps')
           condition = normalize(rule.dig('if', 'raw'))
           reason = if initially_true[index] && !fired_indexes.include?(index)
                      cause == 'START' ? 'was true after START' : 'became true after the event'
@@ -426,6 +527,8 @@ module BasicSharp
           condition_trail.shift while condition_trail.length > 3
           fired_this_pass = true
 
+          return { 'rules' => fired, 'error' => action_result['error'] } if action_result['error']
+
           rearm_false_if_rules!
           signature = if_world_signature
           if seen.key?(signature)
@@ -442,12 +545,11 @@ module BasicSharp
 
     def run_action_list(words, actor:, context:, selections: [])
       steps = []
+      error = nil
 
       words.each do |word|
         selection = action_selection(word['target'], context: context)
-        if selection['set']
-          selections << selection.except('things')
-        end
+        selections << selection.except('things') if selection['set']
 
         targets = selection.fetch('things')
         if targets.empty?
@@ -456,7 +558,7 @@ module BasicSharp
           action = normalize(word['action'])
           text = selection.fetch('text')
           steps << {
-            'word' => "(#{action} #{text}",
+            'word' => display_action_for_selection(word, text),
             'notice_lines' => [
               "#{text} found no Things",
               "(#{action} had nothing to act on"
@@ -466,19 +568,54 @@ module BasicSharp
           next
         end
 
-        targets.each do |target|
-          changes = []
-          description = run_official_word(word, target: target, actor: actor, changes: changes)
-          next unless description
-
+        preflight_error = preflight_action(word, targets)
+        if preflight_error
           steps << {
-            'word' => description,
-            'change' => changes.first
+            'word' => display_action_for_selection(word, selection.fetch('text')),
+            'notice_lines' => [preflight_error, 'Nothing in this action line was changed.'],
+            'targets' => targets.map { |target| target.fetch('name') }
           }
+          error = preflight_error
+          break
+        end
+
+        targets.each do |target|
+          step = run_official_word(word, target: target, actor: actor)
+          steps << step if step
         end
       end
 
-      steps
+      { 'steps' => steps, 'error' => error }
+    end
+
+    def display_action_for_selection(word, text)
+      action = normalize(word['action'])
+      if action == 'damage'
+        amount = word.fetch('amount', 1)
+        return amount == 1 ? "(damage #{text}" : "(damage #{text} by #{amount}"
+      end
+      if action == 'change' && word['value_name']
+        return "(change #{normalize(word['value_name'])} of #{text} to #{word['to_amount']}"
+      end
+
+      "(#{action} #{text}"
+    end
+
+    def preflight_action(word, targets)
+      action = normalize(word['action'])
+      if action == 'damage'
+        amount = word.fetch('amount', 1)
+        overflowing = targets.find do |target|
+          target.fetch('values').fetch('damage', 0) > MAX_WHOLE_NUMBER - amount
+        end
+        return "#{overflowing.fetch('name')} damage would be greater than #{MAX_WHOLE_NUMBER}" if overflowing
+      elsif action == 'change' && word['value_name']
+        value_name = normalize(word['value_name'])
+        missing = targets.find { |target| !target.fetch('values').key?(value_name) }
+        return "#{missing.fetch('name')} does not have a value named #{value_name}." if missing
+      end
+
+      nil
     end
 
     def rearm_false_if_rules!
@@ -499,6 +636,11 @@ module BasicSharp
     def condition_true?(condition)
       subject = thing_for_reference(condition['subject'])
       return false unless subject
+
+      if normalize(condition['relation']) == 'has'
+        value_name = normalize(condition['value_name'])
+        return subject.fetch('values')[value_name] == condition['amount']
+      end
 
       if condition['target']
         relation = normalize(condition['relation'])
@@ -731,33 +873,62 @@ module BasicSharp
       }
     end
 
-    def run_official_word(word, target:, actor:, changes:)
+    def run_official_word(word, target:, actor:)
       name = normalize(word['action'])
       target_name = target.fetch('name')
       case name
       when 'damage'
-        target['damage'] += 1
-        changes << "#{target_name} damage is now #{target.fetch('damage')}" if changes
-        "(damage #{target_name}"
+        amount = word.fetch('amount', 1)
+        old_amount = target.fetch('values').fetch('damage', 0)
+        new_amount = old_amount + amount
+        target.fetch('values')['damage'] = new_amount
+        target['damage'] = new_amount
+        step = {
+          'word' => amount == 1 ? "(damage #{target_name}" : "(damage #{target_name} by #{amount}",
+          'change' => amount == 1 ? "#{target_name} damage is now #{new_amount}" : "#{target_name} damage changed from #{old_amount} to #{new_amount}"
+        }
+        if amount != 1
+          step['value_change'] = {
+            'value_name' => 'damage',
+            'old_amount' => old_amount,
+            'new_amount' => new_amount,
+            'action_amount' => amount
+          }
+        end
+        step
       when 'change'
+        if word['value_name']
+          value_name = normalize(word['value_name'])
+          old_amount = target.fetch('values').fetch(value_name)
+          new_amount = word.fetch('to_amount')
+          target.fetch('values')[value_name] = new_amount
+          target['damage'] = new_amount if value_name == 'damage'
+          return {
+            'word' => "(change #{value_name} of #{target_name} to #{new_amount}",
+            'change' => "#{target_name} #{value_name} changed from #{old_amount} to #{new_amount}",
+            'value_change' => {
+              'value_name' => value_name,
+              'old_amount' => old_amount,
+              'new_amount' => new_amount
+            }
+          }
+        end
+
         state = word.dig('to', 'name') || word.dig('to', 'text')
         return nil unless state
 
         state_name = normalize(state)
         set_state(target, state_name)
-        changes << "#{target_name} is now #{state_name}" if changes
-        "(change #{target_name} to #{state_name}"
+        { 'word' => "(change #{target_name} to #{state_name}", 'change' => "#{target_name} is now #{state_name}" }
       when 'carry'
         carrier = actor || 'player'
         target.fetch('relations').delete('on')
         target.fetch('relations').delete('in')
         target.fetch('relations')['carried by'] = carrier
-        changes << "#{target_name} is now carried by #{carrier}" if changes
-        "(carry #{target_name}"
+        { 'word' => "(carry #{target_name}", 'change' => "#{target_name} is now carried by #{carrier}" }
       when 'unlock'
         set_state(target, 'unlocked')
-        changes << "#{target_name} is now unlocked" if changes
-        "(unlock #{target_name}"
+        { 'word' => "(unlock #{target_name}", 'change' => "#{target_name} is now unlocked" }
       else
         raise ArgumentError, "runtime does not know how to run (#{name}"
       end
@@ -850,6 +1021,11 @@ module BasicSharp
       states = thing.fetch('states')
       details << "states=#{states.join(', ')}" unless states.empty?
       details << "damage=#{thing.fetch('damage')}" if thing.key?('damage')
+      thing.fetch('values', {}).each do |value_name, amount|
+        next if value_name == 'damage'
+
+        details << "#{value_name}=#{amount}"
+      end
       thing.fetch('relations').each { |relation, target| details << "#{relation}=#{target}" }
       "#{thing.fetch('name')}: #{details.join('; ')}"
     end

@@ -1,0 +1,24 @@
+KINDS
+[captain is a guard].
+
+DEFINE
+[a guard named henry
+ a captain named mara
+ a device named brass bell].
+
+START
+[henry has 10 health
+ mara has 10 health
+ brass bell has 3 charges
+ henry is calm
+ mara is calm].
+
+WHEN
+[player sounds brass bell
+<then> (damage every guard by 3
+<then> (change health of every guard to 7
+<then> (change charges of brass bell to 2].
+
+IF
+[henry has 3 damage
+<then> (change henry to angry].

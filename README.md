@@ -1,4 +1,4 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.18
+# BASIC# Ruby Bootstrap Compiler v0.1.19
 
 **Language name:** BASIC#  
 **Pronounced:** Basic Sharp  
@@ -9,53 +9,92 @@
 
 BASIC# lets a creator describe what exists and what should happen without first becoming a conventional programmer. The compiler and runtime carry the mechanical weight.
 
-v0.1.18 activates the existing `every Kind` reference as an action target. One official-word line can now select every compatible Thing in deterministic definition order, including Things whose Kinds inherit from the requested Kind.
+v0.1.19 adds a deliberately small number foundation: whole-number values attached to Things, explicit damage amounts, exact value assignment, and exact-value IF conditions. It does not add equations, variables, decimals, percentages, or hidden combat formulas.
 
-## Multiple-selection example
+## Value example
 
 ```text
-KINDS
-[captain is a guard].
-
-DEFINE
-[a guard named henry
- a captain named mara
- a guard named otto
- a device named brass bell].
+START
+[henry has 10 health
+ brass bell has 3 charges].
 
 WHEN
 [player sounds brass bell
-<then> (damage every guard
-<then> (change every guard to angry].
+<then> (damage henry by 3
+<then> (change charges of brass bell to 2].
+
+IF
+[henry has 3 damage
+<then> (change henry to angry].
 ```
 
-The first action damages Henry, Mara, and Otto in definition order. The second action then changes Henry, Mara, and Otto to angry in the same order.
+## Whole-number contract
 
-`that guard` remains singular event context. A plural action never replaces it with a list.
-
-## Allowed position
-
-`every Kind` is accepted as the target of an official word after `<then>` in `WHEN` and `IF` rules.
-
-It is not yet accepted in START facts, WHEN Triggers, or IF conditions. BASIC# explains those cases instead of guessing all-versus-any meaning.
-
-## Empty selections
-
-A known Kind with no current Things is valid and nonfatal:
+BASIC# v0.1.19 accepts whole numbers from:
 
 ```text
-<then> (damage every dragon
+0 through 2147483647
 ```
 
-The runtime reports that nothing was selected and continues with later action lines. An unknown Kind remains a compiler error.
+Use digits without commas. Negative numbers, decimals, fractions, number words, and scientific notation are not part of this build.
 
-## Deterministic order
+Damage amounts must be at least 1. Starting values and exact value assignments may be 0.
 
-- Selection follows DKIR object order, normally creator DEFINE order.
-- Direct and inherited Kind matches are included.
-- One action line completes across its entire selection before the next action line begins.
-- Each action line takes its own ordered selection snapshot.
-- Serialized `candidates` are debug information only. Runtime selection is recalculated from loaded Things and the validated Kind-family index.
+## Values belong to Things
+
+```text
+henry has 10 health
+brass bell has 3 charges
+```
+
+A value name is one plain word. Custom values must be established in START before an exact value-change action uses them. `damage` is built in and begins at 0 for every Thing.
+
+## Damage amounts
+
+These are equivalent:
+
+```text
+(damage henry
+(damage henry by 1
+```
+
+An explicit amount adds to cumulative damage:
+
+```text
+(damage henry by 3
+```
+
+Damage does not secretly subtract health. Health, armor, death, healing, and combat formulas remain separate creator decisions.
+
+## Exact value assignment
+
+```text
+(change health of henry to 7
+(change courage of every guard to 0
+```
+
+This replaces the named value. It does not add or subtract.
+
+Set value changes validate every selected Thing before changing anyone. Missing values or overflow cause no partial mutation.
+
+## Exact-value IF
+
+```text
+IF
+[henry has 3 damage
+<then> (change henry to angry].
+```
+
+This uses the existing reactive IF contract: false-to-true wake-up, quiet while true, re-arm after false, full WHEN body before IF settlement, deterministic source order, and loop protection.
+
+## Multiple selections remain deterministic
+
+```text
+(damage every guard by 3
+(change courage of every guard to 0
+```
+
+Direct and inherited Kind matches are selected in creator definition order. One action line finishes across its complete selection before the next action line begins. Singular `that Kind` event context remains singular.
 
 ## Current Heads
 
@@ -81,12 +120,13 @@ IF
 ```bash
 ruby compiler/basic_sharp.rb samples/first_room.bsharp
 ruby compiler/basic_sharp.rb samples/every_guard.bsharp
+ruby compiler/basic_sharp.rb samples/values_and_amounts.bsharp
 ```
 
-## Run the multiple-selection sample
+## Run the value sample
 
 ```bash
-ruby compiler/basic_sharp.rb samples/every_guard.bsharp --run "player sounds brass bell"
+ruby compiler/basic_sharp.rb samples/values_and_amounts.bsharp --run "player sounds brass bell"
 ```
 
 ## Run the complete test suite
@@ -98,8 +138,8 @@ ruby -w -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_rel
 Current validated floor:
 
 ```text
-114 runs
-4,637 assertions
+135 runs
+4,717 assertions
 0 failures
 0 errors
 0 skips
@@ -112,15 +152,16 @@ ruby tools/runtime_stress.rb
 ruby tools/kind_family_stress.rb
 ruby tools/if_rule_stress.rb
 ruby tools/multiple_selection_stress.rb
+ruby tools/value_amount_stress.rb
 ```
 
-The multiple-selection lane proves 1,024 Things, 768 direct and inherited matches, 100 repeated multi-target events, 76,800 per-target mutations per execution path, bounded human traces, complete structured results, source/saved-DKIR parity, isolation, and deterministic replay.
+The value-and-amount lane proves 1,024 Things, 768 direct and inherited guard targets, 100 repeated amount events, 76,800 explicit damage mutations and 76,800 exact value assignments per execution path, exact-value IF behavior, missing-value atomicity, overflow atomicity, no hidden health subtraction, source/saved-DKIR parity, runtime isolation, and deterministic replay.
 
 Timing is observational only. A slower correct machine does not fail.
 
 ## Saved-DKIR compatibility
 
-Valid accepted fixtures from v0.1.13, v0.1.15, v0.1.16, and v0.1.17 remain executable.
+Valid accepted fixtures from v0.1.13, v0.1.15, v0.1.16, v0.1.17, and v0.1.18 remain executable. Older damage actions without an `amount` continue to mean one damage.
 
 ## Company Bible
 
@@ -135,15 +176,15 @@ Read it end-to-end before proposing or building the next BASIC# version.
 ## Contracts
 
 ```text
-docs/parser_contract_v0_1_18.md
-docs/runtime_contract_v0_1_18.md
-docs/ir/DKIR_MEANING_CONTRACT_v0_1_18.md
+docs/parser_contract_v0_1_19.md
+docs/runtime_contract_v0_1_19.md
+docs/ir/DKIR_MEANING_CONTRACT_v0_1_19.md
 ```
 
 ## Not included
 
-- No `all guards` alias or plural noun grammar.
-- No `those guards` or set-valued `that Kind`.
-- No `every Kind` in START, WHEN Triggers, or IF conditions.
-- No `any Kind` or all-versus-any condition semantics.
-- No new official words, values, amounts, event queue, time, repetition, save/load, ASK, bytecode, VM, engine bridge, or self-hosting work.
+- No negative numbers, decimals, fractions, number words, percentages, or units.
+- No arithmetic expressions, variables, constants, value copying, or arbitrary add/subtract actions.
+- No greater-than, less-than, ranges, AND, or OR.
+- No automatic health subtraction, death, armor, healing, or combat formulas.
+- No new official words, event queue, time, repetition, save/load, ASK, bytecode, VM, engine bridge, or self-hosting work.

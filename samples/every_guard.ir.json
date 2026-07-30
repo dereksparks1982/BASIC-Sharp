@@ -1,5 +1,5 @@
 {
-  "version": "0.1.18",
+  "version": "0.1.19",
   "format": "dkir.debug.json",
   "kinds": [
     {
@@ -199,7 +199,8 @@
               "mara",
               "otto"
             ]
-          }
+          },
+          "amount": 1
         },
         {
           "line_number": 24,
@@ -287,7 +288,8 @@
               "mara",
               "otto"
             ]
-          }
+          },
+          "amount": 1
         },
         {
           "line_number": 31,

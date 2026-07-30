@@ -210,9 +210,9 @@ module BasicSharp
     end
 
     def parse_fact(child)
-      match = child.body.match(/\A(.+?)\s+(is|isnt)\s+(.+)\z/)
+      match = child.body.match(/\A(.+?)\s+(is|isnt|has)\s+(.+)\z/)
       unless match
-        diagnostics.error(child.line_number, "Fact must look like 'subject is state'")
+        diagnostics.error(child.line_number, "Fact must look like 'subject is state' or 'subject has 10 health'")
         return nil
       end
 
@@ -260,9 +260,15 @@ module BasicSharp
 
     def split_order_rest(rest)
       return ['', ''] if rest.empty?
+
       if rest.include?(' to ')
         target, tail = rest.split(' to ', 2)
         [target.strip, "to #{tail.strip}"]
+      elsif rest.include?(' by ')
+        match = rest.match(/\A(.+?)\s+by\s+(.+)\z/)
+        target = match && match[1]
+        tail = match && match[2]
+        [target.to_s.strip, "by #{tail.to_s.strip}"]
       else
         [rest.strip, '']
       end

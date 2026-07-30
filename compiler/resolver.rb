@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'set'
 require_relative 'diagnostics'
 require_relative 'dictionary'
 require_relative 'basic_sharp_ir'
@@ -7,6 +8,8 @@ require_relative 'basic_sharp_ir'
 module BasicSharp
   class SemanticResolver
     RELATIONAL_FACT_PREFIXES = %w[in on].freeze
+    MAX_WHOLE_NUMBER = 2_147_483_647
+    VALUE_NAME_PATTERN = /\A[a-z][a-z0-9]*\z/
 
     attr_reader :program, :dictionary, :diagnostics
 
@@ -14,16 +17,23 @@ module BasicSharp
       @program = program
       @dictionary = dictionary
       @diagnostics = DiagnosticBag.new
+      @starting_value_assignments = Set.new
     end
 
     def resolve
+      kinds = resolve_kinds
+      objects = resolve_objects
+      facts = program.facts.map { |fact| resolve_fact(fact) }
+      events = program.event_rules.map { |rule| resolve_event_rule(rule) }
+      if_rules = program.if_rules.map { |rule| resolve_if_rule(rule) }
+
       IR::Document.new(
         version: VERSION,
-        kinds: resolve_kinds,
-        objects: resolve_objects,
-        facts: program.facts.map { |fact| resolve_fact(fact) },
-        events: program.event_rules.map { |rule| resolve_event_rule(rule) },
-        if_rules: program.if_rules.map { |rule| resolve_if_rule(rule) },
+        kinds: kinds,
+        objects: objects,
+        facts: facts,
+        events: events,
+        if_rules: if_rules,
         diagnostics: clean_diagnostics(program.diagnostics + diagnostics.items)
       )
     end
@@ -78,6 +88,20 @@ module BasicSharp
     end
 
     def resolve_fact(fact)
+      if normalize_name(fact.relation) == 'has'
+        subject = resolve_reference(fact.subject, fact.line_number, usage: :start)
+        amount, value_name = resolve_amount_and_value_name(fact.value, fact.line_number)
+        remember_starting_value(subject, value_name, fact.line_number) if value_name
+        return {
+          'line_number' => fact.line_number,
+          'subject' => subject,
+          'relation' => 'has',
+          'value_name' => value_name,
+          'amount' => amount,
+          'raw' => fact.to_h
+        }
+      end
+
       value = normalize_name(fact.value)
       if (match = value.match(/\A(#{RELATIONAL_FACT_PREFIXES.join('|')})\s+(.+)\z/))
         relation = match[1]
@@ -98,6 +122,21 @@ module BasicSharp
         'value' => resolve_state_or_phrase(value, fact.line_number),
         'raw' => fact.to_h
       }
+    end
+
+    def remember_starting_value(subject, value_name, line_number)
+      return unless subject.is_a?(Hash) && normalize_name(subject['type']) == 'object'
+
+      thing_name = normalize_name(subject['name'])
+      key = [thing_name, value_name]
+      if @starting_value_assignments.include?(key)
+        diagnostics.error(
+          line_number,
+          "#{thing_name} already has a starting #{value_name} value.\nChoose one starting amount."
+        )
+      else
+        @starting_value_assignments.add(key)
+      end
     end
 
     def resolve_event_rule(rule)
@@ -141,16 +180,23 @@ module BasicSharp
     end
 
     def resolve_action(action)
+      verb = normalize_verb(action.verb)
       diagnostics.error(action.line_number, "unknown official word '(#{action.verb}'") unless dictionary.known_action?(action.verb)
+
+      return resolve_damage_action(action, verb) if verb == 'damage'
+      return resolve_change_action(action, verb) if verb == 'change'
 
       resolved = {
         'line_number' => action.line_number,
-        'action' => normalize_verb(action.verb),
+        'action' => verb,
         'target' => action.target.to_s.empty? ? nil : resolve_reference(action.target, action.line_number, usage: :action_target)
       }
 
       if (match = action.tail.to_s.match(/\Ato\s+(.+)\z/))
         resolved['to'] = resolve_state_or_phrase(match[1], action.line_number)
+      elsif (match = action.tail.to_s.match(/\Aby\s+(.+)\z/))
+        diagnostics.error(action.line_number, "Only (damage uses 'by an amount' in this build")
+        resolved['tail'] = action.tail
       elsif !action.tail.to_s.empty?
         resolved['tail'] = action.tail
       end
@@ -158,11 +204,75 @@ module BasicSharp
       resolved
     end
 
+    def resolve_damage_action(action, verb)
+      amount = 1
+      tail = normalize_name(action.tail)
+      if (match = tail.match(/\Aby\s+(.+)\z/))
+        amount = resolve_whole_number(match[1], action.line_number, minimum: 1, purpose: 'damage amount')
+      elsif !tail.empty?
+        diagnostics.error(action.line_number, "Damage must look like '(damage henry' or '(damage henry by 3'")
+      end
+
+      {
+        'line_number' => action.line_number,
+        'action' => verb,
+        'target' => action.target.to_s.empty? ? nil : resolve_reference(action.target, action.line_number, usage: :action_target),
+        'amount' => amount
+      }
+    end
+
+    def resolve_change_action(action, verb)
+      target_text = normalize_name(action.target)
+      tail = normalize_name(action.tail)
+      numeric_target = target_text.match(/\A([a-z][a-z0-9]*)\s+of\s+(.+)\z/)
+      numeric_amount = tail.match(/\Ato\s+(.+)\z/)
+
+      if numeric_target && numeric_amount
+        value_name = resolve_value_name(numeric_target[1], action.line_number)
+        to_amount = resolve_whole_number(numeric_amount[1], action.line_number, minimum: 0, purpose: 'exact value')
+        return {
+          'line_number' => action.line_number,
+          'action' => verb,
+          'value_name' => value_name,
+          'target' => resolve_reference(numeric_target[2], action.line_number, usage: :action_target),
+          'to_amount' => to_amount
+        }
+      end
+
+      resolved = {
+        'line_number' => action.line_number,
+        'action' => verb,
+        'target' => target_text.empty? ? nil : resolve_reference(target_text, action.line_number, usage: :action_target)
+      }
+
+      if numeric_target && !numeric_amount
+        diagnostics.error(action.line_number, "Value change must look like '(change health of henry to 7'")
+      elsif numeric_amount
+        resolved['to'] = resolve_state_or_phrase(numeric_amount[1], action.line_number)
+      elsif !tail.empty?
+        resolved['tail'] = action.tail
+      end
+
+      resolved
+    end
+
     def parse_condition_fact(text, line_number)
-      match = normalize_name(text).match(/\A(.+?)\s+(is|isnt)\s+(.+)\z/)
+      normalized = normalize_name(text)
+      if (has_match = normalized.match(/\A(.+?)\s+has\s+(.+)\z/))
+        amount, value_name = resolve_amount_and_value_name(has_match[2], line_number)
+        return {
+          'raw' => normalized,
+          'subject' => resolve_reference(has_match[1], line_number, usage: :condition),
+          'relation' => 'has',
+          'value_name' => value_name,
+          'amount' => amount
+        }
+      end
+
+      match = normalized.match(/\A(.+?)\s+(is|isnt)\s+(.+)\z/)
       unless match
-        diagnostics.error(line_number, "condition must look like 'subject is state'")
-        return { 'raw' => normalize_name(text), 'subject' => nil, 'relation' => nil, 'value' => nil }
+        diagnostics.error(line_number, "condition must look like 'subject is state' or 'subject has 3 damage'")
+        return { 'raw' => normalized, 'subject' => nil, 'relation' => nil, 'value' => nil }
       end
 
       subject = match[1]
@@ -170,7 +280,7 @@ module BasicSharp
       value = match[3]
       if (target_match = value.match(/\A(#{RELATIONAL_FACT_PREFIXES.join('|')})\s+(.+)\z/))
         return {
-          'raw' => normalize_name(text),
+          'raw' => normalized,
           'subject' => resolve_reference(subject, line_number, usage: :condition),
           'relation' => target_match[1],
           'target' => resolve_reference(target_match[2], line_number, usage: :condition)
@@ -178,11 +288,68 @@ module BasicSharp
       end
 
       {
-        'raw' => normalize_name(text),
+        'raw' => normalized,
         'subject' => resolve_reference(subject, line_number, usage: :condition),
         'relation' => relation,
         'value' => resolve_state_or_phrase(value, line_number)
       }
+    end
+
+    def resolve_amount_and_value_name(text, line_number)
+      normalized = normalize_name(text)
+      match = normalized.match(/\A(\S+)\s+(\S+)\z/)
+      unless match
+        diagnostics.error(line_number, "Value must look like '10 health' using digits and one value name")
+        return [nil, nil]
+      end
+
+      amount = resolve_whole_number(match[1], line_number, minimum: 0, purpose: 'value')
+      value_name = resolve_value_name(match[2], line_number)
+      [amount, value_name]
+    end
+
+    def resolve_value_name(text, line_number)
+      normalized = normalize_name(text)
+      unless VALUE_NAME_PATTERN.match?(normalized)
+        diagnostics.error(line_number, "Value name '#{normalized}' must be one plain word")
+        return normalized
+      end
+
+      normalized
+    end
+
+    def resolve_whole_number(text, line_number, minimum:, purpose:)
+      shown = text.to_s.strip
+      normalized = normalize_name(shown)
+
+      if normalized.start_with?('-')
+        diagnostics.error(line_number, "#{purpose.capitalize} cannot be negative: #{shown}")
+        return nil
+      end
+      if normalized.include?('.')
+        diagnostics.error(line_number, "#{purpose.capitalize} must be a whole number, not a decimal: #{shown}")
+        return nil
+      end
+      if normalized.include?(',')
+        diagnostics.error(line_number, "#{purpose.capitalize} must use digits without commas: #{shown}")
+        return nil
+      end
+      unless normalized.match?(/\A\d+\z/)
+        diagnostics.error(line_number, "#{purpose.capitalize} must use digits, such as 3")
+        return nil
+      end
+
+      amount = normalized.to_i
+      if amount < minimum
+        diagnostics.error(line_number, "#{purpose.capitalize} must be at least #{minimum}")
+        return nil
+      end
+      if amount > MAX_WHOLE_NUMBER
+        diagnostics.error(line_number, "#{purpose.capitalize} cannot be greater than #{MAX_WHOLE_NUMBER}")
+        return nil
+      end
+
+      amount
     end
 
     def resolve_reference(text, line_number, usage: nil)

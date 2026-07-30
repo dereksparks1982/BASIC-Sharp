@@ -130,7 +130,7 @@ Dir.mktmpdir do |dir|
   end
   assert_stress(replay_a.snapshot == replay_b.snapshot, 'deterministic replay failed')
 
-  puts 'BASIC# Multiple-Selection Stress Test v0.1.18'
+  puts "BASIC# Multiple-Selection Stress Test v#{BasicSharp::VERSION}"
   puts "Total Things: #{TOTAL_THINGS}"
   puts "Direct guards: #{DIRECT_GUARDS}"
   puts "Inherited captains: #{CAPTAINS}"

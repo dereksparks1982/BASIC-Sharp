@@ -1,0 +1,235 @@
+{
+  "version": "0.1.19",
+  "format": "dkir.debug.json",
+  "kinds": [
+    {
+      "name": "captain",
+      "parent": "guard",
+      "line_number": 2
+    }
+  ],
+  "objects": [
+    {
+      "name": "player",
+      "kind": "person",
+      "builtin": true,
+      "line_number": null
+    },
+    {
+      "name": "henry",
+      "kind": "guard",
+      "builtin": false,
+      "line_number": 5
+    },
+    {
+      "name": "mara",
+      "kind": "captain",
+      "builtin": false,
+      "line_number": 6
+    },
+    {
+      "name": "brass bell",
+      "kind": "device",
+      "builtin": false,
+      "line_number": 7
+    }
+  ],
+  "facts": [
+    {
+      "line_number": 10,
+      "subject": {
+        "type": "object",
+        "text": "henry",
+        "name": "henry",
+        "object_kind": "guard"
+      },
+      "relation": "has",
+      "value_name": "health",
+      "amount": 10,
+      "raw": {
+        "subject": "henry",
+        "relation": "has",
+        "value": "10 health",
+        "line_number": 10
+      }
+    },
+    {
+      "line_number": 11,
+      "subject": {
+        "type": "object",
+        "text": "mara",
+        "name": "mara",
+        "object_kind": "captain"
+      },
+      "relation": "has",
+      "value_name": "health",
+      "amount": 10,
+      "raw": {
+        "subject": "mara",
+        "relation": "has",
+        "value": "10 health",
+        "line_number": 11
+      }
+    },
+    {
+      "line_number": 12,
+      "subject": {
+        "type": "object",
+        "text": "brass bell",
+        "name": "brass bell",
+        "object_kind": "device"
+      },
+      "relation": "has",
+      "value_name": "charges",
+      "amount": 3,
+      "raw": {
+        "subject": "brass bell",
+        "relation": "has",
+        "value": "3 charges",
+        "line_number": 12
+      }
+    },
+    {
+      "line_number": 13,
+      "subject": {
+        "type": "object",
+        "text": "henry",
+        "name": "henry",
+        "object_kind": "guard"
+      },
+      "relation": "is",
+      "value": {
+        "kind": "state",
+        "name": "calm"
+      },
+      "raw": {
+        "subject": "henry",
+        "relation": "is",
+        "value": "calm",
+        "line_number": 13
+      }
+    },
+    {
+      "line_number": 14,
+      "subject": {
+        "type": "object",
+        "text": "mara",
+        "name": "mara",
+        "object_kind": "captain"
+      },
+      "relation": "is",
+      "value": {
+        "kind": "state",
+        "name": "calm"
+      },
+      "raw": {
+        "subject": "mara",
+        "relation": "is",
+        "value": "calm",
+        "line_number": 14
+      }
+    }
+  ],
+  "events": [
+    {
+      "line_number": 16,
+      "when": {
+        "raw": "player sounds brass bell",
+        "actor": {
+          "type": "object",
+          "text": "player",
+          "name": "player",
+          "object_kind": "person"
+        },
+        "action": "sound",
+        "target": {
+          "type": "object",
+          "text": "brass bell",
+          "name": "brass bell",
+          "object_kind": "device"
+        }
+      },
+      "then": [
+        {
+          "line_number": 18,
+          "action": "damage",
+          "target": {
+            "type": "kind_set",
+            "text": "every guard",
+            "selector": "every",
+            "kind_name": "guard",
+            "candidates": [
+              "henry",
+              "mara"
+            ]
+          },
+          "amount": 3
+        },
+        {
+          "line_number": 19,
+          "action": "change",
+          "value_name": "health",
+          "target": {
+            "type": "kind_set",
+            "text": "every guard",
+            "selector": "every",
+            "kind_name": "guard",
+            "candidates": [
+              "henry",
+              "mara"
+            ]
+          },
+          "to_amount": 7
+        },
+        {
+          "line_number": 20,
+          "action": "change",
+          "value_name": "charges",
+          "target": {
+            "type": "object",
+            "text": "brass bell",
+            "name": "brass bell",
+            "object_kind": "device"
+          },
+          "to_amount": 2
+        }
+      ]
+    }
+  ],
+  "if_rules": [
+    {
+      "line_number": 22,
+      "if": {
+        "raw": "henry has 3 damage",
+        "subject": {
+          "type": "object",
+          "text": "henry",
+          "name": "henry",
+          "object_kind": "guard"
+        },
+        "relation": "has",
+        "value_name": "damage",
+        "amount": 3
+      },
+      "then": [
+        {
+          "line_number": 24,
+          "action": "change",
+          "target": {
+            "type": "object",
+            "text": "henry",
+            "name": "henry",
+            "object_kind": "guard"
+          },
+          "to": {
+            "kind": "state",
+            "name": "angry"
+          }
+        }
+      ]
+    }
+  ],
+  "diagnostics": [
+
+  ]
+}
