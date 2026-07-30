@@ -6,20 +6,38 @@ require 'fileutils'
 require_relative 'parser'
 require_relative 'resolver'
 require_relative 'ir_emitter'
+require_relative 'runtime'
 
 if ARGV.empty?
-  warn 'Usage: ruby compiler/dks.rb samples/first_room.dks [--json|--emit-ast|--emit-ir] [--out path]'
+  warn 'Usage: ruby compiler/dks.rb source.dks [--json|--emit-ast|--emit-ir] [--out path] [--run "event"]'
+  warn '   or: ruby compiler/dks.rb existing.ir.json --run "event"'
   exit 64
 end
 
-path = ARGV.find { |arg| !arg.start_with?('--') }
+def option_value(arguments, flag)
+  index = arguments.index(flag)
+  index ? arguments[index + 1] : nil
+end
+
 out_index = ARGV.index('--out')
-out_path = out_index ? ARGV[out_index + 1] : nil
+out_path = option_value(ARGV, '--out')
+run_index = ARGV.index('--run')
+run_event = option_value(ARGV, '--run')
 emit_ast = ARGV.include?('--json') || ARGV.include?('--emit-ast')
 emit_ir = ARGV.include?('--emit-ir')
 
+consumed_values = [out_index && out_index + 1, run_index && run_index + 1].compact
+path = ARGV.each_with_index.find do |argument, index|
+  !argument.start_with?('--') && !consumed_values.include?(index)
+end&.first
+
 if out_index && (out_path.nil? || out_path.start_with?('--'))
   warn 'Missing output path after --out'
+  exit 64
+end
+
+if run_index && (run_event.nil? || run_event.start_with?('--'))
+  warn 'Missing event after --run'
   exit 64
 end
 
@@ -31,9 +49,20 @@ end
 def write_output(path, content)
   dir = File.dirname(path)
   FileUtils.mkdir_p(dir) unless dir == '.' || Dir.exist?(dir)
-  File.write(path, "#{content}
-")
+  File.write(path, "#{content}\n")
   puts "wrote: #{path}"
+end
+
+if run_index && File.extname(path).downcase == '.json'
+  begin
+    runtime = DKScript::Runtime.load(path)
+    result = runtime.run_event(run_event)
+    puts runtime.report(result)
+    exit(result.fetch('matched') ? 0 : 1)
+  rescue JSON::ParserError, ArgumentError, KeyError => error
+    warn "DKIR cannot run: #{error.message}"
+    exit 1
+  end
 end
 
 source = File.read(path)
@@ -44,13 +73,25 @@ resolved = DKScript::SemanticResolver.new(program, dictionary: parser.dictionary
 if emit_ast
   output = JSON.pretty_generate(program.to_h)
   out_path ? write_output(out_path, output) : puts(output)
-  exit(program.diagnostics.any? { |d| d.severity == 'error' } ? 1 : 0)
+  exit(program.diagnostics.any? { |diagnostic| diagnostic.severity == 'error' } ? 1 : 0)
 end
 
 if emit_ir
   emitter = DKScript::IREmitter.new(resolved)
   out_path ? emitter.write(out_path) : puts(emitter.to_json)
   exit(resolved.error_count.positive? ? 1 : 0)
+end
+
+if run_index
+  if resolved.error_count.positive?
+    resolved.diagnostics.each { |diagnostic| warn diagnostic.to_s }
+    exit 1
+  end
+
+  runtime = DKScript::Runtime.new(resolved)
+  result = runtime.run_event(run_event)
+  puts runtime.report(result)
+  exit(result.fetch('matched') ? 0 : 1)
 end
 
 puts "DKScript Ruby Bootstrap Compiler v#{DKScript::VERSION}"
@@ -62,7 +103,7 @@ puts "facts: #{program.facts.length}"
 puts "events: #{program.event_rules.length}"
 puts "if rules: #{program.if_rules.length}"
 puts "objects: #{resolved.objects.length}"
-puts "actions: #{program.event_rules.sum { |rule| rule.actions.length } + program.if_rules.sum { |rule| rule.actions.length }}"
+puts "official words: #{program.event_rules.sum { |rule| rule.actions.length } + program.if_rules.sum { |rule| rule.actions.length }}"
 puts "errors: #{resolved.error_count}"
 puts "warnings: #{resolved.warning_count}"
 

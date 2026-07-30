@@ -96,6 +96,6 @@ class TestResolver < Minitest::Test
 
     errors = document.diagnostics.select { |diagnostic| diagnostic.severity == 'error' }.map(&:message)
     assert_includes errors, "unknown state 'sleepy'"
-    assert_includes errors, "unknown action 'explode'"
+    assert_includes errors, "unknown official word '(explode'"
   end
 end

@@ -124,7 +124,7 @@ module DKScript
       end
 
       unless verb_index
-        diagnostics.error(line_number, "event does not contain a known action: '#{text}'")
+        diagnostics.error(line_number, "event does not contain a known event word: '#{text}'")
         return { 'raw' => normalize_name(text), 'actor' => nil, 'action' => nil, 'target' => nil }
       end
 
@@ -141,7 +141,7 @@ module DKScript
     end
 
     def resolve_action(action)
-      diagnostics.error(action.line_number, "unknown action '#{action.verb}'") unless dictionary.known_action?(action.verb)
+      diagnostics.error(action.line_number, "unknown official word '(#{action.verb}'") unless dictionary.known_action?(action.verb)
 
       resolved = {
         'line_number' => action.line_number,

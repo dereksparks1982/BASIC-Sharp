@@ -128,11 +128,11 @@ module DKScript
         body = match[2].strip
         result = RESULT_ALIASES[raw_result]
         unless result
-          diagnostics.error(line.number, "unknown Result '<#{raw_result}>'; did you mean <then>?")
+          diagnostics.error(line.number, "unknown Connector '<#{raw_result}>'; did you mean <then>?")
           result = body.start_with?('(') ? 'then' : raw_result
         end
       elsif body.start_with?('<')
-        diagnostics.error(line.number, 'Results must look like <then>')
+        diagnostics.error(line.number, 'Connectors must look like <then>')
       end
 
       if body.start_with?('(')
@@ -140,7 +140,7 @@ module DKScript
         if match
           action = match[1].downcase
         else
-          diagnostics.error(line.number, 'Orders must look like (damage target')
+          diagnostics.error(line.number, 'Official words must look like (damage')
         end
       end
 
@@ -221,7 +221,7 @@ module DKScript
       trigger = statement.children.find { |child| child.line_command.nil? }
       results = statement.children.select { |child| child.line_command == 'then' }
       diagnostics.error(statement.line_number, 'WHEN needs one Trigger') unless trigger
-      diagnostics.error(statement.line_number, 'WHEN needs at least one Result') if results.empty?
+      diagnostics.error(statement.line_number, 'WHEN needs at least one Connector followed by an official word') if results.empty?
       return nil unless trigger
 
       EventRule.new(event: trigger.body, actions: results.map { |child| parse_order(child) }.compact, line_number: statement.line_number)
@@ -231,7 +231,7 @@ module DKScript
       condition = statement.children.find { |child| child.line_command.nil? }
       results = statement.children.select { |child| child.line_command == 'then' }
       diagnostics.error(statement.line_number, 'IF needs one Fact to check') unless condition
-      diagnostics.error(statement.line_number, 'IF needs at least one Result') if results.empty?
+      diagnostics.error(statement.line_number, 'IF needs at least one Connector followed by an official word') if results.empty?
       return nil unless condition
 
       parse_fact(condition)
@@ -241,7 +241,7 @@ module DKScript
     def parse_order(child)
       match = child.body.match(/\A\((\w+)\b\s*(.*)\z/)
       unless match
-        diagnostics.error(child.line_number, 'Result must contain an Order such as (damage henry')
+        diagnostics.error(child.line_number, 'Connector must be followed by an official word such as (damage')
         return nil
       end
 

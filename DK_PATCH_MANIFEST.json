@@ -1,0 +1,130 @@
+{
+  "format": "DK_CHANGED_FILES_PATCH",
+  "format_version": 1,
+  "project": "DKScript Ruby Bootstrap Compiler",
+  "package_name": "DKScript_Ruby_Bootstrap_Compiler_v0_1_09_FIRST_RUNTIME_EXECUTION_CHANGED_FILES_ONLY.zip",
+  "required_base": "accepted v0.1.08, commit d6c92d1, tag v0.1.08",
+  "target_version": "v0.1.09",
+  "title": "First Runtime Execution",
+  "direct_project_root_payload": true,
+  "changed_files_only": true,
+  "manifest_excluded_from_own_hash_list": true,
+  "deletions": [],
+  "files": [
+    {
+      "path": "BUILD_HANDSHAKE_v0_1_09.md",
+      "bytes": 3913,
+      "sha256": "13ed182e1c4c5615ee4418a31f48dbab961b59e9169e38bb1fe65bcaba7bd61c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3055,
+      "sha256": "d447743543ad7ce87aa95ebfee86d67fe0ff7dc7f344f11cf72a01264f93a0ff"
+    },
+    {
+      "path": "compiler/ast_nodes.rb",
+      "bytes": 2242,
+      "sha256": "149475b113fa6db0ae0467d2589772e6cfcb94d3b191aa9499d2226fb9a36954"
+    },
+    {
+      "path": "compiler/dks.rb",
+      "bytes": 3500,
+      "sha256": "0770b4c04055bddfae883de3c50c322dd1f717296d8fde5a60b065a8648aec35"
+    },
+    {
+      "path": "compiler/parser.rb",
+      "bytes": 8420,
+      "sha256": "0e57d10a5b011ada742ef9bbeb2ca40a3908166fd7660f586468b97ea39f1422"
+    },
+    {
+      "path": "compiler/resolver.rb",
+      "bytes": 9886,
+      "sha256": "3fcbe7b30f6ae11edf43b48ca2ed404b93051ac6fe56385714a7d40e9b79f4cb"
+    },
+    {
+      "path": "compiler/runtime.rb",
+      "bytes": 7137,
+      "sha256": "25abe7f764673676f8842fa25164d1e352c3755554197b306c3cc60eaea0fe9a"
+    },
+    {
+      "path": "docs/changed_files/DKSCRIPT_CHANGED_FILES_v0_1_09.txt",
+      "bytes": 727,
+      "sha256": "c2025ced9b7d4f7fe10268af75944957e8f195de025cc2dfe337c0661ce6efcc"
+    },
+    {
+      "path": "docs/changelog/DKSCRIPT_CHANGELOG_v0_1_09.md",
+      "bytes": 746,
+      "sha256": "6b46f38b94e248bccce7361c14e59e9fe650e2f6ef442ee631e0e67421f8478f"
+    },
+    {
+      "path": "docs/hand_off/DKSCRIPT_MASTER_THREAD_HANDOFF.md",
+      "bytes": 2389,
+      "sha256": "6c784312648f192097ae819114e7a2aca3db9fe2a8232e56764154d7c43d7eb7"
+    },
+    {
+      "path": "docs/parser_contract_v0_1_09.md",
+      "bytes": 1150,
+      "sha256": "90da1e67d1555963eb016c3baf96b009f6a862075eaaf14d09782a55aa701033"
+    },
+    {
+      "path": "docs/patch_notes/DKSCRIPT_PATCH_NOTES_v0_1_09.md",
+      "bytes": 436,
+      "sha256": "69ccbb08de4551e731a70ee676bb1eee8c73b7fcf6b2789089da2133c8cd9f0d"
+    },
+    {
+      "path": "docs/roadmap/DKSCRIPT_ROADMAP.md",
+      "bytes": 1413,
+      "sha256": "e36f96e4eb8aefb9ee85e9dc784d9b42d9953dc6dba45207fa64b4c656998b53"
+    },
+    {
+      "path": "docs/runtime_contract_v0_1_09.md",
+      "bytes": 1921,
+      "sha256": "764cd0a8d040709a312bf11e96812daa6fa1990476ab6146ad1a68a0f995f659"
+    },
+    {
+      "path": "docs/session_logs/DKSCRIPT_v0_1_09_SESSION_LOG.md",
+      "bytes": 1129,
+      "sha256": "9ebf35a17a444226b89aed303615afd0f26dbb91a37eec15f8f95edeee0ec129"
+    },
+    {
+      "path": "docs/validation/DKSCRIPT_VALIDATION_v0_1_09.md",
+      "bytes": 1991,
+      "sha256": "ab31d106aba7d7562eb34baf65f86be5c1676db574d7aee17bf0f84112fef839"
+    },
+    {
+      "path": "samples/first_room.dks",
+      "bytes": 428,
+      "sha256": "36fce8fe9496d40ec3dcdbff9cc203b51a5bb7724f3672db247305408aa74c10"
+    },
+    {
+      "path": "samples/first_room.ir.json",
+      "bytes": 4985,
+      "sha256": "0b8c4c042356be288a2013360127acdd9828324aac38a500e30f377e7bcff9a4"
+    },
+    {
+      "path": "tests/test_cli_output.rb",
+      "bytes": 3151,
+      "sha256": "7a714c75cd11f143fdf55cdca10987e40d9b881714d37db3c0df1e2e6ed9b6ac"
+    },
+    {
+      "path": "tests/test_diagnostics_samples.rb",
+      "bytes": 2909,
+      "sha256": "13a4c5e60eb0234568589436bbe13f3399d95c1f7262491b6d42c05bbefb738f"
+    },
+    {
+      "path": "tests/test_ir_output.rb",
+      "bytes": 1919,
+      "sha256": "634fb75a29bd37f41990e775dfec0a57d200a70dcef62f892d0b5963964333d9"
+    },
+    {
+      "path": "tests/test_resolver.rb",
+      "bytes": 3245,
+      "sha256": "de078f38aef1ed0f879096cf45d6e5a802c172fd5c7a3cb4a81fa9d15321785c"
+    },
+    {
+      "path": "tests/test_runtime.rb",
+      "bytes": 2634,
+      "sha256": "10e73ddf26a6c82e48ec975a67912ffd8c490c7601c4f6979cce4cc393c4035b"
+    }
+  ]
+}

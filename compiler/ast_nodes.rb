@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module DKScript
-  VERSION = '0.1.08'
+  VERSION = '0.1.09'
 
   Statement = Struct.new(:starter, :children, :line_number, keyword_init: true) do
     def to_h

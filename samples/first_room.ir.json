@@ -1,5 +1,5 @@
 {
-  "version": "0.1.08",
+  "version": "0.1.09",
   "format": "dkir.debug.json",
   "kinds": [
     {
@@ -58,12 +58,12 @@
       "relation": "is",
       "value": {
         "kind": "state",
-        "name": "alive"
+        "name": "calm"
       },
       "raw": {
         "subject": "ember",
         "relation": "is",
-        "value": "alive",
+        "value": "calm",
         "line_number": 12
       }
     },

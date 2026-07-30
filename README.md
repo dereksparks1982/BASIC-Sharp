@@ -1,14 +1,30 @@
-# DKScript Ruby Bootstrap Compiler v0.1.08
+# DKScript Ruby Bootstrap Compiler v0.1.09
 
 **The scripting language for non-programmers.**
 
-DKScript is being built so game logic can be written in clear world-language first, then compiled into a runtime-friendly form later.
+DKScript lets a creator write what should happen in clear world-language. The compiler reads it, checks it, turns it into DKIR, and the first runtime can now carry out a small working set.
 
-## Run the sample
+## Compile the sample
 
 ```bash
 ruby compiler/dks.rb samples/first_room.dks
 ```
+
+## Run one WHEN event
+
+```bash
+ruby compiler/dks.rb samples/first_room.dks --run "player attacks ember"
+```
+
+The runtime creates the defined Things, applies the START facts, checks the existing IF rule once, matches the requested WHEN Trigger, follows `<then>` or `<than>`, runs the official words, and prints the changed world state.
+
+## Run an existing DKIR file
+
+```bash
+ruby compiler/dks.rb samples/first_room.ir.json --run "player attacks ember"
+```
+
+This proves the runtime can load DKIR that was already written to disk instead of requiring the source to be compiled again.
 
 ## Emit parser AST JSON
 
@@ -40,7 +56,7 @@ DEFINE
 [a dragon named ember].
 
 START
-[ember is alive].
+[ember is calm].
 
 WHEN
 [player attacks ember
@@ -48,48 +64,61 @@ WHEN
 <than> (change ember to angry].
 ```
 
-The official part names are:
+The active part names are:
 
 ```text
-Head    KINDS / DEFINE / START / WHEN / IF
-Body    [ ... ]
-Kind    dragon is a creature
-Thing   a dragon named ember
-Fact    ember is alive
-Trigger player attacks ember
-Result  <then> or <than>
-Order   (damage ember
-End     ].
+Head          KINDS / DEFINE / START / WHEN / IF
+Body          [ ... ]
+Kind          dragon is a creature
+Thing         a dragon named ember
+Fact          ember is calm
+Trigger       player attacks ember
+Connector     <then> or <than>
+Official word (damage or (change
+End           ].
 ```
 
-## What v0.1.08 adds
+`(damage` is the official word. `ember` is the Thing declared earlier that DKScript uses when that word runs.
 
-- Replaces the old repeated `<` child structure with one Body enclosed by `[` and `].`.
-- Rejects the old child-line structure immediately.
-- Adds the `KINDS` Head.
-- Lets a script teach DKScript a new Kind such as `dragon is a creature`.
-- Lets `DEFINE` create Things from user-defined Kinds.
-- Emits user-defined Kinds in DKIR debug JSON.
-- Accepts both `<then>` and `<than>` as Results.
-- Records `there` and `their` as the approved location-word pair.
-- Uses the plain part names Head, Body, Kind, Thing, Fact, Trigger, Result, Order, and End.
+## Official words run by v0.1.09
 
-## Run tests
+```text
+(damage
+(change
+(carry
+(unlock
+```
+
+The runtime does not add new DKScript syntax or new official words. It runs the words that were already present in v0.1.08.
+
+## What v0.1.09 adds
+
+- First executable DKScript runtime foundation.
+- Loads the existing DKIR structure.
+- Creates all defined Things, including the built-in player.
+- Applies START facts.
+- Checks current IF rules once after START facts.
+- Receives and matches one WHEN event from the command line.
+- Follows `<then>` and `<than>` identically.
+- Runs `(damage`, `(change`, `(carry`, and `(unlock`.
+- Prints the changed world state.
+- Corrects user-facing terminology so `<then>` is a Connector and `(damage` is an official word.
+
+## Run all tests
 
 ```bash
-ruby tests/test_first_room.rb
-ruby tests/test_resolver.rb
-ruby tests/test_ir_output.rb
-ruby tests/test_cli_output.rb
-ruby tests/test_diagnostics_samples.rb
+ruby -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_relative file }'
 ```
 
 ## Not included
 
-- No runtime execution.
+- No new syntax.
+- No new official words.
+- No Kind Families.
+- No dictionary expansion.
 - No bytecode.
 - No VM.
-- No self-hosted compiler.
+- No continuous event queue.
+- No full health or combat model.
 - No DK Engine.
 - No Godot integration.
-- No full Inform or TADS dictionary import.

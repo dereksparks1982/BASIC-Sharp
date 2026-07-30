@@ -52,7 +52,7 @@ class TestDiagnosticsSamples < Minitest::Test
 
   def test_unknown_action_sample_reports_unknown_action_once
     assert_no_duplicate_diagnostics('unknown_action.dks')
-    assert_equal ["unknown action 'explode'"], messages_for('unknown_action.dks', severity: 'error')
+    assert_equal ["unknown official word '(explode'"], messages_for('unknown_action.dks', severity: 'error')
     assert_empty messages_for('unknown_action.dks', severity: 'warning')
   end
 
@@ -66,7 +66,7 @@ class TestDiagnosticsSamples < Minitest::Test
 
   def test_bad_line_command_sample_reports_only_the_typo
     assert_no_duplicate_diagnostics('bad_line_command.dks')
-    assert_equal ["unknown Result '<thne>'; did you mean <then>?"], messages_for('bad_line_command.dks', severity: 'error')
+    assert_equal ["unknown Connector '<thne>'; did you mean <then>?"], messages_for('bad_line_command.dks', severity: 'error')
     assert_empty messages_for('bad_line_command.dks', severity: 'warning')
   end
 end
