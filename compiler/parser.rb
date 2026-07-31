@@ -7,7 +7,8 @@ require_relative 'lexer'
 
 module BasicSharp
   class Parser
-    STATEMENT_STARTERS = %w[START DEFINE KINDS WORLD STATES RELATIONS ACTIONS WHEN IF WHILE OTHERWISE].freeze
+    STATEMENT_STARTERS = %w[KINDS DEFINE START WHEN IF].freeze
+    DORMANT_HEADS = %w[WORLD STATES RELATIONS ACTIONS WHILE OTHERWISE].freeze
     RESULT_ALIASES = { 'than' => 'then', 'then' => 'then' }.freeze
 
     attr_reader :dictionary, :diagnostics
@@ -63,9 +64,12 @@ module BasicSharp
       lines.each do |line|
         text = line.text
 
-        if STATEMENT_STARTERS.include?(text)
+        if STATEMENT_STARTERS.include?(text) || DORMANT_HEADS.include?(text)
           if current && body_open
             diagnostics.error(current.line_number, "#{current.starter} Body is missing its End ].")
+          end
+          if DORMANT_HEADS.include?(text)
+            diagnostics.error(line.number, unsupported_head_message(text))
           end
           current = Statement.new(starter: text, children: [], line_number: line.number)
           statements << current
@@ -116,6 +120,16 @@ module BasicSharp
       end
 
       statements
+    end
+
+
+    def unsupported_head_message(head)
+      [
+        "BASIC# does not have a #{head} Head.",
+        '',
+        'Current Heads are:',
+        *STATEMENT_STARTERS.map { |name| "  #{name}" }
+      ].join("\n")
     end
 
     def parse_body_item(line, text, terminal:)

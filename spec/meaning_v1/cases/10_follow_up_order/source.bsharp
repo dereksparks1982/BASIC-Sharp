@@ -1,0 +1,20 @@
+KINDS
+[guard is a person].
+
+DEFINE
+[a guard named henry
+ a guard named mara
+ a device named brass bell].
+
+WHEN
+[player attacks henry
+<then> (cause henry attacks player
+<then> (cause mara sounds brass bell].
+
+WHEN
+[henry attacks player
+<then> (damage player].
+
+WHEN
+[mara sounds brass bell
+<then> (change mara to angry].

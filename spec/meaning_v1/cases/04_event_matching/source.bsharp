@@ -1,0 +1,14 @@
+KINDS
+[guard is a person].
+
+DEFINE
+[a guard named henry
+ a guard named mara].
+
+WHEN
+[player attacks henry
+<then> (damage henry by 3].
+
+WHEN
+[player attacks a guard
+<then> (damage that guard].

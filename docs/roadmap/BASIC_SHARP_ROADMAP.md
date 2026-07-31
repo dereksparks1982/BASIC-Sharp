@@ -11,10 +11,10 @@ BASIC# source
 -> BSharp IR identity migration  [ACCEPTED: v0.1.20]
 -> explicit follow-up events and deterministic event order  [ACCEPTED: v0.1.21]
 -> BSharp Save files and deterministic world restore  [ACCEPTED: v0.1.22]
--> ASK introspection and deterministic answers  [CURRENT CANDIDATE: v0.1.23]
+-> ASK introspection and deterministic answers  [ACCEPTED: v0.1.23]
+-> Stable Meaning Specification and Conformance Profile 1  [CURRENT CANDIDATE: v0.1.24]
 -> owner validation and acceptance
--> stable meaning specification
--> bytecode
+-> bytecode design
 -> BASIC# VM
 -> game-engine bridge
 -> BASIC# self-hosting compiler
@@ -24,50 +24,40 @@ BASIC# source
 
 ## Completed foundation
 
-- Controlled Body structure.
-- `KINDS`, `DEFINE`, `START`, `WHEN`, and `IF` Heads.
+- Five accepted Heads: KINDS, DEFINE, START, WHEN, and IF.
 - Things, facts, inherited Kind families, and deterministic matching.
-- Singular `that Kind` context and deterministic `every Kind` action selection.
-- Reactive IF rules with false-to-true waking, re-arming, cascades, and loop protection.
+- Singular `that Kind` and deterministic `every Kind` actions.
+- Reactive IF rules with re-arming, cascades, and loop protection.
 - Whole-number values, damage amounts, exact assignment, and atomic validation.
 - BSharp IR identity and retired-DKIR rejection.
-- Explicit `(cause` follow-up events and deterministic ordering.
-- Separate BSharp Save identity and settled-world restore.
-- Program fingerprints, deterministic files, and atomic save/load safety.
-- Read-only ASK inspection of Things, Kinds, event matching, IF rules, world state, and save origin.
-- Deterministic human answers and complete `bsharp.ask.json` output.
+- Explicit `(cause` follow-up events and deterministic order.
+- Deterministic BSharp Save restore.
+- Read-only deterministic ASK inspection.
+- Implementation-neutral `bsharp.meaning.v1` conformance fixtures.
 
-## Immediate continuation after v0.1.23 acceptance
+## Immediate continuation after v0.1.24 acceptance
 
-The next roadmap lane is **Stable Meaning Specification** unless Derek changes direction.
+The next eligible lane is **Bytecode Design** unless Derek changes direction.
 
-The next proposal must define before implementation:
+The bytecode proposal must define before implementation:
 
-- the exact normative meaning document and versioning policy;
-- which source, BSIR, runtime, save, and ASK behaviors become stable contracts;
-- compatibility promises and what may still change before 1.0;
-- canonical terminology for Heads, Things, Kinds, facts, rules, actions, values, events, saves, and answers;
-- conformance tests and machine-readable meaning fixtures;
-- how later bytecode and VM implementations prove the same meaning;
-- risks, rollback, validation, exact files, exclusions, and package name.
+- instruction identity and versioning;
+- how Profile 1 semantic structures lower into instructions;
+- deterministic event, IF, selection, save, and ASK behavior;
+- readable disassembly;
+- validation and malformed-bytecode rejection;
+- Ruby runtime comparison strategy;
+- future VM boundaries;
+- exact files, risks, exclusions, rollback, and package name.
 
-No v0.1.24 implementation begins without the complete proposal and Derek's explicit approval.
+No bytecode implementation begins without a complete proposal and Derek's explicit approval.
 
 ## Protected design rules
 
 - BASIC# is made for non-programmers, by non-programmers.
 - BASIC# is the language name; BSharp is used where `#` is unsafe.
-- BSharp Intermediate Representation is normally called BSharp IR or BSIR.
-- BSharp Save is the separate world-state format.
-- BSharp ASK is an inspection format, not a creator-world action.
-- No new `DK`-prefixed BASIC# component is created without Derek's explicit approval.
-- The compiler and runtime do the heavy lifting.
-- Ruby remains scaffolding.
-- No new official word enters casually.
-- ASK observes and explains without changing the world.
-- START builds a new world; loading a save restores one without replaying START.
-- Saves represent only fully settled worlds.
-- Follow-up events are explicit, first-created/first-run, and bounded.
-- Source and saved BSIR must remain behaviorally equivalent.
-- Warnings remain failures for build validation.
-- One build at a time, changed-files-only by default, with exact base verification and rollback.
+- BSharp IR, BSharp Save, BSharp ASK, and BSharp Meaning Profile are approved identities.
+- No new `DK`-prefixed name without Derek's explicit approval.
+- The opening `(` in official words is a creator-facing visual guide.
+- Complex machinery belongs under understandable creator-facing language.
+- Every build requires an exact accepted base, proposal, approval, validation, changed-files-only package, handshake, commit, and tag.

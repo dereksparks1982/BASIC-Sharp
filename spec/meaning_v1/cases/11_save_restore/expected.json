@@ -1,0 +1,340 @@
+{
+  "case_id": "11_save_restore",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "events": [
+        {
+          "then": [
+            {
+              "action": "damage",
+              "amount": 1,
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              }
+            }
+          ],
+          "when": {
+            "action": "attack",
+            "actor": {
+              "name": "henry",
+              "object_kind": "guard",
+              "text": "henry",
+              "type": "object"
+            },
+            "target": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            }
+          }
+        }
+      ],
+      "facts": [
+        {
+          "relation": "is",
+          "subject": {
+            "name": "henry",
+            "object_kind": "guard",
+            "text": "henry",
+            "type": "object"
+          },
+          "value": {
+            "kind": "state",
+            "name": "angry"
+          }
+        }
+      ],
+      "if_rules": [
+        {
+          "if": {
+            "relation": "is",
+            "subject": {
+              "name": "henry",
+              "object_kind": "guard",
+              "text": "henry",
+              "type": "object"
+            },
+            "value": {
+              "kind": "state",
+              "name": "angry"
+            }
+          },
+          "then": [
+            {
+              "action": "cause",
+              "event": {
+                "action": "attack",
+                "actor": {
+                  "name": "henry",
+                  "object_kind": "guard",
+                  "text": "henry",
+                  "type": "object"
+                },
+                "target": {
+                  "name": "player",
+                  "object_kind": "person",
+                  "text": "player",
+                  "type": "object"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "kinds": [
+        {
+          "name": "guard",
+          "parent": "person"
+        }
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "ask": {
+      "answers": [
+        {
+          "answer": {
+            "if_rules": 1,
+            "kinds_used": 2,
+            "origin": "START",
+            "settled": true,
+            "things": 2,
+            "true_if_rules": 1,
+            "whole_number_values": 2
+          },
+          "ok": true,
+          "question": "what is the world",
+          "type": "world"
+        }
+      ],
+      "questions": [
+        "what is the world"
+      ]
+    },
+    "events": [
+
+    ],
+    "final": {
+      "if_rules": [
+        {
+          "active": true,
+          "condition": "henry is angry",
+          "index": 0,
+          "true": true
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "damage": 1,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 1
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry",
+          "relations": {
+          },
+          "states": [
+            "angry"
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "things": 2,
+        "true_if_rules": 1,
+        "whole_number_values": 2
+      }
+    },
+    "save": {
+      "document": {
+        "format": "bsharp.save.json",
+        "format_version": 1,
+        "program_fingerprint": {
+          "algorithm": "sha256-bsir-meaning-v1",
+          "value": "9d1365662d1f4bedac89a9a9f332cf8ca250576cf9b9cb515230b7159b9a4d52"
+        },
+        "world": {
+          "if_rules": [
+            {
+              "active": true,
+              "condition": "henry is angry",
+              "index": 0
+            }
+          ],
+          "settled": true,
+          "things": [
+            {
+              "builtin": true,
+              "kind": "person",
+              "name": "player",
+              "relations": {
+              },
+              "states": [
+
+              ],
+              "values": {
+                "damage": 1
+              }
+            },
+            {
+              "builtin": false,
+              "kind": "guard",
+              "name": "henry",
+              "relations": {
+              },
+              "states": [
+                "angry"
+              ],
+              "values": {
+                "damage": 0
+              }
+            }
+          ]
+        }
+      },
+      "restored": {
+        "if_rules": [
+          {
+            "active": true,
+            "condition": "henry is angry",
+            "index": 0,
+            "true": true
+          }
+        ],
+        "save_ready": true,
+        "snapshot": [
+          {
+            "builtin": true,
+            "damage": 1,
+            "kind": "person",
+            "name": "player",
+            "relations": {
+            },
+            "states": [
+
+            ],
+            "values": {
+              "damage": 1
+            }
+          },
+          {
+            "builtin": false,
+            "kind": "guard",
+            "name": "henry",
+            "relations": {
+            },
+            "states": [
+              "angry"
+            ],
+            "values": {
+              "damage": 0
+            }
+          }
+        ],
+        "world": {
+          "if_rules": 1,
+          "kinds_used": 2,
+          "origin": "BSharp Save",
+          "settled": true,
+          "things": 2,
+          "true_if_rules": 1,
+          "whole_number_values": 2
+        }
+      },
+      "startup_replayed": false
+    },
+    "startup": {
+      "if_rules": [
+        {
+          "active": true,
+          "condition": "henry is angry",
+          "index": 0,
+          "true": true
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "damage": 1,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 1
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry",
+          "relations": {
+          },
+          "states": [
+            "angry"
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "things": 2,
+        "true_if_rules": 1,
+        "whole_number_values": 2
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v1",
+  "source_bsir_parity": true
+}

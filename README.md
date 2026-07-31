@@ -1,4 +1,4 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.23
+# BASIC# Ruby Bootstrap Compiler v0.1.24
 
 **Language name:** BASIC#  
 **Pronounced:** Basic Sharp  
@@ -7,15 +7,110 @@
 **Creator source extension:** `.bsharp`  
 **Intermediate representation:** BSharp Intermediate Representation, normally **BSharp IR** or **BSIR**  
 **World-save format:** BSharp Save, using `.bsave.json`  
-**Inspection format:** BSharp ASK, using `bsharp.ask.json`
+**Inspection format:** BSharp ASK, using `bsharp.ask.json`  
+**Stable meaning profile:** `bsharp.meaning.v1`
 
 > A scripting language made for non-programmers, by non-programmers.
 
-BASIC# lets a creator describe what exists, what should happen, and now ask what the program or current world means without first becoming a conventional programmer.
+BASIC# lets a creator describe what exists, what should happen, preserve a settled world, and ask what the program or world currently means.
 
-## v0.1.23 ASK introspection
+## v0.1.24 Stable Meaning Specification
 
-ASK is a bootstrap-tool inspection command. It is not a Head, official word, event, or world action.
+v0.1.24 establishes **BSharp Meaning Profile 1**. It is the implementation-neutral meaning target that the Ruby bootstrap, future bytecode runtime, and future BASIC# virtual machine must reproduce.
+
+```text
+BASIC# source
+    -> BSharp Meaning Profile 1
+    -> current Ruby compiler/runtime
+    -> future bytecode and VM implementations
+```
+
+Profile identity:
+
+```text
+bsharp.meaning.v1
+```
+
+Run the conformance suite:
+
+```bash
+ruby tools/meaning_conformance.rb
+```
+
+Expected result:
+
+```text
+BASIC# Meaning Conformance Profile 1
+Cases: 13
+
+Source meaning: PASS
+BSharp IR meaning: PASS
+Runtime meaning: PASS
+BSharp Save meaning: PASS
+BSharp ASK meaning: PASS
+Deterministic replay: PASS
+
+PROFILE 1: PASS
+```
+
+The normative records are:
+
+```text
+docs/specification/BASIC_SHARP_STABLE_MEANING_SPECIFICATION_v1.md
+docs/specification/BASIC_SHARP_TERMINOLOGY_v1.md
+docs/specification/BASIC_SHARP_COMPATIBILITY_POLICY_v0_1_24.md
+spec/meaning_v1/BASIC_SHARP_MEANING_PROFILE_v1.json
+```
+
+## The five current Heads
+
+```text
+KINDS
+DEFINE
+START
+WHEN
+IF
+```
+
+Six abandoned starter names were removed from the parser's accepted Head set:
+
+```text
+WORLD
+STATES
+RELATIONS
+ACTIONS
+WHILE
+OTHERWISE
+```
+
+They never received complete accepted language meaning. A use now receives a plain message such as:
+
+```text
+BASIC# does not have a WORLD Head.
+
+Current Heads are:
+  KINDS
+  DEFINE
+  START
+  WHEN
+  IF
+```
+
+## Current executable official words
+
+```text
+(damage
+(change
+(carry
+(unlock
+(cause
+```
+
+v0.1.24 adds no creator-facing Head, Connector, official word, event behavior, IF behavior, number behavior, save schema, or ASK schema.
+
+## ASK introspection
+
+ASK is a bootstrap-tool inspection command, not a Head or official word.
 
 ```bash
 ruby compiler/basic_sharp.rb samples/ask_demo.bsharp \
@@ -39,62 +134,7 @@ what is the world
 what is the save
 ```
 
-ASK is case-insensitive but does not pretend to understand unrestricted English. Unknown or unsupported questions receive plain explanations.
-
-### Inspect without changing
-
-```bash
-ruby compiler/basic_sharp.rb samples/ask_demo.bsharp \
-  --ask "what happens when player attacks henry"
-```
-
-Event inspection uses the same exact-Thing, inherited-Kind, nearest-Kind, and source-order rules as runtime execution. It reports the selected WHEN rule and actions without running them.
-
-ASK does not change Things, values, states, relationships, IF activity, event lines, or save readiness.
-
-### Inspect after an event
-
-```bash
-ruby compiler/basic_sharp.rb samples/ask_demo.bsharp \
-  --run "player attacks henry" \
-  --ask "what IF rules are true" \
-  --ask "what is henry"
-```
-
-The requested event and all IF/follow-up settlement finish before ASK answers.
-
-### Inspect a restored world
-
-```bash
-ruby compiler/basic_sharp.rb samples/ask_demo.bsharp \
-  --load-world samples/ask_demo.bsave.json \
-  --ask "what is the save" \
-  --ask "what is henry"
-```
-
-### Machine-readable answers
-
-```bash
-ruby compiler/basic_sharp.rb samples/ask_demo.bsharp \
-  --ask "what is henry" \
-  --ask "what Things are guards" \
-  --ask-json
-```
-
-The result uses:
-
-```json
-{
-  "format": "bsharp.ask.json",
-  "format_version": 1,
-  "created_by_basic_sharp": "0.1.23",
-  "answers": []
-}
-```
-
-ASK JSON has no timestamps, random identifiers, machine paths, or unstable ordering. Identical worlds and questions produce byte-identical JSON. Up to 256 questions may be asked in one command.
-
-Human output shows at most 50 Things or 50 true IF rules in one answer. `--ask-json` remains complete.
+Machine-readable answers use `bsharp.ask.json`, format version 1. ASK is read-only and deterministic.
 
 ## BSharp Save files
 
@@ -112,7 +152,7 @@ ruby compiler/basic_sharp.rb samples/world_save_demo.bsharp \
   --run "henry attacks player"
 ```
 
-A loaded world does not rerun START, startup IF rules, or startup follow-up events. Save files preserve Thing order and identity, Kinds, states, relationships, values, damage, IF activity, and a normalized program fingerprint.
+A loaded world does not rerun START, startup IF rules, or startup follow-up events. BSharp Save remains `bsharp.save.json`, format version 1.
 
 ## Follow-up events
 
@@ -130,8 +170,8 @@ BASIC# completes the current action body, settles reactive IF rules, then runs f
 
 ## Current language foundation
 
-- `KINDS`, `DEFINE`, `START`, `WHEN`, and `IF` Heads.
-- Things and inherited Kind families.
+- Controlled Head and Body structure.
+- Things and one-parent inherited Kind families.
 - Exact and Kind-based event matching.
 - Singular `that Kind` event context.
 - `every Kind` deterministic action selections.
@@ -142,19 +182,8 @@ BASIC# completes the current action body, settles reactive IF rules, then runs f
 - Exact value assignment and exact-value IF conditions.
 - Deterministic BSharp Save files.
 - Read-only ASK inspection with deterministic human and JSON answers.
+- Stable Meaning Profile 1 conformance fixtures.
 - Damage and health remain independent unless a creator explicitly connects them.
-
-## Current executable official words
-
-```text
-(damage
-(change
-(carry
-(unlock
-(cause
-```
-
-v0.1.23 adds no language word. ASK is a toolchain inspection surface.
 
 ## Compile samples
 
@@ -179,7 +208,7 @@ A current debug document begins with:
 
 ```json
 {
-  "version": "0.1.23",
+  "version": "0.1.24",
   "format": "bsir.debug.json"
 }
 ```
@@ -203,14 +232,14 @@ ruby -w -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_rel
 Current validated floor:
 
 ```text
-212 runs
-5,043 assertions
+218 runs
+5,102 assertions
 0 failures
 0 errors
 0 skips
 ```
 
-Stress lanes:
+Stress and conformance lanes:
 
 ```bash
 ruby tools/runtime_stress.rb
@@ -221,6 +250,7 @@ ruby tools/value_amount_stress.rb
 ruby tools/follow_up_event_stress.rb
 ruby tools/world_save_stress.rb
 ruby tools/ask_stress.rb
+ruby tools/meaning_conformance.rb
 ```
 
 Timing is observational only. A slower correct machine does not fail.
@@ -232,22 +262,23 @@ The imported DK LAB Company Bible is stored under `docs/company_bible/`. Read it
 ## Current contracts
 
 ```text
-docs/ask/BASIC_SHARP_ASK_CONTRACT_v0_1_23.md
-docs/parser_contract_v0_1_23.md
-docs/runtime_contract_v0_1_23.md
-docs/ir/BSIR_MEANING_CONTRACT_v0_1_23.md
-docs/save/BSHARP_SAVE_CONTRACT_v0_1_23.md
+docs/specification/BASIC_SHARP_STABLE_MEANING_SPECIFICATION_v1.md
+docs/specification/BASIC_SHARP_TERMINOLOGY_v1.md
+docs/specification/BASIC_SHARP_COMPATIBILITY_POLICY_v0_1_24.md
+docs/ask/BASIC_SHARP_ASK_CONTRACT_v0_1_24.md
+docs/parser_contract_v0_1_24.md
+docs/runtime_contract_v0_1_24.md
+docs/ir/BSIR_MEANING_CONTRACT_v0_1_24.md
+docs/save/BSHARP_SAVE_CONTRACT_v0_1_24.md
 ```
 
 ## Not included
 
-- No ASK Head or `(ask` official word.
-- No unrestricted natural-language interpretation or spelling correction.
-- No event execution or outcome simulation during ASK inspection.
-- No automatic saves, slots, file picker, cloud, compression, or encryption.
-- No pending-event serialization or mid-chain saves.
-- No dynamic Thing creation or deletion.
-- No negative numbers, decimals, fractions, percentages, or arithmetic expressions.
+- No new creator-facing Head, Connector, or official word.
+- No capitalization, spacing, contraction, or spelling-tolerance expansion.
+- No unrestricted natural-language interpretation.
+- No arithmetic expressions, negative numbers, decimals, fractions, or percentages.
+- No BSIR, BSharp Save, or BSharp ASK format migration.
 - No bytecode or virtual machine.
 - No GUI editor or IDE.
 - No game-engine bridge.

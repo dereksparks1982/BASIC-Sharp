@@ -1,0 +1,300 @@
+{
+  "case_id": "04_event_matching",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "events": [
+        {
+          "then": [
+            {
+              "action": "damage",
+              "amount": 3,
+              "target": {
+                "name": "henry",
+                "object_kind": "guard",
+                "text": "henry",
+                "type": "object"
+              }
+            }
+          ],
+          "when": {
+            "action": "attack",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "name": "henry",
+              "object_kind": "guard",
+              "text": "henry",
+              "type": "object"
+            }
+          }
+        },
+        {
+          "then": [
+            {
+              "action": "damage",
+              "amount": 1,
+              "target": {
+                "kind_name": "guard",
+                "selector": "that",
+                "text": "that guard",
+                "type": "previous"
+              }
+            }
+          ],
+          "when": {
+            "action": "attack",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "candidates": [
+                "henry",
+                "mara"
+              ],
+              "kind_name": "guard",
+              "selector": "a",
+              "text": "a guard",
+              "type": "kind_one"
+            }
+          }
+        }
+      ],
+      "facts": [
+
+      ],
+      "if_rules": [
+
+      ],
+      "kinds": [
+        {
+          "name": "guard",
+          "parent": "person"
+        }
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry"
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "mara"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "events": [
+      {
+        "context": {
+        },
+        "error": null,
+        "event": "player attacks henry",
+        "event_trail": [
+
+        ],
+        "follow_up_events": [
+
+        ],
+        "if_rules": [
+
+        ],
+        "matched": true,
+        "matched_when": "player attacks henry",
+        "ran": [
+          "(damage henry by 3"
+        ],
+        "selections": [
+
+        ],
+        "steps": [
+          {
+            "change": "henry damage changed from 0 to 3",
+            "value_change": {
+              "action_amount": 3,
+              "new_amount": 3,
+              "old_amount": 0,
+              "value_name": "damage"
+            },
+            "word": "(damage henry by 3"
+          }
+        ],
+        "understood": [
+
+        ]
+      },
+      {
+        "context": {
+          "guard": "mara"
+        },
+        "error": null,
+        "event": "player attacks mara",
+        "event_trail": [
+
+        ],
+        "follow_up_events": [
+
+        ],
+        "if_rules": [
+
+        ],
+        "matched": true,
+        "matched_when": "player attacks a guard",
+        "ran": [
+          "(damage mara"
+        ],
+        "selections": [
+
+        ],
+        "steps": [
+          {
+            "change": "mara damage is now 1",
+            "word": "(damage mara"
+          }
+        ],
+        "understood": [
+          "a guard means mara",
+          "that guard means mara"
+        ]
+      }
+    ],
+    "final": {
+      "if_rules": [
+
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "damage": 3,
+          "kind": "guard",
+          "name": "henry",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 3
+          }
+        },
+        {
+          "builtin": false,
+          "damage": 1,
+          "kind": "guard",
+          "name": "mara",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 1
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "things": 3,
+        "true_if_rules": 0,
+        "whole_number_values": 3
+      }
+    },
+    "startup": {
+      "if_rules": [
+
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "mara",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "things": 3,
+        "true_if_rules": 0,
+        "whole_number_values": 3
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v1",
+  "source_bsir_parity": true
+}

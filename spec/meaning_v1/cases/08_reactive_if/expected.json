@@ -1,0 +1,526 @@
+{
+  "case_id": "08_reactive_if",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "events": [
+        {
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "name": "henry",
+                "object_kind": "guard",
+                "text": "henry",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "angry"
+              }
+            }
+          ],
+          "when": {
+            "action": "attack",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "name": "henry",
+              "object_kind": "guard",
+              "text": "henry",
+              "type": "object"
+            }
+          }
+        },
+        {
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "name": "henry",
+                "object_kind": "guard",
+                "text": "henry",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "calm"
+              }
+            },
+            {
+              "action": "change",
+              "target": {
+                "name": "brass bell",
+                "object_kind": "device",
+                "text": "brass bell",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "off"
+              }
+            }
+          ],
+          "when": {
+            "action": "sound",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "name": "brass bell",
+              "object_kind": "device",
+              "text": "brass bell",
+              "type": "object"
+            }
+          }
+        }
+      ],
+      "facts": [
+        {
+          "relation": "is",
+          "subject": {
+            "name": "henry",
+            "object_kind": "guard",
+            "text": "henry",
+            "type": "object"
+          },
+          "value": {
+            "kind": "state",
+            "name": "calm"
+          }
+        },
+        {
+          "relation": "is",
+          "subject": {
+            "name": "brass bell",
+            "object_kind": "device",
+            "text": "brass bell",
+            "type": "object"
+          },
+          "value": {
+            "kind": "state",
+            "name": "off"
+          }
+        }
+      ],
+      "if_rules": [
+        {
+          "if": {
+            "relation": "is",
+            "subject": {
+              "name": "henry",
+              "object_kind": "guard",
+              "text": "henry",
+              "type": "object"
+            },
+            "value": {
+              "kind": "state",
+              "name": "angry"
+            }
+          },
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "name": "brass bell",
+                "object_kind": "device",
+                "text": "brass bell",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "on"
+              }
+            }
+          ]
+        },
+        {
+          "if": {
+            "relation": "is",
+            "subject": {
+              "name": "brass bell",
+              "object_kind": "device",
+              "text": "brass bell",
+              "type": "object"
+            },
+            "value": {
+              "kind": "state",
+              "name": "on"
+            }
+          },
+          "then": [
+            {
+              "action": "damage",
+              "amount": 1,
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              }
+            }
+          ]
+        }
+      ],
+      "kinds": [
+        {
+          "name": "guard",
+          "parent": "person"
+        }
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry"
+        },
+        {
+          "builtin": false,
+          "kind": "device",
+          "name": "brass bell"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "ask": {
+      "answers": [
+        {
+          "answer": {
+            "rules": [
+              {
+                "active": true,
+                "condition": "henry is angry",
+                "index": 0,
+                "true": true
+              },
+              {
+                "active": true,
+                "condition": "brass bell is on",
+                "index": 1,
+                "true": true
+              }
+            ],
+            "total_count": 2,
+            "true_count": 2
+          },
+          "ok": true,
+          "question": "what IF rules are true",
+          "type": "if_rules_true"
+        }
+      ],
+      "questions": [
+        "what IF rules are true"
+      ]
+    },
+    "events": [
+      {
+        "context": {
+        },
+        "error": null,
+        "event": "player attacks henry",
+        "event_trail": [
+
+        ],
+        "follow_up_events": [
+
+        ],
+        "if_rules": [
+          {
+            "condition": "henry is angry",
+            "reason": "became true after the event",
+            "selections": [
+
+            ],
+            "steps": [
+              {
+                "change": "brass bell is now on",
+                "word": "(change brass bell to on"
+              }
+            ]
+          },
+          {
+            "condition": "brass bell is on",
+            "reason": "became true",
+            "selections": [
+
+            ],
+            "steps": [
+              {
+                "change": "player damage is now 1",
+                "word": "(damage player"
+              }
+            ]
+          }
+        ],
+        "matched": true,
+        "matched_when": "player attacks henry",
+        "ran": [
+          "(change henry to angry"
+        ],
+        "selections": [
+
+        ],
+        "steps": [
+          {
+            "change": "henry is now angry",
+            "word": "(change henry to angry"
+          }
+        ],
+        "understood": [
+
+        ]
+      },
+      {
+        "context": {
+        },
+        "error": null,
+        "event": "player sounds brass bell",
+        "event_trail": [
+
+        ],
+        "follow_up_events": [
+
+        ],
+        "if_rules": [
+
+        ],
+        "matched": true,
+        "matched_when": "player sounds brass bell",
+        "ran": [
+          "(change henry to calm",
+          "(change brass bell to off"
+        ],
+        "selections": [
+
+        ],
+        "steps": [
+          {
+            "change": "henry is now calm",
+            "word": "(change henry to calm"
+          },
+          {
+            "change": "brass bell is now off",
+            "word": "(change brass bell to off"
+          }
+        ],
+        "understood": [
+
+        ]
+      },
+      {
+        "context": {
+        },
+        "error": null,
+        "event": "player attacks henry",
+        "event_trail": [
+
+        ],
+        "follow_up_events": [
+
+        ],
+        "if_rules": [
+          {
+            "condition": "henry is angry",
+            "reason": "became true after the event",
+            "selections": [
+
+            ],
+            "steps": [
+              {
+                "change": "brass bell is now on",
+                "word": "(change brass bell to on"
+              }
+            ]
+          },
+          {
+            "condition": "brass bell is on",
+            "reason": "became true",
+            "selections": [
+
+            ],
+            "steps": [
+              {
+                "change": "player damage is now 2",
+                "word": "(damage player"
+              }
+            ]
+          }
+        ],
+        "matched": true,
+        "matched_when": "player attacks henry",
+        "ran": [
+          "(change henry to angry"
+        ],
+        "selections": [
+
+        ],
+        "steps": [
+          {
+            "change": "henry is now angry",
+            "word": "(change henry to angry"
+          }
+        ],
+        "understood": [
+
+        ]
+      }
+    ],
+    "final": {
+      "if_rules": [
+        {
+          "active": true,
+          "condition": "henry is angry",
+          "index": 0,
+          "true": true
+        },
+        {
+          "active": true,
+          "condition": "brass bell is on",
+          "index": 1,
+          "true": true
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "damage": 2,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 2
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry",
+          "relations": {
+          },
+          "states": [
+            "angry"
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "device",
+          "name": "brass bell",
+          "relations": {
+          },
+          "states": [
+            "on"
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 2,
+        "kinds_used": 3,
+        "origin": "START",
+        "settled": true,
+        "things": 3,
+        "true_if_rules": 2,
+        "whole_number_values": 3
+      }
+    },
+    "startup": {
+      "if_rules": [
+        {
+          "active": false,
+          "condition": "henry is angry",
+          "index": 0,
+          "true": false
+        },
+        {
+          "active": false,
+          "condition": "brass bell is on",
+          "index": 1,
+          "true": false
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry",
+          "relations": {
+          },
+          "states": [
+            "calm"
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "device",
+          "name": "brass bell",
+          "relations": {
+          },
+          "states": [
+            "off"
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 2,
+        "kinds_used": 3,
+        "origin": "START",
+        "settled": true,
+        "things": 3,
+        "true_if_rules": 0,
+        "whole_number_values": 3
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v1",
+  "source_bsir_parity": true
+}

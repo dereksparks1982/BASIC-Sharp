@@ -1,0 +1,241 @@
+{
+  "case_id": "02_kinds_things_order",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "events": [
+
+      ],
+      "facts": [
+
+      ],
+      "if_rules": [
+
+      ],
+      "kinds": [
+        {
+          "name": "guard",
+          "parent": "person"
+        },
+        {
+          "name": "captain",
+          "parent": "guard"
+        },
+        {
+          "name": "elite",
+          "parent": "captain"
+        }
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "elite",
+          "name": "mara"
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry"
+        },
+        {
+          "builtin": false,
+          "kind": "captain",
+          "name": "june"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "ask": {
+      "answers": [
+        {
+          "answer": {
+            "count": 3,
+            "kind": "guard",
+            "things": [
+              {
+                "distance": 2,
+                "inherited": true,
+                "kind": "elite",
+                "name": "mara"
+              },
+              {
+                "distance": 0,
+                "inherited": false,
+                "kind": "guard",
+                "name": "henry"
+              },
+              {
+                "distance": 1,
+                "inherited": true,
+                "kind": "captain",
+                "name": "june"
+              }
+            ]
+          },
+          "ok": true,
+          "question": "what Things are guards",
+          "type": "kind_membership"
+        }
+      ],
+      "questions": [
+        "what Things are guards"
+      ]
+    },
+    "events": [
+
+    ],
+    "final": {
+      "if_rules": [
+
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "elite",
+          "name": "mara",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "captain",
+          "name": "june",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 4,
+        "origin": "START",
+        "settled": true,
+        "things": 4,
+        "true_if_rules": 0,
+        "whole_number_values": 4
+      }
+    },
+    "startup": {
+      "if_rules": [
+
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "elite",
+          "name": "mara",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "captain",
+          "name": "june",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 4,
+        "origin": "START",
+        "settled": true,
+        "things": 4,
+        "true_if_rules": 0,
+        "whole_number_values": 4
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v1",
+  "source_bsir_parity": true
+}

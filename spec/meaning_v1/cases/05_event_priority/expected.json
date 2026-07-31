@@ -1,0 +1,301 @@
+{
+  "case_id": "05_event_priority",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "events": [
+        {
+          "then": [
+            {
+              "action": "damage",
+              "amount": 1,
+              "target": {
+                "name": "general",
+                "object_kind": "commander",
+                "text": "general",
+                "type": "object"
+              }
+            }
+          ],
+          "when": {
+            "action": "attack",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "candidates": [
+                "general"
+              ],
+              "kind_name": "guard",
+              "selector": "a",
+              "text": "a guard",
+              "type": "kind_one"
+            }
+          }
+        },
+        {
+          "then": [
+            {
+              "action": "damage",
+              "amount": 2,
+              "target": {
+                "name": "general",
+                "object_kind": "commander",
+                "text": "general",
+                "type": "object"
+              }
+            }
+          ],
+          "when": {
+            "action": "attack",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "candidates": [
+                "general"
+              ],
+              "kind_name": "captain",
+              "selector": "a",
+              "text": "a captain",
+              "type": "kind_one"
+            }
+          }
+        },
+        {
+          "then": [
+            {
+              "action": "damage",
+              "amount": 3,
+              "target": {
+                "name": "general",
+                "object_kind": "commander",
+                "text": "general",
+                "type": "object"
+              }
+            }
+          ],
+          "when": {
+            "action": "attack",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "candidates": [
+                "general"
+              ],
+              "kind_name": "captain",
+              "selector": "a",
+              "text": "a captain",
+              "type": "kind_one"
+            }
+          }
+        }
+      ],
+      "facts": [
+
+      ],
+      "if_rules": [
+
+      ],
+      "kinds": [
+        {
+          "name": "guard",
+          "parent": "person"
+        },
+        {
+          "name": "captain",
+          "parent": "guard"
+        },
+        {
+          "name": "commander",
+          "parent": "captain"
+        }
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "commander",
+          "name": "general"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "ask": {
+      "answers": [
+        {
+          "answer": {
+            "actions": [
+              "(damage general by 2"
+            ],
+            "error": null,
+            "event": "player attacks general",
+            "matched": true,
+            "matched_when": "player attacks a captain",
+            "understood": [
+              "a captain means general"
+            ]
+          },
+          "ok": true,
+          "question": "what happens when player attacks general",
+          "type": "event_match"
+        }
+      ],
+      "questions": [
+        "what happens when player attacks general"
+      ]
+    },
+    "events": [
+      {
+        "context": {
+          "captain": "general"
+        },
+        "error": null,
+        "event": "player attacks general",
+        "event_trail": [
+
+        ],
+        "follow_up_events": [
+
+        ],
+        "if_rules": [
+
+        ],
+        "matched": true,
+        "matched_when": "player attacks a captain",
+        "ran": [
+          "(damage general by 2"
+        ],
+        "selections": [
+
+        ],
+        "steps": [
+          {
+            "change": "general damage changed from 0 to 2",
+            "value_change": {
+              "action_amount": 2,
+              "new_amount": 2,
+              "old_amount": 0,
+              "value_name": "damage"
+            },
+            "word": "(damage general by 2"
+          }
+        ],
+        "understood": [
+          "a captain means general"
+        ]
+      }
+    ],
+    "final": {
+      "if_rules": [
+
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "damage": 2,
+          "kind": "commander",
+          "name": "general",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 2
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "things": 2,
+        "true_if_rules": 0,
+        "whole_number_values": 2
+      }
+    },
+    "startup": {
+      "if_rules": [
+
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "commander",
+          "name": "general",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "things": 2,
+        "true_if_rules": 0,
+        "whole_number_values": 2
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v1",
+  "source_bsir_parity": true
+}

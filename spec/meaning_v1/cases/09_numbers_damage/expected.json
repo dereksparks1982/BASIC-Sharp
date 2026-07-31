@@ -1,0 +1,402 @@
+{
+  "case_id": "09_numbers_damage",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "events": [
+        {
+          "then": [
+            {
+              "action": "damage",
+              "amount": 3,
+              "target": {
+                "name": "henry",
+                "object_kind": "guard",
+                "text": "henry",
+                "type": "object"
+              }
+            },
+            {
+              "action": "change",
+              "target": {
+                "name": "henry",
+                "object_kind": "guard",
+                "text": "henry",
+                "type": "object"
+              },
+              "to_amount": 7,
+              "value_name": "health"
+            }
+          ],
+          "when": {
+            "action": "attack",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "name": "henry",
+              "object_kind": "guard",
+              "text": "henry",
+              "type": "object"
+            }
+          }
+        }
+      ],
+      "facts": [
+        {
+          "amount": 10,
+          "relation": "has",
+          "subject": {
+            "name": "henry",
+            "object_kind": "guard",
+            "text": "henry",
+            "type": "object"
+          },
+          "value_name": "health"
+        }
+      ],
+      "if_rules": [
+        {
+          "if": {
+            "amount": 3,
+            "relation": "has",
+            "subject": {
+              "name": "henry",
+              "object_kind": "guard",
+              "text": "henry",
+              "type": "object"
+            },
+            "value_name": "damage"
+          },
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "name": "henry",
+                "object_kind": "guard",
+                "text": "henry",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "angry"
+              }
+            }
+          ]
+        }
+      ],
+      "kinds": [
+        {
+          "name": "guard",
+          "parent": "person"
+        }
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "ask": {
+      "answers": [
+        {
+          "answer": {
+            "name": "henry",
+            "values": {
+              "damage": 3,
+              "health": 7
+            }
+          },
+          "ok": true,
+          "question": "what values does henry have",
+          "type": "thing_values"
+        }
+      ],
+      "questions": [
+        "what values does henry have"
+      ]
+    },
+    "events": [
+      {
+        "context": {
+        },
+        "error": null,
+        "event": "player attacks henry",
+        "event_trail": [
+
+        ],
+        "follow_up_events": [
+
+        ],
+        "if_rules": [
+          {
+            "condition": "henry has 3 damage",
+            "reason": "became true after the event",
+            "selections": [
+
+            ],
+            "steps": [
+              {
+                "change": "henry is now angry",
+                "word": "(change henry to angry"
+              }
+            ]
+          }
+        ],
+        "matched": true,
+        "matched_when": "player attacks henry",
+        "ran": [
+          "(damage henry by 3",
+          "(change health of henry to 7"
+        ],
+        "selections": [
+
+        ],
+        "steps": [
+          {
+            "change": "henry damage changed from 0 to 3",
+            "value_change": {
+              "action_amount": 3,
+              "new_amount": 3,
+              "old_amount": 0,
+              "value_name": "damage"
+            },
+            "word": "(damage henry by 3"
+          },
+          {
+            "change": "henry health changed from 10 to 7",
+            "value_change": {
+              "new_amount": 7,
+              "old_amount": 10,
+              "value_name": "health"
+            },
+            "word": "(change health of henry to 7"
+          }
+        ],
+        "understood": [
+
+        ]
+      }
+    ],
+    "final": {
+      "if_rules": [
+        {
+          "active": true,
+          "condition": "henry has 3 damage",
+          "index": 0,
+          "true": true
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "damage": 3,
+          "kind": "guard",
+          "name": "henry",
+          "relations": {
+          },
+          "states": [
+            "angry"
+          ],
+          "values": {
+            "damage": 3,
+            "health": 7
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "things": 2,
+        "true_if_rules": 1,
+        "whole_number_values": 3
+      }
+    },
+    "save": {
+      "document": {
+        "format": "bsharp.save.json",
+        "format_version": 1,
+        "program_fingerprint": {
+          "algorithm": "sha256-bsir-meaning-v1",
+          "value": "782fc2eb6171357db128e561b679631a83cb64e883149652544ceb65dcea853a"
+        },
+        "world": {
+          "if_rules": [
+            {
+              "active": true,
+              "condition": "henry has 3 damage",
+              "index": 0
+            }
+          ],
+          "settled": true,
+          "things": [
+            {
+              "builtin": true,
+              "kind": "person",
+              "name": "player",
+              "relations": {
+              },
+              "states": [
+
+              ],
+              "values": {
+                "damage": 0
+              }
+            },
+            {
+              "builtin": false,
+              "kind": "guard",
+              "name": "henry",
+              "relations": {
+              },
+              "states": [
+                "angry"
+              ],
+              "values": {
+                "damage": 3,
+                "health": 7
+              }
+            }
+          ]
+        }
+      },
+      "restored": {
+        "if_rules": [
+          {
+            "active": true,
+            "condition": "henry has 3 damage",
+            "index": 0,
+            "true": true
+          }
+        ],
+        "save_ready": true,
+        "snapshot": [
+          {
+            "builtin": true,
+            "kind": "person",
+            "name": "player",
+            "relations": {
+            },
+            "states": [
+
+            ],
+            "values": {
+              "damage": 0
+            }
+          },
+          {
+            "builtin": false,
+            "damage": 3,
+            "kind": "guard",
+            "name": "henry",
+            "relations": {
+            },
+            "states": [
+              "angry"
+            ],
+            "values": {
+              "damage": 3,
+              "health": 7
+            }
+          }
+        ],
+        "world": {
+          "if_rules": 1,
+          "kinds_used": 2,
+          "origin": "BSharp Save",
+          "settled": true,
+          "things": 2,
+          "true_if_rules": 1,
+          "whole_number_values": 3
+        }
+      },
+      "startup_replayed": false
+    },
+    "startup": {
+      "if_rules": [
+        {
+          "active": false,
+          "condition": "henry has 3 damage",
+          "index": 0,
+          "true": false
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0,
+            "health": 10
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "things": 2,
+        "true_if_rules": 0,
+        "whole_number_values": 3
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v1",
+  "source_bsir_parity": true
+}

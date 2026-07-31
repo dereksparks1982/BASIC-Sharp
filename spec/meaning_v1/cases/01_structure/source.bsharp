@@ -1,0 +1,17 @@
+KINDS
+[guard is a person].
+
+DEFINE
+[a guard named henry].
+
+START
+[henry is calm].
+
+WHEN
+[player attacks henry
+<than> (damage henry
+<then> (change henry to angry].
+
+IF
+[henry is angry
+<then> (change player to angry].

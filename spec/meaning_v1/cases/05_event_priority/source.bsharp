@@ -1,0 +1,19 @@
+KINDS
+[guard is a person
+captain is a guard
+commander is a captain].
+
+DEFINE
+[a commander named general].
+
+WHEN
+[player attacks a guard
+<then> (damage general].
+
+WHEN
+[player attacks a captain
+<then> (damage general by 2].
+
+WHEN
+[player attacks a captain
+<then> (damage general by 3].

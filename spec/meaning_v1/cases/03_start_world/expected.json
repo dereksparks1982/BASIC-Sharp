@@ -1,0 +1,418 @@
+{
+  "case_id": "03_start_world",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "events": [
+
+      ],
+      "facts": [
+        {
+          "relation": "is",
+          "subject": {
+            "name": "henry",
+            "object_kind": "guard",
+            "text": "henry",
+            "type": "object"
+          },
+          "value": {
+            "kind": "state",
+            "name": "calm"
+          }
+        },
+        {
+          "amount": 10,
+          "relation": "has",
+          "subject": {
+            "name": "henry",
+            "object_kind": "guard",
+            "text": "henry",
+            "type": "object"
+          },
+          "value_name": "health"
+        },
+        {
+          "relation": "on",
+          "subject": {
+            "name": "brass key",
+            "object_kind": "key",
+            "text": "brass key",
+            "type": "object"
+          },
+          "target": {
+            "name": "oak table",
+            "object_kind": "table",
+            "text": "oak table",
+            "type": "object"
+          }
+        }
+      ],
+      "if_rules": [
+
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry"
+        },
+        {
+          "builtin": false,
+          "kind": "key",
+          "name": "brass key"
+        },
+        {
+          "builtin": false,
+          "kind": "table",
+          "name": "oak table"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "ask": {
+      "answers": [
+        {
+          "answer": {
+            "builtin": false,
+            "kind": "guard",
+            "name": "henry",
+            "relations": {
+            },
+            "states": [
+              "calm"
+            ],
+            "values": {
+              "damage": 0,
+              "health": 10
+            }
+          },
+          "ok": true,
+          "question": "what is henry",
+          "type": "thing"
+        },
+        {
+          "answer": {
+            "name": "brass key",
+            "relationships": {
+              "on": "oak table"
+            }
+          },
+          "ok": true,
+          "question": "what relationships does brass key have",
+          "type": "thing_relationships"
+        }
+      ],
+      "questions": [
+        "what is henry",
+        "what relationships does brass key have"
+      ]
+    },
+    "events": [
+
+    ],
+    "final": {
+      "if_rules": [
+
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry",
+          "relations": {
+          },
+          "states": [
+            "calm"
+          ],
+          "values": {
+            "damage": 0,
+            "health": 10
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "key",
+          "name": "brass key",
+          "relations": {
+            "on": "oak table"
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "table",
+          "name": "oak table",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 4,
+        "origin": "START",
+        "settled": true,
+        "things": 4,
+        "true_if_rules": 0,
+        "whole_number_values": 5
+      }
+    },
+    "save": {
+      "document": {
+        "format": "bsharp.save.json",
+        "format_version": 1,
+        "program_fingerprint": {
+          "algorithm": "sha256-bsir-meaning-v1",
+          "value": "a2f747cba9502e7f0941e5ef96933faaf6c32ffc3a18f33db361d4bd50c36b0b"
+        },
+        "world": {
+          "if_rules": [
+
+          ],
+          "settled": true,
+          "things": [
+            {
+              "builtin": true,
+              "kind": "person",
+              "name": "player",
+              "relations": {
+              },
+              "states": [
+
+              ],
+              "values": {
+                "damage": 0
+              }
+            },
+            {
+              "builtin": false,
+              "kind": "guard",
+              "name": "henry",
+              "relations": {
+              },
+              "states": [
+                "calm"
+              ],
+              "values": {
+                "damage": 0,
+                "health": 10
+              }
+            },
+            {
+              "builtin": false,
+              "kind": "key",
+              "name": "brass key",
+              "relations": {
+                "on": "oak table"
+              },
+              "states": [
+
+              ],
+              "values": {
+                "damage": 0
+              }
+            },
+            {
+              "builtin": false,
+              "kind": "table",
+              "name": "oak table",
+              "relations": {
+              },
+              "states": [
+
+              ],
+              "values": {
+                "damage": 0
+              }
+            }
+          ]
+        }
+      },
+      "restored": {
+        "if_rules": [
+
+        ],
+        "save_ready": true,
+        "snapshot": [
+          {
+            "builtin": true,
+            "kind": "person",
+            "name": "player",
+            "relations": {
+            },
+            "states": [
+
+            ],
+            "values": {
+              "damage": 0
+            }
+          },
+          {
+            "builtin": false,
+            "kind": "guard",
+            "name": "henry",
+            "relations": {
+            },
+            "states": [
+              "calm"
+            ],
+            "values": {
+              "damage": 0,
+              "health": 10
+            }
+          },
+          {
+            "builtin": false,
+            "kind": "key",
+            "name": "brass key",
+            "relations": {
+              "on": "oak table"
+            },
+            "states": [
+
+            ],
+            "values": {
+              "damage": 0
+            }
+          },
+          {
+            "builtin": false,
+            "kind": "table",
+            "name": "oak table",
+            "relations": {
+            },
+            "states": [
+
+            ],
+            "values": {
+              "damage": 0
+            }
+          }
+        ],
+        "world": {
+          "if_rules": 0,
+          "kinds_used": 4,
+          "origin": "BSharp Save",
+          "settled": true,
+          "things": 4,
+          "true_if_rules": 0,
+          "whole_number_values": 5
+        }
+      },
+      "startup_replayed": false
+    },
+    "startup": {
+      "if_rules": [
+
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry",
+          "relations": {
+          },
+          "states": [
+            "calm"
+          ],
+          "values": {
+            "damage": 0,
+            "health": 10
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "key",
+          "name": "brass key",
+          "relations": {
+            "on": "oak table"
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "table",
+          "name": "oak table",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 4,
+        "origin": "START",
+        "settled": true,
+        "things": 4,
+        "true_if_rules": 0,
+        "whole_number_values": 5
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v1",
+  "source_bsir_parity": true
+}

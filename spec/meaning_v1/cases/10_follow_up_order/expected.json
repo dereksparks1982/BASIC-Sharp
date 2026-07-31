@@ -1,0 +1,407 @@
+{
+  "case_id": "10_follow_up_order",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "events": [
+        {
+          "then": [
+            {
+              "action": "cause",
+              "event": {
+                "action": "attack",
+                "actor": {
+                  "name": "henry",
+                  "object_kind": "guard",
+                  "text": "henry",
+                  "type": "object"
+                },
+                "target": {
+                  "name": "player",
+                  "object_kind": "person",
+                  "text": "player",
+                  "type": "object"
+                }
+              }
+            },
+            {
+              "action": "cause",
+              "event": {
+                "action": "sound",
+                "actor": {
+                  "name": "mara",
+                  "object_kind": "guard",
+                  "text": "mara",
+                  "type": "object"
+                },
+                "target": {
+                  "name": "brass bell",
+                  "object_kind": "device",
+                  "text": "brass bell",
+                  "type": "object"
+                }
+              }
+            }
+          ],
+          "when": {
+            "action": "attack",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "name": "henry",
+              "object_kind": "guard",
+              "text": "henry",
+              "type": "object"
+            }
+          }
+        },
+        {
+          "then": [
+            {
+              "action": "damage",
+              "amount": 1,
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              }
+            }
+          ],
+          "when": {
+            "action": "attack",
+            "actor": {
+              "name": "henry",
+              "object_kind": "guard",
+              "text": "henry",
+              "type": "object"
+            },
+            "target": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            }
+          }
+        },
+        {
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "name": "mara",
+                "object_kind": "guard",
+                "text": "mara",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "angry"
+              }
+            }
+          ],
+          "when": {
+            "action": "sound",
+            "actor": {
+              "name": "mara",
+              "object_kind": "guard",
+              "text": "mara",
+              "type": "object"
+            },
+            "target": {
+              "name": "brass bell",
+              "object_kind": "device",
+              "text": "brass bell",
+              "type": "object"
+            }
+          }
+        }
+      ],
+      "facts": [
+
+      ],
+      "if_rules": [
+
+      ],
+      "kinds": [
+        {
+          "name": "guard",
+          "parent": "person"
+        }
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry"
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "mara"
+        },
+        {
+          "builtin": false,
+          "kind": "device",
+          "name": "brass bell"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "events": [
+      {
+        "context": {
+        },
+        "error": null,
+        "event": "player attacks henry",
+        "event_trail": [
+          "henry attacks player",
+          "mara sounds brass bell"
+        ],
+        "follow_up_events": [
+          {
+            "caused_by": "(cause henry attacks player",
+            "caused_by_line": 11,
+            "context": {
+            },
+            "error": null,
+            "event": "henry attacks player",
+            "if_rules": [
+
+            ],
+            "matched": true,
+            "matched_when": "henry attacks player",
+            "ran": [
+              "(damage player"
+            ],
+            "selections": [
+
+            ],
+            "steps": [
+              {
+                "change": "player damage is now 1",
+                "word": "(damage player"
+              }
+            ],
+            "understood": [
+
+            ]
+          },
+          {
+            "caused_by": "(cause mara sounds brass bell",
+            "caused_by_line": 12,
+            "context": {
+            },
+            "error": null,
+            "event": "mara sounds brass bell",
+            "if_rules": [
+
+            ],
+            "matched": true,
+            "matched_when": "mara sounds brass bell",
+            "ran": [
+              "(change mara to angry"
+            ],
+            "selections": [
+
+            ],
+            "steps": [
+              {
+                "change": "mara is now angry",
+                "word": "(change mara to angry"
+              }
+            ],
+            "understood": [
+
+            ]
+          }
+        ],
+        "if_rules": [
+
+        ],
+        "matched": true,
+        "matched_when": "player attacks henry",
+        "ran": [
+          "(cause henry attacks player",
+          "(cause mara sounds brass bell"
+        ],
+        "selections": [
+
+        ],
+        "steps": [
+          {
+            "caused_event": "henry attacks player",
+            "change": "henry attacks player will happen next",
+            "word": "(cause henry attacks player"
+          },
+          {
+            "caused_event": "mara sounds brass bell",
+            "change": "mara sounds brass bell will happen next",
+            "word": "(cause mara sounds brass bell"
+          }
+        ],
+        "understood": [
+
+        ]
+      }
+    ],
+    "final": {
+      "if_rules": [
+
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "damage": 1,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 1
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "mara",
+          "relations": {
+          },
+          "states": [
+            "angry"
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "device",
+          "name": "brass bell",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 3,
+        "origin": "START",
+        "settled": true,
+        "things": 4,
+        "true_if_rules": 0,
+        "whole_number_values": 4
+      }
+    },
+    "startup": {
+      "if_rules": [
+
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "mara",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "device",
+          "name": "brass bell",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 3,
+        "origin": "START",
+        "settled": true,
+        "things": 4,
+        "true_if_rules": 0,
+        "whole_number_values": 4
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v1",
+  "source_bsir_parity": true
+}

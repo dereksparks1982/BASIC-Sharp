@@ -1,0 +1,27 @@
+WORLD
+[tenebre is ready].
+
+STATES
+[calm].
+
+RELATIONS
+[on].
+
+ACTIONS
+[(explode henry].
+
+WHILE
+[henry is calm].
+
+OTHERWISE
+[henry is angry].
+
+DEFINE
+[a guard named henry].
+
+START
+[henry has -1 health].
+
+WHEN
+[player attacks henry
+<then> (explode henry].

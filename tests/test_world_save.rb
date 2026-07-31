@@ -50,7 +50,7 @@ class TestWorldSave < Minitest::Test
 
     assert_equal 'bsharp.save.json', document.fetch('format')
     assert_equal 1, document.fetch('format_version')
-    assert_equal '0.1.23', document.fetch('created_by_basic_sharp')
+    assert_equal '0.1.24', document.fetch('created_by_basic_sharp')
     assert_equal true, document.dig('world', 'settled')
     assert_equal %w[player henry mara brass\ bell brass\ key oak\ table], document.dig('world', 'things').map { |entry| entry.fetch('name') }
     assert_equal 10, document.dig('world', 'things', 1, 'values', 'health')
@@ -215,7 +215,7 @@ class TestWorldSave < Minitest::Test
     document['format_version'] = 2
 
     error = assert_raises(BasicSharp::WorldSaveError) { runtime(demo_source, world_save: document) }
-    assert_equal "This BSharp Save uses format version 2.\nBASIC# v0.1.23 understands format version 1.", error.message
+    assert_equal "This BSharp Save uses format version 2.\nBASIC# v0.1.24 understands format version 1.", error.message
   end
 
   def test_unknown_or_reordered_thing_is_rejected

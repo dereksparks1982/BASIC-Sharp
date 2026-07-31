@@ -1,0 +1,276 @@
+{
+  "case_id": "01_structure",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "events": [
+        {
+          "then": [
+            {
+              "action": "damage",
+              "amount": 1,
+              "target": {
+                "name": "henry",
+                "object_kind": "guard",
+                "text": "henry",
+                "type": "object"
+              }
+            },
+            {
+              "action": "change",
+              "target": {
+                "name": "henry",
+                "object_kind": "guard",
+                "text": "henry",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "angry"
+              }
+            }
+          ],
+          "when": {
+            "action": "attack",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "name": "henry",
+              "object_kind": "guard",
+              "text": "henry",
+              "type": "object"
+            }
+          }
+        }
+      ],
+      "facts": [
+        {
+          "relation": "is",
+          "subject": {
+            "name": "henry",
+            "object_kind": "guard",
+            "text": "henry",
+            "type": "object"
+          },
+          "value": {
+            "kind": "state",
+            "name": "calm"
+          }
+        }
+      ],
+      "if_rules": [
+        {
+          "if": {
+            "relation": "is",
+            "subject": {
+              "name": "henry",
+              "object_kind": "guard",
+              "text": "henry",
+              "type": "object"
+            },
+            "value": {
+              "kind": "state",
+              "name": "angry"
+            }
+          },
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "angry"
+              }
+            }
+          ]
+        }
+      ],
+      "kinds": [
+        {
+          "name": "guard",
+          "parent": "person"
+        }
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "events": [
+      {
+        "context": {
+        },
+        "error": null,
+        "event": "player attacks henry",
+        "event_trail": [
+
+        ],
+        "follow_up_events": [
+
+        ],
+        "if_rules": [
+          {
+            "condition": "henry is angry",
+            "reason": "became true after the event",
+            "selections": [
+
+            ],
+            "steps": [
+              {
+                "change": "player is now angry",
+                "word": "(change player to angry"
+              }
+            ]
+          }
+        ],
+        "matched": true,
+        "matched_when": "player attacks henry",
+        "ran": [
+          "(damage henry",
+          "(change henry to angry"
+        ],
+        "selections": [
+
+        ],
+        "steps": [
+          {
+            "change": "henry damage is now 1",
+            "word": "(damage henry"
+          },
+          {
+            "change": "henry is now angry",
+            "word": "(change henry to angry"
+          }
+        ],
+        "understood": [
+
+        ]
+      }
+    ],
+    "final": {
+      "if_rules": [
+        {
+          "active": true,
+          "condition": "henry is angry",
+          "index": 0,
+          "true": true
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+            "angry"
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "damage": 1,
+          "kind": "guard",
+          "name": "henry",
+          "relations": {
+          },
+          "states": [
+            "angry"
+          ],
+          "values": {
+            "damage": 1
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "things": 2,
+        "true_if_rules": 1,
+        "whole_number_values": 2
+      }
+    },
+    "startup": {
+      "if_rules": [
+        {
+          "active": false,
+          "condition": "henry is angry",
+          "index": 0,
+          "true": false
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry",
+          "relations": {
+          },
+          "states": [
+            "calm"
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "things": 2,
+        "true_if_rules": 0,
+        "whole_number_values": 2
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v1",
+  "source_bsir_parity": true
+}
