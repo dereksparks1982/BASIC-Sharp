@@ -11,7 +11,8 @@ require_relative '../compiler/bytecode_emitter'
 require_relative '../compiler/world_save'
 
 ROOT = File.expand_path('..', __dir__)
-SAMPLES = %w[ask_demo every_guard first_room follow_up_events values_and_amounts world_save_demo].freeze
+PROFILE_1_SAMPLES = %w[ask_demo every_guard first_room follow_up_events values_and_amounts world_save_demo].freeze
+TEXT_SAMPLE = 'text_values'
 
 def resolve(path)
   parser = BasicSharp::Parser.new(File.read(path))
@@ -31,7 +32,7 @@ fingerprint_parity = true
 disassembly_determinism = true
 forbidden_data = false
 
-SAMPLES.each do |name|
+PROFILE_1_SAMPLES.each do |name|
   source = BasicSharp::BytecodeEmitter.new(resolve(File.join(ROOT, 'samples', "#{name}.bsharp")))
   bsir_document = JSON.parse(File.read(File.join(ROOT, 'samples', "#{name}.bsir.json")))
   bsir = BasicSharp::BytecodeEmitter.new(bsir_document)
@@ -43,6 +44,13 @@ SAMPLES.each do |name|
   layout &&= source.binary.byteslice(0, 4) == 'BSBC' && source.binary.bytesize == source.binary.byteslice(24, 4).unpack1('V')
   forbidden_data ||= %w[BasicSharp RubyVM ObjectSpace Marshal /home/ /tmp/].any? { |term| source.binary.include?(term) }
 end
+
+text_source = BasicSharp::BytecodeEmitter.new(resolve(File.join(ROOT, 'samples', "#{TEXT_SAMPLE}.bsharp")))
+text_bsir = BasicSharp::BytecodeEmitter.new(JSON.parse(File.read(File.join(ROOT, 'samples', "#{TEXT_SAMPLE}.bsir.json"))))
+text_profile = text_source.model.fetch(:profile) == 'bsharp.bytecode.v2' &&
+               text_source.model.fetch(:meaning_profile) == 'bsharp.meaning.v2' &&
+               text_source.binary == text_bsir.binary && text_source.disassembly == text_bsir.disassembly &&
+               text_source.model.fetch(:strings).include?('OPEN — RubyVM!')
 
 original = File.read(File.join(ROOT, 'samples/first_room.bsharp'))
 spaced = original.lines.map { |line| line.strip.empty? ? line : "\n#{line}" }.join
@@ -78,6 +86,7 @@ assert_pass(disassembly_determinism, 'Deterministic disassembly')
 assert_pass(invalid_rejected, 'Invalid-program rejection')
 assert_pass(atomic_output, 'Atomic output safety')
 assert_pass(!forbidden_data, 'No Ruby-specific serialized data')
+assert_pass(text_profile, 'Profile 2 exact text emission')
 
 fixture_path = File.join(ROOT, 'spec/bytecode_v1/BASIC_SHARP_BYTECODE_EMITTER_FIXTURES_v1.json')
 fixture = JSON.parse(File.read(fixture_path))
@@ -97,8 +106,9 @@ Array(fixture['meaning_cases']).each do |entry|
 end
 assert_pass(fixture_hashes, 'Fixture hashes')
 
-puts 'BSharp Bytecode Emitter v0.1.31'
-puts "Sample artifacts: #{SAMPLES.length}"
+puts 'BSharp Bytecode Emitter v0.1.32'
+puts "Profile 1 sample artifacts: #{PROFILE_1_SAMPLES.length}"
+puts 'Profile 2 sample artifacts: 1'
 puts 'Valid Meaning Profile cases: 12'
 puts
 puts 'Source and BSIR byte parity: PASS'
@@ -114,5 +124,6 @@ puts 'Invalid-program rejection: PASS'
 puts 'Atomic output safety: PASS'
 puts 'Fixture hashes: PASS'
 puts 'No Ruby-specific serialized data: PASS'
+puts 'Profile 2 exact text emission: PASS'
 puts
 puts 'BYTECODE EMITTER: PASS'

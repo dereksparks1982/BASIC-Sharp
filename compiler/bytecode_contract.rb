@@ -14,6 +14,8 @@ module BasicSharp
     BINARY_FORMAT_VERSION = 1
     PROFILE = 'bsharp.bytecode.v1'
     MEANING_PROFILE = 'bsharp.meaning.v1'
+    PROFILE_2 = 'bsharp.bytecode.v2'
+    MEANING_PROFILE_2 = 'bsharp.meaning.v2'
     MAGIC = 'BSBC'
     BYTE_ORDER = 'little-endian'
     TEXT_ENCODING = 'UTF-8'
@@ -39,12 +41,17 @@ module BasicSharp
       'UNLOCK' => 0x24,
       'CAUSE_EVENT' => 0x25
     }.freeze
+    PROFILE_2_INSTRUCTIONS = INSTRUCTIONS.merge(
+      'START_TEXT_VALUE' => 0x13,
+      'CHANGE_TEXT_VALUE' => 0x26
+    ).freeze
     CONDITIONS = {
       'STATE_IS' => 0x30,
       'STATE_ISNT' => 0x31,
       'RELATION_EXISTS' => 0x32,
       'VALUE_EQUALS' => 0x33
     }.freeze
+    PROFILE_2_CONDITIONS = CONDITIONS.merge('TEXT_VALUE_EQUALS' => 0x34).freeze
     WHOLE_NUMBER_RANGE = (0..2_147_483_647)
     NO_REFERENCE_U32 = 0xFFFF_FFFF
     REQUIRED_MALFORMED_RULES = [
@@ -63,6 +70,15 @@ module BasicSharp
       'wrong condition operand count', 'whole number outside 0 through 2147483647',
       'duplicate block identifier', 'overlapping code blocks', 'instruction crossing block boundary'
     ].freeze
+    PROFILE_2_REQUIRED_MALFORMED_RULES = [
+      'Profile 2 instruction inside Profile 1 bytecode',
+      'noncanonical identifier string role',
+      'multiline creator text literal',
+      'unsupported creator text escape sequence',
+      'unsupported creator text interpolation',
+      'unescaped creator text quote',
+      'text and whole-number value type conflict'
+    ].freeze
     FORBIDDEN_SERIALIZED_TERMS = %w[BasicSharp RubyVM ObjectSpace Marshal Struct].freeze
 
     module_function
@@ -77,17 +93,18 @@ module BasicSharp
         raise BytecodeContractError, 'Bytecode contract format is not supported.'
       end
 
-      validate_artifact!(profile.fetch('artifact'))
+      artifact = profile.fetch('artifact')
+      validate_artifact!(artifact)
       validate_container!(profile.fetch('container'))
       validate_sections!(profile.fetch('sections'))
-      validate_identities!(profile)
-      validate_reserved_ranges!(profile)
-      validate_coverage!(profile.fetch('meaning_case_coverage'), root: root)
+      validate_identities!(profile, artifact.fetch('profile'))
+      validate_reserved_ranges!(profile, artifact.fetch('profile'))
+      validate_coverage!(profile.fetch('meaning_case_coverage'), root: root, profile_name: artifact.fetch('profile'))
       validate_disassembly!(profile.fetch('disassembly'))
       validate_emission!(profile.fetch('emission'))
-      validate_loading!(profile.fetch('loading'))
-      validate_execution!(profile.fetch('execution'))
-      validate_malformed_rules!(profile.fetch('malformed_rejection_rules'))
+      validate_loading!(profile.fetch('loading'), profile_name: artifact.fetch('profile'))
+      validate_execution!(profile.fetch('execution'), profile_name: artifact.fetch('profile'))
+      validate_malformed_rules!(profile.fetch('malformed_rejection_rules'), profile_name: artifact.fetch('profile'))
 
       text = canonical_json(profile)
       if forbidden_serialized_data?(text)
@@ -97,14 +114,15 @@ module BasicSharp
     end
 
     def validate_artifact!(artifact)
+      profile_2 = artifact['profile'] == PROFILE_2
       expected = {
         'name' => ARTIFACT_NAME,
         'short_name' => SHORT_NAME,
         'extension' => EXTENSION,
         'binary_format' => BINARY_FORMAT,
         'binary_format_version' => BINARY_FORMAT_VERSION,
-        'profile' => PROFILE,
-        'required_meaning_profile' => MEANING_PROFILE,
+        'profile' => profile_2 ? PROFILE_2 : PROFILE,
+        'required_meaning_profile' => profile_2 ? MEANING_PROFILE_2 : MEANING_PROFILE,
         'magic_ascii' => MAGIC,
         'byte_order' => BYTE_ORDER,
         'text_encoding' => TEXT_ENCODING,
@@ -112,7 +130,7 @@ module BasicSharp
         'no_reference_u32' => NO_REFERENCE_U32,
         'whole_number_min' => WHOLE_NUMBER_RANGE.begin,
         'whole_number_max' => WHOLE_NUMBER_RANGE.end,
-        'meaning_fingerprint_algorithm' => 'sha256-bsir-meaning-v1'
+        'meaning_fingerprint_algorithm' => profile_2 ? 'sha256-bsir-meaning-v2' : 'sha256-bsir-meaning-v1'
       }
       expected.each do |key, value|
         actual = artifact[key]
@@ -148,10 +166,12 @@ module BasicSharp
       end
     end
 
-    def validate_identities!(profile)
+    def validate_identities!(profile, profile_name)
+      instructions = instruction_codes(profile_name)
+      conditions = condition_codes(profile_name)
       validate_named_codes!(profile.fetch('selectors'), SELECTORS, 'selector')
-      validate_named_codes!(profile.fetch('instructions'), INSTRUCTIONS, 'instruction')
-      validate_named_codes!(profile.fetch('conditions'), CONDITIONS, 'condition')
+      validate_named_codes!(profile.fetch('instructions'), instructions, 'instruction')
+      validate_named_codes!(profile.fetch('conditions'), conditions, 'condition')
 
       profile.fetch('instructions').each do |entry|
         operands = entry['operands']
@@ -167,18 +187,26 @@ module BasicSharp
       raise BytecodeContractError, 'Selector contexts are incomplete.' unless selector_names == SELECTORS.keys
     end
 
-    def validate_reserved_ranges!(profile)
-      validate_ranges!(profile.fetch('instruction_reserved_ranges'), INSTRUCTIONS.values, 'instruction')
-      validate_ranges!(profile.fetch('condition_reserved_ranges'), CONDITIONS.values, 'condition')
+    def validate_reserved_ranges!(profile, profile_name)
+      validate_ranges!(profile.fetch('instruction_reserved_ranges'), instruction_codes(profile_name).values, 'instruction')
+      validate_ranges!(profile.fetch('condition_reserved_ranges'), condition_codes(profile_name).values, 'condition')
       validate_ranges!(profile.fetch('selector_reserved_ranges'), SELECTORS.values, 'selector')
     end
 
-    def validate_coverage!(coverage, root:)
-      meaning_path = File.join(root, 'spec/meaning_v1/BASIC_SHARP_MEANING_PROFILE_v1.json')
+    def validate_coverage!(coverage, root:, profile_name: PROFILE)
+      profile_2 = profile_name == PROFILE_2
+      meaning_path = if profile_2
+                       File.join(root, 'spec/meaning_v2/BASIC_SHARP_MEANING_PROFILE_v2.json')
+                     else
+                       File.join(root, 'spec/meaning_v1/BASIC_SHARP_MEANING_PROFILE_v1.json')
+                     end
       meaning = JSON.parse(File.read(meaning_path, encoding: 'UTF-8'))
       expected_ids = meaning.fetch('cases').map { |entry| entry.fetch('id') }
       actual_ids = coverage.map { |entry| entry['case_id'] }
-      raise BytecodeContractError, 'Bytecode coverage must name all 13 Meaning Profile cases in order.' unless actual_ids == expected_ids && actual_ids.length == 13
+      unless actual_ids == expected_ids
+        label = profile_2 ? 'Meaning Profile 2 cases' : 'all 13 Meaning Profile cases'
+        raise BytecodeContractError, "Bytecode coverage must name #{label} in order."
+      end
       coverage.each do |entry|
         requirements = entry['requires']
         raise BytecodeContractError, "Meaning case #{entry['case_id']} has no bytecode coverage." unless requirements.is_a?(Array) && !requirements.empty?
@@ -193,7 +221,12 @@ module BasicSharp
     end
 
     def validate_emission!(emission)
-      expected_prefix = [PROFILE, MEANING_PROFILE, 'sha256-bsir-meaning-v1']
+      profile = emission.fetch('mandatory_string_prefix').first
+      expected_prefix = if profile == PROFILE_2
+                          [PROFILE_2, MEANING_PROFILE_2, 'sha256-bsir-meaning-v2']
+                        else
+                          [PROFILE, MEANING_PROFILE, 'sha256-bsir-meaning-v1']
+                        end
       unless emission['mandatory_string_prefix'] == expected_prefix
         raise BytecodeContractError, 'Bytecode emission mandatory string prefix is inconsistent.'
       end
@@ -209,8 +242,9 @@ module BasicSharp
       raise BytecodeContractError, "Bytecode emission rules are incomplete: #{missing.join(', ')}" unless missing.empty?
     end
 
-    def validate_loading!(loading)
-      unless loading['status'] == 'implemented by BASIC# v0.1.28'
+    def validate_loading!(loading, profile_name: PROFILE)
+      expected_status = profile_name == PROFILE_2 ? 'implemented by BASIC# v0.1.32' : 'implemented by BASIC# v0.1.28'
+      unless loading['status'] == expected_status
         raise BytecodeContractError, 'Bytecode loader implementation status is inconsistent.'
       end
       unless loading['source_inputs'] == ['.bsbc']
@@ -227,8 +261,9 @@ module BasicSharp
       raise BytecodeContractError, "Bytecode loading rules are incomplete: #{missing.join(', ')}" unless missing.empty?
     end
 
-    def validate_execution!(execution)
-      unless execution['status'] == 'preferred by BASIC# v0.1.31'
+    def validate_execution!(execution, profile_name: PROFILE)
+      expected_status = profile_name == PROFILE_2 ? 'preferred by BASIC# v0.1.32' : 'preferred by BASIC# v0.1.31'
+      unless execution['status'] == expected_status
         raise BytecodeContractError, 'BSharp VM implementation status is inconsistent.'
       end
       unless execution['input_boundary'] == 'successfully validated deeply frozen BytecodeLoader model'
@@ -250,15 +285,21 @@ module BasicSharp
         'CHANGE_VALUE', 'CARRY', 'UNLOCK', 'CAUSE_EVENT', 'STATE_IS', 'STATE_ISNT',
         'RELATION_EXISTS', 'VALUE_EQUALS', 'nearest inherited Kind', 'Thing definition order',
         'reactive IF', 'first-created first-run', 'independent mutable world',
-        'canonical reconstructed wording', 'BSharp Save', 'BSharp ASK', 'source, saved BSIR', 'save/restore/replay', '1,024-event protection', 'emitted to BSBC in memory', '--reference-runtime', '--verify-runtime-parity', 'stops on disagreement', 'preferred Profile 1 runtime'
+        'canonical reconstructed wording', 'BSharp Save', 'BSharp ASK', 'source, saved BSIR', 'save/restore/replay', '1,024-event protection', 'emitted to BSBC in memory', '--reference-runtime', '--verify-runtime-parity', 'stops on disagreement',
+        profile_name == PROFILE_2 ? 'preferred Profile 1 and Profile 2 runtime' : 'preferred Profile 1 runtime'
       ]
+      if profile_name == PROFILE_2
+        required.concat(['START_TEXT_VALUE', 'CHANGE_TEXT_VALUE', 'TEXT_VALUE_EQUALS', 'exact creator-facing text'])
+      end
       text = execution.values.flatten.join("\n")
       missing = required.reject { |entry| text.include?(entry) }
       raise BytecodeContractError, "BSharp VM rules are incomplete: #{missing.join(', ')}" unless missing.empty?
     end
 
-    def validate_malformed_rules!(rules)
-      missing = REQUIRED_MALFORMED_RULES - rules
+    def validate_malformed_rules!(rules, profile_name: PROFILE)
+      required = REQUIRED_MALFORMED_RULES.dup
+      required.concat(PROFILE_2_REQUIRED_MALFORMED_RULES) if profile_name == PROFILE_2
+      missing = required - rules
       raise BytecodeContractError, "Malformed-bytecode rules are incomplete: #{missing.join(', ')}" unless missing.empty?
       raise BytecodeContractError, 'Malformed-bytecode rules must be unique.' unless rules.uniq.length == rules.length
     end
@@ -286,6 +327,14 @@ module BasicSharp
         entry = entries.find { |candidate| candidate['name'] == name }
         raise BytecodeContractError, "#{label.capitalize} #{name} must use #{code}." unless entry && entry['code'] == code
       end
+    end
+
+    def instruction_codes(profile_name)
+      profile_name == PROFILE_2 ? PROFILE_2_INSTRUCTIONS : INSTRUCTIONS
+    end
+
+    def condition_codes(profile_name)
+      profile_name == PROFILE_2 ? PROFILE_2_CONDITIONS : CONDITIONS
     end
 
     def validate_ranges!(ranges, active_codes, label)

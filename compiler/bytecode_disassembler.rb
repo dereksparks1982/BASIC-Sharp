@@ -4,6 +4,12 @@ module BasicSharp
   class BytecodeDisassembler
     def initialize(model)
       @model = model
+      pair = [@model.fetch(:profile), @model.fetch(:meaning_profile)]
+      supported = [
+        [BytecodeContract::PROFILE, BytecodeContract::MEANING_PROFILE],
+        [BytecodeContract::PROFILE_2, BytecodeContract::MEANING_PROFILE_2]
+      ]
+      raise ArgumentError, 'BSharp Bytecode disassembly requires a supported profile pair.' unless supported.include?(pair)
     end
 
     def render

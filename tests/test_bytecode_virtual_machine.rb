@@ -281,4 +281,17 @@ class TestBytecodeVirtualMachine < Minitest::Test
     refute status.success?
     assert_includes err, 'cannot combine disassembly'
   end
+
+  def test_profile_2_vm_executes_text_change_and_reactive_if
+    loader = BasicSharp::BytecodeLoader.read(File.join(ROOT, 'samples/text_values.bsbc'))
+    vm = BasicSharp::BytecodeVirtualMachine.new(loader)
+    result = vm.run_event('player sounds brass bell')
+    north = result.fetch('state').find { |thing| thing.fetch('name') == 'north gate' }
+    south = result.fetch('state').find { |thing| thing.fetch('name') == 'south gate' }
+    player = result.fetch('state').find { |thing| thing.fetch('name') == 'player' }
+    assert_equal 'OPEN — RubyVM!', north.dig('values', 'title')
+    assert_equal 'OPEN — RubyVM!', south.dig('values', 'title')
+    assert_equal 1, player.fetch('damage')
+    assert_equal 'bsharp.meaning.v2', vm.meaning_profile
+  end
 end

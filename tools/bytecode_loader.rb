@@ -234,6 +234,13 @@ SAMPLES.each do |name|
   code_valid &&= loader.model[:blocks].each_with_index.all? { |entry, index| entry[:id] == index }
   selector_refs &&= loader.model[:events].all? { |entry| !entry[:actor_selector].nil? && !entry[:target_selector].nil? }
 end
+
+text_loader = BasicSharp::BytecodeLoader.read(File.join(ROOT, 'samples/text_values.bsbc'))
+text_profile = text_loader.model.fetch(:profile) == 'bsharp.bytecode.v2' &&
+               text_loader.model.fetch(:meaning_profile) == 'bsharp.meaning.v2' &&
+               text_loader.model.fetch(:strings).include?('OPEN — RubyVM!') &&
+               text_loader.disassembly == File.read(File.join(ROOT, 'samples/text_values.bsbc.txt'))
+assert_pass(text_profile, 'Profile 2 role-aware string loading')
 assert_pass(loaded_disassembly_parity, 'Loaded disassembly parity')
 assert_pass(header_directory, 'Header and directory validation')
 assert_pass(string_table, 'String-table validation')
@@ -287,8 +294,9 @@ end
   end
 end
 
-puts 'BSharp Bytecode Loader v0.1.31'
-puts "Sample artifacts: #{SAMPLES.length}"
+puts 'BSharp Bytecode Loader v0.1.32'
+puts "Profile 1 sample artifacts: #{SAMPLES.length}"
+puts 'Profile 2 sample artifacts: 1'
 puts 'Valid Meaning Profile cases: 12'
 puts "Malformed fixture cases: #{FIXTURE.fetch('malformed_case_count')}"
 puts
@@ -310,5 +318,6 @@ puts 'Immutable trusted model: PASS'
 puts 'Complete malformed rejection: PASS'
 puts 'Truncation sweep: PASS'
 puts 'No partial model exposure: PASS'
+puts 'Profile 2 role-aware string loading: PASS'
 puts
 puts 'BYTECODE LOADER: PASS'

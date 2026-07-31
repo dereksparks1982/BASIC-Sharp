@@ -8,6 +8,7 @@ require_relative 'bytecode_contract'
 require_relative 'bytecode_disassembler'
 require_relative 'dictionary'
 require_relative 'meaning_profile'
+require_relative 'text_literal'
 require_relative 'world_save'
 
 module BasicSharp
@@ -15,6 +16,7 @@ module BasicSharp
 
   class BytecodeEmitter
     PROFILE_FORMAT_VERSION = 1
+    PROFILE_FORMAT_VERSION_2 = 2
     MANDATORY_STRINGS = [
       BytecodeContract::PROFILE,
       BytecodeContract::MEANING_PROFILE,
@@ -38,9 +40,16 @@ module BasicSharp
     def initialize(document)
       @document = stringify_keys(document.respond_to?(:to_h) ? document.to_h : document)
       validate_document!
+      @profile = @document['meaning_profile'] == BytecodeContract::MEANING_PROFILE_2 ? BytecodeContract::PROFILE_2 : BytecodeContract::PROFILE
+      @meaning_profile = @profile == BytecodeContract::PROFILE_2 ? BytecodeContract::MEANING_PROFILE_2 : BytecodeContract::MEANING_PROFILE
+      @fingerprint_algorithm = @profile == BytecodeContract::PROFILE_2 ? WorldSave::FINGERPRINT_ALGORITHM_2 : WorldSave::FINGERPRINT_ALGORITHM
+      @profile_format_version = @profile == BytecodeContract::PROFILE_2 ? PROFILE_FORMAT_VERSION_2 : PROFILE_FORMAT_VERSION
+      @instruction_codes = BytecodeContract.instruction_codes(@profile)
+      @condition_codes = BytecodeContract.condition_codes(@profile)
       @strings = []
       @string_indexes = {}
-      MANDATORY_STRINGS.each { |value| intern(value) }
+      @string_roles = []
+      [@profile, @meaning_profile, @fingerprint_algorithm].each { |value| intern(value, role: :identifier) }
       @model = build_model
     end
 
@@ -81,6 +90,17 @@ module BasicSharp
       unless warnings.empty?
         raise BytecodeEmitterError, "BSharp Bytecode was not written because the program has #{warnings.length} warning#{warnings.length == 1 ? '' : 's'}."
       end
+      profile = @document['meaning_profile']
+      unless profile.nil? || [BytecodeContract::MEANING_PROFILE, BytecodeContract::MEANING_PROFILE_2].include?(profile)
+        raise BytecodeEmitterError, "BSharp Bytecode does not support meaning profile '#{profile}'."
+      end
+      text_used = document_uses_text_values?
+      if text_used && profile != BytecodeContract::MEANING_PROFILE_2
+        raise BytecodeEmitterError, 'Creator-facing text values require bsharp.meaning.v2 in BSharp IR.'
+      end
+      if profile == BytecodeContract::MEANING_PROFILE_2 && !text_used
+        raise BytecodeEmitterError, 'bsharp.meaning.v2 requires at least one creator-facing text value.'
+      end
     end
 
     def diagnostic_severity(entry)
@@ -106,11 +126,12 @@ module BasicSharp
       end
 
       {
-        profile: BytecodeContract::PROFILE,
-        meaning_profile: BytecodeContract::MEANING_PROFILE,
-        fingerprint_algorithm: WorldSave::FINGERPRINT_ALGORITHM,
+        profile: @profile,
+        meaning_profile: @meaning_profile,
+        fingerprint_algorithm: @fingerprint_algorithm,
         fingerprint: WorldSave.program_fingerprint(@document),
         strings: @strings,
+        string_roles: @string_roles,
         kinds: kind_rows,
         things: thing_rows,
         start_records: start_records,
@@ -214,8 +235,14 @@ module BasicSharp
         instruction('START_STATE', [subject, intern(state), optional_string_index(OPPOSITE_STATES[state])], ["THING[#{thing_name(subject)}]", state, remove_display(OPPOSITE_STATES[state])])
       when 'has'
         value_name = normalize(fact['value_name'])
-        amount = whole_number(fact['amount'], 'START value')
-        instruction('START_VALUE', [subject, intern(value_name), amount], ["THING[#{thing_name(subject)}]", value_name, amount.to_s])
+        if fact.key?('text_value')
+          raise BytecodeEmitterError, 'damage is a whole-number value and cannot store text.' if value_name == 'damage'
+          text = text_value(fact['text_value'], 'START text value')
+          instruction('START_TEXT_VALUE', [subject, intern(value_name), intern(text, role: :literal)], ["THING[#{thing_name(subject)}]", value_name, quote_text(text)])
+        else
+          amount = whole_number(fact['amount'], 'START value')
+          instruction('START_VALUE', [subject, intern(value_name), amount], ["THING[#{thing_name(subject)}]", value_name, amount.to_s])
+        end
       else
         target = exact_thing_index(fact.fetch('target'))
         instruction('START_RELATION', [subject, intern(relation), target], ["THING[#{thing_name(subject)}]", relation, "THING[#{thing_name(target)}]"])
@@ -260,8 +287,13 @@ module BasicSharp
         condition_record('STATE_ISNT', [subject, intern(state)], ["THING[#{thing_name(subject)}]", state])
       when 'has'
         name = normalize(condition['value_name'])
-        amount = whole_number(condition['amount'], 'IF value')
-        condition_record('VALUE_EQUALS', [subject, intern(name), amount], ["THING[#{thing_name(subject)}]", name, amount.to_s])
+        if condition.key?('text_value')
+          text = text_value(condition['text_value'], 'IF text value')
+          condition_record('TEXT_VALUE_EQUALS', [subject, intern(name), intern(text, role: :literal)], ["THING[#{thing_name(subject)}]", name, quote_text(text)])
+        else
+          amount = whole_number(condition['amount'], 'IF value')
+          condition_record('VALUE_EQUALS', [subject, intern(name), amount], ["THING[#{thing_name(subject)}]", name, amount.to_s])
+        end
       else
         target = exact_thing_index(condition.fetch('target'))
         condition_record('RELATION_EXISTS', [subject, intern(relation), target], ["THING[#{thing_name(subject)}]", relation, "THING[#{thing_name(target)}]"])
@@ -285,8 +317,13 @@ module BasicSharp
         selector, reference = lower_selector(action.fetch('target'), :action)
         if action.key?('value_name')
           value_name = normalize(action['value_name'])
-          amount = whole_number(action['to_amount'], 'exact value')
-          instruction('CHANGE_VALUE', [selector_code(selector), reference, intern(value_name), amount], [render_selector(selector, reference), value_name, amount.to_s])
+          if action.key?('to_text')
+            text = text_value(action['to_text'], 'text value change')
+            instruction('CHANGE_TEXT_VALUE', [selector_code(selector), reference, intern(value_name), intern(text, role: :literal)], [render_selector(selector, reference), value_name, quote_text(text)])
+          else
+            amount = whole_number(action['to_amount'], 'exact value')
+            instruction('CHANGE_VALUE', [selector_code(selector), reference, intern(value_name), amount], [render_selector(selector, reference), value_name, amount.to_s])
+          end
         else
           state = normalize(action.dig('to', 'name'))
           raise BytecodeEmitterError, 'BSharp Bytecode cannot lower a state change without a state.' if state.empty?
@@ -352,26 +389,26 @@ module BasicSharp
       expected = instruction_operand_count(name)
       raise BytecodeEmitterError, "#{name} requires #{expected} operands, got #{operands.length}." unless operands.length == expected
       operands.each { |operand| u32(operand) }
-      { name: name, opcode: BytecodeContract::INSTRUCTIONS.fetch(name), operands: operands, display: display.reject(&:empty?) }
+      { name: name, opcode: @instruction_codes.fetch(name), operands: operands, display: display.reject(&:empty?) }
     end
 
     def condition_record(name, operands, display)
       expected = condition_operand_count(name)
       raise BytecodeEmitterError, "#{name} requires #{expected} operands, got #{operands.length}." unless operands.length == expected
       operands.each { |operand| u32(operand) }
-      { name: name, opcode: BytecodeContract::CONDITIONS.fetch(name), operands: operands, display: display }
+      { name: name, opcode: @condition_codes.fetch(name), operands: operands, display: display }
     end
 
     def instruction_operand_count(name)
       {
-        'START_STATE' => 3, 'START_RELATION' => 3, 'START_VALUE' => 3,
-        'DAMAGE' => 3, 'CHANGE_STATE' => 4, 'CHANGE_VALUE' => 4,
+        'START_STATE' => 3, 'START_RELATION' => 3, 'START_VALUE' => 3, 'START_TEXT_VALUE' => 3,
+        'DAMAGE' => 3, 'CHANGE_STATE' => 4, 'CHANGE_VALUE' => 4, 'CHANGE_TEXT_VALUE' => 4,
         'CARRY' => 2, 'UNLOCK' => 2, 'CAUSE_EVENT' => 5
       }.fetch(name)
     end
 
     def condition_operand_count(name)
-      { 'STATE_IS' => 2, 'STATE_ISNT' => 2, 'RELATION_EXISTS' => 3, 'VALUE_EQUALS' => 3 }.fetch(name)
+      { 'STATE_IS' => 2, 'STATE_ISNT' => 2, 'RELATION_EXISTS' => 3, 'VALUE_EQUALS' => 3, 'TEXT_VALUE_EQUALS' => 3 }.fetch(name)
     end
 
     def build_binary
@@ -411,13 +448,13 @@ module BasicSharp
       file_size = offset
       header = [
         BytecodeContract::MAGIC,
-        [BytecodeContract::BINARY_FORMAT_VERSION, PROFILE_FORMAT_VERSION].pack('v2'),
+        [BytecodeContract::BINARY_FORMAT_VERSION, @profile_format_version].pack('v2'),
         [BytecodeContract::HEADER_SIZE_BYTES, BytecodeContract::SECTION_ORDER.length, BytecodeContract::HEADER_SIZE_BYTES, BytecodeContract::DIRECTORY_ENTRY_SIZE_BYTES, file_size, 0].pack('V6')
       ].join
       directory = entries.map { |id, entry_offset, length, count| id + [entry_offset, length, count].pack('V3') }.join
       result = header + directory + body
       raise BytecodeEmitterError, 'BSharp Bytecode file-size calculation failed.' unless result.bytesize == file_size
-      if FORBIDDEN_BINARY_TERMS.any? { |term| result.include?(term) }
+      if @profile == BytecodeContract::PROFILE && FORBIDDEN_BINARY_TERMS.any? { |term| result.include?(term) }
         raise BytecodeEmitterError, 'BSharp Bytecode contains Ruby-specific serialized data.'
       end
       result.force_encoding(Encoding::BINARY)
@@ -435,9 +472,9 @@ module BasicSharp
       raise BytecodeEmitterError, 'Meaning fingerprint must be exactly 32 bytes.' unless fingerprint_bytes.bytesize == 32
 
       pack_u32(
-        @string_indexes.fetch(BytecodeContract::PROFILE),
-        @string_indexes.fetch(BytecodeContract::MEANING_PROFILE),
-        @string_indexes.fetch(WorldSave::FINGERPRINT_ALGORITHM)
+        @string_indexes.fetch(@profile),
+        @string_indexes.fetch(@meaning_profile),
+        @string_indexes.fetch(@fingerprint_algorithm)
       ) + fingerprint_bytes + pack_u32(
         model.fetch(:kinds).length,
         model.fetch(:things).length,
@@ -499,12 +536,17 @@ module BasicSharp
       value
     end
 
-    def intern(value)
+    def intern(value, role: :identifier)
       string = value.to_s.encode(Encoding::UTF_8)
-      return @string_indexes[string] if @string_indexes.key?(string)
+      if @string_indexes.key?(string)
+        index = @string_indexes.fetch(string)
+        @string_roles[index] = merge_string_role(@string_roles[index], role)
+        return index
+      end
 
       index = @strings.length
       @strings << string
+      @string_roles << role
       @string_indexes[string] = index
       index
     rescue Encoding::UndefinedConversionError, Encoding::InvalidByteSequenceError
@@ -548,6 +590,29 @@ module BasicSharp
 
     def normalize(value)
       value.to_s.strip.downcase.gsub(/\s+/, ' ')
+    end
+
+    def text_value(value, label)
+      TextLiteral.new(value).value
+    rescue TextLiteralError => error
+      raise BytecodeEmitterError, "#{label} is invalid: #{error.message}"
+    end
+
+    def quote_text(value)
+      %Q{"#{value}"}
+    end
+
+    def merge_string_role(existing, added)
+      return existing if existing == added
+      :identifier_and_literal
+    end
+
+    def document_uses_text_values?
+      Array(@document['facts']).any? { |fact| fact.key?('text_value') } ||
+        Array(@document['events']).any? { |event| Array(event['then']).any? { |action| action.key?('to_text') } } ||
+        Array(@document['if_rules']).any? do |rule|
+          rule.fetch('if', {}).key?('text_value') || Array(rule['then']).any? { |action| action.key?('to_text') }
+        end
     end
 
     def stringify_keys(value)

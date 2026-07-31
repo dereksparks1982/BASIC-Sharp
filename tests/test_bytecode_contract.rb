@@ -7,6 +7,7 @@ require_relative '../compiler/bytecode_contract'
 class TestBytecodeContract < Minitest::Test
   ROOT = File.expand_path('..', __dir__)
   PROFILE_PATH = File.join(ROOT, 'spec/bytecode_v1/BASIC_SHARP_BYTECODE_PROFILE_v1.json')
+  PROFILE_2_PATH = File.join(ROOT, 'spec/bytecode_v2/BASIC_SHARP_BYTECODE_PROFILE_v2.json')
 
   def profile
     @profile ||= JSON.parse(File.read(PROFILE_PATH))
@@ -179,6 +180,17 @@ class TestBytecodeContract < Minitest::Test
       BasicSharp::BytecodeContract.validate_profile!(changed, root: ROOT)
     end
     assert_includes error.message, '13 Meaning Profile cases'
+  end
+
+  def test_profile_2_contract_extends_profile_1_without_reassigning_codes
+    profile_2 = JSON.parse(File.read(PROFILE_2_PATH, encoding: 'UTF-8'))
+    assert BasicSharp::BytecodeContract.validate_profile!(profile_2, root: ROOT)
+    assert_equal BasicSharp::BytecodeContract::INSTRUCTIONS,
+                 BasicSharp::BytecodeContract::PROFILE_2_INSTRUCTIONS.slice(*BasicSharp::BytecodeContract::INSTRUCTIONS.keys)
+    assert_equal BasicSharp::BytecodeContract::CONDITIONS,
+                 BasicSharp::BytecodeContract::PROFILE_2_CONDITIONS.slice(*BasicSharp::BytecodeContract::CONDITIONS.keys)
+    assert_equal BasicSharp::BytecodeContract::PROFILE_2_REQUIRED_MALFORMED_RULES,
+                 profile_2.fetch('malformed_rejection_rules').last(BasicSharp::BytecodeContract::PROFILE_2_REQUIRED_MALFORMED_RULES.length)
   end
 
   private

@@ -1,0 +1,5 @@
+DEFINE
+[a door named north gate].
+
+START
+[north gate has "North  Gate — OPEN!" title].

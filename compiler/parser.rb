@@ -4,6 +4,7 @@ require_relative 'ast_nodes'
 require_relative 'diagnostics'
 require_relative 'dictionary'
 require_relative 'lexer'
+require_relative 'text_literal'
 
 module BasicSharp
   class Parser
@@ -231,10 +232,23 @@ module BasicSharp
         return nil
       end
 
+      relation = match[2].downcase
+      supplied_value = match[3].strip
+      literal = nil
+      value_name = nil
+      if relation == 'has' && TextLiteral.quote_present?(supplied_value)
+        begin
+          literal, value_name = TextLiteral.parse_assignment(supplied_value)
+        rescue TextLiteralError => error
+          diagnostics.error(child.line_number, error.message)
+        end
+      end
+
       Fact.new(
         subject: match[1].strip.downcase,
-        relation: match[2].downcase,
-        value: match[3].strip.downcase,
+        relation: relation,
+        value: literal || supplied_value.downcase,
+        value_name: value_name,
         line_number: child.line_number
       )
     end
@@ -268,23 +282,36 @@ module BasicSharp
       end
 
       verb = match[1].downcase
-      rest = match[2].strip.downcase
+      rest = match[2].strip
       target, tail = if verb == 'cause'
-                       [rest, '']
+                       [rest.downcase, '']
                      else
                        split_order_rest(rest)
                      end
-      ActionCall.new(verb: verb, target: target, tail: tail, line_number: child.line_number)
+      text_literal = nil
+      if verb == 'change' && (to_match = tail.match(/\Ato\s+(.+)\z/i)) && TextLiteral.quote_present?(to_match[1])
+        begin
+          text_literal = TextLiteral.parse_token(to_match[1])
+        rescue TextLiteralError => error
+          diagnostics.error(child.line_number, error.message)
+        end
+      end
+      ActionCall.new(
+        verb: verb,
+        target: target.downcase,
+        tail: text_literal ? 'to <text>' : tail.downcase,
+        text_literal: text_literal,
+        line_number: child.line_number
+      )
     end
 
     def split_order_rest(rest)
       return ['', ''] if rest.empty?
 
-      if rest.include?(' to ')
-        target, tail = rest.split(' to ', 2)
+      if (match = rest.match(/\A(.+?)\s+to\s+(.+)\z/i))
+        target, tail = match[1], match[2]
         [target.strip, "to #{tail.strip}"]
-      elsif rest.include?(' by ')
-        match = rest.match(/\A(.+?)\s+by\s+(.+)\z/)
+      elsif (match = rest.match(/\A(.+?)\s+by\s+(.+)\z/i))
         target = match && match[1]
         tail = match && match[2]
         [target.to_s.strip, "by #{tail.to_s.strip}"]

@@ -1,0 +1,19 @@
+KINDS
+[gate is a door].
+
+DEFINE
+[a gate named north gate
+a gate named south gate
+a device named brass bell].
+
+START
+[north gate has "North  Gate!" title
+south gate has "South Gate." title].
+
+WHEN
+[player sounds brass bell
+<then> (change title of every gate to "OPEN — RubyVM!"].
+
+IF
+[north gate has "OPEN — RubyVM!" title
+<then> (damage player].

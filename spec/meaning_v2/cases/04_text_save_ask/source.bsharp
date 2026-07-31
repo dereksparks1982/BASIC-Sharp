@@ -1,0 +1,10 @@
+DEFINE
+[a door named north gate
+a device named brass bell].
+
+START
+[north gate has "North Gate" title].
+
+WHEN
+[player sounds brass bell
+<then> (change title of north gate to "North Gate — OPEN"].

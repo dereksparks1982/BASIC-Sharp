@@ -196,4 +196,19 @@ class TestBytecodeVMIntegration < Minitest::Test
     document = JSON.parse(first)
     assert_equal 2, document.fetch('answers').length
   end
+
+  def test_profile_2_vm_save_ask_and_restore_are_typed_and_exact
+    loader = BasicSharp::BytecodeLoader.read(File.join(ROOT, 'samples/text_values.bsbc'))
+    vm = BasicSharp::BytecodeVirtualMachine.new(loader)
+    vm.run_event('player sounds brass bell')
+    answers = BasicSharp::Ask.new(vm).answer_many(['what is north gate', 'what is the world'])
+    assert_equal 'OPEN — RubyVM!', answers.first.dig('answer', 'values', 'title')
+    assert_equal 2, answers.last.dig('answer', 'text_values')
+
+    save = BasicSharp::WorldSave.document_for(vm)
+    assert_equal 2, save.fetch('format_version')
+    restored = BasicSharp::BytecodeVirtualMachine.new(loader, world_save: save)
+    assert_equal vm.snapshot, restored.snapshot
+    assert_empty restored.startup_ran
+  end
 end

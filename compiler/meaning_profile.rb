@@ -13,6 +13,7 @@ module BasicSharp
 
   module MeaningProfile
     PROFILE = 'bsharp.meaning.v1'
+    PROFILE_2 = 'bsharp.meaning.v2'
     MANIFEST_FORMAT = 'bsharp.meaning.conformance.json'
     MANIFEST_FORMAT_VERSION = 1
     EXPECTED_FORMAT = 'bsharp.meaning.case.json'
@@ -30,7 +31,7 @@ module BasicSharp
       [program, document]
     end
 
-    def observe_case(case_entry, root:)
+    def observe_case(case_entry, root:, profile: PROFILE)
       source_path = File.expand_path(case_entry.fetch('source'), root)
       source = File.read(source_path)
       _program, document = compile_source(source)
@@ -41,7 +42,7 @@ module BasicSharp
       observation = {
         'format' => EXPECTED_FORMAT,
         'format_version' => EXPECTED_FORMAT_VERSION,
-        'profile' => PROFILE,
+        'profile' => profile,
         'case_id' => case_entry.fetch('id'),
         'compile' => {
           'errors' => errors,
@@ -169,12 +170,13 @@ module BasicSharp
       unless manifest.is_a?(Hash) && manifest['format'] == MANIFEST_FORMAT && manifest['format_version'] == MANIFEST_FORMAT_VERSION
         raise MeaningProfileError, 'Meaning conformance manifest format is not supported.'
       end
-      unless manifest['profile'] == PROFILE
-        raise MeaningProfileError, "Meaning conformance profile must be #{PROFILE}."
+      unless [PROFILE, PROFILE_2].include?(manifest['profile'])
+        raise MeaningProfileError, "Meaning conformance profile must be #{PROFILE} or #{PROFILE_2}."
       end
       cases = manifest['cases']
-      unless cases.is_a?(Array) && cases.length == 13
-        raise MeaningProfileError, 'Meaning Profile 1 must contain exactly 13 conformance cases.'
+      expected_count = manifest['profile'] == PROFILE_2 ? 5 : 13
+      unless cases.is_a?(Array) && cases.length == expected_count
+        raise MeaningProfileError, "#{manifest['profile']} must contain exactly #{expected_count} conformance cases."
       end
 
       ids = cases.map { |entry| entry['id'] }

@@ -85,6 +85,10 @@ module BasicSharp
       verified_call('program fingerprint', :program_fingerprint)
     end
 
+    def meaning_profile
+      verified_call('meaning profile', :meaning_profile)
+    end
+
     def save_ready?
       verified_call('save readiness', :save_ready?)
     end

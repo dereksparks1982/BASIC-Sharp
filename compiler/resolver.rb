@@ -4,6 +4,7 @@ require 'set'
 require_relative 'diagnostics'
 require_relative 'dictionary'
 require_relative 'basic_sharp_ir'
+require_relative 'text_literal'
 
 module BasicSharp
   class SemanticResolver
@@ -18,6 +19,7 @@ module BasicSharp
       @dictionary = dictionary
       @diagnostics = DiagnosticBag.new
       @starting_value_assignments = Set.new
+      @value_types = { 'damage' => 'whole_number' }
     end
 
     def resolve
@@ -29,6 +31,7 @@ module BasicSharp
 
       IR::Document.new(
         version: VERSION,
+        meaning_profile: meaning_profile_for(facts, events, if_rules),
         kinds: kinds,
         objects: objects,
         facts: facts,
@@ -90,8 +93,22 @@ module BasicSharp
     def resolve_fact(fact)
       if normalize_name(fact.relation) == 'has'
         subject = resolve_reference(fact.subject, fact.line_number, usage: :start)
+        if fact.value.is_a?(TextLiteral)
+          value_name = resolve_value_name(fact.value_name, fact.line_number)
+          diagnostics.error(fact.line_number, "damage is a whole-number value and cannot store text") if value_name == 'damage'
+          remember_starting_value(subject, value_name, fact.line_number, 'text') if value_name
+          return {
+            'line_number' => fact.line_number,
+            'subject' => subject,
+            'relation' => 'has',
+            'value_name' => value_name,
+            'text_value' => fact.value.value,
+            'raw' => fact.to_h
+          }
+        end
+
         amount, value_name = resolve_amount_and_value_name(fact.value, fact.line_number)
-        remember_starting_value(subject, value_name, fact.line_number) if value_name
+        remember_starting_value(subject, value_name, fact.line_number, 'whole_number') if value_name
         return {
           'line_number' => fact.line_number,
           'subject' => subject,
@@ -124,7 +141,7 @@ module BasicSharp
       }
     end
 
-    def remember_starting_value(subject, value_name, line_number)
+    def remember_starting_value(subject, value_name, line_number, value_type)
       return unless subject.is_a?(Hash) && normalize_name(subject['type']) == 'object'
 
       thing_name = normalize_name(subject['name'])
@@ -136,6 +153,7 @@ module BasicSharp
         )
       else
         @starting_value_assignments.add(key)
+        remember_value_type(value_name, value_type, line_number, 'Starting value')
       end
     end
 
@@ -288,14 +306,40 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
       numeric_target = target_text.match(/\A([a-z][a-z0-9]*)\s+of\s+(.+)\z/)
       numeric_amount = tail.match(/\Ato\s+(.+)\z/)
 
-      if numeric_target && numeric_amount
+      if action.text_literal
+        unless numeric_target
+          diagnostics.error(action.line_number, "Text value change must look like '(change title of north gate to \"Open\"'")
+          return {
+            'line_number' => action.line_number,
+            'action' => verb,
+            'value_name' => nil,
+            'target' => resolve_reference(target_text, action.line_number, usage: :action_target),
+            'to_text' => action.text_literal.value
+          }
+        end
+
         value_name = resolve_value_name(numeric_target[1], action.line_number)
-        to_amount = resolve_whole_number(numeric_amount[1], action.line_number, minimum: 0, purpose: 'exact value')
+        target = resolve_reference(numeric_target[2], action.line_number, usage: :action_target)
+        validate_known_value_type(target, value_name, 'text', action.line_number, 'Text value change')
         return {
           'line_number' => action.line_number,
           'action' => verb,
           'value_name' => value_name,
-          'target' => resolve_reference(numeric_target[2], action.line_number, usage: :action_target),
+          'target' => target,
+          'to_text' => action.text_literal.value
+        }
+      end
+
+      if numeric_target && numeric_amount
+        value_name = resolve_value_name(numeric_target[1], action.line_number)
+        to_amount = resolve_whole_number(numeric_amount[1], action.line_number, minimum: 0, purpose: 'exact value')
+        target = resolve_reference(numeric_target[2], action.line_number, usage: :action_target)
+        validate_known_value_type(target, value_name, 'whole_number', action.line_number, 'Whole-number value change')
+        return {
+          'line_number' => action.line_number,
+          'action' => verb,
+          'value_name' => value_name,
+          'target' => target,
           'to_amount' => to_amount
         }
       end
@@ -318,12 +362,33 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
     end
 
     def parse_condition_fact(text, line_number)
-      normalized = normalize_name(text)
+      supplied = text.to_s.strip
+      if (text_match = supplied.match(/\A(.+?)\s+has\s+(.+)\z/i)) && TextLiteral.quote_present?(text_match[2])
+        begin
+          literal, value_name_text = TextLiteral.parse_assignment(text_match[2].strip)
+          value_name = resolve_value_name(value_name_text, line_number)
+          subject = resolve_reference(text_match[1], line_number, usage: :condition)
+          validate_known_value_type(subject, value_name, 'text', line_number, 'IF text comparison')
+          return {
+            'raw' => "#{normalize_name(text_match[1])} has #{literal.quoted} #{value_name}",
+            'subject' => subject,
+            'relation' => 'has',
+            'value_name' => value_name,
+            'text_value' => literal.value
+          }
+        rescue TextLiteralError => error
+          diagnostics.error(line_number, error.message)
+        end
+      end
+
+      normalized = normalize_name(supplied)
       if (has_match = normalized.match(/\A(.+?)\s+has\s+(.+)\z/))
         amount, value_name = resolve_amount_and_value_name(has_match[2], line_number)
+        subject = resolve_reference(has_match[1], line_number, usage: :condition)
+        validate_known_value_type(subject, value_name, 'whole_number', line_number, 'IF whole-number comparison')
         return {
           'raw' => normalized,
-          'subject' => resolve_reference(has_match[1], line_number, usage: :condition),
+          'subject' => subject,
           'relation' => 'has',
           'value_name' => value_name,
           'amount' => amount
@@ -377,6 +442,36 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
       end
 
       normalized
+    end
+
+    def validate_known_value_type(reference, value_name, expected_type, line_number, label)
+      return if value_name.nil?
+
+      remember_value_type(value_name, expected_type, line_number, label)
+    end
+
+    def remember_value_type(value_name, expected_type, line_number, label)
+      actual = @value_types[value_name]
+      if actual.nil?
+        @value_types[value_name] = expected_type
+        return
+      end
+      return if actual == expected_type
+
+      diagnostics.error(
+        line_number,
+        "#{label} cannot use #{value_name} because that value is #{actual == 'text' ? 'text' : 'a whole number'}."
+      )
+    end
+
+    def meaning_profile_for(facts, events, if_rules)
+      text_used = facts.any? { |fact| fact.key?('text_value') } ||
+                  events.any? { |event| event.fetch('then', []).any? { |action| action.key?('to_text') } } ||
+                  if_rules.any? do |rule|
+                    rule.fetch('if', {}).key?('text_value') ||
+                      rule.fetch('then', []).any? { |action| action.key?('to_text') }
+                  end
+      text_used ? 'bsharp.meaning.v2' : 'bsharp.meaning.v1'
     end
 
     def resolve_whole_number(text, line_number, minimum:, purpose:)

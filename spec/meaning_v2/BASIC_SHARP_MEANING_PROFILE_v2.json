@@ -1,0 +1,54 @@
+{
+  "format": "bsharp.meaning.conformance.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v2",
+  "cases": [
+    {
+      "id": "01_text_start",
+      "source": "spec/meaning_v2/cases/01_text_start/source.bsharp",
+      "expected": "spec/meaning_v2/cases/01_text_start/expected.json",
+      "expected_sha256": "5370957b0f549bad1b352328003bbf4c0e68c8c2ebf92f48174964ec886e73c3"
+    },
+    {
+      "id": "02_text_change_selection",
+      "source": "spec/meaning_v2/cases/02_text_change_selection/source.bsharp",
+      "expected": "spec/meaning_v2/cases/02_text_change_selection/expected.json",
+      "expected_sha256": "6357ab00f23966b8e83c8ef149917c46b9f0904025bc9faebf2ab055ed64d38a",
+      "events": [
+        "player sounds brass bell"
+      ]
+    },
+    {
+      "id": "03_text_if_reactivity",
+      "source": "spec/meaning_v2/cases/03_text_if_reactivity/source.bsharp",
+      "expected": "spec/meaning_v2/cases/03_text_if_reactivity/expected.json",
+      "expected_sha256": "79db7dc2c8d46ac6bb5b9beb8cfbaffb88331371c366faf2e800d840b9ee75ad",
+      "events": [
+        "player sounds brass bell",
+        "player speaks brass bell",
+        "player sounds brass bell"
+      ]
+    },
+    {
+      "id": "04_text_save_ask",
+      "source": "spec/meaning_v2/cases/04_text_save_ask/source.bsharp",
+      "expected": "spec/meaning_v2/cases/04_text_save_ask/expected.json",
+      "expected_sha256": "08c97441e690e26a793e842e9af7b7db390cba91266e79089a1e4fc64c04952a",
+      "events": [
+        "player sounds brass bell"
+      ],
+      "ask": [
+        "what is north gate",
+        "what is the world",
+        "what is the save"
+      ],
+      "save": true
+    },
+    {
+      "id": "05_invalid_text_boundaries",
+      "source": "spec/meaning_v2/cases/05_invalid_text_boundaries/source.bsharp",
+      "expected": "spec/meaning_v2/cases/05_invalid_text_boundaries/expected.json",
+      "expected_sha256": "09a97adeb2617d462aa0b54342c4254fde7447eb5bc419cd25cf16b9f943242b"
+    }
+  ]
+}

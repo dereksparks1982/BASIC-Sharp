@@ -1,0 +1,30 @@
+BSharp Bytecode bsharp.bytecode.v2
+Meaning Profile: bsharp.meaning.v2
+Fingerprint: 8510a13d4cebb0edbd9ab12625faa2c513a086c96d7a7da3f5426ad6a8dbe3fd
+
+KIND 0 door PARENT NONE
+KIND 1 gate PARENT KIND[door]
+KIND 2 person PARENT NONE
+KIND 3 device PARENT NONE
+
+THING 0 player KIND[person]
+THING 1 north gate KIND[gate]
+THING 2 south gate KIND[gate]
+THING 3 brass bell KIND[device]
+
+START
+    START_TEXT_VALUE THING[north gate] title "North  Gate!"
+    START_TEXT_VALUE THING[south gate] title "South Gate."
+END
+
+WHEN actor=THING[player] action=sound target=THING[brass bell] BLOCK 0
+
+IF TEXT_VALUE_EQUALS THING[north gate] title "OPEN — RubyVM!" BLOCK 1
+
+BLOCK 0
+    CHANGE_TEXT_VALUE EVERY_KIND[gate] title "OPEN — RubyVM!"
+END
+
+BLOCK 1
+    DAMAGE THING[player] 1
+END

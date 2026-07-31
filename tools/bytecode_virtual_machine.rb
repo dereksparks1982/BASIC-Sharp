@@ -85,6 +85,14 @@ meaning_parity = FIXTURE.fetch('meaning_cases').all? do |entry|
   BasicSharp::Runtime.new(resolved).snapshot == VMConformance.vm_from_resolved(resolved).snapshot
 end
 
+text_resolved = VMConformance.resolve(File.join(ROOT, 'samples/text_values.bsharp'))
+text_runtime = BasicSharp::Runtime.new(text_resolved)
+text_vm = BasicSharp::BytecodeVirtualMachine.new(BasicSharp::BytecodeLoader.read(File.join(ROOT, 'samples/text_values.bsbc')))
+text_runtime_result = text_runtime.run_event('player sounds brass bell')
+text_vm_result = text_vm.run_event('player sounds brass bell')
+text_profile_parity = VMConformance.semantic_result(text_runtime_result) == VMConformance.semantic_result(text_vm_result) &&
+                      text_runtime.snapshot == text_vm.snapshot && text_vm.meaning_profile == 'bsharp.meaning.v2'
+
 if_loop_source = <<~BSHARP
   DEFINE
   [a creature named ember].
@@ -124,14 +132,12 @@ isolation = first_vm.snapshot != second_vm.snapshot && isolation_loader.model.fr
 
 runtime_independence = begin
   singleton = BasicSharp::Runtime.singleton_class
-  singleton.alias_method(:__vm_lane_original_new, :new)
   singleton.define_method(:new) { |*| raise 'reference runtime called' }
   begin
     vm = BasicSharp::BytecodeVirtualMachine.new(BasicSharp::BytecodeLoader.read(File.join(ROOT, 'samples/first_room.bsbc')))
     vm.run_event('player attacks cinder').fetch('matched')
   ensure
-    singleton.alias_method(:new, :__vm_lane_original_new)
-    singleton.remove_method(:__vm_lane_original_new)
+    singleton.remove_method(:new)
   end
 rescue StandardError
   false
@@ -154,14 +160,16 @@ checks = {
   'Separate VM isolation' => isolation,
   'Canonical reporting' => canonical_reporting,
   'Runtime independence' => runtime_independence,
-  'Meaning Profile startup parity' => meaning_parity
+  'Meaning Profile startup parity' => meaning_parity,
+  'Meaning Profile 2 text parity' => text_profile_parity
 }
 
 checks.each { |label, passed| VMConformance.assert!(passed, label) }
 
-puts 'BSharp Virtual Machine v0.1.31'
+puts 'BSharp Virtual Machine v0.1.32'
 puts "Sample programs: #{FIXTURE.fetch('sample_programs').length}"
 puts "Valid Meaning Profile cases: #{FIXTURE.fetch('meaning_cases').length}"
+puts 'Valid Meaning Profile 2 text sample: 1'
 puts
 checks.each { |label, _passed| puts "#{label}: PASS" }
 puts

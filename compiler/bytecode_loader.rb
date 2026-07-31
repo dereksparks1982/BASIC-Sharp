@@ -19,9 +19,11 @@ module BasicSharp
       'START_STATE' => 3,
       'START_RELATION' => 3,
       'START_VALUE' => 3,
+      'START_TEXT_VALUE' => 3,
       'DAMAGE' => 3,
       'CHANGE_STATE' => 4,
       'CHANGE_VALUE' => 4,
+      'CHANGE_TEXT_VALUE' => 4,
       'CARRY' => 2,
       'UNLOCK' => 2,
       'CAUSE_EVENT' => 5
@@ -30,10 +32,11 @@ module BasicSharp
       'STATE_IS' => 2,
       'STATE_ISNT' => 2,
       'RELATION_EXISTS' => 3,
-      'VALUE_EQUALS' => 3
+      'VALUE_EQUALS' => 3,
+      'TEXT_VALUE_EQUALS' => 3
     }.freeze
-    START_INSTRUCTIONS = %w[START_STATE START_RELATION START_VALUE].freeze
-    ACTION_INSTRUCTIONS = %w[DAMAGE CHANGE_STATE CHANGE_VALUE CARRY UNLOCK CAUSE_EVENT].freeze
+    START_INSTRUCTIONS = %w[START_STATE START_RELATION START_VALUE START_TEXT_VALUE].freeze
+    ACTION_INSTRUCTIONS = %w[DAMAGE CHANGE_STATE CHANGE_VALUE CHANGE_TEXT_VALUE CARRY UNLOCK CAUSE_EVENT].freeze
     EVENT_ACTOR_SELECTORS = %w[EXACT_THING ONE_KIND].freeze
     EVENT_TARGET_SELECTORS = %w[EXACT_THING ONE_KIND NO_REFERENCE].freeze
     ACTION_TARGET_SELECTORS = %w[EXACT_THING BOUND_THAT_KIND EVERY_KIND].freeze
@@ -106,10 +109,10 @@ module BasicSharp
     private
 
     def parse
-      reject_implementation_leaks!
       parse_header_and_directory!
       parse_strings!
       parse_meta!
+      reject_implementation_leaks! if @profile_format_version == 1
       parse_kinds!
       parse_things!
       parse_start_records!
@@ -118,6 +121,7 @@ module BasicSharp
       parse_code!
       validate_count_agreement!
       validate_string_usage_and_order!
+      validate_value_type_contracts!
       verify_expected_fingerprint! if @expected_fingerprint
 
       {
@@ -126,6 +130,9 @@ module BasicSharp
         fingerprint_algorithm: @strings.fetch(@meta.fetch(:fingerprint_algorithm_string_index)),
         fingerprint: @meta.fetch(:fingerprint),
         strings: @strings,
+        string_roles: @string_roles.map do |roles|
+          roles.length == 2 ? :identifier_and_literal : roles.fetch(0)
+        end,
         kinds: @kinds,
         things: @things,
         start_records: @start_records,
@@ -164,9 +171,10 @@ module BasicSharp
       unless binary_version == BytecodeContract::BINARY_FORMAT_VERSION
         raise BytecodeLoaderError, "BSharp Bytecode binary format version #{binary_version} is not supported."
       end
-      unless profile_version == 1
+      unless [1, 2].include?(profile_version)
         raise BytecodeLoaderError, "BSharp Bytecode profile format version #{profile_version} is not supported."
       end
+      @profile_format_version = profile_version
       raise BytecodeLoaderError, 'BSharp Bytecode header size is wrong.' unless header_size == BytecodeContract::HEADER_SIZE_BYTES
       raise BytecodeLoaderError, 'BSharp Bytecode section count is wrong.' unless section_count == BytecodeContract::SECTION_ORDER.length
       raise BytecodeLoaderError, 'BSharp Bytecode section directory offset is wrong.' unless directory_offset == BytecodeContract::HEADER_SIZE_BYTES
@@ -254,10 +262,6 @@ module BasicSharp
         unless value.valid_encoding?
           raise BytecodeLoaderError, 'BSharp Bytecode string table contains invalid UTF-8.'
         end
-        unless value == normalize_string(value)
-          raise BytecodeLoaderError, 'BSharp Bytecode string table contains noncanonical semantic text.'
-        end
-
         padding_length = align(cursor - record_start) - (cursor - record_start)
         ensure_bytes!(data, cursor, padding_length, 'STRS padding')
         padding = data.byteslice(cursor, padding_length)
@@ -274,7 +278,11 @@ module BasicSharp
       unless @strings.uniq.length == @strings.length
         raise BytecodeLoaderError, 'BSharp Bytecode string table contains a duplicate deterministic entry.'
       end
-      mandatory = [BytecodeContract::PROFILE, BytecodeContract::MEANING_PROFILE, 'sha256-bsir-meaning-v1']
+      mandatory = if @profile_format_version == 2
+                    [BytecodeContract::PROFILE_2, BytecodeContract::MEANING_PROFILE_2, 'sha256-bsir-meaning-v2']
+                  else
+                    [BytecodeContract::PROFILE, BytecodeContract::MEANING_PROFILE, 'sha256-bsir-meaning-v1']
+                  end
       unless @strings.first(3) == mandatory
         raise BytecodeLoaderError, 'BSharp Bytecode string table has the wrong mandatory identity prefix.'
       end
@@ -290,13 +298,16 @@ module BasicSharp
       fingerprint = data.byteslice(12, 32).unpack1('H*')
       kind_count, thing_count, start_count, event_count, if_count, block_count = data.byteslice(44, 24).unpack('V6')
       [profile_index, meaning_index, fingerprint_algorithm_index].each { |index| validate_string_index!(index) }
-      unless @strings.fetch(profile_index) == BytecodeContract::PROFILE
+      expected_profile = @profile_format_version == 2 ? BytecodeContract::PROFILE_2 : BytecodeContract::PROFILE
+      expected_meaning = @profile_format_version == 2 ? BytecodeContract::MEANING_PROFILE_2 : BytecodeContract::MEANING_PROFILE
+      expected_fingerprint = @profile_format_version == 2 ? 'sha256-bsir-meaning-v2' : 'sha256-bsir-meaning-v1'
+      unless @strings.fetch(profile_index) == expected_profile
         raise BytecodeLoaderError, 'BSharp Bytecode uses an unsupported bytecode profile.'
       end
-      unless @strings.fetch(meaning_index) == BytecodeContract::MEANING_PROFILE
-        raise BytecodeLoaderError, 'BSharp Bytecode meaning profile does not match BASIC# Meaning Profile 1.'
+      unless @strings.fetch(meaning_index) == expected_meaning
+        raise BytecodeLoaderError, "BSharp Bytecode meaning profile does not match #{expected_meaning}."
       end
-      unless @strings.fetch(fingerprint_algorithm_index) == 'sha256-bsir-meaning-v1'
+      unless @strings.fetch(fingerprint_algorithm_index) == expected_fingerprint
         raise BytecodeLoaderError, 'BSharp Bytecode meaning-fingerprint algorithm is not supported.'
       end
 
@@ -549,6 +560,14 @@ module BasicSharp
         validate_thing_index!(operands[0])
         validate_string_index!(operands[1])
         validate_whole_number!(operands[2])
+      when 'START_TEXT_VALUE'
+        require_profile_2!(name)
+        validate_thing_index!(operands[0])
+        validate_string_index!(operands[1])
+        validate_string_index!(operands[2])
+        if @strings.fetch(operands[1]) == 'damage'
+          raise BytecodeLoaderError, 'BSharp Bytecode damage cannot use START_TEXT_VALUE.'
+        end
       end
     end
 
@@ -570,6 +589,11 @@ module BasicSharp
         validate_selector_operands!(operands[0], operands[1], ACTION_TARGET_SELECTORS, 'CHANGE_VALUE target')
         validate_string_index!(operands[2])
         validate_whole_number!(operands[3])
+      when 'CHANGE_TEXT_VALUE'
+        require_profile_2!(name)
+        validate_selector_operands!(operands[0], operands[1], ACTION_TARGET_SELECTORS, 'CHANGE_TEXT_VALUE target')
+        validate_string_index!(operands[2])
+        validate_string_index!(operands[3])
       when 'CARRY', 'UNLOCK'
         validate_selector_operands!(operands[0], operands[1], ACTION_TARGET_SELECTORS, "#{name} target")
       when 'CAUSE_EVENT'
@@ -592,6 +616,11 @@ module BasicSharp
         validate_thing_index!(operands[0])
         validate_string_index!(operands[1])
         validate_whole_number!(operands[2])
+      when 'TEXT_VALUE_EQUALS'
+        require_profile_2!(name)
+        validate_thing_index!(operands[0])
+        validate_string_index!(operands[1])
+        validate_string_index!(operands[2])
       end
     end
 
@@ -616,11 +645,12 @@ module BasicSharp
 
     def validate_string_usage_and_order!
       encountered = []
-      add_string_use(encountered, @meta.fetch(:profile_string_index))
-      add_string_use(encountered, @meta.fetch(:meaning_profile_string_index))
-      add_string_use(encountered, @meta.fetch(:fingerprint_algorithm_string_index))
-      @kinds.each { |entry| add_string_use(encountered, entry.fetch(:name_string_index)) }
-      @things.each { |entry| add_string_use(encountered, entry.fetch(:name_string_index)) }
+      @string_roles = Array.new(@strings.length) { [] }
+      add_string_use(encountered, @meta.fetch(:profile_string_index), role: :identifier)
+      add_string_use(encountered, @meta.fetch(:meaning_profile_string_index), role: :identifier)
+      add_string_use(encountered, @meta.fetch(:fingerprint_algorithm_string_index), role: :identifier)
+      @kinds.each { |entry| add_string_use(encountered, entry.fetch(:name_string_index), role: :identifier) }
+      @things.each { |entry| add_string_use(encountered, entry.fetch(:name_string_index), role: :identifier) }
       @start_records.each { |record| collect_instruction_string_uses(encountered, record) }
       @events.each { |event| add_string_use(encountered, event.fetch(:action_string_index)) }
       @if_rules.each { |rule| collect_condition_string_uses(encountered, rule.fetch(:condition)) }
@@ -633,6 +663,7 @@ module BasicSharp
         end
         raise BytecodeLoaderError, 'BSharp Bytecode string table order is not canonical.'
       end
+      validate_string_roles!
     end
 
     def collect_instruction_string_uses(encountered, record)
@@ -643,11 +674,17 @@ module BasicSharp
         add_optional_string_use(encountered, operands[2])
       when 'START_RELATION', 'START_VALUE'
         add_string_use(encountered, operands[1])
+      when 'START_TEXT_VALUE'
+        add_string_use(encountered, operands[1], role: :identifier)
+        add_string_use(encountered, operands[2], role: :literal)
       when 'CHANGE_STATE'
         add_string_use(encountered, operands[2])
         add_optional_string_use(encountered, operands[3])
       when 'CHANGE_VALUE'
         add_string_use(encountered, operands[2])
+      when 'CHANGE_TEXT_VALUE'
+        add_string_use(encountered, operands[2], role: :identifier)
+        add_string_use(encountered, operands[3], role: :literal)
       when 'CAUSE_EVENT'
         add_string_use(encountered, operands[2])
       end
@@ -655,11 +692,13 @@ module BasicSharp
 
     def collect_condition_string_uses(encountered, condition)
       operands = condition.fetch(:operands)
-      add_string_use(encountered, operands[1])
+      add_string_use(encountered, operands[1], role: :identifier)
+      add_string_use(encountered, operands[2], role: :literal) if condition.fetch(:name) == 'TEXT_VALUE_EQUALS'
     end
 
-    def add_string_use(encountered, index)
+    def add_string_use(encountered, index, role: :identifier)
       validate_string_index!(index)
+      @string_roles[index] << role unless @string_roles[index].include?(role)
       encountered << index unless encountered.include?(index)
     end
 
@@ -677,12 +716,16 @@ module BasicSharp
                   [thing_display(operands[0]), string_at(operands[1]), thing_display(operands[2])]
                 when 'START_VALUE'
                   [thing_display(operands[0]), string_at(operands[1]), operands[2].to_s]
+                when 'START_TEXT_VALUE'
+                  [thing_display(operands[0]), string_at(operands[1]), quote_text(string_at(operands[2]))]
                 when 'DAMAGE'
                   [selector_display(operands[0], operands[1]), operands[2].to_s]
                 when 'CHANGE_STATE'
                   [selector_display(operands[0], operands[1]), string_at(operands[2]), remove_display(operands[3])]
                 when 'CHANGE_VALUE'
                   [selector_display(operands[0], operands[1]), string_at(operands[2]), operands[3].to_s]
+                when 'CHANGE_TEXT_VALUE'
+                  [selector_display(operands[0], operands[1]), string_at(operands[2]), quote_text(string_at(operands[3]))]
                 when 'CARRY', 'UNLOCK'
                   [selector_display(operands[0], operands[1])]
                 when 'CAUSE_EVENT'
@@ -702,6 +745,8 @@ module BasicSharp
                   [thing_display(operands[0]), string_at(operands[1]), thing_display(operands[2])]
                 when 'VALUE_EQUALS'
                   [thing_display(operands[0]), string_at(operands[1]), operands[2].to_s]
+                when 'TEXT_VALUE_EQUALS'
+                  [thing_display(operands[0]), string_at(operands[1]), quote_text(string_at(operands[2]))]
                 end
       condition.merge(display: display)
     end
@@ -772,18 +817,22 @@ module BasicSharp
     end
 
     def instruction_name!(opcode)
-      name = BytecodeContract::INSTRUCTIONS.key(opcode)
+      instructions = BytecodeContract.instruction_codes(profile_name)
+      conditions = BytecodeContract.condition_codes(profile_name)
+      name = instructions.key(opcode)
       return name if name
-      if BytecodeContract::CONDITIONS.value?(opcode)
+      if conditions.value?(opcode)
         raise BytecodeLoaderError, "BSharp Bytecode instruction code 0x#{format('%02X', opcode)} is unknown."
       end
       raise BytecodeLoaderError, "BSharp Bytecode instruction code 0x#{format('%02X', opcode)} is reserved."
     end
 
     def condition_name!(opcode)
-      name = BytecodeContract::CONDITIONS.key(opcode)
+      instructions = BytecodeContract.instruction_codes(profile_name)
+      conditions = BytecodeContract.condition_codes(profile_name)
+      name = conditions.key(opcode)
       return name if name
-      if BytecodeContract::INSTRUCTIONS.value?(opcode)
+      if instructions.value?(opcode)
         raise BytecodeLoaderError, "BSharp Bytecode condition code 0x#{format('%02X', opcode)} is unknown."
       end
       raise BytecodeLoaderError, "BSharp Bytecode condition code 0x#{format('%02X', opcode)} is reserved."
@@ -838,6 +887,101 @@ module BasicSharp
 
     def normalize_string(value)
       value.to_s.strip.downcase.gsub(/\s+/, ' ')
+    end
+
+    def profile_name
+      @profile_format_version == 2 ? BytecodeContract::PROFILE_2 : BytecodeContract::PROFILE
+    end
+
+    def require_profile_2!(name)
+      return if @profile_format_version == 2
+
+      raise BytecodeLoaderError, "BSharp Bytecode #{name} requires Profile 2."
+    end
+
+    def validate_string_roles!
+      @strings.each_with_index do |value, index|
+        roles = @string_roles.fetch(index)
+        if roles.include?(:identifier) && value != normalize_string(value)
+          raise BytecodeLoaderError, 'BSharp Bytecode identifier string contains noncanonical semantic text.'
+        end
+        next unless roles.include?(:literal)
+
+        if value.include?("\n") || value.include?("\r")
+          raise BytecodeLoaderError, 'BSharp Bytecode creator text must stay on one line.'
+        end
+        if value.include?('\\')
+          raise BytecodeLoaderError, 'BSharp Bytecode creator text cannot contain unsupported escape sequences.'
+        end
+        if value.include?('#{')
+          raise BytecodeLoaderError, 'BSharp Bytecode creator text cannot contain unsupported interpolation.'
+        end
+        if value.include?('"')
+          raise BytecodeLoaderError, 'BSharp Bytecode creator text cannot contain an unescaped straight double quote.'
+        end
+      end
+    end
+
+    def validate_value_type_contracts!
+      schemas = { 'damage' => :whole_number }
+      assigned = {}
+
+      @start_records.each do |record|
+        type = case record.fetch(:name)
+               when 'START_VALUE' then :whole_number
+               when 'START_TEXT_VALUE' then :text
+               end
+        next unless type
+
+        thing_index, value_name_index = record.fetch(:operands).first(2)
+        value_name = @strings.fetch(value_name_index)
+        key = [thing_index, value_name]
+        if assigned[key]
+          raise BytecodeLoaderError, "BSharp Bytecode assigns starting value #{value_name} more than once for #{thing_display(thing_index)}."
+        end
+        assigned[key] = true
+        established = schemas[value_name]
+        if established && established != type
+          raise BytecodeLoaderError, "BSharp Bytecode starting value #{value_name} changes its established value type."
+        end
+        schemas[value_name] = type
+      end
+
+      @if_rules.each do |rule|
+        condition = rule.fetch(:condition)
+        type = condition.fetch(:name) == 'TEXT_VALUE_EQUALS' ? :text : :whole_number
+        next unless %w[TEXT_VALUE_EQUALS VALUE_EQUALS].include?(condition.fetch(:name))
+
+        validate_known_bytecode_value_type!(schemas, condition.fetch(:operands)[1], type, condition.fetch(:name))
+      end
+
+      @blocks.each do |block|
+        block.fetch(:instructions).each do |instruction|
+          type = instruction.fetch(:name) == 'CHANGE_TEXT_VALUE' ? :text : :whole_number
+          next unless %w[CHANGE_TEXT_VALUE CHANGE_VALUE].include?(instruction.fetch(:name))
+
+          operands = instruction.fetch(:operands)
+          validate_known_bytecode_value_type!(schemas, operands[2], type, instruction.fetch(:name))
+        end
+      end
+    end
+
+    def validate_known_bytecode_value_type!(schemas, value_name_index, expected_type, operation)
+      value_name = @strings.fetch(value_name_index)
+      established = schemas[value_name]
+      if established.nil?
+        schemas[value_name] = expected_type
+        return
+      end
+      return if established == expected_type
+
+      shown = established == :text ? 'text' : 'a whole number'
+      raise BytecodeLoaderError,
+            "BSharp Bytecode #{operation} conflicts with value #{value_name}, which is #{shown}."
+    end
+
+    def quote_text(value)
+      %Q{"#{value}"}
     end
 
     def section(id)

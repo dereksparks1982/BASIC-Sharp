@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+ROOT = File.expand_path('..', __dir__)
 CANONICAL_PATH = 'docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md'
+CANONICAL_FULL_PATH = File.join(ROOT, CANONICAL_PATH)
 REFERENCE_PATHS = [
   'README.md',
   'docs/roadmap/BASIC_SHARP_ROADMAP.md',
@@ -110,19 +112,21 @@ MANDATORY_TEXT = [
   'Executable bytecode: BSharp Bytecode',
   'Short bytecode name: BSBC',
   'Bytecode extension: .bsbc',
-  'Bytecode profile: bsharp.bytecode.v1',
+  'Bytecode Profile 1: bsharp.bytecode.v1',
+  'Bytecode Profile 2: bsharp.bytecode.v2',
+  'Stable Meaning Profile 2: bsharp.meaning.v2',
   'Virtual machine: BSharp Virtual Machine',
   'must not reconstruct BSIR or call the reference Ruby runtime'
 ].freeze
 
-files = Dir.glob('docs/company_bible/*', File::FNM_DOTMATCH).reject do |path|
-  ['docs/company_bible/.', 'docs/company_bible/..'].include?(path)
+files = Dir.glob(File.join(ROOT, 'docs/company_bible/*'), File::FNM_DOTMATCH).reject do |path|
+  [File.join(ROOT, 'docs/company_bible/.'), File.join(ROOT, 'docs/company_bible/..')].include?(path)
 end
-raise "Expected one Company Bible file, found #{files.length}" unless files == [CANONICAL_PATH]
-puts 'BASIC# Company Bible Audit v0.1.31'
+raise "Expected one Company Bible file, found #{files.length}" unless files == [CANONICAL_FULL_PATH]
+puts 'BASIC# Company Bible Audit v0.1.32'
 puts 'Canonical file count: PASS'
 
-text = File.read(CANONICAL_PATH, encoding: 'UTF-8')
+text = File.read(CANONICAL_FULL_PATH, encoding: 'UTF-8')
 raise 'Canonical Company Bible identity is missing' unless text.start_with?("# BASIC# Company Bible
 ")
 raise 'Canonical path declaration is missing' unless text.include?(CANONICAL_PATH)
@@ -138,7 +142,7 @@ raise 'Consolidation ledger source count is not 74' unless RETIRED_SOURCES.lengt
 puts 'Consolidation ledger: PASS'
 
 REFERENCE_PATHS.each do |path|
-  reference = File.read(path, encoding: 'UTF-8')
+  reference = File.read(File.join(ROOT, path), encoding: 'UTF-8')
   raise "Current reference missing canonical Company Bible path: #{path}" unless reference.include?(CANONICAL_PATH)
 end
 puts 'Current references: PASS'

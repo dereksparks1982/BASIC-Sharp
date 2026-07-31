@@ -1,0 +1,15 @@
+KINDS
+[captain is a guard].
+
+DEFINE
+[a guard named henry
+a captain named mara
+a device named brass bell].
+
+START
+[henry has "Waiting" title
+mara has "Waiting" title].
+
+WHEN
+[player sounds brass bell
+<then> (change title of every guard to "Ready!"].

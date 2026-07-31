@@ -1,0 +1,312 @@
+{
+  "case_id": "02_text_change_selection",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "events": [
+        {
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "candidates": [
+                  "henry",
+                  "mara"
+                ],
+                "kind_name": "guard",
+                "selector": "every",
+                "text": "every guard",
+                "type": "kind_set"
+              },
+              "to_text": "Ready!",
+              "value_name": "title"
+            }
+          ],
+          "when": {
+            "action": "sound",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "name": "brass bell",
+              "object_kind": "device",
+              "text": "brass bell",
+              "type": "object"
+            }
+          }
+        }
+      ],
+      "facts": [
+        {
+          "relation": "has",
+          "subject": {
+            "name": "henry",
+            "object_kind": "guard",
+            "text": "henry",
+            "type": "object"
+          },
+          "text_value": "Waiting",
+          "value_name": "title"
+        },
+        {
+          "relation": "has",
+          "subject": {
+            "name": "mara",
+            "object_kind": "captain",
+            "text": "mara",
+            "type": "object"
+          },
+          "text_value": "Waiting",
+          "value_name": "title"
+        }
+      ],
+      "if_rules": [
+
+      ],
+      "kinds": [
+        {
+          "name": "captain",
+          "parent": "guard"
+        }
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry"
+        },
+        {
+          "builtin": false,
+          "kind": "captain",
+          "name": "mara"
+        },
+        {
+          "builtin": false,
+          "kind": "device",
+          "name": "brass bell"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "events": [
+      {
+        "context": {
+        },
+        "error": null,
+        "event": "player sounds brass bell",
+        "event_trail": [
+
+        ],
+        "follow_up_events": [
+
+        ],
+        "if_rules": [
+
+        ],
+        "matched": true,
+        "matched_when": "player sounds brass bell",
+        "ran": [
+          "(change title of henry to \"Ready!\"",
+          "(change title of mara to \"Ready!\""
+        ],
+        "selections": [
+          {
+            "count": 2,
+            "kind_name": "guard",
+            "set": true,
+            "targets": [
+              "henry",
+              "mara"
+            ],
+            "text": "every guard"
+          }
+        ],
+        "steps": [
+          {
+            "change": "henry title changed from \"Waiting\" to \"Ready!\"",
+            "value_change": {
+              "new_text": "Ready!",
+              "old_text": "Waiting",
+              "value_name": "title"
+            },
+            "word": "(change title of henry to \"Ready!\""
+          },
+          {
+            "change": "mara title changed from \"Waiting\" to \"Ready!\"",
+            "value_change": {
+              "new_text": "Ready!",
+              "old_text": "Waiting",
+              "value_name": "title"
+            },
+            "word": "(change title of mara to \"Ready!\""
+          }
+        ],
+        "understood": [
+
+        ]
+      }
+    ],
+    "final": {
+      "if_rules": [
+
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0,
+            "title": "Ready!"
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "captain",
+          "name": "mara",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0,
+            "title": "Ready!"
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "device",
+          "name": "brass bell",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 4,
+        "origin": "START",
+        "settled": true,
+        "text_values": 2,
+        "things": 4,
+        "true_if_rules": 0,
+        "whole_number_values": 4
+      }
+    },
+    "startup": {
+      "if_rules": [
+
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0,
+            "title": "Waiting"
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "captain",
+          "name": "mara",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0,
+            "title": "Waiting"
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "device",
+          "name": "brass bell",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 4,
+        "origin": "START",
+        "settled": true,
+        "text_values": 2,
+        "things": 4,
+        "true_if_rules": 0,
+        "whole_number_values": 4
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v2",
+  "source_bsir_parity": true
+}

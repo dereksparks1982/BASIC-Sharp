@@ -351,7 +351,7 @@ class TestAsk < Minitest::Test
     assert_empty stderr
     document = JSON.parse(stdout)
     assert_equal 'bsharp.ask.json', document.fetch('format')
-    assert_equal '0.1.31', document.fetch('created_by_basic_sharp')
+    assert_equal '0.1.32', document.fetch('created_by_basic_sharp')
     assert_equal ['what is henry', 'what is the world'], document.fetch('answers').map { |entry| entry.fetch('question') }
   end
 
@@ -405,5 +405,17 @@ class TestAsk < Minitest::Test
       refute_includes stdout, 'ASK:'
       refute File.exist?(save_path)
     end
+  end
+
+  def test_profile_2_ask_preserves_text_and_counts_value_types
+    text = File.read(File.join(ROOT, 'samples/text_values.bsharp'), encoding: 'UTF-8')
+    machine = runtime(text)
+    answers = BasicSharp::Ask.new(machine).answer_many(['what is north gate', 'what is the world'])
+    assert_equal 'North  Gate!', answers.first.dig('answer', 'values', 'title')
+    assert_equal 2, answers.last.dig('answer', 'text_values')
+    assert_equal 4, answers.last.dig('answer', 'whole_number_values')
+    report = BasicSharp::Ask.new(machine).report(answers)
+    assert_includes report, 'title: "North  Gate!"'
+    assert_includes report, 'text values: 2'
   end
 end

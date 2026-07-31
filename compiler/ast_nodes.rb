@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module BasicSharp
-  VERSION = '0.1.31'
+  VERSION = '0.1.32'
 
   Statement = Struct.new(:starter, :children, :line_number, keyword_init: true) do
     def to_h
@@ -38,15 +38,24 @@ module BasicSharp
     end
   end
 
-  Fact = Struct.new(:subject, :relation, :value, :line_number, keyword_init: true) do
+  Fact = Struct.new(:subject, :relation, :value, :value_name, :line_number, keyword_init: true) do
     def to_h
-      { subject: subject, relation: relation, value: value, line_number: line_number }
+      result = {
+        subject: subject,
+        relation: relation,
+        value: value.respond_to?(:to_h) ? value.to_h : value,
+        line_number: line_number
+      }
+      result[:value_name] = value_name if value_name
+      result
     end
   end
 
-  ActionCall = Struct.new(:verb, :target, :tail, :line_number, keyword_init: true) do
+  ActionCall = Struct.new(:verb, :target, :tail, :text_literal, :line_number, keyword_init: true) do
     def to_h
-      { verb: verb, target: target, tail: tail, line_number: line_number }
+      result = { verb: verb, target: target, tail: tail, line_number: line_number }
+      result[:text_literal] = text_literal.to_h if text_literal
+      result
     end
   end
 

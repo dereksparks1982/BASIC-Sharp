@@ -50,7 +50,7 @@ class TestWorldSave < Minitest::Test
 
     assert_equal 'bsharp.save.json', document.fetch('format')
     assert_equal 1, document.fetch('format_version')
-    assert_equal '0.1.31', document.fetch('created_by_basic_sharp')
+    assert_equal '0.1.32', document.fetch('created_by_basic_sharp')
     assert_equal true, document.dig('world', 'settled')
     assert_equal %w[player henry mara brass\ bell brass\ key oak\ table], document.dig('world', 'things').map { |entry| entry.fetch('name') }
     assert_equal 10, document.dig('world', 'things', 1, 'values', 'health')
@@ -215,7 +215,7 @@ class TestWorldSave < Minitest::Test
     document['format_version'] = 2
 
     error = assert_raises(BasicSharp::WorldSaveError) { runtime(demo_source, world_save: document) }
-    assert_equal "This BSharp Save uses format version 2.\nBASIC# v0.1.31 understands format version 1.", error.message
+    assert_equal "This BSharp Save uses format version 2.\nThis program requires BSharp Save format version 1.", error.message
   end
 
   def test_unknown_or_reordered_thing_is_rejected
@@ -346,5 +346,18 @@ class TestWorldSave < Minitest::Test
     assert_equal first_result.fetch('state'), second_result.fetch('state')
     first.run_event('henry attacks player')
     refute_equal first.snapshot, second.snapshot
+  end
+
+  def test_profile_2_save_uses_typed_values_and_format_2
+    source = File.read(File.join(ROOT, 'samples/text_values.bsharp'), encoding: 'UTF-8')
+    machine = runtime(source)
+    machine.run_event('player sounds brass bell')
+    document = BasicSharp::WorldSave.document_for(machine)
+    north = document.dig('world', 'things').find { |thing| thing.fetch('name') == 'north gate' }
+    assert_equal 2, document.fetch('format_version')
+    assert_equal 'sha256-bsir-meaning-v2', document.dig('program_fingerprint', 'algorithm')
+    assert_equal({ 'type' => 'text', 'value' => 'OPEN — RubyVM!' }, north.dig('values', 'title'))
+    assert_equal({ 'type' => 'whole_number', 'value' => 0 }, north.dig('values', 'damage'))
+    assert_equal machine.snapshot, runtime(source, world_save: document).snapshot
   end
 end

@@ -69,7 +69,7 @@ bsir_default = bsir_machine.preferred? && bsir_result.fetch('matched') &&
 bsbc_out, bsbc_err, bsbc_status = PreferredRuntimeAudit.cli(
   File.join(ROOT, 'samples/first_room.bsbc'), '--run', 'player attacks cinder'
 )
-direct_bsbc = bsbc_status.success? && bsbc_err.empty? && bsbc_out.include?('BSharp Virtual Machine v0.1.31')
+direct_bsbc = bsbc_status.success? && bsbc_err.empty? && bsbc_out.include?('BSharp Virtual Machine v0.1.32')
 
 in_memory = source_machine.loader.is_a?(BasicSharp::BytecodeLoader) &&
             source_machine.loader.source_label == '(in-memory preferred runtime bytecode)' &&
@@ -84,17 +84,15 @@ end
 reference_machine = PreferredRuntimeAudit.transition(first, mode: :reference)
 reference_result = reference_machine.run_event('player attacks cinder')
 reference_opt_in = reference_machine.reference? && reference_machine.loader.nil? &&
-                   reference_machine.report(reference_result).include?('BASIC# Runtime v0.1.31')
+                   reference_machine.report(reference_result).include?('BASIC# Runtime v0.1.32')
 
 default_independence = begin
   singleton = BasicSharp::Runtime.singleton_class
-  singleton.alias_method(:__preferred_runtime_original_new, :new)
   singleton.define_method(:new) { |*| raise 'reference runtime called' }
   begin
     PreferredRuntimeAudit.transition(first).run_event('player attacks cinder').fetch('matched')
   ensure
-    singleton.alias_method(:new, :__preferred_runtime_original_new)
-    singleton.remove_method(:__preferred_runtime_original_new)
+    singleton.remove_method(:new)
   end
 rescue StandardError
   false
@@ -158,6 +156,17 @@ end
 deterministic = replay_a.snapshot == replay_b.snapshot &&
                 BasicSharp::WorldSave.document_for(replay_a) == BasicSharp::WorldSave.document_for(replay_b)
 
+text_source = File.join(ROOT, 'samples/text_values.bsharp')
+text_machine = PreferredRuntimeAudit.transition(
+  { 'source' => 'samples/text_values.bsharp' },
+  mode: :verify,
+  document: PreferredRuntimeAudit.resolve(text_source)
+)
+text_result = text_machine.run_event('player sounds brass bell')
+text_profile_shadow = text_result.fetch('matched') && text_result['error'].nil? &&
+                      text_machine.meaning_profile == 'bsharp.meaning.v2' &&
+                      text_machine.snapshot.any? { |entry| entry.dig('values', 'title') == 'OPEN — RubyVM!' }
+
 checks = {
   'Source defaults to BSharp VM' => source_default,
   'BSIR defaults to BSharp VM' => bsir_default,
@@ -175,12 +184,13 @@ checks = {
   'Save shadow parity' => save_shadow,
   'Restore and replay shadow parity' => restore_shadow,
   'Mismatch detection' => mismatch_detection,
-  'Deterministic repeated execution' => deterministic
+  'Deterministic repeated execution' => deterministic,
+  'Meaning Profile 2 text shadow parity' => text_profile_shadow
 }
 
 checks.each { |label, passed| PreferredRuntimeAudit.assert!(passed, label) }
 
-puts 'BASIC# Preferred Runtime Transition v0.1.31'
+puts 'BASIC# Preferred Runtime Transition v0.1.32'
 puts "Sample programs: #{FIXTURE.fetch('samples').length}"
 puts "Valid Meaning Profile cases: #{FIXTURE.fetch('meaning_cases').length}"
 puts

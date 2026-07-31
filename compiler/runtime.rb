@@ -4,6 +4,7 @@ require 'json'
 require 'set'
 require_relative 'ast_nodes'
 require_relative 'dictionary'
+require_relative 'text_literal'
 require_relative 'world_save'
 
 module BasicSharp
@@ -120,6 +121,10 @@ module BasicSharp
       WorldSave.program_fingerprint(@ir)
     end
 
+    def meaning_profile
+      @ir['meaning_profile'] == WorldSave::MEANING_PROFILE_2 ? WorldSave::MEANING_PROFILE_2 : WorldSave::MEANING_PROFILE_1
+    end
+
     def world_save_state
       unless save_ready?
         raise WorldSaveError, 'BSharp Save was not written because the world did not finish a successful event.'
@@ -127,11 +132,15 @@ module BasicSharp
 
       {
         'settled' => true,
-        'things' => snapshot.map { |thing| thing.except('damage') },
+        'things' => snapshot.map do |thing|
+          saved = thing.except('damage')
+          saved['values'] = typed_save_values(saved.fetch('values')) if meaning_profile == WorldSave::MEANING_PROFILE_2
+          saved
+        end,
         'if_rules' => @ir.fetch('if_rules', []).each_with_index.map do |rule, index|
           {
             'index' => index,
-            'condition' => normalize(rule.dig('if', 'raw')),
+            'condition' => canonical_condition_text(rule.fetch('if')),
             'active' => @if_active.fetch(index)
           }
         end
@@ -145,7 +154,7 @@ module BasicSharp
     def restore_world_save!(document)
       WorldSave.validate_header!(document, @ir)
       world = document['world']
-      candidate_objects, candidate_if_active = validate_world_save_state!(world)
+      candidate_objects, candidate_if_active = validate_world_save_state!(world, save_version: document['format_version'])
       @objects = candidate_objects
       @if_active = candidate_if_active
       @startup_ran = []
@@ -226,7 +235,7 @@ module BasicSharp
       @ir.fetch('if_rules', []).each_with_index.map do |rule, index|
         {
           'index' => index,
-          'condition' => normalize(rule.dig('if', 'raw')),
+          'condition' => canonical_condition_text(rule.fetch('if')),
           'true' => condition_true?(rule.fetch('if')),
           'active' => @if_active.fetch(index)
         }
@@ -236,15 +245,19 @@ module BasicSharp
     def ask_world_summary
       things = snapshot
       rules = ask_if_rules
-      {
+      summary = {
         'origin' => @world_origin,
         'settled' => save_ready?,
         'things' => things.length,
         'kinds_used' => things.map { |thing| thing.fetch('kind') }.uniq.length,
         'true_if_rules' => rules.count { |rule| rule.fetch('true') },
         'if_rules' => rules.length,
-        'whole_number_values' => things.sum { |thing| thing.fetch('values').length }
+        'whole_number_values' => things.sum { |thing| thing.fetch('values').values.count { |value| value.is_a?(Integer) } }
       }
+      if meaning_profile == WorldSave::MEANING_PROFILE_2
+        summary['text_values'] = things.sum { |thing| thing.fetch('values').values.count { |value| value.is_a?(String) } }
+      end
+      summary
     end
 
     def ask_save_summary
@@ -360,7 +373,8 @@ module BasicSharp
         return amount == 1 ? "(damage #{target}" : "(damage #{target} by #{amount}"
       end
       if action == 'change' && word['value_name']
-        return "(change #{normalize(word['value_name'])} of #{target} to #{word['to_amount']}"
+        value = word.key?('to_text') ? quote_text(word['to_text']) : word['to_amount']
+        return "(change #{normalize(word['value_name'])} of #{target} to #{value}"
       end
       if action == 'change'
         state = normalize(word.dig('to', 'name') || word.dig('to', 'text'))
@@ -377,11 +391,12 @@ module BasicSharp
         subject = thing_for_reference(fact['subject'])
         next unless subject
 
-        subject.fetch('values')[normalize(fact['value_name'])] ||= 0
+        default = fact.key?('text_value') ? '' : 0
+        subject.fetch('values')[normalize(fact['value_name'])] = default unless subject.fetch('values').key?(normalize(fact['value_name']))
       end
     end
 
-    def validate_world_save_state!(world)
+    def validate_world_save_state!(world, save_version:)
       unless world.is_a?(Hash)
         raise WorldSaveError, 'BSharp Save cannot load because its world entry is missing or invalid.'
       end
@@ -427,7 +442,7 @@ module BasicSharp
 
         states = validate_saved_states!(entry['states'], name)
         relations = validate_saved_relations!(entry['relations'], name, expected_names)
-        values = validate_saved_values!(entry['values'], name, expected.fetch('values').keys)
+        values = validate_saved_values!(entry['values'], name, expected.fetch('values'), save_version: save_version)
 
         candidate_objects[name] = {
           'name' => name,
@@ -457,8 +472,8 @@ module BasicSharp
           raise WorldSaveError, "BSharp Save IF-rule record #{index + 1} has the wrong index."
         end
 
-        expected_condition = normalize(expected_rules.fetch(index).dig('if', 'raw'))
-        condition = canonical_save_text(entry['condition'], "IF-rule #{index + 1} condition")
+        expected_condition = canonical_condition_text(expected_rules.fetch(index).fetch('if'))
+        condition = canonical_saved_condition(entry['condition'], "IF-rule #{index + 1} condition")
         unless condition == expected_condition
           raise WorldSaveError, "BSharp Save IF-rule #{index + 1} does not match '#{expected_condition}'."
         end
@@ -512,26 +527,50 @@ module BasicSharp
       end
     end
 
-    def validate_saved_values!(entries, thing_name, expected_value_names)
+    def validate_saved_values!(entries, thing_name, expected_values, save_version:)
       unless entries.is_a?(Hash)
         raise WorldSaveError, "BSharp Save values for #{thing_name} must be an object."
       end
 
       normalized_keys = entries.keys.map { |name| canonical_save_text(name, "#{thing_name} value name") }
-      unless normalized_keys.sort == expected_value_names.sort
+      unless normalized_keys.sort == expected_values.keys.sort
         raise WorldSaveError, "BSharp Save value names for #{thing_name} do not match this program."
       end
 
-      entries.each_with_object({}) do |(name_value, amount), result|
+      entries.each_with_object({}) do |(name_value, saved_value), result|
         name = canonical_save_text(name_value, "#{thing_name} value name")
         unless VALUE_NAME_PATTERN.match?(name)
           raise WorldSaveError, "BSharp Save value name '#{name}' for #{thing_name} must be one plain word."
         end
-        unless amount.is_a?(Integer) && amount.between?(0, MAX_WHOLE_NUMBER)
-          raise WorldSaveError, "BSharp Save value #{name} for #{thing_name} must be a whole number from 0 to #{MAX_WHOLE_NUMBER}."
+        expected_type = expected_values.fetch(name).is_a?(String) ? 'text' : 'whole_number'
+        value = if save_version == WorldSave::FORMAT_VERSION_2
+                  validate_typed_saved_value!(saved_value, name, thing_name, expected_type)
+                else
+                  saved_value
+                end
+        if expected_type == 'whole_number'
+          unless value.is_a?(Integer) && value.between?(0, MAX_WHOLE_NUMBER)
+            raise WorldSaveError, "BSharp Save value #{name} for #{thing_name} must be a whole number from 0 to #{MAX_WHOLE_NUMBER}."
+          end
+        else
+          begin
+            TextLiteral.new(value)
+          rescue TextLiteralError => error
+            raise WorldSaveError, "BSharp Save value #{name} for #{thing_name} is invalid text: #{error.message}"
+          end
         end
-        result[name] = amount
+        result[name] = value
       end
+    end
+
+    def validate_typed_saved_value!(entry, value_name, thing_name, expected_type)
+      unless entry.is_a?(Hash) && entry.keys.sort == %w[type value]
+        raise WorldSaveError, "BSharp Save value #{value_name} for #{thing_name} must contain exactly type and value."
+      end
+      unless entry['type'] == expected_type
+        raise WorldSaveError, "BSharp Save value #{value_name} for #{thing_name} has the wrong value type."
+      end
+      entry['value']
     end
 
     def canonical_save_text(value, label)
@@ -546,6 +585,13 @@ module BasicSharp
       normalized
     end
 
+    def canonical_saved_condition(value, label)
+      return canonical_save_text(value, label) unless meaning_profile == WorldSave::MEANING_PROFILE_2
+      raise WorldSaveError, "BSharp Save #{label} must be text." unless value.is_a?(String)
+      raise WorldSaveError, "BSharp Save #{label} cannot be empty." if value.empty?
+      value
+    end
+
     def condition_true_in_objects?(condition, objects)
       subject_name = saved_reference_name(condition['subject'])
       subject = objects[subject_name]
@@ -553,7 +599,8 @@ module BasicSharp
 
       if normalize(condition['relation']) == 'has'
         value_name = normalize(condition['value_name'])
-        return subject.fetch('values')[value_name] == condition['amount']
+        expected = condition.key?('text_value') ? condition['text_value'] : condition['amount']
+        return subject.fetch('values')[value_name] == expected
       end
 
       if condition['target']
@@ -588,7 +635,28 @@ module BasicSharp
         raise ArgumentError, "BSharp IR '#{name}' must be a list" unless value.is_a?(Array)
       end
 
+      profile = @ir['meaning_profile']
+      supported_profiles = [nil, '', WorldSave::MEANING_PROFILE_1, WorldSave::MEANING_PROFILE_2]
+      unless supported_profiles.include?(profile)
+        raise ArgumentError, "BSharp IR meaning profile '#{profile}' is not supported"
+      end
+      text_used = ir_uses_text_values?
+      if text_used && profile != WorldSave::MEANING_PROFILE_2
+        raise ArgumentError, 'Creator-facing text values require bsharp.meaning.v2 in BSharp IR'
+      end
+      if profile == WorldSave::MEANING_PROFILE_2 && !text_used
+        raise ArgumentError, 'bsharp.meaning.v2 requires at least one creator-facing text value'
+      end
+
       raise ArgumentError, 'BSharp IR contains errors and cannot run' if ir_errors.any?
+    end
+
+    def ir_uses_text_values?
+      @ir.fetch('facts', []).any? { |fact| fact.key?('text_value') } ||
+        @ir.fetch('events', []).any? { |event| event.fetch('then', []).any? { |word| word.key?('to_text') } } ||
+        @ir.fetch('if_rules', []).any? do |rule|
+          rule.fetch('if', {}).key?('text_value') || rule.fetch('then', []).any? { |word| word.key?('to_text') }
+        end
     end
 
     def ir_errors
@@ -724,12 +792,19 @@ module BasicSharp
 
     def validate_numeric_contracts!
       starting_values = {}
+      value_types = { 'damage' => :whole_number }
 
       @ir.fetch('facts', []).each_with_index do |fact, index|
         next unless normalize(fact['relation']) == 'has'
 
         value_name = validate_value_name_field!(fact, 'value_name', "START value entry #{index + 1}")
-        amount = validate_whole_number_field!(fact, 'amount', minimum: 0, label: "START #{value_name} amount")
+        value_type = fact.key?('text_value') ? :text : :whole_number
+        value = if value_type == :text
+                  raise ArgumentError, 'damage is a whole-number value and cannot store text' if value_name == 'damage'
+                  validate_text_value_field!(fact, 'text_value', label: "START #{value_name} text")
+                else
+                  validate_whole_number_field!(fact, 'amount', minimum: 0, label: "START #{value_name} amount")
+                end
         subject_name = reference_name(fact['subject'])
         next unless subject_name
 
@@ -738,24 +813,35 @@ module BasicSharp
           raise ArgumentError, "#{subject_name} already has a starting #{value_name} value.
 Choose one starting amount."
         end
-        starting_values[key] = amount
+        starting_values[key] = value
+        established = value_types[value_name]
+        if established && established != value_type
+          raise ArgumentError, "BASIC# value #{value_name} cannot change its established value type"
+        end
+        value_types[value_name] = value_type
       end
 
       @ir.fetch('events', []).each do |rule|
-        rule.fetch('then', []).each { |word| validate_numeric_action!(word) }
+        rule.fetch('then', []).each { |word| validate_numeric_action!(word, value_types) }
       end
 
       @ir.fetch('if_rules', []).each do |rule|
         condition = rule.fetch('if')
         if normalize(condition['relation']) == 'has'
           value_name = validate_value_name_field!(condition, 'value_name', 'IF value condition')
-          validate_whole_number_field!(condition, 'amount', minimum: 0, label: "IF #{value_name} amount")
+          if condition.key?('text_value')
+            validate_text_value_field!(condition, 'text_value', label: "IF #{value_name} text")
+            validate_established_value_type!(condition['subject'], value_name, :text, value_types, 'IF text comparison')
+          else
+            validate_whole_number_field!(condition, 'amount', minimum: 0, label: "IF #{value_name} amount")
+            validate_established_value_type!(condition['subject'], value_name, :whole_number, value_types, 'IF whole-number comparison')
+          end
         end
-        rule.fetch('then', []).each { |word| validate_numeric_action!(word) }
+        rule.fetch('then', []).each { |word| validate_numeric_action!(word, value_types) }
       end
     end
 
-    def validate_numeric_action!(word)
+    def validate_numeric_action!(word, value_types)
       action = normalize(word['action'])
       if action == 'damage'
         return unless word.key?('amount')
@@ -766,12 +852,31 @@ Choose one starting amount."
 
       return unless action == 'change'
 
-      numeric_shape = word.key?('value_name') || word.key?('to_amount')
-      return unless numeric_shape
+      value_shape = word.key?('value_name') || word.key?('to_amount') || word.key?('to_text')
+      return unless value_shape
 
       value_name = validate_value_name_field!(word, 'value_name', 'Value change')
-      validate_whole_number_field!(word, 'to_amount', minimum: 0, label: "New #{value_name} amount")
+      if word.key?('to_text')
+        raise ArgumentError, 'Text value change cannot also contain a whole-number amount' if word.key?('to_amount')
+        validate_text_value_field!(word, 'to_text', label: "New #{value_name} text")
+        validate_established_value_type!(word['target'], value_name, :text, value_types, 'Text value change')
+      else
+        validate_whole_number_field!(word, 'to_amount', minimum: 0, label: "New #{value_name} amount")
+        validate_established_value_type!(word['target'], value_name, :whole_number, value_types, 'Whole-number value change')
+      end
       raise ArgumentError, 'Value change cannot also contain a state target' if word.key?('to')
+    end
+
+    def validate_established_value_type!(reference, value_name, expected_type, value_types, label)
+      actual = value_types[value_name]
+      if actual.nil?
+        value_types[value_name] = expected_type
+        return
+      end
+      return if actual == expected_type
+
+      shown = actual == :text ? 'text' : 'a whole number'
+      raise ArgumentError, "#{label} cannot use #{value_name} because it is #{shown}"
     end
 
     def validate_value_name_field!(entry, key, label)
@@ -800,6 +905,13 @@ Choose one starting amount."
       end
 
       amount
+    end
+
+    def validate_text_value_field!(entry, key, label:)
+      raise ArgumentError, "#{label} is missing" unless entry.key?(key)
+      TextLiteral.new(entry[key]).value
+    rescue TextLiteralError => error
+      raise ArgumentError, "#{label} is invalid: #{error.message}"
     end
 
     def reference_location_name(location)
@@ -933,9 +1045,9 @@ Choose one starting amount."
 
         if normalize(fact['relation']) == 'has'
           value_name = normalize(fact['value_name'])
-          amount = fact['amount']
-          subject.fetch('values')[value_name] = amount
-          subject['damage'] = amount if value_name == 'damage'
+          value = fact.key?('text_value') ? fact['text_value'] : fact['amount']
+          subject.fetch('values')[value_name] = value
+          subject['damage'] = value if value_name == 'damage' && value.is_a?(Integer)
           next
         end
 
@@ -987,7 +1099,7 @@ Choose one starting amount."
           selections = []
           action_result = run_action_list(rule.fetch('then', []), actor: nil, context: {}, selections: selections)
           steps = action_result.fetch('steps')
-          condition = normalize(rule.dig('if', 'raw'))
+          condition = canonical_condition_text(rule.fetch('if'))
           reason = if initially_true[index] && !fired_indexes.include?(index)
                      cause == 'START' ? 'was true after START' : 'became true after the event'
                    else
@@ -1140,7 +1252,8 @@ Choose one starting amount."
         return amount == 1 ? "(damage #{text}" : "(damage #{text} by #{amount}"
       end
       if action == 'change' && word['value_name']
-        return "(change #{normalize(word['value_name'])} of #{text} to #{word['to_amount']}"
+        value = word.key?('to_text') ? quote_text(word['to_text']) : word['to_amount']
+        return "(change #{normalize(word['value_name'])} of #{text} to #{value}"
       end
 
       "(#{action} #{text}"
@@ -1158,6 +1271,12 @@ Choose one starting amount."
         value_name = normalize(word['value_name'])
         missing = targets.find { |target| !target.fetch('values').key?(value_name) }
         return "#{missing.fetch('name')} does not have a value named #{value_name}." if missing
+        wants_text = word.key?('to_text')
+        wrong_type = targets.find { |target| target.fetch('values').fetch(value_name).is_a?(String) != wants_text }
+        if wrong_type
+          expected = wants_text ? 'text' : 'a whole number'
+          return "#{wrong_type.fetch('name')} value #{value_name} is not #{expected}."
+        end
       end
 
       nil
@@ -1184,7 +1303,8 @@ Choose one starting amount."
 
       if normalize(condition['relation']) == 'has'
         value_name = normalize(condition['value_name'])
-        return subject.fetch('values')[value_name] == condition['amount']
+        expected = condition.key?('text_value') ? condition['text_value'] : condition['amount']
+        return subject.fetch('values')[value_name] == expected
       end
 
       if condition['target']
@@ -1451,17 +1571,19 @@ Choose one starting amount."
       when 'change'
         if word['value_name']
           value_name = normalize(word['value_name'])
-          old_amount = target.fetch('values').fetch(value_name)
-          new_amount = word.fetch('to_amount')
-          target.fetch('values')[value_name] = new_amount
-          target['damage'] = new_amount if value_name == 'damage'
+          old_value = target.fetch('values').fetch(value_name)
+          new_value = word.key?('to_text') ? word.fetch('to_text') : word.fetch('to_amount')
+          target.fetch('values')[value_name] = new_value
+          target['damage'] = new_value if value_name == 'damage' && new_value.is_a?(Integer)
+          old_display = old_value.is_a?(String) ? quote_text(old_value) : old_value
+          new_display = new_value.is_a?(String) ? quote_text(new_value) : new_value
           return {
-            'word' => "(change #{value_name} of #{target_name} to #{new_amount}",
-            'change' => "#{target_name} #{value_name} changed from #{old_amount} to #{new_amount}",
+            'word' => "(change #{value_name} of #{target_name} to #{new_display}",
+            'change' => "#{target_name} #{value_name} changed from #{old_display} to #{new_display}",
             'value_change' => {
               'value_name' => value_name,
-              'old_amount' => old_amount,
-              'new_amount' => new_amount
+              (new_value.is_a?(String) ? 'old_text' : 'old_amount') => old_value,
+              (new_value.is_a?(String) ? 'new_text' : 'new_amount') => new_value
             }
           }
         end
@@ -1742,7 +1864,7 @@ Choose one starting amount."
       thing.fetch('values', {}).each do |value_name, amount|
         next if value_name == 'damage'
 
-        details << "#{value_name}=#{amount}"
+        details << "#{value_name}=#{amount.is_a?(String) ? quote_text(amount) : amount}"
       end
       thing.fetch('relations').each { |relation, target| details << "#{relation}=#{target}" }
       "#{thing.fetch('name')}: #{details.join('; ')}"
@@ -1750,6 +1872,24 @@ Choose one starting amount."
 
     def normalize(value)
       value.to_s.strip.downcase.gsub(/\s+/, ' ')
+    end
+
+    def quote_text(value)
+      %Q{"#{value}"}
+    end
+
+    def canonical_condition_text(condition)
+      return normalize(condition['raw']) unless condition.key?('text_value')
+
+      subject = reference_name(condition['subject']) || normalize(condition.dig('subject', 'text'))
+      "#{subject} has #{quote_text(condition['text_value'])} #{normalize(condition['value_name'])}"
+    end
+
+    def typed_save_values(values)
+      values.to_h do |name, value|
+        type = value.is_a?(String) ? 'text' : 'whole_number'
+        [name, { 'type' => type, 'value' => value }]
+      end
     end
 
     def stringify_keys(value)

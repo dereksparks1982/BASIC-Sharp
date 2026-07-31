@@ -347,6 +347,7 @@ module BasicSharp
       lines << "Kinds used: #{answer.fetch('kinds_used')}"
       lines << "true IF rules: #{answer.fetch('true_if_rules')} of #{answer.fetch('if_rules')}"
       lines << "whole-number values: #{answer.fetch('whole_number_values')}"
+      lines << "text values: #{answer.fetch('text_values')}" if answer.key?('text_values')
     end
 
     def append_save(lines, answer)
@@ -377,7 +378,10 @@ module BasicSharp
       if entries.empty?
         lines << '  none'
       else
-        entries.each { |key, value| lines << "  #{key}: #{value}" }
+        entries.each do |key, value|
+          shown = value.is_a?(String) ? %Q{"#{value}"} : value
+          lines << "  #{key}: #{shown}"
+        end
       end
     end
 

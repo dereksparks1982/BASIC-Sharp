@@ -2,76 +2,72 @@
 
 ## Current candidate
 
-- **Accepted base:** v0.1.30 VM Parity, BSharp Save, BSharp ASK, and Hardening
-- **Accepted commit:** `30e1506`
-- **Accepted tag:** `v0.1.30`
-- **Candidate:** v0.1.31 BSharp VM Preferred Runtime Transition and Shadow Parity Verification
+- **Accepted base:** v0.1.31 BSharp VM Preferred Runtime Transition and Shadow Parity Verification
+- **Accepted commit:** `e7126c1f7e1963a72abb367687bfa0483fb59b64`
+- **Accepted tag:** `v0.1.31`
+- **Accepted branch:** `main`
+- **Candidate:** v0.1.32 Meaning Profile 2: Creator-Facing Text Values and BSharp Bytecode Profile 2
 - **Project path:** `/home/dereksparks1982/DKLab/Projects/BASIC#`
-- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_31_BSHARP_VM_PREFERRED_RUNTIME_TRANSITION_AND_SHADOW_PARITY_CHANGED_FILES_ONLY.zip`
+- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_32_MEANING_PROFILE_2_CREATOR_FACING_TEXT_VALUES_AND_BSHARP_BYTECODE_PROFILE_2_CHANGED_FILES_ONLY.zip`
 
 ## Canonical authority
 
-Read end-to-end before every build:
+Read `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md` from beginning to end before every build.
+
+## v0.1.32 completed candidate work
+
+- Added creator-facing exact text values with straight double quotes, single-line UTF-8, and preserved case, punctuation, and spaces.
+- Carried typed text through AST, resolution, BSIR, deterministic fingerprints, reference runtime, preferred VM, ASK, typed Save/restore, and shadow parity.
+- Added Stable Meaning Profile 2 and conformance fixtures while retaining Profile 1 selection for programs that do not use text.
+- Added BSharp Bytecode Profile 2 with role-aware strings and `START_TEXT_VALUE`, `CHANGE_TEXT_VALUE`, and `TEXT_VALUE_EQUALS`.
+- Added complete Profile 2 emission, loading, validation, disassembly, VM execution, negative cases, deterministic fixtures, and stress coverage.
+- Preserved committed Profile 1 BSBC bytes, disassembly, fingerprints, and runtime meaning.
+
+## Validation floor and environment
+
+The accepted v0.1.31 floor is:
 
 ```text
-docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
-```
-
-## v0.1.31 completed candidate work
-
-- Made BSharp VM the preferred Profile 1 runtime for source, saved BSIR, and direct BSBC.
-- Added source/BSIR in-memory BSBC emission and complete loader validation with no temporary artifacts.
-- Added `--reference-runtime` as explicit access to the preserved reference oracle.
-- Added `--verify-runtime-parity` for independent startup, event, world, IF, follow-up, ASK, Save, restore, and replay comparison.
-- Added mismatch stopping with bounded fingerprints and no newly mismatched transition state accepted.
-- Preserved direct BSBC behavior, Save/ASK formats, bytecode layout, and all committed BSBC bytes.
-- Recorded and evaluated Derek's supplied external Claude review.
-- Corrected current records to show v0.1.30 accepted at commit `30e1506`, tag `v0.1.30`.
-
-## Validation floor
-
-The accepted v0.1.30 floor may not decrease:
-
-```text
-292 runs
-7,262 assertions
+309 runs
+7,376 assertions
 0 failures
 0 errors
 0 skips
 ```
 
-The candidate result is 309 runs, 7,376 assertions, zero failures/errors/skips. All established lanes and the new preferred-runtime transition lane pass.
+Focused Profile 2 tests and deterministic stress lanes pass in the build environment. The available WebAssembly Ruby runtime cannot provide native `Open3`, atomic rename, or the exact installed extension set, so the final full-suite, warning-free count remains an owner-side installer gate on native Ruby. The package must not be accepted or committed unless that gate passes.
 
 ## Explicit exclusions
 
-No reference-runtime deletion, new BASIC# syntax or meaning, new bytecode profile, binary-layout change, optimization, JIT, native machine code, strings, arithmetic expressions, repetition, functions, collections, editor, IDE, engine bridge, self-hosting, licensing, or monetization.
+No interpolation, concatenation, escape-sequence language, multiline text, `(speak ...)`, text event matching, arithmetic on text, editor work, IDE, engine bridge, self-hosting, licensing, monetization, optimizer, JIT, native machine code, or unrelated syntax.
 
 ## Risks and controls
 
-- Preferred source/BSIR execution validates emitted BSBC before world creation.
-- Default execution does not instantiate the reference runtime.
-- Shadow verification uses independently reconstructed engines and stops on disagreement.
-- The reference runtime remains available for diagnosis and conformance.
-- Existing IF, follow-up-event, Save, ASK, isolation, and failed-restore controls remain active.
-- Shadow mode is intentionally slower and is not the normal creator path.
+- Literal contents never pass through identifier lowercasing.
+- Value schemas reject text/whole-number conflicts before execution or restore.
+- Profile 2 instructions are rejected under Profile 1 identity.
+- Role-aware string validation preserves literal text without weakening canonical identifiers.
+- Profile 1 artifact hashes and deterministic meaning remain regression gates.
+- Ruby/VM verification stops on the first semantic disagreement.
+- Save documents are typed and versioned; Profile 1 save validation remains accepted.
 
 ## Rollback
 
 ```text
-commit 30e1506
-tag v0.1.30
+commit e7126c1f7e1963a72abb367687bfa0483fb59b64
+tag v0.1.31
 ```
+
+The installer verifies the exact accepted base, applies only the approved paths, runs validation, and restores the pre-install state if a post-mutation gate fails.
 
 ## Continuation
 
-Derek installs and validates v0.1.31 before commit or tag. After acceptance, select the smallest creator-facing Profile 2 feature that supports useful programs and eventual self-hosting. The strongest current candidate is general text values, but it requires a separate exact proposal and approval.
+Derek installs and validates v0.1.32 before commit or tag. After acceptance, the next explicit discussion is a separate focused proposal for plain-English left/right platformer movement with creator-chosen speed. The compiler/runtime bridge should hide input polling, direction math, frame timing, velocity, collision movement, and engine calls. No movement syntax or behavior is part of v0.1.32, and exact words—including Derek's rough `PLAYER` and `<move>` ideas—remain owner decisions. The editor remains a staged long-term destination and is not part of v0.1.32.
 
-## Accepted history
+## Accepted recent history
 
-- v0.1.24 Stable Meaning Specification and Conformance Profile 1, commit `28e5b5b`.
-- v0.1.25 Canonical Company Bible Consolidation, commit `dadd813`.
-- v0.1.26 BSharp Bytecode Architecture and Instruction Contract 1, commit `479db66`.
-- v0.1.27 BSharp Bytecode Emitter and Deterministic Disassembly 1, commit `f82b121`.
-- v0.1.28 BSharp Bytecode Loader and Complete Structural Validation 1, commit `e352457`.
-- v0.1.29 First BSharp Virtual Machine and Profile 1 Execution, commit `c5c1374`.
-- v0.1.30 VM Parity, BSharp Save, BSharp ASK, and Hardening, commit `30e1506`.
+- v0.1.24 Stable Meaning Specification and Conformance Profile 1, `28e5b5b`.
+- v0.1.25 Canonical Company Bible Consolidation, `dadd813`.
+- v0.1.26-v0.1.28 Bytecode Profile 1 architecture, emission, disassembly, loading, and validation.
+- v0.1.29-v0.1.30 first BSharp VM, parity, Save, ASK, and hardening.
+- v0.1.31 preferred BSharp VM runtime and shadow parity, `e7126c1`.

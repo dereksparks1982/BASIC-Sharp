@@ -1,65 +1,57 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.31
+# BASIC# Ruby Bootstrap Compiler v0.1.32
 
 > A scripting language made for non-programmers, by non-programmers.
 
-BASIC# now uses the **BSharp Virtual Machine as its preferred Profile 1 runtime**:
+BASIC# v0.1.32 adds creator-facing text values through the complete preferred-runtime pipeline:
 
 ```text
-.bsharp source -> resolve -> BSBC in memory -> validate -> BSharp VM
-.bsir.json     -> BSBC in memory -> validate -> BSharp VM
-.bsbc          -> validate -> BSharp VM
+.bsharp source -> BSharp IR -> BSharp Bytecode -> validated BSharp VM
+quoted text     -> exact UTF-8 value -> Save, ASK, restore, and parity
 ```
 
-Ruby remains the bootstrap host. The older `BasicSharp::Runtime` remains a protected reference oracle for conformance and regression diagnosis, but it is no longer the normal creator execution path.
+Ruby remains the bootstrap host. The BSharp VM is the preferred runtime, while `BasicSharp::Runtime` remains the protected reference oracle used by explicit diagnostic and shadow-parity modes.
 
-## v0.1.31 preferred-runtime transition
+## Creator-facing text values
 
-Normal `.bsharp` and `.bsir.json` execution now:
+Text is written between straight double quotes and followed by a one-word value name:
 
-- emits deterministic BSharp Bytecode in memory;
-- validates the complete binary through `BytecodeLoader`;
-- executes the trusted model through the BSharp VM;
-- leaves no temporary `.bsbc` or `.bsbc.txt` artifacts;
-- remains independent of the reference runtime.
+```bsharp
+START
+[north gate has "North Gate — CLOSED" label].
 
-Direct `.bsbc` execution continues through the same BSharp VM.
+WHEN
+[player sounds brass bell
+<then> (change label of every gate to "OPEN — RubyVM!"].
+
+IF
+[north gate has "OPEN — RubyVM!" label
+<then> (damage player by 1].
+```
+
+Text preserves UTF-8, case, punctuation, and spaces exactly. v0.1.32 does not add interpolation, concatenation, escape sequences, multiline text, arithmetic on text, or text-based event matching.
+
+## Profile selection and compatibility
+
+- Programs using only accepted Profile 1 meaning remain `bsharp.meaning.v1` and emit `bsharp.bytecode.v1`.
+- Any creator-facing text value selects `bsharp.meaning.v2` and emits `bsharp.bytecode.v2`.
+- Profile 1 source, BSIR meaning fingerprints, committed `.bsbc` bytes, and disassembly remain compatible.
+- Profile 2 adds `START_TEXT_VALUE`, `CHANGE_TEXT_VALUE`, and `TEXT_VALUE_EQUALS`.
+- Identifier strings remain canonical lowercase; creator text strings retain their exact spelling through role-aware validation.
 
 ## Main commands
 
-Run BASIC# through the preferred BSharp VM:
-
 ```bash
-ruby compiler/basic_sharp.rb samples/first_room.bsharp --run "player attacks cinder"
+ruby compiler/basic_sharp.rb samples/text_values.bsharp --run "player sounds brass bell"
+ruby compiler/basic_sharp.rb samples/text_values.bsharp --verify-runtime-parity --run "player sounds brass bell"
+ruby compiler/basic_sharp.rb samples/text_values.bsbc --disassemble-bytecode
+ruby compiler/basic_sharp.rb samples/text_values.bsharp --ask "what is north gate"
 ```
-
-Run saved BSIR through the preferred BSharp VM:
-
-```bash
-ruby compiler/basic_sharp.rb samples/first_room.bsir.json --run "player attacks cinder"
-```
-
-Use the reference runtime explicitly for diagnosis:
-
-```bash
-ruby compiler/basic_sharp.rb samples/first_room.bsharp \
-  --reference-runtime \
-  --run "player attacks cinder"
-```
-
-Run both engines and stop on any semantic disagreement:
-
-```bash
-ruby compiler/basic_sharp.rb samples/first_room.bsharp \
-  --verify-runtime-parity \
-  --run "player attacks cinder"
-```
-
-The parity mode compares startup behavior, events, world state, reactive IF state, follow-up order, ASK, Save, restore, and replay. Only the preferred VM report is shown when both paths agree.
 
 ## Validation lanes
 
 ```bash
 ruby tools/meaning_conformance.rb
+ruby tools/meaning_profile_2.rb
 ruby tools/company_bible_audit.rb
 ruby tools/bytecode_contract.rb
 ruby tools/bytecode_emitter.rb
@@ -67,21 +59,20 @@ ruby tools/bytecode_loader.rb
 ruby tools/bytecode_virtual_machine.rb
 ruby tools/bytecode_vm_stress.rb
 ruby tools/runtime_transition.rb
+ruby tools/text_value_stress.rb
 ```
 
-## Deliberately excluded from v0.1.31
-
-The reference runtime is not deleted. This build does not add new BASIC# syntax or meaning, strings, arithmetic expressions, repetition, functions, collections, a new bytecode profile, binary-layout changes, optimization, JIT, native code, editor, IDE, engine bridge, self-hosting, licensing, or monetization.
-
-## Canonical records
+## Canonical current records
 
 ```text
 docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
 docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
 docs/roadmap/BASIC_SHARP_ROADMAP.md
-docs/runtime/BASIC_SHARP_BSHARP_VM_PREFERRED_RUNTIME_TRANSITION_v0_1_31.md
-docs/runtime_contract_v0_1_31.md
-docs/validation/BASIC_SHARP_VALIDATION_v0_1_31.md
+docs/language/BASIC_SHARP_CREATOR_FACING_TEXT_VALUES_v0_1_32.md
+docs/specification/BASIC_SHARP_STABLE_MEANING_SPECIFICATION_v2.md
+docs/bytecode/BASIC_SHARP_BYTECODE_PROFILE_2_v0_1_32.md
+docs/runtime_contract_v0_1_32.md
+docs/validation/BASIC_SHARP_VALIDATION_v0_1_32.md
 ```
 
 ## Current identity
@@ -96,7 +87,7 @@ Inspection: BSharp ASK
 Bytecode: BSharp Bytecode / BSBC / .bsbc
 Preferred runtime: BSharp Virtual Machine / BSharp VM
 Reference oracle: BasicSharp::Runtime
-Meaning profile: bsharp.meaning.v1
-Bytecode profile: bsharp.bytecode.v1
-Version: 0.1.31
+Meaning profiles: bsharp.meaning.v1 and bsharp.meaning.v2
+Bytecode profiles: bsharp.bytecode.v1 and bsharp.bytecode.v2
+Version: 0.1.32
 ```

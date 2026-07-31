@@ -1,0 +1,62 @@
+{
+  "format": "bsharp.bytecode.profile2.fixtures.json",
+  "format_version": 1,
+  "bytecode_profile": "bsharp.bytecode.v2",
+  "meaning_profile": "bsharp.meaning.v2",
+  "files": [
+    {
+      "path": "samples/text_values.bsbc",
+      "bytes": 732,
+      "sha256": "fd0d0315d76aa44c7a143af7c0e6b9a0b61508da1f63f435dab6dfebbbe50403"
+    },
+    {
+      "path": "samples/text_values.bsbc.txt",
+      "bytes": 768,
+      "sha256": "0e860ca11f208c906bdcbd83222f8a97c0911f244ce0dc54246e0825bef251d6"
+    }
+  ],
+  "meaning_cases": [
+    {
+      "id": "01_text_start",
+      "source": "spec/meaning_v2/cases/01_text_start/source.bsharp",
+      "binary_bytes": 460,
+      "binary_sha256": "f4361ccaf6f597ec4c6a69cbeadfeb6c100b89a67f18b27d99db3c3b4baee349",
+      "disassembly_bytes": 338,
+      "disassembly_sha256": "01c80d2a1772857b837eea3d8f7053fa0a3abdef6395a899067e6851f6684d2e"
+    },
+    {
+      "id": "02_text_change_selection",
+      "source": "spec/meaning_v2/cases/02_text_change_selection/source.bsharp",
+      "binary_bytes": 644,
+      "binary_sha256": "706b5d762e24220df4445b2ee0013a0c886682d244d62c06bb096394ff548a14",
+      "disassembly_bytes": 624,
+      "disassembly_sha256": "7755afd61c820a36a30a231b9a8807785c0041784c255ce2efe10c4fda9071a1"
+    },
+    {
+      "id": "03_text_if_reactivity",
+      "source": "spec/meaning_v2/cases/03_text_if_reactivity/source.bsharp",
+      "binary_bytes": 712,
+      "binary_sha256": "10b56c705abde576499914b5e20186541d36b2de08489067684082935f3a1ff5",
+      "disassembly_bytes": 759,
+      "disassembly_sha256": "db094f76ef7608ce6e6eb4070bd24f70a84cdb66831e1f1c525c3e9655eac20e"
+    },
+    {
+      "id": "04_text_save_ask",
+      "source": "spec/meaning_v2/cases/04_text_save_ask/source.bsharp",
+      "binary_bytes": 600,
+      "binary_sha256": "22c0f5e731c5038a17d343095619e6b769b55bdfe6155de128c241239315aad0",
+      "disassembly_bytes": 538,
+      "disassembly_sha256": "15e5fb92169e50a2ce65581b8c49e8c9a7ca9b453ae6b5b2806756f529ac7f39"
+    }
+  ],
+  "invalid_meaning_case": "05_invalid_text_boundaries",
+  "malformed_cases": [
+    "Profile 2 instruction inside Profile 1 bytecode",
+    "noncanonical identifier string role",
+    "multiline creator text literal",
+    "unsupported creator text escape sequence",
+    "unsupported creator text interpolation",
+    "unescaped creator text quote",
+    "text and whole-number value type conflict"
+  ]
+}

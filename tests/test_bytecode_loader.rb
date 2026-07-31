@@ -347,5 +347,15 @@ class TestBytecodeLoader < Minitest::Test
     assert loader.model.frozen?
   end
 
+  def test_loader_accepts_profile_2_and_keeps_literal_text_exact
+    loader = BasicSharp::BytecodeLoader.read(File.join(ROOT, 'samples/text_values.bsbc'))
+    assert_equal 'bsharp.bytecode.v2', loader.model.fetch(:profile)
+    assert_equal 'bsharp.meaning.v2', loader.model.fetch(:meaning_profile)
+    assert_includes loader.model.fetch(:strings), 'North  Gate!'
+    assert_includes loader.model.fetch(:strings), 'OPEN — RubyVM!'
+    assert_includes loader.disassembly, 'TEXT_VALUE_EQUALS'
+    assert loader.model.frozen?
+  end
+
 
 end

@@ -5,6 +5,7 @@ require 'set'
 require_relative 'ast_nodes'
 require_relative 'bytecode_contract'
 require_relative 'bytecode_loader'
+require_relative 'text_literal'
 require_relative 'world_save'
 
 module BasicSharp
@@ -114,6 +115,10 @@ module BasicSharp
       @program.fetch(:fingerprint)
     end
 
+    def meaning_profile
+      @program.fetch(:meaning_profile)
+    end
+
     def save_ready?
       @save_ready == true
     end
@@ -125,7 +130,11 @@ module BasicSharp
 
       {
         'settled' => true,
-        'things' => snapshot.map { |thing| thing.reject { |key, _| key == 'damage' } },
+        'things' => snapshot.map do |thing|
+          saved = thing.reject { |key, _| key == 'damage' }
+          saved['values'] = typed_save_values(saved.fetch('values')) if meaning_profile == WorldSave::MEANING_PROFILE_2
+          saved
+        end,
         'if_rules' => @program.fetch(:if_rules).each_with_index.map do |rule, index|
           {
             'index' => index,
@@ -141,8 +150,8 @@ module BasicSharp
     end
 
     def restore_world_save!(document)
-      WorldSave.validate_header_for_fingerprint!(document, program_fingerprint)
-      candidate_world, candidate_if_active = validate_world_save_state!(document['world'])
+      WorldSave.validate_header_for_fingerprint!(document, program_fingerprint, meaning_profile: meaning_profile)
+      candidate_world, candidate_if_active = validate_world_save_state!(document['world'], save_version: document['format_version'])
       @world = candidate_world
       @if_active = candidate_if_active
       @startup_ran = []
@@ -235,15 +244,19 @@ module BasicSharp
     def ask_world_summary
       things = snapshot
       rules = ask_if_rules
-      {
+      summary = {
         'origin' => @world_origin,
         'settled' => save_ready?,
         'things' => things.length,
         'kinds_used' => things.map { |thing| thing.fetch('kind') }.uniq.length,
         'true_if_rules' => rules.count { |rule| rule.fetch('true') },
         'if_rules' => rules.length,
-        'whole_number_values' => things.sum { |thing| thing.fetch('values').length }
+        'whole_number_values' => things.sum { |thing| thing.fetch('values').values.count { |value| value.is_a?(Integer) } }
       }
+      if meaning_profile == WorldSave::MEANING_PROFILE_2
+        summary['text_values'] = things.sum { |thing| thing.fetch('values').values.count { |value| value.is_a?(String) } }
+      end
+      summary
     end
 
     def ask_save_summary
@@ -342,6 +355,7 @@ module BasicSharp
         amount == 1 ? "(damage #{target}" : "(damage #{target} by #{amount}"
       when 'CHANGE_STATE' then "(change #{target} to #{string(operands.fetch(2))}"
       when 'CHANGE_VALUE' then "(change #{string(operands.fetch(2))} of #{target} to #{operands.fetch(3)}"
+      when 'CHANGE_TEXT_VALUE' then "(change #{string(operands.fetch(2))} of #{target} to #{quote_text(string(operands.fetch(3)))}"
       when 'CARRY' then "(carry #{target}"
       when 'UNLOCK' then "(unlock #{target}"
       else "(#{canonical_action_name(instruction)} #{target}"
@@ -358,7 +372,7 @@ module BasicSharp
       end
     end
 
-    def validate_world_save_state!(world)
+    def validate_world_save_state!(world, save_version:)
       unless world.is_a?(Hash)
         raise WorldSaveError, 'BSharp Save cannot load because its world entry is missing or invalid.'
       end
@@ -401,7 +415,7 @@ module BasicSharp
           index: index, name: name, kind_index: expected.fetch(:kind_index), builtin: builtin,
           states: validate_saved_states!(entry['states'], name),
           relations: validate_saved_relations!(entry['relations'], name, expected_names),
-          values: validate_saved_values!(entry['values'], name, expected.fetch(:values).keys)
+          values: validate_saved_values!(entry['values'], name, expected.fetch(:values), save_version: save_version)
         }
       end
 
@@ -419,7 +433,7 @@ module BasicSharp
           raise WorldSaveError, "BSharp Save IF-rule record #{index + 1} has the wrong index."
         end
         expected_condition = canonical_condition(@program.fetch(:if_rules).fetch(index).fetch(:condition))
-        condition = canonical_save_text(entry['condition'], "IF-rule #{index + 1} condition")
+        condition = canonical_saved_condition(entry['condition'], "IF-rule #{index + 1} condition")
         unless condition == expected_condition
           raise WorldSaveError, "BSharp Save IF-rule #{index + 1} does not match '#{expected_condition}'."
         end
@@ -469,24 +483,48 @@ module BasicSharp
       end
     end
 
-    def validate_saved_values!(entries, thing_name, expected_value_names)
+    def validate_saved_values!(entries, thing_name, expected_values, save_version:)
       unless entries.is_a?(Hash)
         raise WorldSaveError, "BSharp Save values for #{thing_name} must be an object."
       end
       normalized_keys = entries.keys.map { |name| canonical_save_text(name, "#{thing_name} value name") }
-      unless normalized_keys.sort == expected_value_names.sort
+      unless normalized_keys.sort == expected_values.keys.sort
         raise WorldSaveError, "BSharp Save value names for #{thing_name} do not match this bytecode."
       end
-      entries.each_with_object({}) do |(name_value, amount), result|
+      entries.each_with_object({}) do |(name_value, saved_value), result|
         name = canonical_save_text(name_value, "#{thing_name} value name")
         unless VALUE_NAME_PATTERN.match?(name)
           raise WorldSaveError, "BSharp Save value name '#{name}' for #{thing_name} must be one plain word."
         end
-        unless amount.is_a?(Integer) && amount.between?(0, MAX_WHOLE_NUMBER)
-          raise WorldSaveError, "BSharp Save value #{name} for #{thing_name} must be a whole number from 0 to #{MAX_WHOLE_NUMBER}."
+        expected_type = expected_values.fetch(name).is_a?(String) ? 'text' : 'whole_number'
+        value = if save_version == WorldSave::FORMAT_VERSION_2
+                  validate_typed_saved_value!(saved_value, name, thing_name, expected_type)
+                else
+                  saved_value
+                end
+        if expected_type == 'whole_number'
+          unless value.is_a?(Integer) && value.between?(0, MAX_WHOLE_NUMBER)
+            raise WorldSaveError, "BSharp Save value #{name} for #{thing_name} must be a whole number from 0 to #{MAX_WHOLE_NUMBER}."
+          end
+        else
+          begin
+            TextLiteral.new(value)
+          rescue TextLiteralError => error
+            raise WorldSaveError, "BSharp Save value #{name} for #{thing_name} is invalid text: #{error.message}"
+          end
         end
-        result[name] = amount
+        result[name] = value
       end
+    end
+
+    def validate_typed_saved_value!(entry, value_name, thing_name, expected_type)
+      unless entry.is_a?(Hash) && entry.keys.sort == %w[type value]
+        raise WorldSaveError, "BSharp Save value #{value_name} for #{thing_name} must contain exactly type and value."
+      end
+      unless entry['type'] == expected_type
+        raise WorldSaveError, "BSharp Save value #{value_name} for #{thing_name} has the wrong value type."
+      end
+      entry['value']
     end
 
     def canonical_save_text(value, label)
@@ -501,9 +539,20 @@ module BasicSharp
       normalized
     end
 
+    def canonical_saved_condition(value, label)
+      return canonical_save_text(value, label) unless meaning_profile == WorldSave::MEANING_PROFILE_2
+      raise WorldSaveError, "BSharp Save #{label} must be text." unless value.is_a?(String)
+      raise WorldSaveError, "BSharp Save #{label} cannot be empty." if value.empty?
+      value
+    end
+
     def validate_profile!
-      unless @program.fetch(:profile) == BytecodeContract::PROFILE &&
-             @program.fetch(:meaning_profile) == BytecodeContract::MEANING_PROFILE
+      pair = [@program.fetch(:profile), @program.fetch(:meaning_profile)]
+      supported = [
+        [BytecodeContract::PROFILE, BytecodeContract::MEANING_PROFILE],
+        [BytecodeContract::PROFILE_2, BytecodeContract::MEANING_PROFILE_2]
+      ]
+      unless supported.include?(pair)
         raise BytecodeVirtualMachineError, 'The BSharp Virtual Machine cannot execute this bytecode profile.'
       end
     end
@@ -552,6 +601,8 @@ module BasicSharp
           world_thing(operands.fetch(0)).fetch(:relations)[string(operands.fetch(1))] = thing_name(operands.fetch(2))
         when 'START_VALUE'
           world_thing(operands.fetch(0)).fetch(:values)[string(operands.fetch(1))] = operands.fetch(2)
+        when 'START_TEXT_VALUE'
+          world_thing(operands.fetch(0)).fetch(:values)[string(operands.fetch(1))] = string(operands.fetch(2))
         else
           raise BytecodeVirtualMachineError, "The BSharp Virtual Machine cannot execute START instruction #{record.fetch(:name)}."
         end
@@ -801,7 +852,15 @@ module BasicSharp
       when 'CHANGE_VALUE'
         value_name = string(operands.fetch(2))
         missing = targets.find { |index| !world_thing(index).fetch(:values).key?(value_name) }
-        "#{thing_name(missing)} does not have a value named #{value_name}." if missing
+        return "#{thing_name(missing)} does not have a value named #{value_name}." if missing
+        wrong_type = targets.find { |index| !world_thing(index).fetch(:values).fetch(value_name).is_a?(Integer) }
+        "#{thing_name(wrong_type)} value #{value_name} is not a whole number." if wrong_type
+      when 'CHANGE_TEXT_VALUE'
+        value_name = string(operands.fetch(2))
+        missing = targets.find { |index| !world_thing(index).fetch(:values).key?(value_name) }
+        return "#{thing_name(missing)} does not have a value named #{value_name}." if missing
+        wrong_type = targets.find { |index| !world_thing(index).fetch(:values).fetch(value_name).is_a?(String) }
+        "#{thing_name(wrong_type)} value #{value_name} is not text." if wrong_type
       end
     end
 
@@ -840,6 +899,16 @@ module BasicSharp
           'word' => "(change #{value_name} of #{target_name} to #{new_amount}",
           'change' => "#{target_name} #{value_name} changed from #{old_amount} to #{new_amount}",
           'value_change' => { 'value_name' => value_name, 'old_amount' => old_amount, 'new_amount' => new_amount }
+        }
+      when 'CHANGE_TEXT_VALUE'
+        value_name = string(operands.fetch(2))
+        old_text = target.fetch(:values).fetch(value_name)
+        new_text = string(operands.fetch(3))
+        target.fetch(:values)[value_name] = new_text
+        {
+          'word' => "(change #{value_name} of #{target_name} to #{quote_text(new_text)}",
+          'change' => "#{target_name} #{value_name} changed from #{quote_text(old_text)} to #{quote_text(new_text)}",
+          'value_change' => { 'value_name' => value_name, 'old_text' => old_text, 'new_text' => new_text }
         }
       when 'CARRY'
         carrier = actor_index.nil? ? 'player' : thing_name(actor_index)
@@ -960,6 +1029,8 @@ module BasicSharp
         subject.fetch(:relations)[string(operands.fetch(1))] == thing_name(operands.fetch(2))
       when 'VALUE_EQUALS'
         subject.fetch(:values)[string(operands.fetch(1))] == operands.fetch(2)
+      when 'TEXT_VALUE_EQUALS'
+        subject.fetch(:values)[string(operands.fetch(1))] == string(operands.fetch(2))
       else
         false
       end
@@ -1032,6 +1103,7 @@ module BasicSharp
       when 'STATE_ISNT' then "#{subject} isnt #{string(operands.fetch(1))}"
       when 'RELATION_EXISTS' then "#{subject} is #{string(operands.fetch(1))} #{thing_name(operands.fetch(2))}"
       when 'VALUE_EQUALS' then "#{subject} has #{operands.fetch(2)} #{string(operands.fetch(1))}"
+      when 'TEXT_VALUE_EQUALS' then "#{subject} has #{quote_text(string(operands.fetch(2)))} #{string(operands.fetch(1))}"
       end
     end
 
@@ -1122,6 +1194,8 @@ module BasicSharp
         amount == 1 ? "(damage #{text}" : "(damage #{text} by #{amount}"
       when 'CHANGE_VALUE'
         "(change #{string(operands.fetch(2))} of #{text} to #{operands.fetch(3)}"
+      when 'CHANGE_TEXT_VALUE'
+        "(change #{string(operands.fetch(2))} of #{text} to #{quote_text(string(operands.fetch(3)))}"
       when 'CHANGE_STATE'
         "(change #{text} to #{string(operands.fetch(2))}"
       when 'CARRY' then "(carry #{text}"
@@ -1132,7 +1206,7 @@ module BasicSharp
 
     def canonical_action_name(instruction)
       {
-        'DAMAGE' => 'damage', 'CHANGE_STATE' => 'change', 'CHANGE_VALUE' => 'change',
+        'DAMAGE' => 'damage', 'CHANGE_STATE' => 'change', 'CHANGE_VALUE' => 'change', 'CHANGE_TEXT_VALUE' => 'change',
         'CARRY' => 'carry', 'UNLOCK' => 'unlock', 'CAUSE_EVENT' => 'cause'
       }.fetch(instruction.fetch(:name), instruction.fetch(:name).downcase)
     end
@@ -1168,6 +1242,17 @@ module BasicSharp
 
     def normalize(value)
       value.to_s.strip.downcase.gsub(/\s+/, ' ')
+    end
+
+    def quote_text(value)
+      %Q{"#{value}"}
+    end
+
+    def typed_save_values(values)
+      values.to_h do |name, value|
+        type = value.is_a?(String) ? 'text' : 'whole_number'
+        [name, { 'type' => type, 'value' => value }]
+      end
     end
 
     def stringify_symbol_hash(hash)
@@ -1227,7 +1312,7 @@ module BasicSharp
       details << "damage=#{thing.fetch('damage')}" if thing.key?('damage')
       thing.fetch('values').each do |name, amount|
         next if name == 'damage'
-        details << "#{name}=#{amount}"
+        details << "#{name}=#{amount.is_a?(String) ? quote_text(amount) : amount}"
       end
       thing.fetch('relations').each { |relation, target| details << "#{relation}=#{target}" }
       "#{thing.fetch('name')}: #{details.join('; ')}"

@@ -59,7 +59,7 @@ class TestRuntimeTransition < Minitest::Test
     assert_instance_of BasicSharp::BytecodeLoader, machine.loader
     assert machine.loader.model.frozen?
     assert result.fetch('matched')
-    assert_includes machine.report(result), 'BSharp Virtual Machine v0.1.31'
+    assert_includes machine.report(result), 'BSharp Virtual Machine v0.1.32'
   end
 
   def test_bsir_defaults_to_preferred_bsharp_vm
@@ -68,7 +68,7 @@ class TestRuntimeTransition < Minitest::Test
 
     assert result.fetch('matched')
     assert_equal 1, machine.snapshot.find { |thing| thing['name'] == 'henry' }.fetch('damage')
-    assert_includes machine.report(result), 'BSharp Virtual Machine v0.1.31'
+    assert_includes machine.report(result), 'BSharp Virtual Machine v0.1.32'
   end
 
   def test_reference_runtime_requires_explicit_mode
@@ -78,7 +78,7 @@ class TestRuntimeTransition < Minitest::Test
     assert machine.reference?
     refute machine.preferred?
     assert_nil machine.loader
-    assert_includes machine.report(result), 'BASIC# Runtime v0.1.31'
+    assert_includes machine.report(result), 'BASIC# Runtime v0.1.32'
   end
 
   def test_default_path_does_not_construct_reference_runtime
@@ -195,5 +195,17 @@ class TestRuntimeTransition < Minitest::Test
       transition('first_room', mode: :imaginary)
     end
     assert_includes error.message, 'Unknown BASIC# runtime mode'
+  end
+
+  def test_profile_2_runs_in_preferred_reference_and_shadow_modes
+    path = File.join(ROOT, 'samples/text_values.bsharp')
+    preferred = BasicSharp::RuntimeTransition.new(resolve(path))
+    reference = BasicSharp::RuntimeTransition.new(resolve(path), mode: :reference)
+    shadow = BasicSharp::RuntimeTransition.new(resolve(path), mode: :verify)
+    [preferred, reference, shadow].each { |machine| machine.run_event('player sounds brass bell') }
+    assert_equal preferred.snapshot, reference.snapshot
+    assert_equal preferred.snapshot, shadow.snapshot
+    assert_equal 'bsharp.meaning.v2', shadow.meaning_profile
+    assert_equal 'bsharp.bytecode.v2', shadow.loader.model.fetch(:profile)
   end
 end

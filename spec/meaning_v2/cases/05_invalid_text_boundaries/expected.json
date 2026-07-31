@@ -1,0 +1,57 @@
+{
+  "case_id": "05_invalid_text_boundaries",
+  "compile": {
+    "errors": [
+      {
+        "message": "Text values use straight double quotes, such as \"North Gate\".",
+        "severity": "error"
+      },
+      {
+        "message": "Value must look like '10 health' using digits and one value name",
+        "severity": "error"
+      }
+    ],
+    "meaning": {
+      "events": [
+
+      ],
+      "facts": [
+        {
+          "amount": null,
+          "relation": "has",
+          "subject": {
+            "name": "north gate",
+            "object_kind": "door",
+            "text": "north gate",
+            "type": "object"
+          },
+          "value_name": null
+        }
+      ],
+      "if_rules": [
+
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "door",
+          "name": "north gate"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v2"
+}

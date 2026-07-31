@@ -248,6 +248,18 @@ class TestBytecodeEmitter < Minitest::Test
     refute_match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/, binary)
   end
 
+  def test_profile_2_sample_preserves_exact_text_and_profile_1_remains_default
+    text_emitter = BasicSharp::BytecodeEmitter.new(source_document('text_values'))
+    assert_equal 'bsharp.bytecode.v2', text_emitter.model.fetch(:profile)
+    assert_equal 'bsharp.meaning.v2', text_emitter.model.fetch(:meaning_profile)
+    assert_includes text_emitter.model.fetch(:strings), 'OPEN — RubyVM!'
+    assert_includes text_emitter.disassembly, 'START_TEXT_VALUE'
+
+    profile_1 = BasicSharp::BytecodeEmitter.new(source_document('first_room'))
+    assert_equal 'bsharp.bytecode.v1', profile_1.model.fetch(:profile)
+    assert_equal File.binread(File.join(ROOT, 'samples/first_room.bsbc')), profile_1.binary
+  end
+
   private
 
   def parse_directory(bytes)
