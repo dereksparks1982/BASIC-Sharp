@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.25  
+**Version:** v0.1.26  
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -219,6 +219,10 @@ Short IR names: BSharp IR and BSIR
 World save: BSharp Save
 Inspection system: BSharp ASK
 Stable meaning profile: bsharp.meaning.v1
+Executable bytecode: BSharp Bytecode
+Short bytecode name: BSBC
+Bytecode extension: .bsbc
+Bytecode profile: bsharp.bytecode.v1
 ```
 
 Protected rules:
@@ -230,6 +234,7 @@ Protected rules:
 - Difficult machinery belongs beneath understandable creator-facing language.
 - “Forgiving input, dependable meaning, canonical output” remains the long-term direction, but tolerance is added only through approved, tested builds.
 - Stable Meaning Profile 1 is the implementation-neutral meaning authority for its covered language behavior.
+- **BSharp Bytecode** and **BSBC** are the protected names for the future compact execution artifact governed by `bsharp.bytecode.v1`.
 
 Language grammar and runtime behavior belong in specifications and contracts, not duplicated as mutable Company Bible prose.
 

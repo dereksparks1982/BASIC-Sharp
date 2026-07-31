@@ -2,71 +2,73 @@
 
 ## Current candidate
 
-- **Accepted base:** v0.1.24 Stable Meaning Specification and Conformance Profile 1
-- **Accepted commit:** `28e5b5b`
-- **Accepted tag:** `v0.1.24`
-- **Candidate:** v0.1.25 Canonical Company Bible Consolidation
+- **Accepted base:** v0.1.25 Canonical Company Bible Consolidation
+- **Accepted commit:** `dadd813`
+- **Accepted tag:** `v0.1.25`
+- **Candidate:** v0.1.26 BSharp Bytecode Architecture and Instruction Contract 1
 - **Project path:** `/home/dereksparks1982/DKLab/Projects/BASIC#`
-- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_25_CANONICAL_COMPANY_BIBLE_CONSOLIDATION_CHANGED_FILES_ONLY.zip`
+- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_26_BSHARP_BYTECODE_ARCHITECTURE_AND_INSTRUCTION_CONTRACT_1_CHANGED_FILES_ONLY.zip`
 
 ## Canonical authority
 
-The sole active Company Bible after installation is:
+Read end-to-end before every build:
 
 ```text
 docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
 ```
 
-It must be read end-to-end before every future BASIC# build proposal. New standalone Company Bible addendums are prohibited.
+## v0.1.26 completed candidate work
 
-## v0.1.25 completed candidate work
-
-- Reviewed all 74 former active-folder Company Bible, addendum, carryover, pointer, and `.meta` files.
-- Consolidated permanent DK LAB and BASIC# workflow rules into one canonical document.
-- Resolved approval, backup, handoff, warning, versioning, and packaging conflicts.
-- Classified every former source as merged, merged in part, superseded, or retired project-specific history.
-- Removed Demon Killer/Godot gameplay, map, scene, door, control, lore, art, and engine rules from active BASIC# authority.
-- Added `tools/company_bible_audit.rb`.
-- Ended new per-version `NEW_THREAD_HANDOFF` files; this master document is the cumulative continuity authority.
-- Advanced all active BASIC# version surfaces to v0.1.25 without changing language meaning.
+- Established BSharp Bytecode and BSBC as protected execution-artifact identities.
+- Defined `.bsbc`, `BSBC` magic bytes, `bsharp.bytecode.bin`, and `bsharp.bytecode.v1`.
+- Defined the exact 32-byte header, 16-byte section directory, four-byte alignment, and eight required sections.
+- Defined nine Profile 1 instructions, five selector identities, and four IF condition operators with fixed operand contracts.
+- Defined deterministic string, Kind, Thing, event, IF, and code-block ordering.
+- Mapped all 13 Meaning Profile 1 cases to representable bytecode machinery.
+- Defined diagnostic disassembly and complete malformed-artifact rejection before execution.
+- Added `compiler/bytecode_contract.rb`, `tools/bytecode_contract.rb`, and `tests/test_bytecode_contract.rb`.
+- Advanced active BASIC# version surfaces to v0.1.26 without changing creator-facing language meaning.
 
 ## Candidate validation floor
 
+The accepted v0.1.25 floor must not decrease:
+
 ```text
-218 runs
-5,102 assertions
+234 runs
+5,277 assertions
 0 failures
 0 errors
 0 skips
 ```
 
-All eight established stress lanes, all 13 Meaning Profile cases, and the Company Bible integrity audit must pass.
+The final candidate must also pass all eight stress lanes, all 13 Meaning Profile cases, the Company Bible audit, and the BSharp Bytecode Contract audit.
 
 ## Explicit exclusions
 
-No bytecode, VM, creator-facing syntax, Head, Connector, official word, event behavior, IF behavior, arithmetic, tolerance expansion, BSIR/save/ASK schema migration, editor, IDE, engine bridge, self-hosting, pricing, licensing, payment, activation, or subscription implementation.
+No bytecode emitter, generated `.bsbc` program, loader, VM, bytecode execution, Ruby-runtime replacement, new syntax, Head, Connector, official word, BSIR/save/ASK schema change, editor, IDE, engine bridge, self-hosting, pricing, licensing, activation, or subscription work.
 
 ## Risks and controls
 
-- Git at commit `28e5b5b` preserves every retired source byte.
-- The canonical ledger names all 74 retired paths and their disposition.
-- The audit requires exactly one active file in `docs/company_bible/`.
-- Exact base-file hashes protect all modified and deleted paths.
-- Installer failure restores tag `v0.1.24`.
+- The contract is versioned narrowly as `bsharp.bytecode.v1`; unused identities remain reserved.
+- The contract maps stable Profile 1 meaning rather than Ruby classes or private runtime structures.
+- BSIR remains the readable resolved representation; BSBC is the future compact execution artifact.
+- Emission and execution remain separate owner-approved builds.
+- Malformed artifacts must be rejected completely before any execution.
 
 ## Rollback
 
 ```text
-commit 28e5b5b
-tag v0.1.24
+commit dadd813
+tag v0.1.25
 ```
 
 ## Continuation
 
-Derek installs and reviews v0.1.25 before commit or tag. After acceptance, the next proposed technical lane is BSharp bytecode architecture and instruction-contract design. Reread the one canonical Company Bible before preparing that proposal.
+Derek installs and validates v0.1.26 before commit or tag. After acceptance, the next eligible proposal is BSharp Bytecode Emitter and Deterministic Disassembly, unless Derek changes direction.
 
 ## Accepted history
 
+- v0.1.25 Canonical Company Bible Consolidation: commit `dadd813`, tag `v0.1.25`.
 - v0.1.24 Stable Meaning Specification and Conformance Profile 1: commit `28e5b5b`, tag `v0.1.24`.
 - v0.1.23 ASK Introspection and Deterministic Answers: commit `aa69291`, tag `v0.1.23`.
 - v0.1.22 BSharp Save Files and Deterministic World Restore: commit `d991679`, tag `v0.1.22`.

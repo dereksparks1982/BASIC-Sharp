@@ -20,43 +20,55 @@
   "meaning_profile": "bsharp.meaning.v1",
   "meaning_conformance_format": "bsharp.meaning.conformance.json",
   "meaning_conformance_format_version": 1,
-  "package_name": "BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_25_CANONICAL_COMPANY_BIBLE_CONSOLIDATION_CHANGED_FILES_ONLY.zip",
-  "required_base": "accepted v0.1.24 Stable Meaning Specification and Conformance Profile 1; commit 28e5b5b; tag v0.1.24",
-  "base_validation": "218 runs, 5102 assertions, 0 failures, 0 errors, 0 skips; all eight established stress lanes and Meaning Profile 1 PASS",
-  "target_version": "v0.1.25",
-  "title": "Canonical Company Bible Consolidation",
+  "bytecode_name": "BSharp Bytecode",
+  "bytecode_short_name": "BSBC",
+  "bytecode_extension": ".bsbc",
+  "bytecode_magic": "BSBC",
+  "bytecode_format": "bsharp.bytecode.bin",
+  "bytecode_format_version": 1,
+  "bytecode_profile": "bsharp.bytecode.v1",
+  "bytecode_contract_format": "bsharp.bytecode.contract.json",
+  "bytecode_contract_format_version": 1,
+  "package_name": "BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_26_BSHARP_BYTECODE_ARCHITECTURE_AND_INSTRUCTION_CONTRACT_1_CHANGED_FILES_ONLY.zip",
+  "required_base": "accepted v0.1.25 Canonical Company Bible Consolidation; commit dadd813; tag v0.1.25",
+  "base_validation": "218 runs, 5102 assertions, 0 failures, 0 errors, 0 skips; all eight stress lanes, Meaning Profile 1, and Company Bible audit PASS",
+  "target_version": "v0.1.26",
+  "title": "BSharp Bytecode Architecture and Instruction Contract 1",
   "package_status": "candidate built and internally validated; owner installation and acceptance pending",
-  "exact_base_rebuild": "Package generated from the exact accepted v0.1.24 archive for commit 28e5b5b and validated against its file hashes.",
-  "scope_count_correction": "The approved explicit path list contained 20 modified paths. The earlier 19-modified/102-total summary was an arithmetic typo. No path outside the approved list was added.",
+  "exact_base_source": "Built from the exact accepted v0.1.25 installed payload, which Derek committed as dadd813 and tagged v0.1.25.",
   "direct_project_root_payload": true,
   "changed_files_only": true,
   "incremental_from_base": true,
-  "cumulative_from_accepted_base": false,
   "manifest_excluded_from_own_hash_list": true,
   "project_path": "/home/dereksparks1982/DKLab/Projects/BASIC#",
   "package_utility_files": [
-    "APPLY_BASIC_SHARP_v0_1_25.sh"
+    "APPLY_BASIC_SHARP_v0_1_26.sh"
   ],
-  "added_path_count": 9,
-  "modified_path_count": 20,
-  "deleted_path_count": 74,
-  "changed_path_count_including_manifest": 103,
+  "added_path_count": 14,
+  "modified_path_count": 21,
+  "deleted_path_count": 0,
+  "changed_path_count_including_manifest": 35,
   "added_paths": [
-    "BUILD_HANDSHAKE_v0_1_25.md",
-    "docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md",
-    "docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_25.txt",
-    "docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_25.md",
-    "docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_25.md",
-    "docs/session_logs/BASIC_SHARP_v0_1_25_SESSION_LOG.md",
-    "docs/testing/BASIC_SHARP_COMPANY_BIBLE_INTEGRITY_TEST_v0_1_25.md",
-    "docs/validation/BASIC_SHARP_VALIDATION_v0_1_25.md",
-    "tools/company_bible_audit.rb"
+    "BUILD_HANDSHAKE_v0_1_26.md",
+    "compiler/bytecode_contract.rb",
+    "tools/bytecode_contract.rb",
+    "tests/test_bytecode_contract.rb",
+    "spec/bytecode_v1/BASIC_SHARP_BYTECODE_PROFILE_v1.json",
+    "docs/bytecode/BASIC_SHARP_BYTECODE_ARCHITECTURE_v0_1_26.md",
+    "docs/bytecode/BASIC_SHARP_BYTECODE_FORMAT_AND_INSTRUCTION_CONTRACT_v0_1_26.md",
+    "docs/bytecode/BASIC_SHARP_BYTECODE_COMPATIBILITY_POLICY_v0_1_26.md",
+    "docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_26.txt",
+    "docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_26.md",
+    "docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_26.md",
+    "docs/session_logs/BASIC_SHARP_v0_1_26_SESSION_LOG.md",
+    "docs/testing/BASIC_SHARP_BYTECODE_CONTRACT_TEST_v0_1_26.md",
+    "docs/validation/BASIC_SHARP_VALIDATION_v0_1_26.md"
   ],
   "modified_paths": [
     "BASIC_SHARP_PATCH_MANIFEST.json",
     "README.md",
     "compiler/ast_nodes.rb",
-    "compiler/parser.rb",
+    "docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md",
     "docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md",
     "docs/roadmap/BASIC_SHARP_ROADMAP.md",
     "samples/ask_demo.bsave.json",
@@ -72,97 +84,46 @@
     "tests/test_cli_output.rb",
     "tests/test_identity_migration.rb",
     "tests/test_ir_output.rb",
-    "tests/test_world_save.rb"
+    "tests/test_world_save.rb",
+    "tools/company_bible_audit.rb"
   ],
-  "deletions": [
-    "docs/company_bible/BASIC_SHARP_COMPANY_BIBLE_CARRYOVER_v0_1_14.md",
-    "docs/company_bible/COMPANY_BIBLE_ADDENDUM_v0.1.87_No_Loose_Files.md",
-    "docs/company_bible/COMPANY_BIBLE_ADDENDUM_v0.1.88_NES_Overworld_Cell_Build_Safety.md",
-    "docs/company_bible/COMPANY_BIBLE_DemonKiller.md",
-    "docs/company_bible/COMPANY_BIBLE_DemonKiller.md.meta",
-    "docs/company_bible/DK_Godot_Company_Bible_Carryover_Note.md",
-    "docs/company_bible/DK_Godot_v0_1_13_Documentation_Record_Note.md",
-    "docs/company_bible/DK_Godot_v0_1_16_Immediate_Patch_Inclusion_Rule.md",
-    "docs/company_bible/DK_Godot_v0_1_17_Documentation_Discipline_Addendum.md",
-    "docs/company_bible/DK_Godot_v0_1_18_Immediate_Request_Completion_Reinforcement.md",
-    "docs/company_bible/DK_Godot_v0_1_18_No_Image_Unless_Explicit_Rule.md",
-    "docs/company_bible/DK_Godot_v0_1_19_FailedPatchRetry_Documentation_Rule.md",
-    "docs/company_bible/DK_Godot_v0_1_20_Failed_Visual_Patch_Retry_Rule.md",
-    "docs/company_bible/DK_Godot_v0_1_82_RESTORE_OLD_CELLS_KEEP_NEWMAP_VISIBLE_NO_MAP_REPLACEMENT_RULE.md",
-    "docs/company_bible/DK_Godot_v0_1_89_MAIN_INSURANCE_POLICY_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_1_90_VERSIONING_AND_MAIN_SAFETY_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_1_91_DOOR_NAMING_AND_MAIN_UID_SAFETY_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_1_92_PROJECT_IDENTITY_RULE_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_01_VERSION_DISPLAY_AND_BACKUP_TITLE_RULE_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_02_ZERO_TWO_TERRITORY_AND_VERSION_HABIT_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_04_DOOR_TEMPLATE_CREATE_FIX_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_05_DOOR_TEMPLATE_COPY_AND_STALE_LINK_FIX_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_06_DOOR_TEMPLATE_PASTE_NORMALIZER_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_06_PRE_DRAW_ORDER_BACKUP_HANDSHAKE_COMPANY_BIBLE_NOTE.md",
-    "docs/company_bible/DK_Godot_v0_2_07_CELL_DOOR_DRAW_ORDER_FIX_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_08_DOOR_LINK_NO_DUPLICATE_FIX_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_08_PACKAGE_STRUCTURE_AND_BACKUP_RULES_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_09_PROJECT_VERSION_OPEN_SCREEN_FIX_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_10_SPRITE_PLAYER_BODYRECT_HOTFIX_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_11_DOOR_CLEANUP_HOTFIX_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_12_DOOR_ORPHAN_CLEANUP_HOTFIX_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_14_DOOR_COPY_PROMOTION_HOTFIX_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_15_DOOR_COPY_UNDO_LINK_HOTFIX_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_17_NO_IN_PROJECT_SCENE_BACKUPS_REPAIR_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_33_BUILD_RESPONSE_BOILERPLATE_CLEANUP_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_35_MAIN_CHANGE_APPROVAL_AND_VERSION_VISIBILITY_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_38_SEPARATE_BACKUP_DISCRETION_AND_PACKAGE_SEPARATION_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_44_ATTRIBUTION_BEYOND_LEGAL_MINIMUM_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_81_CAMERA_ZOOM_CONTROL_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_82_BIBLE_FIRST_THEN_ASK_DEREK_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_85_NUMERIC_ONLY_VERSIONING_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_88_VERSIONED_DELIVERABLE_ARCHIVE_NAME_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_90_SEQUENTIAL_BUILD_EXECUTION_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_96_NO_ORPHAN_TOOL_TEST_FILES_AND_ALWAYS_DOCUMENT_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_97_DK_LIVE_BUILDER_EXACT_MENU_NAME_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_2_98_APPROVED_MAIN_MENU_ART_LOCK_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_3_02_FAITH_MAP_AND_BUILDING_LAYERING_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_3_04_PRACTICAL_ARCHITECTURE_AND_TOOLCHAIN_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_3_05_ORIGINAL_PERSISTENT_SERVER_ARCHITECTURE_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_3_09_STREAMING_REGION_CELL_AND_HOUSE_SPELLING_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_3_23_LIVE_BUILDER_LOCAL_VALIDATION_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_3_31_CODE_FIRST_MIGRATION_AND_VISUAL_BOUNDARY_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_3_32_COMPANY_BIBLE_PREBUILD_CHECKLIST_ENFORCEMENT_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_3_34_LIVE_BUILDER_PROJECT_MODE_VALIDATION_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_3_35_EXACT_ENGINE_VALIDATION_AND_CONSTANT_EXPRESSION_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_3_36_BOUNDED_VALIDATION_SAFETY_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_3_37_WINDOWS_SAFE_VALIDATION_TELEMETRY_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_3_38_INVISIBLE_REGION_BOUNDARY_RULE_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_3_45_AUTOMATED_PLAYTEST_PILOT_AND_REPORTING_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_3_46_CUMULATIVE_THREAD_HANDOFF_AND_CONTINUITY_LOGGING_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_3_47_DEMON_KILLER_VISUAL_STYLE_AND_COMPACT_PANEL_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_3_48_OWNER_CONTRIBUTOR_AND_ATTRIBUTION_CLARITY_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_3_57_BUILD_THE_GAME_WE_WANT_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_3_69_MIT_INTEGRATION_AND_VISIBLE_UI_RULE_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_3_73_CANONICAL_HANDOFF_COMPLETION_REPAIR_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_3_77_BUILD_INTEGRATOR_BACKUP_AUTHORITY_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_4_14_WARNING_HYGIENE_AND_SYSTEMS_FIRST_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_4_20_PREBUILD_SCOPE_PREAPPROVAL_AND_STOP_RULE_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_4_21_AUDIT_TRAIL_NO_SCRUB_RULE_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_4_37_PATCH_MANIFEST_SCHEMA_AND_ENVIRONMENT_LIMITATION_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_4_38_GAIA_STREAMING_CELL_AND_IMAGE_PERMISSION_ADDENDUM.md",
-    "docs/company_bible/DK_Godot_v0_4_70_POST_BUILD_GIT_AND_NO_HARD_GATE_RULE_ADDENDUM.md",
-    "docs/company_bible/PROJECT_BIBLE_DemonKiller.md",
-    "docs/company_bible/PROJECT_BIBLE_DemonKiller.md.meta"
-  ],
+  "deletions": [],
   "canonical_company_bible": "docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md",
-  "company_bible_policy": "Exactly one active file under docs/company_bible; future mandatory changes edit the canonical file in a numbered build; no standalone addendums.",
   "master_handoff": "docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md",
   "new_thread_handoff": null,
-  "handoff_policy": "Build handshake plus one cumulative master handoff; no new per-version NEW_THREAD_HANDOFF files.",
-  "build_handshake": "BUILD_HANDSHAKE_v0_1_25.md",
-  "validation": "docs/validation/BASIC_SHARP_VALIDATION_v0_1_25.md",
-  "company_bible_integrity_test": "docs/testing/BASIC_SHARP_COMPANY_BIBLE_INTEGRITY_TEST_v0_1_25.md",
-  "company_bible_audit": "tools/company_bible_audit.rb",
-  "stable_meaning_specification": "docs/specification/BASIC_SHARP_STABLE_MEANING_SPECIFICATION_v1.md",
-  "meaning_profile_manifest": "spec/meaning_v1/BASIC_SHARP_MEANING_PROFILE_v1.json",
+  "build_handshake": "BUILD_HANDSHAKE_v0_1_26.md",
+  "validation": "docs/validation/BASIC_SHARP_VALIDATION_v0_1_26.md",
+  "bytecode_contract_module": "compiler/bytecode_contract.rb",
+  "bytecode_contract_manifest": "spec/bytecode_v1/BASIC_SHARP_BYTECODE_PROFILE_v1.json",
+  "bytecode_contract_audit": "tools/bytecode_contract.rb",
+  "bytecode_contract_test": "tests/test_bytecode_contract.rb",
+  "bytecode_sections": [
+    "STRS",
+    "META",
+    "KIND",
+    "THNG",
+    "STRT",
+    "EVNT",
+    "IFRL",
+    "CODE"
+  ],
+  "bytecode_instruction_count": 9,
+  "bytecode_selector_count": 5,
+  "bytecode_condition_count": 4,
+  "explicit_exclusions": [
+    "bytecode emitter",
+    "generated BSBC program files",
+    "bytecode loader",
+    "virtual machine",
+    "bytecode execution",
+    "Ruby runtime replacement",
+    "creator-facing syntax changes",
+    "BSIR, BSharp Save, or BSharp ASK schema changes",
+    "editor, IDE, engine bridge, self-hosting",
+    "pricing, licensing, activation, payment, account, or subscription implementation"
+  ],
   "internal_validation": {
-    "suite": "218 runs, 5102 assertions, 0 failures, 0 errors, 0 skips",
+    "suite": "234 runs, 5277 assertions, 0 failures, 0 errors, 0 skips",
     "runtime_stress": "PASS",
     "kind_family_stress": "PASS",
     "if_rule_stress": "PASS",
@@ -172,23 +133,194 @@
     "world_save_stress": "PASS",
     "ask_stress": "PASS",
     "meaning_profile_cases": "13 PASS",
-    "company_bible_canonical_file_count": "PASS",
-    "company_bible_mandatory_sections": "PASS",
-    "company_bible_74_source_ledger": "PASS",
-    "company_bible_current_references": "PASS",
-    "company_bible_no_standalone_addendums": "PASS",
-    "generated_artifact_version": "0.1.25 PASS",
+    "company_bible_audit": "PASS",
+    "bytecode_contract": "PASS",
+    "bytecode_profile_1_coverage": "13 cases PASS",
+    "generated_artifact_version": "0.1.26 PASS",
+    "generated_artifact_parity": "PASS",
     "retired_dkir_exact_diagnostic": "PASS",
     "dormant_head_rejection": "PASS",
-    "exact_working_tree_scope": "103 paths PASS",
-    "equivalent_base_installer_proof": "PASS (stress lanes validated separately; test-only skip used for package proof)",
+    "exact_working_tree_scope": "35 paths PASS",
+    "equivalent_base_installer_proof": "PASS",
     "post_mutation_rollback_simulation": "PASS"
   },
   "files": [
     {
-      "path": "BUILD_HANDSHAKE_v0_1_25.md",
-      "bytes": 2418,
-      "sha256": "e84ba8806a4dc69692a4880f511d7b60a4dff80188697e7e4bf06b61f8da090b"
+      "path": "BUILD_HANDSHAKE_v0_1_26.md",
+      "bytes": 1922,
+      "sha256": "45cec76a3db2502ad96819eff7e39addd39b99462e9742edd5ca344eaf9fbe6c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6346,
+      "sha256": "38542dcb6c70f9254bc65b72479353afbe72efc13db808f80054cab49eea6648"
+    },
+    {
+      "path": "compiler/ast_nodes.rb",
+      "bytes": 2244,
+      "sha256": "3eb08556274fc1e4de6a938b1f0b42857e790e1850c7614662d15b3c49754db6"
+    },
+    {
+      "path": "compiler/bytecode_contract.rb",
+      "bytes": 12720,
+      "sha256": "8901da68a4bfc3a8807000353782b6ccbf4ac9176f80b6716d4398c5cae25d3e"
+    },
+    {
+      "path": "docs/bytecode/BASIC_SHARP_BYTECODE_ARCHITECTURE_v0_1_26.md",
+      "bytes": 1783,
+      "sha256": "e7754d9a14aabc3bbaabd2a3a1f5fab30f91abdffa05d01984cbeff584a81605"
+    },
+    {
+      "path": "docs/bytecode/BASIC_SHARP_BYTECODE_COMPATIBILITY_POLICY_v0_1_26.md",
+      "bytes": 1302,
+      "sha256": "a8699e1b6dfb6c1ba1422904c39ba9c9dca63b9c8440bc20091f998bb908a8fc"
+    },
+    {
+      "path": "docs/bytecode/BASIC_SHARP_BYTECODE_FORMAT_AND_INSTRUCTION_CONTRACT_v0_1_26.md",
+      "bytes": 2733,
+      "sha256": "b3e58f2a29be405d5f8fb5c9159e8fed7a85aaa36dd079869cf1b43e0aba5a1f"
+    },
+    {
+      "path": "docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_26.txt",
+      "bytes": 1524,
+      "sha256": "706fcea3e162e830d1cf138497d92451abc2d5536b57806f076328859a1ddcf3"
+    },
+    {
+      "path": "docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_26.md",
+      "bytes": 806,
+      "sha256": "c145512be747eb57b1087b975260e1891a74ce243906856545e42d8622714f5f"
+    },
+    {
+      "path": "docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md",
+      "bytes": 32268,
+      "sha256": "cf0e711a496cefcf094fb21ca0077f70eeb52b026c504983f44597505d5593ee"
+    },
+    {
+      "path": "docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md",
+      "bytes": 3890,
+      "sha256": "6b66be4d2dc9d591b5e5aa9bbfb895f5f664d38a27e49e2ec2c4db6378c876b3"
+    },
+    {
+      "path": "docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_26.md",
+      "bytes": 521,
+      "sha256": "473858cac306fcffe7f4fff39a614eac99bd9580d688f7018c77fcf108dac1c2"
+    },
+    {
+      "path": "docs/roadmap/BASIC_SHARP_ROADMAP.md",
+      "bytes": 3748,
+      "sha256": "b90c1072e32db9dffb51236fd1e21f98643670951b2ec8a86af20381775a5208"
+    },
+    {
+      "path": "docs/session_logs/BASIC_SHARP_v0_1_26_SESSION_LOG.md",
+      "bytes": 666,
+      "sha256": "824e9116a56e4f75756cfd695352093819f97ad687a82c019fdbbb7e366d99ab"
+    },
+    {
+      "path": "docs/testing/BASIC_SHARP_BYTECODE_CONTRACT_TEST_v0_1_26.md",
+      "bytes": 867,
+      "sha256": "5e46db788e315332c1d643c7b33591eb98743b6f3234fc190b5f71e0f749f058"
+    },
+    {
+      "path": "docs/validation/BASIC_SHARP_VALIDATION_v0_1_26.md",
+      "bytes": 870,
+      "sha256": "50dfa65782d066a8d6669f5ab87b5c2cb2df073165e787491bffc073299cb5fb"
+    },
+    {
+      "path": "samples/ask_demo.bsave.json",
+      "bytes": 1804,
+      "sha256": "ecfb00c498c9e19c98662c81300df6040fef1e0b3e6baa9bf5bc96c69144b9f9"
+    },
+    {
+      "path": "samples/ask_demo.bsir.json",
+      "bytes": 5711,
+      "sha256": "95a570981275dfa771a161febec2fd2e8d8dd59f79aba34761c5fa7e6463dc7b"
+    },
+    {
+      "path": "samples/every_guard.bsir.json",
+      "bytes": 6492,
+      "sha256": "515156c4010859c4c4a37b6872c957f635633cfe3616c32c20f27bcdd0370a68"
+    },
+    {
+      "path": "samples/first_room.bsir.json",
+      "bytes": 8579,
+      "sha256": "1a4d185b45690796af052293a8d4807cf7906269359de92f65fcab6a67f21594"
+    },
+    {
+      "path": "samples/follow_up_events.bsir.json",
+      "bytes": 5545,
+      "sha256": "f336975f76d5e9c12ceb3344beab40dc1ceacd2c0b5e844d5199d20da54724c7"
+    },
+    {
+      "path": "samples/values_and_amounts.bsir.json",
+      "bytes": 4844,
+      "sha256": "d60b3530da508cd428d80f3831cd1de541306b7b2281982890530d60c73a1da6"
+    },
+    {
+      "path": "samples/world_save_demo.bsave.json",
+      "bytes": 1805,
+      "sha256": "e666ca430520f10955c2c0eb454a6c72713317ee7b9415e4fdd6d232a68137ee"
+    },
+    {
+      "path": "samples/world_save_demo.bsir.json",
+      "bytes": 5343,
+      "sha256": "30c54a0bca53be84a38511fafce275e6ca22e023345404fa60719ff0dcceae08"
+    },
+    {
+      "path": "spec/bytecode_v1/BASIC_SHARP_BYTECODE_PROFILE_v1.json",
+      "bytes": 15825,
+      "sha256": "1880b2d799055208777da1f1026b6fbac2cb6cb08730174100d2d38e014b90fc"
+    },
+    {
+      "path": "tests/test_ask.rb",
+      "bytes": 14383,
+      "sha256": "5a2e43fc3b4feb39018b53a5832403b67aba7be6ddaf2177588da2d3985f03a6"
+    },
+    {
+      "path": "tests/test_bsir_identity_migration.rb",
+      "bytes": 2527,
+      "sha256": "07b6a2d51886fca261255fd6eb28209038ef076d4f06f8ea669b02cdc4f9caff"
+    },
+    {
+      "path": "tests/test_bytecode_contract.rb",
+      "bytes": 7709,
+      "sha256": "339be2eaf139ca93609b76df024b379d1a57b6f4c99b06502d2ed2a73f20a970"
+    },
+    {
+      "path": "tests/test_cli_output.rb",
+      "bytes": 6755,
+      "sha256": "ca7fa7e07a2e88787de85c7126a92e9a66ce7f25d1797b59a6914ae2d4c619f8"
+    },
+    {
+      "path": "tests/test_identity_migration.rb",
+      "bytes": 3480,
+      "sha256": "23d70b1e3d5f9524b3bfb6e891f2af72c230f3b44a152d2b7fc41dec9fcd6a2e"
+    },
+    {
+      "path": "tests/test_ir_output.rb",
+      "bytes": 3121,
+      "sha256": "a485e7ebf7cc920623b5440732c80ef5db6d867b4a62840290777e8f06b3bb79"
+    },
+    {
+      "path": "tests/test_world_save.rb",
+      "bytes": 13054,
+      "sha256": "51c337a5a1f6930b2c94ff8f009fd04fa7b0ccee17c1032e8a7f1000874cb41f"
+    },
+    {
+      "path": "tools/bytecode_contract.rb",
+      "bytes": 856,
+      "sha256": "2c2b400f32f0310f8b76efb9553ba20f286988076614d810b2fff5e7c695ff6d"
+    },
+    {
+      "path": "tools/company_bible_audit.rb",
+      "bytes": 9418,
+      "sha256": "a06ebd6de33d9328c666e6b7e9d5e82fa427805be83d82d9e19c2e8dd0ffe3e4"
+    }
+  ],
+  "base_files": [
+    {
+      "path": "BASIC_SHARP_PATCH_MANIFEST.json",
+      "bytes": 35552,
+      "sha256": "0cc4e5802848e0aecdb0afa724280f54c667a89de768752d1731c2e5e86e21fd"
     },
     {
       "path": "README.md",
@@ -201,21 +333,6 @@
       "sha256": "c68bf6cd6255009f2155d7570ed688659caac792a7c36c5c90437e3d1dbd46e0"
     },
     {
-      "path": "compiler/parser.rb",
-      "bytes": 9581,
-      "sha256": "b2b08d1c1f33604af6eef2458463468e6bc7c1558d3c64c62176a317b102f874"
-    },
-    {
-      "path": "docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_25.txt",
-      "bytes": 7022,
-      "sha256": "ad70b3e830094f89a0243b7cf4916afff8d2704b8a085393a2e4e0a40341ae37"
-    },
-    {
-      "path": "docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_25.md",
-      "bytes": 810,
-      "sha256": "a7622ca076472e9a5b4811c3e6b770b4e351fd923f489ab0a54e0528b2fb7042"
-    },
-    {
       "path": "docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md",
       "bytes": 32007,
       "sha256": "356fab4fc905a654c504eaf631b00d4e78c78be6052c36a583d631cfa9da0e80"
@@ -226,29 +343,9 @@
       "sha256": "404cdef1d1b9fddaccdce2ba73c7355fc93d5161c1f83d53f0c03238a203fdcd"
     },
     {
-      "path": "docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_25.md",
-      "bytes": 547,
-      "sha256": "27b7af6f7903e0a10354021c80451c7b9f7b4618a38909e3fbe3d014756ca9e6"
-    },
-    {
       "path": "docs/roadmap/BASIC_SHARP_ROADMAP.md",
       "bytes": 3701,
       "sha256": "f2605a53aa837157f6c9c0a612ac825dc20aa8bc8360f45992636fad40aeed84"
-    },
-    {
-      "path": "docs/session_logs/BASIC_SHARP_v0_1_25_SESSION_LOG.md",
-      "bytes": 1003,
-      "sha256": "aeef134a6595936d8b7a59027da73af971d61b5692610f210bcee3965e87d7e9"
-    },
-    {
-      "path": "docs/testing/BASIC_SHARP_COMPANY_BIBLE_INTEGRITY_TEST_v0_1_25.md",
-      "bytes": 727,
-      "sha256": "c253fc2ee17854d22f0dceffd4ac34525b1aaed292411a39304605e5a10c067c"
-    },
-    {
-      "path": "docs/validation/BASIC_SHARP_VALIDATION_v0_1_25.md",
-      "bytes": 1063,
-      "sha256": "ad1c11834ccd84bf5121ba2e9739efdcc753df68e2e7f92e67f6f9e65e70c7c8"
     },
     {
       "path": "samples/ask_demo.bsave.json",
@@ -324,478 +421,6 @@
       "path": "tools/company_bible_audit.rb",
       "bytes": 9272,
       "sha256": "2d5f7e420367501c1d6254b5bc5821fe6abbf2d9c5110af6df383d36568071b3"
-    }
-  ],
-  "base_files": [
-    {
-      "path": "BASIC_SHARP_PATCH_MANIFEST.json",
-      "bytes": 21395,
-      "sha256": "1ad29f2d1ac1e9dead432848c7b1a59b6d3c2c839b8cbd8cb55c2ed9e8309e6c"
-    },
-    {
-      "path": "README.md",
-      "bytes": 7345,
-      "sha256": "7155c1c0956e70236da4746d2fc2f041d7e32481ee2e27cdbb953d985975bb4f"
-    },
-    {
-      "path": "compiler/ast_nodes.rb",
-      "bytes": 2244,
-      "sha256": "27df48e95bc8c70ff4862f850f7e8f33dbf33820a97c462e52661f2b01fa7fdd"
-    },
-    {
-      "path": "compiler/parser.rb",
-      "bytes": 9480,
-      "sha256": "909db9c8f748653b36558d74fefe98cd23b191326538ddf6b6f4a2c2de699bdb"
-    },
-    {
-      "path": "docs/company_bible/BASIC_SHARP_COMPANY_BIBLE_CARRYOVER_v0_1_14.md",
-      "bytes": 2028,
-      "sha256": "9feda04ae01fc6043c3785f63cd8d1d795058c0ca10602969ec60130ea014e57"
-    },
-    {
-      "path": "docs/company_bible/COMPANY_BIBLE_ADDENDUM_v0.1.87_No_Loose_Files.md",
-      "bytes": 807,
-      "sha256": "ec9685e461b6eaa47b6120110eb6edc726d1ed604ee97a24da7cbeec444a729c"
-    },
-    {
-      "path": "docs/company_bible/COMPANY_BIBLE_ADDENDUM_v0.1.88_NES_Overworld_Cell_Build_Safety.md",
-      "bytes": 773,
-      "sha256": "b0acfdfa086d483e850636e84cb03d8ba2b4a142dbd482f1472ada17030dd3f9"
-    },
-    {
-      "path": "docs/company_bible/COMPANY_BIBLE_DemonKiller.md",
-      "bytes": 87183,
-      "sha256": "9b24e942cc0bc4edc5545d5afe5258e520811b5469b1a10fd00a0bc436360101"
-    },
-    {
-      "path": "docs/company_bible/COMPANY_BIBLE_DemonKiller.md.meta",
-      "bytes": 158,
-      "sha256": "1f2e83d67c01aff05211726ee882cc4a5cc68b39eff38d6b4e967781b966415a"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_Company_Bible_Carryover_Note.md",
-      "bytes": 621,
-      "sha256": "b5a09f11339d61392b71cdad5fb60d4ea67046cf5aa3c54390e902dab01ea640"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_1_13_Documentation_Record_Note.md",
-      "bytes": 548,
-      "sha256": "8e5cffa148a65a736a123f59092dc9c3dd6d36667654c9cec5f5ca74181f198f"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_1_16_Immediate_Patch_Inclusion_Rule.md",
-      "bytes": 776,
-      "sha256": "7bb1c9d99904208e9cbe3e79a95d3c6c570805a2a1f859e7c2b29c59a139b357"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_1_17_Documentation_Discipline_Addendum.md",
-      "bytes": 682,
-      "sha256": "e3057477e2351f68274d03083b7cda08b037fcf0cb06adf66b746e75e011113f"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_1_18_Immediate_Request_Completion_Reinforcement.md",
-      "bytes": 595,
-      "sha256": "557b9a5840211762b7eb15f6135090b71ec4d770bb4dc970239a5630224ccdf6"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_1_18_No_Image_Unless_Explicit_Rule.md",
-      "bytes": 700,
-      "sha256": "9ec1c4815a143e26647f9dd6199dd6dc578c48b54cc19e059990538bc7f0968d"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_1_19_FailedPatchRetry_Documentation_Rule.md",
-      "bytes": 549,
-      "sha256": "9699785fd75e4b9b6ffbc860083ef50b306f9da42b58ee1d0b0db365cce07471"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_1_20_Failed_Visual_Patch_Retry_Rule.md",
-      "bytes": 685,
-      "sha256": "ee23db86930bb3b41f473c4ac0084c25086a7096b5434373eb6055eca962ef43"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_1_82_RESTORE_OLD_CELLS_KEEP_NEWMAP_VISIBLE_NO_MAP_REPLACEMENT_RULE.md",
-      "bytes": 558,
-      "sha256": "5626613f402597ff948eeba341e4bceed73a0c4be22acfbe859a697e41c1322f"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_1_89_MAIN_INSURANCE_POLICY_ADDENDUM.md",
-      "bytes": 565,
-      "sha256": "c922877f785958798600f2afb00555c984547ffaa4256e5d00f73dfa981849fc"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_1_90_VERSIONING_AND_MAIN_SAFETY_ADDENDUM.md",
-      "bytes": 771,
-      "sha256": "372452b2d32beb44269ffa79896adec05ddea43d9a31ffb1ede7c4608b4c611f"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_1_91_DOOR_NAMING_AND_MAIN_UID_SAFETY_ADDENDUM.md",
-      "bytes": 1251,
-      "sha256": "822c7563776e8fc3d0e575b1fbd90514fd5f95f58e1505688f10bb7a704cdb91"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_1_92_PROJECT_IDENTITY_RULE_ADDENDUM.md",
-      "bytes": 592,
-      "sha256": "01962d069cd6e6add214ccb03eaa75f6ed848e1b300b5e2d7e8e12d7b41862ba"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_01_VERSION_DISPLAY_AND_BACKUP_TITLE_RULE_ADDENDUM.md",
-      "bytes": 1442,
-      "sha256": "83a4cc556a1daefbd3633146a36dc0bab577a729eff1bfef3b534e412adccd6b"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_02_ZERO_TWO_TERRITORY_AND_VERSION_HABIT_ADDENDUM.md",
-      "bytes": 1966,
-      "sha256": "85cf775d1534934ac3e9bb980b8eac2e5410a3dfaebb9e3b17ebf491f6b9702c"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_04_DOOR_TEMPLATE_CREATE_FIX_ADDENDUM.md",
-      "bytes": 805,
-      "sha256": "1516f7f3c62862389c3b76ab02b7e3cd61abfd1058b75323a8c8d0d25d04a25a"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_05_DOOR_TEMPLATE_COPY_AND_STALE_LINK_FIX_ADDENDUM.md",
-      "bytes": 1060,
-      "sha256": "c92ee0bbeb6584f8a49c90d3c0c580d500fc8c416edfec0fbb7bec6b56f1da9e"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_06_DOOR_TEMPLATE_PASTE_NORMALIZER_ADDENDUM.md",
-      "bytes": 627,
-      "sha256": "1b08445b827b2df864adbd0333f9fd60fe72bca0d67ae1c392a1697d8cb0976a"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_06_PRE_DRAW_ORDER_BACKUP_HANDSHAKE_COMPANY_BIBLE_NOTE.md",
-      "bytes": 391,
-      "sha256": "796adcfafa5a1594ba99692031f8563aa4b30b630669e21b311e422535b85010"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_07_CELL_DOOR_DRAW_ORDER_FIX_ADDENDUM.md",
-      "bytes": 812,
-      "sha256": "796b5319e8d2df0cc635b4e138a94293441e68610d23f81c27ea441cd79ddb95"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_08_DOOR_LINK_NO_DUPLICATE_FIX_ADDENDUM.md",
-      "bytes": 1420,
-      "sha256": "e680b15d2ec29c3a6cd1817a3bfec9832eb3ec697cc33f7fb4d8f6c3e5ce8663"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_08_PACKAGE_STRUCTURE_AND_BACKUP_RULES_ADDENDUM.md",
-      "bytes": 1005,
-      "sha256": "a72ebc1a8deb8230c7f3a50bb0ceaad0f420db1501e6c3ea56b40c788f7fa1e3"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_09_PROJECT_VERSION_OPEN_SCREEN_FIX_ADDENDUM.md",
-      "bytes": 856,
-      "sha256": "3ae6d39ecbba2c0fe0c40498ef72c6f3792195dd190f0a181854d4fd1eb502c9"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_10_SPRITE_PLAYER_BODYRECT_HOTFIX_ADDENDUM.md",
-      "bytes": 597,
-      "sha256": "b6a5ec90cabeca0b042edfa19e3e6f491b73c7094d298ae68fa7d207497772d4"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_11_DOOR_CLEANUP_HOTFIX_ADDENDUM.md",
-      "bytes": 764,
-      "sha256": "5d8122a3957e12e9cd5476c29520033938b65593d6c101edbab447e440f1e3e5"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_12_DOOR_ORPHAN_CLEANUP_HOTFIX_ADDENDUM.md",
-      "bytes": 617,
-      "sha256": "f3c210bae248b13ec69439e91e416ed8c332e6b2cbcd8cb6c5c16cbecc878dcc"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_14_DOOR_COPY_PROMOTION_HOTFIX_ADDENDUM.md",
-      "bytes": 904,
-      "sha256": "95e59a6126cdbc223ea7c6e950c9d1b42bcf6f4e71612fbc1d7b98a8640b3710"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_15_DOOR_COPY_UNDO_LINK_HOTFIX_ADDENDUM.md",
-      "bytes": 699,
-      "sha256": "ebdfe4bcfe659df370b2ff36fb29c22940f14572299f672965ed723ac20d2177"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_17_NO_IN_PROJECT_SCENE_BACKUPS_REPAIR_ADDENDUM.md",
-      "bytes": 782,
-      "sha256": "e31c640b600b13da3b847d2dd984a9190f7dd6ffe33e431f0053dce269407499"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_33_BUILD_RESPONSE_BOILERPLATE_CLEANUP_ADDENDUM.md",
-      "bytes": 665,
-      "sha256": "5e866e0d7d659fea290b90a98a024009f004fc647c19b1c3717ed18a4fefdf88"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_35_MAIN_CHANGE_APPROVAL_AND_VERSION_VISIBILITY_ADDENDUM.md",
-      "bytes": 1555,
-      "sha256": "6c857f5b76ffc6dd5d256da5a2355b8c5928c3c9acdad322f07d57763ad78593"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_38_SEPARATE_BACKUP_DISCRETION_AND_PACKAGE_SEPARATION_ADDENDUM.md",
-      "bytes": 1989,
-      "sha256": "67a03126953219c08c2fd01585643b9c359d09f873b826f32383afc1055d60c3"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_44_ATTRIBUTION_BEYOND_LEGAL_MINIMUM_ADDENDUM.md",
-      "bytes": 723,
-      "sha256": "9a9fe2ff357eaaa7490368e675ecd4cca8c5e7272b4de24f10d6c2fa2545fc9b"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_81_CAMERA_ZOOM_CONTROL_ADDENDUM.md",
-      "bytes": 351,
-      "sha256": "4ac7540ec88c3639cce0a91ef9ef4a8448ec1cba50f6a09d09209413f72caf79"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_82_BIBLE_FIRST_THEN_ASK_DEREK_ADDENDUM.md",
-      "bytes": 1266,
-      "sha256": "c7a5e6b869498f295757b199cb0c3b392c65a91bbdd52bf3f41ca28c869fefa9"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_85_NUMERIC_ONLY_VERSIONING_ADDENDUM.md",
-      "bytes": 573,
-      "sha256": "c96e9740d186a24401750ddeeb6af419214080fbdae72491614928d0b7d6e807"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_88_VERSIONED_DELIVERABLE_ARCHIVE_NAME_ADDENDUM.md",
-      "bytes": 671,
-      "sha256": "5898c6a0f4bc0d8e69ce070c6016eb8ea704f2c05842b477d09546b500746258"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_90_SEQUENTIAL_BUILD_EXECUTION_ADDENDUM.md",
-      "bytes": 880,
-      "sha256": "e67f57d43ebe267b0fe6e741474ad5c747676c6f4a7375ffff7fbaf002d1735e"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_96_NO_ORPHAN_TOOL_TEST_FILES_AND_ALWAYS_DOCUMENT_ADDENDUM.md",
-      "bytes": 1486,
-      "sha256": "77e2ad9ea081f04c4b1948fd6915a09d9a3e8863f6d8aa900fdda72612bc0ac2"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_97_DK_LIVE_BUILDER_EXACT_MENU_NAME_ADDENDUM.md",
-      "bytes": 765,
-      "sha256": "a4b3fa2f84237552aab7322a74e6996512aa12f324c243ed1aa763f6e68641a9"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_2_98_APPROVED_MAIN_MENU_ART_LOCK_ADDENDUM.md",
-      "bytes": 1414,
-      "sha256": "54507f933460afbc4c95160e9cf2367734263d0d950881091656eb2cb1d3e401"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_3_02_FAITH_MAP_AND_BUILDING_LAYERING_ADDENDUM.md",
-      "bytes": 1265,
-      "sha256": "4f0c8c0a226417754df857f869ed1481692b584b217c6583e66b6d7128845d13"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_3_04_PRACTICAL_ARCHITECTURE_AND_TOOLCHAIN_ADDENDUM.md",
-      "bytes": 1862,
-      "sha256": "bed03c0b517a0831930d17cfed05794400572bf407cd0e8be322fa119ecfa47d"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_3_05_ORIGINAL_PERSISTENT_SERVER_ARCHITECTURE_ADDENDUM.md",
-      "bytes": 1276,
-      "sha256": "b0d2875a2f5c94971404b6389f9682afe344ef71ee3b22dadd887ec7ea4bf1b9"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_3_09_STREAMING_REGION_CELL_AND_HOUSE_SPELLING_ADDENDUM.md",
-      "bytes": 1503,
-      "sha256": "d5122833ceb3c1e25d45f8578388974ef3b837a5f4ae77d3b36de5fe301a2416"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_3_23_LIVE_BUILDER_LOCAL_VALIDATION_ADDENDUM.md",
-      "bytes": 1288,
-      "sha256": "7bd61ad7feb60334e352587ec6583ff4935753407c02177c193f87fb933c7b1f"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_3_31_CODE_FIRST_MIGRATION_AND_VISUAL_BOUNDARY_ADDENDUM.md",
-      "bytes": 1049,
-      "sha256": "0278c2b6bb242959fdbcead5f02cee254043420dc5a3c2bbe0c1b0754b9f514d"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_3_32_COMPANY_BIBLE_PREBUILD_CHECKLIST_ENFORCEMENT_ADDENDUM.md",
-      "bytes": 2730,
-      "sha256": "8a5e1dc7f8ff4b08630916439efcf99ef3944dbcae46f95fabeb3cb0b4461bac"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_3_34_LIVE_BUILDER_PROJECT_MODE_VALIDATION_ADDENDUM.md",
-      "bytes": 2006,
-      "sha256": "3425fab52c5ca24102defa86ce767d91b36c2c02d7f81fff47808076f2d47032"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_3_35_EXACT_ENGINE_VALIDATION_AND_CONSTANT_EXPRESSION_ADDENDUM.md",
-      "bytes": 1066,
-      "sha256": "45016ef650164608700a5b011c2eb641f395e5c5b57c34a722a054b55cb80a84"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_3_36_BOUNDED_VALIDATION_SAFETY_ADDENDUM.md",
-      "bytes": 1562,
-      "sha256": "9a58e7cb99f3991296c85623f8b3ded2dc79a23ff678031d3797fa493bbf0315"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_3_37_WINDOWS_SAFE_VALIDATION_TELEMETRY_ADDENDUM.md",
-      "bytes": 1525,
-      "sha256": "d648fedc11482ee55aa7e4d94cd90a351c5de1ca5a6756640f4cbc6341023dc2"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_3_38_INVISIBLE_REGION_BOUNDARY_RULE_ADDENDUM.md",
-      "bytes": 1463,
-      "sha256": "5724f626963af31a43beba04ed602fc9ad8213cb681d0887a5095897ee229cf6"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_3_45_AUTOMATED_PLAYTEST_PILOT_AND_REPORTING_ADDENDUM.md",
-      "bytes": 1957,
-      "sha256": "0556e3c65b79f908ca499e88782fc8a5677171dbb979f8edff086a0e3270b571"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_3_46_CUMULATIVE_THREAD_HANDOFF_AND_CONTINUITY_LOGGING_ADDENDUM.md",
-      "bytes": 2564,
-      "sha256": "828b81190b859b813a3b6f93f004be74108f063d10b04ef2c26a5776298422ae"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_3_47_DEMON_KILLER_VISUAL_STYLE_AND_COMPACT_PANEL_ADDENDUM.md",
-      "bytes": 1267,
-      "sha256": "3d50028ecf0d8201e700353c34fb4598f5315a610a0b13299363c1f2636fffa1"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_3_48_OWNER_CONTRIBUTOR_AND_ATTRIBUTION_CLARITY_ADDENDUM.md",
-      "bytes": 999,
-      "sha256": "70926f0bebbf94c22d9f65d0f4d8e9895da269b75802931593c255dae5d7eebf"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_3_57_BUILD_THE_GAME_WE_WANT_ADDENDUM.md",
-      "bytes": 920,
-      "sha256": "03cedb68b7b1c93d79287a6f439f03b0b858b4ae103dfed73fc8a25fc0314db2"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_3_69_MIT_INTEGRATION_AND_VISIBLE_UI_RULE_ADDENDUM.md",
-      "bytes": 904,
-      "sha256": "9f660fba0e2c5397be0c435d6073e109699be6b4a218a2fcf19771ac721439e2"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_3_73_CANONICAL_HANDOFF_COMPLETION_REPAIR_ADDENDUM.md",
-      "bytes": 2028,
-      "sha256": "591e03c9b188411c0339ab89d69861d84196afc8baa5ffec7178be3580febf91"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_3_77_BUILD_INTEGRATOR_BACKUP_AUTHORITY_ADDENDUM.md",
-      "bytes": 1085,
-      "sha256": "46b17e1b71934a47170bdb8426e3e269d0c4e7ed209077ef320c88227079a070"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_4_14_WARNING_HYGIENE_AND_SYSTEMS_FIRST_ADDENDUM.md",
-      "bytes": 2331,
-      "sha256": "a709e569185625034ff5a8df61872e42fc2206e5774c20d54c90d67ef5a04cc5"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_4_20_PREBUILD_SCOPE_PREAPPROVAL_AND_STOP_RULE_ADDENDUM.md",
-      "bytes": 770,
-      "sha256": "5fd6e6e6a286ae5e1014cd4bb954bb5c8f259d711c80052b166d589af0096533"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_4_21_AUDIT_TRAIL_NO_SCRUB_RULE_ADDENDUM.md",
-      "bytes": 1072,
-      "sha256": "eac628334e6fdd00a07ff9f42c7a55346f3264d1e790fb978532d2f90c3485cd"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_4_37_PATCH_MANIFEST_SCHEMA_AND_ENVIRONMENT_LIMITATION_ADDENDUM.md",
-      "bytes": 1083,
-      "sha256": "dce2659be82a31c46f572f1ca7187fc151b76cc56449d233330a82b6484d5f15"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_4_38_GAIA_STREAMING_CELL_AND_IMAGE_PERMISSION_ADDENDUM.md",
-      "bytes": 908,
-      "sha256": "8968bfff43d531d93d8748678a2982e8d3655a36256bd73e88a39fe02298d57d"
-    },
-    {
-      "path": "docs/company_bible/DK_Godot_v0_4_70_POST_BUILD_GIT_AND_NO_HARD_GATE_RULE_ADDENDUM.md",
-      "bytes": 1208,
-      "sha256": "bc0ea5e94dd80438dd501286f7f28c060714a5e422a9faadc036656816761d9c"
-    },
-    {
-      "path": "docs/company_bible/PROJECT_BIBLE_DemonKiller.md",
-      "bytes": 454,
-      "sha256": "921619774d01d3a1e2b7d9883e88e8a5b2852450fee50fb99149d1f2044d3b80"
-    },
-    {
-      "path": "docs/company_bible/PROJECT_BIBLE_DemonKiller.md.meta",
-      "bytes": 158,
-      "sha256": "71cd46ab87f265b84446ffeeb5d52f8dd151b38136cf703ba97c234e3eeb83ec"
-    },
-    {
-      "path": "docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md",
-      "bytes": 2451,
-      "sha256": "9f07328f333f7db0ae1984c92f28693e77dc36b6bcb2f375699458f8b4c55722"
-    },
-    {
-      "path": "docs/roadmap/BASIC_SHARP_ROADMAP.md",
-      "bytes": 2623,
-      "sha256": "d3c5f5266938bb8bc592fc89b426d1fc1e2184bc57a16bb99933e261b7b02664"
-    },
-    {
-      "path": "samples/ask_demo.bsave.json",
-      "bytes": 1804,
-      "sha256": "6fb197def30464acaa5de5281b0c39ae4155771a6457b1d374fabc16f14414ff"
-    },
-    {
-      "path": "samples/ask_demo.bsir.json",
-      "bytes": 5711,
-      "sha256": "49b38757bf17a4a15b43b92ec5750998fd827b193a372e5bba08c2f6cd540622"
-    },
-    {
-      "path": "samples/every_guard.bsir.json",
-      "bytes": 6492,
-      "sha256": "5e23357d398b7196c1dd6b243f553768a1b825b0525b9d5bc0db9c31b40b2eef"
-    },
-    {
-      "path": "samples/first_room.bsir.json",
-      "bytes": 8579,
-      "sha256": "915ed1615691c0a4e6616d1341ea369c57deffa67e45191dcd13f7a53f584cb5"
-    },
-    {
-      "path": "samples/follow_up_events.bsir.json",
-      "bytes": 5545,
-      "sha256": "e9951181e848e195ebbc9808e173f6f6743e289822e07e677c3e2b5f56c9f4f2"
-    },
-    {
-      "path": "samples/values_and_amounts.bsir.json",
-      "bytes": 4844,
-      "sha256": "0c3d252fb0104b5f88375b8dd04040d2fbc474351042d55d57c3b19ee5ec9108"
-    },
-    {
-      "path": "samples/world_save_demo.bsave.json",
-      "bytes": 1805,
-      "sha256": "997e0fa5993ff94b9794f5bfb6fb8ad7409f9ca6f808dd41de764badce691025"
-    },
-    {
-      "path": "samples/world_save_demo.bsir.json",
-      "bytes": 5343,
-      "sha256": "e9b009b6da504a231643a01b572c274584631ca6b23c3da86c5e83e7453fa805"
-    },
-    {
-      "path": "tests/test_ask.rb",
-      "bytes": 14383,
-      "sha256": "9ef55cc17692992eece9f7629e195a76240610d4e4d658002cc3255cf024df48"
-    },
-    {
-      "path": "tests/test_bsir_identity_migration.rb",
-      "bytes": 2527,
-      "sha256": "090defeb5d420148f55e082fafbdd6c963254981ada1d85997bfae4979ce1f18"
-    },
-    {
-      "path": "tests/test_cli_output.rb",
-      "bytes": 6755,
-      "sha256": "1583498e54acdec86c2ed2816d1b1bc6d88ac25cbb9516c2a93ed21ce964431b"
-    },
-    {
-      "path": "tests/test_identity_migration.rb",
-      "bytes": 3475,
-      "sha256": "adb0402c8430c049a041a408944397efab14b4c7b89a809ffffa6c9dfbd5a0e5"
-    },
-    {
-      "path": "tests/test_ir_output.rb",
-      "bytes": 3121,
-      "sha256": "973012aabb60029ab080d5d30ac0d97ed2072e494046e185b101f1ce21ac669a"
-    },
-    {
-      "path": "tests/test_world_save.rb",
-      "bytes": 13054,
-      "sha256": "15d4d2c0667c8fc08ef6e7bfcac48684db7d86e2fd29c487e985e9a6f4396aab"
     }
   ]
 }

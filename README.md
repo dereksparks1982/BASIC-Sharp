@@ -1,4 +1,4 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.25
+# BASIC# Ruby Bootstrap Compiler v0.1.26
 
 **Language name:** BASIC#  
 **Pronounced:** Basic Sharp  
@@ -8,90 +8,95 @@
 **Intermediate representation:** BSharp Intermediate Representation, normally **BSharp IR** or **BSIR**  
 **World-save format:** BSharp Save, using `.bsave.json`  
 **Inspection format:** BSharp ASK, using `bsharp.ask.json`  
-**Stable meaning profile:** `bsharp.meaning.v1`
+**Stable meaning profile:** `bsharp.meaning.v1`  
+**Future execution artifact:** BSharp Bytecode, normally **BSBC**, using `.bsbc`  
+**Bytecode profile:** `bsharp.bytecode.v1`
 
 > A scripting language made for non-programmers, by non-programmers.
 
 BASIC# lets a creator describe what exists, what should happen, preserve a settled world, and ask what the program or world currently means.
 
-## v0.1.25 Canonical Company Bible Consolidation
+## v0.1.26 BSharp Bytecode Architecture and Instruction Contract 1
 
-v0.1.25 replaces the former seventy-four-file Company Bible collection with one canonical authority:
+v0.1.26 defines the first implementation-independent execution-artifact contract for BASIC# without yet creating a bytecode emitter, loader, or virtual machine.
+
+```text
+BASIC# source
+    -> Ruby bootstrap parser and resolver
+    -> BSharp IR
+    -> future bytecode emitter
+    -> BSharp Bytecode (.bsbc)
+    -> future BASIC# VM
+```
+
+Identity:
+
+```text
+Name: BSharp Bytecode
+Short name: BSBC
+Extension: .bsbc
+Magic bytes: BSBC
+Binary format: bsharp.bytecode.bin
+Bytecode profile: bsharp.bytecode.v1
+Required meaning profile: bsharp.meaning.v1
+Byte order: little-endian
+```
+
+Run the machine contract audit:
+
+```bash
+ruby tools/bytecode_contract.rb
+```
+
+Expected ending:
+
+```text
+Profile 1 coverage: PASS
+Readable disassembly grammar: PASS
+Malformed-bytecode rules: PASS
+Deterministic contract: PASS
+No Ruby-specific serialized data: PASS
+
+BYTECODE CONTRACT: PASS
+```
+
+Normative records:
+
+```text
+spec/bytecode_v1/BASIC_SHARP_BYTECODE_PROFILE_v1.json
+docs/bytecode/BASIC_SHARP_BYTECODE_ARCHITECTURE_v0_1_26.md
+docs/bytecode/BASIC_SHARP_BYTECODE_FORMAT_AND_INSTRUCTION_CONTRACT_v0_1_26.md
+docs/bytecode/BASIC_SHARP_BYTECODE_COMPATIBILITY_POLICY_v0_1_26.md
+```
+
+The contract defines eight required sections, fixed instruction identities, selectors, IF condition operators, deterministic string ordering, malformed-artifact rejection, and diagnostic disassembly. It does not execute bytecode.
+
+## Canonical Company Bible
+
+The sole active authority remains:
 
 ```text
 docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
 ```
 
-Every future BASIC# proposal and build must read that one document end-to-end. Mandatory workflow changes edit the same file through a numbered build. New standalone addendums, carryover notes, reinforcement notes, and alternate Company Bibles are prohibited.
-
-Run the integrity audit:
+Run its integrity audit:
 
 ```bash
 ruby tools/company_bible_audit.rb
 ```
 
-Expected result:
-
-```text
-BASIC# Company Bible Audit v0.1.25
-Canonical file count: PASS
-Canonical identity: PASS
-Mandatory sections: PASS
-Consolidation ledger: PASS
-Current references: PASS
-No standalone addendums: PASS
-
-COMPANY BIBLE AUDIT: PASS
-```
-
-This is a documentation and workflow consolidation. It adds no creator-facing syntax or runtime behavior.
-
 ## Stable Meaning Profile 1
 
-BSharp Meaning Profile 1 remains the implementation-neutral meaning target that the Ruby bootstrap, future bytecode runtime, and future BASIC# virtual machine must reproduce.
-
-```text
-BASIC# source
-    -> BSharp Meaning Profile 1
-    -> current Ruby compiler/runtime
-    -> future bytecode and VM implementations
-```
-
-Profile identity:
+BSharp Meaning Profile 1 remains the implementation-neutral meaning target that the Ruby bootstrap, future bytecode emitter, and future BASIC# virtual machine must reproduce.
 
 ```text
 bsharp.meaning.v1
 ```
 
-Run the conformance suite:
+Run:
 
 ```bash
 ruby tools/meaning_conformance.rb
-```
-
-Expected result:
-
-```text
-BASIC# Meaning Conformance Profile 1
-Cases: 13
-
-Source meaning: PASS
-BSharp IR meaning: PASS
-Runtime meaning: PASS
-BSharp Save meaning: PASS
-BSharp ASK meaning: PASS
-Deterministic replay: PASS
-
-PROFILE 1: PASS
-```
-
-The normative records are:
-
-```text
-docs/specification/BASIC_SHARP_STABLE_MEANING_SPECIFICATION_v1.md
-docs/specification/BASIC_SHARP_TERMINOLOGY_v1.md
-docs/specification/BASIC_SHARP_COMPATIBILITY_POLICY_v0_1_24.md
-spec/meaning_v1/BASIC_SHARP_MEANING_PROFILE_v1.json
 ```
 
 ## The five current Heads
@@ -115,19 +120,6 @@ WHILE
 OTHERWISE
 ```
 
-A use receives a plain message such as:
-
-```text
-BASIC# does not have a WORLD Head.
-
-Current Heads are:
-  KINDS
-  DEFINE
-  START
-  WHEN
-  IF
-```
-
 ## Current executable official words
 
 ```text
@@ -138,71 +130,10 @@ Current Heads are:
 (cause
 ```
 
-v0.1.25 adds no creator-facing Head, Connector, official word, event behavior, IF behavior, number behavior, save schema, or ASK schema.
-
-## ASK introspection
-
-ASK is a bootstrap-tool inspection command, not a Head or official word.
-
-```bash
-ruby compiler/basic_sharp.rb samples/ask_demo.bsharp \
-  --ask "what is henry"
-```
-
-Supported question shapes include:
-
-```text
-what is henry
-what is Thing henry
-what is Kind guard
-what Kind is henry
-what states does henry have
-what values does henry have
-what relationships does henry have
-what Things are guards
-what happens when player attacks henry
-what IF rules are true
-what is the world
-what is the save
-```
-
-Machine-readable answers use `bsharp.ask.json`, format version 1. ASK is read-only and deterministic.
-
-## BSharp Save files
-
-BSharp IR stores program rules. BSharp Save stores one fully settled world created by those rules.
-
-```bash
-ruby compiler/basic_sharp.rb samples/world_save_demo.bsharp \
-  --run "player attacks henry" \
-  --save-world saves/world_save_demo.bsave.json
-```
-
-```bash
-ruby compiler/basic_sharp.rb samples/world_save_demo.bsharp \
-  --load-world saves/world_save_demo.bsave.json \
-  --run "henry attacks player"
-```
-
-A loaded world does not rerun START, startup IF rules, or startup follow-up events. BSharp Save remains `bsharp.save.json`, format version 1.
-
-## Follow-up events
-
-The explicit official word `(cause` creates deterministic follow-up events:
-
-```text
-WHEN
-[player attacks a guard
-<then> (damage that guard
-<then> (cause that guard attacks player
-<then> (change that guard to angry].
-```
-
-BASIC# completes the current action body, settles reactive IF rules, then runs follow-up events first-created, first-run. One external event may run at most 1,024 follow-up events.
+v0.1.26 adds no creator-facing Head, Connector, official word, event behavior, IF behavior, number behavior, save schema, ASK schema, emitter, loader, VM, or bytecode execution.
 
 ## Current language foundation
 
-- Controlled Head and Body structure.
 - Things and one-parent inherited Kind families.
 - Exact and Kind-based event matching.
 - Singular `that Kind` event context.
@@ -210,12 +141,10 @@ BASIC# completes the current action body, settles reactive IF rules, then runs f
 - Reactive IF rules with re-arming, cascades, and loop protection.
 - Explicit `(cause` follow-up events with deterministic order.
 - Whole-number Thing values from 0 through 2,147,483,647.
-- Default and explicit damage amounts.
-- Exact value assignment and exact-value IF conditions.
 - Deterministic BSharp Save files.
-- Read-only ASK inspection with deterministic human and JSON answers.
+- Read-only ASK inspection with deterministic answers.
 - Stable Meaning Profile 1 conformance fixtures.
-- Damage and health remain independent unless a creator explicitly connects them.
+- BSharp Bytecode architecture and machine-readable contract.
 
 ## Compile samples
 
@@ -240,7 +169,7 @@ A current debug document begins with:
 
 ```json
 {
-  "version": "0.1.25",
+  "version": "0.1.26",
   "format": "bsir.debug.json"
 }
 ```
@@ -261,17 +190,17 @@ Recompile the original .bsharp source to create a new BSIR file.
 ruby -w -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_relative file }'
 ```
 
-Current validated floor:
+Current validated suite:
 
 ```text
-218 runs
-5,102 assertions
+234 runs
+5,277 assertions
 0 failures
 0 errors
 0 skips
 ```
 
-Stress, conformance, and workflow lanes:
+Full lanes:
 
 ```bash
 ruby tools/runtime_stress.rb
@@ -284,19 +213,10 @@ ruby tools/world_save_stress.rb
 ruby tools/ask_stress.rb
 ruby tools/meaning_conformance.rb
 ruby tools/company_bible_audit.rb
+ruby tools/bytecode_contract.rb
 ```
 
 Timing is observational only. A slower correct machine does not fail.
-
-## Company Bible
-
-The sole active authority is:
-
-```text
-docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
-```
-
-Read it end-to-end before proposing or building another BASIC# version.
 
 ## Current contracts
 
@@ -309,17 +229,14 @@ docs/parser_contract_v0_1_24.md
 docs/runtime_contract_v0_1_24.md
 docs/ir/BSIR_MEANING_CONTRACT_v0_1_24.md
 docs/save/BSHARP_SAVE_CONTRACT_v0_1_24.md
+docs/bytecode/BASIC_SHARP_BYTECODE_FORMAT_AND_INSTRUCTION_CONTRACT_v0_1_26.md
 ```
 
 ## Not included
 
-- No new creator-facing Head, Connector, or official word.
+- No bytecode emitter, loader, virtual machine, or bytecode execution.
+- No creator-facing Head, Connector, official word, or syntax change.
 - No capitalization, spacing, contraction, or spelling-tolerance expansion.
-- No unrestricted natural-language interpretation.
 - No arithmetic expressions, negative numbers, decimals, fractions, or percentages.
-- No BSIR, BSharp Save, or BSharp ASK format migration.
-- No bytecode or virtual machine.
-- No GUI editor or IDE.
-- No game-engine bridge.
-- No self-hosting compiler.
-- No licensing, pricing, activation, or subscription implementation.
+- No BSIR, BSharp Save, or BSharp ASK schema migration.
+- No editor, IDE, engine bridge, self-hosting, pricing, licensing, activation, or subscription implementation.

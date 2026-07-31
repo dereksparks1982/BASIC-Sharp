@@ -6,22 +6,45 @@
 BASIC# source
 -> Ruby bootstrap parser and resolver
 -> BSharp IR debug document
--> deterministic runtime execution
+-> deterministic Ruby runtime execution
 -> inherited Kinds, reactive IF rules, values, set actions, and follow-up events
 -> BSharp IR identity migration  [ACCEPTED: v0.1.20]
--> explicit follow-up events and deterministic event order  [ACCEPTED: v0.1.21]
+-> follow-up events and deterministic event order  [ACCEPTED: v0.1.21]
 -> BSharp Save files and deterministic world restore  [ACCEPTED: v0.1.22]
 -> ASK introspection and deterministic answers  [ACCEPTED: v0.1.23]
 -> Stable Meaning Specification and Conformance Profile 1  [ACCEPTED: v0.1.24]
--> Canonical Company Bible Consolidation  [CURRENT CANDIDATE: v0.1.25]
+-> Canonical Company Bible Consolidation  [ACCEPTED: v0.1.25]
+-> BSharp Bytecode Architecture and Instruction Contract 1  [CURRENT CANDIDATE: v0.1.26]
 -> owner validation and acceptance
--> bytecode design
--> BASIC# VM
+-> bytecode emitter and deterministic disassembly
+-> BASIC# bytecode loader and VM
 -> game-engine bridge
 -> BASIC# self-hosting compiler
 -> BASIC# code editor
 -> BASIC# IDE
 ```
+
+## Current v0.1.26 lane
+
+Define before execution:
+
+- BSharp Bytecode / BSBC identity;
+- `.bsbc`, `BSBC` magic, `bsharp.bytecode.bin`, and `bsharp.bytecode.v1`;
+- exact header and eight-section container;
+- fixed Profile 1 instructions, selectors, and IF condition operators;
+- deterministic string, Kind, Thing, event, IF, and code-block ordering;
+- Profile 1 coverage for all 13 conformance cases;
+- readable diagnostic disassembly grammar;
+- complete pre-execution malformed-bytecode rejection;
+- machine-readable validation independent of Ruby object layouts.
+
+No emitter, `.bsbc` program output, loader, VM, or execution is authorized in this lane.
+
+## Immediate continuation after v0.1.26 acceptance
+
+The next eligible proposal is a **BSharp Bytecode Emitter and Deterministic Disassembly** build. It must lower normalized BSIR into byte-identical `.bsbc` files, emit readable disassembly, compare source/BSIR meaning fingerprints, and remain non-executing until separately approved.
+
+The loader and VM remain later lanes.
 
 ## Completed foundation
 
@@ -35,35 +58,7 @@ BASIC# source
 - Deterministic BSharp Save restore.
 - Read-only deterministic ASK inspection.
 - Implementation-neutral `bsharp.meaning.v1` conformance fixtures.
-
-## Current v0.1.25 lane
-
-Consolidate seventy-four Company Bible files into the sole active authority:
-
-```text
-docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
-```
-
-The build must preserve permanent DK LAB and BASIC# workflow rules, resolve contradictions, classify every retired source, remove Godot metadata and game-specific authority from BASIC#, prohibit future standalone addendums, and add a repeatable integrity audit.
-
-No language behavior changes are authorized in this lane.
-
-## Immediate continuation after v0.1.25 acceptance
-
-The next eligible lane returns to **Bytecode Design**, unless Derek changes direction.
-
-The bytecode proposal must define before implementation:
-
-- instruction identity and versioning;
-- how Profile 1 semantic structures lower into instructions;
-- deterministic event, IF, selection, save, and ASK behavior;
-- readable disassembly;
-- validation and malformed-bytecode rejection;
-- Ruby runtime comparison strategy;
-- future VM boundaries;
-- exact files, risks, exclusions, rollback, and package name.
-
-No bytecode implementation begins without rereading the canonical Company Bible, presenting a complete proposal, and receiving Derek's explicit approval.
+- One canonical Company Bible with repeatable integrity audit.
 
 ## Shelved commercial lane
 
@@ -73,7 +68,7 @@ Private/proprietary distribution remains under consideration, but licensing and 
 
 - BASIC# is made for non-programmers, by non-programmers.
 - BASIC# is the language name; BSharp is used where `#` is unsafe.
-- BSharp IR, BSharp Save, BSharp ASK, and BSharp Meaning Profile are approved identities.
+- BSharp IR, BSharp Save, BSharp ASK, BSharp Meaning Profile, BSharp Bytecode, and BSBC are approved identities.
 - No new `DK`-prefixed name without Derek's explicit approval.
 - The opening `(` in official words is a creator-facing visual guide.
 - Complex machinery belongs under understandable creator-facing language.

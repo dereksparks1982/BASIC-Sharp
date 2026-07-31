@@ -1,0 +1,641 @@
+{
+  "format": "bsharp.bytecode.contract.json",
+  "format_version": 1,
+  "artifact": {
+    "name": "BSharp Bytecode",
+    "short_name": "BSBC",
+    "extension": ".bsbc",
+    "binary_format": "bsharp.bytecode.bin",
+    "binary_format_version": 1,
+    "profile": "bsharp.bytecode.v1",
+    "required_meaning_profile": "bsharp.meaning.v1",
+    "magic_ascii": "BSBC",
+    "magic_hex": "42 53 42 43",
+    "byte_order": "little-endian",
+    "text_encoding": "UTF-8",
+    "alignment_bytes": 4,
+    "index_width_bits": 32,
+    "length_width_bits": 32,
+    "no_reference_u32": 4294967295,
+    "whole_number_min": 0,
+    "whole_number_max": 2147483647,
+    "meaning_fingerprint_algorithm": "sha256-bsir-meaning-v1",
+    "determinism_rule": "Equivalent normalized bsharp.meaning.v1 meaning produces byte-identical BSharp Bytecode."
+  },
+  "container": {
+    "header_size_bytes": 32,
+    "header_fields": [
+      {
+        "name": "magic",
+        "offset": 0,
+        "bytes": 4,
+        "type": "ascii4",
+        "value": "BSBC"
+      },
+      {
+        "name": "binary_format_version",
+        "offset": 4,
+        "bytes": 2,
+        "type": "u16",
+        "value": 1
+      },
+      {
+        "name": "profile_format_version",
+        "offset": 6,
+        "bytes": 2,
+        "type": "u16",
+        "value": 1
+      },
+      {
+        "name": "header_size",
+        "offset": 8,
+        "bytes": 4,
+        "type": "u32",
+        "value": 32
+      },
+      {
+        "name": "section_count",
+        "offset": 12,
+        "bytes": 4,
+        "type": "u32",
+        "value": 8
+      },
+      {
+        "name": "section_directory_offset",
+        "offset": 16,
+        "bytes": 4,
+        "type": "u32",
+        "value": 32
+      },
+      {
+        "name": "section_directory_entry_size",
+        "offset": 20,
+        "bytes": 4,
+        "type": "u32",
+        "value": 16
+      },
+      {
+        "name": "file_size",
+        "offset": 24,
+        "bytes": 4,
+        "type": "u32"
+      },
+      {
+        "name": "reserved_flags",
+        "offset": 28,
+        "bytes": 4,
+        "type": "u32",
+        "value": 0
+      }
+    ],
+    "section_directory_entry_size_bytes": 16,
+    "section_directory_fields": [
+      {
+        "name": "section_id",
+        "offset": 0,
+        "bytes": 4,
+        "type": "ascii4"
+      },
+      {
+        "name": "offset",
+        "offset": 4,
+        "bytes": 4,
+        "type": "u32"
+      },
+      {
+        "name": "length",
+        "offset": 8,
+        "bytes": 4,
+        "type": "u32"
+      },
+      {
+        "name": "record_count",
+        "offset": 12,
+        "bytes": 4,
+        "type": "u32"
+      }
+    ],
+    "section_data_minimum_offset": 160,
+    "section_order": [
+      "STRS",
+      "META",
+      "KIND",
+      "THNG",
+      "STRT",
+      "EVNT",
+      "IFRL",
+      "CODE"
+    ],
+    "trailing_unexplained_bytes": "forbidden",
+    "duplicate_sections": "forbidden",
+    "overlapping_sections": "forbidden"
+  },
+  "sections": [
+    {
+      "id": "STRS",
+      "name": "Deterministic UTF-8 string table",
+      "record_count_means": "string count",
+      "schema": "Each record is u32 byte_length, exact UTF-8 bytes, then zero padding to four-byte alignment.",
+      "ordering": "Traverse normalized BSIR meaning keys in kinds, objects, facts, events, if_rules order; preserve semantic array order; traverse object keys lexicographically; intern each exact string at first occurrence."
+    },
+    {
+      "id": "META",
+      "name": "Identity, profile, fingerprint, and counts",
+      "record_count_means": "must equal 1",
+      "fields": [
+        "bytecode_profile_string_index",
+        "meaning_profile_string_index",
+        "fingerprint_algorithm_string_index",
+        "meaning_fingerprint_32_bytes",
+        "kind_count",
+        "thing_count",
+        "start_record_count",
+        "event_count",
+        "if_rule_count",
+        "code_block_count"
+      ]
+    },
+    {
+      "id": "KIND",
+      "name": "Referenced Kind families",
+      "record_count_means": "Kind count",
+      "record_size_bytes": 12,
+      "fields": [
+        "name_string_index:u32",
+        "parent_kind_index_or_no_reference:u32",
+        "source_order:u32"
+      ],
+      "ordering": "Stable resolved Kind definition order with every referenced ancestor included before its descendants."
+    },
+    {
+      "id": "THNG",
+      "name": "Things",
+      "record_count_means": "Thing count",
+      "record_size_bytes": 12,
+      "fields": [
+        "name_string_index:u32",
+        "kind_index:u32",
+        "definition_order:u32"
+      ],
+      "ordering": "Stable resolved Thing definition order."
+    },
+    {
+      "id": "STRT",
+      "name": "Starting-world records",
+      "record_count_means": "starting instruction count",
+      "schema": "Instruction records using only START_STATE, START_RELATION, and START_VALUE; no CODE block wrapper."
+    },
+    {
+      "id": "EVNT",
+      "name": "WHEN patterns",
+      "record_count_means": "event count",
+      "record_size_bytes": 28,
+      "fields": [
+        "actor_selector_type:u32",
+        "actor_reference:u32",
+        "action_string_index:u32",
+        "target_selector_type:u32",
+        "target_reference:u32",
+        "code_block_index:u32",
+        "source_order:u32"
+      ],
+      "ordering": "Stable source order. Runtime priority is exact Thing, nearest inherited Kind, then source order."
+    },
+    {
+      "id": "IFRL",
+      "name": "Reactive IF records",
+      "record_count_means": "IF rule count",
+      "schema": "condition_operator:u8, operand_count:u8, reserved_zero:u16, operands:u32[], code_block_index:u32, source_order:u32.",
+      "ordering": "Stable source order. Active state is runtime world state and is not serialized into program bytecode."
+    },
+    {
+      "id": "CODE",
+      "name": "Ordered action blocks",
+      "record_count_means": "code block count",
+      "schema": "u32 block_count, then 16-byte block directory entries (block_id, instruction_offset, instruction_length, instruction_count), then aligned instruction records.",
+      "instruction_record": "opcode:u8, operand_count:u8, reserved_zero:u16, operands:u32[]. Block lengths are authoritative; END in disassembly is not an opcode."
+    }
+  ],
+  "selectors": [
+    {
+      "name": "EXACT_THING",
+      "code": 1,
+      "reference": "thing_index",
+      "contexts": [
+        "WHEN actor",
+        "WHEN target",
+        "action target",
+        "CAUSE_EVENT actor",
+        "CAUSE_EVENT target"
+      ]
+    },
+    {
+      "name": "ONE_KIND",
+      "code": 2,
+      "reference": "kind_index",
+      "contexts": [
+        "WHEN actor",
+        "WHEN target",
+        "CAUSE_EVENT actor",
+        "CAUSE_EVENT target"
+      ]
+    },
+    {
+      "name": "BOUND_THAT_KIND",
+      "code": 3,
+      "reference": "kind_index",
+      "contexts": [
+        "action target",
+        "CAUSE_EVENT actor",
+        "CAUSE_EVENT target"
+      ]
+    },
+    {
+      "name": "EVERY_KIND",
+      "code": 4,
+      "reference": "kind_index",
+      "contexts": [
+        "action target"
+      ]
+    },
+    {
+      "name": "NO_REFERENCE",
+      "code": 255,
+      "reference": "0xFFFFFFFF",
+      "contexts": [
+        "contract fields explicitly marked optional"
+      ]
+    }
+  ],
+  "selector_reserved_ranges": [
+    {
+      "start": 0,
+      "end": 0
+    },
+    {
+      "start": 5,
+      "end": 254
+    }
+  ],
+  "instructions": [
+    {
+      "name": "START_STATE",
+      "code": 16,
+      "hex": "0x10",
+      "category": "start",
+      "operands": [
+        "thing_index",
+        "state_string_index",
+        "opposite_state_string_index_or_no_reference"
+      ]
+    },
+    {
+      "name": "START_RELATION",
+      "code": 17,
+      "hex": "0x11",
+      "category": "start",
+      "operands": [
+        "subject_thing_index",
+        "relation_string_index",
+        "target_thing_index"
+      ]
+    },
+    {
+      "name": "START_VALUE",
+      "code": 18,
+      "hex": "0x12",
+      "category": "start",
+      "operands": [
+        "thing_index",
+        "value_name_string_index",
+        "whole_number"
+      ]
+    },
+    {
+      "name": "DAMAGE",
+      "code": 32,
+      "hex": "0x20",
+      "category": "action",
+      "operands": [
+        "target_selector_type",
+        "target_reference",
+        "amount"
+      ]
+    },
+    {
+      "name": "CHANGE_STATE",
+      "code": 33,
+      "hex": "0x21",
+      "category": "action",
+      "operands": [
+        "target_selector_type",
+        "target_reference",
+        "state_string_index",
+        "opposite_state_string_index_or_no_reference"
+      ]
+    },
+    {
+      "name": "CHANGE_VALUE",
+      "code": 34,
+      "hex": "0x22",
+      "category": "action",
+      "operands": [
+        "target_selector_type",
+        "target_reference",
+        "value_name_string_index",
+        "whole_number"
+      ]
+    },
+    {
+      "name": "CARRY",
+      "code": 35,
+      "hex": "0x23",
+      "category": "action",
+      "operands": [
+        "target_selector_type",
+        "target_reference"
+      ]
+    },
+    {
+      "name": "UNLOCK",
+      "code": 36,
+      "hex": "0x24",
+      "category": "action",
+      "operands": [
+        "target_selector_type",
+        "target_reference"
+      ]
+    },
+    {
+      "name": "CAUSE_EVENT",
+      "code": 37,
+      "hex": "0x25",
+      "category": "action",
+      "operands": [
+        "actor_selector_type",
+        "actor_reference",
+        "action_string_index",
+        "target_selector_type",
+        "target_reference"
+      ]
+    }
+  ],
+  "instruction_reserved_ranges": [
+    {
+      "start": 0,
+      "end": 15
+    },
+    {
+      "start": 19,
+      "end": 31
+    },
+    {
+      "start": 38,
+      "end": 255
+    }
+  ],
+  "conditions": [
+    {
+      "name": "STATE_IS",
+      "code": 48,
+      "hex": "0x30",
+      "operands": [
+        "subject_thing_index",
+        "state_string_index"
+      ]
+    },
+    {
+      "name": "STATE_ISNT",
+      "code": 49,
+      "hex": "0x31",
+      "operands": [
+        "subject_thing_index",
+        "state_string_index"
+      ]
+    },
+    {
+      "name": "RELATION_EXISTS",
+      "code": 50,
+      "hex": "0x32",
+      "operands": [
+        "subject_thing_index",
+        "relation_string_index",
+        "target_thing_index"
+      ]
+    },
+    {
+      "name": "VALUE_EQUALS",
+      "code": 51,
+      "hex": "0x33",
+      "operands": [
+        "subject_thing_index",
+        "value_name_string_index",
+        "whole_number"
+      ]
+    }
+  ],
+  "condition_reserved_ranges": [
+    {
+      "start": 0,
+      "end": 47
+    },
+    {
+      "start": 52,
+      "end": 255
+    }
+  ],
+  "runtime_semantics": {
+    "event_match_priority": [
+      "EXACT_THING",
+      "nearest inherited ONE_KIND",
+      "source_order"
+    ],
+    "every_kind_order": "Thing definition order including inherited members",
+    "that_kind": "One concrete Thing captured by the currently matched event context",
+    "action_order": "Complete each action line over its selected Things before the next action line",
+    "if_behavior": [
+      "evaluate after START and complete event bodies",
+      "wake only false-to-true",
+      "remain quiet while true",
+      "re-arm after false",
+      "settle in source order"
+    ],
+    "follow_up_order": [
+      "complete current action block",
+      "settle reactive IF rules",
+      "run first-created waiting event",
+      "append nested events to the end"
+    ],
+    "follow_up_limit": 1024,
+    "save_rule": "BSharp Save remains separate runtime world state and is validated against the normalized program meaning fingerprint.",
+    "ask_rule": "BSharp ASK remains read-only and observes the same settled meaning regardless of source, BSIR, or future BSBC origin."
+  },
+  "meaning_case_coverage": [
+    {
+      "case_id": "01_structure",
+      "requires": [
+        "all required sections",
+        "bounded CODE blocks"
+      ]
+    },
+    {
+      "case_id": "02_kinds_things_order",
+      "requires": [
+        "KIND",
+        "THNG",
+        "definition order"
+      ]
+    },
+    {
+      "case_id": "03_start_world",
+      "requires": [
+        "START_STATE",
+        "START_RELATION",
+        "START_VALUE"
+      ]
+    },
+    {
+      "case_id": "04_event_matching",
+      "requires": [
+        "EVNT",
+        "EXACT_THING",
+        "ONE_KIND"
+      ]
+    },
+    {
+      "case_id": "05_event_priority",
+      "requires": [
+        "nearest inherited ONE_KIND",
+        "source_order"
+      ]
+    },
+    {
+      "case_id": "06_that_context",
+      "requires": [
+        "BOUND_THAT_KIND"
+      ]
+    },
+    {
+      "case_id": "07_every_selection",
+      "requires": [
+        "EVERY_KIND",
+        "Thing definition order"
+      ]
+    },
+    {
+      "case_id": "08_reactive_if",
+      "requires": [
+        "IFRL",
+        "STATE_IS",
+        "reactive settlement"
+      ]
+    },
+    {
+      "case_id": "09_numbers_damage",
+      "requires": [
+        "START_VALUE",
+        "DAMAGE",
+        "CHANGE_VALUE",
+        "VALUE_EQUALS",
+        "whole-number range"
+      ]
+    },
+    {
+      "case_id": "10_follow_up_order",
+      "requires": [
+        "CAUSE_EVENT",
+        "first-created first-run order",
+        "1024 follow-up limit"
+      ]
+    },
+    {
+      "case_id": "11_save_restore",
+      "requires": [
+        "meaning fingerprint",
+        "BSharp Save compatibility",
+        "no START replay"
+      ]
+    },
+    {
+      "case_id": "12_ask_answers",
+      "requires": [
+        "BSharp ASK parity",
+        "read-only observation"
+      ]
+    },
+    {
+      "case_id": "13_invalid_boundaries",
+      "requires": [
+        "complete malformed-bytecode rejection"
+      ]
+    }
+  ],
+  "disassembly": {
+    "status": "diagnostic only; not BASIC# creator syntax",
+    "header": "BSharp Bytecode bsharp.bytecode.v1",
+    "block_open": "BLOCK <block_id>",
+    "instruction_line": "    <MNEMONIC> <typed operands>",
+    "block_close": "END",
+    "when_example": "WHEN actor=THING[player] action=attack target=ONE_KIND[guard] BLOCK 3",
+    "instruction_example": "    CHANGE_STATE BOUND_THAT_KIND[guard] angry REMOVE calm"
+  },
+  "malformed_rejection_rules": [
+    "wrong magic bytes",
+    "unsupported binary format version",
+    "unsupported bytecode profile",
+    "meaning-profile mismatch",
+    "meaning-fingerprint mismatch",
+    "wrong header size",
+    "nonzero reserved field",
+    "missing required section",
+    "duplicate section",
+    "wrong section order",
+    "overlapping section data",
+    "out-of-range section offset",
+    "out-of-range section length",
+    "misaligned section data",
+    "file-size mismatch",
+    "truncated header",
+    "truncated section directory",
+    "truncated section record",
+    "trailing unexplained data",
+    "invalid UTF-8",
+    "duplicate deterministic string entry",
+    "invalid string index",
+    "invalid Kind parent index",
+    "Kind ancestry circle",
+    "invalid Thing Kind index",
+    "invalid selector code",
+    "selector not allowed in context",
+    "invalid Thing reference",
+    "invalid Kind reference",
+    "invalid code-block reference",
+    "unknown instruction code",
+    "reserved instruction code",
+    "wrong instruction operand count",
+    "nonzero instruction reserved field",
+    "unknown condition code",
+    "reserved condition code",
+    "wrong condition operand count",
+    "whole number outside 0 through 2147483647",
+    "duplicate block identifier",
+    "overlapping code blocks",
+    "instruction crossing block boundary"
+  ],
+  "future_boundaries": {
+    "v0_1_26_includes": [
+      "architecture",
+      "machine-readable contract",
+      "validation",
+      "diagnostic disassembly grammar"
+    ],
+    "v0_1_26_excludes": [
+      "bytecode emitter",
+      "generated BSBC program files",
+      "bytecode loader",
+      "virtual machine",
+      "bytecode execution",
+      "Ruby runtime replacement"
+    ]
+  }
+}
