@@ -1,0 +1,267 @@
+{
+  "format": "bsharp.bytecode.loader.fixtures.json",
+  "format_version": 1,
+  "created_by_basic_sharp": "0.1.28",
+  "bytecode_profile": "bsharp.bytecode.v1",
+  "source_artifact": "samples/first_room.bsbc",
+  "valid_samples": [
+    "samples/ask_demo.bsbc",
+    "samples/every_guard.bsbc",
+    "samples/first_room.bsbc",
+    "samples/follow_up_events.bsbc",
+    "samples/values_and_amounts.bsbc",
+    "samples/world_save_demo.bsbc"
+  ],
+  "valid_sample_count": 6,
+  "valid_meaning_case_count": 12,
+  "malformed_case_count": 41,
+  "malformed_cases": [
+    {
+      "id": "wrong_magic_bytes",
+      "rule": "wrong magic bytes",
+      "mutation": "wrong_magic_bytes",
+      "expected_message": "magic bytes"
+    },
+    {
+      "id": "unsupported_binary_format_version",
+      "rule": "unsupported binary format version",
+      "mutation": "unsupported_binary_format_version",
+      "expected_message": "binary format version"
+    },
+    {
+      "id": "unsupported_bytecode_profile",
+      "rule": "unsupported bytecode profile",
+      "mutation": "unsupported_bytecode_profile",
+      "expected_message": "unsupported bytecode profile"
+    },
+    {
+      "id": "meaning_profile_mismatch",
+      "rule": "meaning-profile mismatch",
+      "mutation": "meaning_profile_mismatch",
+      "expected_message": "meaning profile"
+    },
+    {
+      "id": "meaning_fingerprint_mismatch",
+      "rule": "meaning-fingerprint mismatch",
+      "mutation": "meaning_fingerprint_mismatch",
+      "expected_message": "different BASIC# program meaning"
+    },
+    {
+      "id": "wrong_header_size",
+      "rule": "wrong header size",
+      "mutation": "wrong_header_size",
+      "expected_message": "header size"
+    },
+    {
+      "id": "nonzero_reserved_field",
+      "rule": "nonzero reserved field",
+      "mutation": "nonzero_reserved_field",
+      "expected_message": "reserved header field"
+    },
+    {
+      "id": "missing_required_section",
+      "rule": "missing required section",
+      "mutation": "missing_required_section",
+      "expected_message": "missing a required section"
+    },
+    {
+      "id": "duplicate_section",
+      "rule": "duplicate section",
+      "mutation": "duplicate_section",
+      "expected_message": "duplicate section"
+    },
+    {
+      "id": "wrong_section_order",
+      "rule": "wrong section order",
+      "mutation": "wrong_section_order",
+      "expected_message": "wrong order"
+    },
+    {
+      "id": "overlapping_section_data",
+      "rule": "overlapping section data",
+      "mutation": "overlapping_section_data",
+      "expected_message": "sections overlap"
+    },
+    {
+      "id": "out_of_range_section_offset",
+      "rule": "out-of-range section offset",
+      "mutation": "out_of_range_section_offset",
+      "expected_message": "out-of-range offset"
+    },
+    {
+      "id": "out_of_range_section_length",
+      "rule": "out-of-range section length",
+      "mutation": "out_of_range_section_length",
+      "expected_message": "out-of-range length"
+    },
+    {
+      "id": "misaligned_section_data",
+      "rule": "misaligned section data",
+      "mutation": "misaligned_section_data",
+      "expected_message": "not four-byte aligned"
+    },
+    {
+      "id": "file_size_mismatch",
+      "rule": "file-size mismatch",
+      "mutation": "file_size_mismatch",
+      "expected_message": "file-size field"
+    },
+    {
+      "id": "truncated_header",
+      "rule": "truncated header",
+      "mutation": "truncated_header",
+      "expected_message": "header is truncated"
+    },
+    {
+      "id": "truncated_section_directory",
+      "rule": "truncated section directory",
+      "mutation": "truncated_section_directory",
+      "expected_message": "section directory is truncated"
+    },
+    {
+      "id": "truncated_section_record",
+      "rule": "truncated section record",
+      "mutation": "truncated_section_record",
+      "expected_message": "STRS text is truncated"
+    },
+    {
+      "id": "trailing_unexplained_data",
+      "rule": "trailing unexplained data",
+      "mutation": "trailing_unexplained_data",
+      "expected_message": "trailing unexplained data"
+    },
+    {
+      "id": "invalid_utf8",
+      "rule": "invalid UTF-8",
+      "mutation": "invalid_utf8",
+      "expected_message": "invalid UTF-8"
+    },
+    {
+      "id": "duplicate_deterministic_string_entry",
+      "rule": "duplicate deterministic string entry",
+      "mutation": "duplicate_deterministic_string_entry",
+      "expected_message": "duplicate deterministic entry"
+    },
+    {
+      "id": "invalid_string_index",
+      "rule": "invalid string index",
+      "mutation": "invalid_string_index",
+      "expected_message": "string index"
+    },
+    {
+      "id": "invalid_kind_parent_index",
+      "rule": "invalid Kind parent index",
+      "mutation": "invalid_kind_parent_index",
+      "expected_message": "invalid parent index"
+    },
+    {
+      "id": "kind_ancestry_circle",
+      "rule": "Kind ancestry circle",
+      "mutation": "kind_ancestry_circle",
+      "expected_message": "ancestry contains a circle"
+    },
+    {
+      "id": "invalid_thing_kind_index",
+      "rule": "invalid Thing Kind index",
+      "mutation": "invalid_thing_kind_index",
+      "expected_message": "Kind index"
+    },
+    {
+      "id": "invalid_selector_code",
+      "rule": "invalid selector code",
+      "mutation": "invalid_selector_code",
+      "expected_message": "selector code"
+    },
+    {
+      "id": "selector_not_allowed_in_context",
+      "rule": "selector not allowed in context",
+      "mutation": "selector_not_allowed_in_context",
+      "expected_message": "not allowed for WHEN actor"
+    },
+    {
+      "id": "invalid_thing_reference",
+      "rule": "invalid Thing reference",
+      "mutation": "invalid_thing_reference",
+      "expected_message": "Thing index"
+    },
+    {
+      "id": "invalid_kind_reference",
+      "rule": "invalid Kind reference",
+      "mutation": "invalid_kind_reference",
+      "expected_message": "Kind index"
+    },
+    {
+      "id": "invalid_code_block_reference",
+      "rule": "invalid code-block reference",
+      "mutation": "invalid_code_block_reference",
+      "expected_message": "code-block reference"
+    },
+    {
+      "id": "unknown_instruction_code",
+      "rule": "unknown instruction code",
+      "mutation": "unknown_instruction_code",
+      "expected_message": "instruction code 0x30 is unknown"
+    },
+    {
+      "id": "reserved_instruction_code",
+      "rule": "reserved instruction code",
+      "mutation": "reserved_instruction_code",
+      "expected_message": "instruction code 0x00 is reserved"
+    },
+    {
+      "id": "wrong_instruction_operand_count",
+      "rule": "wrong instruction operand count",
+      "mutation": "wrong_instruction_operand_count",
+      "expected_message": "wrong operand count"
+    },
+    {
+      "id": "nonzero_instruction_reserved_field",
+      "rule": "nonzero instruction reserved field",
+      "mutation": "nonzero_instruction_reserved_field",
+      "expected_message": "instruction reserved field"
+    },
+    {
+      "id": "unknown_condition_code",
+      "rule": "unknown condition code",
+      "mutation": "unknown_condition_code",
+      "expected_message": "condition code 0x20 is unknown"
+    },
+    {
+      "id": "reserved_condition_code",
+      "rule": "reserved condition code",
+      "mutation": "reserved_condition_code",
+      "expected_message": "condition code 0x00 is reserved"
+    },
+    {
+      "id": "wrong_condition_operand_count",
+      "rule": "wrong condition operand count",
+      "mutation": "wrong_condition_operand_count",
+      "expected_message": "wrong operand count"
+    },
+    {
+      "id": "whole_number_outside_range",
+      "rule": "whole number outside 0 through 2147483647",
+      "mutation": "whole_number_outside_range",
+      "expected_message": "whole number"
+    },
+    {
+      "id": "duplicate_block_identifier",
+      "rule": "duplicate block identifier",
+      "mutation": "duplicate_block_identifier",
+      "expected_message": "duplicate block identifier"
+    },
+    {
+      "id": "overlapping_code_blocks",
+      "rule": "overlapping code blocks",
+      "mutation": "overlapping_code_blocks",
+      "expected_message": "code blocks overlap"
+    },
+    {
+      "id": "instruction_crossing_block_boundary",
+      "rule": "instruction crossing block boundary",
+      "mutation": "instruction_crossing_block_boundary",
+      "expected_message": "crosses its block boundary"
+    }
+  ],
+  "no_loose_corrupt_binaries": true
+}

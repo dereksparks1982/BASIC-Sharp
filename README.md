@@ -1,4 +1,4 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.27
+# BASIC# Ruby Bootstrap Compiler v0.1.28
 
 **Language name:** BASIC#  
 **Pronounced:** Basic Sharp  
@@ -14,59 +14,55 @@
 
 > A scripting language made for non-programmers, by non-programmers.
 
-BASIC# lets a creator describe what exists, what should happen, preserve a settled world, ask what the program currently means, and now compile that resolved meaning into deterministic bytecode.
+BASIC# lets a creator describe what exists, what should happen, preserve a settled world, inspect what the program means, emit deterministic bytecode, and now safely load that bytecode back into a trusted non-executing model.
 
-## v0.1.27 BSharp Bytecode Emitter and Deterministic Disassembly 1
+## v0.1.28 BSharp Bytecode Loader and Complete Structural Validation 1
 
-v0.1.27 creates the first real BSharp Bytecode files while remaining non-executing:
+v0.1.28 reads real BSharp Bytecode while keeping execution locked behind the future virtual machine:
 
 ```text
-BASIC# source
-    -> Ruby bootstrap parser and resolver
-    -> BSharp IR
+BASIC# source or saved BSIR
     -> BSharp Bytecode emitter
     -> BSharp Bytecode (.bsbc)
-    -> future bytecode loader and BASIC# VM
+    -> complete loader validation
+    -> deeply frozen trusted bytecode model
+    -> future BSharp virtual machine
 ```
 
-Emit from source:
+Validate and summarize a bytecode file:
 
 ```bash
-ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-bytecode
+ruby compiler/basic_sharp.rb samples/first_room.bsbc
 ```
 
-Emit from saved BSIR:
+Disassemble directly from validated binary records:
 
 ```bash
-ruby compiler/basic_sharp.rb samples/first_room.bsir.json --emit-bytecode
+ruby compiler/basic_sharp.rb samples/first_room.bsbc --disassemble-bytecode
 ```
 
-Both commands create byte-identical files when their normalized meaning is identical:
-
-```text
-samples/first_room.bsbc
-samples/first_room.bsbc.txt
-```
-
-A custom output path uses the existing `--out` option and must end in `.bsbc`:
+Verify that bytecode belongs to the same normalized program meaning as source or saved BSIR:
 
 ```bash
-ruby compiler/basic_sharp.rb samples/first_room.bsharp \
-  --emit-bytecode \
-  --out /tmp/first_room.bsbc
+ruby compiler/basic_sharp.rb samples/first_room.bsbc \
+  --against samples/first_room.bsharp
+
+ruby compiler/basic_sharp.rb samples/first_room.bsbc \
+  --against samples/first_room.bsir.json
 ```
 
-The `.bsbc.txt` companion is deterministic diagnostic disassembly. It is not creator-facing BASIC# syntax.
+The loader validates the complete header, directory, sections, alignment, padding, strings, counts, Kind ancestry, Things, START records, WHEN records, IF records, CODE blocks, instructions, selectors, references, whole numbers, and optional meaning fingerprint comparison before exposing any model.
 
-Run the emitter lane:
+Run the loader lane:
+
+```bash
+ruby tools/bytecode_loader.rb
+```
+
+Run the emitter and machine contract lanes:
 
 ```bash
 ruby tools/bytecode_emitter.rb
-```
-
-Run the machine contract audit:
-
-```bash
 ruby tools/bytecode_contract.rb
 ```
 
@@ -75,17 +71,17 @@ Normative records:
 ```text
 spec/bytecode_v1/BASIC_SHARP_BYTECODE_PROFILE_v1.json
 spec/bytecode_v1/BASIC_SHARP_BYTECODE_EMITTER_FIXTURES_v1.json
+spec/bytecode_v1/BASIC_SHARP_BYTECODE_LOADER_FIXTURES_v1.json
 docs/bytecode/BASIC_SHARP_BYTECODE_ARCHITECTURE_v0_1_26.md
 docs/bytecode/BASIC_SHARP_BYTECODE_FORMAT_AND_INSTRUCTION_CONTRACT_v0_1_26.md
 docs/bytecode/BASIC_SHARP_BYTECODE_COMPATIBILITY_POLICY_v0_1_26.md
 docs/bytecode/BASIC_SHARP_BYTECODE_EMITTER_AND_DETERMINISTIC_DISASSEMBLY_v0_1_27.md
+docs/bytecode/BASIC_SHARP_BYTECODE_LOADER_AND_COMPLETE_STRUCTURAL_VALIDATION_v0_1_28.md
 ```
-
-The emitter writes atomically, rejects programs with errors or warnings, rejects unsupported Profile 1 meaning, and never serializes Ruby classes, machine paths, timestamps, or object identities.
 
 ## Canonical Company Bible
 
-The sole active authority remains:
+The sole active authority is:
 
 ```text
 docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
@@ -99,13 +95,7 @@ ruby tools/company_bible_audit.rb
 
 ## Stable Meaning Profile 1
 
-BSharp Meaning Profile 1 remains the implementation-neutral meaning target that the Ruby bootstrap, bytecode emitter, and future BASIC# virtual machine must reproduce.
-
-```text
-bsharp.meaning.v1
-```
-
-Run:
+BSharp Meaning Profile 1 remains the implementation-neutral target that the Ruby bootstrap, bytecode emitter, loader, and future BASIC# virtual machine must reproduce.
 
 ```bash
 ruby tools/meaning_conformance.rb
@@ -142,7 +132,7 @@ OTHERWISE
 (cause
 ```
 
-v0.1.27 adds no creator-facing Head, Connector, official word, event behavior, IF behavior, number behavior, BSIR schema, Save schema, ASK schema, loader, VM, or bytecode execution.
+v0.1.28 adds no creator-facing Head, Connector, official word, event behavior, IF behavior, number behavior, BSIR schema, Save schema, ASK schema, VM, or bytecode execution.
 
 ## Current language foundation
 
@@ -156,7 +146,7 @@ v0.1.27 adds no creator-facing Head, Connector, official word, event behavior, I
 - Deterministic BSharp Save files.
 - Read-only ASK inspection with deterministic answers.
 - Stable Meaning Profile 1 conformance fixtures.
-- BSharp Bytecode architecture, machine-readable contract, deterministic emitter, and readable disassembly.
+- BSharp Bytecode contract, deterministic emitter, committed sample binaries, complete structural loader, and binary-derived disassembly.
 
 ## Compile samples
 
@@ -181,7 +171,7 @@ A current debug document begins with:
 
 ```json
 {
-  "version": "0.1.27",
+  "version": "0.1.28",
   "format": "bsir.debug.json"
 }
 ```
@@ -205,7 +195,7 @@ ruby -w -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_rel
 Current validated suite totals are recorded in:
 
 ```text
-docs/validation/BASIC_SHARP_VALIDATION_v0_1_27.md
+docs/validation/BASIC_SHARP_VALIDATION_v0_1_28.md
 ```
 
 Full lanes:
@@ -223,14 +213,15 @@ ruby tools/meaning_conformance.rb
 ruby tools/company_bible_audit.rb
 ruby tools/bytecode_contract.rb
 ruby tools/bytecode_emitter.rb
+ruby tools/bytecode_loader.rb
 ```
 
 Timing is observational only. A slower correct machine does not fail.
 
 ## Not included
 
-- No arbitrary `.bsbc` loader, virtual machine, or bytecode execution.
-- No Ruby runtime replacement.
+- No virtual machine or bytecode execution.
+- No Ruby runtime replacement, world mutation, or ASK against BSBC.
 - No optimization or compression.
 - No creator-facing Head, Connector, official word, or syntax change.
 - No capitalization, spacing, contraction, or spelling-tolerance expansion.

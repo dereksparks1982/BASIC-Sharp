@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.27  
+**Version:** v0.1.28  
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -234,7 +234,7 @@ Protected rules:
 - Difficult machinery belongs beneath understandable creator-facing language.
 - “Forgiving input, dependable meaning, canonical output” remains the long-term direction, but tolerance is added only through approved, tested builds.
 - Stable Meaning Profile 1 is the implementation-neutral meaning authority for its covered language behavior.
-- **BSharp Bytecode** and **BSBC** are the protected names for the compact execution artifact governed by `bsharp.bytecode.v1`. The accepted Ruby bootstrap may emit deterministic `.bsbc` files and `.bsbc.txt` diagnostic disassembly, but loaders, virtual machines, and execution require separate approved builds.
+- **BSharp Bytecode** and **BSBC** are the protected names for the compact execution artifact governed by `bsharp.bytecode.v1`. The accepted Ruby bootstrap may emit deterministic `.bsbc` files, load and completely validate them into a deeply frozen trusted model, and reconstruct `.bsbc.txt` diagnostic disassembly. Virtual machines and bytecode execution still require separate approved builds.
 
 Language grammar and runtime behavior belong in specifications and contracts, not duplicated as mutable Company Bible prose.
 

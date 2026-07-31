@@ -49,14 +49,19 @@ module BasicSharp
     NO_REFERENCE_U32 = 0xFFFF_FFFF
     REQUIRED_MALFORMED_RULES = [
       'wrong magic bytes', 'unsupported binary format version', 'unsupported bytecode profile',
-      'meaning-profile mismatch', 'meaning-fingerprint mismatch', 'missing required section',
-      'duplicate section', 'wrong section order', 'overlapping section data',
-      'out-of-range section offset', 'out-of-range section length', 'misaligned section data',
+      'meaning-profile mismatch', 'meaning-fingerprint mismatch', 'wrong header size',
+      'nonzero reserved field', 'missing required section', 'duplicate section',
+      'wrong section order', 'overlapping section data', 'out-of-range section offset',
+      'out-of-range section length', 'misaligned section data', 'file-size mismatch',
+      'truncated header', 'truncated section directory', 'truncated section record',
       'trailing unexplained data', 'invalid UTF-8', 'duplicate deterministic string entry',
-      'invalid selector code', 'unknown instruction code', 'reserved instruction code',
-      'wrong instruction operand count', 'unknown condition code', 'wrong condition operand count',
-      'whole number outside 0 through 2147483647', 'invalid code-block reference',
-      'instruction crossing block boundary'
+      'invalid string index', 'invalid Kind parent index', 'Kind ancestry circle',
+      'invalid Thing Kind index', 'invalid selector code', 'selector not allowed in context',
+      'invalid Thing reference', 'invalid Kind reference', 'invalid code-block reference',
+      'unknown instruction code', 'reserved instruction code', 'wrong instruction operand count',
+      'nonzero instruction reserved field', 'unknown condition code', 'reserved condition code',
+      'wrong condition operand count', 'whole number outside 0 through 2147483647',
+      'duplicate block identifier', 'overlapping code blocks', 'instruction crossing block boundary'
     ].freeze
     FORBIDDEN_SERIALIZED_TERMS = %w[BasicSharp RubyVM ObjectSpace Marshal Struct].freeze
 
@@ -80,6 +85,7 @@ module BasicSharp
       validate_coverage!(profile.fetch('meaning_case_coverage'), root: root)
       validate_disassembly!(profile.fetch('disassembly'))
       validate_emission!(profile.fetch('emission'))
+      validate_loading!(profile.fetch('loading'))
       validate_malformed_rules!(profile.fetch('malformed_rejection_rules'))
 
       text = canonical_json(profile)
@@ -200,6 +206,24 @@ module BasicSharp
       text = emission.values.flatten.join("\n")
       missing = required.reject { |entry| text.include?(entry) }
       raise BytecodeContractError, "Bytecode emission rules are incomplete: #{missing.join(', ')}" unless missing.empty?
+    end
+
+    def validate_loading!(loading)
+      unless loading['status'] == 'implemented by BASIC# v0.1.28'
+        raise BytecodeContractError, 'Bytecode loader implementation status is inconsistent.'
+      end
+      unless loading['source_inputs'] == ['.bsbc']
+        raise BytecodeContractError, 'Bytecode loader input identity is inconsistent.'
+      end
+      required = [
+        'complete structural validation', 'trusted in-memory model', 'deeply frozen',
+        'no partial model', '--against', '.bsharp', '.bsir.json',
+        'diagnostic disassembly', 'non-executing', '41'
+      ]
+      text = loading.values.flatten.join("
+")
+      missing = required.reject { |entry| text.include?(entry) }
+      raise BytecodeContractError, "Bytecode loading rules are incomplete: #{missing.join(', ')}" unless missing.empty?
     end
 
     def validate_malformed_rules!(rules)

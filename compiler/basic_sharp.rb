@@ -10,12 +10,14 @@ require_relative 'runtime'
 require_relative 'world_save'
 require_relative 'ask'
 require_relative 'bytecode_emitter'
+require_relative 'bytecode_loader'
 
 if ARGV.empty?
   warn 'Usage: ruby compiler/basic_sharp.rb source.bsharp [--json|--emit-ast|--emit-ir|--emit-bytecode] [--out path] [--run "event"]'
   warn '       [--load-world path.bsave.json] [--ask "question"]... [--ask-json] [--save-world path.bsave.json]'
   warn '   or: ruby compiler/basic_sharp.rb existing.bsir.json [--run "event"] [--load-world path.bsave.json]'
   warn '       [--ask "question"]... [--ask-json] [--save-world path.bsave.json]'
+  warn '   or: ruby compiler/basic_sharp.rb program.bsbc [--disassemble-bytecode] [--against source.bsharp|program.bsir.json]'
   exit 64
 end
 
@@ -57,12 +59,14 @@ out_index, out_path = validate_option_value!(ARGV, '--out', 'output path')
 run_index, run_event = validate_option_value!(ARGV, '--run', 'event')
 load_index, load_world_path = validate_option_value!(ARGV, '--load-world', 'world-save path')
 save_index, save_world_path = validate_option_value!(ARGV, '--save-world', 'world-save path')
+against_index, against_path = validate_option_value!(ARGV, '--against', 'comparison program path')
 ask_entries = repeated_option_values!(ARGV, '--ask', 'ASK question')
 ask_questions = ask_entries.map(&:last)
 ask_json = ARGV.include?('--ask-json')
 emit_ast = ARGV.include?('--json') || ARGV.include?('--emit-ast')
 emit_ir = ARGV.include?('--emit-ir')
 emit_bytecode = ARGV.include?('--emit-bytecode')
+disassemble_bytecode = ARGV.include?('--disassemble-bytecode')
 
 if ask_json && ask_questions.empty?
   warn '--ask-json requires at least one --ask question'
@@ -73,7 +77,7 @@ if ask_questions.length > BasicSharp::Ask::MAX_QUESTIONS
   exit 64
 end
 
-value_indexes = [out_index, run_index, load_index, save_index].compact + ask_entries.map(&:first)
+value_indexes = [out_index, run_index, load_index, save_index, against_index].compact + ask_entries.map(&:first)
 consumed_values = value_indexes.map { |index| index + 1 }
 path = ARGV.each_with_index.find do |argument, index|
   !argument.start_with?('--') && !consumed_values.include?(index)
@@ -82,6 +86,85 @@ end&.first
 unless path && File.file?(path)
   warn "BASIC# source file not found: #{path || '(none)'}"
   exit 66
+end
+
+bytecode_input = path.downcase.end_with?('.bsbc')
+
+def comparison_fingerprint(path)
+  unless path && File.file?(path)
+    raise BasicSharp::BytecodeLoaderError, "BASIC# comparison program not found: #{path || '(none)'}"
+  end
+
+  if path.downcase.end_with?('.bsharp')
+    parser = BasicSharp::Parser.new(File.read(path))
+    program = parser.parse
+    resolved = BasicSharp::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
+    if resolved.error_count.positive? || resolved.warning_count.positive?
+      raise BasicSharp::BytecodeLoaderError, 'BSharp Bytecode comparison requires source with zero errors and zero warnings.'
+    end
+    BasicSharp::WorldSave.program_fingerprint(resolved)
+  elsif path.downcase.end_with?('.bsir.json')
+    document = JSON.parse(File.read(path))
+    if BasicSharp::WorldSave.save_file?(document)
+      raise BasicSharp::BytecodeLoaderError, 'A BSharp Save cannot be used as a bytecode meaning comparison program.'
+    end
+    unless document.is_a?(Hash) && document['format'] == 'bsir.debug.json'
+      raise BasicSharp::BytecodeLoaderError, 'BSharp Bytecode comparison requires .bsharp source or resolved .bsir.json.'
+    end
+    diagnostics = Array(document['diagnostics'])
+    unless diagnostics.none? { |entry| %w[error warning].include?(entry['severity'].to_s) }
+      raise BasicSharp::BytecodeLoaderError, 'BSharp Bytecode comparison requires BSIR with zero errors and zero warnings.'
+    end
+    BasicSharp::WorldSave.program_fingerprint(document)
+  else
+    raise BasicSharp::BytecodeLoaderError, 'BSharp Bytecode --against accepts only .bsharp or .bsir.json.'
+  end
+rescue JSON::ParserError => error
+  raise BasicSharp::BytecodeLoaderError, "BSharp Bytecode comparison BSIR cannot be read: #{error.message}"
+end
+
+if bytecode_input
+  incompatible = emit_ast || emit_ir || emit_bytecode || run_index || load_index || save_index ||
+                 !ask_questions.empty? || ask_json || out_index
+  if incompatible
+    warn 'BASIC# v0.1.28 can validate and disassemble BSharp Bytecode, but bytecode execution and other compiler modes require source or BSIR.'
+    exit 64
+  end
+
+  begin
+    expected = against_path ? comparison_fingerprint(against_path) : nil
+    loader = BasicSharp::BytecodeLoader.read(path, expected_fingerprint: expected)
+    if disassemble_bytecode
+      print loader.disassembly
+    else
+      summary = loader.summary
+      puts "BASIC# Ruby Bootstrap Compiler v#{BasicSharp::VERSION}"
+      puts "file: #{path}"
+      puts 'BSharp Bytecode: valid'
+      puts "binary format: #{summary[:binary_format]} v#{summary[:binary_format_version]}"
+      puts "profile: #{summary[:profile]}"
+      puts "meaning profile: #{summary[:meaning_profile]}"
+      puts "fingerprint: #{summary[:fingerprint]}"
+      puts "strings: #{summary[:strings]}"
+      puts "kinds: #{summary[:kinds]}"
+      puts "things: #{summary[:things]}"
+      puts "start records: #{summary[:start_records]}"
+      puts "events: #{summary[:events]}"
+      puts "if rules: #{summary[:if_rules]}"
+      puts "code blocks: #{summary[:code_blocks]}"
+      puts "instructions: #{summary[:instructions]}"
+      puts 'meaning comparison: PASS' if against_path
+    end
+    exit 0
+  rescue BasicSharp::BytecodeLoaderError => error
+    warn error.message
+    exit 1
+  end
+end
+
+if disassemble_bytecode || against_path
+  warn '--disassemble-bytecode and --against require a .bsbc input file'
+  exit 64
 end
 
 json_input = File.extname(path).downcase == '.json'

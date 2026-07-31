@@ -105,9 +105,21 @@ class TestBytecodeContract < Minitest::Test
       assert_includes rules, rule
     end
     assert_equal rules.length, rules.uniq.length
-    assert_includes profile.dig('future_boundaries', 'v0_1_27_excludes'), 'bytecode execution'
+    assert_includes profile.dig('future_boundaries', 'v0_1_28_excludes'), 'bytecode execution'
     assert_equal ['.bsharp', '.bsir.json'], profile.dig('emission', 'source_inputs')
     assert_equal ['bsharp.bytecode.v1', 'bsharp.meaning.v1', 'sha256-bsir-meaning-v1'], profile.dig('emission', 'mandatory_string_prefix')
+  end
+
+  def test_loader_contract_is_complete_and_non_executing
+    loading = profile.fetch('loading')
+    assert_equal 'implemented by BASIC# v0.1.28', loading.fetch('status')
+    assert_equal ['.bsbc'], loading.fetch('source_inputs')
+    assert_includes loading.fetch('validation'), 'complete structural validation'
+    assert_includes loading.fetch('trusted_model'), 'deeply frozen'
+    assert_includes loading.fetch('failure_boundary'), 'no partial model'
+    assert_includes loading.fetch('meaning_comparison'), '--against'
+    assert_includes loading.fetch('execution_boundary'), 'non-executing'
+    assert_includes loading.fetch('malformed_fixture_count'), '41'
   end
 
   def test_canonical_contract_is_deterministic_across_hash_order

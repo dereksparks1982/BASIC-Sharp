@@ -639,6 +639,24 @@
       "Ruby runtime replacement",
       "optimization",
       "compression"
+    ],
+    "v0_1_28_includes": [
+      "arbitrary BSBC loader",
+      "complete structural and cross-reference validation",
+      "trusted deeply frozen in-memory model",
+      "binary-derived deterministic disassembly",
+      "optional source or BSIR fingerprint comparison",
+      "41 malformed-bytecode fixture cases",
+      "complete truncation sweep"
+    ],
+    "v0_1_28_excludes": [
+      "virtual machine",
+      "bytecode execution",
+      "Ruby runtime replacement",
+      "world mutation",
+      "ASK against BSBC",
+      "optimization",
+      "compression"
     ]
   },
   "emission": {
@@ -664,5 +682,19 @@
     "fingerprint_storage": "32 raw SHA-256 bytes using sha256-bsir-meaning-v1",
     "determinism": "Equivalent normalized Profile 1 meaning produces byte-identical .bsbc and .bsbc.txt output.",
     "atomic_output": "Binary and disassembly are replaced together; a failed emission leaves no partial pair."
+  },
+  "loading": {
+    "status": "implemented by BASIC# v0.1.28",
+    "source_inputs": [
+      ".bsbc"
+    ],
+    "validation": "complete structural validation before exposing a trusted in-memory model",
+    "trusted_model": "deeply frozen, deterministic, isolated, and unavailable on failure",
+    "failure_boundary": "a rejected artifact exposes no partial model and performs no execution or world mutation",
+    "summary": "validated identity, profiles, fingerprint, section counts, block counts, and instruction counts",
+    "disassembly": "diagnostic disassembly is reconstructed from validated binary records and must match committed .bsbc.txt output",
+    "meaning_comparison": "--against accepts matching .bsharp or .bsir.json and compares sha256-bsir-meaning-v1 exactly",
+    "execution_boundary": "non-executing; the future BSharp virtual machine owns bytecode execution",
+    "malformed_fixture_count": "41 deterministic in-memory corruption cases; no loose corrupted binaries"
   }
 }
