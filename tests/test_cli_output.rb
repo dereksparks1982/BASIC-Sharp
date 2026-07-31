@@ -27,7 +27,7 @@ class TestCLIOutput < Minitest::Test
       assert_includes stdout, "wrote: #{out_path}"
       assert File.file?(out_path), 'expected --out to create the IR file'
       json = JSON.parse(File.read(out_path))
-      assert_equal '0.1.20', json.fetch('version')
+      assert_equal '0.1.21', json.fetch('version')
     end
   end
 
@@ -42,7 +42,7 @@ class TestCLIOutput < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BASIC# Runtime v0.1.20'
+    assert_includes stdout, 'BASIC# Runtime v0.1.21'
     assert_includes stdout, 'matched: yes'
     assert_includes stdout, 'what matched:'
     assert_includes stdout, 'player attacks ember'
@@ -93,7 +93,7 @@ class TestCLIOutput < Minitest::Test
       )
 
       assert status.success?, stderr
-      assert_includes stdout, 'BASIC# Runtime v0.1.20'
+      assert_includes stdout, 'BASIC# Runtime v0.1.21'
       assert_includes stdout, 'matched: yes'
       assert_includes stdout, 'what matched:'
       assert_includes stdout, 'player attacks a guard'
@@ -130,7 +130,7 @@ class TestCLIOutput < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BASIC# Runtime v0.1.20'
+    assert_includes stdout, 'BASIC# Runtime v0.1.21'
     assert_includes stdout, 'matched: yes'
     assert_includes stdout, 'what matched:'
     assert_includes stdout, 'player attacks a guard'
@@ -181,6 +181,34 @@ class TestCLIOutput < Minitest::Test
     assert_includes stdout, 'IF rules:'
     assert_includes stdout, 'cinder is angry became true after the event'
     assert_includes stdout, 'player damage is now 1'
+  end
+
+  def test_follow_up_loop_reports_failure_exit_status
+    Dir.mktmpdir do |dir|
+      source_path = File.join(dir, 'loop.bsharp')
+      File.write(source_path, <<~BSHARP)
+        DEFINE
+        [a device named brass bell].
+
+        WHEN
+        [player sounds brass bell
+        <then> (cause player sounds brass bell].
+      BSHARP
+
+      stdout, stderr, status = Open3.capture3(
+        RUBY,
+        File.join(ROOT, 'compiler/basic_sharp.rb'),
+        source_path,
+        '--run',
+        'player sounds brass bell',
+        chdir: ROOT
+      )
+
+      refute status.success?
+      assert_empty stderr
+      assert_includes stdout, 'Events kept causing more events.'
+      assert_includes stdout, 'stopped this chain after 1,024 follow-up events'
+    end
   end
 
 end

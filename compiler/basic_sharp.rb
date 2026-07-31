@@ -58,7 +58,7 @@ if run_index && File.extname(path).downcase == '.json'
     runtime = BasicSharp::Runtime.load(path)
     result = runtime.run_event(run_event)
     puts runtime.report(result)
-    exit(result.fetch('matched') ? 0 : 1)
+    exit(result.fetch('matched') && result['error'].nil? ? 0 : 1)
   rescue BasicSharp::RetiredDKIRFormatError => error
     warn error.message
     exit 1
@@ -94,7 +94,7 @@ if run_index
   runtime = BasicSharp::Runtime.new(resolved)
   result = runtime.run_event(run_event)
   puts runtime.report(result)
-  exit(result.fetch('matched') ? 0 : 1)
+  exit(result.fetch('matched') && result['error'].nil? ? 0 : 1)
 end
 
 puts "BASIC# Ruby Bootstrap Compiler v#{BasicSharp::VERSION}"

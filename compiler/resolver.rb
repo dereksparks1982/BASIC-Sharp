@@ -140,10 +140,12 @@ module BasicSharp
     end
 
     def resolve_event_rule(rule)
+      when_event = resolve_event(rule.event, rule.line_number)
+      bound_kinds = event_bound_kinds(when_event)
       {
         'line_number' => rule.line_number,
-        'when' => resolve_event(rule.event, rule.line_number),
-        'then' => rule.actions.map { |action| resolve_action(action) }
+        'when' => when_event,
+        'then' => rule.actions.map { |action| resolve_action(action, bound_kinds: bound_kinds) }
       }
     end
 
@@ -152,14 +154,14 @@ module BasicSharp
       {
         'line_number' => rule.line_number,
         'if' => condition_fact,
-        'then' => rule.actions.map { |action| resolve_action(action) }
+        'then' => rule.actions.map { |action| resolve_action(action, bound_kinds: []) }
       }
     end
 
-    def resolve_event(text, line_number)
+    def resolve_event(text, line_number, usage: :event)
       words = normalize_name(text).split
       verb_index = words.each_index.find do |index|
-        index.positive? && dictionary.known_action?(normalize_verb(words[index]))
+        index.positive? && dictionary.known_event_action?(normalize_verb(words[index]))
       end
 
       unless verb_index
@@ -173,18 +175,19 @@ module BasicSharp
 
       {
         'raw' => normalize_name(text),
-        'actor' => resolve_reference(actor_text, line_number, usage: :event),
+        'actor' => resolve_reference(actor_text, line_number, usage: usage),
         'action' => action,
-        'target' => target_text.empty? ? nil : resolve_reference(target_text, line_number, usage: :event)
+        'target' => target_text.empty? ? nil : resolve_reference(target_text, line_number, usage: usage)
       }
     end
 
-    def resolve_action(action)
+    def resolve_action(action, bound_kinds:)
       verb = normalize_verb(action.verb)
       diagnostics.error(action.line_number, "unknown official word '(#{action.verb}'") unless dictionary.known_action?(action.verb)
 
       return resolve_damage_action(action, verb) if verb == 'damage'
       return resolve_change_action(action, verb) if verb == 'change'
+      return resolve_cause_action(action, bound_kinds: bound_kinds) if verb == 'cause'
 
       resolved = {
         'line_number' => action.line_number,
@@ -202,6 +205,64 @@ module BasicSharp
       end
 
       resolved
+    end
+
+    def resolve_cause_action(action, bound_kinds:)
+      event_text = normalize_name(action.target)
+      if event_text.empty?
+        diagnostics.error(action.line_number, "Cause must name an event, such as '(cause henry attacks player'")
+        return {
+          'line_number' => action.line_number,
+          'action' => 'cause',
+          'event' => { 'raw' => '', 'actor' => nil, 'action' => nil, 'target' => nil }
+        }
+      end
+
+      event = resolve_event(event_text, action.line_number, usage: nil)
+      validate_caused_event_references(event, bound_kinds, action.line_number)
+      {
+        'line_number' => action.line_number,
+        'action' => 'cause',
+        'event' => event
+      }
+    end
+
+    def event_bound_kinds(event)
+      [event['actor'], event['target']].compact.filter_map do |reference|
+        type = normalize_name(reference['type'])
+        normalize_name(reference['kind_name']) if %w[kind_one kind].include?(type)
+      end.uniq
+    end
+
+    def validate_caused_event_references(event, bound_kinds, line_number)
+      [event['actor'], event['target']].compact.each do |reference|
+        type = normalize_name(reference['type'])
+        kind = normalize_name(reference['kind_name'])
+        text = normalize_name(reference['text'])
+
+        case type
+        when 'previous'
+          next if bound_kinds.include?(kind)
+
+          diagnostics.error(
+            line_number,
+            "'#{text}' has no selected #{kind} here.
+Use it inside a WHEN that selected one #{kind}, or name the Thing."
+          )
+        when 'kind_set'
+          diagnostics.error(
+            line_number,
+            "'#{text}' cannot be used inside (cause yet.
+Cause one event with a named Thing or 'that #{kind}'."
+          )
+        when 'kind_one', 'kind'
+          diagnostics.error(
+            line_number,
+            "BASIC# cannot choose one #{kind} for this caused event.
+Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
+          )
+        end
+      end
     end
 
     def resolve_damage_action(action, verb)

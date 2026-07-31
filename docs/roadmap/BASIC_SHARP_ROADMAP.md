@@ -13,9 +13,9 @@ BASIC# source
 -> reactive IF rules and loop protection
 -> multiple selected Things and deterministic set actions
 -> whole-number values and damage amounts
--> BSharp IR identity migration  [CURRENT CANDIDATE: v0.1.20]
+-> BSharp IR identity migration  [ACCEPTED: v0.1.20]
+-> explicit follow-up events and deterministic event order  [CURRENT CANDIDATE: v0.1.21]
 -> owner validation and acceptance
--> event ordering and queue design
 -> save/load world state
 -> ASK-style introspection
 -> stable meaning specification
@@ -38,29 +38,30 @@ BASIC# source
 - Reactive IF rules with false-to-true wake-up, re-arming, cascades, and loop protection.
 - Whole-number Thing values, damage amounts, and exact value assignment.
 - Missing-value and overflow atomicity.
-- BSharp IR format marker `bsir.debug.json`.
-- `.bsir.json` saved debug files.
-- BSharp IR wording throughout current code, tests, tools, samples, contracts, and documentation.
-- Retired DKIR rejection with an exact creator-facing recovery message.
-- BASIC#-named patch manifest and package format.
+- BSharp IR identity, `.bsir.json` files, and retired-DKIR rejection.
+- Explicit `(cause` follow-up events.
+- Complete-body and complete-IF settlement before follow-up events.
+- First-created, first-run ordering with nested events appended to the end.
+- Captured context, fresh event matching, unmatched continuation, fatal-error stop, and 1,024-event protection.
 
-## Immediate continuation after v0.1.20 acceptance
+## Immediate continuation after v0.1.21 acceptance
 
-The next roadmap lane returns to **Event Ordering and Queue Design** unless Derek changes direction.
+The next roadmap lane is **Save/Load World State** unless Derek changes direction.
 
 The next proposal must define, before implementation:
 
-- what counts as a new event rather than a direct action result;
-- whether world changes may create follow-up WHEN events;
-- deterministic ordering between direct actions, IF settlement, and queued events;
-- queue ownership, bounded processing, and loop protection;
-- whether queued events preserve actor and selected-Thing context;
-- plain trace wording that exposes cause and order without programmer jargon;
-- BSharp IR representation;
-- compatibility with values, amounts, sets, and reactive IF;
-- stress, rollback, files, exclusions, and package name.
+- exactly what world state is saved;
+- whether pending follow-up events may be saved or only settled worlds;
+- file identity, versioning, and corruption handling;
+- Thing identity and definition-order preservation;
+- Kind, state, relation, value, damage, IF-active, and startup-state behavior;
+- whether creator source and BSharp IR are required when loading a save;
+- deterministic restore and replay guarantees;
+- human-readable recovery messages;
+- BSharp IR or separate save-document representation;
+- tests, stress, rollback, files, exclusions, and package name.
 
-No v0.1.21 implementation begins without the complete proposal and Derek's explicit approval.
+No v0.1.22 implementation begins without the complete proposal and Derek's explicit approval.
 
 ## Protected design rules
 
@@ -74,6 +75,9 @@ No v0.1.21 implementation begins without the complete proposal and Derek's expli
 - No new official word enters casually.
 - One Kind has one direct parent until explicitly changed.
 - IF completes rule bodies before another IF check.
+- A complete IF settlement finishes before the next follow-up event.
+- `(cause` is explicit; ordinary world changes do not generate hidden events.
+- Follow-up events remain first-created, first-run until explicitly changed.
 - `that Kind` remains singular until an explicit plural-context design is approved.
-- `every Kind` remains action-only until all/any condition meaning is explicitly designed.
+- `every Kind` remains action-only and is not allowed inside `(cause` until plural event meaning is explicitly designed.
 - Damage and health remain independent unless Derek explicitly approves a combat rule.

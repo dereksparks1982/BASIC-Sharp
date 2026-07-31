@@ -16,6 +16,12 @@ module BasicSharp
     ].join("\n").freeze
 
     MAX_WHOLE_NUMBER = 2_147_483_647
+    MAX_FOLLOW_UP_EVENTS = 1_024
+    EVENT_CHAIN_LIMIT_MESSAGE = [
+      'Events kept causing more events.',
+      '',
+      'BASIC# stopped this chain after 1,024 follow-up events so it would not run forever.'
+    ].join("\n").freeze
     VALUE_NAME_PATTERN = /\A[a-z][a-z0-9]*\z/
 
     OPPOSITE_STATES = {
@@ -39,7 +45,7 @@ module BasicSharp
       'off' => 'on'
     }.freeze
 
-    attr_reader :startup_ran, :startup_if_rules, :startup_if_error
+    attr_reader :startup_ran, :startup_if_rules, :startup_if_error, :startup_follow_up_events
 
     def self.load(path)
       new(JSON.parse(File.read(path)))
@@ -57,6 +63,7 @@ module BasicSharp
       @startup_ran = []
       @startup_if_rules = []
       @startup_if_error = nil
+      @startup_follow_up_events = []
       @if_active = Array.new(@ir.fetch('if_rules', []).length, false)
       load_kind_families
       create_things
@@ -67,39 +74,29 @@ module BasicSharp
       @startup_if_rules = startup_settlement.fetch('rules')
       @startup_if_error = startup_settlement['error']
       @startup_ran = @startup_if_rules.flat_map { |entry| entry.fetch('steps').map { |step| step.fetch('word') } }
-    end
 
+      if @startup_if_error.nil? && !startup_settlement.fetch('follow_ups', []).empty?
+        startup_chain = drain_follow_up_events(startup_settlement.fetch('follow_ups'))
+        @startup_follow_up_events = startup_chain.fetch('events')
+        @startup_if_error = startup_chain['error']
+      end
+    end
     def run_event(text)
-      event_text = normalize(text)
-      match = find_event_match(event_text)
-      return result(event_text, false, [], {}, match && match['error']) unless match && match['rule']
+      root = process_event(normalize(text))
+      queued = root.delete('_follow_ups') || []
+      root_fatal_error = root.delete('_fatal_error')
+      chain = if root_fatal_error
+                { 'events' => [], 'error' => nil, 'trail' => [] }
+              else
+                drain_follow_up_events(queued)
+              end
 
-      rule = match.fetch('rule')
-      context = match.fetch('context')
-      actor = reference_name(rule.dig('when', 'actor'), context: context)
-      selections = []
-      action_result = run_action_list(rule.fetch('then', []), actor: actor, context: context, selections: selections)
-      steps = action_result.fetch('steps')
-      if_settlement = if action_result['error']
-                        { 'rules' => [], 'error' => nil }
-                      else
-                        settle_if_rules(cause: 'event')
-                      end
-
-      result(
-        event_text,
-        true,
-        steps.map { |step| step.fetch('word') },
-        context,
-        action_result['error'] || if_settlement['error'],
-        matched_when: normalize(rule.dig('when', 'raw')),
-        understood: context_explanations(rule, context),
-        steps: steps,
-        selections: selections,
-        if_rules: if_settlement.fetch('rules')
-      )
+      root['follow_up_events'] = chain.fetch('events')
+      root['event_trail'] = chain.fetch('trail')
+      root['error'] ||= chain['error']
+      root['state'] = snapshot
+      root
     end
-
     def snapshot
       @object_order.map do |name|
         thing = @objects.fetch(name)
@@ -143,6 +140,10 @@ module BasicSharp
         lines << 'starting IF rules:'
         append_if_rule_report(lines, startup_if_rules)
       end
+      unless startup_follow_up_events.empty?
+        lines << 'starting follow-up events:'
+        append_follow_up_report(lines, startup_follow_up_events)
+      end
       lines << "starting IF error: #{startup_if_error}" if startup_if_error
 
       unless event_result.fetch('steps', []).empty?
@@ -155,13 +156,22 @@ module BasicSharp
         append_if_rule_report(lines, event_result.fetch('if_rules'))
       end
 
+      unless event_result.fetch('follow_up_events', []).empty?
+        lines << 'what happened next:'
+        append_follow_up_report(lines, event_result.fetch('follow_up_events'))
+      end
+
+      if event_result['error'] == EVENT_CHAIN_LIMIT_MESSAGE && !event_result.fetch('event_trail', []).empty?
+        lines << 'last events before BASIC# stopped:'
+        event_result.fetch('event_trail').each { |event| lines << "  #{event}" }
+      end
+
       lines << 'world state:'
       snapshot.each { |thing| lines << "  #{format_thing(thing)}" }
       lines.join("\n")
     end
 
     private
-
 
     def validate_ir!
       format = normalize(@ir['format'])
@@ -194,18 +204,23 @@ module BasicSharp
         when_part = rule.fetch('when')
         validate_reference!(when_part['actor'], location: :event)
         validate_reference!(when_part['target'], location: :event) if when_part['target']
-        rule.fetch('then', []).each { |word| validate_action_reference!(word) }
+        bound_kinds = event_bound_kinds(when_part)
+        rule.fetch('then', []).each { |word| validate_action_reference!(word, bound_kinds: bound_kinds) }
       end
 
       @ir.fetch('if_rules', []).each do |rule|
         condition = rule.fetch('if')
         validate_reference!(condition['subject'], location: :condition)
         validate_reference!(condition['target'], location: :condition) if condition['target']
-        rule.fetch('then', []).each { |word| validate_action_reference!(word) }
+        rule.fetch('then', []).each { |word| validate_action_reference!(word, bound_kinds: []) }
       end
     end
+    def validate_action_reference!(word, bound_kinds:)
+      if normalize(word['action']) == 'cause'
+        validate_cause_action!(word, bound_kinds: bound_kinds)
+        return
+      end
 
-    def validate_action_reference!(word)
       reference = word['target']
       return unless reference
 
@@ -219,6 +234,53 @@ module BasicSharp
             "BASIC# cannot choose one #{kind} here.\n\nName the #{kind}, use 'that #{kind}' after selecting one in WHEN,\nor use 'every #{kind}' for all #{kind} Things."
     end
 
+    def validate_cause_action!(word, bound_kinds:)
+      event = word['event']
+      raise ArgumentError, '(cause is missing its event description' unless event.is_a?(Hash)
+
+      raw = event['raw']
+      raise ArgumentError, '(cause event text must be plain text' unless raw.is_a?(String)
+      raise ArgumentError, '(cause must name an event' if normalize(raw).empty?
+
+      action = event['action']
+      unless action.is_a?(String) && !normalize(action).empty?
+        raise ArgumentError, '(cause event is missing its event word'
+      end
+      raise ArgumentError, '(cause cannot cause another cause word as an event' if normalize(action) == 'cause'
+
+      validate_caused_event_reference!(event['actor'], bound_kinds: bound_kinds, role: 'actor')
+      validate_caused_event_reference!(event['target'], bound_kinds: bound_kinds, role: 'target') if event['target']
+    end
+
+    def validate_caused_event_reference!(reference, bound_kinds:, role:)
+      validate_reference!(reference, location: :caused_event)
+      type = normalize(reference['type'])
+      text = normalize(reference['text'])
+
+      case type
+      when 'object'
+        name = normalize(reference['name'] || reference['text'])
+        raise ArgumentError, "Caused event #{role} '#{name}' is not a defined Thing" unless @objects.key?(name)
+      when 'previous'
+        kind = normalize(reference['kind_name'])
+        raise ArgumentError, "'#{text}' has no selected #{kind} in this event" unless bound_kinds.include?(kind)
+      when 'kind_set'
+        kind = normalize(reference['kind_name'])
+        raise ArgumentError, "'every #{kind}' cannot be used inside (cause yet"
+      when 'kind_one', 'kind'
+        kind = normalize(reference['kind_name'] || reference['text']).sub(/\Aa\s+/, '')
+        raise ArgumentError, "BASIC# cannot choose one #{kind} for this caused event"
+      else
+        raise ArgumentError, "Caused event #{role} '#{text}' must name a Thing or use 'that Kind'"
+      end
+    end
+
+    def event_bound_kinds(event)
+      [event['actor'], event['target']].compact.filter_map do |reference|
+        type = normalize(reference['type'])
+        normalize(reference['kind_name']) if %w[kind_one kind].include?(type)
+      end.uniq
+    end
     def validate_reference!(reference, location:)
       unless reference.is_a?(Hash)
         raise ArgumentError, "#{reference_location_name(location)} reference must describe a Thing"
@@ -344,7 +406,8 @@ Choose one starting amount."
         start: 'START',
         event: 'WHEN',
         condition: 'IF',
-        action: 'Action target'
+        action: 'Action target',
+        caused_event: 'Caused event'
       }.fetch(location, 'BSharp IR')
     end
 
@@ -491,9 +554,10 @@ Choose one starting amount."
 
     def settle_if_rules(cause:)
       rules = @ir.fetch('if_rules', [])
-      return { 'rules' => [], 'error' => nil } if rules.empty?
+      return { 'rules' => [], 'error' => nil, 'follow_ups' => [] } if rules.empty?
 
       fired = []
+      follow_ups = []
       fired_indexes = Set.new
       initially_true = rules.map { |rule| condition_true?(rule['if']) }
       seen = nil
@@ -512,7 +576,9 @@ Choose one starting amount."
           next if @if_active[index]
 
           if fired.length >= firing_limit
-            return { 'rules' => fired, 'error' => if_loop_error(condition_trail) }
+            error = if_loop_error(condition_trail)
+            discard_if_follow_up_steps!(fired, 'IF rules did not finish, so this event will not happen.')
+            return { 'rules' => fired, 'error' => error, 'follow_ups' => [] }
           end
 
           seen ||= { if_world_signature => true }
@@ -532,17 +598,23 @@ Choose one starting amount."
             'steps' => steps,
             'selections' => selections
           }
+          follow_ups.concat(action_result.fetch('follow_ups', []))
           fired_indexes.add(index)
           condition_trail << condition
           condition_trail.shift while condition_trail.length > 3
           fired_this_pass = true
 
-          return { 'rules' => fired, 'error' => action_result['error'] } if action_result['error']
+          if action_result['error']
+            discard_if_follow_up_steps!(fired, 'IF rules did not finish, so this event will not happen.')
+            return { 'rules' => fired, 'error' => action_result['error'], 'follow_ups' => [] }
+          end
 
           rearm_false_if_rules!
           signature = if_world_signature
           if seen.key?(signature)
-            return { 'rules' => fired, 'error' => if_loop_error(condition_trail) }
+            error = if_loop_error(condition_trail)
+            discard_if_follow_up_steps!(fired, 'IF rules did not finish, so this event will not happen.')
+            return { 'rules' => fired, 'error' => error, 'follow_ups' => [] }
           end
           seen[signature] = true
         end
@@ -550,14 +622,41 @@ Choose one starting amount."
         break unless fired_this_pass
       end
 
-      { 'rules' => fired, 'error' => nil }
+      { 'rules' => fired, 'error' => nil, 'follow_ups' => follow_ups }
     end
-
     def run_action_list(words, actor:, context:, selections: [])
       steps = []
+      follow_ups = []
       error = nil
 
       words.each do |word|
+        if normalize(word['action']) == 'cause'
+          materialized = materialize_caused_event(word, context: context)
+          if materialized['error']
+            steps << {
+              'word' => "(cause #{normalize(word.dig('event', 'raw'))}",
+              'notice_lines' => [materialized.fetch('error')]
+            }
+            error = materialized.fetch('error')
+            break
+          end
+
+          event_text = materialized.fetch('event')
+          caused_by = "(cause #{event_text}"
+          steps << {
+            'word' => caused_by,
+            'change' => "#{event_text} will happen next",
+            'caused_event' => event_text,
+            '_staged_follow_up' => true
+          }
+          follow_ups << {
+            'event' => event_text,
+            'caused_by' => caused_by,
+            'line_number' => word['line_number']
+          }
+          next
+        end
+
         selection = action_selection(word['target'], context: context)
         selections << selection.except('things') if selection['set']
 
@@ -589,13 +688,48 @@ Choose one starting amount."
           break
         end
 
-        targets.each do |target|
-          step = run_official_word(word, target: target, actor: actor)
-          steps << step if step
+        begin
+          targets.each do |target|
+            step = run_official_word(word, target: target, actor: actor)
+            steps << step if step
+          end
+        rescue ArgumentError, KeyError => runtime_error
+          steps << {
+            'word' => display_action_for_selection(word, selection.fetch('text')),
+            'notice_lines' => [runtime_error.message],
+            'targets' => targets.map { |target| target.fetch('name') }
+          }
+          error = runtime_error.message
+          break
         end
       end
 
-      { 'steps' => steps, 'error' => error }
+      if error && !follow_ups.empty?
+        steps.each do |step|
+          next unless step.delete('_staged_follow_up')
+
+          event_text = step.fetch('caused_event')
+          step.delete('change')
+          step['notice_lines'] = ["#{event_text} will not happen because this action body did not finish."]
+        end
+        follow_ups = []
+      else
+        steps.each { |step| step.delete('_staged_follow_up') }
+      end
+
+      { 'steps' => steps, 'error' => error, 'follow_ups' => follow_ups }
+    end
+    def discard_if_follow_up_steps!(rules, message)
+      rules.each { |entry| discard_follow_up_steps!(entry.fetch('steps', []), message) }
+    end
+
+    def discard_follow_up_steps!(steps, message)
+      steps.each do |step|
+        next unless step['caused_event'] && step['change']
+
+        step.delete('change')
+        step['notice_lines'] = [message]
+      end
     end
 
     def display_action_for_selection(word, text)
@@ -845,17 +979,24 @@ Choose one starting amount."
       end
 
       rule.fetch('then', []).each do |word|
-        reference = word['target']
-        next unless normalize(reference && reference['type']) == 'previous'
+        references = if normalize(word['action']) == 'cause'
+                       event = word['event'] || {}
+                       [event['actor'], event['target']].compact
+                     else
+                       [word['target']].compact
+                     end
 
-        kind = normalize(reference['kind_name'])
-        name = context[kind]
-        explanations << "#{normalize(reference['text'])} means #{name}" if name
+        references.each do |reference|
+          next unless normalize(reference && reference['type']) == 'previous'
+
+          kind = normalize(reference['kind_name'])
+          name = context[kind]
+          explanations << "#{normalize(reference['text'])} means #{name}" if name
+        end
       end
 
       explanations.uniq
     end
-
     def action_selection(reference, context:)
       if reference.is_a?(Hash) && normalize(reference['type']) == 'kind_set'
         kind = normalize(reference['kind_name'])
@@ -970,8 +1111,128 @@ Choose one starting amount."
       normalize(reference['name'] || reference['text'])
     end
 
-    def result(event_text, matched, ran, context, error, matched_when: nil, understood: [], steps: [], selections: [], if_rules: [])
-      {
+    def process_event(event_text, caused_by: nil, caused_by_line: nil)
+      match = find_event_match(event_text)
+      unless match && match['rule']
+        outcome = result(event_text, false, [], {}, match && match['error'], caused_by: caused_by, caused_by_line: caused_by_line)
+        outcome['_follow_ups'] = []
+        outcome['_fatal_error'] = nil
+        return outcome
+      end
+
+      rule = match.fetch('rule')
+      context = match.fetch('context')
+      actor = reference_name(rule.dig('when', 'actor'), context: context)
+      selections = []
+      action_result = run_action_list(rule.fetch('then', []), actor: actor, context: context, selections: selections)
+      steps = action_result.fetch('steps')
+      if_settlement = if action_result['error']
+                        { 'rules' => [], 'error' => nil, 'follow_ups' => [] }
+                      else
+                        settle_if_rules(cause: 'event')
+                      end
+      fatal_error = action_result['error'] || if_settlement['error']
+      if if_settlement['error'] && action_result['error'].nil?
+        discard_follow_up_steps!(steps, 'IF rules did not finish, so this event will not happen.')
+      end
+      follow_ups = if fatal_error
+                     []
+                   else
+                     action_result.fetch('follow_ups', []) + if_settlement.fetch('follow_ups', [])
+                   end
+
+      outcome = result(
+        event_text,
+        true,
+        steps.map { |step| step.fetch('word') },
+        context,
+        fatal_error,
+        matched_when: normalize(rule.dig('when', 'raw')),
+        understood: context_explanations(rule, context),
+        steps: steps,
+        selections: selections,
+        if_rules: if_settlement.fetch('rules'),
+        caused_by: caused_by,
+        caused_by_line: caused_by_line
+      )
+      outcome['_follow_ups'] = follow_ups
+      outcome['_fatal_error'] = fatal_error
+      outcome
+    end
+
+    def drain_follow_up_events(initial_events)
+      queue = initial_events.map(&:dup)
+      events = []
+      trail = []
+      error = nil
+
+      until queue.empty?
+        if events.length >= MAX_FOLLOW_UP_EVENTS
+          error = EVENT_CHAIN_LIMIT_MESSAGE
+          break
+        end
+
+        pending = queue.shift
+        event_text = normalize(pending.fetch('event'))
+        outcome = process_event(
+          event_text,
+          caused_by: pending['caused_by'],
+          caused_by_line: pending['line_number']
+        )
+        produced = outcome.delete('_follow_ups') || []
+        fatal_error = outcome.delete('_fatal_error')
+        events << outcome
+        trail << event_text
+        trail.shift while trail.length > 3
+
+        if fatal_error
+          error = fatal_error
+          break
+        end
+
+        queue.concat(produced)
+      end
+
+      { 'events' => events, 'error' => error, 'trail' => trail }
+    end
+
+    def materialize_caused_event(word, context:)
+      event = word['event'] || {}
+      raw = normalize(event['raw'])
+      actor_reference = event['actor']
+      actor_text = normalize(actor_reference && actor_reference['text'])
+      actor_name = reference_name(actor_reference, context: context)
+      unless actor_name
+        return { 'error' => "BASIC# could not resolve '#{actor_text}' for this caused event." }
+      end
+
+      unless raw.start_with?("#{actor_text} ")
+        return { 'error' => 'BSharp IR caused event does not begin with its actor.' }
+      end
+
+      target_reference = event['target']
+      unless target_reference
+        return { 'event' => normalize("#{actor_name}#{raw[actor_text.length..]}") }
+      end
+
+      target_text = normalize(target_reference['text'])
+      target_name = reference_name(target_reference, context: context)
+      unless target_name
+        return { 'error' => "BASIC# could not resolve '#{target_text}' for this caused event." }
+      end
+
+      suffix = " #{target_text}"
+      unless raw.end_with?(suffix)
+        return { 'error' => 'BSharp IR caused event does not end with its target.' }
+      end
+
+      middle_end = raw.length - suffix.length
+      middle = raw[actor_text.length...middle_end]
+      { 'event' => normalize("#{actor_name}#{middle} #{target_name}") }
+    end
+
+    def result(event_text, matched, ran, context, error, matched_when: nil, understood: [], steps: [], selections: [], if_rules: [], caused_by: nil, caused_by_line: nil)
+      outcome = {
         'event' => event_text,
         'matched' => matched,
         'matched_when' => matched_when,
@@ -981,9 +1242,55 @@ Choose one starting amount."
         'selections' => selections,
         'if_rules' => if_rules,
         'context' => context,
-        'error' => error,
-        'state' => snapshot
+        'error' => error
       }
+      outcome['caused_by'] = caused_by if caused_by
+      outcome['caused_by_line'] = caused_by_line if caused_by_line
+      outcome
+    end
+    def append_follow_up_report(lines, entries)
+      indexes = if entries.length <= 12
+                  (0...entries.length).to_a
+                else
+                  (0...9).to_a + ((entries.length - 3)...entries.length).to_a
+                end
+      previous_index = nil
+
+      indexes.each do |index|
+        if previous_index && index > previous_index + 1
+          lines << "  ... #{index - previous_index - 1} more follow-up events happened ..."
+        end
+
+        entry = entries.fetch(index)
+        lines << "  event #{index + 1}: #{entry.fetch('event')}"
+        if entry['caused_by']
+          lines << '  caused by:'
+          lines << "    #{entry.fetch('caused_by')}"
+        end
+        lines << "  matched: #{entry.fetch('matched') ? 'yes' : 'no'}"
+        lines << "  error: #{entry.fetch('error')}" if entry['error']
+        if entry['matched_when']
+          lines << '  what matched:'
+          lines << "    #{entry.fetch('matched_when')}"
+        end
+        unless entry.fetch('understood', []).empty?
+          lines << '  what I understood:'
+          entry.fetch('understood').each { |line| lines << "    #{line}" }
+        end
+        unless entry.fetch('selections', []).empty?
+          lines << '  what I selected:'
+          append_selection_report(lines, entry.fetch('selections'), indent: '    ')
+        end
+        unless entry.fetch('steps', []).empty?
+          lines << '  what happened:'
+          append_steps_report(lines, entry.fetch('steps'), indent: '    ')
+        end
+        unless entry.fetch('if_rules', []).empty?
+          lines << '  IF rules:'
+          append_if_rule_report(lines, entry.fetch('if_rules'))
+        end
+        previous_index = index
+      end
     end
 
     def append_if_rule_report(lines, entries)

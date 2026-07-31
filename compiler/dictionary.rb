@@ -17,7 +17,7 @@ module BasicSharp
         open closed locked unlocked alive dead calm angry friendly hostile visible hidden carried dropped broken whole on off
       ]
       @actions = %w[
-        take drop carry open close lock unlock attack damage change speak give eat wear remove sound
+        take drop carry open close lock unlock attack damage change speak give eat wear remove sound cause
       ]
       @relations = ['is', 'isnt', 'in', 'on', 'held by', 'worn by', 'connects', 'unlocks', 'owned by']
       @objects = {}
@@ -78,6 +78,11 @@ module BasicSharp
 
     def known_action?(word)
       @actions.include?(normalize_action(word))
+    end
+
+    def known_event_action?(word)
+      action = normalize_action(word)
+      action != 'cause' && @actions.include?(action)
     end
 
     def known_object?(name)

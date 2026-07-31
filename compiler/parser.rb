@@ -254,7 +254,11 @@ module BasicSharp
 
       verb = match[1].downcase
       rest = match[2].strip.downcase
-      target, tail = split_order_rest(rest)
+      target, tail = if verb == 'cause'
+                       [rest, '']
+                     else
+                       split_order_rest(rest)
+                     end
       ActionCall.new(verb: verb, target: target, tail: tail, line_number: child.line_number)
     end
 
