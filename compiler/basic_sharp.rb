@@ -11,13 +11,14 @@ require_relative 'world_save'
 require_relative 'ask'
 require_relative 'bytecode_emitter'
 require_relative 'bytecode_loader'
+require_relative 'bytecode_virtual_machine'
 
 if ARGV.empty?
   warn 'Usage: ruby compiler/basic_sharp.rb source.bsharp [--json|--emit-ast|--emit-ir|--emit-bytecode] [--out path] [--run "event"]'
   warn '       [--load-world path.bsave.json] [--ask "question"]... [--ask-json] [--save-world path.bsave.json]'
   warn '   or: ruby compiler/basic_sharp.rb existing.bsir.json [--run "event"] [--load-world path.bsave.json]'
   warn '       [--ask "question"]... [--ask-json] [--save-world path.bsave.json]'
-  warn '   or: ruby compiler/basic_sharp.rb program.bsbc [--disassemble-bytecode] [--against source.bsharp|program.bsir.json]'
+  warn '   or: ruby compiler/basic_sharp.rb program.bsbc [--run "event"] [--disassemble-bytecode] [--against source.bsharp|program.bsir.json]'
   exit 64
 end
 
@@ -124,17 +125,22 @@ rescue JSON::ParserError => error
 end
 
 if bytecode_input
-  incompatible = emit_ast || emit_ir || emit_bytecode || run_index || load_index || save_index ||
-                 !ask_questions.empty? || ask_json || out_index
+  incompatible = emit_ast || emit_ir || emit_bytecode || load_index || save_index ||
+                 !ask_questions.empty? || ask_json || out_index || (run_index && disassemble_bytecode)
   if incompatible
-    warn 'BASIC# v0.1.28 can validate and disassemble BSharp Bytecode, but bytecode execution and other compiler modes require source or BSIR.'
+    warn 'BASIC# v0.1.29 can validate, disassemble, or run BSharp Bytecode, but world-save, ASK, compiler-output, and combined run/disassembly modes remain unavailable for BSBC.'
     exit 64
   end
 
   begin
     expected = against_path ? comparison_fingerprint(against_path) : nil
     loader = BasicSharp::BytecodeLoader.read(path, expected_fingerprint: expected)
-    if disassemble_bytecode
+    if run_index
+      machine = BasicSharp::BytecodeVirtualMachine.new(loader)
+      result = machine.run_event(run_event)
+      puts machine.report(result)
+      exit(result.fetch('matched') && result['error'].nil? ? 0 : 1)
+    elsif disassemble_bytecode
       print loader.disassembly
     else
       summary = loader.summary
@@ -156,7 +162,7 @@ if bytecode_input
       puts 'meaning comparison: PASS' if against_path
     end
     exit 0
-  rescue BasicSharp::BytecodeLoaderError => error
+  rescue BasicSharp::BytecodeLoaderError, BasicSharp::BytecodeVirtualMachineError => error
     warn error.message
     exit 1
   end

@@ -8,6 +8,7 @@ require_relative '../compiler/parser'
 require_relative '../compiler/resolver'
 require_relative '../compiler/bytecode_emitter'
 require_relative '../compiler/bytecode_loader'
+require_relative '../compiler/bytecode_virtual_machine'
 require_relative '../compiler/world_save'
 
 module BytecodeMutationSupport
@@ -323,12 +324,13 @@ class TestBytecodeLoader < Minitest::Test
     end
   end
 
-  def test_cli_rejects_execution_and_wrong_comparison_program
+  def test_cli_executes_validated_bytecode_and_rejects_wrong_comparison_program
     compiler = File.join(ROOT, 'compiler/basic_sharp.rb')
     bytecode = File.join(ROOT, 'samples/first_room.bsbc')
-    _stdout, stderr, status = Open3.capture3(RUBY, compiler, bytecode, '--run', 'player attacks ember', chdir: ROOT)
-    assert_equal 64, status.exitstatus
-    assert_includes stderr, 'validate and disassemble'
+    stdout, stderr, status = Open3.capture3(RUBY, compiler, bytecode, '--run', 'player attacks ember', chdir: ROOT)
+    assert status.success?, stderr
+    assert_includes stdout, 'BSharp Virtual Machine'
+    assert_includes stdout, 'ember damage is now 1'
 
     _stdout, stderr, status = Open3.capture3(
       RUBY, compiler, bytecode, '--against', File.join(ROOT, 'samples/ask_demo.bsharp'), chdir: ROOT
@@ -336,4 +338,14 @@ class TestBytecodeLoader < Minitest::Test
     refute status.success?
     assert_includes stderr, 'different BASIC# program meaning'
   end
+
+  def test_validated_loader_is_the_only_vm_program_boundary
+    loader = BasicSharp::BytecodeLoader.read(File.join(ROOT, 'samples/first_room.bsbc'))
+    machine = BasicSharp::BytecodeVirtualMachine.new(loader)
+    assert_equal loader.model.fetch(:fingerprint), machine.program_fingerprint
+    assert_equal loader.model, loader.model
+    assert loader.model.frozen?
+  end
+
+
 end

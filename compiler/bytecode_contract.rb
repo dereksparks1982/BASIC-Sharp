@@ -86,6 +86,7 @@ module BasicSharp
       validate_disassembly!(profile.fetch('disassembly'))
       validate_emission!(profile.fetch('emission'))
       validate_loading!(profile.fetch('loading'))
+      validate_execution!(profile.fetch('execution'))
       validate_malformed_rules!(profile.fetch('malformed_rejection_rules'))
 
       text = canonical_json(profile)
@@ -224,6 +225,33 @@ module BasicSharp
 ")
       missing = required.reject { |entry| text.include?(entry) }
       raise BytecodeContractError, "Bytecode loading rules are incomplete: #{missing.join(', ')}" unless missing.empty?
+    end
+
+    def validate_execution!(execution)
+      unless execution['status'] == 'implemented by BASIC# v0.1.29'
+        raise BytecodeContractError, 'BSharp VM implementation status is inconsistent.'
+      end
+      unless execution['input_boundary'] == 'successfully validated deeply frozen BytecodeLoader model'
+        raise BytecodeContractError, 'BSharp VM trusted-loader boundary is inconsistent.'
+      end
+      unless execution['direct_bytecode_interpretation'] == true &&
+             execution['reconstructs_bsir'] == false &&
+             execution['calls_reference_runtime'] == false
+        raise BytecodeContractError, 'BSharp VM independence rules are inconsistent.'
+      end
+      unless execution['follow_up_limit'] == 1_024
+        raise BytecodeContractError, 'BSharp VM follow-up-event limit is inconsistent.'
+      end
+      required = [
+        'START_STATE', 'START_RELATION', 'START_VALUE', 'DAMAGE', 'CHANGE_STATE',
+        'CHANGE_VALUE', 'CARRY', 'UNLOCK', 'CAUSE_EVENT', 'STATE_IS', 'STATE_ISNT',
+        'RELATION_EXISTS', 'VALUE_EQUALS', 'nearest inherited Kind', 'Thing definition order',
+        'reactive IF', 'first-created first-run', 'independent mutable world',
+        'canonical reconstructed wording', 'excluded from v0.1.29'
+      ]
+      text = execution.values.flatten.join("\n")
+      missing = required.reject { |entry| text.include?(entry) }
+      raise BytecodeContractError, "BSharp VM rules are incomplete: #{missing.join(', ')}" unless missing.empty?
     end
 
     def validate_malformed_rules!(rules)

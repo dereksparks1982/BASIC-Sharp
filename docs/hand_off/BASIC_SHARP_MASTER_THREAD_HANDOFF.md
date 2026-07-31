@@ -2,12 +2,12 @@
 
 ## Current candidate
 
-- **Accepted base:** v0.1.27 BSharp Bytecode Emitter and Deterministic Disassembly 1
-- **Accepted commit:** `f82b121`
-- **Accepted tag:** `v0.1.27`
-- **Candidate:** v0.1.28 BSharp Bytecode Loader and Complete Structural Validation 1
+- **Accepted base:** v0.1.28 BSharp Bytecode Loader and Complete Structural Validation 1
+- **Accepted commit:** `e352457`
+- **Accepted tag:** `v0.1.28`
+- **Candidate:** v0.1.29 First BSharp Virtual Machine and Profile 1 Execution
 - **Project path:** `/home/dereksparks1982/DKLab/Projects/BASIC#`
-- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_28_BSHARP_BYTECODE_LOADER_AND_COMPLETE_STRUCTURAL_VALIDATION_1_CHANGED_FILES_ONLY.zip`
+- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_29_FIRST_BSHARP_VIRTUAL_MACHINE_AND_PROFILE_1_EXECUTION_CHANGED_FILES_ONLY.zip`
 
 ## Canonical authority
 
@@ -17,54 +17,54 @@ Read end-to-end before every build:
 docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
 ```
 
-## v0.1.28 completed candidate work
+## v0.1.29 completed candidate work
 
-- Added `compiler/bytecode_loader.rb` for arbitrary `.bsbc` input.
-- Added complete header, directory, section, alignment, padding, string, META, Kind, Thing, START, WHEN, IF, CODE, instruction, selector, reference, and whole-number validation.
-- Added deeply frozen trusted loaded models exposed only after complete validation.
-- Added binary-derived deterministic disassembly matching committed v0.1.27 `.bsbc.txt` files.
-- Added CLI validation, `--disassemble-bytecode`, and `--against` source/BSIR meaning comparison.
-- Added deterministic fixture definitions for all 41 malformed-bytecode rules without storing loose corrupt binaries.
-- Added complete truncation-prefix rejection, repeated-load determinism, loader isolation, and no-partial-model tests.
-- Preserved all six committed v0.1.27 BSBC binaries byte-for-byte.
-- Advanced active BASIC# version surfaces to v0.1.28 without changing creator-facing language meaning.
+- Added `compiler/bytecode_virtual_machine.rb` as the first direct BSBC interpreter.
+- Added `.bsbc --run "event"` CLI execution after complete loader validation.
+- Executes START, all six Profile 1 actions, all four IF conditions, exact and inherited event matching, singular bindings, deterministic set actions, reactive IF settlement, follow-up FIFO order, and both loop guards.
+- Keeps the trusted loader model frozen while each VM owns an independent mutable world.
+- Added canonical VM snapshots and reporting.
+- Added six-sample event-sequence fixtures and twelve valid Meaning Profile startup cases.
+- Added focused proof that the VM runs while the reference Ruby runtime constructor is disabled.
+- Preserved all committed BSBC and disassembly artifacts byte-for-byte.
 
 ## Validation floor
 
-The accepted v0.1.27 floor may not decrease:
+The accepted v0.1.28 floor may not decrease:
 
 ```text
-253 runs
-5,534 assertions
+265 runs
+7,032 assertions
 0 failures
 0 errors
 0 skips
 ```
 
-The final v0.1.28 candidate must exceed that floor and pass all eight stress lanes, all 13 Meaning Profile cases, Company Bible audit, Bytecode Contract audit, Bytecode Emitter lane, Bytecode Loader lane, all 41 malformed fixtures, complete truncation sweep, sample binary hash preservation, generated BSIR/Save/BSBC parity, and exact 39-path scope.
+The final candidate must exceed that floor and pass all established stress lanes, all 13 Meaning Profile cases, Company Bible audit, Bytecode Contract, Emitter, Loader, and new VM lanes, exact 41-path scope, artifact parity, and installer rollback proof.
 
 ## Explicit exclusions
 
-No virtual machine, bytecode execution, Ruby-runtime replacement, BSharp Save loading through BSBC, world mutation, ASK against BSBC, optimization, compression, new bytecode profile, binary-layout change, sample BSBC rewrite, creator-facing syntax, Head, Connector, official word, BSIR/Save/ASK schema change, editor, IDE, engine bridge, self-hosting, pricing, licensing, activation, or subscription work.
+No BSharp Save or ASK through the VM, source/BSIR runtime replacement, full VM-scale stress and performance hardening, optimization, JIT, native machine code, new bytecode profile, binary-layout changes, sample BSBC rewrites, new BASIC# syntax or meaning, editor, IDE, engine bridge, self-hosting, licensing, or monetization work.
 
 ## Risks and controls
 
-- All offsets, counts, lengths, and arithmetic are checked before slicing or allocation.
-- A trusted model is exposed only after every section and cross-reference passes.
-- Every committed sample and valid Meaning Profile artifact is loaded and disassembled for parity.
-- Source and BSIR fingerprint checks are explicit and optional; structural validation alone does not claim source authenticity.
-- Execution, event queues, world mutation, and VM state remain outside this build.
+- The VM accepts only a fully validated `BytecodeLoader`.
+- Focused tests disable the reference runtime to prove direct interpretation.
+- Loaded program data remains deeply frozen and each VM owns isolated state.
+- Set actions preflight every selected Thing before mutation.
+- Existing IF and 1,024-follow-up guards remain active.
+- Canonical reporting does not pretend to recover erased source spelling or line numbers.
 
 ## Rollback
 
 ```text
-commit f82b121
-tag v0.1.27
+commit e352457
+tag v0.1.28
 ```
 
 ## Continuation
 
-Derek installs and validates v0.1.28 before commit or tag. After acceptance, the next eligible proposal is **First BSharp Virtual Machine 1**, unless Derek changes direction.
+Derek installs and validates v0.1.29 before commit or tag. After acceptance, the next eligible proposal is **Source, BSIR, and BSBC Runtime Parity and Hardening**, unless Derek changes direction.
 
 ## Accepted history
 
@@ -72,3 +72,4 @@ Derek installs and validates v0.1.28 before commit or tag. After acceptance, the
 - v0.1.25 Canonical Company Bible Consolidation, commit `dadd813`.
 - v0.1.26 BSharp Bytecode Architecture and Instruction Contract 1, commit `479db66`.
 - v0.1.27 BSharp Bytecode Emitter and Deterministic Disassembly 1, commit `f82b121`.
+- v0.1.28 BSharp Bytecode Loader and Complete Structural Validation 1, commit `e352457`.

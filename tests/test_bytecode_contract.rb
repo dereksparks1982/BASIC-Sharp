@@ -122,6 +122,20 @@ class TestBytecodeContract < Minitest::Test
     assert_includes loading.fetch('malformed_fixture_count'), '41'
   end
 
+
+  def test_vm_execution_contract_is_direct_and_profile_complete
+    execution = profile.fetch('execution')
+    assert_equal 'implemented by BASIC# v0.1.29', execution.fetch('status')
+    assert_equal 'successfully validated deeply frozen BytecodeLoader model', execution.fetch('input_boundary')
+    assert_equal true, execution.fetch('direct_bytecode_interpretation')
+    assert_equal false, execution.fetch('reconstructs_bsir')
+    assert_equal false, execution.fetch('calls_reference_runtime')
+    assert_equal 1_024, execution.fetch('follow_up_limit')
+    assert_includes execution.fetch('action_instructions'), 'CAUSE_EVENT'
+    assert_includes execution.fetch('condition_instructions'), 'VALUE_EQUALS'
+    assert_includes profile.dig('future_boundaries', 'v0_1_29_excludes'), 'BSharp Save through the VM'
+  end
+
   def test_canonical_contract_is_deterministic_across_hash_order
     reversed = reverse_hashes(deep_copy(profile))
     first = BasicSharp::BytecodeContract.canonical_json(profile)

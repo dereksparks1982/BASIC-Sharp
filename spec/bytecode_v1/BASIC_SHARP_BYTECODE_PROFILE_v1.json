@@ -657,6 +657,29 @@
       "ASK against BSBC",
       "optimization",
       "compression"
+    ],
+    "v0_1_29_includes": [
+      "first BSharp Virtual Machine",
+      "direct Profile 1 bytecode execution",
+      "START world creation",
+      "event matching and actions",
+      "reactive IF settlement",
+      "follow-up event queue and loop protection",
+      "deterministic world snapshots",
+      "reference-runtime parity fixtures",
+      "runtime-independence proof"
+    ],
+    "v0_1_29_excludes": [
+      "BSharp Save through the VM",
+      "ASK against a VM world",
+      "source and BSIR runtime replacement",
+      "full VM stress and performance hardening",
+      "optimization",
+      "JIT",
+      "native machine code",
+      "new bytecode profile",
+      "binary layout changes",
+      "new BASIC# language features"
     ]
   },
   "emission": {
@@ -694,7 +717,46 @@
     "summary": "validated identity, profiles, fingerprint, section counts, block counts, and instruction counts",
     "disassembly": "diagnostic disassembly is reconstructed from validated binary records and must match committed .bsbc.txt output",
     "meaning_comparison": "--against accepts matching .bsharp or .bsir.json and compares sha256-bsir-meaning-v1 exactly",
-    "execution_boundary": "non-executing; the future BSharp virtual machine owns bytecode execution",
+    "execution_boundary": "loader remains non-executing; it validates and exposes a trusted model that BSharp Virtual Machine v0.1.29 executes separately",
     "malformed_fixture_count": "41 deterministic in-memory corruption cases; no loose corrupted binaries"
+  },
+  "execution": {
+    "status": "implemented by BASIC# v0.1.29",
+    "input_boundary": "successfully validated deeply frozen BytecodeLoader model",
+    "direct_bytecode_interpretation": true,
+    "reconstructs_bsir": false,
+    "calls_reference_runtime": false,
+    "startup_instructions": [
+      "START_STATE",
+      "START_RELATION",
+      "START_VALUE"
+    ],
+    "action_instructions": [
+      "DAMAGE",
+      "CHANGE_STATE",
+      "CHANGE_VALUE",
+      "CARRY",
+      "UNLOCK",
+      "CAUSE_EVENT"
+    ],
+    "condition_instructions": [
+      "STATE_IS",
+      "STATE_ISNT",
+      "RELATION_EXISTS",
+      "VALUE_EQUALS"
+    ],
+    "event_match_priority": [
+      "exact named Thing",
+      "nearest inherited Kind",
+      "source order for equal distance"
+    ],
+    "every_kind_order": "Thing definition order",
+    "if_settlement": "complete action body, then reactive IF settlement",
+    "follow_up_order": "IF settlement, then first-created first-run queue",
+    "follow_up_limit": 1024,
+    "world_isolation": "each VM owns an independent mutable world; loaded program stays frozen",
+    "reporting": "canonical reconstructed wording from semantic bytecode records",
+    "save_support": "excluded from v0.1.29",
+    "ask_support": "excluded from v0.1.29"
   }
 }

@@ -1,0 +1,872 @@
+# frozen_string_literal: true
+
+require 'json'
+require 'set'
+require_relative 'ast_nodes'
+require_relative 'bytecode_contract'
+require_relative 'bytecode_loader'
+
+module BasicSharp
+  class BytecodeVirtualMachineError < ArgumentError; end
+
+  # Executes only completely validated BSharp Bytecode models.
+  # It intentionally does not depend on BasicSharp::Runtime or reconstruct BSIR.
+  class BytecodeVirtualMachine
+    MAX_WHOLE_NUMBER = 2_147_483_647
+    MAX_FOLLOW_UP_EVENTS = 1_024
+    EVENT_CHAIN_LIMIT_MESSAGE = [
+      'Events kept causing more events.',
+      '',
+      'BASIC# stopped this chain after 1,024 follow-up events so it would not run forever.'
+    ].join("\n").freeze
+
+    attr_reader :startup_ran, :startup_if_rules, :startup_if_error, :startup_follow_up_events
+
+    def initialize(loader)
+      unless loader.is_a?(BytecodeLoader)
+        raise BytecodeVirtualMachineError,
+              'The BSharp Virtual Machine accepts only a successfully validated BytecodeLoader.'
+      end
+
+      @loader = loader
+      @program = loader.model
+      validate_profile!
+      build_indexes
+      create_world
+      execute_start_records
+      @if_active = Array.new(@program.fetch(:if_rules).length, false)
+      @startup_ran = []
+      @startup_if_rules = []
+      @startup_if_error = nil
+      @startup_follow_up_events = []
+
+      settlement = settle_if_rules(cause: 'START')
+      @startup_if_rules = settlement.fetch('rules')
+      @startup_if_error = settlement['error']
+      @startup_ran = @startup_if_rules.flat_map do |entry|
+        entry.fetch('steps').map { |step| step.fetch('word') }
+      end
+
+      if @startup_if_error.nil? && !settlement.fetch('follow_ups').empty?
+        chain = drain_follow_up_events(settlement.fetch('follow_ups'))
+        @startup_follow_up_events = chain.fetch('events')
+        @startup_if_error = chain['error']
+      end
+      @save_ready = @startup_if_error.nil?
+    end
+
+    def run_event(text)
+      @save_ready = false
+      root = process_event(normalize(text))
+      queued = root.delete('_follow_ups') || []
+      root_fatal_error = root.delete('_fatal_error')
+      chain = if root_fatal_error
+                { 'events' => [], 'error' => nil, 'trail' => [] }
+              else
+                drain_follow_up_events(queued)
+              end
+
+      root['follow_up_events'] = chain.fetch('events')
+      root['event_trail'] = chain.fetch('trail')
+      root['error'] ||= chain['error']
+      root['state'] = snapshot
+      @save_ready = root.fetch('matched') && root['error'].nil?
+      root
+    end
+
+    def snapshot
+      @world.map do |thing|
+        entry = {
+          'name' => thing.fetch(:name),
+          'kind' => kind_name(thing.fetch(:kind_index)),
+          'builtin' => thing.fetch(:builtin),
+          'states' => thing.fetch(:states).to_a.sort,
+          'relations' => thing.fetch(:relations).sort.to_h,
+          'values' => thing.fetch(:values).sort.to_h
+        }
+        damage = thing.fetch(:values).fetch('damage', 0)
+        entry['damage'] = damage if damage.positive?
+        entry
+      end
+    end
+
+    def program_fingerprint
+      @program.fetch(:fingerprint)
+    end
+
+    def save_ready?
+      @save_ready == true
+    end
+
+    def report(event_result)
+      lines = []
+      lines << "BSharp Virtual Machine v#{VERSION}"
+      lines << "event: #{event_result.fetch('event')}"
+      lines << "matched: #{event_result.fetch('matched') ? 'yes' : 'no'}"
+      lines << "error: #{event_result.fetch('error')}" if event_result['error']
+      if event_result['matched_when']
+        lines << 'what matched:'
+        lines << "  #{event_result.fetch('matched_when')}"
+      end
+      unless event_result.fetch('understood', []).empty?
+        lines << 'what I understood:'
+        event_result.fetch('understood').each { |line| lines << "  #{line}" }
+      end
+      unless event_result.fetch('selections', []).empty?
+        lines << 'what I selected:'
+        append_selection_report(lines, event_result.fetch('selections'), indent: '  ')
+      end
+      unless startup_if_rules.empty?
+        lines << 'starting IF rules:'
+        append_if_rule_report(lines, startup_if_rules)
+      end
+      unless startup_follow_up_events.empty?
+        lines << 'starting follow-up events:'
+        append_follow_up_report(lines, startup_follow_up_events)
+      end
+      lines << "starting IF error: #{startup_if_error}" if startup_if_error
+      unless event_result.fetch('steps', []).empty?
+        lines << 'what happened:'
+        append_steps_report(lines, event_result.fetch('steps'), indent: '  ')
+      end
+      unless event_result.fetch('if_rules', []).empty?
+        lines << 'IF rules:'
+        append_if_rule_report(lines, event_result.fetch('if_rules'))
+      end
+      unless event_result.fetch('follow_up_events', []).empty?
+        lines << 'what happened next:'
+        append_follow_up_report(lines, event_result.fetch('follow_up_events'))
+      end
+      if event_result['error'] == EVENT_CHAIN_LIMIT_MESSAGE && !event_result.fetch('event_trail', []).empty?
+        lines << 'last events before BASIC# stopped:'
+        event_result.fetch('event_trail').each { |event| lines << "  #{event}" }
+      end
+      lines << 'world state:'
+      snapshot.each { |thing| lines << "  #{format_thing(thing)}" }
+      lines.join("\n")
+    end
+
+    private
+
+    def validate_profile!
+      unless @program.fetch(:profile) == BytecodeContract::PROFILE &&
+             @program.fetch(:meaning_profile) == BytecodeContract::MEANING_PROFILE
+        raise BytecodeVirtualMachineError, 'The BSharp Virtual Machine cannot execute this bytecode profile.'
+      end
+    end
+
+    def build_indexes
+      @strings = @program.fetch(:strings)
+      @kinds = @program.fetch(:kinds)
+      @things = @program.fetch(:things)
+      @blocks = @program.fetch(:blocks).to_h { |entry| [entry.fetch(:id), entry] }
+      @kind_distances = @kinds.each_index.map do |index|
+        distances = {}
+        current = index
+        distance = 0
+        while current != BytecodeContract::NO_REFERENCE_U32
+          distances[current] = distance
+          current = @kinds.fetch(current).fetch(:parent_index)
+          distance += 1
+        end
+        distances.freeze
+      end.freeze
+      @thing_indexes_by_name = @things.each_with_index.to_h { |thing, index| [thing.fetch(:name), index] }.freeze
+    end
+
+    def create_world
+      @world = @things.each_with_index.map do |thing, index|
+        name = thing.fetch(:name)
+        {
+          index: index,
+          name: name,
+          kind_index: thing.fetch(:kind_index),
+          builtin: name == 'player' && kind_name(thing.fetch(:kind_index)) == 'person',
+          states: Set.new,
+          relations: {},
+          values: { 'damage' => 0 }
+        }
+      end
+    end
+
+    def execute_start_records
+      @program.fetch(:start_records).each do |record|
+        operands = record.fetch(:operands)
+        case record.fetch(:name)
+        when 'START_STATE'
+          set_state(world_thing(operands.fetch(0)), string(operands.fetch(1)), optional_string(operands.fetch(2)))
+        when 'START_RELATION'
+          world_thing(operands.fetch(0)).fetch(:relations)[string(operands.fetch(1))] = thing_name(operands.fetch(2))
+        when 'START_VALUE'
+          world_thing(operands.fetch(0)).fetch(:values)[string(operands.fetch(1))] = operands.fetch(2)
+        else
+          raise BytecodeVirtualMachineError, "The BSharp Virtual Machine cannot execute START instruction #{record.fetch(:name)}."
+        end
+      end
+    end
+
+    def process_event(event_text, caused_by: nil)
+      match = find_event_match(event_text)
+      unless match[:event]
+        outcome = result(event_text, false, [], {}, match[:error], caused_by: caused_by)
+        outcome['_follow_ups'] = []
+        outcome['_fatal_error'] = nil
+        return outcome
+      end
+
+      event = match.fetch(:event)
+      context = match.fetch(:context)
+      actor_index = resolved_event_reference(event.fetch(:actor_selector), event.fetch(:actor_reference), context)
+      selections = []
+      action_result = execute_block(event.fetch(:block_index), actor_index: actor_index, context: context, selections: selections)
+      if_settlement = if action_result['error']
+                        { 'rules' => [], 'error' => nil, 'follow_ups' => [] }
+                      else
+                        settle_if_rules(cause: 'event')
+                      end
+      fatal_error = action_result['error'] || if_settlement['error']
+      if if_settlement['error'] && action_result['error'].nil?
+        discard_follow_up_steps!(action_result.fetch('steps'), 'IF rules did not finish, so this event will not happen.')
+      end
+      follow_ups = fatal_error ? [] : action_result.fetch('follow_ups') + if_settlement.fetch('follow_ups')
+
+      outcome = result(
+        event_text,
+        true,
+        action_result.fetch('steps').map { |step| step.fetch('word') },
+        context_names(context),
+        fatal_error,
+        matched_when: canonical_event_pattern(event),
+        understood: context_explanations(event, context),
+        steps: action_result.fetch('steps'),
+        selections: selections,
+        if_rules: if_settlement.fetch('rules'),
+        caused_by: caused_by
+      )
+      outcome['_follow_ups'] = follow_ups
+      outcome['_fatal_error'] = fatal_error
+      outcome
+    end
+
+    def find_event_match(event_text)
+      exact = @program.fetch(:events).find do |event|
+        event.fetch(:actor_selector) == 'EXACT_THING' &&
+          %w[EXACT_THING NO_REFERENCE].include?(event.fetch(:target_selector)) &&
+          event_text == canonical_concrete_event(event)
+      end
+      return { event: exact, context: {}, error: nil } if exact
+
+      best = nil
+      best_distance = nil
+      best_error = nil
+      @program.fetch(:events).each do |event|
+        parsed = parse_event_text(event_text, event.fetch(:action))
+        next unless parsed
+
+        actor = match_event_reference(event.fetch(:actor_selector), event.fetch(:actor_reference), parsed.fetch(:actor))
+        unless actor[:matched]
+          best_error ||= actor[:error] if event.fetch(:actor_selector) == 'ONE_KIND'
+          next
+        end
+        target = match_event_reference(event.fetch(:target_selector), event.fetch(:target_reference), parsed.fetch(:target))
+        unless target[:matched]
+          best_error ||= target[:error]
+          next
+        end
+
+        context = {}
+        bind_context(context, actor)
+        bind_context(context, target)
+        distance = actor.fetch(:distance, 0) + target.fetch(:distance, 0)
+        if best.nil? || distance < best_distance
+          best = { event: event, context: context, error: nil }
+          best_distance = distance
+        end
+      end
+      best || { event: nil, context: {}, error: best_error }
+    end
+
+    def match_event_reference(selector, reference, supplied)
+      supplied = normalize(supplied)
+      case selector
+      when 'NO_REFERENCE'
+        { matched: supplied.empty?, distance: 0 }
+      when 'EXACT_THING'
+        { matched: supplied == thing_name(reference), distance: 0, thing_index: reference }
+      when 'ONE_KIND'
+        thing_index = @thing_indexes_by_name[supplied]
+        unless thing_index
+          return { matched: false, error: "event Thing '#{supplied}' is not defined", kind_index: reference }
+        end
+        actual_kind = @things.fetch(thing_index).fetch(:kind_index)
+        distance = kind_distance(actual_kind, reference)
+        unless distance
+          return {
+            matched: false,
+            error: "#{supplied} is a #{kind_name(actual_kind)}, not a #{kind_name(reference)}",
+            kind_index: reference,
+            thing_index: thing_index
+          }
+        end
+        { matched: true, distance: distance, kind_index: reference, thing_index: thing_index }
+      else
+        { matched: false, error: "event selector #{selector} is not executable" }
+      end
+    end
+
+    def bind_context(context, match)
+      context[match[:kind_index]] = match[:thing_index] if match[:kind_index] && match[:thing_index]
+    end
+
+    def parse_event_text(event_text, expected_action)
+      words = normalize(event_text).split
+      action_index = words.each_index.find do |index|
+        index.positive? && normalize_event_word(words[index]) == normalize(expected_action)
+      end
+      return nil unless action_index
+
+      {
+        actor: words[0...action_index].join(' '),
+        target: words[(action_index + 1)..]&.join(' ').to_s
+      }
+    end
+
+    def normalize_event_word(word)
+      normalized = normalize(word)
+      return normalized[0...-3] + 'y' if normalized.end_with?('ies')
+      if normalized.end_with?('es') && normalized[0...-2].end_with?('s', 'x', 'z', 'ch', 'sh')
+        return normalized[0...-2]
+      end
+      normalized.sub(/s\z/, '')
+    end
+
+    def execute_block(block_index, actor_index:, context:, selections: [])
+      block = @blocks.fetch(block_index)
+      steps = []
+      follow_ups = []
+      error = nil
+
+      block.fetch(:instructions).each do |instruction|
+        if instruction.fetch(:name) == 'CAUSE_EVENT'
+          event_text = materialize_caused_event(instruction, context)
+          caused_by = "(cause #{event_text}"
+          steps << {
+            'word' => caused_by,
+            'change' => "#{event_text} will happen next",
+            'caused_event' => event_text,
+            '_staged_follow_up' => true
+          }
+          follow_ups << { 'event' => event_text, 'caused_by' => caused_by }
+          next
+        end
+
+        selection = action_selection(instruction, context)
+        selections << selection.reject { |key, _| key == :thing_indexes } if selection[:set]
+        targets = selection.fetch(:thing_indexes)
+
+        if targets.empty? && selection[:set]
+          steps << {
+            'word' => display_action_for_selection(instruction, selection.fetch(:text)),
+            'notice_lines' => [
+              "#{selection.fetch(:text)} found no Things",
+              "(#{canonical_action_name(instruction)} had nothing to act on"
+            ],
+            'targets' => []
+          }
+          next
+        end
+
+        preflight_error = preflight_action(instruction, targets)
+        if preflight_error
+          steps << {
+            'word' => display_action_for_selection(instruction, selection.fetch(:text)),
+            'notice_lines' => [preflight_error, 'Nothing in this action line was changed.'],
+            'targets' => targets.map { |index| thing_name(index) }
+          }
+          error = preflight_error
+          break
+        end
+
+        targets.each do |target_index|
+          steps << execute_instruction(instruction, target_index: target_index, actor_index: actor_index)
+        end
+      rescue BytecodeVirtualMachineError, KeyError => runtime_error
+        steps << {
+          'word' => display_action_for_selection(instruction, selection ? selection.fetch(:text) : 'unknown target'),
+          'notice_lines' => [runtime_error.message]
+        }
+        error = runtime_error.message
+        break
+      end
+
+      if error && !follow_ups.empty?
+        steps.each do |step|
+          next unless step.delete('_staged_follow_up')
+
+          event_text = step.fetch('caused_event')
+          step.delete('change')
+          step['notice_lines'] = ["#{event_text} will not happen because this action body did not finish."]
+        end
+        follow_ups = []
+      else
+        steps.each { |step| step.delete('_staged_follow_up') }
+      end
+
+      { 'steps' => steps, 'error' => error, 'follow_ups' => follow_ups }
+    end
+
+    def action_selection(instruction, context)
+      selector = selector_name(instruction.fetch(:operands).fetch(0))
+      reference = instruction.fetch(:operands).fetch(1)
+      case selector
+      when 'EXACT_THING'
+        indexes = [reference]
+        { set: false, text: thing_name(reference), targets: indexes.map { |i| thing_name(i) }, count: 1, thing_indexes: indexes }
+      when 'BOUND_THAT_KIND'
+        index = context[reference]
+        indexes = index.nil? ? [] : [index]
+        { set: false, text: "that #{kind_name(reference)}", targets: indexes.map { |i| thing_name(i) }, count: indexes.length, thing_indexes: indexes }
+      when 'EVERY_KIND'
+        indexes = @world.each_index.select do |index|
+          !kind_distance(@things.fetch(index).fetch(:kind_index), reference).nil?
+        end
+        { set: true, text: "every #{kind_name(reference)}", kind_name: kind_name(reference), targets: indexes.map { |i| thing_name(i) }, count: indexes.length, thing_indexes: indexes }
+      else
+        raise BytecodeVirtualMachineError, "Action selector #{selector} cannot select a Thing."
+      end
+    end
+
+    def preflight_action(instruction, targets)
+      operands = instruction.fetch(:operands)
+      case instruction.fetch(:name)
+      when 'DAMAGE'
+        amount = operands.fetch(2)
+        overflowing = targets.find do |index|
+          world_thing(index).fetch(:values).fetch('damage', 0) > MAX_WHOLE_NUMBER - amount
+        end
+        "#{thing_name(overflowing)} damage would be greater than #{MAX_WHOLE_NUMBER}" if overflowing
+      when 'CHANGE_VALUE'
+        value_name = string(operands.fetch(2))
+        missing = targets.find { |index| !world_thing(index).fetch(:values).key?(value_name) }
+        "#{thing_name(missing)} does not have a value named #{value_name}." if missing
+      end
+    end
+
+    def execute_instruction(instruction, target_index:, actor_index:)
+      target = world_thing(target_index)
+      target_name = target.fetch(:name)
+      operands = instruction.fetch(:operands)
+      case instruction.fetch(:name)
+      when 'DAMAGE'
+        amount = operands.fetch(2)
+        old_amount = target.fetch(:values).fetch('damage', 0)
+        new_amount = old_amount + amount
+        target.fetch(:values)['damage'] = new_amount
+        step = {
+          'word' => amount == 1 ? "(damage #{target_name}" : "(damage #{target_name} by #{amount}",
+          'change' => amount == 1 ? "#{target_name} damage is now #{new_amount}" : "#{target_name} damage changed from #{old_amount} to #{new_amount}"
+        }
+        if amount != 1
+          step['value_change'] = {
+            'value_name' => 'damage', 'old_amount' => old_amount,
+            'new_amount' => new_amount, 'action_amount' => amount
+          }
+        end
+        step
+      when 'CHANGE_STATE'
+        state = string(operands.fetch(2))
+        opposite = optional_string(operands.fetch(3))
+        set_state(target, state, opposite)
+        { 'word' => "(change #{target_name} to #{state}", 'change' => "#{target_name} is now #{state}" }
+      when 'CHANGE_VALUE'
+        value_name = string(operands.fetch(2))
+        old_amount = target.fetch(:values).fetch(value_name)
+        new_amount = operands.fetch(3)
+        target.fetch(:values)[value_name] = new_amount
+        {
+          'word' => "(change #{value_name} of #{target_name} to #{new_amount}",
+          'change' => "#{target_name} #{value_name} changed from #{old_amount} to #{new_amount}",
+          'value_change' => { 'value_name' => value_name, 'old_amount' => old_amount, 'new_amount' => new_amount }
+        }
+      when 'CARRY'
+        carrier = actor_index.nil? ? 'player' : thing_name(actor_index)
+        target.fetch(:relations).delete('on')
+        target.fetch(:relations).delete('in')
+        target.fetch(:relations)['carried by'] = carrier
+        { 'word' => "(carry #{target_name}", 'change' => "#{target_name} is now carried by #{carrier}" }
+      when 'UNLOCK'
+        set_state(target, 'unlocked', 'locked')
+        { 'word' => "(unlock #{target_name}", 'change' => "#{target_name} is now unlocked" }
+      else
+        raise BytecodeVirtualMachineError, "The BSharp Virtual Machine cannot execute #{instruction.fetch(:name)}."
+      end
+    end
+
+    def materialize_caused_event(instruction, context)
+      operands = instruction.fetch(:operands)
+      actor = materialize_event_reference(selector_name(operands.fetch(0)), operands.fetch(1), context)
+      action = third_person_action(string(operands.fetch(2)))
+      target_selector = selector_name(operands.fetch(3))
+      target = materialize_event_reference(target_selector, operands.fetch(4), context)
+      normalize([actor, action, target].reject(&:empty?).join(' '))
+    end
+
+    def materialize_event_reference(selector, reference, context)
+      case selector
+      when 'NO_REFERENCE' then ''
+      when 'EXACT_THING' then thing_name(reference)
+      when 'BOUND_THAT_KIND'
+        index = context[reference]
+        raise BytecodeVirtualMachineError, "BASIC# could not resolve 'that #{kind_name(reference)}' for this caused event." if index.nil?
+        thing_name(index)
+      when 'ONE_KIND' then "one #{kind_name(reference)}"
+      else
+        raise BytecodeVirtualMachineError, "Caused-event selector #{selector} is not executable."
+      end
+    end
+
+    def settle_if_rules(cause:)
+      rules = @program.fetch(:if_rules)
+      return { 'rules' => [], 'error' => nil, 'follow_ups' => [] } if rules.empty?
+
+      fired = []
+      follow_ups = []
+      fired_indexes = Set.new
+      initially_true = rules.map { |rule| condition_true?(rule.fetch(:condition)) }
+      seen = nil
+      firing_limit = [256, rules.length * 8].max
+      condition_trail = []
+
+      loop do
+        fired_this_pass = false
+        rules.each_with_index do |rule, index|
+          current = condition_true?(rule.fetch(:condition))
+          unless current
+            @if_active[index] = false
+            next
+          end
+          next if @if_active[index]
+
+          if fired.length >= firing_limit
+            error = if_loop_error(condition_trail)
+            discard_if_follow_up_steps!(fired, 'IF rules did not finish, so this event will not happen.')
+            return { 'rules' => fired, 'error' => error, 'follow_ups' => [] }
+          end
+
+          seen ||= { if_world_signature => true }
+          @if_active[index] = true
+          selections = []
+          action_result = execute_block(rule.fetch(:block_index), actor_index: nil, context: {}, selections: selections)
+          condition = canonical_condition(rule.fetch(:condition))
+          reason = if initially_true[index] && !fired_indexes.include?(index)
+                     cause == 'START' ? 'was true after START' : 'became true after the event'
+                   else
+                     'became true'
+                   end
+          fired << {
+            'condition' => condition,
+            'reason' => reason,
+            'steps' => action_result.fetch('steps'),
+            'selections' => selections
+          }
+          follow_ups.concat(action_result.fetch('follow_ups'))
+          fired_indexes.add(index)
+          condition_trail << condition
+          condition_trail.shift while condition_trail.length > 3
+          fired_this_pass = true
+
+          if action_result['error']
+            discard_if_follow_up_steps!(fired, 'IF rules did not finish, so this event will not happen.')
+            return { 'rules' => fired, 'error' => action_result['error'], 'follow_ups' => [] }
+          end
+
+          rearm_false_if_rules!
+          signature = if_world_signature
+          if seen.key?(signature)
+            error = if_loop_error(condition_trail)
+            discard_if_follow_up_steps!(fired, 'IF rules did not finish, so this event will not happen.')
+            return { 'rules' => fired, 'error' => error, 'follow_ups' => [] }
+          end
+          seen[signature] = true
+        end
+        break unless fired_this_pass
+      end
+
+      { 'rules' => fired, 'error' => nil, 'follow_ups' => follow_ups }
+    end
+
+    def condition_true?(condition)
+      operands = condition.fetch(:operands)
+      subject = world_thing(operands.fetch(0))
+      case condition.fetch(:name)
+      when 'STATE_IS'
+        subject.fetch(:states).include?(string(operands.fetch(1)))
+      when 'STATE_ISNT'
+        !subject.fetch(:states).include?(string(operands.fetch(1)))
+      when 'RELATION_EXISTS'
+        subject.fetch(:relations)[string(operands.fetch(1))] == thing_name(operands.fetch(2))
+      when 'VALUE_EQUALS'
+        subject.fetch(:values)[string(operands.fetch(1))] == operands.fetch(2)
+      else
+        false
+      end
+    end
+
+    def drain_follow_up_events(initial_events)
+      queue = initial_events.map(&:dup)
+      events = []
+      trail = []
+      error = nil
+      until queue.empty?
+        if events.length >= MAX_FOLLOW_UP_EVENTS
+          error = EVENT_CHAIN_LIMIT_MESSAGE
+          break
+        end
+        pending = queue.shift
+        event_text = normalize(pending.fetch('event'))
+        outcome = process_event(event_text, caused_by: pending['caused_by'])
+        produced = outcome.delete('_follow_ups') || []
+        fatal_error = outcome.delete('_fatal_error')
+        events << outcome
+        trail << event_text
+        trail.shift while trail.length > 3
+        if fatal_error
+          error = fatal_error
+          break
+        end
+        queue.concat(produced)
+      end
+      { 'events' => events, 'error' => error, 'trail' => trail }
+    end
+
+    def rearm_false_if_rules!
+      @program.fetch(:if_rules).each_with_index do |rule, index|
+        @if_active[index] = false unless condition_true?(rule.fetch(:condition))
+      end
+    end
+
+    def if_world_signature
+      JSON.generate([snapshot, @if_active])
+    end
+
+    def if_loop_error(condition_trail)
+      shown = condition_trail.empty? ? ['IF conditions repeated'] : condition_trail
+      "IF rules kept waking each other.\n\n#{shown.join("\n")}\n\nBASIC# stopped this chain so it would not run forever."
+    end
+
+    def discard_if_follow_up_steps!(rules, message)
+      rules.each { |entry| discard_follow_up_steps!(entry.fetch('steps'), message) }
+    end
+
+    def discard_follow_up_steps!(steps, message)
+      steps.each do |step|
+        next unless step['caused_event'] && step['change']
+        step.delete('change')
+        step['notice_lines'] = [message]
+      end
+    end
+
+    def set_state(thing, state, opposite = nil)
+      thing.fetch(:states).delete(opposite) if opposite
+      thing.fetch(:states).add(state)
+    end
+
+    def canonical_condition(condition)
+      operands = condition.fetch(:operands)
+      subject = thing_name(operands.fetch(0))
+      case condition.fetch(:name)
+      when 'STATE_IS' then "#{subject} is #{string(operands.fetch(1))}"
+      when 'STATE_ISNT' then "#{subject} isnt #{string(operands.fetch(1))}"
+      when 'RELATION_EXISTS' then "#{subject} is #{string(operands.fetch(1))} #{thing_name(operands.fetch(2))}"
+      when 'VALUE_EQUALS' then "#{subject} has #{operands.fetch(2)} #{string(operands.fetch(1))}"
+      end
+    end
+
+    def canonical_event_pattern(event)
+      actor = event_reference_text(event.fetch(:actor_selector), event.fetch(:actor_reference), article: true)
+      target = event_reference_text(event.fetch(:target_selector), event.fetch(:target_reference), article: true)
+      normalize([actor, third_person_action(event.fetch(:action)), target].reject(&:empty?).join(' '))
+    end
+
+    def canonical_concrete_event(event)
+      actor = event_reference_text(event.fetch(:actor_selector), event.fetch(:actor_reference), article: false)
+      target = event_reference_text(event.fetch(:target_selector), event.fetch(:target_reference), article: false)
+      normalize([actor, third_person_action(event.fetch(:action)), target].reject(&:empty?).join(' '))
+    end
+
+    def event_reference_text(selector, reference, article:)
+      case selector
+      when 'NO_REFERENCE' then ''
+      when 'EXACT_THING' then thing_name(reference)
+      when 'ONE_KIND' then article ? "a #{kind_name(reference)}" : kind_name(reference)
+      else ''
+      end
+    end
+
+    def third_person_action(action)
+      normalized = normalize(action)
+      return normalized[0...-1] + 'ies' if normalized.end_with?('y') && normalized.length > 1
+      return "#{normalized}es" if normalized.end_with?('s', 'x', 'z', 'ch', 'sh')
+      "#{normalized}s"
+    end
+
+    def context_names(context)
+      context.to_h { |kind_index, thing_index| [kind_name(kind_index), thing_name(thing_index)] }
+    end
+
+    def context_explanations(event, context)
+      explanations = []
+      [[event.fetch(:actor_selector), event.fetch(:actor_reference)],
+       [event.fetch(:target_selector), event.fetch(:target_reference)]].each do |selector, reference|
+        next unless selector == 'ONE_KIND' && context.key?(reference)
+        explanations << "a #{kind_name(reference)} means #{thing_name(context.fetch(reference))}"
+      end
+      @blocks.fetch(event.fetch(:block_index)).fetch(:instructions).each do |instruction|
+        refs = if instruction.fetch(:name) == 'CAUSE_EVENT'
+                 [[selector_name(instruction.fetch(:operands).fetch(0)), instruction.fetch(:operands).fetch(1)],
+                  [selector_name(instruction.fetch(:operands).fetch(3)), instruction.fetch(:operands).fetch(4)]]
+               else
+                 [[selector_name(instruction.fetch(:operands).fetch(0)), instruction.fetch(:operands).fetch(1)]]
+               end
+        refs.each do |selector, reference|
+          next unless selector == 'BOUND_THAT_KIND' && context.key?(reference)
+          explanations << "that #{kind_name(reference)} means #{thing_name(context.fetch(reference))}"
+        end
+      end
+      explanations.uniq
+    end
+
+    def resolved_event_reference(selector, reference, context)
+      case selector
+      when 'EXACT_THING' then reference
+      when 'ONE_KIND' then context[reference]
+      else nil
+      end
+    end
+
+    def result(event_text, matched, ran, context, error, matched_when: nil, understood: [], steps: [], selections: [], if_rules: [], caused_by: nil)
+      outcome = {
+        'event' => event_text,
+        'matched' => matched,
+        'matched_when' => matched_when,
+        'understood' => understood,
+        'ran' => ran,
+        'steps' => steps,
+        'selections' => selections.map { |entry| stringify_symbol_hash(entry) },
+        'if_rules' => if_rules,
+        'context' => context,
+        'error' => error
+      }
+      outcome['caused_by'] = caused_by if caused_by
+      outcome
+    end
+
+    def display_action_for_selection(instruction, text)
+      operands = instruction.fetch(:operands)
+      case instruction.fetch(:name)
+      when 'DAMAGE'
+        amount = operands.fetch(2)
+        amount == 1 ? "(damage #{text}" : "(damage #{text} by #{amount}"
+      when 'CHANGE_VALUE'
+        "(change #{string(operands.fetch(2))} of #{text} to #{operands.fetch(3)}"
+      when 'CHANGE_STATE'
+        "(change #{text} to #{string(operands.fetch(2))}"
+      when 'CARRY' then "(carry #{text}"
+      when 'UNLOCK' then "(unlock #{text}"
+      else "(#{canonical_action_name(instruction)} #{text}"
+      end
+    end
+
+    def canonical_action_name(instruction)
+      {
+        'DAMAGE' => 'damage', 'CHANGE_STATE' => 'change', 'CHANGE_VALUE' => 'change',
+        'CARRY' => 'carry', 'UNLOCK' => 'unlock', 'CAUSE_EVENT' => 'cause'
+      }.fetch(instruction.fetch(:name), instruction.fetch(:name).downcase)
+    end
+
+    def selector_name(code)
+      @selector_names ||= BytecodeContract::SELECTORS.invert.freeze
+      @selector_names.fetch(code)
+    end
+
+    def kind_distance(actual_kind_index, expected_kind_index)
+      @kind_distances.fetch(actual_kind_index)[expected_kind_index]
+    end
+
+    def kind_name(index)
+      @kinds.fetch(index).fetch(:name)
+    end
+
+    def thing_name(index)
+      @things.fetch(index).fetch(:name)
+    end
+
+    def world_thing(index)
+      @world.fetch(index)
+    end
+
+    def string(index)
+      @strings.fetch(index)
+    end
+
+    def optional_string(index)
+      index == BytecodeContract::NO_REFERENCE_U32 ? nil : string(index)
+    end
+
+    def normalize(value)
+      value.to_s.strip.downcase.gsub(/\s+/, ' ')
+    end
+
+    def stringify_symbol_hash(hash)
+      hash.each_with_object({}) { |(key, value), out| out[key.to_s] = value }
+    end
+
+    def append_follow_up_report(lines, entries)
+      entries.each_with_index do |entry, index|
+        lines << "  event #{index + 1}: #{entry.fetch('event')}"
+        lines << "  matched: #{entry.fetch('matched') ? 'yes' : 'no'}"
+        lines << "  error: #{entry.fetch('error')}" if entry['error']
+      end
+    end
+
+    def append_if_rule_report(lines, entries)
+      entries.each do |entry|
+        lines << "  #{entry.fetch('condition')} #{entry.fetch('reason')}"
+        lines << '  ran:'
+        append_steps_report(lines, entry.fetch('steps'), indent: '    ')
+      end
+    end
+
+    def append_selection_report(lines, selections, indent:)
+      selections.each do |selection|
+        targets = selection.fetch('targets')
+        if selection.fetch('count').zero?
+          lines << "#{indent}#{selection.fetch('text')} found no Things"
+        else
+          lines << "#{indent}#{selection.fetch('text')} means #{targets.join(', ')}"
+        end
+      end
+    end
+
+    def append_steps_report(lines, steps, indent:)
+      steps.each do |step|
+        lines << "#{indent}#{step.fetch('word')}"
+        lines << "#{indent}#{step.fetch('change')}" if step['change']
+        step.fetch('notice_lines', []).each { |notice| lines << "#{indent}#{notice}" }
+      end
+    end
+
+    def format_thing(thing)
+      details = ["kind=#{thing.fetch('kind')}"]
+      states = thing.fetch('states')
+      details << "states=#{states.join(', ')}" unless states.empty?
+      details << "damage=#{thing.fetch('damage')}" if thing.key?('damage')
+      thing.fetch('values').each do |name, amount|
+        next if name == 'damage'
+        details << "#{name}=#{amount}"
+      end
+      thing.fetch('relations').each { |relation, target| details << "#{relation}=#{target}" }
+      "#{thing.fetch('name')}: #{details.join('; ')}"
+    end
+  end
+end

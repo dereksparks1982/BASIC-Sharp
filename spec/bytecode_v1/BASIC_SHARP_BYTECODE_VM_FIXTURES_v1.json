@@ -1,0 +1,229 @@
+{
+  "format": "bsharp.bytecode.vm.fixtures.json",
+  "format_version": 1,
+  "vm": "BSharp Virtual Machine",
+  "implemented_by_basic_sharp": "0.1.29",
+  "bytecode_profile": "bsharp.bytecode.v1",
+  "meaning_profile": "bsharp.meaning.v1",
+  "sample_programs": [
+    {
+      "name": "ask_demo",
+      "source": "samples/ask_demo.bsharp",
+      "bytecode": "samples/ask_demo.bsbc",
+      "startup_world_sha256": "d6752b55e5e22426c0ccad03637426e1d7b176ea0adc9507d359692eb57e6675",
+      "events": [
+        {
+          "event": "player attacks henry",
+          "matched": true,
+          "error": null,
+          "follow_up_events": [
+            "henry attacks player"
+          ],
+          "if_conditions": [
+            "henry has 3 damage"
+          ]
+        }
+      ],
+      "final_world_sha256": "5af4bb83d40cd52148a0b7f10f4cf8967355a1ca84930ba921ee7b41141be9bc"
+    },
+    {
+      "name": "every_guard",
+      "source": "samples/every_guard.bsharp",
+      "bytecode": "samples/every_guard.bsbc",
+      "startup_world_sha256": "5d64f143b2e91f7b76df51076e23b1640ca7be2d8350cd8022defab76032655c",
+      "events": [
+        {
+          "event": "player sounds brass bell",
+          "matched": true,
+          "error": null,
+          "follow_up_events": [
+
+          ],
+          "if_conditions": [
+
+          ]
+        },
+        {
+          "event": "player attacks mara",
+          "matched": true,
+          "error": null,
+          "follow_up_events": [
+
+          ],
+          "if_conditions": [
+
+          ]
+        }
+      ],
+      "final_world_sha256": "c9f1db0a1aba8d3cb97d4eab53226a9380ddb75b1a2d121589af9b0fcf6ca631"
+    },
+    {
+      "name": "first_room",
+      "source": "samples/first_room.bsharp",
+      "bytecode": "samples/first_room.bsbc",
+      "startup_world_sha256": "645bbe6a3c6a5706381c01fb4cc8414a83ae233fafe4c62cb71c12352e1cdbd6",
+      "events": [
+        {
+          "event": "player attacks cinder",
+          "matched": true,
+          "error": null,
+          "follow_up_events": [
+
+          ],
+          "if_conditions": [
+            "cinder is angry"
+          ]
+        },
+        {
+          "event": "player takes brass key",
+          "matched": true,
+          "error": null,
+          "follow_up_events": [
+
+          ],
+          "if_conditions": [
+
+          ]
+        },
+        {
+          "event": "player attacks henry",
+          "matched": true,
+          "error": null,
+          "follow_up_events": [
+
+          ],
+          "if_conditions": [
+
+          ]
+        }
+      ],
+      "final_world_sha256": "62a195154891ba8ea8a15a13107aec5ef15272675f1966dda26fc71bc8a1a790"
+    },
+    {
+      "name": "follow_up_events",
+      "source": "samples/follow_up_events.bsharp",
+      "bytecode": "samples/follow_up_events.bsbc",
+      "startup_world_sha256": "0a2e87ce61ee8f76cf8eb11ec40048b918714115dcf7d48ffae50e223fb1d549",
+      "events": [
+        {
+          "event": "player attacks henry",
+          "matched": true,
+          "error": null,
+          "follow_up_events": [
+            "henry attacks player",
+            "mara sounds brass bell"
+          ],
+          "if_conditions": [
+            "henry is angry"
+          ]
+        }
+      ],
+      "final_world_sha256": "a2c4fee428324275038a0372238aa29ac0df8709337951a3b1981cc0384d24a2"
+    },
+    {
+      "name": "values_and_amounts",
+      "source": "samples/values_and_amounts.bsharp",
+      "bytecode": "samples/values_and_amounts.bsbc",
+      "startup_world_sha256": "c87e590550665c247a8a99f8f7cda1f0cfb3f388e8c4f850ec74dd045cf9fffa",
+      "events": [
+        {
+          "event": "player sounds brass bell",
+          "matched": true,
+          "error": null,
+          "follow_up_events": [
+
+          ],
+          "if_conditions": [
+            "henry has 3 damage"
+          ]
+        }
+      ],
+      "final_world_sha256": "6ee39bd48dca198b9e02d0a8d86f505e458bbab2d9c60b9c2598a86ca91ba8c0"
+    },
+    {
+      "name": "world_save_demo",
+      "source": "samples/world_save_demo.bsharp",
+      "bytecode": "samples/world_save_demo.bsbc",
+      "startup_world_sha256": "7482c4fb610c04062cbd35ace4b5c19b003a6d568d36d374901e8335c70b6e47",
+      "events": [
+        {
+          "event": "player attacks henry",
+          "matched": true,
+          "error": null,
+          "follow_up_events": [
+            "henry attacks player"
+          ],
+          "if_conditions": [
+            "henry has 3 damage"
+          ]
+        }
+      ],
+      "final_world_sha256": "78ba3d4ac8a013cfd4e9890a82fccc2049c399498b698feab545805d7908a809"
+    }
+  ],
+  "meaning_cases": [
+    {
+      "case_id": "01",
+      "source": "spec/meaning_v1/cases/01_structure/source.bsharp"
+    },
+    {
+      "case_id": "02",
+      "source": "spec/meaning_v1/cases/02_kinds_things_order/source.bsharp"
+    },
+    {
+      "case_id": "03",
+      "source": "spec/meaning_v1/cases/03_start_world/source.bsharp"
+    },
+    {
+      "case_id": "04",
+      "source": "spec/meaning_v1/cases/04_event_matching/source.bsharp"
+    },
+    {
+      "case_id": "05",
+      "source": "spec/meaning_v1/cases/05_event_priority/source.bsharp"
+    },
+    {
+      "case_id": "06",
+      "source": "spec/meaning_v1/cases/06_that_context/source.bsharp"
+    },
+    {
+      "case_id": "07",
+      "source": "spec/meaning_v1/cases/07_every_selection/source.bsharp"
+    },
+    {
+      "case_id": "08",
+      "source": "spec/meaning_v1/cases/08_reactive_if/source.bsharp"
+    },
+    {
+      "case_id": "09",
+      "source": "spec/meaning_v1/cases/09_numbers_damage/source.bsharp"
+    },
+    {
+      "case_id": "10",
+      "source": "spec/meaning_v1/cases/10_follow_up_order/source.bsharp"
+    },
+    {
+      "case_id": "11",
+      "source": "spec/meaning_v1/cases/11_save_restore/source.bsharp"
+    },
+    {
+      "case_id": "12",
+      "source": "spec/meaning_v1/cases/12_ask_answers/source.bsharp"
+    }
+  ],
+  "invalid_case": "spec/meaning_v1/cases/13_invalid_boundaries/source.bsharp",
+  "required_proofs": [
+    "trusted loader boundary",
+    "direct bytecode interpretation",
+    "START world parity",
+    "event matching parity",
+    "action execution parity",
+    "reactive IF parity",
+    "follow-up event parity",
+    "loop protection",
+    "deterministic final worlds",
+    "separate VM isolation",
+    "canonical reporting",
+    "reference runtime independence"
+  ]
+}
