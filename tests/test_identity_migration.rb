@@ -14,7 +14,7 @@ class TestIdentityMigration < Minitest::Test
   def test_basic_sharp_is_the_only_active_ruby_namespace
     assert Object.const_defined?(:BasicSharp)
     refute Object.const_defined?(:DKScript)
-    assert_equal '0.1.24', BasicSharp::VERSION
+    assert_equal '0.1.25', BasicSharp::VERSION
   end
 
   def test_new_compiler_paths_exist_and_retired_paths_are_gone
@@ -38,7 +38,7 @@ class TestIdentityMigration < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BASIC# Ruby Bootstrap Compiler v0.1.24'
+    assert_includes stdout, 'BASIC# Ruby Bootstrap Compiler v0.1.25'
     refute_includes stdout, 'DKScript Ruby Bootstrap Compiler'
 
     run_stdout, run_stderr, run_status = Open3.capture3(
@@ -50,7 +50,7 @@ class TestIdentityMigration < Minitest::Test
     )
 
     assert run_status.success?, run_stderr
-    assert_includes run_stdout, 'BASIC# Runtime v0.1.24'
+    assert_includes run_stdout, 'BASIC# Runtime v0.1.25'
     refute_includes run_stdout, 'DKScript Runtime'
   end
 
@@ -71,11 +71,12 @@ class TestIdentityMigration < Minitest::Test
 
   def test_company_bible_is_integrated
     bible_root = File.join(ROOT, 'docs/company_bible')
+    canonical = File.join(bible_root, 'BASIC_SHARP_COMPANY_BIBLE.md')
     files = Dir[File.join(bible_root, '**/*')].select { |path| File.file?(path) }
 
-    assert_operator files.length, :>=, 74
-    assert File.file?(File.join(bible_root, 'COMPANY_BIBLE_DemonKiller.md'))
-    assert File.file?(File.join(bible_root, 'BASIC_SHARP_COMPANY_BIBLE_CARRYOVER_v0_1_14.md'))
+    assert_equal [canonical], files
+    assert File.file?(canonical)
+    assert File.read(canonical).include?('one active Company Bible for BASIC#')
   end
 
   def test_no_project_filename_uses_retired_dkscript_identity

@@ -2,22 +2,33 @@
 
 ## Current candidate
 
-- **Accepted base:** v0.1.23 ASK Introspection and Deterministic Answers
-- **Accepted commit:** `aa69291`
-- **Accepted tag:** `v0.1.23`
-- **Candidate:** v0.1.24 Stable Meaning Specification and Conformance Profile 1
+- **Accepted base:** v0.1.24 Stable Meaning Specification and Conformance Profile 1
+- **Accepted commit:** `28e5b5b`
+- **Accepted tag:** `v0.1.24`
+- **Candidate:** v0.1.25 Canonical Company Bible Consolidation
 - **Project path:** `/home/dereksparks1982/DKLab/Projects/BASIC#`
+- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_25_CANONICAL_COMPANY_BIBLE_CONSOLIDATION_CHANGED_FILES_ONLY.zip`
 
-## v0.1.24 completed candidate work
+## Canonical authority
 
-- Added normative Stable Meaning Specification v1.
-- Added terminology and compatibility policy.
-- Added machine profile `bsharp.meaning.v1`.
-- Added 13 source and implementation-neutral expected-result cases.
-- Added a conformance runner for source, BSIR, runtime, save, ASK, and deterministic replay.
-- Removed WORLD, STATES, RELATIONS, ACTIONS, WHILE, and OTHERWISE from accepted Head starters.
-- Added plain invalid-Head guidance listing the five current Heads.
-- Preserved all accepted language, BSIR, save, ASK, event, IF, selection, and value behavior.
+The sole active Company Bible after installation is:
+
+```text
+docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
+```
+
+It must be read end-to-end before every future BASIC# build proposal. New standalone Company Bible addendums are prohibited.
+
+## v0.1.25 completed candidate work
+
+- Reviewed all 74 former active-folder Company Bible, addendum, carryover, pointer, and `.meta` files.
+- Consolidated permanent DK LAB and BASIC# workflow rules into one canonical document.
+- Resolved approval, backup, handoff, warning, versioning, and packaging conflicts.
+- Classified every former source as merged, merged in part, superseded, or retired project-specific history.
+- Removed Demon Killer/Godot gameplay, map, scene, door, control, lore, art, and engine rules from active BASIC# authority.
+- Added `tools/company_bible_audit.rb`.
+- Ended new per-version `NEW_THREAD_HANDOFF` files; this master document is the cumulative continuity authority.
+- Advanced all active BASIC# version surfaces to v0.1.25 without changing language meaning.
 
 ## Candidate validation floor
 
@@ -29,25 +40,34 @@
 0 skips
 ```
 
-All eight established stress lanes and the Profile 1 conformance lane must pass.
+All eight established stress lanes, all 13 Meaning Profile cases, and the Company Bible integrity audit must pass.
 
 ## Explicit exclusions
 
-No new creator-facing syntax, Head, Connector, official word, event behavior, IF behavior, arithmetic, input tolerance, schema migration, bytecode, VM, GUI, engine bridge, self-hosting, or new DK-prefixed name.
+No bytecode, VM, creator-facing syntax, Head, Connector, official word, event behavior, IF behavior, arithmetic, tolerance expansion, BSIR/save/ASK schema migration, editor, IDE, engine bridge, self-hosting, pricing, licensing, payment, activation, or subscription implementation.
+
+## Risks and controls
+
+- Git at commit `28e5b5b` preserves every retired source byte.
+- The canonical ledger names all 74 retired paths and their disposition.
+- The audit requires exactly one active file in `docs/company_bible/`.
+- Exact base-file hashes protect all modified and deleted paths.
+- Installer failure restores tag `v0.1.24`.
 
 ## Rollback
 
 ```text
-commit aa69291
-tag v0.1.23
+commit 28e5b5b
+tag v0.1.24
 ```
 
 ## Continuation
 
-Derek installs and reviews the v0.1.24 package before commit or tag. After acceptance, bytecode design becomes eligible for a full prebuild proposal.
+Derek installs and reviews v0.1.25 before commit or tag. After acceptance, the next proposed technical lane is BSharp bytecode architecture and instruction-contract design. Reread the one canonical Company Bible before preparing that proposal.
 
 ## Accepted history
 
+- v0.1.24 Stable Meaning Specification and Conformance Profile 1: commit `28e5b5b`, tag `v0.1.24`.
 - v0.1.23 ASK Introspection and Deterministic Answers: commit `aa69291`, tag `v0.1.23`.
 - v0.1.22 BSharp Save Files and Deterministic World Restore: commit `d991679`, tag `v0.1.22`.
 - v0.1.21 Follow-Up Events and Deterministic Event Order: commit `d67373b`, tag `v0.1.21`.

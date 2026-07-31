@@ -1,4 +1,4 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.24
+# BASIC# Ruby Bootstrap Compiler v0.1.25
 
 **Language name:** BASIC#  
 **Pronounced:** Basic Sharp  
@@ -14,9 +14,41 @@
 
 BASIC# lets a creator describe what exists, what should happen, preserve a settled world, and ask what the program or world currently means.
 
-## v0.1.24 Stable Meaning Specification
+## v0.1.25 Canonical Company Bible Consolidation
 
-v0.1.24 establishes **BSharp Meaning Profile 1**. It is the implementation-neutral meaning target that the Ruby bootstrap, future bytecode runtime, and future BASIC# virtual machine must reproduce.
+v0.1.25 replaces the former seventy-four-file Company Bible collection with one canonical authority:
+
+```text
+docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
+```
+
+Every future BASIC# proposal and build must read that one document end-to-end. Mandatory workflow changes edit the same file through a numbered build. New standalone addendums, carryover notes, reinforcement notes, and alternate Company Bibles are prohibited.
+
+Run the integrity audit:
+
+```bash
+ruby tools/company_bible_audit.rb
+```
+
+Expected result:
+
+```text
+BASIC# Company Bible Audit v0.1.25
+Canonical file count: PASS
+Canonical identity: PASS
+Mandatory sections: PASS
+Consolidation ledger: PASS
+Current references: PASS
+No standalone addendums: PASS
+
+COMPANY BIBLE AUDIT: PASS
+```
+
+This is a documentation and workflow consolidation. It adds no creator-facing syntax or runtime behavior.
+
+## Stable Meaning Profile 1
+
+BSharp Meaning Profile 1 remains the implementation-neutral meaning target that the Ruby bootstrap, future bytecode runtime, and future BASIC# virtual machine must reproduce.
 
 ```text
 BASIC# source
@@ -72,7 +104,7 @@ WHEN
 IF
 ```
 
-Six abandoned starter names were removed from the parser's accepted Head set:
+Six abandoned starter names remain outside the accepted Head set:
 
 ```text
 WORLD
@@ -83,7 +115,7 @@ WHILE
 OTHERWISE
 ```
 
-They never received complete accepted language meaning. A use now receives a plain message such as:
+A use receives a plain message such as:
 
 ```text
 BASIC# does not have a WORLD Head.
@@ -106,7 +138,7 @@ Current Heads are:
 (cause
 ```
 
-v0.1.24 adds no creator-facing Head, Connector, official word, event behavior, IF behavior, number behavior, save schema, or ASK schema.
+v0.1.25 adds no creator-facing Head, Connector, official word, event behavior, IF behavior, number behavior, save schema, or ASK schema.
 
 ## ASK introspection
 
@@ -208,7 +240,7 @@ A current debug document begins with:
 
 ```json
 {
-  "version": "0.1.24",
+  "version": "0.1.25",
   "format": "bsir.debug.json"
 }
 ```
@@ -239,7 +271,7 @@ Current validated floor:
 0 skips
 ```
 
-Stress and conformance lanes:
+Stress, conformance, and workflow lanes:
 
 ```bash
 ruby tools/runtime_stress.rb
@@ -251,13 +283,20 @@ ruby tools/follow_up_event_stress.rb
 ruby tools/world_save_stress.rb
 ruby tools/ask_stress.rb
 ruby tools/meaning_conformance.rb
+ruby tools/company_bible_audit.rb
 ```
 
 Timing is observational only. A slower correct machine does not fail.
 
 ## Company Bible
 
-The imported DK LAB Company Bible is stored under `docs/company_bible/`. Read it end-to-end before proposing or building another BASIC# version. Historical filenames remain historical and are not active BASIC# branding.
+The sole active authority is:
+
+```text
+docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
+```
+
+Read it end-to-end before proposing or building another BASIC# version.
 
 ## Current contracts
 
@@ -283,3 +322,4 @@ docs/save/BSHARP_SAVE_CONTRACT_v0_1_24.md
 - No GUI editor or IDE.
 - No game-engine bridge.
 - No self-hosting compiler.
+- No licensing, pricing, activation, or subscription implementation.

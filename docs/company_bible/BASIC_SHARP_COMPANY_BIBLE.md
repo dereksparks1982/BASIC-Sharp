@@ -1,0 +1,398 @@
+# BASIC# Company Bible
+
+**Version:** v0.1.25  
+**Status:** Mandatory and canonical  
+**Project:** BASIC#  
+**Owner:** Derek  
+**Canonical path:** `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md`
+
+> A scripting language made for non-programmers, by non-programmers.
+
+## 1. Sole authority and scope
+
+This file is the **one active Company Bible for BASIC#**. It replaces the former collection of standalone Company Bible files, addendums, carryover notes, reinforcement notes, project-bible pointers, and Godot metadata.
+
+Every assistant, developer, tester, tool, and contributor working on BASIC# must read this document from beginning to end before preparing a build proposal or changing the project.
+
+Future mandatory workflow changes must edit this same file in a numbered BASIC# build. **Do not create another standalone Company Bible addendum, carryover file, reinforcement note, or alternate Bible.**
+
+The Company Bible governs authority, workflow, safety, packaging, validation, continuity, identity, and project conduct. It does not replace technical specifications, language contracts, the roadmap, changelogs, validation reports, or the cumulative handoff. Those records keep their distinct jobs.
+
+Demon Killer and Godot-specific lore, gameplay, maps, scenes, doors, controls, art, and engine rules are not active BASIC# company law. Their original records remain recoverable in Git history at accepted BASIC# v0.1.24 commit `28e5b5b`.
+
+## 2. Derek is the final decision-maker
+
+Derek is the owner and final authority for BASIC# and DK LAB work.
+
+- Tools advise, report, and validate. They do not overrule Derek.
+- No assistant, contributor, convention, outside reviewer, automated score, or fashionable architecture may silently replace an owner decision.
+- An explicit current instruction from Derek governs the approved work. When it changes a permanent rule, the decision must be recorded in this file through the next numbered build.
+- Historical records that use the name Dick refer to Derek. Preserve those records as history, but use **Derek** in all new records.
+
+## 3. Required reading order before work
+
+Before proposing or performing a BASIC# build:
+
+1. Acknowledge Derek before beginning lengthy inspection or tool work.
+2. Read this complete Company Bible.
+3. Read the current master handoff and roadmap.
+4. Read the technical contracts, specifications, validation records, and source files relevant to the request.
+5. Verify the accepted Git base and actual project state.
+6. Ask Derek only when the records do not answer the question or an owner-only decision remains.
+
+Do not ask Derek to repeat a decision already preserved in current project records. Do not guess around missing facts before checking the records.
+
+## 4. Prebuild scope and explicit approval
+
+Before implementation, packaging, file generation, or equivalent build work, state:
+
+- required accepted base version, commit, tag, branch, and clean-tree requirement;
+- target numeric version and build title;
+- exact purpose and behavior;
+- exact files or systems expected to be added, modified, or deleted;
+- explicit exclusions;
+- risks and controls;
+- rollback point and method;
+- validation plan;
+- exact package filename.
+
+Implementation begins only after Derek explicitly approves that stated scope with a build or patch command. Approval applies only to that scope. If the work expands, stop and obtain approval for the expanded scope.
+
+Discussion, questions, defect reports, design notes, and future ideas are not build approval by themselves.
+
+When Derek says **stop**, all build, tool, packaging, and implementation work stops immediately. Answer him plainly instead of continuing silent work.
+
+## 5. Complete the approved scope
+
+Once Derek approves an exact build:
+
+- complete every approved item in that build unless Derek changes the scope;
+- do not silently defer requested items to another version;
+- disclose any limitation, exclusion, or failure before delivery;
+- do not add unrelated work because it seems helpful;
+- finish, validate, package, and hand off the current build before starting another.
+
+When Derek reports that an installed patch did not take, re-carry the missed work in the corrective build, preserve working systems, add a clear verification method when practical, and document the failure and repair. A changelog entry is not proof that a feature actually worked.
+
+## 6. Accepted base and version truth
+
+Every build, patch, hotfix, documentation release, or package uses the **next unused numeric version**.
+
+- Letter suffixes such as `a`, `b`, or `c` are forbidden.
+- Rejected or failed packages are not accepted baselines and their version numbers are not reused.
+- Never build from an approximate reconstruction of the accepted base.
+- Verify the exact accepted commit, tag, branch, clean working tree, and required base-file hashes.
+- A dirty or unexpected base stops installation before mutation.
+- Every active version surface must agree, including compiler/runtime identity, generated artifacts, package name, manifest, README, tests, changelog, patch notes, session log, validation record, handshake, roadmap, and master handoff where applicable.
+- A documentation-only build still advances the version when it changes the active project.
+
+After Derek accepts a build, review `git status`, stage the accepted changes, commit with the accepted build name, tag the version, and confirm the tree is clean before the next build.
+
+## 7. Packaging rules
+
+The default deliverable is one **changed-files-only ZIP**.
+
+- Provide one primary download unless Derek explicitly requests otherwise.
+- Preserve project-relative paths directly at archive root. Do not add a duplicate wrapper folder.
+- Do not deliver loose project files.
+- Package records belong in their proper project directories, not scattered at ZIP root. Approved top-level package control files, such as the manifest, installer, and build handshake, are allowed.
+- Every user-facing archive name includes its numeric version.
+- Do not create a separate loose SHA/checksum file unless Derek asks. Package and base hashes belong inside the manifest and installer validation.
+- A full-project archive is created only when Derek explicitly requests one.
+
+Every installable BASIC# changed-files package must carry `BASIC_SHARP_PATCH_MANIFEST.json` using:
+
+```text
+format = BASIC_SHARP_CHANGED_FILES_PATCH
+format_version = 1
+package_name = exact archive filename
+target_version = exact numeric target
+direct_project_root_payload = true
+changed_files_only = true
+added_paths = exact array
+modified_paths = exact array
+deletions = exact array
+files = payload byte counts and SHA-256 hashes
+base_files = accepted-base byte counts and SHA-256 hashes
+```
+
+Repair a malformed package. Do not weaken the installer or validator to excuse it.
+
+## 8. Backups and rollback
+
+Git and the validated installer are the primary recovery authorities.
+
+- The installer must verify the base before mutation.
+- A post-mutation failure must restore the exact accepted tag and remove untracked candidate files.
+- Do not place backup copies inside the active project tree.
+- Do not create a routine second backup ZIP for every package.
+- An exceptional separate backup is allowed only when Derek requests it or a concrete recovery risk is explained. It remains versioned, clearly labeled, outside the active project, and separate from the installation package.
+- The build handshake and master handoff must name the rollback point.
+
+## 9. Validation and evidence
+
+A build is not successful merely because files were written or code compiled.
+
+Validation must be:
+
+- appropriate to the actual change;
+- bounded and deterministic where possible;
+- non-destructive to the accepted project;
+- performed with the strongest available toolchain;
+- reported honestly, including limitations and failures;
+- repeated owner-side when local tooling cannot reproduce the final environment.
+
+Warnings are treated as failures by default. When a warning or validation exception must remain, stop, explain the exact reason and risk, and obtain Derek's explicit approval. Record the exception in the build documents.
+
+Derek may explicitly accept a documented exception. Automated gates advise and protect the candidate, but they do not become an independent owner.
+
+Do not repeat generic environment-limit boilerplate in every delivery. Mention a limitation when it materially affects that build or Derek asks about it.
+
+Failed runs, rejected packages, contaminated packages, and embarrassing mistakes are permanent evidence. Correct them through dated errata, new current-state entries, failure logs, or a new numbered repair. Do not silently scrub history.
+
+## 10. Documentation and continuity
+
+Every numbered BASIC# deliverable must include the records appropriate to its scope:
+
+- top-level build handshake;
+- changelog;
+- patch notes;
+- session log;
+- changed-files record;
+- validation record;
+- updated patch manifest;
+- updated roadmap;
+- updated cumulative master handoff.
+
+The one active handoff is:
+
+```text
+docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
+```
+
+Do not create new per-version `NEW_THREAD_HANDOFF` files. Existing historical per-version handoffs remain preserved as history, but the master handoff is the continuity spine.
+
+The top of the master handoff must identify the current accepted base or candidate, exact package, completed work, exclusions, validation, risks, rollback, and next action. Its history must preserve accepted versions and material failures.
+
+A numbered deliverable is documentation-incomplete until the master handoff and roadmap are current.
+
+When a mandatory workflow rule changes, edit this canonical Company Bible in the same build. Do not create another Bible file.
+
+After every completed installation or validation decision, state the next concrete step without waiting for Derek to ask what comes next.
+
+## 11. Engineering principles
+
+BASIC# follows these priorities:
+
+```text
+1. Correct behavior.
+2. Preserve accepted working systems.
+3. Understandable and repairable implementation.
+4. Deterministic validation and documentation.
+5. Conventional elegance only when it serves the first four.
+```
+
+- Make the smallest safe change that fulfills the approved scope.
+- Do not rewrite functioning code merely to satisfy style fashion.
+- Do not break one accepted system to fix another.
+- Build real systems before final decoration.
+- A rough but working foundation is better than polished theater around missing behavior.
+- Keep compatibility bridges when they protect accepted work, unless a deliberate migration has been approved.
+- Do not invent hidden behavior, silent corrections, or unapproved language meaning.
+- Preserve accepted semantics across future compiler, bytecode, runtime, virtual-machine, editor, and self-hosting implementations.
+- Test actual behavior, not merely the presence of files or names.
+- No orphan tools or test files. Every added tool must have a defined role, documentation, and validation path.
+
+## 12. BASIC# identity and protected design
+
+Canonical identity:
+
+```text
+Language name: BASIC#
+Pronunciation: Basic Sharp
+Safe written form: BSharp
+Safe code/path form: basic_sharp
+Ruby namespace: BasicSharp
+Creator source extension: .bsharp
+Intermediate representation: BSharp Intermediate Representation
+Short IR names: BSharp IR and BSIR
+World save: BSharp Save
+Inspection system: BSharp ASK
+Stable meaning profile: bsharp.meaning.v1
+```
+
+Protected rules:
+
+- The tagline is **“A scripting language made for non-programmers, by non-programmers.”**
+- Do not automatically prefix new BASIC# names with `DK`.
+- Historical DKScript and DKIR references remain only where required for truthful history or the exact retired-format diagnostic.
+- The opening `(` in official words such as `(damage` is a deliberate creator-facing guide showing that the world is being told to do something. It is not merely parser convenience.
+- Difficult machinery belongs beneath understandable creator-facing language.
+- “Forgiving input, dependable meaning, canonical output” remains the long-term direction, but tolerance is added only through approved, tested builds.
+- Stable Meaning Profile 1 is the implementation-neutral meaning authority for its covered language behavior.
+
+Language grammar and runtime behavior belong in specifications and contracts, not duplicated as mutable Company Bible prose.
+
+## 13. Image permission
+
+Planning, questions, corrections, confirmations, visual descriptions, maps, cursor discussion, art direction, or object discussion are not permission to generate or edit an image.
+
+Only generate or edit an image when Derek gives a clear direct command to make, create, draw, render, or edit that picture. Project work must not be mistaken for image-generation permission.
+
+## 14. Attribution and outside analysis
+
+For externally sourced code, assets, libraries, research, or tools, preserve when available:
+
+- creator or organization;
+- original title and source;
+- license and version;
+- acquisition date;
+- modifications or integration notes.
+
+Credit creators in good faith even when a license makes attribution optional. Do not claim a candidate source contributed to the active project when it was not actually used.
+
+Development assistance may be credited as:
+
+> Development assistance provided with ChatGPT by OpenAI.
+
+Every meaningful outside audit, AI analysis, consultant report, or testing summary must be evaluated rather than blindly obeyed. Preserve the source or a faithful summary, verify claims against actual project evidence, and record accepted, modified, rejected, or deferred recommendations.
+
+## 15. Shelved ownership and pricing principles
+
+Commercialization is intentionally shelved while BASIC# is being built. No pricing, licensing, activation, payment, account, subscription, or edition-enforcement work begins without a future approved proposal.
+
+The preserved future principles are:
+
+- private/proprietary distribution remains under consideration;
+- BASIC# Creator must offer a reasonably priced monthly option;
+- annual billing may be an optional discount, never the only route;
+- an eligible paid local compiler and IDE version remains usable permanently after the qualifying purchase terms are met;
+- a one-time permanent purchase may also be offered;
+- hosted services, continuing updates, cloud work, and support may remain subscriptions;
+- BASIC# must not use Adobe-style loss of local tool access merely because payment stops.
+
+These are future guardrails, not a current business model.
+
+## 16. Rule conflicts and exceptions
+
+No rule may be silently bypassed or reinterpreted because it is inconvenient.
+
+When a rule genuinely blocks safe or necessary work:
+
+1. identify the exact conflict;
+2. explain why the work cannot proceed safely under the existing rule;
+3. state the smallest exception requested;
+4. state risks, alternatives, and affected files;
+5. wait for Derek's explicit decision;
+6. document an approved permanent change in this canonical Bible through a numbered build.
+
+Conflict resolutions established by v0.1.25:
+
+| Former conflict | Canonical resolution |
+|---|---|
+| Build immediately on first mention vs. prebuild approval | Exact proposal and explicit approval are required before implementation. |
+| Immediate inclusion vs. scope control | Complete the approved scope; unapproved additions and silent deferrals are both forbidden. |
+| Backups inside project vs. outside project | No backup copies inside the active project. Git and installer rollback are primary. |
+| Routine extra backup vs. one download | One changed-files package by default; exceptional backup only when justified and separate. |
+| Many handoffs vs. one cumulative handoff | Build handshake plus one active master handoff. |
+| Loose checksum ban vs. package integrity | Hashes remain inside the manifest; no loose checksum file unless requested. |
+| Warnings as failures vs. owner authority | Warnings fail normal validation; Derek may explicitly accept a documented exception. |
+| Old owner-name variants | New records use Derek; historical records remain unchanged. |
+| Game rules inside Company Bible | Demon Killer/Godot rules remain historical and do not govern BASIC#. |
+
+## 17. v0.1.25 consolidation ledger
+
+The following 74 former active-folder files were reviewed before consolidation. Their original bytes remain in Git history at commit `28e5b5b`.
+
+| Former path | Disposition | Consolidation result |
+|---|---|---|
+| `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE_CARRYOVER_v0_1_14.md` | MERGED | BASIC# authority, identity, explicit approval, packaging, validation, and Git workflow were carried into the canonical document. |
+| `docs/company_bible/COMPANY_BIBLE_ADDENDUM_v0.1.87_No_Loose_Files.md` | MERGED | No-loose-files and direct project-relative packaging rules were retained. |
+| `docs/company_bible/COMPANY_BIBLE_ADDENDUM_v0.1.88_NES_Overworld_Cell_Build_Safety.md` | MERGED IN PART | Surgical preservation of working systems was retained; NES map-cell and Main-scene instructions are Demon Killer history. |
+| `docs/company_bible/COMPANY_BIBLE_DemonKiller.md` | MERGED IN PART | Company-wide workflow principles were retained; Demon Killer lore, controls, maps, scenes, art, gameplay, and Godot rules were retired from BASIC# authority. |
+| `docs/company_bible/COMPANY_BIBLE_DemonKiller.md.meta` | RETIRED METADATA | Obsolete Godot import metadata has no function in the BASIC# documentation tree. |
+| `docs/company_bible/DK_Godot_Company_Bible_Carryover_Note.md` | MERGED IN PART | Documentation, changed-files packaging, preservation, and explicit build authority were retained; Godot carryover wording was retired. |
+| `docs/company_bible/DK_Godot_v0_1_13_Documentation_Record_Note.md` | MERGED IN PART | Thorough reconstructable history was retained; the game-engine journey remains historical project material. |
+| `docs/company_bible/DK_Godot_v0_1_16_Immediate_Patch_Inclusion_Rule.md` | SUPERSEDED | Replaced by exact prebuild scope, explicit approval, and complete execution of the approved scope without silent deferral. |
+| `docs/company_bible/DK_Godot_v0_1_17_Documentation_Discipline_Addendum.md` | MERGED | Same-build documentation discipline was retained. |
+| `docs/company_bible/DK_Godot_v0_1_18_Immediate_Request_Completion_Reinforcement.md` | MERGED | Once exact scope is approved, the approved work must be completed or limitations disclosed before delivery. |
+| `docs/company_bible/DK_Godot_v0_1_18_No_Image_Unless_Explicit_Rule.md` | MERGED IN PART | Direct image permission remains mandatory; Gaia and game-world rules were retired from BASIC# authority. |
+| `docs/company_bible/DK_Godot_v0_1_19_FailedPatchRetry_Documentation_Rule.md` | MERGED | Failed or unapplied work must be re-carried, verified, and documented rather than assumed successful. |
+| `docs/company_bible/DK_Godot_v0_1_20_Failed_Visual_Patch_Retry_Rule.md` | MERGED | Failed or unapplied work must be re-carried, verified, and documented rather than assumed successful. |
+| `docs/company_bible/DK_Godot_v0_1_82_RESTORE_OLD_CELLS_KEEP_NEWMAP_VISIBLE_NO_MAP_REPLACEMENT_RULE.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_1_89_MAIN_INSURANCE_POLICY_ADDENDUM.md` | MERGED IN PART | Risk explanation and rollback planning were retained; Main.tscn-specific backup instructions were retired. |
+| `docs/company_bible/DK_Godot_v0_1_90_VERSIONING_AND_MAIN_SAFETY_ADDENDUM.md` | MERGED IN PART | Numeric version progression and rollback discipline were retained; Main.tscn rules were retired. |
+| `docs/company_bible/DK_Godot_v0_1_91_DOOR_NAMING_AND_MAIN_UID_SAFETY_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_1_92_PROJECT_IDENTITY_RULE_ADDENDUM.md` | MERGED IN PART | Complete active version identity was retained; Godot-specific surfaces and historical version-territory rules were retired. |
+| `docs/company_bible/DK_Godot_v0_2_01_VERSION_DISPLAY_AND_BACKUP_TITLE_RULE_ADDENDUM.md` | MERGED IN PART | Complete active version identity was retained; Godot-specific surfaces and historical version-territory rules were retired. |
+| `docs/company_bible/DK_Godot_v0_2_02_ZERO_TWO_TERRITORY_AND_VERSION_HABIT_ADDENDUM.md` | MERGED IN PART | Complete active version identity was retained; Godot-specific surfaces and historical version-territory rules were retired. |
+| `docs/company_bible/DK_Godot_v0_2_04_DOOR_TEMPLATE_CREATE_FIX_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_2_05_DOOR_TEMPLATE_COPY_AND_STALE_LINK_FIX_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_2_06_DOOR_TEMPLATE_PASTE_NORMALIZER_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_2_06_PRE_DRAW_ORDER_BACKUP_HANDSHAKE_COMPANY_BIBLE_NOTE.md` | MERGED IN PART | Build handshakes and rollback records were retained; draw-order and scene-backup details were retired. |
+| `docs/company_bible/DK_Godot_v0_2_07_CELL_DOOR_DRAW_ORDER_FIX_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_2_08_DOOR_LINK_NO_DUPLICATE_FIX_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_2_08_PACKAGE_STRUCTURE_AND_BACKUP_RULES_ADDENDUM.md` | MERGED | Direct-root packages, organized records, no loose checksum files, and external exceptional backups were retained. |
+| `docs/company_bible/DK_Godot_v0_2_09_PROJECT_VERSION_OPEN_SCREEN_FIX_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | No active BASIC# company-wide rule was required from this Demon Killer/Godot-specific record. |
+| `docs/company_bible/DK_Godot_v0_2_10_SPRITE_PLAYER_BODYRECT_HOTFIX_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_2_11_DOOR_CLEANUP_HOTFIX_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_2_12_DOOR_ORPHAN_CLEANUP_HOTFIX_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_2_14_DOOR_COPY_PROMOTION_HOTFIX_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_2_15_DOOR_COPY_UNDO_LINK_HOTFIX_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_2_17_NO_IN_PROJECT_SCENE_BACKUPS_REPAIR_ADDENDUM.md` | MERGED IN PART | No backup copies inside the active project was retained; scene-specific repair details were retired. |
+| `docs/company_bible/DK_Godot_v0_2_33_BUILD_RESPONSE_BOILERPLATE_CLEANUP_ADDENDUM.md` | MERGED | Repeated generic limitation boilerplate remains prohibited unless materially relevant. |
+| `docs/company_bible/DK_Godot_v0_2_35_MAIN_CHANGE_APPROVAL_AND_VERSION_VISIBILITY_ADDENDUM.md` | MERGED IN PART | Exact scope approval and documented rule exceptions were retained; Main.tscn-specific approval was retired. |
+| `docs/company_bible/DK_Godot_v0_2_38_SEPARATE_BACKUP_DISCRETION_AND_PACKAGE_SEPARATION_ADDENDUM.md` | SUPERSEDED | Git plus installer rollback is primary; only exceptional, explained backups may be separate from the main package. |
+| `docs/company_bible/DK_Godot_v0_2_44_ATTRIBUTION_BEYOND_LEGAL_MINIMUM_ADDENDUM.md` | MERGED | Provenance and good-faith creator attribution were retained. |
+| `docs/company_bible/DK_Godot_v0_2_81_CAMERA_ZOOM_CONTROL_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_2_82_BIBLE_FIRST_THEN_ASK_DEREK_ADDENDUM.md` | MERGED | Read the canonical Bible and current records before asking Derek to repeat documented decisions. |
+| `docs/company_bible/DK_Godot_v0_2_85_NUMERIC_ONLY_VERSIONING_ADDENDUM.md` | MERGED | Next-unused numeric versioning and prohibition of letter suffixes were retained. |
+| `docs/company_bible/DK_Godot_v0_2_88_VERSIONED_DELIVERABLE_ARCHIVE_NAME_ADDENDUM.md` | MERGED | Every user-facing deliverable must identify its numeric version. |
+| `docs/company_bible/DK_Godot_v0_2_90_SEQUENTIAL_BUILD_EXECUTION_ADDENDUM.md` | MERGED | One build at a time was retained. |
+| `docs/company_bible/DK_Godot_v0_2_96_NO_ORPHAN_TOOL_TEST_FILES_AND_ALWAYS_DOCUMENT_ADDENDUM.md` | MERGED | No orphan tools/tests and same-build documentation were retained. |
+| `docs/company_bible/DK_Godot_v0_2_97_DK_LIVE_BUILDER_EXACT_MENU_NAME_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_2_98_APPROVED_MAIN_MENU_ART_LOCK_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_3_02_FAITH_MAP_AND_BUILDING_LAYERING_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_3_04_PRACTICAL_ARCHITECTURE_AND_TOOLCHAIN_ADDENDUM.md` | MERGED IN PART | Practical, maintainable, systems-first architecture was retained; Godot toolchain specifics were retired. |
+| `docs/company_bible/DK_Godot_v0_3_05_ORIGINAL_PERSISTENT_SERVER_ARCHITECTURE_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer server architecture belongs in that project technical record, not BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_3_09_STREAMING_REGION_CELL_AND_HOUSE_SPELLING_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_3_23_LIVE_BUILDER_LOCAL_VALIDATION_ADDENDUM.md` | MERGED IN PART | Validate with the strongest available tools and record limits; Live Builder specifics were retired. |
+| `docs/company_bible/DK_Godot_v0_3_31_CODE_FIRST_MIGRATION_AND_VISUAL_BOUNDARY_ADDENDUM.md` | MERGED IN PART | Behavioral contracts and systems-first migration were retained; game visual-boundary details were retired. |
+| `docs/company_bible/DK_Godot_v0_3_32_COMPANY_BIBLE_PREBUILD_CHECKLIST_ENFORCEMENT_ADDENDUM.md` | MERGED | Exact prebuild proposal, owner approval, and stop behavior were retained. |
+| `docs/company_bible/DK_Godot_v0_3_34_LIVE_BUILDER_PROJECT_MODE_VALIDATION_ADDENDUM.md` | MERGED IN PART | Validate with the strongest available tools and record limits; Live Builder specifics were retired. |
+| `docs/company_bible/DK_Godot_v0_3_35_EXACT_ENGINE_VALIDATION_AND_CONSTANT_EXPRESSION_ADDENDUM.md` | MERGED IN PART | Exact supported-tool validation and safe constants were generalized; Godot details were retired. |
+| `docs/company_bible/DK_Godot_v0_3_36_BOUNDED_VALIDATION_SAFETY_ADDENDUM.md` | MERGED | Validation must be bounded, deterministic, and non-destructive. |
+| `docs/company_bible/DK_Godot_v0_3_37_WINDOWS_SAFE_VALIDATION_TELEMETRY_ADDENDUM.md` | MERGED IN PART | Portable, non-destructive validation and useful reporting were retained; Windows/Godot telemetry specifics were retired. |
+| `docs/company_bible/DK_Godot_v0_3_38_INVISIBLE_REGION_BOUNDARY_RULE_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_3_45_AUTOMATED_PLAYTEST_PILOT_AND_REPORTING_ADDENDUM.md` | MERGED IN PART | Automated evidence supplements owner testing; Test Pilot specifics were retired. |
+| `docs/company_bible/DK_Godot_v0_3_46_CUMULATIVE_THREAD_HANDOFF_AND_CONTINUITY_LOGGING_ADDENDUM.md` | MERGED | One cumulative master handoff and its completion gate were retained. |
+| `docs/company_bible/DK_Godot_v0_3_47_DEMON_KILLER_VISUAL_STYLE_AND_COMPACT_PANEL_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_3_48_OWNER_CONTRIBUTOR_AND_ATTRIBUTION_CLARITY_ADDENDUM.md` | MERGED | Derek is the canonical owner name; historical names and honest contributor roles remain preserved. |
+| `docs/company_bible/DK_Godot_v0_3_57_BUILD_THE_GAME_WE_WANT_ADDENDUM.md` | MERGED IN PART | Owner vision outranks committee design; Demon Killer product specifics were retired. |
+| `docs/company_bible/DK_Godot_v0_3_69_MIT_INTEGRATION_AND_VISIBLE_UI_RULE_ADDENDUM.md` | MERGED IN PART | Third-party provenance and visible, testable integration were retained; game UI specifics were retired. |
+| `docs/company_bible/DK_Godot_v0_3_73_CANONICAL_HANDOFF_COMPLETION_REPAIR_ADDENDUM.md` | MERGED | One cumulative master handoff and its completion gate were retained. |
+| `docs/company_bible/DK_Godot_v0_3_77_BUILD_INTEGRATOR_BACKUP_AUTHORITY_ADDENDUM.md` | SUPERSEDED | BASIC# uses Git and installer rollback as primary recovery authorities; routine duplicate backup archives are prohibited. |
+| `docs/company_bible/DK_Godot_v0_4_14_WARNING_HYGIENE_AND_SYSTEMS_FIRST_ADDENDUM.md` | MERGED | Systems-first development and warnings-as-failures by default were retained. |
+| `docs/company_bible/DK_Godot_v0_4_20_PREBUILD_SCOPE_PREAPPROVAL_AND_STOP_RULE_ADDENDUM.md` | MERGED | Exact prebuild proposal, owner approval, and stop behavior were retained. |
+| `docs/company_bible/DK_Godot_v0_4_21_AUDIT_TRAIL_NO_SCRUB_RULE_ADDENDUM.md` | MERGED | Failures and corrections remain permanent evidence rather than being silently scrubbed. |
+| `docs/company_bible/DK_Godot_v0_4_37_PATCH_MANIFEST_SCHEMA_AND_ENVIRONMENT_LIMITATION_ADDENDUM.md` | MERGED IN PART | Manifest schema verification and honest environment limits were retained using the BASIC# manifest identity. |
+| `docs/company_bible/DK_Godot_v0_4_38_GAIA_STREAMING_CELL_AND_IMAGE_PERMISSION_ADDENDUM.md` | MERGED IN PART | Direct image permission remains mandatory; Gaia and game-world rules were retired from BASIC# authority. |
+| `docs/company_bible/DK_Godot_v0_4_70_POST_BUILD_GIT_AND_NO_HARD_GATE_RULE_ADDENDUM.md` | MERGED | Post-acceptance commit/tag and Derek-over-tools authority were retained; documented exceptions remain owner-controlled. |
+| `docs/company_bible/PROJECT_BIBLE_DemonKiller.md` | RETIRED POINTER | Retired Demon Killer pointer file is preserved in Git history and has no BASIC# authority. |
+| `docs/company_bible/PROJECT_BIBLE_DemonKiller.md.meta` | RETIRED METADATA | Obsolete Godot import metadata has no function in the BASIC# documentation tree. |
+
+## 18. Future Company Bible maintenance
+
+The active folder must contain exactly one file:
+
+```text
+docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
+```
+
+The integrity audit is:
+
+```bash
+ruby tools/company_bible_audit.rb
+```
+
+A future package fails Bible integrity when it creates a second file in this folder, revives a retired addendum as active authority, omits mandatory sections, or points current records at a superseded Bible path.

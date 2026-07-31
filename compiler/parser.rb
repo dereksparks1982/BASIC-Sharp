@@ -7,6 +7,7 @@ require_relative 'lexer'
 
 module BasicSharp
   class Parser
+    # Profile 1 Head identities are language semantics; documentation-only builds do not alter them.
     STATEMENT_STARTERS = %w[KINDS DEFINE START WHEN IF].freeze
     DORMANT_HEADS = %w[WORLD STATES RELATIONS ACTIONS WHILE OTHERWISE].freeze
     RESULT_ALIASES = { 'than' => 'then', 'then' => 'then' }.freeze
