@@ -1,0 +1,43 @@
+BSharp Bytecode bsharp.bytecode.v1
+Meaning Profile: bsharp.meaning.v1
+Fingerprint: 721160ad909ece8c3432689d69f63681183abae4edb1de699096a8a09d87df6c
+
+KIND 0 guard PARENT NONE
+KIND 1 captain PARENT KIND[guard]
+KIND 2 person PARENT NONE
+KIND 3 device PARENT NONE
+KIND 4 door PARENT NONE
+KIND 5 key PARENT NONE
+
+THING 0 player KIND[person]
+THING 1 henry KIND[guard]
+THING 2 mara KIND[captain]
+THING 3 otto KIND[guard]
+THING 4 brass bell KIND[device]
+THING 5 north door KIND[door]
+THING 6 south door KIND[door]
+THING 7 brass key KIND[key]
+THING 8 iron key KIND[key]
+
+START
+    START_STATE THING[henry] calm REMOVE angry
+    START_STATE THING[mara] calm REMOVE angry
+    START_STATE THING[otto] calm REMOVE angry
+    START_STATE THING[north door] locked REMOVE unlocked
+    START_STATE THING[south door] locked REMOVE unlocked
+END
+
+WHEN actor=THING[player] action=sound target=THING[brass bell] BLOCK 0
+WHEN actor=THING[player] action=attack target=ONE_KIND[guard] BLOCK 1
+
+BLOCK 0
+    DAMAGE EVERY_KIND[guard] 1
+    CHANGE_STATE EVERY_KIND[guard] angry REMOVE calm
+    CARRY EVERY_KIND[key]
+    UNLOCK EVERY_KIND[door]
+END
+
+BLOCK 1
+    DAMAGE EVERY_KIND[guard] 1
+    CHANGE_STATE BOUND_THAT_KIND[guard] hostile REMOVE friendly
+END

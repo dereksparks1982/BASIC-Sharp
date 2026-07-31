@@ -79,6 +79,7 @@ module BasicSharp
       validate_reserved_ranges!(profile)
       validate_coverage!(profile.fetch('meaning_case_coverage'), root: root)
       validate_disassembly!(profile.fetch('disassembly'))
+      validate_emission!(profile.fetch('emission'))
       validate_malformed_rules!(profile.fetch('malformed_rejection_rules'))
 
       text = canonical_json(profile)
@@ -182,6 +183,23 @@ module BasicSharp
       text = disassembly.values.join('\n')
       missing = required.reject { |entry| text.include?(entry) }
       raise BytecodeContractError, "Readable disassembly grammar is incomplete: #{missing.join(', ')}" unless missing.empty?
+    end
+
+    def validate_emission!(emission)
+      expected_prefix = [PROFILE, MEANING_PROFILE, 'sha256-bsir-meaning-v1']
+      unless emission['mandatory_string_prefix'] == expected_prefix
+        raise BytecodeContractError, 'Bytecode emission mandatory string prefix is inconsistent.'
+      end
+      unless emission['source_inputs'] == ['.bsharp', '.bsir.json']
+        raise BytecodeContractError, 'Bytecode emitter source inputs are inconsistent.'
+      end
+      unless emission['output_binary_extension'] == EXTENSION && emission['output_disassembly_suffix'] == '.bsbc.txt'
+        raise BytecodeContractError, 'Bytecode emitter output identities are inconsistent.'
+      end
+      required = ['zero-based', 'zero-filled', 'byte-identical', '32 raw SHA-256 bytes', 'failed emission leaves no partial pair']
+      text = emission.values.flatten.join("\n")
+      missing = required.reject { |entry| text.include?(entry) }
+      raise BytecodeContractError, "Bytecode emission rules are incomplete: #{missing.join(', ')}" unless missing.empty?
     end
 
     def validate_malformed_rules!(rules)

@@ -9,9 +9,10 @@ require_relative 'ir_emitter'
 require_relative 'runtime'
 require_relative 'world_save'
 require_relative 'ask'
+require_relative 'bytecode_emitter'
 
 if ARGV.empty?
-  warn 'Usage: ruby compiler/basic_sharp.rb source.bsharp [--json|--emit-ast|--emit-ir] [--out path] [--run "event"]'
+  warn 'Usage: ruby compiler/basic_sharp.rb source.bsharp [--json|--emit-ast|--emit-ir|--emit-bytecode] [--out path] [--run "event"]'
   warn '       [--load-world path.bsave.json] [--ask "question"]... [--ask-json] [--save-world path.bsave.json]'
   warn '   or: ruby compiler/basic_sharp.rb existing.bsir.json [--run "event"] [--load-world path.bsave.json]'
   warn '       [--ask "question"]... [--ask-json] [--save-world path.bsave.json]'
@@ -61,6 +62,7 @@ ask_questions = ask_entries.map(&:last)
 ask_json = ARGV.include?('--ask-json')
 emit_ast = ARGV.include?('--json') || ARGV.include?('--emit-ast')
 emit_ir = ARGV.include?('--emit-ir')
+emit_bytecode = ARGV.include?('--emit-bytecode')
 
 if ask_json && ask_questions.empty?
   warn '--ask-json requires at least one --ask question'
@@ -106,6 +108,50 @@ unless json_input
   parser = BasicSharp::Parser.new(source)
   program = parser.parse
   resolved = BasicSharp::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
+end
+
+
+if emit_bytecode
+  incompatible = emit_ast || emit_ir || run_index || load_index || save_index || !ask_questions.empty? || ask_json
+  if incompatible
+    warn '--emit-bytecode cannot be combined with AST, BSIR, runtime, world-save, or ASK modes'
+    exit 64
+  end
+
+  begin
+    bytecode_document = if json_input
+                          json_document
+                        else
+                          resolved
+                        end
+    if !json_input && (resolved.error_count.positive? || resolved.warning_count.positive?)
+      resolved.diagnostics.each { |diagnostic| warn diagnostic.to_s }
+      warn 'BSharp Bytecode was not written because the program has errors or warnings.'
+      exit 1
+    end
+
+    output_path = out_path
+    unless output_path
+      output_path = if path.downcase.end_with?('.bsir.json')
+                      path[0...-'.bsir.json'.length] + '.bsbc'
+                    else
+                      path.sub(/\.bsharp\z/i, '.bsbc')
+                    end
+    end
+    unless output_path.downcase.end_with?('.bsbc')
+      warn 'BSharp Bytecode output must end with .bsbc.'
+      exit 64
+    end
+
+    emitter = BasicSharp::BytecodeEmitter.new(bytecode_document)
+    binary_path, disassembly_path = emitter.write(output_path)
+    puts "wrote: #{binary_path}"
+    puts "wrote: #{disassembly_path}"
+    exit 0
+  rescue BasicSharp::BytecodeEmitterError => error
+    warn error.message
+    exit 1
+  end
 end
 
 if emit_ast

@@ -1,4 +1,4 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.26
+# BASIC# Ruby Bootstrap Compiler v0.1.27
 
 **Language name:** BASIC#  
 **Pronounced:** Basic Sharp  
@@ -9,37 +9,59 @@
 **World-save format:** BSharp Save, using `.bsave.json`  
 **Inspection format:** BSharp ASK, using `bsharp.ask.json`  
 **Stable meaning profile:** `bsharp.meaning.v1`  
-**Future execution artifact:** BSharp Bytecode, normally **BSBC**, using `.bsbc`  
+**Execution artifact:** BSharp Bytecode, normally **BSBC**, using `.bsbc`  
 **Bytecode profile:** `bsharp.bytecode.v1`
 
 > A scripting language made for non-programmers, by non-programmers.
 
-BASIC# lets a creator describe what exists, what should happen, preserve a settled world, and ask what the program or world currently means.
+BASIC# lets a creator describe what exists, what should happen, preserve a settled world, ask what the program currently means, and now compile that resolved meaning into deterministic bytecode.
 
-## v0.1.26 BSharp Bytecode Architecture and Instruction Contract 1
+## v0.1.27 BSharp Bytecode Emitter and Deterministic Disassembly 1
 
-v0.1.26 defines the first implementation-independent execution-artifact contract for BASIC# without yet creating a bytecode emitter, loader, or virtual machine.
+v0.1.27 creates the first real BSharp Bytecode files while remaining non-executing:
 
 ```text
 BASIC# source
     -> Ruby bootstrap parser and resolver
     -> BSharp IR
-    -> future bytecode emitter
+    -> BSharp Bytecode emitter
     -> BSharp Bytecode (.bsbc)
-    -> future BASIC# VM
+    -> future bytecode loader and BASIC# VM
 ```
 
-Identity:
+Emit from source:
+
+```bash
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --emit-bytecode
+```
+
+Emit from saved BSIR:
+
+```bash
+ruby compiler/basic_sharp.rb samples/first_room.bsir.json --emit-bytecode
+```
+
+Both commands create byte-identical files when their normalized meaning is identical:
 
 ```text
-Name: BSharp Bytecode
-Short name: BSBC
-Extension: .bsbc
-Magic bytes: BSBC
-Binary format: bsharp.bytecode.bin
-Bytecode profile: bsharp.bytecode.v1
-Required meaning profile: bsharp.meaning.v1
-Byte order: little-endian
+samples/first_room.bsbc
+samples/first_room.bsbc.txt
+```
+
+A custom output path uses the existing `--out` option and must end in `.bsbc`:
+
+```bash
+ruby compiler/basic_sharp.rb samples/first_room.bsharp \
+  --emit-bytecode \
+  --out /tmp/first_room.bsbc
+```
+
+The `.bsbc.txt` companion is deterministic diagnostic disassembly. It is not creator-facing BASIC# syntax.
+
+Run the emitter lane:
+
+```bash
+ruby tools/bytecode_emitter.rb
 ```
 
 Run the machine contract audit:
@@ -48,28 +70,18 @@ Run the machine contract audit:
 ruby tools/bytecode_contract.rb
 ```
 
-Expected ending:
-
-```text
-Profile 1 coverage: PASS
-Readable disassembly grammar: PASS
-Malformed-bytecode rules: PASS
-Deterministic contract: PASS
-No Ruby-specific serialized data: PASS
-
-BYTECODE CONTRACT: PASS
-```
-
 Normative records:
 
 ```text
 spec/bytecode_v1/BASIC_SHARP_BYTECODE_PROFILE_v1.json
+spec/bytecode_v1/BASIC_SHARP_BYTECODE_EMITTER_FIXTURES_v1.json
 docs/bytecode/BASIC_SHARP_BYTECODE_ARCHITECTURE_v0_1_26.md
 docs/bytecode/BASIC_SHARP_BYTECODE_FORMAT_AND_INSTRUCTION_CONTRACT_v0_1_26.md
 docs/bytecode/BASIC_SHARP_BYTECODE_COMPATIBILITY_POLICY_v0_1_26.md
+docs/bytecode/BASIC_SHARP_BYTECODE_EMITTER_AND_DETERMINISTIC_DISASSEMBLY_v0_1_27.md
 ```
 
-The contract defines eight required sections, fixed instruction identities, selectors, IF condition operators, deterministic string ordering, malformed-artifact rejection, and diagnostic disassembly. It does not execute bytecode.
+The emitter writes atomically, rejects programs with errors or warnings, rejects unsupported Profile 1 meaning, and never serializes Ruby classes, machine paths, timestamps, or object identities.
 
 ## Canonical Company Bible
 
@@ -87,7 +99,7 @@ ruby tools/company_bible_audit.rb
 
 ## Stable Meaning Profile 1
 
-BSharp Meaning Profile 1 remains the implementation-neutral meaning target that the Ruby bootstrap, future bytecode emitter, and future BASIC# virtual machine must reproduce.
+BSharp Meaning Profile 1 remains the implementation-neutral meaning target that the Ruby bootstrap, bytecode emitter, and future BASIC# virtual machine must reproduce.
 
 ```text
 bsharp.meaning.v1
@@ -130,7 +142,7 @@ OTHERWISE
 (cause
 ```
 
-v0.1.26 adds no creator-facing Head, Connector, official word, event behavior, IF behavior, number behavior, save schema, ASK schema, emitter, loader, VM, or bytecode execution.
+v0.1.27 adds no creator-facing Head, Connector, official word, event behavior, IF behavior, number behavior, BSIR schema, Save schema, ASK schema, loader, VM, or bytecode execution.
 
 ## Current language foundation
 
@@ -144,7 +156,7 @@ v0.1.26 adds no creator-facing Head, Connector, official word, event behavior, I
 - Deterministic BSharp Save files.
 - Read-only ASK inspection with deterministic answers.
 - Stable Meaning Profile 1 conformance fixtures.
-- BSharp Bytecode architecture and machine-readable contract.
+- BSharp Bytecode architecture, machine-readable contract, deterministic emitter, and readable disassembly.
 
 ## Compile samples
 
@@ -169,7 +181,7 @@ A current debug document begins with:
 
 ```json
 {
-  "version": "0.1.26",
+  "version": "0.1.27",
   "format": "bsir.debug.json"
 }
 ```
@@ -190,14 +202,10 @@ Recompile the original .bsharp source to create a new BSIR file.
 ruby -w -Itest -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require_relative file }'
 ```
 
-Current validated suite:
+Current validated suite totals are recorded in:
 
 ```text
-234 runs
-5,277 assertions
-0 failures
-0 errors
-0 skips
+docs/validation/BASIC_SHARP_VALIDATION_v0_1_27.md
 ```
 
 Full lanes:
@@ -214,27 +222,16 @@ ruby tools/ask_stress.rb
 ruby tools/meaning_conformance.rb
 ruby tools/company_bible_audit.rb
 ruby tools/bytecode_contract.rb
+ruby tools/bytecode_emitter.rb
 ```
 
 Timing is observational only. A slower correct machine does not fail.
 
-## Current contracts
-
-```text
-docs/specification/BASIC_SHARP_STABLE_MEANING_SPECIFICATION_v1.md
-docs/specification/BASIC_SHARP_TERMINOLOGY_v1.md
-docs/specification/BASIC_SHARP_COMPATIBILITY_POLICY_v0_1_24.md
-docs/ask/BASIC_SHARP_ASK_CONTRACT_v0_1_24.md
-docs/parser_contract_v0_1_24.md
-docs/runtime_contract_v0_1_24.md
-docs/ir/BSIR_MEANING_CONTRACT_v0_1_24.md
-docs/save/BSHARP_SAVE_CONTRACT_v0_1_24.md
-docs/bytecode/BASIC_SHARP_BYTECODE_FORMAT_AND_INSTRUCTION_CONTRACT_v0_1_26.md
-```
-
 ## Not included
 
-- No bytecode emitter, loader, virtual machine, or bytecode execution.
+- No arbitrary `.bsbc` loader, virtual machine, or bytecode execution.
+- No Ruby runtime replacement.
+- No optimization or compression.
 - No creator-facing Head, Connector, official word, or syntax change.
 - No capitalization, spacing, contraction, or spelling-tolerance expansion.
 - No arithmetic expressions, negative numbers, decimals, fractions, or percentages.

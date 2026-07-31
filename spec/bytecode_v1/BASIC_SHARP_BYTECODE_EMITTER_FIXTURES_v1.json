@@ -1,0 +1,217 @@
+{
+  "format": "bsharp.bytecode.emitter.fixtures.json",
+  "format_version": 1,
+  "created_by_basic_sharp": "0.1.27",
+  "bytecode_profile": "bsharp.bytecode.v1",
+  "meaning_profile": "bsharp.meaning.v1",
+  "fingerprint_algorithm": "sha256-bsir-meaning-v1",
+  "sample_count": 6,
+  "valid_meaning_case_count": 12,
+  "invalid_meaning_case": {
+    "case_id": "13_invalid_boundaries",
+    "source": "spec/meaning_v1/cases/13_invalid_boundaries/source.bsharp",
+    "must_reject_without_output": true
+  },
+  "samples": [
+    {
+      "id": "ask_demo",
+      "source": "samples/ask_demo.bsharp",
+      "bsir": "samples/ask_demo.bsir.json",
+      "binary": "samples/ask_demo.bsbc",
+      "binary_bytes": 952,
+      "binary_sha256": "a35bbbbceee4b9fbafe749773e594aed19b6ed92f12de164a96abc3f81f3ba76",
+      "disassembly": "samples/ask_demo.bsbc.txt",
+      "disassembly_bytes": 1134,
+      "disassembly_sha256": "d33c0278218e9884bb0d0c65db41f0a2b81401b2b5d1938a6667fb173e0d923f",
+      "source_bsir_binary_equal": true,
+      "source_bsir_disassembly_equal": true
+    },
+    {
+      "id": "every_guard",
+      "source": "samples/every_guard.bsharp",
+      "bsir": "samples/every_guard.bsir.json",
+      "binary": "samples/every_guard.bsbc",
+      "binary_bytes": 1024,
+      "binary_sha256": "ad25640dedb513c4ce8c3ebc2dbd62bfa595e6435ddcf25990c666e71997789a",
+      "disassembly": "samples/every_guard.bsbc.txt",
+      "disassembly_bytes": 1226,
+      "disassembly_sha256": "33afa8f2e8b530c092b6448f5b4ba9775cb855ff8bed37b13046906066c08275",
+      "source_bsir_binary_equal": true,
+      "source_bsir_disassembly_equal": true
+    },
+    {
+      "id": "first_room",
+      "source": "samples/first_room.bsharp",
+      "bsir": "samples/first_room.bsir.json",
+      "binary": "samples/first_room.bsbc",
+      "binary_bytes": 1240,
+      "binary_sha256": "c09c60886cdb341accc427d07a0ac68350b675b4f4e2d1571e02dac216870ee1",
+      "disassembly": "samples/first_room.bsbc.txt",
+      "disassembly_bytes": 1655,
+      "disassembly_sha256": "3034d2b9a76be2b4c67c603642707319f316c243fd110e647604588cd80a20d3",
+      "source_bsir_binary_equal": true,
+      "source_bsir_disassembly_equal": true
+    },
+    {
+      "id": "follow_up_events",
+      "source": "samples/follow_up_events.bsharp",
+      "bsir": "samples/follow_up_events.bsir.json",
+      "binary": "samples/follow_up_events.bsbc",
+      "binary_bytes": 840,
+      "binary_sha256": "11acffca2ee06b4678ff991ef4f8924254c3290e098d33a68e494bdd564b4589",
+      "disassembly": "samples/follow_up_events.bsbc.txt",
+      "disassembly_bytes": 1024,
+      "disassembly_sha256": "f1e4b6725c6bad778e856d8cbf3eddc77440b8232b1367ab642f4d944198d57f",
+      "source_bsir_binary_equal": true,
+      "source_bsir_disassembly_equal": true
+    },
+    {
+      "id": "values_and_amounts",
+      "source": "samples/values_and_amounts.bsharp",
+      "bsir": "samples/values_and_amounts.bsir.json",
+      "binary": "samples/values_and_amounts.bsbc",
+      "binary_bytes": 808,
+      "binary_sha256": "5c6de427beae0bc78877bffac5ad21851f3947f568341e7c2259c4a513d0790d",
+      "disassembly": "samples/values_and_amounts.bsbc.txt",
+      "disassembly_bytes": 912,
+      "disassembly_sha256": "db078042c39ee7f69b8b87edaabe1020875ba725c0fafb53e85f598922a43109",
+      "source_bsir_binary_equal": true,
+      "source_bsir_disassembly_equal": true
+    },
+    {
+      "id": "world_save_demo",
+      "source": "samples/world_save_demo.bsharp",
+      "bsir": "samples/world_save_demo.bsir.json",
+      "binary": "samples/world_save_demo.bsbc",
+      "binary_bytes": 920,
+      "binary_sha256": "928e13a5583318e66283c5c9b39a4f41dd64ef43852632fadede71a48db84eae",
+      "disassembly": "samples/world_save_demo.bsbc.txt",
+      "disassembly_bytes": 1042,
+      "disassembly_sha256": "9c008b20fb5429f610190c347535ea1ac4c76c3c98b5946581f319d443266515",
+      "source_bsir_binary_equal": true,
+      "source_bsir_disassembly_equal": true
+    }
+  ],
+  "meaning_cases": [
+    {
+      "case_id": "01_structure",
+      "source": "spec/meaning_v1/cases/01_structure/source.bsharp",
+      "binary_bytes": 588,
+      "binary_sha256": "b0d367f3f48ea8a95f022116be2f5ad50530d0d5ff6b0c63f4eb6323ceb907b9",
+      "disassembly_bytes": 578,
+      "disassembly_sha256": "4ba32ea6dac3ea583a4cc5c92baa3fa6f782b89780da9976396b7a034d389ea0",
+      "source_bsir_binary_equal": true,
+      "source_bsir_disassembly_equal": true
+    },
+    {
+      "case_id": "02_kinds_things_order",
+      "source": "spec/meaning_v1/cases/02_kinds_things_order/source.bsharp",
+      "binary_bytes": 492,
+      "binary_sha256": "f5cd88c848feebef8aa753f47d02fc4f2610c8719cc39518ee0ea2c8d83808ad",
+      "disassembly_bytes": 394,
+      "disassembly_sha256": "97c75b204d72862391fd302c655027f36a5618b7db5cc1ca0e5b34357264956d",
+      "source_bsir_binary_equal": true,
+      "source_bsir_disassembly_equal": true
+    },
+    {
+      "case_id": "03_start_world",
+      "source": "spec/meaning_v1/cases/03_start_world/source.bsharp",
+      "binary_bytes": 592,
+      "binary_sha256": "77d1af9608d51adea5d9867e16b57af77ac2c2c6d9e2a3433abb4d4550371bfe",
+      "disassembly_bytes": 514,
+      "disassembly_sha256": "aeabbebd2671947bed3d70e6ce61e7da4632e9d92fecb149b0245ed712af51a3",
+      "source_bsir_binary_equal": true,
+      "source_bsir_disassembly_equal": true
+    },
+    {
+      "case_id": "04_event_matching",
+      "source": "spec/meaning_v1/cases/04_event_matching/source.bsharp",
+      "binary_bytes": 556,
+      "binary_sha256": "c8329776abea61482831a03979d87f7543001f0490de23730d1e7e183cab3522",
+      "disassembly_bytes": 525,
+      "disassembly_sha256": "e792014091463fda5a42d84a086684b384787acdf94bf54b4404f1e95c82d578",
+      "source_bsir_binary_equal": true,
+      "source_bsir_disassembly_equal": true
+    },
+    {
+      "case_id": "05_event_priority",
+      "source": "spec/meaning_v1/cases/05_event_priority/source.bsharp",
+      "binary_bytes": 648,
+      "binary_sha256": "80a4f504c029ebfc2e8eaf2db9b3d96125bc87e2924420b981b8d44ac3dbb66c",
+      "disassembly_bytes": 690,
+      "disassembly_sha256": "97709ba8d63091cc742414b4849d438f66bbb2b34e73323937cf660c2dd4b7a8",
+      "source_bsir_binary_equal": true,
+      "source_bsir_disassembly_equal": true
+    },
+    {
+      "case_id": "06_that_context",
+      "source": "spec/meaning_v1/cases/06_that_context/source.bsharp",
+      "binary_bytes": 580,
+      "binary_sha256": "0b1ca8be8e627f40dc2f957e40ff62306ba5d6c928574041b52032560ed2054d",
+      "disassembly_bytes": 589,
+      "disassembly_sha256": "260f299f96da60a77d54b16caff9896d731a58f0e04e88fc64879ed1f3e7e3ae",
+      "source_bsir_binary_equal": true,
+      "source_bsir_disassembly_equal": true
+    },
+    {
+      "case_id": "07_every_selection",
+      "source": "spec/meaning_v1/cases/07_every_selection/source.bsharp",
+      "binary_bytes": 644,
+      "binary_sha256": "ff13c0cfea82d99c267a6538cd0402d1778544ce71d74eb747215842900d867d",
+      "disassembly_bytes": 655,
+      "disassembly_sha256": "ca2b187ef7112b3d30a14d01a107d4948dbaf80e5a6c7c2d099560ab28719942",
+      "source_bsir_binary_equal": true,
+      "source_bsir_disassembly_equal": true
+    },
+    {
+      "case_id": "08_reactive_if",
+      "source": "spec/meaning_v1/cases/08_reactive_if/source.bsharp",
+      "binary_bytes": 804,
+      "binary_sha256": "38a073e5adbf9cf0cb92cd4d76e775f528e6ac02a76aae563101ab8a1bccb804",
+      "disassembly_bytes": 920,
+      "disassembly_sha256": "2c10ff8150512ce984f36cb781c793d822352780589165daa018c4dc9ae84723",
+      "source_bsir_binary_equal": true,
+      "source_bsir_disassembly_equal": true
+    },
+    {
+      "case_id": "09_numbers_damage",
+      "source": "spec/meaning_v1/cases/09_numbers_damage/source.bsharp",
+      "binary_bytes": 616,
+      "binary_sha256": "047a209eaced8b93a88aaad14ce25eff1458496398ac704955321366bdb97d8a",
+      "disassembly_bytes": 567,
+      "disassembly_sha256": "b821af8936b6aed13eb554d9012ce497a95263711338a3512450f833eb121b8d",
+      "source_bsir_binary_equal": true,
+      "source_bsir_disassembly_equal": true
+    },
+    {
+      "case_id": "10_follow_up_order",
+      "source": "spec/meaning_v1/cases/10_follow_up_order/source.bsharp",
+      "binary_bytes": 736,
+      "binary_sha256": "76397dd0b09b0b2a11604624d4ca89ce949b3f4ac02c9a4d8b8a000a9784cc24",
+      "disassembly_bytes": 776,
+      "disassembly_sha256": "4b71ed539385f79c6c51c196610b7a6e6711eb9dfe16978462c7f63389be27a1",
+      "source_bsir_binary_equal": true,
+      "source_bsir_disassembly_equal": true
+    },
+    {
+      "case_id": "11_save_restore",
+      "source": "spec/meaning_v1/cases/11_save_restore/source.bsharp",
+      "binary_bytes": 572,
+      "binary_sha256": "51f8636ff6a4cf41bcfc4bcdc4f50f5304d57d8e5263367e8c190aa7aca3c910",
+      "disassembly_bytes": 532,
+      "disassembly_sha256": "158fdad612e4261bd0fa6a19591808007dc73d06a86a3c7923c16e10b2525b69",
+      "source_bsir_binary_equal": true,
+      "source_bsir_disassembly_equal": true
+    },
+    {
+      "case_id": "12_ask_answers",
+      "source": "spec/meaning_v1/cases/12_ask_answers/source.bsharp",
+      "binary_bytes": 744,
+      "binary_sha256": "0b83f3c9c01ee904583c28042a1528e3d582a290588e56fa3e12e8d05692108a",
+      "disassembly_bytes": 810,
+      "disassembly_sha256": "18796cd634486a6596018fe51b5f70985e10e09ef245507949006ad3f4de5d88",
+      "source_bsir_binary_equal": true,
+      "source_bsir_disassembly_equal": true
+    }
+  ]
+}

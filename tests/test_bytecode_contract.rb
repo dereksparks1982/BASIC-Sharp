@@ -105,7 +105,9 @@ class TestBytecodeContract < Minitest::Test
       assert_includes rules, rule
     end
     assert_equal rules.length, rules.uniq.length
-    assert_includes profile.dig('future_boundaries', 'v0_1_26_excludes'), 'bytecode execution'
+    assert_includes profile.dig('future_boundaries', 'v0_1_27_excludes'), 'bytecode execution'
+    assert_equal ['.bsharp', '.bsir.json'], profile.dig('emission', 'source_inputs')
+    assert_equal ['bsharp.bytecode.v1', 'bsharp.meaning.v1', 'sha256-bsir-meaning-v1'], profile.dig('emission', 'mandatory_string_prefix')
   end
 
   def test_canonical_contract_is_deterministic_across_hash_order

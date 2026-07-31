@@ -1,0 +1,64 @@
+BSharp Bytecode bsharp.bytecode.v1
+Meaning Profile: bsharp.meaning.v1
+Fingerprint: 2065082c70bd242b0ec905b928855752a452100096354fde0e955f1ed88a3b84
+
+KIND 0 thing PARENT NONE
+KIND 1 creature PARENT KIND[thing]
+KIND 2 dragon PARENT KIND[creature]
+KIND 3 wyrm PARENT KIND[dragon]
+KIND 4 person PARENT NONE
+KIND 5 door PARENT NONE
+KIND 6 key PARENT NONE
+KIND 7 table PARENT NONE
+KIND 8 guard PARENT NONE
+
+THING 0 player KIND[person]
+THING 1 ember KIND[wyrm]
+THING 2 cinder KIND[wyrm]
+THING 3 north door KIND[door]
+THING 4 brass key KIND[key]
+THING 5 oak table KIND[table]
+THING 6 henry KIND[guard]
+
+START
+    START_STATE THING[ember] calm REMOVE angry
+    START_STATE THING[cinder] calm REMOVE angry
+    START_STATE THING[north door] locked REMOVE unlocked
+    START_RELATION THING[brass key] on THING[oak table]
+    START_STATE THING[henry] calm REMOVE angry
+END
+
+WHEN actor=THING[player] action=take target=THING[brass key] BLOCK 0
+WHEN actor=THING[player] action=attack target=THING[ember] BLOCK 1
+WHEN actor=THING[player] action=attack target=ONE_KIND[creature] BLOCK 2
+WHEN actor=THING[player] action=attack target=ONE_KIND[guard] BLOCK 3
+
+IF STATE_IS THING[north door] locked BLOCK 4
+IF STATE_IS THING[cinder] angry BLOCK 5
+
+BLOCK 0
+    CARRY THING[brass key]
+END
+
+BLOCK 1
+    DAMAGE THING[ember] 1
+    CHANGE_STATE THING[ember] angry REMOVE calm
+END
+
+BLOCK 2
+    DAMAGE BOUND_THAT_KIND[creature] 1
+    CHANGE_STATE BOUND_THAT_KIND[creature] angry REMOVE calm
+END
+
+BLOCK 3
+    DAMAGE BOUND_THAT_KIND[guard] 1
+    CHANGE_STATE BOUND_THAT_KIND[guard] angry REMOVE calm
+END
+
+BLOCK 4
+    UNLOCK THING[north door]
+END
+
+BLOCK 5
+    DAMAGE THING[player] 1
+END

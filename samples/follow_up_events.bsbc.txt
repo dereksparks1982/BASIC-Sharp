@@ -1,0 +1,41 @@
+BSharp Bytecode bsharp.bytecode.v1
+Meaning Profile: bsharp.meaning.v1
+Fingerprint: e723be3412c26876a633ca47f7d3d543e9b932cdf390399293c89eb075c0e026
+
+KIND 0 person PARENT NONE
+KIND 1 guard PARENT NONE
+KIND 2 device PARENT NONE
+
+THING 0 player KIND[person]
+THING 1 henry KIND[guard]
+THING 2 mara KIND[guard]
+THING 3 brass bell KIND[device]
+
+START
+    START_STATE THING[henry] calm REMOVE angry
+    START_STATE THING[mara] calm REMOVE angry
+END
+
+WHEN actor=THING[player] action=attack target=ONE_KIND[guard] BLOCK 0
+WHEN actor=ONE_KIND[guard] action=attack target=THING[player] BLOCK 1
+WHEN actor=THING[mara] action=sound target=THING[brass bell] BLOCK 2
+
+IF STATE_IS THING[henry] angry BLOCK 3
+
+BLOCK 0
+    DAMAGE BOUND_THAT_KIND[guard] 1
+    CAUSE_EVENT BOUND_THAT_KIND[guard] attack THING[player]
+    CHANGE_STATE BOUND_THAT_KIND[guard] angry REMOVE calm
+END
+
+BLOCK 1
+    DAMAGE THING[player] 1
+END
+
+BLOCK 2
+    CHANGE_STATE THING[mara] angry REMOVE calm
+END
+
+BLOCK 3
+    CAUSE_EVENT THING[mara] sound THING[brass bell]
+END

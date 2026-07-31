@@ -136,7 +136,7 @@
       "name": "Deterministic UTF-8 string table",
       "record_count_means": "string count",
       "schema": "Each record is u32 byte_length, exact UTF-8 bytes, then zero padding to four-byte alignment.",
-      "ordering": "Traverse normalized BSIR meaning keys in kinds, objects, facts, events, if_rules order; preserve semantic array order; traverse object keys lexicographically; intern each exact string at first occurrence."
+      "ordering": "Mandatory strings bsharp.bytecode.v1, bsharp.meaning.v1, and sha256-bsir-meaning-v1 first; then exact normalized semantic strings in canonical emission traversal order, interned at first occurrence."
     },
     {
       "id": "META",
@@ -165,7 +165,7 @@
         "parent_kind_index_or_no_reference:u32",
         "source_order:u32"
       ],
-      "ordering": "Stable resolved Kind definition order with every referenced ancestor included before its descendants."
+      "ordering": "Referenced ancestors before descendants; custom Kind definitions, Thing Kinds, and selector Kinds are traversed in stable semantic order; equal candidates use first semantic reference."
     },
     {
       "id": "THNG",
@@ -213,7 +213,9 @@
       "name": "Ordered action blocks",
       "record_count_means": "code block count",
       "schema": "u32 block_count, then 16-byte block directory entries (block_id, instruction_offset, instruction_length, instruction_count), then aligned instruction records.",
-      "instruction_record": "opcode:u8, operand_count:u8, reserved_zero:u16, operands:u32[]. Block lengths are authoritative; END in disassembly is not an opcode."
+      "instruction_record": "opcode:u8, operand_count:u8, reserved_zero:u16, operands:u32[]. Block lengths are authoritative; END in disassembly is not an opcode.",
+      "instruction_offset_base": "Offset is measured from the first byte of the CODE section.",
+      "block_order": "All WHEN action blocks in event source order, then all IF action blocks in IF-rule source order."
     }
   ],
   "selectors": [
@@ -623,19 +625,44 @@
     "instruction crossing block boundary"
   ],
   "future_boundaries": {
-    "v0_1_26_includes": [
-      "architecture",
-      "machine-readable contract",
-      "validation",
-      "diagnostic disassembly grammar"
-    ],
-    "v0_1_26_excludes": [
+    "v0_1_27_includes": [
       "bytecode emitter",
-      "generated BSBC program files",
-      "bytecode loader",
+      "generated BSBC sample files",
+      "deterministic diagnostic disassembly",
+      "source and BSIR byte parity",
+      "atomic output"
+    ],
+    "v0_1_27_excludes": [
+      "arbitrary BSBC loader",
       "virtual machine",
       "bytecode execution",
-      "Ruby runtime replacement"
+      "Ruby runtime replacement",
+      "optimization",
+      "compression"
     ]
+  },
+  "emission": {
+    "status": "implemented by BASIC# v0.1.27",
+    "source_inputs": [
+      ".bsharp",
+      ".bsir.json"
+    ],
+    "output_binary_extension": ".bsbc",
+    "output_disassembly_suffix": ".bsbc.txt",
+    "mandatory_string_prefix": [
+      "bsharp.bytecode.v1",
+      "bsharp.meaning.v1",
+      "sha256-bsir-meaning-v1"
+    ],
+    "string_order": "After the mandatory prefix, intern normalized semantic strings at first occurrence during KIND, THNG, STRT, EVNT, IFRL, and CODE lowering.",
+    "kind_order": "Add each referenced ancestor before its descendant; preserve first semantic reference among otherwise equal candidates.",
+    "thing_order": "Resolved BSIR definition order.",
+    "start_order": "Resolved BSIR fact order.",
+    "code_block_order": "All WHEN blocks in event order, then all IF blocks in IF-rule order.",
+    "indexes": "zero-based",
+    "padding": "zero-filled to four-byte alignment",
+    "fingerprint_storage": "32 raw SHA-256 bytes using sha256-bsir-meaning-v1",
+    "determinism": "Equivalent normalized Profile 1 meaning produces byte-identical .bsbc and .bsbc.txt output.",
+    "atomic_output": "Binary and disassembly are replaced together; a failed emission leaves no partial pair."
   }
 }

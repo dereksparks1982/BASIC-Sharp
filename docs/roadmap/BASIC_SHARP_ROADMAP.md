@@ -14,37 +14,40 @@ BASIC# source
 -> ASK introspection and deterministic answers  [ACCEPTED: v0.1.23]
 -> Stable Meaning Specification and Conformance Profile 1  [ACCEPTED: v0.1.24]
 -> Canonical Company Bible Consolidation  [ACCEPTED: v0.1.25]
--> BSharp Bytecode Architecture and Instruction Contract 1  [CURRENT CANDIDATE: v0.1.26]
+-> BSharp Bytecode Architecture and Instruction Contract 1  [ACCEPTED: v0.1.26]
+-> BSharp Bytecode Emitter and Deterministic Disassembly 1  [CURRENT CANDIDATE: v0.1.27]
 -> owner validation and acceptance
--> bytecode emitter and deterministic disassembly
--> BASIC# bytecode loader and VM
+-> BSharp Bytecode loader and complete validator
+-> first BSharp virtual machine
+-> source/BSIR/BSBC runtime parity and hardening
 -> game-engine bridge
 -> BASIC# self-hosting compiler
 -> BASIC# code editor
 -> BASIC# IDE
 ```
 
-## Current v0.1.26 lane
+## Current v0.1.27 lane
 
-Define before execution:
+Create real deterministic execution artifacts without executing them:
 
-- BSharp Bytecode / BSBC identity;
-- `.bsbc`, `BSBC` magic, `bsharp.bytecode.bin`, and `bsharp.bytecode.v1`;
-- exact header and eight-section container;
-- fixed Profile 1 instructions, selectors, and IF condition operators;
-- deterministic string, Kind, Thing, event, IF, and code-block ordering;
-- Profile 1 coverage for all 13 conformance cases;
-- readable diagnostic disassembly grammar;
-- complete pre-execution malformed-bytecode rejection;
-- machine-readable validation independent of Ruby object layouts.
+- emit `bsharp.bytecode.v1` `.bsbc` files from `.bsharp` source or `.bsir.json`;
+- require byte-identical source/BSIR output for equivalent normalized meaning;
+- emit deterministic `.bsbc.txt` diagnostic disassembly;
+- lock mandatory string-prefix and semantic traversal ordering;
+- preserve Kind ancestors before descendants and Thing definition order;
+- lower all current START records, WHEN patterns, IF conditions, selectors, and official actions;
+- preserve the `sha256-bsir-meaning-v1` fingerprint as 32 raw bytes;
+- reject errors, warnings, unsupported meaning, invalid output identities, and conflicting CLI modes;
+- write binary and disassembly atomically;
+- lock sample and Meaning Profile fixture hashes.
 
-No emitter, `.bsbc` program output, loader, VM, or execution is authorized in this lane.
+No arbitrary bytecode loader, VM, execution, optimization, compression, or Ruby-runtime replacement is authorized in this lane.
 
-## Immediate continuation after v0.1.26 acceptance
+## Immediate continuation after v0.1.27 acceptance
 
-The next eligible proposal is a **BSharp Bytecode Emitter and Deterministic Disassembly** build. It must lower normalized BSIR into byte-identical `.bsbc` files, emit readable disassembly, compare source/BSIR meaning fingerprints, and remain non-executing until separately approved.
+The next eligible proposal is **BSharp Bytecode Loader and Complete Validation 1**. It should read arbitrary `.bsbc` files, validate every header, directory, section, reference, operand, fingerprint, and boundary rule before exposing a trusted in-memory model. It must remain non-executing unless Derek separately approves VM work.
 
-The loader and VM remain later lanes.
+The first VM, runtime parity lane, engine bridge, and self-hosting remain later builds.
 
 ## Completed foundation
 
@@ -59,6 +62,7 @@ The loader and VM remain later lanes.
 - Read-only deterministic ASK inspection.
 - Implementation-neutral `bsharp.meaning.v1` conformance fixtures.
 - One canonical Company Bible with repeatable integrity audit.
+- BSharp Bytecode Profile 1 architecture and machine-readable contract.
 
 ## Shelved commercial lane
 
