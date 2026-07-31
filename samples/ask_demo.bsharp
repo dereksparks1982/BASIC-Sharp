@@ -1,0 +1,29 @@
+KINDS
+[captain is a guard].
+
+DEFINE
+[a guard named henry
+ a captain named mara
+ a device named brass bell
+ a key named brass key
+ a table named oak table].
+
+START
+[henry is calm
+ mara is calm
+ brass key is on oak table
+ henry has 10 health].
+
+WHEN
+[player attacks a guard
+<then> (damage that guard by 3
+<then> (cause that guard attacks player
+<then> (change that guard to angry].
+
+WHEN
+[a guard attacks player
+<then> (damage player].
+
+IF
+[henry has 3 damage
+<then> (change mara to angry].

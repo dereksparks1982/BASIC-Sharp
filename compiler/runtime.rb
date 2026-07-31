@@ -67,6 +67,8 @@ module BasicSharp
       @startup_if_error = nil
       @startup_follow_up_events = []
       @if_active = Array.new(@ir.fetch('if_rules', []).length, false)
+      @world_origin = world_save ? 'BSharp Save' : 'START'
+      @loaded_world_save = world_save ? stringify_keys(world_save) : nil
       load_kind_families
       create_things
       validate_reference_contracts!
@@ -150,8 +152,119 @@ module BasicSharp
       @startup_if_rules = []
       @startup_if_error = nil
       @startup_follow_up_events = []
+      @world_origin = 'BSharp Save'
+      @loaded_world_save = stringify_keys(document)
       @save_ready = true
       self
+    end
+
+    def ask_thing(name)
+      canonical = normalize(name)
+      snapshot.find { |entry| entry.fetch('name') == canonical }
+    end
+
+    def ask_kind(name)
+      canonical = normalize(name)
+      return nil unless @known_kinds.include?(canonical)
+
+      {
+        'name' => canonical,
+        'parent' => @kind_parents[canonical],
+        'thing_count' => ask_kind_members(canonical).length
+      }
+    end
+
+    def ask_resolve_kind(text)
+      supplied = normalize(text)
+      matches = @known_kinds.select do |kind|
+        supplied == kind || supplied == ask_plural_kind(kind)
+      end
+      matches.length == 1 ? matches.first : nil
+    end
+
+    def ask_kind_members(kind_name)
+      canonical = normalize(kind_name)
+      @object_order.filter_map do |name|
+        thing = @objects.fetch(name)
+        distance = kind_distance(thing.fetch('kind'), canonical)
+        next if distance.nil?
+
+        {
+          'name' => name,
+          'kind' => thing.fetch('kind'),
+          'inherited' => distance.positive?,
+          'distance' => distance
+        }
+      end
+    end
+
+    def ask_event_match(event_text)
+      event = normalize(event_text)
+      match = find_event_match(event)
+      unless match && match['rule']
+        return {
+          'matched' => false,
+          'matched_when' => nil,
+          'understood' => [],
+          'actions' => [],
+          'error' => match && match['error']
+        }
+      end
+
+      rule = match.fetch('rule')
+      context = match.fetch('context')
+      {
+        'matched' => true,
+        'matched_when' => normalize(rule.dig('when', 'raw')),
+        'understood' => context_explanations(rule, context),
+        'actions' => rule.fetch('then', []).map { |word| ask_action_text(word) },
+        'error' => nil
+      }
+    end
+
+    def ask_if_rules
+      @ir.fetch('if_rules', []).each_with_index.map do |rule, index|
+        {
+          'index' => index,
+          'condition' => normalize(rule.dig('if', 'raw')),
+          'true' => condition_true?(rule.fetch('if')),
+          'active' => @if_active.fetch(index)
+        }
+      end
+    end
+
+    def ask_world_summary
+      things = snapshot
+      rules = ask_if_rules
+      {
+        'origin' => @world_origin,
+        'settled' => save_ready?,
+        'things' => things.length,
+        'kinds_used' => things.map { |thing| thing.fetch('kind') }.uniq.length,
+        'true_if_rules' => rules.count { |rule| rule.fetch('true') },
+        'if_rules' => rules.length,
+        'whole_number_values' => things.sum { |thing| thing.fetch('values').length }
+      }
+    end
+
+    def ask_save_summary
+      unless @loaded_world_save
+        return {
+          'loaded' => false,
+          'format_version' => nil,
+          'settled' => save_ready?,
+          'things' => snapshot.length,
+          'fingerprint_matched' => nil
+        }
+      end
+
+      {
+        'loaded' => true,
+        'format_version' => @loaded_world_save['format_version'],
+        'settled' => @loaded_world_save.dig('world', 'settled') == true,
+        'things' => Array(@loaded_world_save.dig('world', 'things')).length,
+        'fingerprint_matched' => true
+      }
     end
 
     def snapshot
@@ -229,6 +342,33 @@ module BasicSharp
     end
 
     private
+
+    def ask_plural_kind(kind)
+      return "#{kind[0...-1]}ies" if kind.end_with?('y') && kind.length > 1
+      return "#{kind}es" if kind.end_with?('s', 'x', 'z', 'ch', 'sh')
+
+      "#{kind}s"
+    end
+
+    def ask_action_text(word)
+      action = normalize(word['action'])
+      return "(cause #{normalize(word.dig('event', 'raw'))}" if action == 'cause'
+
+      target = normalize(word.dig('target', 'text') || word.dig('target', 'name'))
+      if action == 'damage'
+        amount = word.fetch('amount', 1)
+        return amount == 1 ? "(damage #{target}" : "(damage #{target} by #{amount}"
+      end
+      if action == 'change' && word['value_name']
+        return "(change #{normalize(word['value_name'])} of #{target} to #{word['to_amount']}"
+      end
+      if action == 'change'
+        state = normalize(word.dig('to', 'name') || word.dig('to', 'text'))
+        return "(change #{target} to #{state}"
+      end
+
+      "(#{action} #{target}"
+    end
 
     def prepare_value_schema
       @ir.fetch('facts', []).each do |fact|

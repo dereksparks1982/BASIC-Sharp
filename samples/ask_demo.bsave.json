@@ -4,7 +4,7 @@
   "created_by_basic_sharp": "0.1.23",
   "program_fingerprint": {
     "algorithm": "sha256-bsir-meaning-v1",
-    "value": "47f25721551d6fbe46a1cacde45f44c146090adcf454ffb6813c3e39a8f2c270"
+    "value": "f5d9e178e8e6ff29321630d829fba723957b8dcc01913a11b3f9f2f655796375"
   },
   "world": {
     "settled": true,
@@ -38,10 +38,10 @@
       },
       {
         "name": "mara",
-        "kind": "guard",
+        "kind": "captain",
         "builtin": false,
         "states": [
-          "calm"
+          "angry"
         ],
         "relations": {
         },
@@ -70,7 +70,7 @@
 
         ],
         "relations": {
-          "carried by": "henry"
+          "on": "oak table"
         },
         "values": {
           "damage": 0

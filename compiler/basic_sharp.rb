@@ -8,17 +8,14 @@ require_relative 'resolver'
 require_relative 'ir_emitter'
 require_relative 'runtime'
 require_relative 'world_save'
+require_relative 'ask'
 
 if ARGV.empty?
   warn 'Usage: ruby compiler/basic_sharp.rb source.bsharp [--json|--emit-ast|--emit-ir] [--out path] [--run "event"]'
-  warn '       [--load-world path.bsave.json] [--save-world path.bsave.json]'
-  warn '   or: ruby compiler/basic_sharp.rb existing.bsir.json [--run "event"] [--load-world path.bsave.json] [--save-world path.bsave.json]'
+  warn '       [--load-world path.bsave.json] [--ask "question"]... [--ask-json] [--save-world path.bsave.json]'
+  warn '   or: ruby compiler/basic_sharp.rb existing.bsir.json [--run "event"] [--load-world path.bsave.json]'
+  warn '       [--ask "question"]... [--ask-json] [--save-world path.bsave.json]'
   exit 64
-end
-
-def option_value(arguments, flag)
-  index = arguments.index(flag)
-  index ? arguments[index + 1] : nil
 end
 
 def validate_option_value!(arguments, flag, label)
@@ -33,6 +30,21 @@ def validate_option_value!(arguments, flag, label)
   [index, value]
 end
 
+def repeated_option_values!(arguments, flag, label)
+  entries = []
+  arguments.each_with_index do |argument, index|
+    next unless argument == flag
+
+    value = arguments[index + 1]
+    if value.nil? || value.start_with?('--')
+      warn "Missing #{label} after #{flag}"
+      exit 64
+    end
+    entries << [index, value]
+  end
+  entries
+end
+
 def write_output(path, content)
   dir = File.dirname(path)
   FileUtils.mkdir_p(dir) unless dir == '.' || Dir.exist?(dir)
@@ -44,10 +56,23 @@ out_index, out_path = validate_option_value!(ARGV, '--out', 'output path')
 run_index, run_event = validate_option_value!(ARGV, '--run', 'event')
 load_index, load_world_path = validate_option_value!(ARGV, '--load-world', 'world-save path')
 save_index, save_world_path = validate_option_value!(ARGV, '--save-world', 'world-save path')
+ask_entries = repeated_option_values!(ARGV, '--ask', 'ASK question')
+ask_questions = ask_entries.map(&:last)
+ask_json = ARGV.include?('--ask-json')
 emit_ast = ARGV.include?('--json') || ARGV.include?('--emit-ast')
 emit_ir = ARGV.include?('--emit-ir')
 
-consumed_values = [out_index, run_index, load_index, save_index].compact.map { |index| index + 1 }
+if ask_json && ask_questions.empty?
+  warn '--ask-json requires at least one --ask question'
+  exit 64
+end
+if ask_questions.length > BasicSharp::Ask::MAX_QUESTIONS
+  warn "BASIC# ASK accepts at most #{BasicSharp::Ask::MAX_QUESTIONS} questions per command."
+  exit 64
+end
+
+value_indexes = [out_index, run_index, load_index, save_index].compact + ask_entries.map(&:first)
+consumed_values = value_indexes.map { |index| index + 1 }
 path = ARGV.each_with_index.find do |argument, index|
   !argument.start_with?('--') && !consumed_values.include?(index)
 end&.first
@@ -103,7 +128,7 @@ if emit_ir
   exit(resolved.error_count.positive? ? 1 : 0)
 end
 
-runtime_mode = run_index || load_index || save_index
+runtime_mode = run_index || load_index || save_index || !ask_questions.empty?
 if runtime_mode
   begin
     if !json_input && resolved.error_count.positive?
@@ -118,22 +143,38 @@ if runtime_mode
                 BasicSharp::Runtime.new(resolved, world_save: save_document)
               end
 
-    puts "loaded world: #{load_world_path}" if load_world_path && !run_index
+    puts "loaded world: #{load_world_path}" if load_world_path && !run_index && ask_questions.empty? && !ask_json
 
     result = nil
     if run_index
       result = runtime.run_event(run_event)
-      puts runtime.report(result)
+      puts runtime.report(result) unless ask_json
+      unless result.fetch('matched') && result['error'].nil?
+        exit 1
+      end
+    end
+
+    unless ask_questions.empty?
+      inspector = BasicSharp::Ask.new(runtime)
+      answers = inspector.answer_many(ask_questions)
+      if ask_json
+        print inspector.to_json(answers)
+      else
+        puts if run_index
+        puts inspector.report(answers)
+      end
     end
 
     if save_world_path
       runtime.write_world_save(save_world_path)
-      puts "saved world: #{save_world_path}"
+      puts "saved world: #{save_world_path}" unless ask_json
     end
 
-    success = result.nil? || (result.fetch('matched') && result['error'].nil?)
-    exit(success ? 0 : 1)
+    exit 0
   rescue BasicSharp::RetiredDKIRFormatError => error
+    warn error.message
+    exit 1
+  rescue BasicSharp::AskError => error
     warn error.message
     exit 1
   rescue BasicSharp::WorldSaveError => error

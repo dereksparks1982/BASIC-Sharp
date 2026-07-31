@@ -1,0 +1,48 @@
+# BASIC# Changed Files v0.1.23
+
+Target: v0.1.23 ASK Introspection and Deterministic Answers
+Required base: v0.1.22, commit d991679, tag v0.1.22
+
+Changed project paths: 37
+
+- `BASIC_SHARP_PATCH_MANIFEST.json`
+- `BUILD_HANDSHAKE_v0_1_23.md`
+- `README.md`
+- `compiler/ask.rb`
+- `compiler/ast_nodes.rb`
+- `compiler/basic_sharp.rb`
+- `compiler/runtime.rb`
+- `docs/ask/BASIC_SHARP_ASK_CONTRACT_v0_1_23.md`
+- `docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_23.txt`
+- `docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_23.md`
+- `docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md`
+- `docs/hand_off/BASIC_SHARP_v0_1_23_NEW_THREAD_HANDOFF.md`
+- `docs/ir/BSIR_MEANING_CONTRACT_v0_1_23.md`
+- `docs/parser_contract_v0_1_23.md`
+- `docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_23.md`
+- `docs/roadmap/BASIC_SHARP_ROADMAP.md`
+- `docs/runtime_contract_v0_1_23.md`
+- `docs/save/BSHARP_SAVE_CONTRACT_v0_1_23.md`
+- `docs/session_logs/BASIC_SHARP_v0_1_23_SESSION_LOG.md`
+- `docs/testing/BASIC_SHARP_ASK_STRESS_TEST_v0_1_23.md`
+- `docs/validation/BASIC_SHARP_VALIDATION_v0_1_23.md`
+- `samples/ask_demo.bsave.json`
+- `samples/ask_demo.bsharp`
+- `samples/ask_demo.bsir.json`
+- `samples/every_guard.bsir.json`
+- `samples/first_room.bsir.json`
+- `samples/follow_up_events.bsir.json`
+- `samples/values_and_amounts.bsir.json`
+- `samples/world_save_demo.bsave.json`
+- `samples/world_save_demo.bsir.json`
+- `tests/test_ask.rb`
+- `tests/test_bsir_identity_migration.rb`
+- `tests/test_cli_output.rb`
+- `tests/test_identity_migration.rb`
+- `tests/test_ir_output.rb`
+- `tests/test_world_save.rb`
+- `tools/ask_stress.rb`
+
+Added paths: 19
+Modified paths: 18
+Deleted paths: 0
