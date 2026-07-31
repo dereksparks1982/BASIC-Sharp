@@ -1,0 +1,96 @@
+{
+  "format": "bsharp.preferred.runtime.fixtures.json",
+  "format_version": 1,
+  "implemented_by_basic_sharp": "0.1.31",
+  "preferred_runtime": "BSharp Virtual Machine",
+  "reference_runtime_role": "explicit verification oracle",
+  "preferred_inputs": [
+    ".bsharp",
+    ".bsir.json",
+    ".bsbc"
+  ],
+  "options": {
+    "reference": "--reference-runtime",
+    "shadow_parity": "--verify-runtime-parity"
+  },
+  "samples": [
+    {
+      "name": "ask_demo",
+      "source": "samples/ask_demo.bsharp",
+      "bsir": "samples/ask_demo.bsir.json",
+      "events": ["player attacks henry"]
+    },
+    {
+      "name": "every_guard",
+      "source": "samples/every_guard.bsharp",
+      "bsir": "samples/every_guard.bsir.json",
+      "events": ["player sounds brass bell", "player attacks mara"]
+    },
+    {
+      "name": "first_room",
+      "source": "samples/first_room.bsharp",
+      "bsir": "samples/first_room.bsir.json",
+      "events": ["player attacks cinder", "player takes brass key", "player attacks henry"]
+    },
+    {
+      "name": "follow_up_events",
+      "source": "samples/follow_up_events.bsharp",
+      "bsir": "samples/follow_up_events.bsir.json",
+      "events": ["player attacks henry"]
+    },
+    {
+      "name": "values_and_amounts",
+      "source": "samples/values_and_amounts.bsharp",
+      "bsir": "samples/values_and_amounts.bsir.json",
+      "events": ["player sounds brass bell"]
+    },
+    {
+      "name": "world_save_demo",
+      "source": "samples/world_save_demo.bsharp",
+      "bsir": "samples/world_save_demo.bsir.json",
+      "events": ["player attacks henry"]
+    }
+  ],
+  "meaning_cases": [
+    "01_structure",
+    "02_kinds_things_order",
+    "03_start_world",
+    "04_event_matching",
+    "05_event_priority",
+    "06_that_context",
+    "07_every_selection",
+    "08_reactive_if",
+    "09_numbers_damage",
+    "10_follow_up_order",
+    "11_save_restore",
+    "12_ask_answers"
+  ],
+  "ask_questions": [
+    "what is henry",
+    "what Kind is henry",
+    "what Things are guards",
+    "what happens when player attacks henry",
+    "what IF rules are true",
+    "what is the world",
+    "what is the save"
+  ],
+  "required_proofs": [
+    "source defaults to BSharp VM",
+    "BSIR defaults to BSharp VM",
+    "direct BSBC remains BSharp VM",
+    "in-memory bytecode pipeline",
+    "no temporary artifact leakage",
+    "reference-runtime opt-in",
+    "default-path runtime independence",
+    "startup shadow parity",
+    "event-result shadow parity",
+    "world-state shadow parity",
+    "reactive IF shadow parity",
+    "follow-up-event shadow parity",
+    "ASK shadow parity",
+    "Save shadow parity",
+    "restore and replay shadow parity",
+    "mismatch detection",
+    "deterministic repeated execution"
+  ]
+}

@@ -1,60 +1,62 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.30
+# BASIC# Ruby Bootstrap Compiler v0.1.31
 
 > A scripting language made for non-programmers, by non-programmers.
 
-BASIC# now has a hardened three-path Profile 1 runtime:
+BASIC# now uses the **BSharp Virtual Machine as its preferred Profile 1 runtime**:
 
 ```text
-.bsharp source -> reference runtime
-.bsharp source -> BSharp IR -> reference runtime
-.bsharp source -> BSharp IR -> BSharp Bytecode -> loader -> BSharp VM
+.bsharp source -> resolve -> BSBC in memory -> validate -> BSharp VM
+.bsir.json     -> BSBC in memory -> validate -> BSharp VM
+.bsbc          -> validate -> BSharp VM
 ```
 
-All three paths must reach the same settled world for equivalent program meaning and event sequences.
+Ruby remains the bootstrap host. The older `BasicSharp::Runtime` remains a protected reference oracle for conformance and regression diagnosis, but it is no longer the normal creator execution path.
 
-## v0.1.30 VM parity, Save, ASK, and hardening
+## v0.1.31 preferred-runtime transition
 
-The BSharp VM now supports the complete current Profile 1 operating boundary:
+Normal `.bsharp` and `.bsir.json` execution now:
 
-- deterministic BSharp Save writing from a VM world;
-- validated BSharp Save restoration into a VM without replaying START;
-- preserved reactive IF active state across restore;
-- BSharp ASK over VM Things, Kinds, event matching, IF rules, world summaries, and save summaries;
-- source / saved BSIR / validated BSBC world parity;
-- repeated save, restore, and replay cycles;
-- isolated mutable VM worlds over one deeply frozen loaded program;
-- atomic failed-restore recovery;
-- IF-loop and 1,024-follow-up-event protection;
-- bounded performance reporting through the VM stress lane.
+- emits deterministic BSharp Bytecode in memory;
+- validates the complete binary through `BytecodeLoader`;
+- executes the trusted model through the BSharp VM;
+- leaves no temporary `.bsbc` or `.bsbc.txt` artifacts;
+- remains independent of the reference runtime.
 
-The VM continues to interpret validated bytecode directly. It does not reconstruct BSIR and does not call `BasicSharp::Runtime` to execute instructions.
+Direct `.bsbc` execution continues through the same BSharp VM.
 
 ## Main commands
 
-Run BSharp Bytecode:
+Run BASIC# through the preferred BSharp VM:
 
 ```bash
-ruby compiler/basic_sharp.rb samples/first_room.bsbc --run "player attacks cinder"
+ruby compiler/basic_sharp.rb samples/first_room.bsharp --run "player attacks cinder"
 ```
 
-Run, inspect, and save one VM world:
+Run saved BSIR through the preferred BSharp VM:
 
 ```bash
-ruby compiler/basic_sharp.rb samples/ask_demo.bsbc \
-  --run "player attacks henry" \
-  --ask "what is the world" \
-  --save-world /tmp/ask_demo.bsave.json
+ruby compiler/basic_sharp.rb samples/first_room.bsir.json --run "player attacks cinder"
 ```
 
-Restore and inspect a VM world:
+Use the reference runtime explicitly for diagnosis:
 
 ```bash
-ruby compiler/basic_sharp.rb samples/ask_demo.bsbc \
-  --load-world /tmp/ask_demo.bsave.json \
-  --ask "what is the save"
+ruby compiler/basic_sharp.rb samples/first_room.bsharp \
+  --reference-runtime \
+  --run "player attacks cinder"
 ```
 
-Run validation lanes:
+Run both engines and stop on any semantic disagreement:
+
+```bash
+ruby compiler/basic_sharp.rb samples/first_room.bsharp \
+  --verify-runtime-parity \
+  --run "player attacks cinder"
+```
+
+The parity mode compares startup behavior, events, world state, reactive IF state, follow-up order, ASK, Save, restore, and replay. Only the preferred VM report is shown when both paths agree.
+
+## Validation lanes
 
 ```bash
 ruby tools/meaning_conformance.rb
@@ -64,11 +66,12 @@ ruby tools/bytecode_emitter.rb
 ruby tools/bytecode_loader.rb
 ruby tools/bytecode_virtual_machine.rb
 ruby tools/bytecode_vm_stress.rb
+ruby tools/runtime_transition.rb
 ```
 
-## Deliberately excluded from v0.1.30
+## Deliberately excluded from v0.1.31
 
-The source/BSIR reference runtime is not removed. This build does not add a new bytecode profile, optimization, JIT, native machine code, new BASIC# syntax, strings, arithmetic expressions, repetition, functions, collections, editor, IDE, engine bridge, self-hosting, licensing, or monetization.
+The reference runtime is not deleted. This build does not add new BASIC# syntax or meaning, strings, arithmetic expressions, repetition, functions, collections, a new bytecode profile, binary-layout changes, optimization, JIT, native code, editor, IDE, engine bridge, self-hosting, licensing, or monetization.
 
 ## Canonical records
 
@@ -76,8 +79,9 @@ The source/BSIR reference runtime is not removed. This build does not add a new 
 docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
 docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
 docs/roadmap/BASIC_SHARP_ROADMAP.md
-docs/bytecode/BASIC_SHARP_VM_PARITY_SAVE_ASK_AND_HARDENING_v0_1_30.md
-docs/validation/BASIC_SHARP_VALIDATION_v0_1_30.md
+docs/runtime/BASIC_SHARP_BSHARP_VM_PREFERRED_RUNTIME_TRANSITION_v0_1_31.md
+docs/runtime_contract_v0_1_31.md
+docs/validation/BASIC_SHARP_VALIDATION_v0_1_31.md
 ```
 
 ## Current identity
@@ -90,8 +94,9 @@ Intermediate representation: BSharp IR / BSIR
 World save: BSharp Save
 Inspection: BSharp ASK
 Bytecode: BSharp Bytecode / BSBC / .bsbc
-Virtual machine: BSharp Virtual Machine / BSharp VM
+Preferred runtime: BSharp Virtual Machine / BSharp VM
+Reference oracle: BasicSharp::Runtime
 Meaning profile: bsharp.meaning.v1
 Bytecode profile: bsharp.bytecode.v1
-Version: 0.1.30
+Version: 0.1.31
 ```

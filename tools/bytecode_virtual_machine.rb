@@ -159,7 +159,7 @@ checks = {
 
 checks.each { |label, passed| VMConformance.assert!(passed, label) }
 
-puts 'BSharp Virtual Machine v0.1.30'
+puts 'BSharp Virtual Machine v0.1.31'
 puts "Sample programs: #{FIXTURE.fetch('sample_programs').length}"
 puts "Valid Meaning Profile cases: #{FIXTURE.fetch('meaning_cases').length}"
 puts

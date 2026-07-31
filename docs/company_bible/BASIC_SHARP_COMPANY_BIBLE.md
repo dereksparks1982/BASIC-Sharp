@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.30  
+**Version:** v0.1.31  
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -237,6 +237,7 @@ Protected rules:
 - “Forgiving input, dependable meaning, canonical output” remains the long-term direction, but tolerance is added only through approved, tested builds.
 - Stable Meaning Profile 1 is the implementation-neutral meaning authority for its covered language behavior.
 - **BSharp Bytecode** and **BSBC** are the protected names for the compact execution artifact governed by `bsharp.bytecode.v1`. The accepted Ruby bootstrap may emit deterministic `.bsbc` files, load and completely validate them into a deeply frozen trusted model, reconstruct `.bsbc.txt` diagnostic disassembly, and execute Profile 1 through the **BSharp Virtual Machine**. The BSharp VM interprets the validated bytecode model directly and must not reconstruct BSIR or call the reference Ruby runtime. It remains Ruby-hosted bootstrap machinery. The accepted VM may write and restore deterministic BSharp Saves, answer read-only BSharp ASK questions, and must preserve source, saved BSIR, and validated BSBC Profile 1 parity.
+- The **BSharp VM is the preferred Profile 1 runtime** for `.bsharp`, `.bsir.json`, and `.bsbc`. Source and saved BSIR enter it through deterministic BSBC emission and complete validation in memory. `BasicSharp::Runtime` remains a protected reference oracle available only through explicit diagnostic use and conformance testing. Shadow parity verification must stop on disagreement rather than silently choosing one engine's result.
 
 Language grammar and runtime behavior belong in specifications and contracts, not duplicated as mutable Company Bible prose.
 

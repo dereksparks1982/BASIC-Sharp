@@ -125,12 +125,16 @@ class TestBytecodeContract < Minitest::Test
 
   def test_vm_execution_contract_is_direct_and_profile_complete
     execution = profile.fetch('execution')
-    assert_equal 'hardened by BASIC# v0.1.30', execution.fetch('status')
+    assert_equal 'preferred by BASIC# v0.1.31', execution.fetch('status')
     assert_equal 'successfully validated deeply frozen BytecodeLoader model', execution.fetch('input_boundary')
     assert_equal true, execution.fetch('direct_bytecode_interpretation')
     assert_equal false, execution.fetch('reconstructs_bsir')
     assert_equal false, execution.fetch('calls_reference_runtime')
     assert_equal 1_024, execution.fetch('follow_up_limit')
+    assert_equal ['.bsharp', '.bsir.json', '.bsbc'], execution.fetch('preferred_runtime_inputs')
+    assert_includes execution.fetch('source_and_bsir_pipeline'), 'emitted to BSBC in memory'
+    assert_includes execution.fetch('reference_runtime_role'), '--reference-runtime'
+    assert_includes execution.fetch('shadow_parity_verification'), '--verify-runtime-parity'
     assert_includes execution.fetch('action_instructions'), 'CAUSE_EVENT'
     assert_includes execution.fetch('condition_instructions'), 'VALUE_EQUALS'
     assert_includes profile.dig('future_boundaries', 'v0_1_29_excludes'), 'BSharp Save through the VM'

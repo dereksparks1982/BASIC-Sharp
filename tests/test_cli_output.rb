@@ -27,7 +27,7 @@ class TestCLIOutput < Minitest::Test
       assert_includes stdout, "wrote: #{out_path}"
       assert File.file?(out_path), 'expected --out to create the IR file'
       json = JSON.parse(File.read(out_path))
-      assert_equal '0.1.30', json.fetch('version')
+      assert_equal '0.1.31', json.fetch('version')
     end
   end
 
@@ -42,7 +42,7 @@ class TestCLIOutput < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BASIC# Runtime v0.1.30'
+    assert_includes stdout, 'BSharp Virtual Machine v0.1.31'
     assert_includes stdout, 'matched: yes'
     assert_includes stdout, 'what matched:'
     assert_includes stdout, 'player attacks ember'
@@ -93,7 +93,7 @@ class TestCLIOutput < Minitest::Test
       )
 
       assert status.success?, stderr
-      assert_includes stdout, 'BASIC# Runtime v0.1.30'
+      assert_includes stdout, 'BSharp Virtual Machine v0.1.31'
       assert_includes stdout, 'matched: yes'
       assert_includes stdout, 'what matched:'
       assert_includes stdout, 'player attacks a guard'
@@ -130,7 +130,7 @@ class TestCLIOutput < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BASIC# Runtime v0.1.30'
+    assert_includes stdout, 'BSharp Virtual Machine v0.1.31'
     assert_includes stdout, 'matched: yes'
     assert_includes stdout, 'what matched:'
     assert_includes stdout, 'player attacks a guard'
@@ -209,6 +209,72 @@ class TestCLIOutput < Minitest::Test
       assert_includes stdout, 'Events kept causing more events.'
       assert_includes stdout, 'stopped this chain after 1,024 follow-up events'
     end
+  end
+
+  def test_reference_runtime_is_available_only_by_explicit_option
+    stdout, stderr, status = Open3.capture3(
+      RUBY,
+      File.join(ROOT, 'compiler/basic_sharp.rb'),
+      File.join(ROOT, 'samples/first_room.bsharp'),
+      '--reference-runtime',
+      '--run',
+      'player attacks cinder',
+      chdir: ROOT
+    )
+
+    assert status.success?, stderr
+    assert_includes stdout, 'BASIC# Runtime v0.1.31'
+    refute_includes stdout, 'BSharp Virtual Machine v0.1.31'
+  end
+
+  def test_shadow_parity_mode_reports_only_preferred_vm_result
+    stdout, stderr, status = Open3.capture3(
+      RUBY,
+      File.join(ROOT, 'compiler/basic_sharp.rb'),
+      File.join(ROOT, 'samples/first_room.bsharp'),
+      '--verify-runtime-parity',
+      '--run',
+      'player attacks cinder',
+      chdir: ROOT
+    )
+
+    assert status.success?, stderr
+    assert_includes stdout, 'BSharp Virtual Machine v0.1.31'
+    refute_includes stdout, 'BASIC# Runtime v0.1.31'
+    assert_includes stdout, 'cinder damage is now 1'
+  end
+
+  def test_runtime_transition_options_reject_direct_bytecode
+    _stdout, stderr, status = Open3.capture3(
+      RUBY,
+      File.join(ROOT, 'compiler/basic_sharp.rb'),
+      File.join(ROOT, 'samples/first_room.bsbc'),
+      '--reference-runtime',
+      '--run',
+      'player attacks cinder',
+      chdir: ROOT
+    )
+
+    refute status.success?
+    assert_equal 64, status.exitstatus
+    assert_includes stderr, 'Direct .bsbc execution already uses the BSharp VM.'
+  end
+
+  def test_runtime_transition_options_are_mutually_exclusive
+    _stdout, stderr, status = Open3.capture3(
+      RUBY,
+      File.join(ROOT, 'compiler/basic_sharp.rb'),
+      File.join(ROOT, 'samples/first_room.bsharp'),
+      '--reference-runtime',
+      '--verify-runtime-parity',
+      '--run',
+      'player attacks cinder',
+      chdir: ROOT
+    )
+
+    refute status.success?
+    assert_equal 64, status.exitstatus
+    assert_includes stderr, 'cannot be combined'
   end
 
 end

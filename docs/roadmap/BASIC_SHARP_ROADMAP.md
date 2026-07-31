@@ -6,7 +6,7 @@
 BASIC# source
 -> Ruby bootstrap parser and resolver
 -> BSharp IR
--> deterministic reference Ruby runtime
+-> deterministic reference Ruby runtime  [REFERENCE ORACLE]
 -> BSharp Save and BSharp ASK
 -> Stable Meaning Profile 1  [ACCEPTED: v0.1.24]
 -> one canonical Company Bible  [ACCEPTED: v0.1.25]
@@ -14,9 +14,9 @@ BASIC# source
 -> deterministic BSBC emitter  [ACCEPTED: v0.1.27]
 -> complete BSBC loader and validator  [ACCEPTED: v0.1.28]
 -> first BSharp Virtual Machine  [ACCEPTED: v0.1.29]
--> VM parity, BSharp Save, BSharp ASK, and hardening  [CURRENT CANDIDATE: v0.1.30]
+-> VM parity, BSharp Save, BSharp ASK, and hardening  [ACCEPTED: v0.1.30]
+-> BSharp VM preferred runtime transition and shadow parity  [CURRENT CANDIDATE: v0.1.31]
 -> owner validation and acceptance
--> decide when BSBC becomes the preferred runtime path
 -> expand BASIC# toward Profile 2 and self-hosting needs
 -> game-engine bridge
 -> BASIC# self-hosting compiler
@@ -24,26 +24,20 @@ BASIC# source
 -> BASIC# IDE
 ```
 
-## Current v0.1.30 lane
+## Current v0.1.31 lane
 
-Complete and harden the Profile 1 bytecode runtime milestone:
+Formalize the permanent runtime direction already established by Derek:
 
-- BSharp Save write and restore through the VM;
-- no START replay when restoring a VM world;
-- preserved IF active state and deterministic replay;
-- BSharp ASK through the VM without mutation;
-- source, saved BSIR, and validated BSBC world parity;
-- repeated save/restore/replay cycles;
-- independent VM worlds over one frozen loader model;
-- atomic malformed-save rejection and recovery;
-- bounded VM stress and performance reporting;
-- continued proof that the VM executes without the reference runtime.
+- `.bsharp` and `.bsir.json` emit BSBC in memory and run through the validated BSharp VM;
+- `.bsbc` continues directly through the validated BSharp VM;
+- `BasicSharp::Runtime` becomes explicit reference-oracle machinery rather than the normal creator path;
+- optional shadow verification compares both engines and stops on disagreement;
+- no temporary bytecode artifacts leak from normal source or BSIR execution;
+- no new creator-facing language meaning is added in this transition.
 
-No new creator-facing language behavior is authorized in this lane.
+## Immediate continuation after v0.1.31 acceptance
 
-## Immediate continuation after v0.1.30 acceptance
-
-The bytecode runtime milestone is substantially complete. The next proposal should first decide whether the validated BSBC path becomes the preferred runtime path, then choose the smallest Profile 2 capability needed to move toward useful programs and eventual self-hosting. No transition removes the reference runtime without Derek's explicit approval and parity evidence.
+The next numbered build may begin Profile 2. Choose the smallest capability that creates major creator value and also helps eventual self-hosting. General text values are the strongest current candidate because dialogue, messages, names, paths, diagnostics, and compiler work all need text. This remains a future proposal, not approved work.
 
 ## Completed foundation
 
@@ -54,7 +48,8 @@ The bytecode runtime milestone is substantially complete. The next proposal shou
 - BSharp IR, BSharp Save, and BSharp ASK.
 - Implementation-neutral `bsharp.meaning.v1` conformance fixtures.
 - One canonical Company Bible and integrity audit.
-- BSharp Bytecode Profile 1 architecture, emitter, disassembly, complete loader, and direct VM.
+- BSharp Bytecode Profile 1 architecture, emitter, disassembly, complete loader, direct VM, Save/ASK integration, and hardening.
+- Preferred BSharp VM runtime path with explicit reference and shadow-parity modes.
 
 ## Shelved commercial lane
 
@@ -66,5 +61,6 @@ Private/proprietary distribution remains under consideration, but licensing and 
 - BASIC# is the language name; BSharp is used where `#` is unsafe.
 - No new `DK`-prefixed name without Derek's explicit approval.
 - Difficult machinery belongs under understandable creator-facing language.
+- The BSharp VM is the preferred runtime; Ruby remains temporary bootstrap support and reference verification.
 - Every build requires an exact accepted base, approval, validation, changed-files-only package, handshake, commit, and tag.
 - The complete Company Bible is one file: `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md`.

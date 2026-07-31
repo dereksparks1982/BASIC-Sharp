@@ -12,10 +12,12 @@ require_relative 'ask'
 require_relative 'bytecode_emitter'
 require_relative 'bytecode_loader'
 require_relative 'bytecode_virtual_machine'
+require_relative 'runtime_transition'
 
 if ARGV.empty?
   warn 'Usage: ruby compiler/basic_sharp.rb source.bsharp [--json|--emit-ast|--emit-ir|--emit-bytecode] [--out path] [--run "event"]'
   warn '       [--load-world path.bsave.json] [--ask "question"]... [--ask-json] [--save-world path.bsave.json]'
+  warn '       [--reference-runtime|--verify-runtime-parity]'
   warn '   or: ruby compiler/basic_sharp.rb existing.bsir.json [--run "event"] [--load-world path.bsave.json]'
   warn '       [--ask "question"]... [--ask-json] [--save-world path.bsave.json]'
   warn '   or: ruby compiler/basic_sharp.rb program.bsbc [--run "event"] [--disassemble-bytecode] [--against source.bsharp|program.bsir.json]'
@@ -68,6 +70,13 @@ emit_ast = ARGV.include?('--json') || ARGV.include?('--emit-ast')
 emit_ir = ARGV.include?('--emit-ir')
 emit_bytecode = ARGV.include?('--emit-bytecode')
 disassemble_bytecode = ARGV.include?('--disassemble-bytecode')
+reference_runtime = ARGV.include?('--reference-runtime')
+verify_runtime_parity = ARGV.include?('--verify-runtime-parity')
+
+if reference_runtime && verify_runtime_parity
+  warn '--reference-runtime and --verify-runtime-parity cannot be combined.'
+  exit 64
+end
 
 if ask_json && ask_questions.empty?
   warn '--ask-json requires at least one --ask question'
@@ -125,6 +134,11 @@ rescue JSON::ParserError => error
 end
 
 if bytecode_input
+  if reference_runtime || verify_runtime_parity
+    warn 'Direct .bsbc execution already uses the BSharp VM. Runtime-transition options require .bsharp or .bsir.json input.'
+    exit 64
+  end
+
   runtime_requested = run_index || load_index || save_index || !ask_questions.empty?
   incompatible = emit_ast || emit_ir || emit_bytecode || out_index ||
                  (disassemble_bytecode && runtime_requested)
@@ -227,6 +241,17 @@ unless json_input
 end
 
 
+if (reference_runtime || verify_runtime_parity) && (emit_ast || emit_ir || emit_bytecode)
+  warn 'Runtime-transition options cannot be combined with AST, BSIR, or bytecode emission.'
+  exit 64
+end
+
+if (reference_runtime || verify_runtime_parity) && !(run_index || load_index || save_index || !ask_questions.empty?)
+  warn '--reference-runtime and --verify-runtime-parity require runtime, world-save, or ASK work.'
+  exit 64
+end
+
+
 if emit_bytecode
   incompatible = emit_ast || emit_ir || run_index || load_index || save_index || !ask_questions.empty? || ask_json
   if incompatible
@@ -299,11 +324,19 @@ if runtime_mode
     end
 
     save_document = load_world_path ? BasicSharp::WorldSave.read(load_world_path) : nil
-    runtime = if json_input
-                BasicSharp::Runtime.new(json_document, world_save: save_document)
-              else
-                BasicSharp::Runtime.new(resolved, world_save: save_document)
-              end
+    runtime_document = json_input ? json_document : resolved
+    runtime_mode_name = if reference_runtime
+                          :reference
+                        elsif verify_runtime_parity
+                          :verify
+                        else
+                          :preferred
+                        end
+    runtime = BasicSharp::RuntimeTransition.new(
+      runtime_document,
+      world_save: save_document,
+      mode: runtime_mode_name
+    )
 
     puts "loaded world: #{load_world_path}" if load_world_path && !run_index && ask_questions.empty? && !ask_json
 
@@ -333,6 +366,10 @@ if runtime_mode
     end
 
     exit 0
+  rescue BasicSharp::RuntimeTransitionError, BasicSharp::BytecodeEmitterError, BasicSharp::BytecodeLoaderError,
+         BasicSharp::BytecodeVirtualMachineError => error
+    warn error.message
+    exit 1
   rescue BasicSharp::RetiredDKIRFormatError => error
     warn error.message
     exit 1
@@ -350,11 +387,15 @@ end
 
 if json_input
   begin
-    runtime = BasicSharp::Runtime.new(json_document)
+    runtime = BasicSharp::RuntimeTransition.new(json_document)
     puts "BASIC# Ruby Bootstrap Compiler v#{BasicSharp::VERSION}"
     puts "file: #{path}"
-    puts 'BSharp IR: ready'
+    puts 'BSharp IR: ready for the preferred BSharp VM'
     exit(runtime.startup_if_error.nil? ? 0 : 1)
+  rescue BasicSharp::RuntimeTransitionError, BasicSharp::BytecodeEmitterError, BasicSharp::BytecodeLoaderError,
+         BasicSharp::BytecodeVirtualMachineError => error
+    warn error.message
+    exit 1
   rescue BasicSharp::RetiredDKIRFormatError => error
     warn error.message
     exit 1

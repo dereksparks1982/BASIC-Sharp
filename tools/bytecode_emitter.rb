@@ -97,7 +97,7 @@ Array(fixture['meaning_cases']).each do |entry|
 end
 assert_pass(fixture_hashes, 'Fixture hashes')
 
-puts 'BSharp Bytecode Emitter v0.1.30'
+puts 'BSharp Bytecode Emitter v0.1.31'
 puts "Sample artifacts: #{SAMPLES.length}"
 puts 'Valid Meaning Profile cases: 12'
 puts

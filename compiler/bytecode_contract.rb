@@ -228,7 +228,7 @@ module BasicSharp
     end
 
     def validate_execution!(execution)
-      unless execution['status'] == 'hardened by BASIC# v0.1.30'
+      unless execution['status'] == 'preferred by BASIC# v0.1.31'
         raise BytecodeContractError, 'BSharp VM implementation status is inconsistent.'
       end
       unless execution['input_boundary'] == 'successfully validated deeply frozen BytecodeLoader model'
@@ -242,12 +242,15 @@ module BasicSharp
       unless execution['follow_up_limit'] == 1_024
         raise BytecodeContractError, 'BSharp VM follow-up-event limit is inconsistent.'
       end
+      unless execution['preferred_runtime_inputs'] == ['.bsharp', '.bsir.json', '.bsbc']
+        raise BytecodeContractError, 'BSharp VM preferred-runtime inputs are inconsistent.'
+      end
       required = [
         'START_STATE', 'START_RELATION', 'START_VALUE', 'DAMAGE', 'CHANGE_STATE',
         'CHANGE_VALUE', 'CARRY', 'UNLOCK', 'CAUSE_EVENT', 'STATE_IS', 'STATE_ISNT',
         'RELATION_EXISTS', 'VALUE_EQUALS', 'nearest inherited Kind', 'Thing definition order',
         'reactive IF', 'first-created first-run', 'independent mutable world',
-        'canonical reconstructed wording', 'BSharp Save', 'BSharp ASK', 'source, saved BSIR', 'save/restore/replay', '1,024-event protection'
+        'canonical reconstructed wording', 'BSharp Save', 'BSharp ASK', 'source, saved BSIR', 'save/restore/replay', '1,024-event protection', 'emitted to BSBC in memory', '--reference-runtime', '--verify-runtime-parity', 'stops on disagreement', 'preferred Profile 1 runtime'
       ]
       text = execution.values.flatten.join("\n")
       missing = required.reject { |entry| text.include?(entry) }
