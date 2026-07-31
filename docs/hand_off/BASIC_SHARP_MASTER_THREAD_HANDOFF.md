@@ -1,37 +1,40 @@
 # BASIC# Master Thread Handoff
 
-## Current transfer state
+## Current project state
 
 **Project:** BASIC# Ruby Bootstrap Compiler  
-**Accepted baseline:** v0.1.20 BSharp IR Identity Migration  
-**Accepted commit:** `c94faec`  
-**Accepted tag:** `v0.1.20`  
-**Current candidate:** v0.1.21 Follow-Up Events and Deterministic Event Order  
-**Candidate status:** built and internally validated; owner installation and acceptance pending  
+**Language identity:** BASIC# / BSharp  
+**Intermediate representation:** BSharp IR / BSIR  
+**World-state format:** BSharp Save  
+**Accepted base:** v0.1.21 Follow-Up Events and Deterministic Event Order  
+**Accepted commit:** `d67373b`  
+**Accepted tag:** `v0.1.21`  
+**Current candidate:** v0.1.22 BSharp Save Files and Deterministic World Restore  
 **Project path:** `/home/dereksparks1982/DKLab/Projects/BASIC#`
 
-## v0.1.21 completed work
+## v0.1.22 completed work
 
-- Added the explicit creator-facing official word `(cause`.
-- Added caused-event templates to BSharp IR.
-- Fixed runtime order as complete action body, complete IF settlement, then follow-up events.
-- Added first-created, first-run ordering.
-- Added nested event append-to-end behavior.
-- Captured singular `that Kind` as a concrete Thing when a caused event is created.
-- Added a fresh matching context for each follow-up event.
-- Continued after follow-up events that match no WHEN rule.
-- Stopped later waiting events after a follow-up runtime error.
-- Discarded staged events after body or IF settlement failure.
-- Added a 1,024-follow-up-event boundary and bounded human trace.
-- Kept structured results complete for all events that actually ran.
-- Added the follow-up event sample, tests, stress lane, contracts, records, and package validation.
-- Added no automatic hidden events, plural caused events, time, scheduling, save/load, or unrelated language work.
+- Added the separate BSharp Save format marker `bsharp.save.json` and extension `.bsave.json`.
+- Added `--save-world` and `--load-world` toolchain commands without adding language words.
+- Added normalized SHA-256 program fingerprints shared by source and equivalent saved BSIR.
+- Excluded file paths, compiler labels, diagnostics, comments, formatting, indentation, and line numbers from fingerprints.
+- Saved only fully settled worlds.
+- Preserved Thing definition order, names, Kinds, built-in identity, states, relationships, values, damage, and IF-active state.
+- Restored worlds directly without replaying START, startup IF rules, or startup follow-up events.
+- Validated complete save documents before changing runtime state.
+- Rejected wrong formats, unsupported versions, program mismatches, Thing identity changes, invalid numbers, missing relationship targets, contradictory states, and inconsistent IF records.
+- Added deterministic byte-identical save output with no timestamps or random identifiers.
+- Added temporary-file write and atomic replacement behavior so failed writes preserve the previous save.
+- Refused saves after unmatched events, runtime errors, or unfinished event chains.
+- Added a direct-save-file explanation that points the creator to `--load-world`.
+- Added a world-save sample, saved BSIR, example save, test suite, stress lane, contracts, handoffs, and validation records.
+- Preserved all accepted BSharp IR, Kind, IF, set, value, amount, and follow-up-event behavior.
 
-## Internal validation
+## Internal validation target
 
 ```text
-157 runs
-4,841 assertions
+182 runs
+4,945 assertions
 0 failures
 0 errors
 0 skips
@@ -44,26 +47,34 @@ IF-rule stress: PASS
 Multiple-selection stress: PASS
 Value-and-amount stress: PASS
 Follow-up-event stress: PASS
+World-save stress: PASS
 ```
 
-## Event-order contract
+## World-save contract summary
 
 ```text
-current WHEN body
--> complete reactive IF settlement
--> first waiting follow-up event
--> complete reactive IF settlement
--> continue first-created, first-run
+matching .bsharp source or .bsir.json rules
++
+matching settled .bsave.json world
+-> direct deterministic restore
+-> no START replay
+-> accept the next external event normally
 ```
 
-Only `(cause` creates a follow-up event. Nested events join the end of the existing line.
+A save is not BSharp IR and cannot be run as program rules.
 
-## Event-chain limit
+## Required mismatch diagnostic
 
 ```text
-Events kept causing more events.
+This BSharp Save belongs to a different BASIC# program.
+Load it with the same .bsharp source or .bsir.json file that created it.
+```
 
-BASIC# stopped this chain after 1,024 follow-up events so it would not run forever.
+## Required direct-save diagnostic
+
+```text
+A BSharp Save contains world state, not program rules.
+Start BASIC# with the matching .bsharp or .bsir.json file and use --load-world.
 ```
 
 ## Required retired-format diagnostic
@@ -76,28 +87,39 @@ Recompile the original .bsharp source to create a new BSIR file.
 
 DKIR remains retired with no compatibility layer or silent conversion.
 
+## Explicit exclusions in v0.1.22
+
+- No `(save` or `(load` official words.
+- No automatic saves, save slots, file picker, compression, encryption, or cloud saves.
+- No pending follow-up-event serialization or mid-chain saving.
+- No save migration between different or changed programs.
+- No dynamic Thing creation or deletion.
+- No event-history or replay-log storage.
+- No new language syntax, Heads, values, IF forms, arithmetic, ASK, bytecode, VM, GUI, engine bridge, or self-hosting work.
+- No new `DK`-prefixed name.
+
 ## Rollback point
 
 ```text
-commit c94faec
-tag v0.1.20
+commit d67373b
+tag v0.1.21
 ```
 
 ## Current continuation point
 
-1. Derek installs the v0.1.21 package.
-2. Derek reviews the full suite, six stress lanes, event order, trace, and working-tree scope.
+1. Derek installs the v0.1.22 changed-files-only package.
+2. Derek reviews the full suite, seven stress lanes, sample save/restore, and working-tree scope.
 3. Derek accepts or rejects the candidate.
-4. If accepted, commit and tag v0.1.21.
+4. If accepted, commit and tag v0.1.22.
 5. Read the updated Company Bible and continuation records.
-6. Present the complete v0.1.22 proposal before implementation.
-7. The roadmap currently points to Save/Load World State.
+6. Present the complete v0.1.23 proposal before implementation.
+7. The roadmap currently points to ASK-style introspection.
 
-## Cumulative history
+## Cumulative accepted history
 
 ### v0.1.21 - 2026-07-30
 
-Follow-Up Events and Deterministic Event Order. Candidate built and internally validated; owner acceptance pending.
+Follow-Up Events and Deterministic Event Order. Accepted at commit `d67373b`, tag `v0.1.21`.
 
 ### v0.1.20 - 2026-07-30
 
@@ -127,6 +149,6 @@ Inherited Kind Matching. Accepted at commit `a672c49`, tag `v0.1.15`.
 
 Technical Identity Migration and Company Bible Integration. Accepted at commit `49f00f1`, tag `v0.1.14`.
 
-## v0.1.21 corrected-package note
+## v0.1.21 corrected-package history
 
-The first v0.1.21 package was rejected safely before mutation because the installer carried an incorrect accepted-base hash for `README.md`. The accepted v0.1.20 repository remained unchanged. The corrected candidate was rebuilt from the exact `c94faec` file state and must replace the rejected ZIP entirely.
+The first v0.1.21 package was rejected safely before mutation because it expected an incorrect accepted-base hash for `README.md`. The corrected package was rebuilt from the exact accepted v0.1.20 file state and became the accepted v0.1.21 baseline. v0.1.22 must verify the exact accepted v0.1.21 base at commit `d67373b`.

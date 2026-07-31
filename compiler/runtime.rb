@@ -4,6 +4,7 @@ require 'json'
 require 'set'
 require_relative 'ast_nodes'
 require_relative 'dictionary'
+require_relative 'world_save'
 
 module BasicSharp
   class RetiredDKIRFormatError < ArgumentError; end
@@ -47,11 +48,12 @@ module BasicSharp
 
     attr_reader :startup_ran, :startup_if_rules, :startup_if_error, :startup_follow_up_events
 
-    def self.load(path)
-      new(JSON.parse(File.read(path)))
+    def self.load(path, world_save_path: nil)
+      save_document = world_save_path ? WorldSave.read(world_save_path) : nil
+      new(JSON.parse(File.read(path)), world_save: save_document)
     end
 
-    def initialize(document)
+    def initialize(document, world_save: nil)
       @ir = stringify_keys(document.respond_to?(:to_h) ? document.to_h : document)
       validate_ir!
 
@@ -69,19 +71,28 @@ module BasicSharp
       create_things
       validate_reference_contracts!
       validate_numeric_contracts!
-      apply_start_facts
-      startup_settlement = settle_if_rules(cause: 'START')
-      @startup_if_rules = startup_settlement.fetch('rules')
-      @startup_if_error = startup_settlement['error']
-      @startup_ran = @startup_if_rules.flat_map { |entry| entry.fetch('steps').map { |step| step.fetch('word') } }
 
-      if @startup_if_error.nil? && !startup_settlement.fetch('follow_ups', []).empty?
-        startup_chain = drain_follow_up_events(startup_settlement.fetch('follow_ups'))
-        @startup_follow_up_events = startup_chain.fetch('events')
-        @startup_if_error = startup_chain['error']
+      if world_save
+        prepare_value_schema
+        restore_world_save!(world_save)
+      else
+        apply_start_facts
+        startup_settlement = settle_if_rules(cause: 'START')
+        @startup_if_rules = startup_settlement.fetch('rules')
+        @startup_if_error = startup_settlement['error']
+        @startup_ran = @startup_if_rules.flat_map { |entry| entry.fetch('steps').map { |step| step.fetch('word') } }
+
+        if @startup_if_error.nil? && !startup_settlement.fetch('follow_ups', []).empty?
+          startup_chain = drain_follow_up_events(startup_settlement.fetch('follow_ups'))
+          @startup_follow_up_events = startup_chain.fetch('events')
+          @startup_if_error = startup_chain['error']
+        end
+        @save_ready = @startup_if_error.nil?
       end
     end
+
     def run_event(text)
+      @save_ready = false
       root = process_event(normalize(text))
       queued = root.delete('_follow_ups') || []
       root_fatal_error = root.delete('_fatal_error')
@@ -95,8 +106,54 @@ module BasicSharp
       root['event_trail'] = chain.fetch('trail')
       root['error'] ||= chain['error']
       root['state'] = snapshot
+      @save_ready = root.fetch('matched') && root['error'].nil?
       root
     end
+
+    def save_ready?
+      @save_ready == true
+    end
+
+    def program_fingerprint
+      WorldSave.program_fingerprint(@ir)
+    end
+
+    def world_save_state
+      unless save_ready?
+        raise WorldSaveError, 'BSharp Save was not written because the world did not finish a successful event.'
+      end
+
+      {
+        'settled' => true,
+        'things' => snapshot.map { |thing| thing.except('damage') },
+        'if_rules' => @ir.fetch('if_rules', []).each_with_index.map do |rule, index|
+          {
+            'index' => index,
+            'condition' => normalize(rule.dig('if', 'raw')),
+            'active' => @if_active.fetch(index)
+          }
+        end
+      }
+    end
+
+    def write_world_save(path)
+      WorldSave.write(path, self)
+    end
+
+    def restore_world_save!(document)
+      WorldSave.validate_header!(document, @ir)
+      world = document['world']
+      candidate_objects, candidate_if_active = validate_world_save_state!(world)
+      @objects = candidate_objects
+      @if_active = candidate_if_active
+      @startup_ran = []
+      @startup_if_rules = []
+      @startup_if_error = nil
+      @startup_follow_up_events = []
+      @save_ready = true
+      self
+    end
+
     def snapshot
       @object_order.map do |name|
         thing = @objects.fetch(name)
@@ -172,6 +229,210 @@ module BasicSharp
     end
 
     private
+
+    def prepare_value_schema
+      @ir.fetch('facts', []).each do |fact|
+        next unless normalize(fact['relation']) == 'has'
+
+        subject = thing_for_reference(fact['subject'])
+        next unless subject
+
+        subject.fetch('values')[normalize(fact['value_name'])] ||= 0
+      end
+    end
+
+    def validate_world_save_state!(world)
+      unless world.is_a?(Hash)
+        raise WorldSaveError, 'BSharp Save cannot load because its world entry is missing or invalid.'
+      end
+      unless world['settled'] == true
+        raise WorldSaveError, 'BSharp Save cannot load because the saved world was not fully settled.'
+      end
+
+      things = world['things']
+      unless things.is_a?(Array)
+        raise WorldSaveError, 'BSharp Save cannot load because its Things entry is not a list.'
+      end
+      unless things.length == @object_order.length
+        raise WorldSaveError, "BSharp Save contains #{things.length} Things, but this program defines #{@object_order.length}."
+      end
+
+      expected_names = @object_order.to_set
+      candidate_objects = {}
+
+      things.each_with_index do |entry, index|
+        unless entry.is_a?(Hash)
+          raise WorldSaveError, "BSharp Save Thing #{index + 1} does not describe one Thing."
+        end
+
+        expected_name = @object_order.fetch(index)
+        name = canonical_save_text(entry['name'], "Thing #{index + 1} name")
+        unless name == expected_name
+          raise WorldSaveError, "BSharp Save expected Thing #{index + 1} to be #{expected_name}, but found #{name}."
+        end
+
+        expected = @objects.fetch(expected_name)
+        kind = canonical_save_text(entry['kind'], "#{name} Kind")
+        unless kind == expected.fetch('kind')
+          raise WorldSaveError, "BSharp Save says #{name} is a #{kind}, but this program defines #{name} as a #{expected.fetch('kind')}."
+        end
+
+        builtin = entry['builtin']
+        unless builtin == true || builtin == false
+          raise WorldSaveError, "BSharp Save builtin flag for #{name} must be true or false."
+        end
+        unless builtin == expected.fetch('builtin')
+          raise WorldSaveError, "BSharp Save builtin identity for #{name} does not match this program."
+        end
+
+        states = validate_saved_states!(entry['states'], name)
+        relations = validate_saved_relations!(entry['relations'], name, expected_names)
+        values = validate_saved_values!(entry['values'], name, expected.fetch('values').keys)
+
+        candidate_objects[name] = {
+          'name' => name,
+          'kind' => kind,
+          'builtin' => builtin,
+          'states' => states,
+          'relations' => relations,
+          'values' => values,
+          'damage' => values.fetch('damage')
+        }
+      end
+
+      if_rules = world['if_rules']
+      unless if_rules.is_a?(Array)
+        raise WorldSaveError, 'BSharp Save cannot load because its IF-rule entry is not a list.'
+      end
+      expected_rules = @ir.fetch('if_rules', [])
+      unless if_rules.length == expected_rules.length
+        raise WorldSaveError, "BSharp Save contains #{if_rules.length} IF-rule records, but this program defines #{expected_rules.length}."
+      end
+
+      candidate_if_active = if_rules.each_with_index.map do |entry, index|
+        unless entry.is_a?(Hash)
+          raise WorldSaveError, "BSharp Save IF-rule record #{index + 1} is invalid."
+        end
+        unless entry['index'] == index
+          raise WorldSaveError, "BSharp Save IF-rule record #{index + 1} has the wrong index."
+        end
+
+        expected_condition = normalize(expected_rules.fetch(index).dig('if', 'raw'))
+        condition = canonical_save_text(entry['condition'], "IF-rule #{index + 1} condition")
+        unless condition == expected_condition
+          raise WorldSaveError, "BSharp Save IF-rule #{index + 1} does not match '#{expected_condition}'."
+        end
+
+        active = entry['active']
+        unless active == true || active == false
+          raise WorldSaveError, "BSharp Save IF-rule #{index + 1} active flag must be true or false."
+        end
+
+        truth = condition_true_in_objects?(expected_rules.fetch(index).fetch('if'), candidate_objects)
+        unless active == truth
+          raise WorldSaveError, "BSharp Save IF-rule '#{expected_condition}' does not match the restored world."
+        end
+        active
+      end
+
+      [candidate_objects, candidate_if_active]
+    end
+
+    def validate_saved_states!(entries, thing_name)
+      unless entries.is_a?(Array)
+        raise WorldSaveError, "BSharp Save states for #{thing_name} must be a list."
+      end
+
+      states = entries.map { |state| canonical_save_text(state, "#{thing_name} state") }
+      if states.uniq.length != states.length
+        raise WorldSaveError, "BSharp Save lists the same state more than once for #{thing_name}."
+      end
+
+      states.each do |state|
+        opposite = OPPOSITE_STATES[state]
+        next unless opposite && states.include?(opposite)
+
+        raise WorldSaveError, "BSharp Save gives #{thing_name} contradictory states: #{state} and #{opposite}."
+      end
+      Set.new(states)
+    end
+
+    def validate_saved_relations!(entries, thing_name, expected_names)
+      unless entries.is_a?(Hash)
+        raise WorldSaveError, "BSharp Save relationships for #{thing_name} must be an object."
+      end
+
+      entries.each_with_object({}) do |(relation_value, target_value), result|
+        relation = canonical_save_text(relation_value, "#{thing_name} relationship")
+        target = canonical_save_text(target_value, "#{thing_name} #{relation} target")
+        unless expected_names.include?(target)
+          raise WorldSaveError, "BSharp Save relationship '#{relation}' for #{thing_name} points to missing Thing '#{target}'."
+        end
+        result[relation] = target
+      end
+    end
+
+    def validate_saved_values!(entries, thing_name, expected_value_names)
+      unless entries.is_a?(Hash)
+        raise WorldSaveError, "BSharp Save values for #{thing_name} must be an object."
+      end
+
+      normalized_keys = entries.keys.map { |name| canonical_save_text(name, "#{thing_name} value name") }
+      unless normalized_keys.sort == expected_value_names.sort
+        raise WorldSaveError, "BSharp Save value names for #{thing_name} do not match this program."
+      end
+
+      entries.each_with_object({}) do |(name_value, amount), result|
+        name = canonical_save_text(name_value, "#{thing_name} value name")
+        unless VALUE_NAME_PATTERN.match?(name)
+          raise WorldSaveError, "BSharp Save value name '#{name}' for #{thing_name} must be one plain word."
+        end
+        unless amount.is_a?(Integer) && amount.between?(0, MAX_WHOLE_NUMBER)
+          raise WorldSaveError, "BSharp Save value #{name} for #{thing_name} must be a whole number from 0 to #{MAX_WHOLE_NUMBER}."
+        end
+        result[name] = amount
+      end
+    end
+
+    def canonical_save_text(value, label)
+      unless value.is_a?(String)
+        raise WorldSaveError, "BSharp Save #{label} must be text."
+      end
+      normalized = normalize(value)
+      raise WorldSaveError, "BSharp Save #{label} cannot be empty." if normalized.empty?
+      unless value == normalized
+        raise WorldSaveError, "BSharp Save #{label} must use its canonical lowercase spelling."
+      end
+      normalized
+    end
+
+    def condition_true_in_objects?(condition, objects)
+      subject_name = saved_reference_name(condition['subject'])
+      subject = objects[subject_name]
+      return false unless subject
+
+      if normalize(condition['relation']) == 'has'
+        value_name = normalize(condition['value_name'])
+        return subject.fetch('values')[value_name] == condition['amount']
+      end
+
+      if condition['target']
+        relation = normalize(condition['relation'])
+        return subject.fetch('relations')[relation] == saved_reference_name(condition['target'])
+      end
+
+      state = condition.dig('value', 'name') || condition.dig('value', 'text')
+      return false unless state
+
+      present = subject.fetch('states').include?(normalize(state))
+      normalize(condition['relation']) == 'isnt' ? !present : present
+    end
+
+    def saved_reference_name(reference)
+      return nil unless reference.is_a?(Hash)
+
+      normalize(reference['name'] || reference['text'])
+    end
 
     def validate_ir!
       format = normalize(@ir['format'])
