@@ -273,12 +273,12 @@ class TestBytecodeVirtualMachine < Minitest::Test
     assert_empty err
   end
 
-  def test_cli_rejects_vm_modes_that_remain_excluded
+  def test_cli_rejects_disassembly_combined_with_vm_execution
     _out, err, status = Open3.capture3(
       'ruby', File.join(ROOT, 'compiler/basic_sharp.rb'), File.join(ROOT, 'samples/first_room.bsbc'),
-      '--run', 'player attacks cinder', '--save-world', '/tmp/nope.bsave.json'
+      '--run', 'player attacks cinder', '--disassemble-bytecode'
     )
     refute status.success?
-    assert_includes err, 'world-save, ASK, compiler-output'
+    assert_includes err, 'cannot combine disassembly'
   end
 end

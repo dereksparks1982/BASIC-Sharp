@@ -2,12 +2,12 @@
 
 ## Current candidate
 
-- **Accepted base:** v0.1.28 BSharp Bytecode Loader and Complete Structural Validation 1
-- **Accepted commit:** `e352457`
-- **Accepted tag:** `v0.1.28`
-- **Candidate:** v0.1.29 First BSharp Virtual Machine and Profile 1 Execution
+- **Accepted base:** v0.1.29 First BSharp Virtual Machine and Profile 1 Execution
+- **Accepted commit:** `c5c1374`
+- **Accepted tag:** `v0.1.29`
+- **Candidate:** v0.1.30 VM Parity, BSharp Save, BSharp ASK, and Hardening
 - **Project path:** `/home/dereksparks1982/DKLab/Projects/BASIC#`
-- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_29_FIRST_BSHARP_VIRTUAL_MACHINE_AND_PROFILE_1_EXECUTION_CHANGED_FILES_ONLY.zip`
+- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_30_VM_PARITY_BSHARP_SAVE_ASK_AND_HARDENING_CHANGED_FILES_ONLY.zip`
 
 ## Canonical authority
 
@@ -17,54 +17,56 @@ Read end-to-end before every build:
 docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
 ```
 
-## v0.1.29 completed candidate work
+## v0.1.30 completed candidate work
 
-- Added `compiler/bytecode_virtual_machine.rb` as the first direct BSBC interpreter.
-- Added `.bsbc --run "event"` CLI execution after complete loader validation.
-- Executes START, all six Profile 1 actions, all four IF conditions, exact and inherited event matching, singular bindings, deterministic set actions, reactive IF settlement, follow-up FIFO order, and both loop guards.
-- Keeps the trusted loader model frozen while each VM owns an independent mutable world.
-- Added canonical VM snapshots and reporting.
-- Added six-sample event-sequence fixtures and twelve valid Meaning Profile startup cases.
-- Added focused proof that the VM runs while the reference Ruby runtime constructor is disabled.
-- Preserved all committed BSBC and disassembly artifacts byte-for-byte.
+- Added deterministic BSharp Save writing from BSharp VM worlds.
+- Added validated BSharp Save restoration into the VM without START or startup-event replay.
+- Preserved IF active state and save readiness across restoration.
+- Added read-only BSharp ASK support over VM Things, Kinds, events, IF rules, world summaries, and save summaries.
+- Added `.bsbc` CLI combinations for run, load-world, ASK, ASK JSON, and save-world.
+- Added source / saved BSIR / validated BSBC three-way parity tests.
+- Added repeated save/restore/replay, 64-world isolation, deterministic save bytes, and failed-restore recovery tests.
+- Added the bounded BSharp VM stress lane with event soak, restore cycles, ASK saturation, isolation, loop guards, and timing reports.
+- Preserved all committed `.bsbc` and `.bsbc.txt` artifacts byte-for-byte.
+- Kept direct VM execution independent of `BasicSharp::Runtime`.
 
 ## Validation floor
 
-The accepted v0.1.28 floor may not decrease:
+The accepted v0.1.29 floor may not decrease:
 
 ```text
-265 runs
-7,032 assertions
+282 runs
+7,150 assertions
 0 failures
 0 errors
 0 skips
 ```
 
-The final candidate must exceed that floor and pass all established stress lanes, all 13 Meaning Profile cases, Company Bible audit, Bytecode Contract, Emitter, Loader, and new VM lanes, exact 41-path scope, artifact parity, and installer rollback proof.
+The candidate must exceed that floor and pass all established stress lanes, all 13 Meaning Profile cases, Company Bible audit, Bytecode Contract, Emitter, Loader, VM lane, new VM hardening lane, artifact parity, exact scope, and installer rollback proof.
 
 ## Explicit exclusions
 
-No BSharp Save or ASK through the VM, source/BSIR runtime replacement, full VM-scale stress and performance hardening, optimization, JIT, native machine code, new bytecode profile, binary-layout changes, sample BSBC rewrites, new BASIC# syntax or meaning, editor, IDE, engine bridge, self-hosting, licensing, or monetization work.
+No reference-runtime removal, preferred-runtime transition, optimization, JIT, native machine code, new bytecode profile, binary-layout change, sample BSBC rewrite, new BASIC# syntax or meaning, strings, arithmetic expressions, repetition, functions, collections, editor, IDE, engine bridge, self-hosting, licensing, or monetization.
 
 ## Risks and controls
 
-- The VM accepts only a fully validated `BytecodeLoader`.
-- Focused tests disable the reference runtime to prove direct interpretation.
-- Loaded program data remains deeply frozen and each VM owns isolated state.
-- Set actions preflight every selected Thing before mutation.
-- Existing IF and 1,024-follow-up guards remain active.
-- Canonical reporting does not pretend to recover erased source spelling or line numbers.
+- Save restoration validates the program fingerprint and complete world before mutation.
+- A failed restore leaves the existing VM world unchanged.
+- ASK uses the VM's read-only inspection boundary and preserves save readiness.
+- Each VM owns independent mutable state while the loaded program remains frozen.
+- Existing IF and 1,024-follow-up guards remain active under stress.
+- The source/BSIR reference runtime remains available until an owner-approved transition.
 
 ## Rollback
 
 ```text
-commit e352457
-tag v0.1.28
+commit c5c1374
+tag v0.1.29
 ```
 
 ## Continuation
 
-Derek installs and validates v0.1.29 before commit or tag. After acceptance, the next eligible proposal is **Source, BSIR, and BSBC Runtime Parity and Hardening**, unless Derek changes direction.
+Derek installs and validates v0.1.30 before commit or tag. After acceptance, the next eligible proposal is a preferred-runtime decision followed by the smallest Profile 2 capability needed for useful programs and eventual self-hosting.
 
 ## Accepted history
 
@@ -73,3 +75,4 @@ Derek installs and validates v0.1.29 before commit or tag. After acceptance, the
 - v0.1.26 BSharp Bytecode Architecture and Instruction Contract 1, commit `479db66`.
 - v0.1.27 BSharp Bytecode Emitter and Deterministic Disassembly 1, commit `f82b121`.
 - v0.1.28 BSharp Bytecode Loader and Complete Structural Validation 1, commit `e352457`.
+- v0.1.29 First BSharp Virtual Machine and Profile 1 Execution, commit `c5c1374`.

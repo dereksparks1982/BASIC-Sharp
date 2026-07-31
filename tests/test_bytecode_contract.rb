@@ -125,7 +125,7 @@ class TestBytecodeContract < Minitest::Test
 
   def test_vm_execution_contract_is_direct_and_profile_complete
     execution = profile.fetch('execution')
-    assert_equal 'implemented by BASIC# v0.1.29', execution.fetch('status')
+    assert_equal 'hardened by BASIC# v0.1.30', execution.fetch('status')
     assert_equal 'successfully validated deeply frozen BytecodeLoader model', execution.fetch('input_boundary')
     assert_equal true, execution.fetch('direct_bytecode_interpretation')
     assert_equal false, execution.fetch('reconstructs_bsir')

@@ -5,6 +5,7 @@ require 'set'
 require_relative 'ast_nodes'
 require_relative 'bytecode_contract'
 require_relative 'bytecode_loader'
+require_relative 'world_save'
 
 module BasicSharp
   class BytecodeVirtualMachineError < ArgumentError; end
@@ -20,9 +21,22 @@ module BasicSharp
       'BASIC# stopped this chain after 1,024 follow-up events so it would not run forever.'
     ].join("\n").freeze
 
+    VALUE_NAME_PATTERN = /\A[a-z][a-z0-9]*\z/
+    OPPOSITE_STATES = {
+      'open' => 'closed', 'closed' => 'open',
+      'locked' => 'unlocked', 'unlocked' => 'locked',
+      'alive' => 'dead', 'dead' => 'alive',
+      'calm' => 'angry', 'angry' => 'calm',
+      'friendly' => 'hostile', 'hostile' => 'friendly',
+      'visible' => 'hidden', 'hidden' => 'visible',
+      'carried' => 'dropped', 'dropped' => 'carried',
+      'broken' => 'whole', 'whole' => 'broken',
+      'on' => 'off', 'off' => 'on'
+    }.freeze
+
     attr_reader :startup_ran, :startup_if_rules, :startup_if_error, :startup_follow_up_events
 
-    def initialize(loader)
+    def initialize(loader, world_save: nil)
       unless loader.is_a?(BytecodeLoader)
         raise BytecodeVirtualMachineError,
               'The BSharp Virtual Machine accepts only a successfully validated BytecodeLoader.'
@@ -39,20 +53,26 @@ module BasicSharp
       @startup_if_rules = []
       @startup_if_error = nil
       @startup_follow_up_events = []
+      @world_origin = world_save ? 'BSharp Save' : 'START'
+      @loaded_world_save = world_save ? stringify_keys(world_save) : nil
 
-      settlement = settle_if_rules(cause: 'START')
-      @startup_if_rules = settlement.fetch('rules')
-      @startup_if_error = settlement['error']
-      @startup_ran = @startup_if_rules.flat_map do |entry|
-        entry.fetch('steps').map { |step| step.fetch('word') }
-      end
+      if world_save
+        restore_world_save!(world_save)
+      else
+        settlement = settle_if_rules(cause: 'START')
+        @startup_if_rules = settlement.fetch('rules')
+        @startup_if_error = settlement['error']
+        @startup_ran = @startup_if_rules.flat_map do |entry|
+          entry.fetch('steps').map { |step| step.fetch('word') }
+        end
 
-      if @startup_if_error.nil? && !settlement.fetch('follow_ups').empty?
-        chain = drain_follow_up_events(settlement.fetch('follow_ups'))
-        @startup_follow_up_events = chain.fetch('events')
-        @startup_if_error = chain['error']
+        if @startup_if_error.nil? && !settlement.fetch('follow_ups').empty?
+          chain = drain_follow_up_events(settlement.fetch('follow_ups'))
+          @startup_follow_up_events = chain.fetch('events')
+          @startup_if_error = chain['error']
+        end
+        @save_ready = @startup_if_error.nil?
       end
-      @save_ready = @startup_if_error.nil?
     end
 
     def run_event(text)
@@ -96,6 +116,151 @@ module BasicSharp
 
     def save_ready?
       @save_ready == true
+    end
+
+    def world_save_state
+      unless save_ready?
+        raise WorldSaveError, 'BSharp Save was not written because the world did not finish a successful event.'
+      end
+
+      {
+        'settled' => true,
+        'things' => snapshot.map { |thing| thing.reject { |key, _| key == 'damage' } },
+        'if_rules' => @program.fetch(:if_rules).each_with_index.map do |rule, index|
+          {
+            'index' => index,
+            'condition' => canonical_condition(rule.fetch(:condition)),
+            'active' => @if_active.fetch(index)
+          }
+        end
+      }
+    end
+
+    def write_world_save(path)
+      WorldSave.write(path, self)
+    end
+
+    def restore_world_save!(document)
+      WorldSave.validate_header_for_fingerprint!(document, program_fingerprint)
+      candidate_world, candidate_if_active = validate_world_save_state!(document['world'])
+      @world = candidate_world
+      @if_active = candidate_if_active
+      @startup_ran = []
+      @startup_if_rules = []
+      @startup_if_error = nil
+      @startup_follow_up_events = []
+      @world_origin = 'BSharp Save'
+      @loaded_world_save = stringify_keys(document)
+      @save_ready = true
+      self
+    end
+
+    def ask_thing(name)
+      canonical = normalize(name)
+      snapshot.find { |entry| entry.fetch('name') == canonical }
+    end
+
+    def ask_kind(name)
+      canonical = normalize(name)
+      index = @kinds.index { |kind| kind.fetch(:name) == canonical }
+      return nil if index.nil?
+
+      parent_index = @kinds.fetch(index).fetch(:parent_index)
+      {
+        'name' => canonical,
+        'parent' => parent_index == BytecodeContract::NO_REFERENCE_U32 ? nil : kind_name(parent_index),
+        'thing_count' => ask_kind_members(canonical).length
+      }
+    end
+
+    def ask_resolve_kind(text)
+      supplied = normalize(text)
+      matches = @kinds.filter_map do |kind|
+        name = kind.fetch(:name)
+        name if supplied == name || supplied == ask_plural_kind(name)
+      end
+      matches.length == 1 ? matches.first : nil
+    end
+
+    def ask_kind_members(kind_text)
+      canonical = normalize(kind_text)
+      kind_index = @kinds.index { |kind| kind.fetch(:name) == canonical }
+      return [] if kind_index.nil?
+
+      @world.each_index.filter_map do |index|
+        distance = kind_distance(@things.fetch(index).fetch(:kind_index), kind_index)
+        next if distance.nil?
+
+        {
+          'name' => thing_name(index),
+          'kind' => kind_name(@things.fetch(index).fetch(:kind_index)),
+          'inherited' => distance.positive?,
+          'distance' => distance
+        }
+      end
+    end
+
+    def ask_event_match(event_text)
+      event = normalize(event_text)
+      match = find_event_match(event)
+      unless match[:event]
+        return {
+          'matched' => false, 'matched_when' => nil, 'understood' => [],
+          'actions' => [], 'error' => match[:error]
+        }
+      end
+
+      rule = match.fetch(:event)
+      context = match.fetch(:context)
+      {
+        'matched' => true,
+        'matched_when' => canonical_event_pattern(rule),
+        'understood' => context_explanations(rule, context),
+        'actions' => @blocks.fetch(rule.fetch(:block_index)).fetch(:instructions).map { |instruction| ask_action_text(instruction) },
+        'error' => nil
+      }
+    end
+
+    def ask_if_rules
+      @program.fetch(:if_rules).each_with_index.map do |rule, index|
+        {
+          'index' => index,
+          'condition' => canonical_condition(rule.fetch(:condition)),
+          'true' => condition_true?(rule.fetch(:condition)),
+          'active' => @if_active.fetch(index)
+        }
+      end
+    end
+
+    def ask_world_summary
+      things = snapshot
+      rules = ask_if_rules
+      {
+        'origin' => @world_origin,
+        'settled' => save_ready?,
+        'things' => things.length,
+        'kinds_used' => things.map { |thing| thing.fetch('kind') }.uniq.length,
+        'true_if_rules' => rules.count { |rule| rule.fetch('true') },
+        'if_rules' => rules.length,
+        'whole_number_values' => things.sum { |thing| thing.fetch('values').length }
+      }
+    end
+
+    def ask_save_summary
+      unless @loaded_world_save
+        return {
+          'loaded' => false, 'format_version' => nil, 'settled' => save_ready?,
+          'things' => snapshot.length, 'fingerprint_matched' => nil
+        }
+      end
+
+      {
+        'loaded' => true,
+        'format_version' => @loaded_world_save['format_version'],
+        'settled' => @loaded_world_save.dig('world', 'settled') == true,
+        'things' => Array(@loaded_world_save.dig('world', 'things')).length,
+        'fingerprint_matched' => true
+      }
     end
 
     def report(event_result)
@@ -147,6 +312,194 @@ module BasicSharp
     end
 
     private
+
+    def ask_plural_kind(kind)
+      return "#{kind[0...-1]}ies" if kind.end_with?('y') && kind.length > 1
+      return "#{kind}es" if kind.end_with?('s', 'x', 'z', 'ch', 'sh')
+
+      "#{kind}s"
+    end
+
+    def ask_action_text(instruction)
+      operands = instruction.fetch(:operands)
+      if instruction.fetch(:name) == 'CAUSE_EVENT'
+        actor = ask_event_reference_text(selector_name(operands.fetch(0)), operands.fetch(1))
+        action = third_person_action(string(operands.fetch(2)))
+        target = ask_event_reference_text(selector_name(operands.fetch(3)), operands.fetch(4))
+        return "(cause #{normalize([actor, action, target].reject(&:empty?).join(' '))}"
+      end
+
+      selector = selector_name(operands.fetch(0))
+      target = case selector
+               when 'EXACT_THING' then thing_name(operands.fetch(1))
+               when 'BOUND_THAT_KIND' then "that #{kind_name(operands.fetch(1))}"
+               when 'EVERY_KIND' then "every #{kind_name(operands.fetch(1))}"
+               else 'unknown target'
+               end
+      case instruction.fetch(:name)
+      when 'DAMAGE'
+        amount = operands.fetch(2)
+        amount == 1 ? "(damage #{target}" : "(damage #{target} by #{amount}"
+      when 'CHANGE_STATE' then "(change #{target} to #{string(operands.fetch(2))}"
+      when 'CHANGE_VALUE' then "(change #{string(operands.fetch(2))} of #{target} to #{operands.fetch(3)}"
+      when 'CARRY' then "(carry #{target}"
+      when 'UNLOCK' then "(unlock #{target}"
+      else "(#{canonical_action_name(instruction)} #{target}"
+      end
+    end
+
+    def ask_event_reference_text(selector, reference)
+      case selector
+      when 'NO_REFERENCE' then ''
+      when 'EXACT_THING' then thing_name(reference)
+      when 'ONE_KIND' then "one #{kind_name(reference)}"
+      when 'BOUND_THAT_KIND' then "that #{kind_name(reference)}"
+      else 'unknown reference'
+      end
+    end
+
+    def validate_world_save_state!(world)
+      unless world.is_a?(Hash)
+        raise WorldSaveError, 'BSharp Save cannot load because its world entry is missing or invalid.'
+      end
+      unless world['settled'] == true
+        raise WorldSaveError, 'BSharp Save cannot load because the saved world was not fully settled.'
+      end
+
+      entries = world['things']
+      unless entries.is_a?(Array)
+        raise WorldSaveError, 'BSharp Save cannot load because its Things entry is not a list.'
+      end
+      unless entries.length == @world.length
+        raise WorldSaveError, "BSharp Save contains #{entries.length} Things, but this bytecode defines #{@world.length}."
+      end
+
+      expected_names = @world.map { |thing| thing.fetch(:name) }.to_set
+      candidate_world = entries.each_with_index.map do |entry, index|
+        unless entry.is_a?(Hash)
+          raise WorldSaveError, "BSharp Save Thing #{index + 1} does not describe one Thing."
+        end
+        expected = @world.fetch(index)
+        name = canonical_save_text(entry['name'], "Thing #{index + 1} name")
+        unless name == expected.fetch(:name)
+          raise WorldSaveError, "BSharp Save expected Thing #{index + 1} to be #{expected.fetch(:name)}, but found #{name}."
+        end
+        kind = canonical_save_text(entry['kind'], "#{name} Kind")
+        expected_kind = kind_name(expected.fetch(:kind_index))
+        unless kind == expected_kind
+          raise WorldSaveError, "BSharp Save says #{name} is a #{kind}, but this bytecode defines #{name} as a #{expected_kind}."
+        end
+        builtin = entry['builtin']
+        unless builtin == true || builtin == false
+          raise WorldSaveError, "BSharp Save builtin flag for #{name} must be true or false."
+        end
+        unless builtin == expected.fetch(:builtin)
+          raise WorldSaveError, "BSharp Save builtin identity for #{name} does not match this bytecode."
+        end
+
+        {
+          index: index, name: name, kind_index: expected.fetch(:kind_index), builtin: builtin,
+          states: validate_saved_states!(entry['states'], name),
+          relations: validate_saved_relations!(entry['relations'], name, expected_names),
+          values: validate_saved_values!(entry['values'], name, expected.fetch(:values).keys)
+        }
+      end
+
+      rules = world['if_rules']
+      unless rules.is_a?(Array)
+        raise WorldSaveError, 'BSharp Save cannot load because its IF-rule entry is not a list.'
+      end
+      unless rules.length == @program.fetch(:if_rules).length
+        raise WorldSaveError, "BSharp Save contains #{rules.length} IF-rule records, but this bytecode defines #{@program.fetch(:if_rules).length}."
+      end
+      previous_world = @world
+      @world = candidate_world
+      candidate_if_active = rules.each_with_index.map do |entry, index|
+        unless entry.is_a?(Hash) && entry['index'] == index
+          raise WorldSaveError, "BSharp Save IF-rule record #{index + 1} has the wrong index."
+        end
+        expected_condition = canonical_condition(@program.fetch(:if_rules).fetch(index).fetch(:condition))
+        condition = canonical_save_text(entry['condition'], "IF-rule #{index + 1} condition")
+        unless condition == expected_condition
+          raise WorldSaveError, "BSharp Save IF-rule #{index + 1} does not match '#{expected_condition}'."
+        end
+        active = entry['active']
+        unless active == true || active == false
+          raise WorldSaveError, "BSharp Save IF-rule #{index + 1} active flag must be true or false."
+        end
+        truth = condition_true?(@program.fetch(:if_rules).fetch(index).fetch(:condition))
+        unless active == truth
+          raise WorldSaveError, "BSharp Save IF-rule '#{expected_condition}' does not match the restored world."
+        end
+        active
+      end
+      [candidate_world, candidate_if_active]
+    ensure
+      @world = previous_world if defined?(previous_world) && previous_world
+    end
+
+    def validate_saved_states!(entries, thing_name)
+      unless entries.is_a?(Array)
+        raise WorldSaveError, "BSharp Save states for #{thing_name} must be a list."
+      end
+      states = entries.map { |state| canonical_save_text(state, "#{thing_name} state") }
+      if states.uniq.length != states.length
+        raise WorldSaveError, "BSharp Save lists the same state more than once for #{thing_name}."
+      end
+      states.each do |state|
+        opposite = OPPOSITE_STATES[state]
+        if opposite && states.include?(opposite)
+          raise WorldSaveError, "BSharp Save gives #{thing_name} contradictory states: #{state} and #{opposite}."
+        end
+      end
+      Set.new(states)
+    end
+
+    def validate_saved_relations!(entries, thing_name, expected_names)
+      unless entries.is_a?(Hash)
+        raise WorldSaveError, "BSharp Save relationships for #{thing_name} must be an object."
+      end
+      entries.each_with_object({}) do |(relation_value, target_value), result|
+        relation = canonical_save_text(relation_value, "#{thing_name} relationship")
+        target = canonical_save_text(target_value, "#{thing_name} #{relation} target")
+        unless expected_names.include?(target)
+          raise WorldSaveError, "BSharp Save relationship '#{relation}' for #{thing_name} points to missing Thing '#{target}'."
+        end
+        result[relation] = target
+      end
+    end
+
+    def validate_saved_values!(entries, thing_name, expected_value_names)
+      unless entries.is_a?(Hash)
+        raise WorldSaveError, "BSharp Save values for #{thing_name} must be an object."
+      end
+      normalized_keys = entries.keys.map { |name| canonical_save_text(name, "#{thing_name} value name") }
+      unless normalized_keys.sort == expected_value_names.sort
+        raise WorldSaveError, "BSharp Save value names for #{thing_name} do not match this bytecode."
+      end
+      entries.each_with_object({}) do |(name_value, amount), result|
+        name = canonical_save_text(name_value, "#{thing_name} value name")
+        unless VALUE_NAME_PATTERN.match?(name)
+          raise WorldSaveError, "BSharp Save value name '#{name}' for #{thing_name} must be one plain word."
+        end
+        unless amount.is_a?(Integer) && amount.between?(0, MAX_WHOLE_NUMBER)
+          raise WorldSaveError, "BSharp Save value #{name} for #{thing_name} must be a whole number from 0 to #{MAX_WHOLE_NUMBER}."
+        end
+        result[name] = amount
+      end
+    end
+
+    def canonical_save_text(value, label)
+      unless value.is_a?(String)
+        raise WorldSaveError, "BSharp Save #{label} must be text."
+      end
+      normalized = normalize(value)
+      raise WorldSaveError, "BSharp Save #{label} cannot be empty." if normalized.empty?
+      unless value == normalized
+        raise WorldSaveError, "BSharp Save #{label} must use its canonical lowercase spelling."
+      end
+      normalized
+    end
 
     def validate_profile!
       unless @program.fetch(:profile) == BytecodeContract::PROFILE &&
@@ -819,6 +1172,17 @@ module BasicSharp
 
     def stringify_symbol_hash(hash)
       hash.each_with_object({}) { |(key, value), out| out[key.to_s] = value }
+    end
+
+    def stringify_keys(value)
+      case value
+      when Hash
+        value.each_with_object({}) { |(key, item), out| out[key.to_s] = stringify_keys(item) }
+      when Array
+        value.map { |item| stringify_keys(item) }
+      else
+        value
+      end
     end
 
     def append_follow_up_report(lines, entries)

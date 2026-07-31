@@ -721,7 +721,7 @@
     "malformed_fixture_count": "41 deterministic in-memory corruption cases; no loose corrupted binaries"
   },
   "execution": {
-    "status": "implemented by BASIC# v0.1.29",
+    "status": "hardened by BASIC# v0.1.30",
     "input_boundary": "successfully validated deeply frozen BytecodeLoader model",
     "direct_bytecode_interpretation": true,
     "reconstructs_bsir": false,
@@ -756,7 +756,10 @@
     "follow_up_limit": 1024,
     "world_isolation": "each VM owns an independent mutable world; loaded program stays frozen",
     "reporting": "canonical reconstructed wording from semantic bytecode records",
-    "save_support": "excluded from v0.1.29",
-    "ask_support": "excluded from v0.1.29"
+    "save_support": "implemented by BASIC# v0.1.30 through deterministic BSharp Save write, validated restore, no START replay, preserved IF active state, and atomic failure recovery",
+    "ask_support": "implemented by BASIC# v0.1.30 through read-only BSharp ASK over VM Things, Kinds, events, IF rules, world summaries, and save summaries",
+    "runtime_parity": "source, saved BSIR, and validated BSBC must reach identical settled Profile 1 worlds for equivalent event sequences",
+    "hardening": "repeated deterministic execution, save/restore/replay cycles, isolated VM worlds, malformed-save recovery, IF-loop protection, and 1,024-event protection",
+    "preferred_path_boundary": "BSBC is execution-capable and parity-tested, but the source/BSIR reference runtime remains available until a later owner-approved transition"
   }
 }

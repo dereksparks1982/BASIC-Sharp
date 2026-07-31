@@ -1,0 +1,27 @@
+{
+  "format": "bsharp.bytecode.vm.hardening.fixtures.json",
+  "format_version": 1,
+  "implemented_by_basic_sharp": "0.1.30",
+  "meaning_profile": "bsharp.meaning.v1",
+  "bytecode_profile": "bsharp.bytecode.v1",
+  "three_path_program": "samples/first_room.bsharp",
+  "three_path_event": "player attacks cinder",
+  "default_events_per_path": 10000,
+  "save_restore_program": "samples/world_save_demo.bsbc",
+  "save_restore_event": "player attacks henry",
+  "default_restore_cycles": 100,
+  "ask_program": "samples/ask_demo.bsbc",
+  "default_ask_questions": 256,
+  "default_isolated_worlds": 128,
+  "required_proofs": [
+    "source / BSIR / BSBC world parity",
+    "repeated VM determinism",
+    "save / restore / replay parity",
+    "ASK read-only parity",
+    "separate VM isolation",
+    "malformed-save recovery",
+    "IF loop protection",
+    "1,024-event loop protection",
+    "loaded-program immutability"
+  ]
+}

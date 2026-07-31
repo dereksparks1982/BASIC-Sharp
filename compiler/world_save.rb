@@ -59,6 +59,10 @@ module BasicSharp
     end
 
     def validate_header!(document, program_document)
+      validate_header_for_fingerprint!(document, program_fingerprint(program_document))
+    end
+
+    def validate_header_for_fingerprint!(document, expected_fingerprint)
       unless document.is_a?(Hash) && normalize(document['format']) == FORMAT
         raise WorldSaveError, 'BSharp Save cannot load because this is not a BSharp Save file.'
       end
@@ -74,10 +78,9 @@ module BasicSharp
         raise WorldSaveError, 'BSharp Save cannot load because its program fingerprint is missing or invalid.'
       end
 
-      expected = program_fingerprint(program_document)
-      return if fingerprint['value'] == expected
+      return if fingerprint['value'] == expected_fingerprint
 
-      raise WorldSaveError, "This BSharp Save belongs to a different BASIC# program.\nLoad it with the same .bsharp source or .bsir.json file that created it."
+      raise WorldSaveError, "This BSharp Save belongs to a different BASIC# program.\nLoad it with the same .bsharp, .bsir.json, or .bsbc program that created it."
     end
 
     def atomic_write(path, content)

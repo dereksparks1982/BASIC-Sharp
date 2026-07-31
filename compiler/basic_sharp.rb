@@ -125,21 +125,47 @@ rescue JSON::ParserError => error
 end
 
 if bytecode_input
-  incompatible = emit_ast || emit_ir || emit_bytecode || load_index || save_index ||
-                 !ask_questions.empty? || ask_json || out_index || (run_index && disassemble_bytecode)
+  runtime_requested = run_index || load_index || save_index || !ask_questions.empty?
+  incompatible = emit_ast || emit_ir || emit_bytecode || out_index ||
+                 (disassemble_bytecode && runtime_requested)
   if incompatible
-    warn 'BASIC# v0.1.29 can validate, disassemble, or run BSharp Bytecode, but world-save, ASK, compiler-output, and combined run/disassembly modes remain unavailable for BSBC.'
+    warn 'BSharp Bytecode cannot combine disassembly or compiler-output modes with VM world, ASK, or execution modes.'
     exit 64
   end
 
   begin
     expected = against_path ? comparison_fingerprint(against_path) : nil
     loader = BasicSharp::BytecodeLoader.read(path, expected_fingerprint: expected)
-    if run_index
-      machine = BasicSharp::BytecodeVirtualMachine.new(loader)
-      result = machine.run_event(run_event)
-      puts machine.report(result)
-      exit(result.fetch('matched') && result['error'].nil? ? 0 : 1)
+
+    if runtime_requested
+      save_document = load_world_path ? BasicSharp::WorldSave.read(load_world_path) : nil
+      machine = BasicSharp::BytecodeVirtualMachine.new(loader, world_save: save_document)
+      puts "loaded world: #{load_world_path}" if load_world_path && !run_index && ask_questions.empty? && !ask_json
+
+      result = nil
+      if run_index
+        result = machine.run_event(run_event)
+        puts machine.report(result) unless ask_json
+        unless result.fetch('matched') && result['error'].nil?
+          exit 1
+        end
+      end
+
+      unless ask_questions.empty?
+        inspector = BasicSharp::Ask.new(machine)
+        answers = inspector.answer_many(ask_questions)
+        if ask_json
+          print inspector.to_json(answers)
+        else
+          puts if run_index
+          puts inspector.report(answers)
+        end
+      end
+
+      if save_world_path
+        machine.write_world_save(save_world_path)
+        puts "saved world: #{save_world_path}" unless ask_json
+      end
     elsif disassemble_bytecode
       print loader.disassembly
     else
@@ -162,7 +188,8 @@ if bytecode_input
       puts 'meaning comparison: PASS' if against_path
     end
     exit 0
-  rescue BasicSharp::BytecodeLoaderError, BasicSharp::BytecodeVirtualMachineError => error
+  rescue BasicSharp::BytecodeLoaderError, BasicSharp::BytecodeVirtualMachineError,
+         BasicSharp::AskError, BasicSharp::WorldSaveError => error
     warn error.message
     exit 1
   end

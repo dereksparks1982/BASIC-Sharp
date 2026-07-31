@@ -50,7 +50,7 @@ class TestWorldSave < Minitest::Test
 
     assert_equal 'bsharp.save.json', document.fetch('format')
     assert_equal 1, document.fetch('format_version')
-    assert_equal '0.1.29', document.fetch('created_by_basic_sharp')
+    assert_equal '0.1.30', document.fetch('created_by_basic_sharp')
     assert_equal true, document.dig('world', 'settled')
     assert_equal %w[player henry mara brass\ bell brass\ key oak\ table], document.dig('world', 'things').map { |entry| entry.fetch('name') }
     assert_equal 10, document.dig('world', 'things', 1, 'values', 'health')
@@ -189,7 +189,7 @@ class TestWorldSave < Minitest::Test
     changed = demo_source.sub('mara is calm', 'mara is angry')
 
     error = assert_raises(BasicSharp::WorldSaveError) { runtime(changed, world_save: document) }
-    assert_equal "This BSharp Save belongs to a different BASIC# program.\nLoad it with the same .bsharp source or .bsir.json file that created it.", error.message
+    assert_equal "This BSharp Save belongs to a different BASIC# program.\nLoad it with the same .bsharp, .bsir.json, or .bsbc program that created it.", error.message
   end
 
   def test_invalid_json_has_plain_message
@@ -215,7 +215,7 @@ class TestWorldSave < Minitest::Test
     document['format_version'] = 2
 
     error = assert_raises(BasicSharp::WorldSaveError) { runtime(demo_source, world_save: document) }
-    assert_equal "This BSharp Save uses format version 2.\nBASIC# v0.1.29 understands format version 1.", error.message
+    assert_equal "This BSharp Save uses format version 2.\nBASIC# v0.1.30 understands format version 1.", error.message
   end
 
   def test_unknown_or_reordered_thing_is_rejected

@@ -228,7 +228,7 @@ module BasicSharp
     end
 
     def validate_execution!(execution)
-      unless execution['status'] == 'implemented by BASIC# v0.1.29'
+      unless execution['status'] == 'hardened by BASIC# v0.1.30'
         raise BytecodeContractError, 'BSharp VM implementation status is inconsistent.'
       end
       unless execution['input_boundary'] == 'successfully validated deeply frozen BytecodeLoader model'
@@ -247,7 +247,7 @@ module BasicSharp
         'CHANGE_VALUE', 'CARRY', 'UNLOCK', 'CAUSE_EVENT', 'STATE_IS', 'STATE_ISNT',
         'RELATION_EXISTS', 'VALUE_EQUALS', 'nearest inherited Kind', 'Thing definition order',
         'reactive IF', 'first-created first-run', 'independent mutable world',
-        'canonical reconstructed wording', 'excluded from v0.1.29'
+        'canonical reconstructed wording', 'BSharp Save', 'BSharp ASK', 'source, saved BSIR', 'save/restore/replay', '1,024-event protection'
       ]
       text = execution.values.flatten.join("\n")
       missing = required.reject { |entry| text.include?(entry) }

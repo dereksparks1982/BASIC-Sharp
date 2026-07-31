@@ -287,7 +287,7 @@ end
   end
 end
 
-puts 'BSharp Bytecode Loader v0.1.29'
+puts 'BSharp Bytecode Loader v0.1.30'
 puts "Sample artifacts: #{SAMPLES.length}"
 puts 'Valid Meaning Profile cases: 12'
 puts "Malformed fixture cases: #{FIXTURE.fetch('malformed_case_count')}"
