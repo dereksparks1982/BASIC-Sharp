@@ -11,8 +11,8 @@ require_relative 'bytecode_virtual_machine'
 module BasicSharp
   class RuntimeTransitionError < ArgumentError; end
 
-  # Routes resolved BASIC# source or saved BSIR, including Profile 5 number
-  # changes and thresholds, through the preferred BSharp VM.
+  # Routes resolved BASIC# source or saved BSIR, including Profile 6 compound
+  # IF conditions, through the preferred BSharp VM.
   # The reference Ruby runtime remains available only by explicit request or as
   # a shadow oracle for deterministic parity verification.
   class RuntimeTransition

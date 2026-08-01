@@ -1,0 +1,15 @@
+DEFINE
+[
+    @boss is a #creature
+    @key is a #key
+    @table is a #table
+].
+START
+[
+    @boss is alive
+    @key is on @table
+].
+IF @boss is alive and @key is on @table
+[
+    |then (change PLAYER to on
+].

@@ -5,5 +5,5 @@
   "input": "samples/number_changes.input.json",
   "input_sha256": "808b489ae49d6701ec8c9b925462485abdd8140a688078f00b9eecd6cd09e38d",
   "expected": "samples/number_changes.expected.json",
-  "expected_sha256": "cd9a76e30f066a0c681e78eb8770c8c383007e510180180b00e05c6a7cf9b823"
+  "expected_sha256": "806680d5ed53e52b9bea5fd92a1e4e3f9391f466a1dbb7830906f450ce879180"
 }

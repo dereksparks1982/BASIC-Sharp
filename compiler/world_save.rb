@@ -16,16 +16,19 @@ module BasicSharp
     FORMAT_VERSION_3 = 3
     FORMAT_VERSION_4 = 4
     FORMAT_VERSION_5 = 5
+    FORMAT_VERSION_6 = 6
     FINGERPRINT_ALGORITHM = 'sha256-bsir-meaning-v1'
     FINGERPRINT_ALGORITHM_2 = 'sha256-bsir-meaning-v2'
     FINGERPRINT_ALGORITHM_3 = 'sha256-bsir-meaning-v3'
     FINGERPRINT_ALGORITHM_4 = 'sha256-bsir-meaning-v4'
     FINGERPRINT_ALGORITHM_5 = 'sha256-bsir-meaning-v5'
+    FINGERPRINT_ALGORITHM_6 = 'sha256-bsir-meaning-v6'
     MEANING_PROFILE_1 = 'bsharp.meaning.v1'
     MEANING_PROFILE_2 = 'bsharp.meaning.v2'
     MEANING_PROFILE_3 = 'bsharp.meaning.v3'
     MEANING_PROFILE_4 = 'bsharp.meaning.v4'
     MEANING_PROFILE_5 = 'bsharp.meaning.v5'
+    MEANING_PROFILE_6 = 'bsharp.meaning.v6'
     MEANING_KEYS = %w[kinds objects facts events if_rules].freeze
     MEANING_KEYS_3 = (MEANING_KEYS + %w[controls hover_declarations context_declarations]).freeze
 
@@ -47,7 +50,7 @@ module BasicSharp
 
     def program_fingerprint(document)
       source = stringify_keys(document.respond_to?(:to_h) ? document.to_h : document)
-      keys = [MEANING_PROFILE_3, MEANING_PROFILE_4, MEANING_PROFILE_5].include?(source['meaning_profile']) ? MEANING_KEYS_3 : MEANING_KEYS
+      keys = [MEANING_PROFILE_3, MEANING_PROFILE_4, MEANING_PROFILE_5, MEANING_PROFILE_6].include?(source['meaning_profile']) ? MEANING_KEYS_3 : MEANING_KEYS
       meaning = keys.each_with_object({}) do |key, result|
         result[key] = source.fetch(key, [])
       end
@@ -140,6 +143,7 @@ module BasicSharp
 
     def meaning_profile(document)
       source = stringify_keys(document.respond_to?(:to_h) ? document.to_h : document)
+      return MEANING_PROFILE_6 if source['meaning_profile'] == MEANING_PROFILE_6
       return MEANING_PROFILE_5 if source['meaning_profile'] == MEANING_PROFILE_5
       return MEANING_PROFILE_4 if source['meaning_profile'] == MEANING_PROFILE_4
       return MEANING_PROFILE_3 if source['meaning_profile'] == MEANING_PROFILE_3
@@ -147,6 +151,7 @@ module BasicSharp
     end
 
     def save_format_version(profile)
+      return FORMAT_VERSION_6 if profile == MEANING_PROFILE_6
       return FORMAT_VERSION_5 if profile == MEANING_PROFILE_5
       return FORMAT_VERSION_4 if profile == MEANING_PROFILE_4
       return FORMAT_VERSION_3 if profile == MEANING_PROFILE_3
@@ -154,6 +159,7 @@ module BasicSharp
     end
 
     def fingerprint_algorithm(profile)
+      return FINGERPRINT_ALGORITHM_6 if profile == MEANING_PROFILE_6
       return FINGERPRINT_ALGORITHM_5 if profile == MEANING_PROFILE_5
       return FINGERPRINT_ALGORITHM_4 if profile == MEANING_PROFILE_4
       return FINGERPRINT_ALGORITHM_3 if profile == MEANING_PROFILE_3

@@ -1,0 +1,58 @@
+BSharp Bytecode bsharp.bytecode.v6
+Meaning Profile: bsharp.meaning.v6
+Fingerprint: 3256430f1d363552e1746b851f91c3909e637f8d15f4c4e9b1e6ea91039405a5
+
+KIND 0 person PARENT NONE
+KIND 1 creature PARENT NONE
+KIND 2 thing PARENT NONE
+
+THING 0 player KIND[person]
+THING 1 boss KIND[creature]
+THING 2 bridge KIND[thing]
+THING 3 coin KIND[thing]
+
+START
+    START_VALUE THING[player] score 0
+    START_VALUE THING[player] health 10
+    START_VALUE THING[player] victories 0
+    START_STATE THING[boss] alive REMOVE dead
+    START_STATE THING[bridge] whole REMOVE broken
+END
+
+WHEN actor=THING[player] action=take target=THING[coin] BLOCK 0
+WHEN actor=THING[player] action=attack target=THING[boss] BLOCK 1
+WHEN actor=THING[player] action=speak target=THING[boss] BLOCK 2
+WHEN actor=THING[player] action=attack target=THING[bridge] BLOCK 3
+WHEN actor=THING[player] action=speak target=THING[bridge] BLOCK 4
+
+IF ALL_CONDITIONS [VALUE_AT_LEAST THING[player] score 100] AND [STATE_IS THING[boss] dead] BLOCK 5
+IF ANY_CONDITIONS [VALUE_LESS_THAN THING[player] health 1] OR [STATE_IS THING[bridge] broken] BLOCK 6
+
+
+BLOCK 0
+    INCREASE_VALUE THING[player] score 50
+END
+
+BLOCK 1
+    CHANGE_STATE THING[boss] dead REMOVE alive
+END
+
+BLOCK 2
+    CHANGE_STATE THING[boss] alive REMOVE dead
+END
+
+BLOCK 3
+    CHANGE_STATE THING[bridge] broken REMOVE whole
+END
+
+BLOCK 4
+    CHANGE_STATE THING[bridge] whole REMOVE broken
+END
+
+BLOCK 5
+    INCREASE_VALUE THING[player] victories 1
+END
+
+BLOCK 6
+    CHANGE_STATE THING[player] dead REMOVE alive
+END

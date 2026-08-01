@@ -1,0 +1,13 @@
+DEFINE
+[
+    @boss is a #creature
+].
+START
+[
+    PLAYER has 0 score
+    @boss is alive
+].
+IF PLAYER has at least 100 score and @boss is dead
+[
+    |then (change PLAYER to friendly
+].

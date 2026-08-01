@@ -1,0 +1,27 @@
+DEFINE
+[
+    @boss is a #creature
+    @coin is a #thing
+].
+START
+[
+    PLAYER has 0 score
+    PLAYER has 0 victories
+    @boss is alive
+].
+WHEN PLAYER takes @coin
+[
+    |then (increase score of PLAYER by 100
+].
+WHEN PLAYER attacks @boss
+[
+    |then (change @boss to dead
+].
+WHEN PLAYER speaks @boss
+[
+    |then (change @boss to alive
+].
+IF PLAYER has at least 100 score and @boss is dead
+[
+    |then (increase victories of PLAYER by 1
+].

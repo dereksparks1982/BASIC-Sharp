@@ -59,7 +59,7 @@ class TestRuntimeTransition < Minitest::Test
     assert_instance_of BasicSharp::BytecodeLoader, machine.loader
     assert machine.loader.model.frozen?
     assert result.fetch('matched')
-    assert_includes machine.report(result), 'BSharp Virtual Machine v0.1.37'
+    assert_includes machine.report(result), 'BSharp Virtual Machine v0.1.38'
   end
 
   def test_bsir_defaults_to_preferred_bsharp_vm
@@ -68,7 +68,7 @@ class TestRuntimeTransition < Minitest::Test
 
     assert result.fetch('matched')
     assert_equal 1, machine.snapshot.find { |thing| thing['name'] == 'henry' }.fetch('damage')
-    assert_includes machine.report(result), 'BSharp Virtual Machine v0.1.37'
+    assert_includes machine.report(result), 'BSharp Virtual Machine v0.1.38'
   end
 
   def test_reference_runtime_requires_explicit_mode
@@ -78,7 +78,7 @@ class TestRuntimeTransition < Minitest::Test
     assert machine.reference?
     refute machine.preferred?
     assert_nil machine.loader
-    assert_includes machine.report(result), 'BASIC# Runtime v0.1.37'
+    assert_includes machine.report(result), 'BASIC# Runtime v0.1.38'
   end
 
   def test_standalone_runtime_transition_audit_uses_the_live_version
@@ -230,5 +230,21 @@ class TestRuntimeTransition < Minitest::Test
     assert_equal 'bsharp.meaning.v5', shadow.meaning_profile
     assert_equal 'bsharp.bytecode.v5', shadow.loader.model.fetch(:profile)
     assert_equal 5, BasicSharp::WorldSave.document_for(shadow).fetch('format_version')
+  end
+
+  def test_profile_6_compound_conditions_run_in_all_runtime_modes
+    path = File.join(ROOT, 'samples/compound_if_conditions.bsharp')
+    preferred = BasicSharp::RuntimeTransition.new(resolve(path))
+    reference = BasicSharp::RuntimeTransition.new(resolve(path), mode: :reference)
+    shadow = BasicSharp::RuntimeTransition.new(resolve(path), mode: :verify)
+    ['player takes coin', 'player takes coin', 'player attacks boss', 'player speaks boss', 'player attacks boss', 'player attacks bridge'].each do |event|
+      [preferred, reference, shadow].each { |machine| machine.run_event(event) }
+    end
+    assert_equal preferred.snapshot, reference.snapshot
+    assert_equal preferred.snapshot, shadow.snapshot
+    assert_equal 'bsharp.meaning.v6', shadow.meaning_profile
+    assert_equal 'bsharp.bytecode.v6', shadow.loader.model.fetch(:profile)
+    assert_equal 6, BasicSharp::WorldSave.document_for(shadow).fetch('format_version')
+    assert_equal 2, shadow.ask_if_rules.count { |entry| entry.fetch('active') }
   end
 end

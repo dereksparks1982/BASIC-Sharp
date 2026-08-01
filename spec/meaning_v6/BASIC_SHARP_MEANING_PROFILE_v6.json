@@ -1,0 +1,142 @@
+{
+  "cases": [
+    {
+      "ask": [
+        "what IF rules are true"
+      ],
+      "events": [
+
+      ],
+      "expected": "spec/meaning_v6/cases/01_and_condition/expected.json",
+      "expected_sha256": "afbe4d4d92bad883996f1b0cb99abee74d12c4b13ab5385806da6735fa123bc0",
+      "id": "01_and_condition",
+      "save": false,
+      "source": "spec/meaning_v6/cases/01_and_condition/source.bsharp"
+    },
+    {
+      "ask": [
+        "what IF rules are true"
+      ],
+      "events": [
+
+      ],
+      "expected": "spec/meaning_v6/cases/02_or_condition/expected.json",
+      "expected_sha256": "2c5b1b550a1368478ff5a0cda80213e3312ef2e0ccf3739a74e6ce6a30651182",
+      "id": "02_or_condition",
+      "save": false,
+      "source": "spec/meaning_v6/cases/02_or_condition/source.bsharp"
+    },
+    {
+      "ask": [
+        "what IF rules are true"
+      ],
+      "events": [
+
+      ],
+      "expected": "spec/meaning_v6/cases/03_and_startup_truth/expected.json",
+      "expected_sha256": "d4b0f0f806b1df1366f1eddeec4dd2e5d308b8d838e1ace78333c010585419d9",
+      "id": "03_and_startup_truth",
+      "save": true,
+      "source": "spec/meaning_v6/cases/03_and_startup_truth/source.bsharp"
+    },
+    {
+      "ask": [
+        "what IF rules are true"
+      ],
+      "events": [
+
+      ],
+      "expected": "spec/meaning_v6/cases/04_or_startup_truth/expected.json",
+      "expected_sha256": "75256fd8285ec005174afe1860d5566df7cc35038606961a22b19457edc9d7b3",
+      "id": "04_or_startup_truth",
+      "save": true,
+      "source": "spec/meaning_v6/cases/04_or_startup_truth/source.bsharp"
+    },
+    {
+      "ask": [
+        "what values does player have",
+        "what IF rules are true"
+      ],
+      "events": [
+        "player takes coin",
+        "player attacks boss",
+        "player speaks boss",
+        "player attacks boss"
+      ],
+      "expected": "spec/meaning_v6/cases/05_crossing_and_rearm/expected.json",
+      "expected_sha256": "badbfe892f5b5dd9b4d3dffb1f82a07d927e88880a667658d75a2054afd712b9",
+      "id": "05_crossing_and_rearm",
+      "save": true,
+      "source": "spec/meaning_v6/cases/05_crossing_and_rearm/source.bsharp"
+    },
+    {
+      "ask": [
+        "what IF rules are true"
+      ],
+      "events": [
+
+      ],
+      "expected": "spec/meaning_v6/cases/06_state_and_relation/expected.json",
+      "expected_sha256": "e8fcc0a353e88b7e2f97cd125a24178efae75cd745b99b25fa935cddfb797d82",
+      "id": "06_state_and_relation",
+      "save": false,
+      "source": "spec/meaning_v6/cases/06_state_and_relation/source.bsharp"
+    },
+    {
+      "ask": [
+        "what IF rules are true"
+      ],
+      "events": [
+
+      ],
+      "expected": "spec/meaning_v6/cases/07_quoted_operator_words/expected.json",
+      "expected_sha256": "89cf5f4df735177e5adfef7cce707978b03b75de748bff82901b189ddd2b858a",
+      "id": "07_quoted_operator_words",
+      "save": true,
+      "source": "spec/meaning_v6/cases/07_quoted_operator_words/source.bsharp"
+    },
+    {
+      "ask": [
+        "what IF rules are true"
+      ],
+      "events": [
+
+      ],
+      "expected": "spec/meaning_v6/cases/08_numbers_and_thresholds/expected.json",
+      "expected_sha256": "020b8559fe8f9f2cdaefdf700497c2efd9bf999640e1b21aa27adf2a411e4baf",
+      "id": "08_numbers_and_thresholds",
+      "save": false,
+      "source": "spec/meaning_v6/cases/08_numbers_and_thresholds/source.bsharp"
+    },
+    {
+      "ask": [
+
+      ],
+      "events": [
+
+      ],
+      "expected": "spec/meaning_v6/cases/09_mixed_operators/expected.json",
+      "expected_sha256": "311e37c23040276c7e7c096421101d37cbec777dd98807d3e6462ea42598c0c7",
+      "id": "09_mixed_operators",
+      "save": false,
+      "source": "spec/meaning_v6/cases/09_mixed_operators/source.bsharp"
+    },
+    {
+      "ask": [
+
+      ],
+      "events": [
+
+      ],
+      "expected": "spec/meaning_v6/cases/10_incomplete_clause/expected.json",
+      "expected_sha256": "9e99a6f537a852f178fe1dd56d65991035ecbce969a41d0e0392cd084a7e2907",
+      "id": "10_incomplete_clause",
+      "save": false,
+      "source": "spec/meaning_v6/cases/10_incomplete_clause/source.bsharp"
+    }
+  ],
+  "format": "bsharp.meaning.conformance.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v6",
+  "title": "BASIC# Stable Meaning Profile 6: plain-English compound IF conditions"
+}

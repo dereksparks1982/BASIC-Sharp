@@ -1,0 +1,13 @@
+DEFINE
+[
+    @bridge is a #thing
+].
+START
+[
+    PLAYER has 10 health
+    @bridge is broken
+].
+IF PLAYER has less than 1 health or @bridge is broken
+[
+    |then (change PLAYER to dead
+].

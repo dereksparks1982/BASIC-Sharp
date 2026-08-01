@@ -1,0 +1,10 @@
+{
+  "format": "basic-sharp.runtime-fixtures.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v6",
+  "source": "samples/compound_if_conditions.bsharp",
+  "input": "samples/compound_if_conditions.input.json",
+  "input_sha256": "29d0ab80f061b9add4a21219ae64fd5a50f2c9fb516595bbc2ebad06a052fe0b",
+  "expected": "samples/compound_if_conditions.expected.json",
+  "expected_sha256": "cd98ec09657bf0d99b7db5077a4605578be88e6bfb3657a39b9322a1912f6edd"
+}

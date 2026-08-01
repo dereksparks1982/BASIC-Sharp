@@ -1,0 +1,102 @@
+{
+  "format": "bsharp.save.json",
+  "format_version": 6,
+  "created_by_basic_sharp": "0.1.38",
+  "program_fingerprint": {
+    "algorithm": "sha256-bsir-meaning-v6",
+    "value": "3256430f1d363552e1746b851f91c3909e637f8d15f4c4e9b1e6ea91039405a5"
+  },
+  "world": {
+    "settled": true,
+    "things": [
+      {
+        "name": "player",
+        "kind": "person",
+        "builtin": true,
+        "states": [
+          "dead"
+        ],
+        "relations": {
+        },
+        "values": {
+          "damage": {
+            "type": "whole_number",
+            "value": 0
+          },
+          "health": {
+            "type": "whole_number",
+            "value": 10
+          },
+          "score": {
+            "type": "whole_number",
+            "value": 100
+          },
+          "victories": {
+            "type": "whole_number",
+            "value": 2
+          }
+        }
+      },
+      {
+        "name": "boss",
+        "kind": "creature",
+        "builtin": false,
+        "states": [
+          "dead"
+        ],
+        "relations": {
+        },
+        "values": {
+          "damage": {
+            "type": "whole_number",
+            "value": 0
+          }
+        }
+      },
+      {
+        "name": "bridge",
+        "kind": "thing",
+        "builtin": false,
+        "states": [
+          "broken"
+        ],
+        "relations": {
+        },
+        "values": {
+          "damage": {
+            "type": "whole_number",
+            "value": 0
+          }
+        }
+      },
+      {
+        "name": "coin",
+        "kind": "thing",
+        "builtin": false,
+        "states": [
+
+        ],
+        "relations": {
+        },
+        "values": {
+          "damage": {
+            "type": "whole_number",
+            "value": 0
+          }
+        }
+      }
+    ],
+    "if_rules": [
+      {
+        "index": 0,
+        "condition": "player has at least 100 score and boss is dead",
+        "active": true
+      },
+      {
+        "index": 1,
+        "condition": "player has less than 1 health or bridge is broken",
+        "active": true
+      }
+    ]
+  }
+}

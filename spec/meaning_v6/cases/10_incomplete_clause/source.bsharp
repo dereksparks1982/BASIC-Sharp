@@ -1,0 +1,8 @@
+START
+[
+    PLAYER has 0 score
+].
+IF PLAYER has 0 score and
+[
+    |then (change PLAYER to on
+].

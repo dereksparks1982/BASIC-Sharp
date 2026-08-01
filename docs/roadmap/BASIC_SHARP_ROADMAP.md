@@ -16,7 +16,8 @@ BASIC# source
 -> v0.1.34 repaired emitter but retained stale runtime-banner validation  [REJECTED]
 -> complete Profile 3 re-carry and runtime-transition validation repair  [ACCEPTED: v0.1.35]
 -> plain-English platform movement and Profile 4  [ACCEPTED: v0.1.36]
--> plain-English number changes, comparisons, and Profile 5  [CURRENT CANDIDATE: v0.1.37]
+-> plain-English number changes, comparisons, and Profile 5  [ACCEPTED: v0.1.37]
+-> plain-English compound IF conditions and Profile 6  [CURRENT CANDIDATE: v0.1.38]
 -> owner validation and acceptance
 -> expand the usable language and standard library
 -> mature the BSharp VM through real programs and games
@@ -26,18 +27,19 @@ BASIC# source
 -> complete BASIC# IDE
 ```
 
-## Current v0.1.37 lane
+## Current v0.1.38 lane
 
-- Accept `(increase score of PLAYER by 10` and `(decrease health of PLAYER by 3` for existing whole-number values.
-- Accept exact equality plus `at least`, `more than`, `at most`, and `less than` IF comparisons.
-- Stop missing-value, type mismatch, overflow, and underflow failures atomically before any selected Thing changes.
-- Carry the new meaning through BSIR, Meaning Profile 5, BSharp Bytecode Profile 5, loader, BSharp VM, reference runtime, ASK, Save format 5, and shadow parity.
-- Preserve all accepted Profile 1 through Profile 4 behavior and committed BSBC/disassembly bytes.
+- Accept multiple complete IF clauses joined by only `and` or only `or` on one line.
+- Make the complete group own false-to-true waking, quiet-while-true behavior, source ordering, rearming, and loop protection.
+- Combine state, relation, exact text, exact number, and threshold facts while ignoring connector words inside quoted text.
+- Reject mixed connectors, empty clauses, nesting, and parenthesized precedence with a plain-English explanation.
+- Carry the new meaning through BSIR, Meaning Profile 6, BSharp Bytecode Profile 6, loader, BSharp VM, reference runtime, ASK, Save format 6, and shadow parity.
+- Preserve all accepted Profile 1 through Profile 5 behavior and committed BSBC/disassembly bytes.
 
-## Continuation after v0.1.37
+## Continuation after v0.1.38
 
 1. Install and complete owner-side native validation.
-2. Commit and tag v0.1.37 immediately after every gate passes, then capture the accepted full project snapshot.
+2. Commit and tag v0.1.38 immediately after every gate passes, then capture the accepted full project snapshot.
 3. Discuss the next focused creator-language build; no engine bridge begins without its own exact proposal and approval.
 4. Expand creator-useful language meaning: more values, computation, conditions, events, collections, reusable behavior, official words, and non-programmer diagnostics.
 5. Mature the BSharp VM as the permanent normal runtime while Ruby remains the bootstrap/reference oracle until replacement is proven.

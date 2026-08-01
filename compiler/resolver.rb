@@ -175,12 +175,60 @@ module BasicSharp
     end
 
     def resolve_if_rule(rule)
-      condition_fact = parse_condition_fact(rule.condition, rule.line_number)
+      condition_fact = parse_if_condition(rule.condition, rule.line_number)
       {
         'line_number' => rule.line_number,
         'if' => condition_fact,
         'then' => rule.actions.map { |action| resolve_action(action, bound_kinds: []) }
       }
+    end
+
+    def parse_if_condition(text, line_number)
+      clauses, connectors = split_if_condition(text)
+      return parse_condition_fact(text, line_number) if connectors.empty?
+
+      if connectors.uniq.length > 1
+        diagnostics.error(line_number, "BASIC# does not mix and and or in one IF yet.\nUse separate IF rules so the meaning stays plain.")
+      end
+      if clauses.any? { |clause| clause.empty? }
+        diagnostics.error(line_number, 'Every and or or in an IF must have a complete condition on both sides.')
+      end
+      connector = connectors.first
+      resolved_clauses = clauses.map { |clause| parse_condition_fact(clause.empty? ? 'missing condition' : clause, line_number) }
+      {
+        'raw' => resolved_clauses.map { |clause| clause['raw'] }.join(" #{connector} "),
+        'connector' => connector,
+        'clauses' => resolved_clauses
+      }
+    end
+
+    def split_if_condition(text)
+      source = text.to_s.strip
+      clauses = []
+      connectors = []
+      start = 0
+      index = 0
+      quoted = false
+      while index < source.length
+        if source[index] == '"'
+          quoted = !quoted
+          index += 1
+          next
+        end
+        unless quoted
+          remainder = source[index..]
+          if (match = remainder.match(/\A(and|or)(?=\s|\z)/i)) && (index.zero? || source[index - 1].match?(/\s/))
+            clauses << source[start...index].to_s.strip
+            connectors << match[1].downcase
+            index += match[1].length
+            start = index
+            next
+          end
+        end
+        index += 1
+      end
+      clauses << source[start..].to_s.strip
+      [clauses, connectors]
     end
 
     def resolve_controls(declaration)
@@ -670,10 +718,13 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
     end
 
     def meaning_profile_for(facts, events, if_rules, controls, hover_declarations, context_declarations)
+      compound_conditions_used = if_rules.any? { |rule| rule.fetch('if', {}).key?('connector') }
+      return 'bsharp.meaning.v6' if compound_conditions_used
+
       number_changes_used = events.any? do |event|
         event.fetch('then', []).any? { |action| %w[increase decrease].include?(action['action']) }
       end || if_rules.any? do |rule|
-        rule.fetch('if', {}).key?('comparison') ||
+        condition_clauses(rule.fetch('if', {})).any? { |condition| condition.key?('comparison') } ||
           rule.fetch('then', []).any? { |action| %w[increase decrease].include?(action['action']) }
       end
       return 'bsharp.meaning.v5' if number_changes_used
@@ -689,10 +740,14 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
       text_used = facts.any? { |fact| fact.key?('text_value') } ||
                   events.any? { |event| event.fetch('then', []).any? { |action| action.key?('to_text') } } ||
                   if_rules.any? do |rule|
-                    rule.fetch('if', {}).key?('text_value') ||
+                    condition_clauses(rule.fetch('if', {})).any? { |condition| condition.key?('text_value') } ||
                       rule.fetch('then', []).any? { |action| action.key?('to_text') }
                   end
       text_used ? 'bsharp.meaning.v2' : 'bsharp.meaning.v1'
+    end
+
+    def condition_clauses(condition)
+      condition.key?('connector') ? Array(condition['clauses']) : [condition]
     end
 
     def resolve_whole_number(text, line_number, minimum:, purpose:)

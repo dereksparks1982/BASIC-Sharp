@@ -1,0 +1,15 @@
+DEFINE
+[
+    @boss is a #creature
+    @bridge is a #thing
+].
+START
+[
+    PLAYER has 0 score
+    @boss is alive
+    @bridge is whole
+].
+IF PLAYER has 0 score and @boss is alive or @bridge is whole
+[
+    |then (change PLAYER to on
+].

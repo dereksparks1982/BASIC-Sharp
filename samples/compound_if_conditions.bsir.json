@@ -1,0 +1,421 @@
+{
+  "version": "0.1.38",
+  "format": "bsir.debug.json",
+  "kinds": [
+
+  ],
+  "objects": [
+    {
+      "name": "player",
+      "kind": "person",
+      "builtin": true,
+      "line_number": null
+    },
+    {
+      "name": "boss",
+      "kind": "creature",
+      "builtin": false,
+      "line_number": 3
+    },
+    {
+      "name": "bridge",
+      "kind": "thing",
+      "builtin": false,
+      "line_number": 4
+    },
+    {
+      "name": "coin",
+      "kind": "thing",
+      "builtin": false,
+      "line_number": 5
+    }
+  ],
+  "facts": [
+    {
+      "line_number": 10,
+      "subject": {
+        "type": "object",
+        "text": "player",
+        "name": "player",
+        "object_kind": "person"
+      },
+      "relation": "has",
+      "value_name": "score",
+      "amount": 0,
+      "raw": {
+        "subject": "player",
+        "relation": "has",
+        "value": "0 score",
+        "line_number": 10
+      }
+    },
+    {
+      "line_number": 11,
+      "subject": {
+        "type": "object",
+        "text": "player",
+        "name": "player",
+        "object_kind": "person"
+      },
+      "relation": "has",
+      "value_name": "health",
+      "amount": 10,
+      "raw": {
+        "subject": "player",
+        "relation": "has",
+        "value": "10 health",
+        "line_number": 11
+      }
+    },
+    {
+      "line_number": 12,
+      "subject": {
+        "type": "object",
+        "text": "player",
+        "name": "player",
+        "object_kind": "person"
+      },
+      "relation": "has",
+      "value_name": "victories",
+      "amount": 0,
+      "raw": {
+        "subject": "player",
+        "relation": "has",
+        "value": "0 victories",
+        "line_number": 12
+      }
+    },
+    {
+      "line_number": 13,
+      "subject": {
+        "type": "object",
+        "text": "boss",
+        "name": "boss",
+        "object_kind": "creature"
+      },
+      "relation": "is",
+      "value": {
+        "kind": "state",
+        "name": "alive"
+      },
+      "raw": {
+        "subject": "boss",
+        "relation": "is",
+        "value": "alive",
+        "line_number": 13
+      }
+    },
+    {
+      "line_number": 14,
+      "subject": {
+        "type": "object",
+        "text": "bridge",
+        "name": "bridge",
+        "object_kind": "thing"
+      },
+      "relation": "is",
+      "value": {
+        "kind": "state",
+        "name": "whole"
+      },
+      "raw": {
+        "subject": "bridge",
+        "relation": "is",
+        "value": "whole",
+        "line_number": 14
+      }
+    }
+  ],
+  "events": [
+    {
+      "line_number": 17,
+      "when": {
+        "raw": "player takes coin",
+        "actor": {
+          "type": "object",
+          "text": "player",
+          "name": "player",
+          "object_kind": "person"
+        },
+        "action": "take",
+        "target": {
+          "type": "object",
+          "text": "coin",
+          "name": "coin",
+          "object_kind": "thing"
+        }
+      },
+      "then": [
+        {
+          "line_number": 19,
+          "action": "increase",
+          "value_name": "score",
+          "target": {
+            "type": "object",
+            "text": "player",
+            "name": "player",
+            "object_kind": "person"
+          },
+          "amount": 50
+        }
+      ]
+    },
+    {
+      "line_number": 22,
+      "when": {
+        "raw": "player attacks boss",
+        "actor": {
+          "type": "object",
+          "text": "player",
+          "name": "player",
+          "object_kind": "person"
+        },
+        "action": "attack",
+        "target": {
+          "type": "object",
+          "text": "boss",
+          "name": "boss",
+          "object_kind": "creature"
+        }
+      },
+      "then": [
+        {
+          "line_number": 24,
+          "action": "change",
+          "target": {
+            "type": "object",
+            "text": "boss",
+            "name": "boss",
+            "object_kind": "creature"
+          },
+          "to": {
+            "kind": "state",
+            "name": "dead"
+          }
+        }
+      ]
+    },
+    {
+      "line_number": 27,
+      "when": {
+        "raw": "player speaks boss",
+        "actor": {
+          "type": "object",
+          "text": "player",
+          "name": "player",
+          "object_kind": "person"
+        },
+        "action": "speak",
+        "target": {
+          "type": "object",
+          "text": "boss",
+          "name": "boss",
+          "object_kind": "creature"
+        }
+      },
+      "then": [
+        {
+          "line_number": 29,
+          "action": "change",
+          "target": {
+            "type": "object",
+            "text": "boss",
+            "name": "boss",
+            "object_kind": "creature"
+          },
+          "to": {
+            "kind": "state",
+            "name": "alive"
+          }
+        }
+      ]
+    },
+    {
+      "line_number": 32,
+      "when": {
+        "raw": "player attacks bridge",
+        "actor": {
+          "type": "object",
+          "text": "player",
+          "name": "player",
+          "object_kind": "person"
+        },
+        "action": "attack",
+        "target": {
+          "type": "object",
+          "text": "bridge",
+          "name": "bridge",
+          "object_kind": "thing"
+        }
+      },
+      "then": [
+        {
+          "line_number": 34,
+          "action": "change",
+          "target": {
+            "type": "object",
+            "text": "bridge",
+            "name": "bridge",
+            "object_kind": "thing"
+          },
+          "to": {
+            "kind": "state",
+            "name": "broken"
+          }
+        }
+      ]
+    },
+    {
+      "line_number": 37,
+      "when": {
+        "raw": "player speaks bridge",
+        "actor": {
+          "type": "object",
+          "text": "player",
+          "name": "player",
+          "object_kind": "person"
+        },
+        "action": "speak",
+        "target": {
+          "type": "object",
+          "text": "bridge",
+          "name": "bridge",
+          "object_kind": "thing"
+        }
+      },
+      "then": [
+        {
+          "line_number": 39,
+          "action": "change",
+          "target": {
+            "type": "object",
+            "text": "bridge",
+            "name": "bridge",
+            "object_kind": "thing"
+          },
+          "to": {
+            "kind": "state",
+            "name": "whole"
+          }
+        }
+      ]
+    }
+  ],
+  "if_rules": [
+    {
+      "line_number": 42,
+      "if": {
+        "raw": "player has at least 100 score and boss is dead",
+        "connector": "and",
+        "clauses": [
+          {
+            "raw": "player has at least 100 score",
+            "subject": {
+              "type": "object",
+              "text": "player",
+              "name": "player",
+              "object_kind": "person"
+            },
+            "relation": "has",
+            "value_name": "score",
+            "amount": 100,
+            "comparison": "at_least"
+          },
+          {
+            "raw": "boss is dead",
+            "subject": {
+              "type": "object",
+              "text": "boss",
+              "name": "boss",
+              "object_kind": "creature"
+            },
+            "relation": "is",
+            "value": {
+              "kind": "state",
+              "name": "dead"
+            }
+          }
+        ]
+      },
+      "then": [
+        {
+          "line_number": 44,
+          "action": "increase",
+          "value_name": "victories",
+          "target": {
+            "type": "object",
+            "text": "player",
+            "name": "player",
+            "object_kind": "person"
+          },
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "line_number": 47,
+      "if": {
+        "raw": "player has less than 1 health or bridge is broken",
+        "connector": "or",
+        "clauses": [
+          {
+            "raw": "player has less than 1 health",
+            "subject": {
+              "type": "object",
+              "text": "player",
+              "name": "player",
+              "object_kind": "person"
+            },
+            "relation": "has",
+            "value_name": "health",
+            "amount": 1,
+            "comparison": "less_than"
+          },
+          {
+            "raw": "bridge is broken",
+            "subject": {
+              "type": "object",
+              "text": "bridge",
+              "name": "bridge",
+              "object_kind": "thing"
+            },
+            "relation": "is",
+            "value": {
+              "kind": "state",
+              "name": "broken"
+            }
+          }
+        ]
+      },
+      "then": [
+        {
+          "line_number": 49,
+          "action": "change",
+          "target": {
+            "type": "object",
+            "text": "player",
+            "name": "player",
+            "object_kind": "person"
+          },
+          "to": {
+            "kind": "state",
+            "name": "dead"
+          }
+        }
+      ]
+    }
+  ],
+  "controls": [
+
+  ],
+  "hover_declarations": [
+
+  ],
+  "context_declarations": [
+
+  ],
+  "diagnostics": [
+
+  ],
+  "meaning_profile": "bsharp.meaning.v6"
+}

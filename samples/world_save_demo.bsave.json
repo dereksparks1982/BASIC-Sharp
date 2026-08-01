@@ -1,7 +1,7 @@
 {
   "format": "bsharp.save.json",
   "format_version": 1,
-  "created_by_basic_sharp": "0.1.37",
+  "created_by_basic_sharp": "0.1.38",
   "program_fingerprint": {
     "algorithm": "sha256-bsir-meaning-v1",
     "value": "47f25721551d6fbe46a1cacde45f44c146090adcf454ffb6813c3e39a8f2c270"

@@ -139,6 +139,7 @@ module BasicSharp
     end
 
     def meaning_profile
+      return WorldSave::MEANING_PROFILE_6 if @ir['meaning_profile'] == WorldSave::MEANING_PROFILE_6
       return WorldSave::MEANING_PROFILE_5 if @ir['meaning_profile'] == WorldSave::MEANING_PROFILE_5
       return WorldSave::MEANING_PROFILE_4 if @ir['meaning_profile'] == WorldSave::MEANING_PROFILE_4
       return WorldSave::MEANING_PROFILE_3 if @ir['meaning_profile'] == WorldSave::MEANING_PROFILE_3
@@ -609,7 +610,7 @@ module BasicSharp
           raise WorldSaveError, "BSharp Save value name '#{name}' for #{thing_name} must be one plain word."
         end
         expected_type = expected_values.fetch(name).is_a?(String) ? 'text' : 'whole_number'
-        value = if [WorldSave::FORMAT_VERSION_2, WorldSave::FORMAT_VERSION_3, WorldSave::FORMAT_VERSION_4, WorldSave::FORMAT_VERSION_5].include?(save_version)
+        value = if [WorldSave::FORMAT_VERSION_2, WorldSave::FORMAT_VERSION_3, WorldSave::FORMAT_VERSION_4, WorldSave::FORMAT_VERSION_5, WorldSave::FORMAT_VERSION_6].include?(save_version)
                   validate_typed_saved_value!(saved_value, name, thing_name, expected_type)
                 else
                   saved_value
@@ -659,6 +660,10 @@ module BasicSharp
     end
 
     def condition_true_in_objects?(condition, objects)
+      if condition.key?('connector')
+        truths = Array(condition['clauses']).map { |clause| condition_true_in_objects?(clause, objects) }
+        return condition['connector'] == 'and' ? truths.all? : truths.any?
+      end
       subject_name = saved_reference_name(condition['subject'])
       subject = objects[subject_name]
       return false unless subject
@@ -702,12 +707,12 @@ module BasicSharp
       end
 
       profile = @ir['meaning_profile']
-      supported_profiles = [nil, '', WorldSave::MEANING_PROFILE_1, WorldSave::MEANING_PROFILE_2, WorldSave::MEANING_PROFILE_3, WorldSave::MEANING_PROFILE_4, WorldSave::MEANING_PROFILE_5]
+      supported_profiles = [nil, '', WorldSave::MEANING_PROFILE_1, WorldSave::MEANING_PROFILE_2, WorldSave::MEANING_PROFILE_3, WorldSave::MEANING_PROFILE_4, WorldSave::MEANING_PROFILE_5, WorldSave::MEANING_PROFILE_6]
       unless supported_profiles.include?(profile)
         raise ArgumentError, "BSharp IR meaning profile '#{profile}' is not supported"
       end
       text_used = ir_uses_text_values?
-      if text_used && ![WorldSave::MEANING_PROFILE_2, WorldSave::MEANING_PROFILE_3, WorldSave::MEANING_PROFILE_4, WorldSave::MEANING_PROFILE_5].include?(profile)
+      if text_used && ![WorldSave::MEANING_PROFILE_2, WorldSave::MEANING_PROFILE_3, WorldSave::MEANING_PROFILE_4, WorldSave::MEANING_PROFILE_5, WorldSave::MEANING_PROFILE_6].include?(profile)
         raise ArgumentError, 'Creator-facing text values require bsharp.meaning.v2 or later in BSharp IR'
       end
       if profile == WorldSave::MEANING_PROFILE_2 && !text_used
@@ -726,6 +731,10 @@ module BasicSharp
       if profile == WorldSave::MEANING_PROFILE_5 && !ir_uses_number_changes_or_comparisons?
         raise ArgumentError, 'bsharp.meaning.v5 requires number-change or threshold-comparison meaning'
       end
+      if profile == WorldSave::MEANING_PROFILE_6 && !ir_uses_compound_if_conditions?
+        raise ArgumentError, 'bsharp.meaning.v6 requires a compound IF condition'
+      end
+      validate_compound_if_contracts!(profile)
 
       raise ArgumentError, 'BSharp IR contains errors and cannot run' if ir_errors.any?
     end
@@ -734,7 +743,7 @@ module BasicSharp
       @ir.fetch('facts', []).any? { |fact| fact.key?('text_value') } ||
         @ir.fetch('events', []).any? { |event| event.fetch('then', []).any? { |word| word.key?('to_text') } } ||
         @ir.fetch('if_rules', []).any? do |rule|
-          rule.fetch('if', {}).key?('text_value') || rule.fetch('then', []).any? { |word| word.key?('to_text') }
+          condition_clauses(rule.fetch('if', {})).any? { |condition| condition.key?('text_value') } || rule.fetch('then', []).any? { |word| word.key?('to_text') }
         end
     end
 
@@ -742,9 +751,32 @@ module BasicSharp
       @ir.fetch('events', []).any? do |event|
         event.fetch('then', []).any? { |word| %w[increase decrease].include?(normalize(word['action'])) }
       end || @ir.fetch('if_rules', []).any? do |rule|
-        rule.fetch('if', {}).key?('comparison') ||
+        condition_clauses(rule.fetch('if', {})).any? { |condition| condition.key?('comparison') } ||
           rule.fetch('then', []).any? { |word| %w[increase decrease].include?(normalize(word['action'])) }
       end
+    end
+
+    def ir_uses_compound_if_conditions?
+      @ir.fetch('if_rules', []).any? { |rule| rule.fetch('if', {}).key?('connector') }
+    end
+
+    def validate_compound_if_contracts!(profile)
+      @ir.fetch('if_rules', []).each do |rule|
+        condition = rule.fetch('if', {})
+        next unless condition.key?('connector')
+        raise ArgumentError, 'Compound IF conditions require bsharp.meaning.v6 in BSharp IR' unless profile == WorldSave::MEANING_PROFILE_6
+        connector = normalize(condition['connector'])
+        raise ArgumentError, "Compound IF connector '#{connector}' is not supported" unless %w[and or].include?(connector)
+        clauses = condition['clauses']
+        raise ArgumentError, 'Compound IF conditions require at least two complete clauses' unless clauses.is_a?(Array) && clauses.length >= 2
+        if clauses.any? { |clause| !clause.is_a?(Hash) || clause.key?('connector') }
+          raise ArgumentError, 'Compound IF conditions cannot contain nested condition groups'
+        end
+      end
+    end
+
+    def condition_clauses(condition)
+      condition.key?('connector') ? Array(condition['clauses']) : [condition]
     end
 
     def ir_errors
@@ -766,9 +798,10 @@ module BasicSharp
       end
 
       @ir.fetch('if_rules', []).each do |rule|
-        condition = rule.fetch('if')
-        validate_reference!(condition['subject'], location: :condition)
-        validate_reference!(condition['target'], location: :condition) if condition['target']
+        condition_clauses(rule.fetch('if')).each do |condition|
+          validate_reference!(condition['subject'], location: :condition)
+          validate_reference!(condition['target'], location: :condition) if condition['target']
+        end
         rule.fetch('then', []).each { |word| validate_action_reference!(word, bound_kinds: []) }
       end
     end
@@ -914,19 +947,20 @@ Choose one starting amount."
       end
 
       @ir.fetch('if_rules', []).each do |rule|
-        condition = rule.fetch('if')
-        if normalize(condition['relation']) == 'has'
-          value_name = validate_value_name_field!(condition, 'value_name', 'IF value condition')
-          if condition.key?('text_value')
-            validate_text_value_field!(condition, 'text_value', label: "IF #{value_name} text")
-            validate_established_value_type!(condition['subject'], value_name, :text, value_types, 'IF text comparison')
-          else
-            validate_whole_number_field!(condition, 'amount', minimum: 0, label: "IF #{value_name} amount")
-            comparison = normalize(condition.fetch('comparison', 'equals'))
-            unless %w[equals at_least more_than at_most less_than].include?(comparison)
-              raise ArgumentError, "IF #{value_name} comparison '#{comparison}' is not supported"
+        condition_clauses(rule.fetch('if')).each do |condition|
+          if normalize(condition['relation']) == 'has'
+            value_name = validate_value_name_field!(condition, 'value_name', 'IF value condition')
+            if condition.key?('text_value')
+              validate_text_value_field!(condition, 'text_value', label: "IF #{value_name} text")
+              validate_established_value_type!(condition['subject'], value_name, :text, value_types, 'IF text comparison')
+            else
+              validate_whole_number_field!(condition, 'amount', minimum: 0, label: "IF #{value_name} amount")
+              comparison = normalize(condition.fetch('comparison', 'equals'))
+              unless %w[equals at_least more_than at_most less_than].include?(comparison)
+                raise ArgumentError, "IF #{value_name} comparison '#{comparison}' is not supported"
+              end
+              validate_established_value_type!(condition['subject'], value_name, :whole_number, value_types, 'IF whole-number comparison')
             end
-            validate_established_value_type!(condition['subject'], value_name, :whole_number, value_types, 'IF whole-number comparison')
           end
         end
         rule.fetch('then', []).each { |word| validate_numeric_action!(word, value_types) }
@@ -1414,6 +1448,10 @@ Choose one starting amount."
     end
 
     def condition_true?(condition)
+      if condition.key?('connector')
+        truths = Array(condition['clauses']).map { |clause| condition_true?(clause) }
+        return condition['connector'] == 'and' ? truths.all? : truths.any?
+      end
       subject = thing_for_reference(condition['subject'])
       return false unless subject
 
@@ -2013,6 +2051,10 @@ Choose one starting amount."
     end
 
     def canonical_condition_text(condition)
+      if condition.key?('connector')
+        connector = normalize(condition['connector'])
+        return Array(condition['clauses']).map { |clause| canonical_condition_text(clause) }.join(" #{connector} ")
+      end
       return normalize(condition['raw']) unless condition.key?('text_value')
 
       subject = reference_name(condition['subject']) || normalize(condition.dig('subject', 'text'))

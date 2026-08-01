@@ -1,0 +1,815 @@
+{
+  "events": [
+    {
+      "event": "player takes coin",
+      "matched": true,
+      "matched_when": "player takes coin",
+      "understood": [
+
+      ],
+      "ran": [
+        "(increase score of player by 50"
+      ],
+      "steps": [
+        {
+          "word": "(increase score of player by 50",
+          "change": "player score changed from 0 to 50",
+          "value_change": {
+            "value_name": "score",
+            "old_amount": 0,
+            "new_amount": 50,
+            "action_amount": 50,
+            "operation": "increase"
+          }
+        }
+      ],
+      "selections": [
+
+      ],
+      "if_rules": [
+
+      ],
+      "context": {
+      },
+      "error": null,
+      "follow_up_events": [
+
+      ],
+      "event_trail": [
+
+      ],
+      "state": [
+        {
+          "name": "player",
+          "kind": "person",
+          "builtin": true,
+          "states": [
+
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0,
+            "health": 10,
+            "score": 50,
+            "victories": 0
+          }
+        },
+        {
+          "name": "boss",
+          "kind": "creature",
+          "builtin": false,
+          "states": [
+            "alive"
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "name": "bridge",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+            "whole"
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "name": "coin",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        }
+      ]
+    },
+    {
+      "event": "player takes coin",
+      "matched": true,
+      "matched_when": "player takes coin",
+      "understood": [
+
+      ],
+      "ran": [
+        "(increase score of player by 50"
+      ],
+      "steps": [
+        {
+          "word": "(increase score of player by 50",
+          "change": "player score changed from 50 to 100",
+          "value_change": {
+            "value_name": "score",
+            "old_amount": 50,
+            "new_amount": 100,
+            "action_amount": 50,
+            "operation": "increase"
+          }
+        }
+      ],
+      "selections": [
+
+      ],
+      "if_rules": [
+
+      ],
+      "context": {
+      },
+      "error": null,
+      "follow_up_events": [
+
+      ],
+      "event_trail": [
+
+      ],
+      "state": [
+        {
+          "name": "player",
+          "kind": "person",
+          "builtin": true,
+          "states": [
+
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0,
+            "health": 10,
+            "score": 100,
+            "victories": 0
+          }
+        },
+        {
+          "name": "boss",
+          "kind": "creature",
+          "builtin": false,
+          "states": [
+            "alive"
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "name": "bridge",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+            "whole"
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "name": "coin",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        }
+      ]
+    },
+    {
+      "event": "player attacks boss",
+      "matched": true,
+      "matched_when": "player attacks boss",
+      "understood": [
+
+      ],
+      "ran": [
+        "(change boss to dead"
+      ],
+      "steps": [
+        {
+          "word": "(change boss to dead",
+          "change": "boss is now dead"
+        }
+      ],
+      "selections": [
+
+      ],
+      "if_rules": [
+        {
+          "condition": "player has at least 100 score and boss is dead",
+          "reason": "became true after the event",
+          "steps": [
+            {
+              "word": "(increase victories of player by 1",
+              "change": "player victories changed from 0 to 1",
+              "value_change": {
+                "value_name": "victories",
+                "old_amount": 0,
+                "new_amount": 1,
+                "action_amount": 1,
+                "operation": "increase"
+              }
+            }
+          ],
+          "selections": [
+
+          ]
+        }
+      ],
+      "context": {
+      },
+      "error": null,
+      "follow_up_events": [
+
+      ],
+      "event_trail": [
+
+      ],
+      "state": [
+        {
+          "name": "player",
+          "kind": "person",
+          "builtin": true,
+          "states": [
+
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0,
+            "health": 10,
+            "score": 100,
+            "victories": 1
+          }
+        },
+        {
+          "name": "boss",
+          "kind": "creature",
+          "builtin": false,
+          "states": [
+            "dead"
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "name": "bridge",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+            "whole"
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "name": "coin",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        }
+      ]
+    },
+    {
+      "event": "player speaks boss",
+      "matched": true,
+      "matched_when": "player speaks boss",
+      "understood": [
+
+      ],
+      "ran": [
+        "(change boss to alive"
+      ],
+      "steps": [
+        {
+          "word": "(change boss to alive",
+          "change": "boss is now alive"
+        }
+      ],
+      "selections": [
+
+      ],
+      "if_rules": [
+
+      ],
+      "context": {
+      },
+      "error": null,
+      "follow_up_events": [
+
+      ],
+      "event_trail": [
+
+      ],
+      "state": [
+        {
+          "name": "player",
+          "kind": "person",
+          "builtin": true,
+          "states": [
+
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0,
+            "health": 10,
+            "score": 100,
+            "victories": 1
+          }
+        },
+        {
+          "name": "boss",
+          "kind": "creature",
+          "builtin": false,
+          "states": [
+            "alive"
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "name": "bridge",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+            "whole"
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "name": "coin",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        }
+      ]
+    },
+    {
+      "event": "player attacks boss",
+      "matched": true,
+      "matched_when": "player attacks boss",
+      "understood": [
+
+      ],
+      "ran": [
+        "(change boss to dead"
+      ],
+      "steps": [
+        {
+          "word": "(change boss to dead",
+          "change": "boss is now dead"
+        }
+      ],
+      "selections": [
+
+      ],
+      "if_rules": [
+        {
+          "condition": "player has at least 100 score and boss is dead",
+          "reason": "became true after the event",
+          "steps": [
+            {
+              "word": "(increase victories of player by 1",
+              "change": "player victories changed from 1 to 2",
+              "value_change": {
+                "value_name": "victories",
+                "old_amount": 1,
+                "new_amount": 2,
+                "action_amount": 1,
+                "operation": "increase"
+              }
+            }
+          ],
+          "selections": [
+
+          ]
+        }
+      ],
+      "context": {
+      },
+      "error": null,
+      "follow_up_events": [
+
+      ],
+      "event_trail": [
+
+      ],
+      "state": [
+        {
+          "name": "player",
+          "kind": "person",
+          "builtin": true,
+          "states": [
+
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0,
+            "health": 10,
+            "score": 100,
+            "victories": 2
+          }
+        },
+        {
+          "name": "boss",
+          "kind": "creature",
+          "builtin": false,
+          "states": [
+            "dead"
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "name": "bridge",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+            "whole"
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "name": "coin",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        }
+      ]
+    },
+    {
+      "event": "player attacks bridge",
+      "matched": true,
+      "matched_when": "player attacks bridge",
+      "understood": [
+
+      ],
+      "ran": [
+        "(change bridge to broken"
+      ],
+      "steps": [
+        {
+          "word": "(change bridge to broken",
+          "change": "bridge is now broken"
+        }
+      ],
+      "selections": [
+
+      ],
+      "if_rules": [
+        {
+          "condition": "player has less than 1 health or bridge is broken",
+          "reason": "became true after the event",
+          "steps": [
+            {
+              "word": "(change player to dead",
+              "change": "player is now dead"
+            }
+          ],
+          "selections": [
+
+          ]
+        }
+      ],
+      "context": {
+      },
+      "error": null,
+      "follow_up_events": [
+
+      ],
+      "event_trail": [
+
+      ],
+      "state": [
+        {
+          "name": "player",
+          "kind": "person",
+          "builtin": true,
+          "states": [
+            "dead"
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0,
+            "health": 10,
+            "score": 100,
+            "victories": 2
+          }
+        },
+        {
+          "name": "boss",
+          "kind": "creature",
+          "builtin": false,
+          "states": [
+            "dead"
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "name": "bridge",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+            "broken"
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "name": "coin",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        }
+      ]
+    }
+  ],
+  "ask": [
+    {
+      "question": "what values does player have",
+      "type": "thing_values",
+      "ok": true,
+      "answer": {
+        "name": "player",
+        "values": {
+          "damage": 0,
+          "health": 10,
+          "score": 100,
+          "victories": 2
+        }
+      }
+    },
+    {
+      "question": "what IF rules are true",
+      "type": "if_rules_true",
+      "ok": true,
+      "answer": {
+        "rules": [
+          {
+            "index": 0,
+            "condition": "player has at least 100 score and boss is dead",
+            "true": true,
+            "active": true
+          },
+          {
+            "index": 1,
+            "condition": "player has less than 1 health or bridge is broken",
+            "true": true,
+            "active": true
+          }
+        ],
+        "true_count": 2,
+        "total_count": 2
+      }
+    },
+    {
+      "question": "what is the world",
+      "type": "world",
+      "ok": true,
+      "answer": {
+        "origin": "START",
+        "settled": true,
+        "things": 4,
+        "kinds_used": 3,
+        "true_if_rules": 2,
+        "if_rules": 2,
+        "whole_number_values": 7,
+        "text_values": 0
+      }
+    }
+  ],
+  "final_state": [
+    {
+      "name": "player",
+      "kind": "person",
+      "builtin": true,
+      "states": [
+        "dead"
+      ],
+      "relations": {
+      },
+      "values": {
+        "damage": 0,
+        "health": 10,
+        "score": 100,
+        "victories": 2
+      }
+    },
+    {
+      "name": "boss",
+      "kind": "creature",
+      "builtin": false,
+      "states": [
+        "dead"
+      ],
+      "relations": {
+      },
+      "values": {
+        "damage": 0
+      }
+    },
+    {
+      "name": "bridge",
+      "kind": "thing",
+      "builtin": false,
+      "states": [
+        "broken"
+      ],
+      "relations": {
+      },
+      "values": {
+        "damage": 0
+      }
+    },
+    {
+      "name": "coin",
+      "kind": "thing",
+      "builtin": false,
+      "states": [
+
+      ],
+      "relations": {
+      },
+      "values": {
+        "damage": 0
+      }
+    }
+  ],
+  "save": {
+    "format": "bsharp.save.json",
+    "format_version": 6,
+    "created_by_basic_sharp": "0.1.38",
+    "program_fingerprint": {
+      "algorithm": "sha256-bsir-meaning-v6",
+      "value": "3256430f1d363552e1746b851f91c3909e637f8d15f4c4e9b1e6ea91039405a5"
+    },
+    "world": {
+      "settled": true,
+      "things": [
+        {
+          "name": "player",
+          "kind": "person",
+          "builtin": true,
+          "states": [
+            "dead"
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": {
+              "type": "whole_number",
+              "value": 0
+            },
+            "health": {
+              "type": "whole_number",
+              "value": 10
+            },
+            "score": {
+              "type": "whole_number",
+              "value": 100
+            },
+            "victories": {
+              "type": "whole_number",
+              "value": 2
+            }
+          }
+        },
+        {
+          "name": "boss",
+          "kind": "creature",
+          "builtin": false,
+          "states": [
+            "dead"
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": {
+              "type": "whole_number",
+              "value": 0
+            }
+          }
+        },
+        {
+          "name": "bridge",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+            "broken"
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": {
+              "type": "whole_number",
+              "value": 0
+            }
+          }
+        },
+        {
+          "name": "coin",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": {
+              "type": "whole_number",
+              "value": 0
+            }
+          }
+        }
+      ],
+      "if_rules": [
+        {
+          "index": 0,
+          "condition": "player has at least 100 score and boss is dead",
+          "active": true
+        },
+        {
+          "index": 1,
+          "condition": "player has less than 1 health or bridge is broken",
+          "active": true
+        }
+      ]
+    }
+  }
+}

@@ -10,7 +10,8 @@ module BasicSharp
         [BytecodeContract::PROFILE_2, BytecodeContract::MEANING_PROFILE_2],
         [BytecodeContract::PROFILE_3, BytecodeContract::MEANING_PROFILE_3],
         [BytecodeContract::PROFILE_4, BytecodeContract::MEANING_PROFILE_4],
-        [BytecodeContract::PROFILE_5, BytecodeContract::MEANING_PROFILE_5]
+        [BytecodeContract::PROFILE_5, BytecodeContract::MEANING_PROFILE_5],
+        [BytecodeContract::PROFILE_6, BytecodeContract::MEANING_PROFILE_6]
       ]
       raise ArgumentError, 'BSharp Bytecode disassembly requires a supported profile pair.' unless supported.include?(pair)
     end
@@ -54,7 +55,7 @@ module BasicSharp
       end
       lines << '' unless @model.fetch(:if_rules).empty?
 
-      render_game_declarations(lines) if [BytecodeContract::PROFILE_3, BytecodeContract::PROFILE_4, BytecodeContract::PROFILE_5].include?(@model.fetch(:profile))
+      render_game_declarations(lines) if [BytecodeContract::PROFILE_3, BytecodeContract::PROFILE_4, BytecodeContract::PROFILE_5, BytecodeContract::PROFILE_6].include?(@model.fetch(:profile))
 
       @model.fetch(:blocks).each do |block|
         lines << "BLOCK #{block.fetch(:id)}"
@@ -103,6 +104,11 @@ module BasicSharp
     end
 
     def render_condition(condition)
+      if %w[ALL_CONDITIONS ANY_CONDITIONS].include?(condition.fetch(:name))
+        connector = condition.fetch(:name) == 'ALL_CONDITIONS' ? ' AND ' : ' OR '
+        clauses = Array(condition[:clauses]).map { |clause| "[#{render_condition(clause)}]" }
+        return "#{condition.fetch(:name)} #{clauses.join(connector)}"
+      end
       ([condition.fetch(:name)] + condition.fetch(:display)).join(' ')
     end
 

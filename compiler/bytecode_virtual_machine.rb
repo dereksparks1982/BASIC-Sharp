@@ -579,7 +579,7 @@ module BasicSharp
           raise WorldSaveError, "BSharp Save value name '#{name}' for #{thing_name} must be one plain word."
         end
         expected_type = expected_values.fetch(name).is_a?(String) ? 'text' : 'whole_number'
-        value = if [WorldSave::FORMAT_VERSION_2, WorldSave::FORMAT_VERSION_3, WorldSave::FORMAT_VERSION_4, WorldSave::FORMAT_VERSION_5].include?(save_version)
+        value = if [WorldSave::FORMAT_VERSION_2, WorldSave::FORMAT_VERSION_3, WorldSave::FORMAT_VERSION_4, WorldSave::FORMAT_VERSION_5, WorldSave::FORMAT_VERSION_6].include?(save_version)
                   validate_typed_saved_value!(saved_value, name, thing_name, expected_type)
                 else
                   saved_value
@@ -635,7 +635,8 @@ module BasicSharp
         [BytecodeContract::PROFILE_2, BytecodeContract::MEANING_PROFILE_2],
         [BytecodeContract::PROFILE_3, BytecodeContract::MEANING_PROFILE_3],
         [BytecodeContract::PROFILE_4, BytecodeContract::MEANING_PROFILE_4],
-        [BytecodeContract::PROFILE_5, BytecodeContract::MEANING_PROFILE_5]
+        [BytecodeContract::PROFILE_5, BytecodeContract::MEANING_PROFILE_5],
+        [BytecodeContract::PROFILE_6, BytecodeContract::MEANING_PROFILE_6]
       ]
       unless supported.include?(pair)
         raise BytecodeVirtualMachineError, 'The BSharp Virtual Machine cannot execute this bytecode profile.'
@@ -1133,6 +1134,10 @@ module BasicSharp
     end
 
     def condition_true?(condition)
+      if %w[ALL_CONDITIONS ANY_CONDITIONS].include?(condition.fetch(:name))
+        truths = Array(condition[:clauses]).map { |clause| condition_true?(clause) }
+        return condition.fetch(:name) == 'ALL_CONDITIONS' ? truths.all? : truths.any?
+      end
       operands = condition.fetch(:operands)
       subject = world_thing(operands.fetch(0))
       case condition.fetch(:name)
@@ -1223,6 +1228,10 @@ module BasicSharp
     end
 
     def canonical_condition(condition)
+      if %w[ALL_CONDITIONS ANY_CONDITIONS].include?(condition.fetch(:name))
+        connector = condition.fetch(:name) == 'ALL_CONDITIONS' ? 'and' : 'or'
+        return Array(condition[:clauses]).map { |clause| canonical_condition(clause) }.join(" #{connector} ")
+      end
       operands = condition.fetch(:operands)
       subject = thing_name(operands.fetch(0))
       case condition.fetch(:name)

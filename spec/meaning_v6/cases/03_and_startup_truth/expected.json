@@ -1,0 +1,357 @@
+{
+  "case_id": "03_and_startup_truth",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "context_declarations": [
+
+      ],
+      "controls": [
+
+      ],
+      "events": [
+
+      ],
+      "facts": [
+        {
+          "amount": 100,
+          "relation": "has",
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          },
+          "value_name": "score"
+        },
+        {
+          "relation": "is",
+          "subject": {
+            "name": "boss",
+            "object_kind": "creature",
+            "text": "boss",
+            "type": "object"
+          },
+          "value": {
+            "kind": "state",
+            "name": "dead"
+          }
+        }
+      ],
+      "hover_declarations": [
+
+      ],
+      "if_rules": [
+        {
+          "if": {
+            "clauses": [
+              {
+                "amount": 100,
+                "comparison": "at_least",
+                "relation": "has",
+                "subject": {
+                  "name": "player",
+                  "object_kind": "person",
+                  "text": "player",
+                  "type": "object"
+                },
+                "value_name": "score"
+              },
+              {
+                "relation": "is",
+                "subject": {
+                  "name": "boss",
+                  "object_kind": "creature",
+                  "text": "boss",
+                  "type": "object"
+                },
+                "value": {
+                  "kind": "state",
+                  "name": "dead"
+                }
+              }
+            ],
+            "connector": "and"
+          },
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "friendly"
+              }
+            }
+          ]
+        }
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "creature",
+          "name": "boss"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "ask": {
+      "answers": [
+        {
+          "answer": {
+            "rules": [
+              {
+                "active": true,
+                "condition": "player has at least 100 score and boss is dead",
+                "index": 0,
+                "true": true
+              }
+            ],
+            "total_count": 1,
+            "true_count": 1
+          },
+          "ok": true,
+          "question": "what IF rules are true",
+          "type": "if_rules_true"
+        }
+      ],
+      "questions": [
+        "what IF rules are true"
+      ]
+    },
+    "events": [
+
+    ],
+    "final": {
+      "if_rules": [
+        {
+          "active": true,
+          "condition": "player has at least 100 score and boss is dead",
+          "index": 0,
+          "true": true
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+            "friendly"
+          ],
+          "values": {
+            "damage": 0,
+            "score": 100
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "creature",
+          "name": "boss",
+          "relations": {
+          },
+          "states": [
+            "dead"
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 2,
+        "true_if_rules": 1,
+        "whole_number_values": 3
+      }
+    },
+    "save": {
+      "document": {
+        "format": "bsharp.save.json",
+        "format_version": 6,
+        "program_fingerprint": {
+          "algorithm": "sha256-bsir-meaning-v6",
+          "value": "42e3c45381d0409461c2ee8375c5aee3e71e9e1490d1a81f440ea2c0f10d53ed"
+        },
+        "world": {
+          "if_rules": [
+            {
+              "active": true,
+              "condition": "player has at least 100 score and boss is dead",
+              "index": 0
+            }
+          ],
+          "settled": true,
+          "things": [
+            {
+              "builtin": true,
+              "kind": "person",
+              "name": "player",
+              "relations": {
+              },
+              "states": [
+                "friendly"
+              ],
+              "values": {
+                "damage": {
+                  "type": "whole_number",
+                  "value": 0
+                },
+                "score": {
+                  "type": "whole_number",
+                  "value": 100
+                }
+              }
+            },
+            {
+              "builtin": false,
+              "kind": "creature",
+              "name": "boss",
+              "relations": {
+              },
+              "states": [
+                "dead"
+              ],
+              "values": {
+                "damage": {
+                  "type": "whole_number",
+                  "value": 0
+                }
+              }
+            }
+          ]
+        }
+      },
+      "restored": {
+        "if_rules": [
+          {
+            "active": true,
+            "condition": "player has at least 100 score and boss is dead",
+            "index": 0,
+            "true": true
+          }
+        ],
+        "save_ready": true,
+        "snapshot": [
+          {
+            "builtin": true,
+            "kind": "person",
+            "name": "player",
+            "relations": {
+            },
+            "states": [
+              "friendly"
+            ],
+            "values": {
+              "damage": 0,
+              "score": 100
+            }
+          },
+          {
+            "builtin": false,
+            "kind": "creature",
+            "name": "boss",
+            "relations": {
+            },
+            "states": [
+              "dead"
+            ],
+            "values": {
+              "damage": 0
+            }
+          }
+        ],
+        "world": {
+          "if_rules": 1,
+          "kinds_used": 2,
+          "origin": "BSharp Save",
+          "settled": true,
+          "text_values": 0,
+          "things": 2,
+          "true_if_rules": 1,
+          "whole_number_values": 3
+        }
+      },
+      "startup_replayed": false
+    },
+    "startup": {
+      "if_rules": [
+        {
+          "active": true,
+          "condition": "player has at least 100 score and boss is dead",
+          "index": 0,
+          "true": true
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+            "friendly"
+          ],
+          "values": {
+            "damage": 0,
+            "score": 100
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "creature",
+          "name": "boss",
+          "relations": {
+          },
+          "states": [
+            "dead"
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 2,
+        "true_if_rules": 1,
+        "whole_number_values": 3
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v6",
+  "source_bsir_parity": true
+}

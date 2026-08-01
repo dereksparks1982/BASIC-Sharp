@@ -17,6 +17,7 @@ module BasicSharp
     PROFILE_3 = 'bsharp.meaning.v3'
     PROFILE_4 = 'bsharp.meaning.v4'
     PROFILE_5 = 'bsharp.meaning.v5'
+    PROFILE_6 = 'bsharp.meaning.v6'
     MANIFEST_FORMAT = 'bsharp.meaning.conformance.json'
     MANIFEST_FORMAT_VERSION = 1
     EXPECTED_FORMAT = 'bsharp.meaning.case.json'
@@ -119,7 +120,7 @@ module BasicSharp
 
     def normalize_bsir(document)
       hash = stringify_keys(document.respond_to?(:to_h) ? document.to_h : document)
-      keys = [PROFILE_3, PROFILE_4, PROFILE_5].include?(hash['meaning_profile']) ? MEANING_KEYS_3 : MEANING_KEYS
+      keys = [PROFILE_3, PROFILE_4, PROFILE_5, PROFILE_6].include?(hash['meaning_profile']) ? MEANING_KEYS_3 : MEANING_KEYS
       keys.each_with_object({}) do |key, result|
         result[key] = canonicalize(hash.fetch(key, []))
       end
@@ -175,11 +176,11 @@ module BasicSharp
       unless manifest.is_a?(Hash) && manifest['format'] == MANIFEST_FORMAT && manifest['format_version'] == MANIFEST_FORMAT_VERSION
         raise MeaningProfileError, 'Meaning conformance manifest format is not supported.'
       end
-      unless [PROFILE, PROFILE_2, PROFILE_3, PROFILE_4, PROFILE_5].include?(manifest['profile'])
-        raise MeaningProfileError, "Meaning conformance profile must be #{PROFILE}, #{PROFILE_2}, #{PROFILE_3}, #{PROFILE_4}, or #{PROFILE_5}."
+      unless [PROFILE, PROFILE_2, PROFILE_3, PROFILE_4, PROFILE_5, PROFILE_6].include?(manifest['profile'])
+        raise MeaningProfileError, "Meaning conformance profile must be #{PROFILE}, #{PROFILE_2}, #{PROFILE_3}, #{PROFILE_4}, #{PROFILE_5}, or #{PROFILE_6}."
       end
       cases = manifest['cases']
-      expected_count = { PROFILE => 13, PROFILE_2 => 5, PROFILE_3 => 9, PROFILE_4 => 8, PROFILE_5 => 10 }.fetch(manifest['profile'])
+      expected_count = { PROFILE => 13, PROFILE_2 => 5, PROFILE_3 => 9, PROFILE_4 => 8, PROFILE_5 => 10, PROFILE_6 => 10 }.fetch(manifest['profile'])
       unless cases.is_a?(Array) && cases.length == expected_count
         raise MeaningProfileError, "#{manifest['profile']} must contain exactly #{expected_count} conformance cases."
       end

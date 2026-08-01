@@ -1,0 +1,13 @@
+START
+[
+    PLAYER has 10 health
+    PLAYER has 3 lives
+].
+IF PLAYER has 3 lives and PLAYER has at least 10 health
+[
+    |then (change PLAYER to on
+].
+IF PLAYER has less than 1 health or PLAYER has at most 2 lives
+[
+    |then (change PLAYER to dead
+].

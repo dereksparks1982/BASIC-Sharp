@@ -20,6 +20,7 @@ module BasicSharp
     PROFILE_FORMAT_VERSION_3 = 3
     PROFILE_FORMAT_VERSION_4 = 4
     PROFILE_FORMAT_VERSION_5 = 5
+    PROFILE_FORMAT_VERSION_6 = 6
     MANDATORY_STRINGS = [
       BytecodeContract::PROFILE,
       BytecodeContract::MEANING_PROFILE,
@@ -44,6 +45,7 @@ module BasicSharp
       @document = stringify_keys(document.respond_to?(:to_h) ? document.to_h : document)
       validate_document!
       @profile = case @document['meaning_profile']
+                 when BytecodeContract::MEANING_PROFILE_6 then BytecodeContract::PROFILE_6
                  when BytecodeContract::MEANING_PROFILE_5 then BytecodeContract::PROFILE_5
                  when BytecodeContract::MEANING_PROFILE_4 then BytecodeContract::PROFILE_4
                  when BytecodeContract::MEANING_PROFILE_3 then BytecodeContract::PROFILE_3
@@ -55,21 +57,24 @@ module BasicSharp
         BytecodeContract::PROFILE_2 => BytecodeContract::MEANING_PROFILE_2,
         BytecodeContract::PROFILE_3 => BytecodeContract::MEANING_PROFILE_3,
         BytecodeContract::PROFILE_4 => BytecodeContract::MEANING_PROFILE_4,
-        BytecodeContract::PROFILE_5 => BytecodeContract::MEANING_PROFILE_5
+        BytecodeContract::PROFILE_5 => BytecodeContract::MEANING_PROFILE_5,
+        BytecodeContract::PROFILE_6 => BytecodeContract::MEANING_PROFILE_6
       }.fetch(@profile)
       @fingerprint_algorithm = {
         BytecodeContract::PROFILE => WorldSave::FINGERPRINT_ALGORITHM,
         BytecodeContract::PROFILE_2 => WorldSave::FINGERPRINT_ALGORITHM_2,
         BytecodeContract::PROFILE_3 => WorldSave::FINGERPRINT_ALGORITHM_3,
         BytecodeContract::PROFILE_4 => WorldSave::FINGERPRINT_ALGORITHM_4,
-        BytecodeContract::PROFILE_5 => WorldSave::FINGERPRINT_ALGORITHM_5
+        BytecodeContract::PROFILE_5 => WorldSave::FINGERPRINT_ALGORITHM_5,
+        BytecodeContract::PROFILE_6 => WorldSave::FINGERPRINT_ALGORITHM_6
       }.fetch(@profile)
       @profile_format_version = {
         BytecodeContract::PROFILE => PROFILE_FORMAT_VERSION,
         BytecodeContract::PROFILE_2 => PROFILE_FORMAT_VERSION_2,
         BytecodeContract::PROFILE_3 => PROFILE_FORMAT_VERSION_3,
         BytecodeContract::PROFILE_4 => PROFILE_FORMAT_VERSION_4,
-        BytecodeContract::PROFILE_5 => PROFILE_FORMAT_VERSION_5
+        BytecodeContract::PROFILE_5 => PROFILE_FORMAT_VERSION_5,
+        BytecodeContract::PROFILE_6 => PROFILE_FORMAT_VERSION_6
       }.fetch(@profile)
       @instruction_codes = BytecodeContract.instruction_codes(@profile)
       @condition_codes = BytecodeContract.condition_codes(@profile)
@@ -118,11 +123,11 @@ module BasicSharp
         raise BytecodeEmitterError, "BSharp Bytecode was not written because the program has #{warnings.length} warning#{warnings.length == 1 ? '' : 's'}."
       end
       profile = @document['meaning_profile']
-      unless profile.nil? || [BytecodeContract::MEANING_PROFILE, BytecodeContract::MEANING_PROFILE_2, BytecodeContract::MEANING_PROFILE_3, BytecodeContract::MEANING_PROFILE_4, BytecodeContract::MEANING_PROFILE_5].include?(profile)
+      unless profile.nil? || [BytecodeContract::MEANING_PROFILE, BytecodeContract::MEANING_PROFILE_2, BytecodeContract::MEANING_PROFILE_3, BytecodeContract::MEANING_PROFILE_4, BytecodeContract::MEANING_PROFILE_5, BytecodeContract::MEANING_PROFILE_6].include?(profile)
         raise BytecodeEmitterError, "BSharp Bytecode does not support meaning profile '#{profile}'."
       end
       text_used = document_uses_text_values?
-      if text_used && ![BytecodeContract::MEANING_PROFILE_2, BytecodeContract::MEANING_PROFILE_3, BytecodeContract::MEANING_PROFILE_4, BytecodeContract::MEANING_PROFILE_5].include?(profile)
+      if text_used && ![BytecodeContract::MEANING_PROFILE_2, BytecodeContract::MEANING_PROFILE_3, BytecodeContract::MEANING_PROFILE_4, BytecodeContract::MEANING_PROFILE_5, BytecodeContract::MEANING_PROFILE_6].include?(profile)
         raise BytecodeEmitterError, 'Creator-facing text values require bsharp.meaning.v2 or later in BSharp IR.'
       end
       if profile == BytecodeContract::MEANING_PROFILE_2 && !text_used
@@ -142,6 +147,9 @@ module BasicSharp
       if profile == BytecodeContract::MEANING_PROFILE_5 && !number_features
         raise BytecodeEmitterError, 'bsharp.meaning.v5 requires number-change or threshold-comparison meaning.'
       end
+      if profile == BytecodeContract::MEANING_PROFILE_6 && !document_uses_compound_if_conditions?
+        raise BytecodeEmitterError, 'bsharp.meaning.v6 requires a compound IF condition.'
+      end
     end
 
     def diagnostic_severity(entry)
@@ -152,7 +160,7 @@ module BasicSharp
       Array(@document['events']).any? do |event|
         Array(event['then']).any? { |word| %w[increase decrease].include?(normalize(word['action'])) }
       end || Array(@document['if_rules']).any? do |rule|
-        rule.fetch('if', {}).key?('comparison') ||
+        condition_clauses(rule.fetch('if', {})).any? { |condition| condition.key?('comparison') } ||
           Array(rule['then']).any? { |word| %w[increase decrease].include?(normalize(word['action'])) }
       end
     end
@@ -331,6 +339,15 @@ module BasicSharp
     end
 
     def lower_condition(condition)
+      if condition.key?('connector')
+        connector = normalize(condition['connector'])
+        clauses = Array(condition['clauses']).map { |clause| lower_condition(clause) }
+        name = { 'and' => 'ALL_CONDITIONS', 'or' => 'ANY_CONDITIONS' }.fetch(connector) do
+          raise BytecodeEmitterError, "BSharp Bytecode cannot lower compound connector '#{connector}'."
+        end
+        group = condition_record(name, [clauses.length], clauses.map { |clause| clause.fetch(:display).join(' ') })
+        return group.merge(clauses: clauses)
+      end
       relation = normalize(condition['relation'])
       subject = exact_thing_index(condition.fetch('subject'))
       case relation
@@ -482,7 +499,8 @@ module BasicSharp
         'STATE_IS' => 2, 'STATE_ISNT' => 2, 'RELATION_EXISTS' => 3,
         'VALUE_EQUALS' => 3, 'TEXT_VALUE_EQUALS' => 3,
         'VALUE_AT_LEAST' => 3, 'VALUE_MORE_THAN' => 3,
-        'VALUE_AT_MOST' => 3, 'VALUE_LESS_THAN' => 3
+        'VALUE_AT_MOST' => 3, 'VALUE_LESS_THAN' => 3,
+        'ALL_CONDITIONS' => 1, 'ANY_CONDITIONS' => 1
       }.fetch(name)
     end
 
@@ -508,7 +526,7 @@ module BasicSharp
         'CODE' => model.fetch(:blocks).length
       }
 
-      if [BytecodeContract::PROFILE_3, BytecodeContract::PROFILE_4, BytecodeContract::PROFILE_5].include?(@profile)
+      if [BytecodeContract::PROFILE_3, BytecodeContract::PROFILE_4, BytecodeContract::PROFILE_5, BytecodeContract::PROFILE_6].include?(@profile)
         section_data['CTRL'] = encode_game_section(model.fetch(:controls))
         section_data['HOVR'] = encode_game_section(model.fetch(:hover_declarations))
         section_data['CTXT'] = encode_game_section(model.fetch(:context_declarations))
@@ -579,7 +597,9 @@ module BasicSharp
 
     def encode_if_rule(entry)
       condition = entry.fetch(:condition)
-      encode_record(condition) + pack_u32(entry[:block_index], entry[:source_order])
+      encoded = encode_record(condition)
+      encoded += Array(condition[:clauses]).map { |clause| encode_record(clause) }.join if condition[:clauses]
+      encoded + pack_u32(entry[:block_index], entry[:source_order])
     end
 
     def encode_code
@@ -714,8 +734,16 @@ module BasicSharp
       Array(@document['facts']).any? { |fact| fact.key?('text_value') } ||
         Array(@document['events']).any? { |event| Array(event['then']).any? { |action| action.key?('to_text') } } ||
         Array(@document['if_rules']).any? do |rule|
-          rule.fetch('if', {}).key?('text_value') || Array(rule['then']).any? { |action| action.key?('to_text') }
+          condition_clauses(rule.fetch('if', {})).any? { |condition| condition.key?('text_value') } || Array(rule['then']).any? { |action| action.key?('to_text') }
         end
+    end
+
+    def document_uses_compound_if_conditions?
+      Array(@document['if_rules']).any? { |rule| rule.fetch('if', {}).key?('connector') }
+    end
+
+    def condition_clauses(condition)
+      condition.key?('connector') ? Array(condition['clauses']) : [condition]
     end
 
     def stringify_keys(value)

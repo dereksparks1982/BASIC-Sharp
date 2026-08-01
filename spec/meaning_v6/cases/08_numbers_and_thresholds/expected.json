@@ -1,0 +1,273 @@
+{
+  "case_id": "08_numbers_and_thresholds",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "context_declarations": [
+
+      ],
+      "controls": [
+
+      ],
+      "events": [
+
+      ],
+      "facts": [
+        {
+          "amount": 10,
+          "relation": "has",
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          },
+          "value_name": "health"
+        },
+        {
+          "amount": 3,
+          "relation": "has",
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          },
+          "value_name": "lives"
+        }
+      ],
+      "hover_declarations": [
+
+      ],
+      "if_rules": [
+        {
+          "if": {
+            "clauses": [
+              {
+                "amount": 3,
+                "relation": "has",
+                "subject": {
+                  "name": "player",
+                  "object_kind": "person",
+                  "text": "player",
+                  "type": "object"
+                },
+                "value_name": "lives"
+              },
+              {
+                "amount": 10,
+                "comparison": "at_least",
+                "relation": "has",
+                "subject": {
+                  "name": "player",
+                  "object_kind": "person",
+                  "text": "player",
+                  "type": "object"
+                },
+                "value_name": "health"
+              }
+            ],
+            "connector": "and"
+          },
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "on"
+              }
+            }
+          ]
+        },
+        {
+          "if": {
+            "clauses": [
+              {
+                "amount": 1,
+                "comparison": "less_than",
+                "relation": "has",
+                "subject": {
+                  "name": "player",
+                  "object_kind": "person",
+                  "text": "player",
+                  "type": "object"
+                },
+                "value_name": "health"
+              },
+              {
+                "amount": 2,
+                "comparison": "at_most",
+                "relation": "has",
+                "subject": {
+                  "name": "player",
+                  "object_kind": "person",
+                  "text": "player",
+                  "type": "object"
+                },
+                "value_name": "lives"
+              }
+            ],
+            "connector": "or"
+          },
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "dead"
+              }
+            }
+          ]
+        }
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "ask": {
+      "answers": [
+        {
+          "answer": {
+            "rules": [
+              {
+                "active": true,
+                "condition": "player has 3 lives and player has at least 10 health",
+                "index": 0,
+                "true": true
+              }
+            ],
+            "total_count": 2,
+            "true_count": 1
+          },
+          "ok": true,
+          "question": "what IF rules are true",
+          "type": "if_rules_true"
+        }
+      ],
+      "questions": [
+        "what IF rules are true"
+      ]
+    },
+    "events": [
+
+    ],
+    "final": {
+      "if_rules": [
+        {
+          "active": true,
+          "condition": "player has 3 lives and player has at least 10 health",
+          "index": 0,
+          "true": true
+        },
+        {
+          "active": false,
+          "condition": "player has less than 1 health or player has at most 2 lives",
+          "index": 1,
+          "true": false
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+            "on"
+          ],
+          "values": {
+            "damage": 0,
+            "health": 10,
+            "lives": 3
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 2,
+        "kinds_used": 1,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 1,
+        "true_if_rules": 1,
+        "whole_number_values": 3
+      }
+    },
+    "startup": {
+      "if_rules": [
+        {
+          "active": true,
+          "condition": "player has 3 lives and player has at least 10 health",
+          "index": 0,
+          "true": true
+        },
+        {
+          "active": false,
+          "condition": "player has less than 1 health or player has at most 2 lives",
+          "index": 1,
+          "true": false
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+            "on"
+          ],
+          "values": {
+            "damage": 0,
+            "health": 10,
+            "lives": 3
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 2,
+        "kinds_used": 1,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 1,
+        "true_if_rules": 1,
+        "whole_number_values": 3
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v6",
+  "source_bsir_parity": true
+}

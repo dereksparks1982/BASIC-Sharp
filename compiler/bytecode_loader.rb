@@ -40,7 +40,9 @@ module BasicSharp
       'VALUE_AT_LEAST' => 3,
       'VALUE_MORE_THAN' => 3,
       'VALUE_AT_MOST' => 3,
-      'VALUE_LESS_THAN' => 3
+      'VALUE_LESS_THAN' => 3,
+      'ALL_CONDITIONS' => 1,
+      'ANY_CONDITIONS' => 1
     }.freeze
     START_INSTRUCTIONS = %w[START_STATE START_RELATION START_VALUE START_TEXT_VALUE].freeze
     ACTION_INSTRUCTIONS = %w[DAMAGE CHANGE_STATE CHANGE_VALUE CHANGE_TEXT_VALUE INCREASE_VALUE DECREASE_VALUE CARRY UNLOCK CAUSE_EVENT].freeze
@@ -185,7 +187,7 @@ module BasicSharp
       unless binary_version == BytecodeContract::BINARY_FORMAT_VERSION
         raise BytecodeLoaderError, "BSharp Bytecode binary format version #{binary_version} is not supported."
       end
-      unless [1, 2, 3, 4, 5].include?(profile_version)
+      unless [1, 2, 3, 4, 5, 6].include?(profile_version)
         raise BytecodeLoaderError, "BSharp Bytecode profile format version #{profile_version} is not supported."
       end
       @profile_format_version = profile_version
@@ -293,7 +295,9 @@ module BasicSharp
       unless @strings.uniq.length == @strings.length
         raise BytecodeLoaderError, 'BSharp Bytecode string table contains a duplicate deterministic entry.'
       end
-      mandatory = if @profile_format_version == 5
+      mandatory = if @profile_format_version == 6
+                    [BytecodeContract::PROFILE_6, BytecodeContract::MEANING_PROFILE_6, 'sha256-bsir-meaning-v6']
+                  elsif @profile_format_version == 5
                     [BytecodeContract::PROFILE_5, BytecodeContract::MEANING_PROFILE_5, 'sha256-bsir-meaning-v5']
                   elsif @profile_format_version == 4
                     [BytecodeContract::PROFILE_4, BytecodeContract::MEANING_PROFILE_4, 'sha256-bsir-meaning-v4']
@@ -319,9 +323,9 @@ module BasicSharp
       fingerprint = data.byteslice(12, 32).unpack1('H*')
       kind_count, thing_count, start_count, event_count, if_count, block_count = data.byteslice(44, 24).unpack('V6')
       [profile_index, meaning_index, fingerprint_algorithm_index].each { |index| validate_string_index!(index) }
-      expected_profile = { 1 => BytecodeContract::PROFILE, 2 => BytecodeContract::PROFILE_2, 3 => BytecodeContract::PROFILE_3, 4 => BytecodeContract::PROFILE_4, 5 => BytecodeContract::PROFILE_5 }.fetch(@profile_format_version)
-      expected_meaning = { 1 => BytecodeContract::MEANING_PROFILE, 2 => BytecodeContract::MEANING_PROFILE_2, 3 => BytecodeContract::MEANING_PROFILE_3, 4 => BytecodeContract::MEANING_PROFILE_4, 5 => BytecodeContract::MEANING_PROFILE_5 }.fetch(@profile_format_version)
-      expected_fingerprint = { 1 => 'sha256-bsir-meaning-v1', 2 => 'sha256-bsir-meaning-v2', 3 => 'sha256-bsir-meaning-v3', 4 => 'sha256-bsir-meaning-v4', 5 => 'sha256-bsir-meaning-v5' }.fetch(@profile_format_version)
+      expected_profile = { 1 => BytecodeContract::PROFILE, 2 => BytecodeContract::PROFILE_2, 3 => BytecodeContract::PROFILE_3, 4 => BytecodeContract::PROFILE_4, 5 => BytecodeContract::PROFILE_5, 6 => BytecodeContract::PROFILE_6 }.fetch(@profile_format_version)
+      expected_meaning = { 1 => BytecodeContract::MEANING_PROFILE, 2 => BytecodeContract::MEANING_PROFILE_2, 3 => BytecodeContract::MEANING_PROFILE_3, 4 => BytecodeContract::MEANING_PROFILE_4, 5 => BytecodeContract::MEANING_PROFILE_5, 6 => BytecodeContract::MEANING_PROFILE_6 }.fetch(@profile_format_version)
+      expected_fingerprint = { 1 => 'sha256-bsir-meaning-v1', 2 => 'sha256-bsir-meaning-v2', 3 => 'sha256-bsir-meaning-v3', 4 => 'sha256-bsir-meaning-v4', 5 => 'sha256-bsir-meaning-v5', 6 => 'sha256-bsir-meaning-v6' }.fetch(@profile_format_version)
       unless @strings.fetch(profile_index) == expected_profile
         raise BytecodeLoaderError, 'BSharp Bytecode uses an unsupported bytecode profile.'
       end
@@ -453,6 +457,18 @@ module BasicSharp
       event_count = directory_entry('EVNT').fetch(:count)
       @if_rules = entry.fetch(:count).times.map do |index|
         condition, cursor = parse_condition_record(data, cursor, data.bytesize)
+        if %w[ALL_CONDITIONS ANY_CONDITIONS].include?(condition.fetch(:name))
+          clause_count = condition.fetch(:operands).fetch(0)
+          raise BytecodeLoaderError, 'BSharp Bytecode compound IF must contain at least two clauses.' unless clause_count >= 2
+          clauses = clause_count.times.map do
+            clause, cursor = parse_condition_record(data, cursor, data.bytesize)
+            if %w[ALL_CONDITIONS ANY_CONDITIONS].include?(clause.fetch(:name))
+              raise BytecodeLoaderError, 'BSharp Bytecode compound IF clauses cannot contain nested condition groups.'
+            end
+            decorate_condition(clause)
+          end
+          condition = condition.merge(clauses: clauses)
+        end
         ensure_bytes!(data, cursor, 8, 'IFRL block fields')
         block_index, source_order = data.byteslice(cursor, 8).unpack('V2')
         cursor += 8
@@ -474,7 +490,7 @@ module BasicSharp
       @controls = []
       @hover_declarations = []
       @context_declarations = []
-      return unless [3, 4, 5].include?(@profile_format_version)
+      return unless [3, 4, 5, 6].include?(@profile_format_version)
 
       @controls = parse_game_section!('CTRL', 'controls')
       @hover_declarations = parse_game_section!('HOVR', 'hover declarations')
@@ -688,6 +704,11 @@ module BasicSharp
         validate_thing_index!(operands[0])
         validate_string_index!(operands[1])
         validate_string_index!(operands[2])
+      when 'ALL_CONDITIONS', 'ANY_CONDITIONS'
+        require_profile_6!(name)
+        unless operands[0].is_a?(Integer) && operands[0] >= 2
+          raise BytecodeLoaderError, "BSharp Bytecode #{name} must contain at least two clauses."
+        end
       end
     end
 
@@ -758,6 +779,10 @@ module BasicSharp
     end
 
     def collect_condition_string_uses(encountered, condition)
+      if %w[ALL_CONDITIONS ANY_CONDITIONS].include?(condition.fetch(:name))
+        Array(condition[:clauses]).each { |clause| collect_condition_string_uses(encountered, clause) }
+        return
+      end
       operands = condition.fetch(:operands)
       add_string_use(encountered, operands[1], role: :identifier)
       add_string_use(encountered, operands[2], role: :literal) if condition.fetch(:name) == 'TEXT_VALUE_EQUALS'
@@ -804,6 +829,10 @@ module BasicSharp
     end
 
     def decorate_condition(condition)
+      if %w[ALL_CONDITIONS ANY_CONDITIONS].include?(condition.fetch(:name))
+        connector = condition.fetch(:name) == 'ALL_CONDITIONS' ? 'and' : 'or'
+        return condition.merge(display: [connector])
+      end
       operands = condition.fetch(:operands)
       display = case condition.fetch(:name)
                 when 'STATE_IS', 'STATE_ISNT'
@@ -957,19 +986,24 @@ module BasicSharp
     end
 
     def profile_name
-      { 1 => BytecodeContract::PROFILE, 2 => BytecodeContract::PROFILE_2, 3 => BytecodeContract::PROFILE_3, 4 => BytecodeContract::PROFILE_4, 5 => BytecodeContract::PROFILE_5 }.fetch(@profile_format_version)
+      { 1 => BytecodeContract::PROFILE, 2 => BytecodeContract::PROFILE_2, 3 => BytecodeContract::PROFILE_3, 4 => BytecodeContract::PROFILE_4, 5 => BytecodeContract::PROFILE_5, 6 => BytecodeContract::PROFILE_6 }.fetch(@profile_format_version)
     end
 
     def require_profile_2!(name)
-      return if [2, 3, 4, 5].include?(@profile_format_version)
+      return if [2, 3, 4, 5, 6].include?(@profile_format_version)
 
       raise BytecodeLoaderError, "BSharp Bytecode #{name} requires Profile 2 or later."
     end
 
     def require_profile_5!(name)
-      return if @profile_format_version == 5
+      return if [5, 6].include?(@profile_format_version)
 
       raise BytecodeLoaderError, "BSharp Bytecode #{name} requires Profile 5."
+    end
+
+    def require_profile_6!(name)
+      return if @profile_format_version == 6
+      raise BytecodeLoaderError, "BSharp Bytecode #{name} requires Profile 6."
     end
 
     def validate_string_roles!
@@ -1021,11 +1055,11 @@ module BasicSharp
       end
 
       @if_rules.each do |rule|
-        condition = rule.fetch(:condition)
-        type = condition.fetch(:name) == 'TEXT_VALUE_EQUALS' ? :text : :whole_number
-        next unless %w[TEXT_VALUE_EQUALS VALUE_EQUALS VALUE_AT_LEAST VALUE_MORE_THAN VALUE_AT_MOST VALUE_LESS_THAN].include?(condition.fetch(:name))
-
-        validate_known_bytecode_value_type!(schemas, condition.fetch(:operands)[1], type, condition.fetch(:name))
+        bytecode_condition_clauses(rule.fetch(:condition)).each do |condition|
+          type = condition.fetch(:name) == 'TEXT_VALUE_EQUALS' ? :text : :whole_number
+          next unless %w[TEXT_VALUE_EQUALS VALUE_EQUALS VALUE_AT_LEAST VALUE_MORE_THAN VALUE_AT_MOST VALUE_LESS_THAN].include?(condition.fetch(:name))
+          validate_known_bytecode_value_type!(schemas, condition.fetch(:operands)[1], type, condition.fetch(:name))
+        end
       end
 
       @blocks.each do |block|
@@ -1051,6 +1085,10 @@ module BasicSharp
       shown = established == :text ? 'text' : 'a whole number'
       raise BytecodeLoaderError,
             "BSharp Bytecode #{operation} conflicts with value #{value_name}, which is #{shown}."
+    end
+
+    def bytecode_condition_clauses(condition)
+      %w[ALL_CONDITIONS ANY_CONDITIONS].include?(condition.fetch(:name)) ? Array(condition[:clauses]) : [condition]
     end
 
     def quote_text(value)

@@ -1,0 +1,317 @@
+{
+  "case_id": "06_state_and_relation",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "context_declarations": [
+
+      ],
+      "controls": [
+
+      ],
+      "events": [
+
+      ],
+      "facts": [
+        {
+          "relation": "is",
+          "subject": {
+            "name": "boss",
+            "object_kind": "creature",
+            "text": "boss",
+            "type": "object"
+          },
+          "value": {
+            "kind": "state",
+            "name": "alive"
+          }
+        },
+        {
+          "relation": "on",
+          "subject": {
+            "name": "key",
+            "object_kind": "key",
+            "text": "key",
+            "type": "object"
+          },
+          "target": {
+            "name": "table",
+            "object_kind": "table",
+            "text": "table",
+            "type": "object"
+          }
+        }
+      ],
+      "hover_declarations": [
+
+      ],
+      "if_rules": [
+        {
+          "if": {
+            "clauses": [
+              {
+                "relation": "is",
+                "subject": {
+                  "name": "boss",
+                  "object_kind": "creature",
+                  "text": "boss",
+                  "type": "object"
+                },
+                "value": {
+                  "kind": "state",
+                  "name": "alive"
+                }
+              },
+              {
+                "relation": "on",
+                "subject": {
+                  "name": "key",
+                  "object_kind": "key",
+                  "text": "key",
+                  "type": "object"
+                },
+                "target": {
+                  "name": "table",
+                  "object_kind": "table",
+                  "text": "table",
+                  "type": "object"
+                }
+              }
+            ],
+            "connector": "and"
+          },
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "on"
+              }
+            }
+          ]
+        }
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "creature",
+          "name": "boss"
+        },
+        {
+          "builtin": false,
+          "kind": "key",
+          "name": "key"
+        },
+        {
+          "builtin": false,
+          "kind": "table",
+          "name": "table"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "ask": {
+      "answers": [
+        {
+          "answer": {
+            "rules": [
+              {
+                "active": true,
+                "condition": "boss is alive and key is on table",
+                "index": 0,
+                "true": true
+              }
+            ],
+            "total_count": 1,
+            "true_count": 1
+          },
+          "ok": true,
+          "question": "what IF rules are true",
+          "type": "if_rules_true"
+        }
+      ],
+      "questions": [
+        "what IF rules are true"
+      ]
+    },
+    "events": [
+
+    ],
+    "final": {
+      "if_rules": [
+        {
+          "active": true,
+          "condition": "boss is alive and key is on table",
+          "index": 0,
+          "true": true
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+            "on"
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "creature",
+          "name": "boss",
+          "relations": {
+          },
+          "states": [
+            "alive"
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "key",
+          "name": "key",
+          "relations": {
+            "on": "table"
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "table",
+          "name": "table",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 4,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 4,
+        "true_if_rules": 1,
+        "whole_number_values": 4
+      }
+    },
+    "startup": {
+      "if_rules": [
+        {
+          "active": true,
+          "condition": "boss is alive and key is on table",
+          "index": 0,
+          "true": true
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+            "on"
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "creature",
+          "name": "boss",
+          "relations": {
+          },
+          "states": [
+            "alive"
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "key",
+          "name": "key",
+          "relations": {
+            "on": "table"
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "table",
+          "name": "table",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 4,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 4,
+        "true_if_rules": 1,
+        "whole_number_values": 4
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v6",
+  "source_bsir_parity": true
+}

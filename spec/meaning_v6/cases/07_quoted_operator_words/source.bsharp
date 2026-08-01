@@ -1,0 +1,13 @@
+DEFINE
+[
+    @boss is a #creature
+].
+START
+[
+    PLAYER has "ready and willing or able" motto
+    @boss is alive
+].
+IF PLAYER has "ready and willing or able" motto and @boss is alive
+[
+    |then (change PLAYER to visible
+].

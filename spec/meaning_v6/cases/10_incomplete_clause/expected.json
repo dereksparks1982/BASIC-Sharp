@@ -1,0 +1,98 @@
+{
+  "case_id": "10_incomplete_clause",
+  "compile": {
+    "errors": [
+      {
+        "message": "Every and or or in an IF must have a complete condition on both sides.",
+        "severity": "error"
+      },
+      {
+        "message": "condition must look like 'subject is state' or 'subject has 3 damage'",
+        "severity": "error"
+      }
+    ],
+    "meaning": {
+      "context_declarations": [
+
+      ],
+      "controls": [
+
+      ],
+      "events": [
+
+      ],
+      "facts": [
+        {
+          "amount": 0,
+          "relation": "has",
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          },
+          "value_name": "score"
+        }
+      ],
+      "hover_declarations": [
+
+      ],
+      "if_rules": [
+        {
+          "if": {
+            "clauses": [
+              {
+                "amount": 0,
+                "relation": "has",
+                "subject": {
+                  "name": "player",
+                  "object_kind": "person",
+                  "text": "player",
+                  "type": "object"
+                },
+                "value_name": "score"
+              },
+              {
+                "relation": null,
+                "subject": null,
+                "value": null
+              }
+            ],
+            "connector": "and"
+          },
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "on"
+              }
+            }
+          ]
+        }
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v6"
+}

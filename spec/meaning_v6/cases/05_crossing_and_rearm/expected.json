@@ -1,0 +1,712 @@
+{
+  "case_id": "05_crossing_and_rearm",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "context_declarations": [
+
+      ],
+      "controls": [
+
+      ],
+      "events": [
+        {
+          "then": [
+            {
+              "action": "increase",
+              "amount": 100,
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "value_name": "score"
+            }
+          ],
+          "when": {
+            "action": "take",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "name": "coin",
+              "object_kind": "thing",
+              "text": "coin",
+              "type": "object"
+            }
+          }
+        },
+        {
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "name": "boss",
+                "object_kind": "creature",
+                "text": "boss",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "dead"
+              }
+            }
+          ],
+          "when": {
+            "action": "attack",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "name": "boss",
+              "object_kind": "creature",
+              "text": "boss",
+              "type": "object"
+            }
+          }
+        },
+        {
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "name": "boss",
+                "object_kind": "creature",
+                "text": "boss",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "alive"
+              }
+            }
+          ],
+          "when": {
+            "action": "speak",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "name": "boss",
+              "object_kind": "creature",
+              "text": "boss",
+              "type": "object"
+            }
+          }
+        }
+      ],
+      "facts": [
+        {
+          "amount": 0,
+          "relation": "has",
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          },
+          "value_name": "score"
+        },
+        {
+          "amount": 0,
+          "relation": "has",
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          },
+          "value_name": "victories"
+        },
+        {
+          "relation": "is",
+          "subject": {
+            "name": "boss",
+            "object_kind": "creature",
+            "text": "boss",
+            "type": "object"
+          },
+          "value": {
+            "kind": "state",
+            "name": "alive"
+          }
+        }
+      ],
+      "hover_declarations": [
+
+      ],
+      "if_rules": [
+        {
+          "if": {
+            "clauses": [
+              {
+                "amount": 100,
+                "comparison": "at_least",
+                "relation": "has",
+                "subject": {
+                  "name": "player",
+                  "object_kind": "person",
+                  "text": "player",
+                  "type": "object"
+                },
+                "value_name": "score"
+              },
+              {
+                "relation": "is",
+                "subject": {
+                  "name": "boss",
+                  "object_kind": "creature",
+                  "text": "boss",
+                  "type": "object"
+                },
+                "value": {
+                  "kind": "state",
+                  "name": "dead"
+                }
+              }
+            ],
+            "connector": "and"
+          },
+          "then": [
+            {
+              "action": "increase",
+              "amount": 1,
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "value_name": "victories"
+            }
+          ]
+        }
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "creature",
+          "name": "boss"
+        },
+        {
+          "builtin": false,
+          "kind": "thing",
+          "name": "coin"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "ask": {
+      "answers": [
+        {
+          "answer": {
+            "name": "player",
+            "values": {
+              "damage": 0,
+              "score": 100,
+              "victories": 2
+            }
+          },
+          "ok": true,
+          "question": "what values does player have",
+          "type": "thing_values"
+        },
+        {
+          "answer": {
+            "rules": [
+              {
+                "active": true,
+                "condition": "player has at least 100 score and boss is dead",
+                "index": 0,
+                "true": true
+              }
+            ],
+            "total_count": 1,
+            "true_count": 1
+          },
+          "ok": true,
+          "question": "what IF rules are true",
+          "type": "if_rules_true"
+        }
+      ],
+      "questions": [
+        "what values does player have",
+        "what IF rules are true"
+      ]
+    },
+    "events": [
+      {
+        "context": {
+        },
+        "error": null,
+        "event": "player takes coin",
+        "event_trail": [
+
+        ],
+        "follow_up_events": [
+
+        ],
+        "if_rules": [
+
+        ],
+        "matched": true,
+        "matched_when": "player takes coin",
+        "ran": [
+          "(increase score of player by 100"
+        ],
+        "selections": [
+
+        ],
+        "steps": [
+          {
+            "change": "player score changed from 0 to 100",
+            "value_change": {
+              "action_amount": 100,
+              "new_amount": 100,
+              "old_amount": 0,
+              "operation": "increase",
+              "value_name": "score"
+            },
+            "word": "(increase score of player by 100"
+          }
+        ],
+        "understood": [
+
+        ]
+      },
+      {
+        "context": {
+        },
+        "error": null,
+        "event": "player attacks boss",
+        "event_trail": [
+
+        ],
+        "follow_up_events": [
+
+        ],
+        "if_rules": [
+          {
+            "condition": "player has at least 100 score and boss is dead",
+            "reason": "became true after the event",
+            "selections": [
+
+            ],
+            "steps": [
+              {
+                "change": "player victories changed from 0 to 1",
+                "value_change": {
+                  "action_amount": 1,
+                  "new_amount": 1,
+                  "old_amount": 0,
+                  "operation": "increase",
+                  "value_name": "victories"
+                },
+                "word": "(increase victories of player by 1"
+              }
+            ]
+          }
+        ],
+        "matched": true,
+        "matched_when": "player attacks boss",
+        "ran": [
+          "(change boss to dead"
+        ],
+        "selections": [
+
+        ],
+        "steps": [
+          {
+            "change": "boss is now dead",
+            "word": "(change boss to dead"
+          }
+        ],
+        "understood": [
+
+        ]
+      },
+      {
+        "context": {
+        },
+        "error": null,
+        "event": "player speaks boss",
+        "event_trail": [
+
+        ],
+        "follow_up_events": [
+
+        ],
+        "if_rules": [
+
+        ],
+        "matched": true,
+        "matched_when": "player speaks boss",
+        "ran": [
+          "(change boss to alive"
+        ],
+        "selections": [
+
+        ],
+        "steps": [
+          {
+            "change": "boss is now alive",
+            "word": "(change boss to alive"
+          }
+        ],
+        "understood": [
+
+        ]
+      },
+      {
+        "context": {
+        },
+        "error": null,
+        "event": "player attacks boss",
+        "event_trail": [
+
+        ],
+        "follow_up_events": [
+
+        ],
+        "if_rules": [
+          {
+            "condition": "player has at least 100 score and boss is dead",
+            "reason": "became true after the event",
+            "selections": [
+
+            ],
+            "steps": [
+              {
+                "change": "player victories changed from 1 to 2",
+                "value_change": {
+                  "action_amount": 1,
+                  "new_amount": 2,
+                  "old_amount": 1,
+                  "operation": "increase",
+                  "value_name": "victories"
+                },
+                "word": "(increase victories of player by 1"
+              }
+            ]
+          }
+        ],
+        "matched": true,
+        "matched_when": "player attacks boss",
+        "ran": [
+          "(change boss to dead"
+        ],
+        "selections": [
+
+        ],
+        "steps": [
+          {
+            "change": "boss is now dead",
+            "word": "(change boss to dead"
+          }
+        ],
+        "understood": [
+
+        ]
+      }
+    ],
+    "final": {
+      "if_rules": [
+        {
+          "active": true,
+          "condition": "player has at least 100 score and boss is dead",
+          "index": 0,
+          "true": true
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0,
+            "score": 100,
+            "victories": 2
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "creature",
+          "name": "boss",
+          "relations": {
+          },
+          "states": [
+            "dead"
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "thing",
+          "name": "coin",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 3,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 3,
+        "true_if_rules": 1,
+        "whole_number_values": 5
+      }
+    },
+    "save": {
+      "document": {
+        "format": "bsharp.save.json",
+        "format_version": 6,
+        "program_fingerprint": {
+          "algorithm": "sha256-bsir-meaning-v6",
+          "value": "bfdf25d8ae63fea5b2ba293e219811ecc90f33147eec75166ce0f6b281349560"
+        },
+        "world": {
+          "if_rules": [
+            {
+              "active": true,
+              "condition": "player has at least 100 score and boss is dead",
+              "index": 0
+            }
+          ],
+          "settled": true,
+          "things": [
+            {
+              "builtin": true,
+              "kind": "person",
+              "name": "player",
+              "relations": {
+              },
+              "states": [
+
+              ],
+              "values": {
+                "damage": {
+                  "type": "whole_number",
+                  "value": 0
+                },
+                "score": {
+                  "type": "whole_number",
+                  "value": 100
+                },
+                "victories": {
+                  "type": "whole_number",
+                  "value": 2
+                }
+              }
+            },
+            {
+              "builtin": false,
+              "kind": "creature",
+              "name": "boss",
+              "relations": {
+              },
+              "states": [
+                "dead"
+              ],
+              "values": {
+                "damage": {
+                  "type": "whole_number",
+                  "value": 0
+                }
+              }
+            },
+            {
+              "builtin": false,
+              "kind": "thing",
+              "name": "coin",
+              "relations": {
+              },
+              "states": [
+
+              ],
+              "values": {
+                "damage": {
+                  "type": "whole_number",
+                  "value": 0
+                }
+              }
+            }
+          ]
+        }
+      },
+      "restored": {
+        "if_rules": [
+          {
+            "active": true,
+            "condition": "player has at least 100 score and boss is dead",
+            "index": 0,
+            "true": true
+          }
+        ],
+        "save_ready": true,
+        "snapshot": [
+          {
+            "builtin": true,
+            "kind": "person",
+            "name": "player",
+            "relations": {
+            },
+            "states": [
+
+            ],
+            "values": {
+              "damage": 0,
+              "score": 100,
+              "victories": 2
+            }
+          },
+          {
+            "builtin": false,
+            "kind": "creature",
+            "name": "boss",
+            "relations": {
+            },
+            "states": [
+              "dead"
+            ],
+            "values": {
+              "damage": 0
+            }
+          },
+          {
+            "builtin": false,
+            "kind": "thing",
+            "name": "coin",
+            "relations": {
+            },
+            "states": [
+
+            ],
+            "values": {
+              "damage": 0
+            }
+          }
+        ],
+        "world": {
+          "if_rules": 1,
+          "kinds_used": 3,
+          "origin": "BSharp Save",
+          "settled": true,
+          "text_values": 0,
+          "things": 3,
+          "true_if_rules": 1,
+          "whole_number_values": 5
+        }
+      },
+      "startup_replayed": false
+    },
+    "startup": {
+      "if_rules": [
+        {
+          "active": false,
+          "condition": "player has at least 100 score and boss is dead",
+          "index": 0,
+          "true": false
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0,
+            "score": 0,
+            "victories": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "creature",
+          "name": "boss",
+          "relations": {
+          },
+          "states": [
+            "alive"
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "thing",
+          "name": "coin",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 3,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 3,
+        "true_if_rules": 0,
+        "whole_number_values": 5
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v6",
+  "source_bsir_parity": true
+}

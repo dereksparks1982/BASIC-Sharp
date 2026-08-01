@@ -198,15 +198,26 @@ number_events = ['player takes gold coin', 'player attacks spikes', 'player atta
 number_parity = number_events.all? { |event| number_vm.run_event(event) == number_reference.run_event(event) }
 checks['Meaning Profile 5 number changes and thresholds'] = number_vm.meaning_profile == 'bsharp.meaning.v5' && number_parity
 
+compound_document = resolve(File.join(ROOT, 'samples/compound_if_conditions.bsharp'))
+compound_loader = BasicSharp::BytecodeLoader.read(File.join(ROOT, 'samples/compound_if_conditions.bsbc'))
+compound_vm = BasicSharp::BytecodeVirtualMachine.new(compound_loader)
+compound_reference = BasicSharp::Runtime.new(compound_document)
+compound_events = ['player takes coin', 'player takes coin', 'player attacks boss', 'player speaks boss', 'player attacks boss', 'player attacks bridge']
+compound_parity = compound_events.all? { |event| compound_vm.run_event(event) == compound_reference.run_event(event) }
+checks['Meaning Profile 6 compound IF conditions'] = compound_vm.meaning_profile == 'bsharp.meaning.v6' &&
+                                                     compound_parity &&
+                                                     compound_vm.ask_if_rules.count { |entry| entry.fetch('active') } == 2
+
 checks.each { |label, passed| VMConformance.assert!(passed, label) }
 
-puts 'BSharp Virtual Machine v0.1.37'
+puts 'BSharp Virtual Machine v0.1.38'
 puts "Sample programs: #{FIXTURE.fetch('sample_programs').length}"
 puts "Valid Meaning Profile cases: #{FIXTURE.fetch('meaning_cases').length}"
 puts 'Valid Meaning Profile 2 text sample: 1'
 puts 'Valid Meaning Profile 3 game sample: 1'
 puts 'Valid Meaning Profile 4 platform sample: 1'
 puts 'Valid Meaning Profile 5 number-change sample: 1'
+puts 'Valid Meaning Profile 6 compound IF sample: 1'
 puts
 checks.each { |label, _passed| puts "#{label}: PASS" }
 puts

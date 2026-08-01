@@ -1,0 +1,356 @@
+{
+  "case_id": "07_quoted_operator_words",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "context_declarations": [
+
+      ],
+      "controls": [
+
+      ],
+      "events": [
+
+      ],
+      "facts": [
+        {
+          "relation": "has",
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          },
+          "text_value": "ready and willing or able",
+          "value_name": "motto"
+        },
+        {
+          "relation": "is",
+          "subject": {
+            "name": "boss",
+            "object_kind": "creature",
+            "text": "boss",
+            "type": "object"
+          },
+          "value": {
+            "kind": "state",
+            "name": "alive"
+          }
+        }
+      ],
+      "hover_declarations": [
+
+      ],
+      "if_rules": [
+        {
+          "if": {
+            "clauses": [
+              {
+                "relation": "has",
+                "subject": {
+                  "name": "player",
+                  "object_kind": "person",
+                  "text": "player",
+                  "type": "object"
+                },
+                "text_value": "ready and willing or able",
+                "value_name": "motto"
+              },
+              {
+                "relation": "is",
+                "subject": {
+                  "name": "boss",
+                  "object_kind": "creature",
+                  "text": "boss",
+                  "type": "object"
+                },
+                "value": {
+                  "kind": "state",
+                  "name": "alive"
+                }
+              }
+            ],
+            "connector": "and"
+          },
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "visible"
+              }
+            }
+          ]
+        }
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "creature",
+          "name": "boss"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "ask": {
+      "answers": [
+        {
+          "answer": {
+            "rules": [
+              {
+                "active": true,
+                "condition": "player has \"ready and willing or able\" motto and boss is alive",
+                "index": 0,
+                "true": true
+              }
+            ],
+            "total_count": 1,
+            "true_count": 1
+          },
+          "ok": true,
+          "question": "what IF rules are true",
+          "type": "if_rules_true"
+        }
+      ],
+      "questions": [
+        "what IF rules are true"
+      ]
+    },
+    "events": [
+
+    ],
+    "final": {
+      "if_rules": [
+        {
+          "active": true,
+          "condition": "player has \"ready and willing or able\" motto and boss is alive",
+          "index": 0,
+          "true": true
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+            "visible"
+          ],
+          "values": {
+            "damage": 0,
+            "motto": "ready and willing or able"
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "creature",
+          "name": "boss",
+          "relations": {
+          },
+          "states": [
+            "alive"
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "text_values": 1,
+        "things": 2,
+        "true_if_rules": 1,
+        "whole_number_values": 2
+      }
+    },
+    "save": {
+      "document": {
+        "format": "bsharp.save.json",
+        "format_version": 6,
+        "program_fingerprint": {
+          "algorithm": "sha256-bsir-meaning-v6",
+          "value": "5af31c1701bcabb97fc86fff86cfd010adfe3681e991031b44039c4cb856b97e"
+        },
+        "world": {
+          "if_rules": [
+            {
+              "active": true,
+              "condition": "player has \"ready and willing or able\" motto and boss is alive",
+              "index": 0
+            }
+          ],
+          "settled": true,
+          "things": [
+            {
+              "builtin": true,
+              "kind": "person",
+              "name": "player",
+              "relations": {
+              },
+              "states": [
+                "visible"
+              ],
+              "values": {
+                "damage": {
+                  "type": "whole_number",
+                  "value": 0
+                },
+                "motto": {
+                  "type": "text",
+                  "value": "ready and willing or able"
+                }
+              }
+            },
+            {
+              "builtin": false,
+              "kind": "creature",
+              "name": "boss",
+              "relations": {
+              },
+              "states": [
+                "alive"
+              ],
+              "values": {
+                "damage": {
+                  "type": "whole_number",
+                  "value": 0
+                }
+              }
+            }
+          ]
+        }
+      },
+      "restored": {
+        "if_rules": [
+          {
+            "active": true,
+            "condition": "player has \"ready and willing or able\" motto and boss is alive",
+            "index": 0,
+            "true": true
+          }
+        ],
+        "save_ready": true,
+        "snapshot": [
+          {
+            "builtin": true,
+            "kind": "person",
+            "name": "player",
+            "relations": {
+            },
+            "states": [
+              "visible"
+            ],
+            "values": {
+              "damage": 0,
+              "motto": "ready and willing or able"
+            }
+          },
+          {
+            "builtin": false,
+            "kind": "creature",
+            "name": "boss",
+            "relations": {
+            },
+            "states": [
+              "alive"
+            ],
+            "values": {
+              "damage": 0
+            }
+          }
+        ],
+        "world": {
+          "if_rules": 1,
+          "kinds_used": 2,
+          "origin": "BSharp Save",
+          "settled": true,
+          "text_values": 1,
+          "things": 2,
+          "true_if_rules": 1,
+          "whole_number_values": 2
+        }
+      },
+      "startup_replayed": false
+    },
+    "startup": {
+      "if_rules": [
+        {
+          "active": true,
+          "condition": "player has \"ready and willing or able\" motto and boss is alive",
+          "index": 0,
+          "true": true
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+            "visible"
+          ],
+          "values": {
+            "damage": 0,
+            "motto": "ready and willing or able"
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "creature",
+          "name": "boss",
+          "relations": {
+          },
+          "states": [
+            "alive"
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "text_values": 1,
+        "things": 2,
+        "true_if_rules": 1,
+        "whole_number_values": 2
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v6",
+  "source_bsir_parity": true
+}

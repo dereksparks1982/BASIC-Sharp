@@ -1,0 +1,50 @@
+DEFINE
+[
+    @boss is a #creature
+    @bridge is a #thing
+    @coin is a #thing
+].
+
+START
+[
+    PLAYER has 0 score
+    PLAYER has 10 health
+    PLAYER has 0 victories
+    @boss is alive
+    @bridge is whole
+].
+
+WHEN PLAYER takes @coin
+[
+    |then (increase score of PLAYER by 50
+].
+
+WHEN PLAYER attacks @boss
+[
+    |then (change @boss to dead
+].
+
+WHEN PLAYER speaks @boss
+[
+    |then (change @boss to alive
+].
+
+WHEN PLAYER attacks @bridge
+[
+    |then (change @bridge to broken
+].
+
+WHEN PLAYER speaks @bridge
+[
+    |then (change @bridge to whole
+].
+
+IF PLAYER has at least 100 score and @boss is dead
+[
+    |then (increase victories of PLAYER by 1
+].
+
+IF PLAYER has less than 1 health or @bridge is broken
+[
+    |then (change PLAYER to dead
+].
