@@ -1,0 +1,49 @@
+//Demon Killer input and interaction declaration for the engine-neutral BASIC# host bridge./.
+
+KINDS
+[
+    #gate is a #door
+].
+
+DEFINE
+[
+    @north gate is a #gate
+    @iron sword is a #weapon
+].
+
+START
+[
+    PLAYER has 3 speed //Normal walking speed./.
+    @north gate is closed
+    @north gate has "A heavy oak gate." description
+].
+
+CONTROLS for PLAYER
+[
+    W moves PLAYER north
+    S moves PLAYER south
+    A moves PLAYER west
+    D moves PLAYER east
+    PLAYER faces mouse pointer
+    holding right mouse moves PLAYER toward mouse pointer
+].
+
+HOVER for #door
+[
+    name
+    kind
+    state
+    description
+].
+
+CONTEXT for #door
+[
+    "Open" when it is closed (change it to open
+    "Close" when it is open (change it to closed
+    "Examine" (cause PLAYER examines it
+].
+
+WHEN PLAYER opens @north gate
+[
+    |then (change it to open
+].

@@ -1,11 +1,11 @@
 {
-  "version": "0.1.32",
+  "version": "0.1.35",
   "format": "bsir.debug.json",
   "kinds": [
     {
       "name": "captain",
       "parent": "guard",
-      "line_number": 2
+      "line_number": 3
     }
   ],
   "objects": [
@@ -19,54 +19,54 @@
       "name": "henry",
       "kind": "guard",
       "builtin": false,
-      "line_number": 5
+      "line_number": 8
     },
     {
       "name": "mara",
       "kind": "captain",
       "builtin": false,
-      "line_number": 6
+      "line_number": 9
     },
     {
       "name": "otto",
       "kind": "guard",
       "builtin": false,
-      "line_number": 7
+      "line_number": 10
     },
     {
       "name": "brass bell",
       "kind": "device",
       "builtin": false,
-      "line_number": 8
+      "line_number": 11
     },
     {
       "name": "north door",
       "kind": "door",
       "builtin": false,
-      "line_number": 9
+      "line_number": 12
     },
     {
       "name": "south door",
       "kind": "door",
       "builtin": false,
-      "line_number": 10
+      "line_number": 13
     },
     {
       "name": "brass key",
       "kind": "key",
       "builtin": false,
-      "line_number": 11
+      "line_number": 14
     },
     {
       "name": "iron key",
       "kind": "key",
       "builtin": false,
-      "line_number": 12
+      "line_number": 15
     }
   ],
   "facts": [
     {
-      "line_number": 15,
+      "line_number": 20,
       "subject": {
         "type": "object",
         "text": "henry",
@@ -82,11 +82,11 @@
         "subject": "henry",
         "relation": "is",
         "value": "calm",
-        "line_number": 15
+        "line_number": 20
       }
     },
     {
-      "line_number": 16,
+      "line_number": 21,
       "subject": {
         "type": "object",
         "text": "mara",
@@ -102,11 +102,11 @@
         "subject": "mara",
         "relation": "is",
         "value": "calm",
-        "line_number": 16
+        "line_number": 21
       }
     },
     {
-      "line_number": 17,
+      "line_number": 22,
       "subject": {
         "type": "object",
         "text": "otto",
@@ -122,11 +122,11 @@
         "subject": "otto",
         "relation": "is",
         "value": "calm",
-        "line_number": 17
+        "line_number": 22
       }
     },
     {
-      "line_number": 18,
+      "line_number": 23,
       "subject": {
         "type": "object",
         "text": "north door",
@@ -142,11 +142,11 @@
         "subject": "north door",
         "relation": "is",
         "value": "locked",
-        "line_number": 18
+        "line_number": 23
       }
     },
     {
-      "line_number": 19,
+      "line_number": 24,
       "subject": {
         "type": "object",
         "text": "south door",
@@ -162,13 +162,13 @@
         "subject": "south door",
         "relation": "is",
         "value": "locked",
-        "line_number": 19
+        "line_number": 24
       }
     }
   ],
   "events": [
     {
-      "line_number": 21,
+      "line_number": 27,
       "when": {
         "raw": "player sounds brass bell",
         "actor": {
@@ -187,7 +187,7 @@
       },
       "then": [
         {
-          "line_number": 23,
+          "line_number": 29,
           "action": "damage",
           "target": {
             "type": "kind_set",
@@ -203,7 +203,7 @@
           "amount": 1
         },
         {
-          "line_number": 24,
+          "line_number": 30,
           "action": "change",
           "target": {
             "type": "kind_set",
@@ -222,7 +222,7 @@
           }
         },
         {
-          "line_number": 25,
+          "line_number": 31,
           "action": "carry",
           "target": {
             "type": "kind_set",
@@ -236,7 +236,7 @@
           }
         },
         {
-          "line_number": 26,
+          "line_number": 32,
           "action": "unlock",
           "target": {
             "type": "kind_set",
@@ -252,7 +252,7 @@
       ]
     },
     {
-      "line_number": 28,
+      "line_number": 35,
       "when": {
         "raw": "player attacks a guard",
         "actor": {
@@ -276,7 +276,7 @@
       },
       "then": [
         {
-          "line_number": 30,
+          "line_number": 37,
           "action": "damage",
           "target": {
             "type": "kind_set",
@@ -292,7 +292,7 @@
           "amount": 1
         },
         {
-          "line_number": 31,
+          "line_number": 38,
           "action": "change",
           "target": {
             "type": "previous",
@@ -309,6 +309,15 @@
     }
   ],
   "if_rules": [
+
+  ],
+  "controls": [
+
+  ],
+  "hover_declarations": [
+
+  ],
+  "context_declarations": [
 
   ],
   "diagnostics": [

@@ -49,6 +49,23 @@ module BasicSharp
 
     attr_reader :startup_ran, :startup_if_rules, :startup_if_error, :startup_follow_up_events
 
+    def game_declarations
+      canonical_game_data({
+        'controls' => @ir.fetch('controls', []),
+        'hover' => @ir.fetch('hover_declarations', []),
+        'context' => @ir.fetch('context_declarations', [])
+      })
+    end
+
+    def canonical_game_data(value)
+      case value
+      when Hash then value.each_with_object({}) { |(key, entry), result| result[key.to_s] = canonical_game_data(entry) unless %w[line_number raw].include?(key.to_s) }
+      when Array then value.map { |entry| canonical_game_data(entry) }
+      else value
+      end
+    end
+    private :canonical_game_data
+
     def self.load(path, world_save_path: nil)
       save_document = world_save_path ? WorldSave.read(world_save_path) : nil
       new(JSON.parse(File.read(path)), world_save: save_document)
@@ -122,6 +139,7 @@ module BasicSharp
     end
 
     def meaning_profile
+      return WorldSave::MEANING_PROFILE_3 if @ir['meaning_profile'] == WorldSave::MEANING_PROFILE_3
       @ir['meaning_profile'] == WorldSave::MEANING_PROFILE_2 ? WorldSave::MEANING_PROFILE_2 : WorldSave::MEANING_PROFILE_1
     end
 
@@ -134,7 +152,7 @@ module BasicSharp
         'settled' => true,
         'things' => snapshot.map do |thing|
           saved = thing.except('damage')
-          saved['values'] = typed_save_values(saved.fetch('values')) if meaning_profile == WorldSave::MEANING_PROFILE_2
+          saved['values'] = typed_save_values(saved.fetch('values')) unless meaning_profile == WorldSave::MEANING_PROFILE_1
           saved
         end,
         'if_rules' => @ir.fetch('if_rules', []).each_with_index.map do |rule, index|
@@ -254,7 +272,7 @@ module BasicSharp
         'if_rules' => rules.length,
         'whole_number_values' => things.sum { |thing| thing.fetch('values').values.count { |value| value.is_a?(Integer) } }
       }
-      if meaning_profile == WorldSave::MEANING_PROFILE_2
+      unless meaning_profile == WorldSave::MEANING_PROFILE_1
         summary['text_values'] = things.sum { |thing| thing.fetch('values').values.count { |value| value.is_a?(String) } }
       end
       summary
@@ -354,7 +372,50 @@ module BasicSharp
       lines.join("\n")
     end
 
+    def execute_context_action(action, object_name)
+      name = normalize(object_name)
+      thing = @objects[name]
+      raise ArgumentError, "Context action object '#{name}' is not defined" unless thing
+
+      word = replace_context_reference(stringify_keys(action), name, thing.fetch('kind'))
+      @save_ready = false
+      action_result = run_action_list([word], actor: 'player', context: {}, selections: [])
+      settlement = action_result['error'] ? { 'rules' => [], 'error' => nil, 'follow_ups' => [] } : settle_if_rules(cause: 'context')
+      error = action_result['error'] || settlement['error']
+      chain = error ? { 'events' => [], 'error' => nil } : drain_follow_up_events(action_result.fetch('follow_ups', []) + settlement.fetch('follow_ups', []))
+      error ||= chain['error']
+      @save_ready = error.nil?
+      {
+        'object' => name,
+        'ran' => action_result.fetch('steps').map { |step| step.fetch('word') },
+        'steps' => action_result.fetch('steps'),
+        'if_rules' => settlement.fetch('rules'),
+        'follow_up_events' => chain.fetch('events'),
+        'error' => error,
+        'state' => snapshot
+      }
+    end
+
     private
+
+    def replace_context_reference(value, object_name, object_kind)
+      case value
+      when Hash
+        if normalize(value['type']) == 'context_it'
+          return {
+            'type' => 'object', 'text' => object_name, 'name' => object_name,
+            'object_kind' => object_kind
+          }
+        end
+        value.each_with_object({}) do |(key, entry), result|
+          result[key] = replace_context_reference(entry, object_name, object_kind)
+        end
+      when Array
+        value.map { |entry| replace_context_reference(entry, object_name, object_kind) }
+      else
+        value
+      end
+    end
 
     def ask_plural_kind(kind)
       return "#{kind[0...-1]}ies" if kind.end_with?('y') && kind.length > 1
@@ -543,7 +604,7 @@ module BasicSharp
           raise WorldSaveError, "BSharp Save value name '#{name}' for #{thing_name} must be one plain word."
         end
         expected_type = expected_values.fetch(name).is_a?(String) ? 'text' : 'whole_number'
-        value = if save_version == WorldSave::FORMAT_VERSION_2
+        value = if [WorldSave::FORMAT_VERSION_2, WorldSave::FORMAT_VERSION_3].include?(save_version)
                   validate_typed_saved_value!(saved_value, name, thing_name, expected_type)
                 else
                   saved_value
@@ -586,7 +647,7 @@ module BasicSharp
     end
 
     def canonical_saved_condition(value, label)
-      return canonical_save_text(value, label) unless meaning_profile == WorldSave::MEANING_PROFILE_2
+      return canonical_save_text(value, label) if meaning_profile == WorldSave::MEANING_PROFILE_1
       raise WorldSaveError, "BSharp Save #{label} must be text." unless value.is_a?(String)
       raise WorldSaveError, "BSharp Save #{label} cannot be empty." if value.empty?
       value
@@ -636,16 +697,20 @@ module BasicSharp
       end
 
       profile = @ir['meaning_profile']
-      supported_profiles = [nil, '', WorldSave::MEANING_PROFILE_1, WorldSave::MEANING_PROFILE_2]
+      supported_profiles = [nil, '', WorldSave::MEANING_PROFILE_1, WorldSave::MEANING_PROFILE_2, WorldSave::MEANING_PROFILE_3]
       unless supported_profiles.include?(profile)
         raise ArgumentError, "BSharp IR meaning profile '#{profile}' is not supported"
       end
       text_used = ir_uses_text_values?
-      if text_used && profile != WorldSave::MEANING_PROFILE_2
-        raise ArgumentError, 'Creator-facing text values require bsharp.meaning.v2 in BSharp IR'
+      if text_used && ![WorldSave::MEANING_PROFILE_2, WorldSave::MEANING_PROFILE_3].include?(profile)
+        raise ArgumentError, 'Creator-facing text values require bsharp.meaning.v2 or bsharp.meaning.v3 in BSharp IR'
       end
       if profile == WorldSave::MEANING_PROFILE_2 && !text_used
         raise ArgumentError, 'bsharp.meaning.v2 requires at least one creator-facing text value'
+      end
+      game_used = Array(@ir['controls']).any? || Array(@ir['hover_declarations']).any? || Array(@ir['context_declarations']).any?
+      if profile == WorldSave::MEANING_PROFILE_3 && !game_used
+        raise ArgumentError, 'bsharp.meaning.v3 requires game input or interaction meaning'
       end
 
       raise ArgumentError, 'BSharp IR contains errors and cannot run' if ir_errors.any?
@@ -782,9 +847,9 @@ module BasicSharp
       when :action
         nil
       when :event
-        raise ArgumentError, "'every #{kind}' can be used as an action target after <then>.\n\nWHEN still describes one event Thing."
+        raise ArgumentError, "'every #{kind}' can be used as an action target after |then.\n\nWHEN still describes one event Thing."
       when :start
-        raise ArgumentError, "'every #{kind}' can be used as an action target after <then>.\n\nSTART still describes one Thing at a time."
+        raise ArgumentError, "'every #{kind}' can be used as an action target after |then.\n\nSTART still describes one Thing at a time."
       when :condition
         raise ArgumentError, "'every #{kind}' is not yet supported inside an IF condition.\n\nBASIC# would need to know whether you mean every #{kind} or any #{kind}."
       end

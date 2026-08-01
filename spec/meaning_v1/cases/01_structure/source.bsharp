@@ -1,17 +1,25 @@
 KINDS
-[guard is a person].
+[
+    #guard is a #person
+].
 
 DEFINE
-[a guard named henry].
+[
+    @henry is a #guard
+].
 
 START
-[henry is calm].
+[
+    @henry is calm
+].
 
-WHEN
-[player attacks henry
-<than> (damage henry
-<then> (change henry to angry].
+WHEN PLAYER attacks @henry
+[
+    |then (damage @henry
+    |then (change @henry to angry
+].
 
-IF
-[henry is angry
-<then> (change player to angry].
+IF @henry is angry
+[
+    |then (change PLAYER to angry
+].

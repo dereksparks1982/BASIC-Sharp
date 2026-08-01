@@ -116,14 +116,17 @@ MANDATORY_TEXT = [
   'Bytecode Profile 2: bsharp.bytecode.v2',
   'Stable Meaning Profile 2: bsharp.meaning.v2',
   'Virtual machine: BSharp Virtual Machine',
-  'must not reconstruct BSIR or call the reference Ruby runtime'
+  'must not reconstruct BSIR or call the reference Ruby runtime',
+  'Protected BASIC# visual grammar',
+  '`PLAYER` for the built-in player',
+  '`CONTROLS`, `HOVER`, and `CONTEXT`'
 ].freeze
 
 files = Dir.glob(File.join(ROOT, 'docs/company_bible/*'), File::FNM_DOTMATCH).reject do |path|
   [File.join(ROOT, 'docs/company_bible/.'), File.join(ROOT, 'docs/company_bible/..')].include?(path)
 end
 raise "Expected one Company Bible file, found #{files.length}" unless files == [CANONICAL_FULL_PATH]
-puts 'BASIC# Company Bible Audit v0.1.32'
+puts 'BASIC# Company Bible Audit v0.1.35'
 puts 'Canonical file count: PASS'
 
 text = File.read(CANONICAL_FULL_PATH, encoding: 'UTF-8')

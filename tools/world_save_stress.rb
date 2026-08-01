@@ -31,53 +31,63 @@ def assert_pass(condition, label)
   puts "#{label}: PASS"
 end
 
-kind_lines = ['captain is a guard']
+kind_lines = ['#captain is a #guard']
 definition_lines = []
 start_lines = []
 DIRECT_GUARDS.times do |index|
   name = format('guard%03d', index)
-  definition_lines << "a guard named #{name}"
-  start_lines << "#{name} is calm"
-  start_lines << "#{name} has 10 health"
+  definition_lines << "@#{name} is a #guard"
+  start_lines << "@#{name} is calm"
+  start_lines << "@#{name} has 10 health"
 end
 CAPTAINS.times do |index|
   name = format('captain%03d', index)
-  definition_lines << "a captain named #{name}"
-  start_lines << "#{name} is calm"
-  start_lines << "#{name} has 10 health"
+  definition_lines << "@#{name} is a #captain"
+  start_lines << "@#{name} is calm"
+  start_lines << "@#{name} has 10 health"
 end
-definition_lines.concat(['a device named brass bell', 'a key named brass key', 'a table named oak table'])
-start_lines << 'brass key is on oak table'
+definition_lines.concat(['@brass bell is a #device', '@brass key is a #key', '@oak table is a #table'])
+start_lines << '@brass key is on @oak table'
 
 source = <<~BSHARP
   KINDS
-  [#{kind_lines.join("\n")}].
+  [
+      #{kind_lines.join("\n")}
+  ].
 
   DEFINE
-  [#{definition_lines.join("\n")}].
+  [
+      #{definition_lines.join("\n")}
+  ].
 
   START
-  [#{start_lines.join("\n")}].
+  [
+      #{start_lines.join("\n")}
+  ].
 
-  WHEN
-  [player sounds brass bell
-  <then> (damage every guard by 3
-  <then> (change health of every guard to 7
-  <then> (cause guard000 attacks player].
+  WHEN PLAYER sounds @brass bell
+  [
+      |then (damage every #guard by 3
+      |then (change health of every #guard to 7
+      |then (cause @guard000 attacks PLAYER
+  ].
 
-  IF
-  [guard000 has 3 damage
-  <then> (change guard000 to angry
-  <then> (cause captain000 sounds brass bell].
+  IF @guard000 has 3 damage
+  [
+      |then (change @guard000 to angry
+      |then (cause @captain000 sounds @brass bell
+  ].
 
-  WHEN
-  [guard000 attacks player
-  <then> (damage player
-  <then> (carry brass key].
+  WHEN @guard000 attacks PLAYER
+  [
+      |then (damage PLAYER
+      |then (carry @brass key
+  ].
 
-  WHEN
-  [captain000 sounds brass bell
-  <then> (damage player].
+  WHEN @captain000 sounds @brass bell
+  [
+      |then (damage PLAYER
+  ].
 BSHARP
 
 document = resolve(source)

@@ -59,7 +59,7 @@ class TestRuntimeTransition < Minitest::Test
     assert_instance_of BasicSharp::BytecodeLoader, machine.loader
     assert machine.loader.model.frozen?
     assert result.fetch('matched')
-    assert_includes machine.report(result), 'BSharp Virtual Machine v0.1.32'
+    assert_includes machine.report(result), 'BSharp Virtual Machine v0.1.35'
   end
 
   def test_bsir_defaults_to_preferred_bsharp_vm
@@ -68,7 +68,7 @@ class TestRuntimeTransition < Minitest::Test
 
     assert result.fetch('matched')
     assert_equal 1, machine.snapshot.find { |thing| thing['name'] == 'henry' }.fetch('damage')
-    assert_includes machine.report(result), 'BSharp Virtual Machine v0.1.32'
+    assert_includes machine.report(result), 'BSharp Virtual Machine v0.1.35'
   end
 
   def test_reference_runtime_requires_explicit_mode
@@ -78,7 +78,15 @@ class TestRuntimeTransition < Minitest::Test
     assert machine.reference?
     refute machine.preferred?
     assert_nil machine.loader
-    assert_includes machine.report(result), 'BASIC# Runtime v0.1.32'
+    assert_includes machine.report(result), 'BASIC# Runtime v0.1.35'
+  end
+
+  def test_standalone_runtime_transition_audit_uses_the_live_version
+    audit_source = File.read(File.join(ROOT, 'tools/runtime_transition.rb'))
+
+    assert_includes audit_source, 'BSharp Virtual Machine v#{BasicSharp::VERSION}'
+    assert_includes audit_source, 'BASIC# Runtime v#{BasicSharp::VERSION}'
+    refute_match(/(?:BSharp Virtual Machine|BASIC# Runtime) v0\.\d+\.\d+/, audit_source)
   end
 
   def test_default_path_does_not_construct_reference_runtime

@@ -272,6 +272,8 @@ first = BasicSharp::BytecodeLoader.read(File.join(ROOT, 'samples/first_room.bsbc
 second = BasicSharp::BytecodeLoader.read(File.join(ROOT, 'samples/first_room.bsbc'))
 assert_pass(first.model == second.model && !first.model.equal?(second.model), 'Repeated-load determinism')
 assert_pass(first.model.frozen? && first.model[:strings].all?(&:frozen?), 'Immutable trusted model')
+game_loader = BasicSharp::BytecodeLoader.read(File.join(ROOT, 'samples/demon_killer_controls.bsbc'))
+assert_pass(game_loader.model[:profile] == 'bsharp.bytecode.v3' && game_loader.model[:controls].length == 1, 'Profile 3 game sections')
 
 original = File.binread(File.join(ROOT, FIXTURE.fetch('source_artifact')))
 assert_pass(FIXTURE.fetch('malformed_case_count') == 41, 'Malformed fixture count')
@@ -294,9 +296,10 @@ end
   end
 end
 
-puts 'BSharp Bytecode Loader v0.1.32'
+puts 'BSharp Bytecode Loader v0.1.35'
 puts "Profile 1 sample artifacts: #{SAMPLES.length}"
 puts 'Profile 2 sample artifacts: 1'
+puts 'Profile 3 sample artifacts: 1'
 puts 'Valid Meaning Profile cases: 12'
 puts "Malformed fixture cases: #{FIXTURE.fetch('malformed_case_count')}"
 puts

@@ -26,30 +26,37 @@ end
 
 def stress_source
   definitions = []
-  DIRECT_GUARDS.times { |index| definitions << "a guard named guard #{index + 1}" }
-  CAPTAINS.times { |index| definitions << "a captain named captain #{index + 1}" }
-  UNRELATED_KEYS.times { |index| definitions << "a key named key #{index + 1}" }
-  definitions << 'a device named alarm bell'
+  DIRECT_GUARDS.times { |index| definitions << "@guard #{index + 1} is a #guard" }
+  CAPTAINS.times { |index| definitions << "@captain #{index + 1} is a #captain" }
+  UNRELATED_KEYS.times { |index| definitions << "@key #{index + 1} is a #key" }
+  definitions << '@alarm bell is a #device'
 
   <<~BS
     KINDS
-    [captain is a guard].
+    [
+        #captain is a #guard
+    ].
 
     DEFINE
-    [#{definitions.join("\n")}].
+    [
+        #{definitions.join("\n")}
+    ].
 
-    WHEN
-    [player sounds alarm bell
-    <then> (damage every guard].
+    WHEN PLAYER sounds @alarm bell
+    [
+        |then (damage every #guard
+    ].
 
-    WHEN
-    [player attacks a guard
-    <then> (damage every guard
-    <then> (change that guard to angry].
+    WHEN PLAYER attacks a #guard
+    [
+        |then (damage every #guard
+        |then (change it to angry
+    ].
 
-    WHEN
-    [player speaks alarm bell
-    <then> (damage every creature].
+    WHEN PLAYER speaks @alarm bell
+    [
+        |then (damage every #creature
+    ].
   BS
 end
 

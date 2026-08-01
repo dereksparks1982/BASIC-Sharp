@@ -30,53 +30,62 @@ end
 
 def chain_source
   definitions = [
-    'a device named master bell',
-    'a device named final alarm',
-    'a guard named henry'
+    '@master bell is a #device',
+    '@final alarm is a #device',
+    '@henry is a #guard'
   ]
-  DIRECT_EVENTS.times { |index| definitions << format('a device named bell %03d', index) }
-  NESTED_EVENTS.times { |index| definitions << format('a device named echo %03d', index) }
+  DIRECT_EVENTS.times { |index| definitions << format('@bell %03d is a #device', index) }
+  NESTED_EVENTS.times { |index| definitions << format('@echo %03d is a #device', index) }
 
-  root_actions = ['<then> (cause player speaks master bell']
-  DIRECT_EVENTS.times { |index| root_actions << format('<then> (cause player sounds bell %03d', index) }
-  root_actions << '<then> (change henry to angry'
+  root_actions = ['|then (cause PLAYER speaks @master bell']
+  DIRECT_EVENTS.times { |index| root_actions << format('|then (cause PLAYER sounds @bell %03d', index) }
+  root_actions << '|then (change @henry to angry'
 
   rules = []
   DIRECT_EVENTS.times do |index|
-    actions = ['<then> (damage player']
-    actions << format('<then> (cause player sounds echo %03d', index) if index < NESTED_EVENTS
+    actions = ['|then (damage PLAYER']
+    actions << format('|then (cause PLAYER sounds @echo %03d', index) if index < NESTED_EVENTS
     rules << <<~RULE
-      WHEN
-      [player sounds #{format('bell %03d', index)}
-      #{actions.join("\n")}].
+      WHEN PLAYER sounds @#{format('bell %03d', index)}
+      [
+          #{actions.join("\n")}
+      ].
     RULE
   end
   NESTED_EVENTS.times do |index|
     rules << <<~RULE
-      WHEN
-      [player sounds #{format('echo %03d', index)}
-      <then> (damage player by 2].
+      WHEN PLAYER sounds @#{format('echo %03d', index)}
+      [
+          |then (damage PLAYER by 2
+      ].
     RULE
   end
 
   <<~BSHARP
     DEFINE
-    [#{definitions.join("\n")}].
+    [
+        #{definitions.join("\n")}
+    ].
 
     START
-    [henry is calm].
+    [
+        @henry is calm
+    ].
 
-    WHEN
-    [player sounds master bell
-    #{root_actions.join("\n")}].
+    WHEN PLAYER sounds @master bell
+    [
+        #{root_actions.join("\n")}
+    ].
 
-    IF
-    [henry is angry
-    <then> (cause player sounds final alarm].
+    IF @henry is angry
+    [
+        |then (cause PLAYER sounds @final alarm
+    ].
 
-    WHEN
-    [player sounds final alarm
-    <then> (damage player by 3].
+    WHEN PLAYER sounds @final alarm
+    [
+        |then (damage PLAYER by 3
+    ].
 
     #{rules.join("\n")}
   BSHARP
@@ -85,26 +94,33 @@ end
 def loop_source
   <<~BSHARP
     DEFINE
-    [a device named master bell].
+    [
+        @master bell is a #device
+    ].
 
-    WHEN
-    [player sounds master bell
-    <then> (cause player sounds master bell].
+    WHEN PLAYER sounds @master bell
+    [
+        |then (cause PLAYER sounds @master bell
+    ].
   BSHARP
 end
 
 def context_source
   <<~BSHARP
     DEFINE
-    [a guard named henry].
+    [
+        @henry is a #guard
+    ].
 
-    WHEN
-    [player attacks a guard
-    <then> (cause that guard attacks player].
+    WHEN PLAYER attacks a #guard
+    [
+        |then (cause it attacks PLAYER
+    ].
 
-    WHEN
-    [a guard attacks player
-    <then> (damage player].
+    WHEN a #guard attacks PLAYER
+    [
+        |then (damage PLAYER
+    ].
   BSHARP
 end
 

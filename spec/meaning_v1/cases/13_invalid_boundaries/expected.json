@@ -3,27 +3,27 @@
   "compile": {
     "errors": [
       {
-        "message": "BASIC# does not have a WORLD Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF",
+        "message": "BASIC# does not have a WORLD Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF\n  CONTROLS\n  HOVER\n  CONTEXT",
         "severity": "error"
       },
       {
-        "message": "BASIC# does not have a STATES Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF",
+        "message": "BASIC# does not have a STATES Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF\n  CONTROLS\n  HOVER\n  CONTEXT",
         "severity": "error"
       },
       {
-        "message": "BASIC# does not have a RELATIONS Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF",
+        "message": "BASIC# does not have a RELATIONS Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF\n  CONTROLS\n  HOVER\n  CONTEXT",
         "severity": "error"
       },
       {
-        "message": "BASIC# does not have a ACTIONS Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF",
+        "message": "BASIC# does not have a ACTIONS Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF\n  CONTROLS\n  HOVER\n  CONTEXT",
         "severity": "error"
       },
       {
-        "message": "BASIC# does not have a WHILE Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF",
+        "message": "BASIC# does not have a WHILE Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF\n  CONTROLS\n  HOVER\n  CONTEXT",
         "severity": "error"
       },
       {
-        "message": "BASIC# does not have a OTHERWISE Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF",
+        "message": "BASIC# does not have a OTHERWISE Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF\n  CONTROLS\n  HOVER\n  CONTEXT",
         "severity": "error"
       },
       {

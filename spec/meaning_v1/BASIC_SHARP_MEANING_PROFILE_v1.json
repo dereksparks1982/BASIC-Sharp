@@ -89,7 +89,7 @@
       "title": "Singular that-Kind context",
       "source": "spec/meaning_v1/cases/06_that_context/source.bsharp",
       "expected": "spec/meaning_v1/cases/06_that_context/expected.json",
-      "expected_sha256": "1d31c63b494892b8ba79e3373f2a81497eb853eef8ef60646529ba330a200d9d",
+      "expected_sha256": "262bc2e6c68907e583165c2842db839e4caf7761f81bb5f8d68c09ca18ef9630",
       "events": [
         "player attacks mara"
       ],
@@ -147,7 +147,7 @@
       "title": "Follow-up-event order",
       "source": "spec/meaning_v1/cases/10_follow_up_order/source.bsharp",
       "expected": "spec/meaning_v1/cases/10_follow_up_order/expected.json",
-      "expected_sha256": "043d9088409c573dccce2dff01ba1e61e574293437a1c496f88e75b48b7732d9",
+      "expected_sha256": "3b4d0b03f2bb9d848cc15cd887ffd8d51ba0de8e87267a446030f4e4c88bfdf9",
       "events": [
         "player attacks henry"
       ],
@@ -194,7 +194,7 @@
       "title": "Invalid and unsupported language boundaries",
       "source": "spec/meaning_v1/cases/13_invalid_boundaries/source.bsharp",
       "expected": "spec/meaning_v1/cases/13_invalid_boundaries/expected.json",
-      "expected_sha256": "eb11cb303a34b17352c825c5faadc386d5e9c20955be07929286ae6b832e8494",
+      "expected_sha256": "be751623c9be3c1e96133f924c9b544325f4906a1b2dcf4fe7dde314a62ebf5f",
       "events": [
 
       ],

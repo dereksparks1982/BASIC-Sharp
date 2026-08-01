@@ -27,7 +27,7 @@ class TestCLIOutput < Minitest::Test
       assert_includes stdout, "wrote: #{out_path}"
       assert File.file?(out_path), 'expected --out to create the IR file'
       json = JSON.parse(File.read(out_path))
-      assert_equal '0.1.32', json.fetch('version')
+      assert_equal '0.1.35', json.fetch('version')
     end
   end
 
@@ -42,7 +42,7 @@ class TestCLIOutput < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BSharp Virtual Machine v0.1.32'
+    assert_includes stdout, 'BSharp Virtual Machine v0.1.35'
     assert_includes stdout, 'matched: yes'
     assert_includes stdout, 'what matched:'
     assert_includes stdout, 'player attacks ember'
@@ -93,7 +93,7 @@ class TestCLIOutput < Minitest::Test
       )
 
       assert status.success?, stderr
-      assert_includes stdout, 'BSharp Virtual Machine v0.1.32'
+      assert_includes stdout, 'BSharp Virtual Machine v0.1.35'
       assert_includes stdout, 'matched: yes'
       assert_includes stdout, 'what matched:'
       assert_includes stdout, 'player attacks a guard'
@@ -130,7 +130,7 @@ class TestCLIOutput < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BSharp Virtual Machine v0.1.32'
+    assert_includes stdout, 'BSharp Virtual Machine v0.1.35'
     assert_includes stdout, 'matched: yes'
     assert_includes stdout, 'what matched:'
     assert_includes stdout, 'player attacks a guard'
@@ -188,11 +188,14 @@ class TestCLIOutput < Minitest::Test
       source_path = File.join(dir, 'loop.bsharp')
       File.write(source_path, <<~BSHARP)
         DEFINE
-        [a device named brass bell].
+        [
+            @brass bell is a #device
+        ].
 
-        WHEN
-        [player sounds brass bell
-        <then> (cause player sounds brass bell].
+        WHEN PLAYER sounds @brass bell
+        [
+            |then (cause PLAYER sounds @brass bell
+        ].
       BSHARP
 
       stdout, stderr, status = Open3.capture3(
@@ -223,8 +226,8 @@ class TestCLIOutput < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BASIC# Runtime v0.1.32'
-    refute_includes stdout, 'BSharp Virtual Machine v0.1.32'
+    assert_includes stdout, 'BASIC# Runtime v0.1.35'
+    refute_includes stdout, 'BSharp Virtual Machine v0.1.35'
   end
 
   def test_shadow_parity_mode_reports_only_preferred_vm_result
@@ -239,8 +242,8 @@ class TestCLIOutput < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BSharp Virtual Machine v0.1.32'
-    refute_includes stdout, 'BASIC# Runtime v0.1.32'
+    assert_includes stdout, 'BSharp Virtual Machine v0.1.35'
+    refute_includes stdout, 'BASIC# Runtime v0.1.35'
     assert_includes stdout, 'cinder damage is now 1'
   end
 
@@ -289,7 +292,7 @@ class TestCLIOutput < Minitest::Test
     )
     assert status.success?, stderr
     assert_empty stderr
-    assert_includes stdout, 'BSharp Virtual Machine v0.1.32'
+    assert_includes stdout, 'BSharp Virtual Machine v0.1.35'
     assert_includes stdout, 'north gate title changed from "North  Gate!" to "OPEN — RubyVM!"'
     assert_includes stdout, 'north gate: kind=gate; title="OPEN — RubyVM!"'
   end

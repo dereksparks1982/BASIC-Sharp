@@ -1,10 +1,15 @@
 DEFINE
-[a door named north gate
-a device named brass bell].
+[
+    @north gate is a #door
+    @brass bell is a #device
+].
 
 START
-[north gate has "North Gate" title].
+[
+    @north gate has "North Gate" title
+].
 
-WHEN
-[player sounds brass bell
-<then> (change title of north gate to "North Gate — OPEN"].
+WHEN PLAYER sounds @brass bell
+[
+    |then (change title of @north gate to "North Gate — OPEN"
+].

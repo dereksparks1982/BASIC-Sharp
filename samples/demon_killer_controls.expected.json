@@ -1,0 +1,118 @@
+{
+  "commands": [
+    {
+      "command": "face_pointer",
+      "subject": "player",
+      "x": 12.0,
+      "y": -4.0
+    },
+    {
+      "command": "move",
+      "subject": "player",
+      "maximum_speed": 3,
+      "x": 0.707106781187,
+      "y": -0.707106781187,
+      "speed_scale": 1.0
+    },
+    {
+      "command": "move_toward_pointer",
+      "subject": "player",
+      "maximum_speed": 3,
+      "speed_scale": 0.4,
+      "x": 12.0,
+      "y": -4.0
+    },
+    {
+      "command": "open_context",
+      "object": "north gate"
+    }
+  ],
+  "hover": [
+    {
+      "field": "name",
+      "value": "north gate"
+    },
+    {
+      "field": "kind",
+      "value": "gate"
+    },
+    {
+      "field": "state",
+      "value": "closed"
+    },
+    {
+      "field": "description",
+      "value": "A heavy oak gate."
+    }
+  ],
+  "context_before": [
+    "Open",
+    "Examine"
+  ],
+  "open_result": {
+    "object": "north gate",
+    "ran": [
+      "(change north gate to open"
+    ],
+    "steps": [
+      {
+        "word": "(change north gate to open",
+        "change": "north gate is now open"
+      }
+    ],
+    "if_rules": [
+
+    ],
+    "follow_up_events": [
+
+    ],
+    "error": null,
+    "state": [
+      {
+        "name": "player",
+        "kind": "person",
+        "builtin": true,
+        "states": [
+
+        ],
+        "relations": {
+        },
+        "values": {
+          "damage": 0,
+          "speed": 3
+        }
+      },
+      {
+        "name": "north gate",
+        "kind": "gate",
+        "builtin": false,
+        "states": [
+          "open"
+        ],
+        "relations": {
+        },
+        "values": {
+          "damage": 0,
+          "description": "A heavy oak gate."
+        }
+      },
+      {
+        "name": "iron sword",
+        "kind": "weapon",
+        "builtin": false,
+        "states": [
+
+        ],
+        "relations": {
+        },
+        "values": {
+          "damage": 0
+        }
+      }
+    ]
+  },
+  "context_after": [
+    "Close",
+    "Examine"
+  ]
+}

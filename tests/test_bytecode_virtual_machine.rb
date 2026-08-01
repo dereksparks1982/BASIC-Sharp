@@ -110,24 +110,31 @@ class TestBytecodeVirtualMachine < Minitest::Test
   def test_exact_and_inherited_event_priority_match
     source = <<~BSHARP
       KINDS
-      [creature is a thing
-      dragon is a creature
-      wyrm is a dragon].
+      [
+          #creature is a #thing
+          #dragon is a #creature
+          #wyrm is a #dragon
+      ].
 
       DEFINE
-      [a wyrm named ember].
+      [
+          @ember is a #wyrm
+      ].
 
-      WHEN
-      [player attacks a creature
-      <then> (damage that creature].
+      WHEN PLAYER attacks a #creature
+      [
+          |then (damage it
+      ].
 
-      WHEN
-      [player attacks a dragon
-      <then> (damage that dragon by 2].
+      WHEN PLAYER attacks a #dragon
+      [
+          |then (damage it by 2
+      ].
 
-      WHEN
-      [player attacks ember
-      <then> (damage ember by 4].
+      WHEN PLAYER attacks @ember
+      [
+          |then (damage @ember by 4
+      ].
     BSHARP
     runtime = BasicSharp::Runtime.new(resolve(source))
     vm = machine_for_source(source)
@@ -149,22 +156,29 @@ class TestBytecodeVirtualMachine < Minitest::Test
   def test_reactive_if_rearms_after_becoming_false
     source = <<~BSHARP
       DEFINE
-      [a creature named ember].
+      [
+          @ember is a #creature
+      ].
 
       START
-      [ember is calm].
+      [
+          @ember is calm
+      ].
 
-      WHEN
-      [player attacks ember
-      <then> (change ember to angry].
+      WHEN PLAYER attacks @ember
+      [
+          |then (change @ember to angry
+      ].
 
-      WHEN
-      [player speaks ember
-      <then> (change ember to calm].
+      WHEN PLAYER speaks @ember
+      [
+          |then (change @ember to calm
+      ].
 
-      IF
-      [ember is angry
-      <then> (damage player].
+      IF @ember is angry
+      [
+          |then (damage PLAYER
+      ].
     BSHARP
     runtime = BasicSharp::Runtime.new(resolve(source))
     vm = machine_for_source(source)
@@ -187,16 +201,21 @@ class TestBytecodeVirtualMachine < Minitest::Test
   def test_missing_value_failure_is_atomic_for_every_kind
     source = <<~BSHARP
       DEFINE
-      [a guard named henry
-      a guard named mara
-      a device named bell].
+      [
+          @henry is a #guard
+          @mara is a #guard
+          @bell is a #device
+      ].
 
       START
-      [henry has 10 health].
+      [
+          @henry has 10 health
+      ].
 
-      WHEN
-      [player sounds bell
-      <then> (change health of every guard to 7].
+      WHEN PLAYER sounds @bell
+      [
+          |then (change health of every #guard to 7
+      ].
     BSHARP
     runtime = BasicSharp::Runtime.new(resolve(source))
     vm = machine_for_source(source)

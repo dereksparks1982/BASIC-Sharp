@@ -93,7 +93,7 @@ assert!(hash_json(single_answers) == expected.fetch('ask_answers_sha256'), 'ASK 
 single_save = BasicSharp::WorldSave.document_for(single)
 assert!(hash_json(single_save) == expected.fetch('save_document_sha256'), 'Save fixture hash')
 
-puts 'BASIC# Creator-Facing Text Value Stress v0.1.32'
+puts "BASIC# Creator-Facing Text Value Stress v#{BasicSharp::VERSION}"
 puts "Events per runtime path: #{EVENT_COUNT}"
 puts "Shadow-parity events: #{PARITY_COUNT}"
 puts "Typed Save restore cycles: #{RESTORE_COUNT}"

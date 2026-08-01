@@ -1,15 +1,21 @@
 KINDS
-[guard is a person].
+[
+    #guard is a #person
+].
 
 DEFINE
-[a guard named henry
- a guard named mara].
+[
+    @henry is a #guard
+    @mara is a #guard
+].
 
-WHEN
-[player attacks a guard
-<then> (damage that guard by 2
-<then> (cause that guard attacks player].
+WHEN PLAYER attacks a #guard
+[
+    |then (damage it by 2
+    |then (cause it attacks PLAYER
+].
 
-WHEN
-[a guard attacks player
-<then> (damage player].
+WHEN a #guard attacks PLAYER
+[
+    |then (damage PLAYER
+].

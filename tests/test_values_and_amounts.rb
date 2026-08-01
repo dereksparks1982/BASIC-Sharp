@@ -34,21 +34,33 @@ class TestValuesAndAmounts < Minitest::Test
   end
 
   def base_source(actions:, start_lines: ['henry has 10 health', 'mara has 10 health'])
+    actions = actions.map do |line|
+      line.gsub(/every guard/, 'every #guard')
+          .gsub(/\b(henry|mara|brass bell)\b/, '@\\1')
+    end
+    start_lines = start_lines.map { |line| line.gsub(/\b(henry|mara|brass bell)\b/, '@\\1') }
     <<~BS
       KINDS
-      [captain is a guard].
+      [
+          #captain is a #guard
+      ].
 
       DEFINE
-      [a guard named henry
-      a captain named mara
-      a device named brass bell].
+      [
+          @henry is a #guard
+          @mara is a #captain
+          @brass bell is a #device
+      ].
 
       START
-      [#{start_lines.join("\n")}].
+      [
+          #{start_lines.join("\n")}
+      ].
 
-      WHEN
-      [player sounds brass bell
-      #{actions.map { |action| "<then> #{action}" }.join("\n")}].
+      WHEN PLAYER sounds @brass bell
+      [
+          #{actions.map { |action| "|then #{action}" }.join("\n")}
+      ].
     BS
   end
 
@@ -152,23 +164,30 @@ class TestValuesAndAmounts < Minitest::Test
   def test_exact_value_if_wakes_stays_quiet_and_rearms
     source = <<~BS
       DEFINE
-      [a guard named henry
-      a device named brass bell].
+      [
+          @henry is a #guard
+          @brass bell is a #device
+      ].
 
       START
-      [henry has 0 courage].
+      [
+          @henry has 0 courage
+      ].
 
-      WHEN
-      [player sounds brass bell
-      <then> (change courage of henry to 3].
+      WHEN PLAYER sounds @brass bell
+      [
+          |then (change courage of @henry to 3
+      ].
 
-      WHEN
-      [player speaks brass bell
-      <then> (change courage of henry to 0].
+      WHEN PLAYER speaks @brass bell
+      [
+          |then (change courage of @henry to 0
+      ].
 
-      IF
-      [henry has 3 courage
-      <then> (damage player].
+      IF @henry has 3 courage
+      [
+          |then (damage PLAYER
+      ].
     BS
 
     machine = runtime(source)
@@ -187,20 +206,26 @@ class TestValuesAndAmounts < Minitest::Test
   def test_complete_when_body_finishes_before_exact_value_if_settles
     source = <<~BS
       DEFINE
-      [a guard named henry
-      a device named brass bell].
+      [
+          @henry is a #guard
+          @brass bell is a #device
+      ].
 
       START
-      [henry has 0 courage].
+      [
+          @henry has 0 courage
+      ].
 
-      WHEN
-      [player sounds brass bell
-      <then> (change courage of henry to 3
-      <then> (change courage of henry to 2].
+      WHEN PLAYER sounds @brass bell
+      [
+          |then (change courage of @henry to 3
+          |then (change courage of @henry to 2
+      ].
 
-      IF
-      [henry has 3 courage
-      <then> (damage player].
+      IF @henry has 3 courage
+      [
+          |then (damage PLAYER
+      ].
     BS
 
     result = runtime(source).run_event('player sounds brass bell')
@@ -235,10 +260,14 @@ class TestValuesAndAmounts < Minitest::Test
     cases.each do |amount, expected|
       source = <<~BS
         DEFINE
-        [a guard named henry].
+        [
+            @henry is a #guard
+        ].
 
         START
-        [henry has #{amount} health].
+        [
+            @henry has #{amount} @health
+        ].
       BS
       assert messages(source).any? { |message| message.include?(expected) }, "expected #{expected.inspect} for #{amount}"
     end
@@ -247,10 +276,14 @@ class TestValuesAndAmounts < Minitest::Test
   def test_value_name_must_be_one_plain_word
     source = <<~BS
       DEFINE
-      [a guard named henry].
+      [
+          @henry is a #guard
+      ].
 
       START
-      [henry has 10 hit points].
+      [
+          @henry has 10 hit points
+      ].
     BS
     assert messages(source).any? { |message| message.include?("Value must look like '10 health'") }
   end
@@ -258,11 +291,15 @@ class TestValuesAndAmounts < Minitest::Test
   def test_duplicate_starting_value_is_rejected
     source = <<~BS
       DEFINE
-      [a guard named henry].
+      [
+          @henry is a #guard
+      ].
 
       START
-      [henry has 10 health
-      henry has 20 health].
+      [
+          @henry has 10 health
+          @henry has 20 health
+      ].
     BS
     assert messages(source).any? { |message| message.include?('henry already has a starting health value') }
   end
@@ -270,10 +307,14 @@ class TestValuesAndAmounts < Minitest::Test
   def test_safe_maximum_is_accepted
     machine = runtime(<<~BS)
       DEFINE
-      [a guard named henry].
+      [
+          @henry is a #guard
+      ].
 
       START
-      [henry has #{MAX} score].
+      [
+          @henry has #{MAX} score
+      ].
     BS
     assert_equal MAX, thing(machine.snapshot, 'henry').fetch('values').fetch('score')
   end

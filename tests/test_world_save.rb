@@ -50,7 +50,7 @@ class TestWorldSave < Minitest::Test
 
     assert_equal 'bsharp.save.json', document.fetch('format')
     assert_equal 1, document.fetch('format_version')
-    assert_equal '0.1.32', document.fetch('created_by_basic_sharp')
+    assert_equal '0.1.35', document.fetch('created_by_basic_sharp')
     assert_equal true, document.dig('world', 'settled')
     assert_equal %w[player henry mara brass\ bell brass\ key oak\ table], document.dig('world', 'things').map { |entry| entry.fetch('name') }
     assert_equal 10, document.dig('world', 'things', 1, 'values', 'health')
@@ -117,19 +117,25 @@ class TestWorldSave < Minitest::Test
   def test_start_if_and_startup_follow_up_events_do_not_rerun_on_restore
     source = <<~BSHARP
       DEFINE
-      [a device named brass bell].
+      [
+          @brass bell is a #device
+      ].
 
       START
-      [brass bell is on].
+      [
+          @brass bell is on
+      ].
 
-      IF
-      [brass bell is on
-      <then> (damage player
-      <then> (cause player sounds brass bell].
+      IF @brass bell is on
+      [
+          |then (damage PLAYER
+          |then (cause PLAYER sounds @brass bell
+      ].
 
-      WHEN
-      [player sounds brass bell
-      <then> (damage player].
+      WHEN PLAYER sounds @brass bell
+      [
+          |then (damage PLAYER
+      ].
     BSHARP
 
     original = runtime(source)
@@ -155,11 +161,14 @@ class TestWorldSave < Minitest::Test
   def test_save_is_refused_after_a_runtime_error
     source = <<~BSHARP
       DEFINE
-      [a guard named henry].
+      [
+          @henry is a #guard
+      ].
 
-      WHEN
-      [player attacks henry
-      <then> (change health of henry to 7].
+      WHEN PLAYER attacks @henry
+      [
+          |then (change health of @henry to 7
+      ].
     BSHARP
     machine = runtime(source)
     result = machine.run_event('player attacks henry')
@@ -171,11 +180,14 @@ class TestWorldSave < Minitest::Test
   def test_save_is_refused_after_the_follow_up_event_circuit_breaker
     source = <<~BSHARP
       DEFINE
-      [a device named brass bell].
+      [
+          @brass bell is a #device
+      ].
 
-      WHEN
-      [player sounds brass bell
-      <then> (cause player sounds brass bell].
+      WHEN PLAYER sounds @brass bell
+      [
+          |then (cause PLAYER sounds @brass bell
+      ].
     BSHARP
     machine = runtime(source)
     result = machine.run_event('player sounds brass bell')

@@ -14,11 +14,13 @@ module BasicSharp
   module MeaningProfile
     PROFILE = 'bsharp.meaning.v1'
     PROFILE_2 = 'bsharp.meaning.v2'
+    PROFILE_3 = 'bsharp.meaning.v3'
     MANIFEST_FORMAT = 'bsharp.meaning.conformance.json'
     MANIFEST_FORMAT_VERSION = 1
     EXPECTED_FORMAT = 'bsharp.meaning.case.json'
     EXPECTED_FORMAT_VERSION = 1
     MEANING_KEYS = %w[kinds objects facts events if_rules].freeze
+    MEANING_KEYS_3 = (MEANING_KEYS + %w[controls hover_declarations context_declarations]).freeze
     NON_MEANING_KEYS = %w[line_number raw].freeze
     FORBIDDEN_SERIALIZED_TERMS = %w[BasicSharp Struct ObjectSpace RubyVM].freeze
 
@@ -115,7 +117,8 @@ module BasicSharp
 
     def normalize_bsir(document)
       hash = stringify_keys(document.respond_to?(:to_h) ? document.to_h : document)
-      MEANING_KEYS.each_with_object({}) do |key, result|
+      keys = hash['meaning_profile'] == PROFILE_3 ? MEANING_KEYS_3 : MEANING_KEYS
+      keys.each_with_object({}) do |key, result|
         result[key] = canonicalize(hash.fetch(key, []))
       end
     end
@@ -170,11 +173,11 @@ module BasicSharp
       unless manifest.is_a?(Hash) && manifest['format'] == MANIFEST_FORMAT && manifest['format_version'] == MANIFEST_FORMAT_VERSION
         raise MeaningProfileError, 'Meaning conformance manifest format is not supported.'
       end
-      unless [PROFILE, PROFILE_2].include?(manifest['profile'])
-        raise MeaningProfileError, "Meaning conformance profile must be #{PROFILE} or #{PROFILE_2}."
+      unless [PROFILE, PROFILE_2, PROFILE_3].include?(manifest['profile'])
+        raise MeaningProfileError, "Meaning conformance profile must be #{PROFILE}, #{PROFILE_2}, or #{PROFILE_3}."
       end
       cases = manifest['cases']
-      expected_count = manifest['profile'] == PROFILE_2 ? 5 : 13
+      expected_count = manifest['profile'] == PROFILE_3 ? 9 : (manifest['profile'] == PROFILE_2 ? 5 : 13)
       unless cases.is_a?(Array) && cases.length == expected_count
         raise MeaningProfileError, "#{manifest['profile']} must contain exactly #{expected_count} conformance cases."
       end

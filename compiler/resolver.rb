@@ -28,15 +28,21 @@ module BasicSharp
       facts = program.facts.map { |fact| resolve_fact(fact) }
       events = program.event_rules.map { |rule| resolve_event_rule(rule) }
       if_rules = program.if_rules.map { |rule| resolve_if_rule(rule) }
+      controls = program.controls.map { |entry| resolve_controls(entry) }
+      hover_declarations = program.hover_declarations.map { |entry| resolve_hover(entry) }
+      context_declarations = program.context_declarations.map { |entry| resolve_context(entry) }
 
       IR::Document.new(
         version: VERSION,
-        meaning_profile: meaning_profile_for(facts, events, if_rules),
+        meaning_profile: meaning_profile_for(facts, events, if_rules, controls, hover_declarations, context_declarations),
         kinds: kinds,
         objects: objects,
         facts: facts,
         events: events,
         if_rules: if_rules,
+        controls: controls,
+        hover_declarations: hover_declarations,
+        context_declarations: context_declarations,
         diagnostics: clean_diagnostics(program.diagnostics + diagnostics.items)
       )
     end
@@ -103,7 +109,7 @@ module BasicSharp
             'relation' => 'has',
             'value_name' => value_name,
             'text_value' => fact.value.value,
-            'raw' => fact.to_h
+            'raw' => canonical_fact_raw(fact)
           }
         end
 
@@ -115,7 +121,7 @@ module BasicSharp
           'relation' => 'has',
           'value_name' => value_name,
           'amount' => amount,
-          'raw' => fact.to_h
+          'raw' => canonical_fact_raw(fact)
         }
       end
 
@@ -128,7 +134,7 @@ module BasicSharp
           'subject' => resolve_reference(fact.subject, fact.line_number, usage: :start),
           'relation' => relation,
           'target' => resolve_reference(target_text, fact.line_number, usage: :start),
-          'raw' => fact.to_h
+          'raw' => canonical_fact_raw(fact)
         }
       end
 
@@ -137,7 +143,7 @@ module BasicSharp
         'subject' => resolve_reference(fact.subject, fact.line_number, usage: :start),
         'relation' => fact.relation,
         'value' => resolve_state_or_phrase(value, fact.line_number),
-        'raw' => fact.to_h
+        'raw' => canonical_fact_raw(fact)
       }
     end
 
@@ -160,10 +166,11 @@ module BasicSharp
     def resolve_event_rule(rule)
       when_event = resolve_event(rule.event, rule.line_number)
       bound_kinds = event_bound_kinds(when_event)
+      established_objects = event_established_objects(when_event)
       {
         'line_number' => rule.line_number,
         'when' => when_event,
-        'then' => rule.actions.map { |action| resolve_action(action, bound_kinds: bound_kinds) }
+        'then' => rule.actions.map { |action| resolve_action(action, bound_kinds: bound_kinds, established_objects: established_objects) }
       }
     end
 
@@ -176,8 +183,68 @@ module BasicSharp
       }
     end
 
-    def resolve_event(text, line_number, usage: :event)
-      words = normalize_name(text).split
+    def resolve_controls(declaration)
+      {
+        'line_number' => declaration.line_number,
+        'subject' => resolve_reference(declaration.subject, declaration.line_number, usage: :control),
+        'instructions' => declaration.instructions
+      }
+    end
+
+    def resolve_hover(declaration)
+      {
+        'line_number' => declaration.line_number,
+        'subject' => resolve_declaration_subject(declaration.subject, declaration.line_number, 'HOVER'),
+        'fields' => declaration.fields
+      }
+    end
+
+    def resolve_context(declaration)
+      {
+        'line_number' => declaration.line_number,
+        'subject' => resolve_declaration_subject(declaration.subject, declaration.line_number, 'CONTEXT'),
+        'entries' => declaration.entries.map do |entry|
+          {
+            'line_number' => entry.line_number,
+            'label' => entry.label,
+            'condition' => resolve_context_condition(entry.condition, entry.line_number),
+            'action' => resolve_action(entry.action, bound_kinds: [], context_it_allowed: true)
+          }
+        end
+      }
+    end
+
+    def resolve_declaration_subject(text, line_number, label)
+      raw = text.to_s.strip
+      if raw.start_with?('#')
+        kind = normalize_name(raw[1..])
+        diagnostics.error(line_number, "#{label} uses unknown Kind '##{kind}'") unless dictionary.known_kind?(kind)
+        return reference('kind_declaration', raw, 'kind_name' => kind)
+      end
+      if raw.start_with?('@')
+        name = normalize_name(raw[1..])
+        diagnostics.error(line_number, "#{label} uses unknown object '@#{name}'") unless dictionary.known_object?(name)
+        return reference('object', raw, 'name' => name, 'object_kind' => dictionary.object_kind(name))
+      end
+      diagnostics.error(line_number, "#{label} must target a #Kind or @particular object")
+      reference('unknown', raw)
+    end
+
+    def resolve_context_condition(text, line_number)
+      return nil if text.nil? || text.empty?
+      if (match = text.match(/\Ait\s+(is|isnt)\s+(.+)\z/i))
+        return {
+          'subject' => reference('context_it', 'it'),
+          'relation' => match[1].downcase,
+          'value' => resolve_state_or_phrase(match[2], line_number)
+        }
+      end
+      diagnostics.error(line_number, "Context condition must look like 'it is closed'")
+      { 'subject' => reference('context_it', 'it'), 'relation' => nil, 'value' => nil }
+    end
+
+    def resolve_event(text, line_number, usage: :event, bound_kinds: [], established_objects: [], context_it_allowed: false)
+      words = text.to_s.strip.split
       verb_index = words.each_index.find do |index|
         index.positive? && dictionary.known_event_action?(normalize_verb(words[index]))
       end
@@ -191,26 +258,43 @@ module BasicSharp
       action = normalize_verb(words[verb_index])
       target_text = words[(verb_index + 1)..]&.join(' ') || ''
 
+      actor = resolve_reference(actor_text, line_number, usage: usage, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed)
+      target = target_text.empty? ? nil : resolve_reference(target_text, line_number, usage: usage, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed)
+      raw = semantic_text(text)
+      raw = raw.sub(/\Ait\b/, actor['text']) if normalize_name(actor_text) == 'it' && actor['type'] == 'previous'
+      raw = raw.sub(/\bit\z/, target['text']) if normalize_name(target_text) == 'it' && target && target['type'] == 'previous'
       {
-        'raw' => normalize_name(text),
-        'actor' => resolve_reference(actor_text, line_number, usage: usage),
+        'raw' => raw,
+        'actor' => actor,
         'action' => action,
-        'target' => target_text.empty? ? nil : resolve_reference(target_text, line_number, usage: usage)
+        'target' => target
       }
     end
 
-    def resolve_action(action, bound_kinds:)
+    def resolve_action(action, bound_kinds:, established_objects: [], context_it_allowed: false)
       verb = normalize_verb(action.verb)
       diagnostics.error(action.line_number, "unknown official word '(#{action.verb}'") unless dictionary.known_action?(action.verb)
 
-      return resolve_damage_action(action, verb) if verb == 'damage'
-      return resolve_change_action(action, verb) if verb == 'change'
-      return resolve_cause_action(action, bound_kinds: bound_kinds) if verb == 'cause'
+      return resolve_damage_action(action, verb, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed) if verb == 'damage'
+      return resolve_change_action(action, verb, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed) if verb == 'change'
+      return resolve_cause_action(
+        action,
+        bound_kinds: bound_kinds,
+        established_objects: established_objects,
+        context_it_allowed: context_it_allowed
+      ) if verb == 'cause'
 
       resolved = {
         'line_number' => action.line_number,
         'action' => verb,
-        'target' => action.target.to_s.empty? ? nil : resolve_reference(action.target, action.line_number, usage: :action_target)
+        'target' => action.target.to_s.empty? ? nil : resolve_reference(
+          action.target,
+          action.line_number,
+          usage: :action_target,
+          bound_kinds: bound_kinds,
+          established_objects: established_objects,
+          context_it_allowed: context_it_allowed
+        )
       }
 
       if (match = action.tail.to_s.match(/\Ato\s+(.+)\z/))
@@ -225,8 +309,8 @@ module BasicSharp
       resolved
     end
 
-    def resolve_cause_action(action, bound_kinds:)
-      event_text = normalize_name(action.target)
+    def resolve_cause_action(action, bound_kinds:, established_objects: [], context_it_allowed: false)
+      event_text = action.target.to_s.strip
       if event_text.empty?
         diagnostics.error(action.line_number, "Cause must name an event, such as '(cause henry attacks player'")
         return {
@@ -236,7 +320,14 @@ module BasicSharp
         }
       end
 
-      event = resolve_event(event_text, action.line_number, usage: nil)
+      event = resolve_event(
+        event_text,
+        action.line_number,
+        usage: nil,
+        bound_kinds: bound_kinds,
+        established_objects: established_objects,
+        context_it_allowed: context_it_allowed
+      )
       validate_caused_event_references(event, bound_kinds, action.line_number)
       {
         'line_number' => action.line_number,
@@ -252,6 +343,13 @@ module BasicSharp
       end.uniq
     end
 
+    def event_established_objects(event)
+      [event['actor'], event['target']].compact.filter_map do |reference|
+        name = normalize_name(reference['name']) if normalize_name(reference['type']) == 'object'
+        name unless name.nil? || name == 'player'
+      end.uniq
+    end
+
     def validate_caused_event_references(event, bound_kinds, line_number)
       [event['actor'], event['target']].compact.each do |reference|
         type = normalize_name(reference['type'])
@@ -259,6 +357,8 @@ module BasicSharp
         text = normalize_name(reference['text'])
 
         case type
+        when 'context_it'
+          next
         when 'previous'
           next if bound_kinds.include?(kind)
 
@@ -283,7 +383,7 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
       end
     end
 
-    def resolve_damage_action(action, verb)
+    def resolve_damage_action(action, verb, bound_kinds:, established_objects:, context_it_allowed:)
       amount = 1
       tail = normalize_name(action.tail)
       if (match = tail.match(/\Aby\s+(.+)\z/))
@@ -295,15 +395,22 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
       {
         'line_number' => action.line_number,
         'action' => verb,
-        'target' => action.target.to_s.empty? ? nil : resolve_reference(action.target, action.line_number, usage: :action_target),
+        'target' => action.target.to_s.empty? ? nil : resolve_reference(
+          action.target,
+          action.line_number,
+          usage: :action_target,
+          bound_kinds: bound_kinds,
+          established_objects: established_objects,
+          context_it_allowed: context_it_allowed
+        ),
         'amount' => amount
       }
     end
 
-    def resolve_change_action(action, verb)
-      target_text = normalize_name(action.target)
+    def resolve_change_action(action, verb, bound_kinds:, established_objects:, context_it_allowed:)
+      target_text = action.target.to_s.strip
       tail = normalize_name(action.tail)
-      numeric_target = target_text.match(/\A([a-z][a-z0-9]*)\s+of\s+(.+)\z/)
+      numeric_target = target_text.match(/\A([a-z][a-z0-9]*)\s+of\s+(.+)\z/i)
       numeric_amount = tail.match(/\Ato\s+(.+)\z/)
 
       if action.text_literal
@@ -313,13 +420,13 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
             'line_number' => action.line_number,
             'action' => verb,
             'value_name' => nil,
-            'target' => resolve_reference(target_text, action.line_number, usage: :action_target),
+            'target' => resolve_reference(target_text, action.line_number, usage: :action_target, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed),
             'to_text' => action.text_literal.value
           }
         end
 
         value_name = resolve_value_name(numeric_target[1], action.line_number)
-        target = resolve_reference(numeric_target[2], action.line_number, usage: :action_target)
+        target = resolve_reference(numeric_target[2], action.line_number, usage: :action_target, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed)
         validate_known_value_type(target, value_name, 'text', action.line_number, 'Text value change')
         return {
           'line_number' => action.line_number,
@@ -333,7 +440,7 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
       if numeric_target && numeric_amount
         value_name = resolve_value_name(numeric_target[1], action.line_number)
         to_amount = resolve_whole_number(numeric_amount[1], action.line_number, minimum: 0, purpose: 'exact value')
-        target = resolve_reference(numeric_target[2], action.line_number, usage: :action_target)
+        target = resolve_reference(numeric_target[2], action.line_number, usage: :action_target, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed)
         validate_known_value_type(target, value_name, 'whole_number', action.line_number, 'Whole-number value change')
         return {
           'line_number' => action.line_number,
@@ -347,7 +454,7 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
       resolved = {
         'line_number' => action.line_number,
         'action' => verb,
-        'target' => target_text.empty? ? nil : resolve_reference(target_text, action.line_number, usage: :action_target)
+        'target' => target_text.empty? ? nil : resolve_reference(target_text, action.line_number, usage: :action_target, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed)
       }
 
       if numeric_target && !numeric_amount
@@ -370,7 +477,7 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
           subject = resolve_reference(text_match[1], line_number, usage: :condition)
           validate_known_value_type(subject, value_name, 'text', line_number, 'IF text comparison')
           return {
-            'raw' => "#{normalize_name(text_match[1])} has #{literal.quoted} #{value_name}",
+            'raw' => "#{semantic_text(text_match[1])} has #{literal.quoted} #{value_name}",
             'subject' => subject,
             'relation' => 'has',
             'value_name' => value_name,
@@ -381,13 +488,13 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
         end
       end
 
-      normalized = normalize_name(supplied)
-      if (has_match = normalized.match(/\A(.+?)\s+has\s+(.+)\z/))
+      normalized = semantic_text(supplied)
+      if (has_match = supplied.match(/\A(.+?)\s+has\s+(.+)\z/i))
         amount, value_name = resolve_amount_and_value_name(has_match[2], line_number)
         subject = resolve_reference(has_match[1], line_number, usage: :condition)
         validate_known_value_type(subject, value_name, 'whole_number', line_number, 'IF whole-number comparison')
         return {
-          'raw' => normalized,
+          'raw' => semantic_text(supplied),
           'subject' => subject,
           'relation' => 'has',
           'value_name' => value_name,
@@ -395,18 +502,18 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
         }
       end
 
-      match = normalized.match(/\A(.+?)\s+(is|isnt)\s+(.+)\z/)
+      match = supplied.match(/\A(.+?)\s+(is|isnt)\s+(.+)\z/i)
       unless match
         diagnostics.error(line_number, "condition must look like 'subject is state' or 'subject has 3 damage'")
         return { 'raw' => normalized, 'subject' => nil, 'relation' => nil, 'value' => nil }
       end
 
       subject = match[1]
-      relation = match[2]
+      relation = match[2].downcase
       value = match[3]
       if (target_match = value.match(/\A(#{RELATIONAL_FACT_PREFIXES.join('|')})\s+(.+)\z/))
         return {
-          'raw' => normalized,
+          'raw' => semantic_text(supplied),
           'subject' => resolve_reference(subject, line_number, usage: :condition),
           'relation' => target_match[1],
           'target' => resolve_reference(target_match[2], line_number, usage: :condition)
@@ -414,7 +521,7 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
       end
 
       {
-        'raw' => normalized,
+        'raw' => semantic_text(supplied),
         'subject' => resolve_reference(subject, line_number, usage: :condition),
         'relation' => relation,
         'value' => resolve_state_or_phrase(value, line_number)
@@ -464,7 +571,10 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
       )
     end
 
-    def meaning_profile_for(facts, events, if_rules)
+    def meaning_profile_for(facts, events, if_rules, controls, hover_declarations, context_declarations)
+      game_used = !controls.empty? || !hover_declarations.empty? || !context_declarations.empty?
+      return 'bsharp.meaning.v3' if game_used
+
       text_used = facts.any? { |fact| fact.key?('text_value') } ||
                   events.any? { |event| event.fetch('then', []).any? { |action| action.key?('to_text') } } ||
                   if_rules.any? do |rule|
@@ -508,42 +618,90 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
       amount
     end
 
-    def resolve_reference(text, line_number, usage: nil)
-      original = normalize_name(text)
+    def resolve_reference(text, line_number, usage: nil, bound_kinds: [], established_objects: [], context_it_allowed: false)
+      shown = text.to_s.strip
+      original = normalize_name(shown)
       return reference('empty', original) if original.empty?
 
+      if shown == 'PLAYER'
+        return reference('object', 'player', 'name' => 'player', 'object_kind' => 'person')
+      elsif original == 'player'
+        diagnostics.error(line_number, 'The built-in human-controlled character must be written as PLAYER')
+        return reference('object', 'player', 'name' => 'player', 'object_kind' => 'person')
+      end
+
+      if original == 'it'
+        if context_it_allowed
+          return reference('context_it', 'it')
+        end
+        if established_objects.length == 1
+          name = established_objects.first
+          return reference('object', 'it', 'name' => name, 'object_kind' => dictionary.object_kind(name))
+        end
+        if bound_kinds.length == 1
+          return reference('previous', "that #{bound_kinds.first}", 'selector' => 'that', 'kind_name' => bound_kinds.first)
+        end
+        diagnostics.error(
+          line_number,
+          bound_kinds.empty? ?
+            "'it' has no single object established in this scene. Name the @object." :
+            "'it' could mean more than one object here. Name the intended @object."
+        )
+        return reference('unknown', 'it')
+      end
+
       if original.start_with?('that ')
-        kind = original.sub(/\Athat\s+/, '')
-        diagnostics.error(line_number, "unknown kind '#{kind}'") unless dictionary.known_kind?(kind)
-        return reference('previous', original, 'selector' => 'that', 'kind_name' => kind)
+        diagnostics.error(line_number, "The retired 'that #Kind' form no longer works. Use it after one object is established.")
+        kind = normalize_name(original.sub(/\Athat\s+#?/, ''))
+        return reference('previous', 'it', 'selector' => 'it', 'kind_name' => kind)
       end
 
-      if original.start_with?('every ')
-        kind = original.sub(/\Aevery\s+/, '')
-        diagnostics.error(line_number, "unknown kind '#{kind}'") unless dictionary.known_kind?(kind)
-        diagnose_kind_set_usage(original, line_number, usage)
-        return reference('kind_set', original, 'selector' => 'every', 'kind_name' => kind, 'candidates' => dictionary.objects_by_kind(kind))
+      if (match = shown.match(/\Aevery\s+#(.+)\z/i))
+        kind = normalize_name(match[1])
+        diagnostics.error(line_number, "unknown Kind '##{kind}'") unless dictionary.known_kind?(kind)
+        diagnose_kind_set_usage("every #{kind}", line_number, usage)
+        return reference('kind_set', "every #{kind}", 'selector' => 'every', 'kind_name' => kind, 'candidates' => dictionary.objects_by_kind(kind))
       end
 
-      if original.start_with?('a ')
-        kind = original.sub(/\Aa\s+/, '')
-        diagnostics.error(line_number, "unknown kind '#{kind}'") unless dictionary.known_kind?(kind)
+      if (match = shown.match(/\Aa[n]?\s+#(.+)\z/i))
+        kind = normalize_name(match[1])
+        diagnostics.error(line_number, "unknown Kind '##{kind}'") unless dictionary.known_kind?(kind)
         diagnose_unbound_single_action(kind, line_number) if usage == :action_target
-        return reference('kind_one', original, 'selector' => 'a', 'kind_name' => kind, 'candidates' => dictionary.objects_by_kind(kind))
+        return reference('kind_one', "a #{kind}", 'selector' => 'a', 'kind_name' => kind, 'candidates' => dictionary.objects_by_kind(kind))
       end
 
-      if original.start_with?('the ')
-        stripped = original.sub(/\Athe\s+/, '')
-        return resolve_definite_reference(original, stripped, line_number)
+      if (match = shown.match(/\Athe\s+#(.+)\z/i))
+        kind = normalize_name(match[1])
+        return resolve_definite_reference("the #{kind}", kind, line_number)
       end
 
-      return reference('object', original, 'name' => original, 'object_kind' => dictionary.object_kind(original)) if dictionary.known_object?(original)
-      if dictionary.known_kind?(original)
-        diagnose_unbound_single_action(original, line_number) if usage == :action_target
-        return reference('kind', original, 'kind_name' => original, 'candidates' => dictionary.objects_by_kind(original))
+      if shown.start_with?('@')
+        name = normalize_name(shown[1..])
+        unless dictionary.known_object?(name)
+          diagnostics.error(line_number, "unknown object '@#{name}'")
+          return reference('unknown', name)
+        end
+        return reference('object', name, 'name' => name, 'object_kind' => dictionary.object_kind(name))
       end
 
-      diagnostics.error(line_number, "unknown reference '#{original}': not a defined object and not a known kind")
+      if shown.start_with?('#')
+        kind = normalize_name(shown[1..])
+        diagnostics.error(line_number, "unknown Kind '##{kind}'") unless dictionary.known_kind?(kind)
+        diagnose_unbound_single_action(kind, line_number) if usage == :action_target
+        return reference('kind', kind, 'kind_name' => kind, 'candidates' => dictionary.objects_by_kind(kind))
+      end
+
+      if dictionary.known_object?(original)
+        diagnostics.error(line_number, "Particular object '#{original}' must be written as @#{original}")
+        return reference('object', original, 'name' => original, 'object_kind' => dictionary.object_kind(original))
+      end
+      if dictionary.known_kind?(original) || original.match?(/\A(?:a|an|the|every)\s+/)
+        diagnostics.error(line_number, "Kind reference '#{original}' must mark the Kind with #")
+        stripped = original.sub(/\A(?:a|an|the|every)\s+/, '')
+        return reference('kind', original, 'kind_name' => stripped, 'candidates' => dictionary.objects_by_kind(stripped))
+      end
+
+      diagnostics.error(line_number, "unknown reference '#{original}': not a defined @object and not a known #Kind")
       reference('unknown', original)
     end
 
@@ -553,12 +711,12 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
       when :event
         diagnostics.error(
           line_number,
-          "'#{original}' can be used as an action target after <then>.\n\nWHEN still describes one event Thing."
+          "'#{original}' can be used as an action target after |then.\n\nWHEN still describes one event Thing."
         )
       when :start
         diagnostics.error(
           line_number,
-          "'#{original}' can be used as an action target after <then>.\n\nSTART still describes one Thing at a time."
+          "'#{original}' can be used as an action target after |then.\n\nSTART still describes one Thing at a time."
         )
       when :condition
         diagnostics.error(
@@ -610,6 +768,21 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
 
     def normalize_name(value)
       value.to_s.strip.downcase.gsub(/\s+/, ' ')
+    end
+
+    def semantic_text(value)
+      value.to_s.gsub(/@(?=[A-Za-z])/, '').gsub(/#(?=[A-Za-z])/, '').gsub(/\bPLAYER\b/, 'player').strip.downcase.gsub(/\s+/, ' ')
+    end
+
+    def canonical_fact_raw(fact)
+      result = {
+        subject: semantic_text(fact.subject),
+        relation: fact.relation,
+        value: fact.value.respond_to?(:to_h) ? fact.value.to_h : semantic_text(fact.value),
+        line_number: fact.line_number
+      }
+      result[:value_name] = fact.value_name if fact.value_name
+      result
     end
 
     def normalize_verb(value)

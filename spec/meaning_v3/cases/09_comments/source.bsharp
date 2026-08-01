@@ -1,0 +1,7 @@
+//This comment spans
+more than one line./.
+CONTROLS for PLAYER
+[
+    W moves PLAYER north //This period is punctuation./.
+    PLAYER faces mouse pointer
+].

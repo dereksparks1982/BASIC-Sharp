@@ -1,0 +1,7 @@
+CONTROLS for PLAYER
+[
+    W moves PLAYER north
+    S moves PLAYER south
+    A moves PLAYER west
+    D moves PLAYER east
+].

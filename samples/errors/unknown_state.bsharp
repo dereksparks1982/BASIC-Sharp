@@ -1,5 +1,9 @@
 DEFINE
-[a guard named henry].
+[
+    @henry is a #guard
+].
 
 START
-[henry is sleepy].
+[
+    @henry is sleepy
+].

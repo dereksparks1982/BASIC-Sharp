@@ -260,6 +260,19 @@ class TestBytecodeEmitter < Minitest::Test
     assert_equal File.binread(File.join(ROOT, 'samples/first_room.bsbc')), profile_1.binary
   end
 
+  def test_profile_reader_reports_every_selected_bytecode_profile
+    profile_1 = BasicSharp::BytecodeEmitter.new(source_document('first_room'))
+    profile_2 = BasicSharp::BytecodeEmitter.new(source_document('text_values'))
+    profile_3 = BasicSharp::BytecodeEmitter.new(source_document('demon_killer_controls'))
+
+    assert_equal 'bsharp.bytecode.v1', profile_1.profile
+    assert_equal profile_1.model.fetch(:profile), profile_1.profile
+    assert_equal 'bsharp.bytecode.v2', profile_2.profile
+    assert_equal profile_2.model.fetch(:profile), profile_2.profile
+    assert_equal 'bsharp.bytecode.v3', profile_3.profile
+    assert_equal profile_3.model.fetch(:profile), profile_3.profile
+  end
+
   private
 
   def parse_directory(bytes)

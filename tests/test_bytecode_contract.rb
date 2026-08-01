@@ -8,6 +8,7 @@ class TestBytecodeContract < Minitest::Test
   ROOT = File.expand_path('..', __dir__)
   PROFILE_PATH = File.join(ROOT, 'spec/bytecode_v1/BASIC_SHARP_BYTECODE_PROFILE_v1.json')
   PROFILE_2_PATH = File.join(ROOT, 'spec/bytecode_v2/BASIC_SHARP_BYTECODE_PROFILE_v2.json')
+  PROFILE_3_PATH = File.join(ROOT, 'spec/bytecode_v3/BASIC_SHARP_BYTECODE_PROFILE_v3.json')
 
   def profile
     @profile ||= JSON.parse(File.read(PROFILE_PATH))
@@ -19,6 +20,9 @@ class TestBytecodeContract < Minitest::Test
 
   def test_profile_validates
     assert BasicSharp::BytecodeContract.validate_profile!(profile, root: ROOT)
+    profile_3 = JSON.parse(File.read(PROFILE_3_PATH))
+    assert BasicSharp::BytecodeContract.validate_profile!(profile_3, root: ROOT)
+    assert_equal %w[STRS META KIND THNG STRT EVNT IFRL CTRL HOVR CTXT CODE], profile_3.dig('container', 'section_order')
   end
 
   def test_artifact_identity_is_exact

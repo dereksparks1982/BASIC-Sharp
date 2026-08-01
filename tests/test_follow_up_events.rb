@@ -32,51 +32,64 @@ class TestFollowUpEvents < Minitest::Test
   def chain_source
     <<~BSHARP
       DEFINE
-      [a guard named henry
-      a guard named mara
-      a device named brass bell
-      a key named brass key].
+      [
+          @henry is a #guard
+          @mara is a #guard
+          @brass bell is a #device
+          @brass key is a #key
+      ].
 
       START
-      [henry is calm
-      mara is calm].
+      [
+          @henry is calm
+          @mara is calm
+      ].
 
-      WHEN
-      [player sounds brass bell
-      <then> (cause henry attacks player
-      <then> (change henry to angry
-      <then> (cause player takes brass key].
+      WHEN PLAYER sounds @brass bell
+      [
+          |then (cause @henry attacks PLAYER
+          |then (change @henry to angry
+          |then (cause PLAYER takes @brass key
+      ].
 
-      IF
-      [henry is angry
-      <then> (cause mara sounds brass bell].
+      IF @henry is angry
+      [
+          |then (cause @mara sounds @brass bell
+      ].
 
-      WHEN
-      [henry attacks player
-      <then> (cause henry sounds brass bell].
+      WHEN @henry attacks PLAYER
+      [
+          |then (cause @henry sounds @brass bell
+      ].
 
-      WHEN
-      [player takes brass key
-      <then> (damage player].
+      WHEN PLAYER takes @brass key
+      [
+          |then (damage PLAYER
+      ].
 
-      WHEN
-      [mara sounds brass bell
-      <then> (damage henry].
+      WHEN @mara sounds @brass bell
+      [
+          |then (damage @henry
+      ].
 
-      WHEN
-      [henry sounds brass bell
-      <then> (damage mara].
+      WHEN @henry sounds @brass bell
+      [
+          |then (damage @mara
+      ].
     BSHARP
   end
 
   def test_cause_compiles_to_an_explicit_event_template
     document = resolve(<<~BSHARP).to_h
       DEFINE
-      [a guard named henry].
+      [
+          @henry is a #guard
+      ].
 
-      WHEN
-      [player attacks a guard
-      <then> (cause that guard attacks player].
+      WHEN PLAYER attacks a #guard
+      [
+          |then (cause it attacks PLAYER
+      ].
     BSHARP
 
     assert_empty document.fetch(:diagnostics)
@@ -93,14 +106,17 @@ class TestFollowUpEvents < Minitest::Test
   def test_parser_preserves_to_and_by_inside_caused_event_names
     document = resolve(<<~BSHARP).to_h
       DEFINE
-      [a device named brass bell
-      a place named road to town
-      a guard named guard by river].
+      [
+          @brass bell is a #device
+          @road to town is a #place
+          @guard by river is a #guard
+      ].
 
-      WHEN
-      [player sounds brass bell
-      <then> (cause player takes road to town
-      <then> (cause player attacks guard by river].
+      WHEN PLAYER sounds @brass bell
+      [
+          |then (cause PLAYER takes @road to town
+          |then (cause PLAYER attacks @guard by river
+      ].
     BSHARP
 
     assert_empty document.fetch(:diagnostics)
@@ -114,20 +130,25 @@ class TestFollowUpEvents < Minitest::Test
   def test_that_kind_is_captured_before_the_follow_up_event_runs
     machine = runtime(<<~BSHARP)
       DEFINE
-      [a guard named henry].
+      [
+          @henry is a #guard
+      ].
 
-      WHEN
-      [player attacks a guard
-      <then> (damage that guard
-      <then> (cause that guard attacks player].
+      WHEN PLAYER attacks a #guard
+      [
+          |then (damage it
+          |then (cause it attacks PLAYER
+      ].
 
-      WHEN
-      [a guard attacks player
-      <then> (cause that guard sounds player].
+      WHEN a #guard attacks PLAYER
+      [
+          |then (cause it sounds PLAYER
+      ].
 
-      WHEN
-      [a guard sounds player
-      <then> (damage player].
+      WHEN a #guard sounds PLAYER
+      [
+          |then (damage PLAYER
+      ].
     BSHARP
 
     result = machine.run_event('player attacks henry')
@@ -165,17 +186,21 @@ class TestFollowUpEvents < Minitest::Test
   def test_unmatched_follow_up_does_not_stop_later_events
     machine = runtime(<<~BSHARP)
       DEFINE
-      [a guard named henry
-      a device named brass bell].
+      [
+          @henry is a #guard
+          @brass bell is a #device
+      ].
 
-      WHEN
-      [player attacks henry
-      <then> (cause player speaks henry
-      <then> (cause player sounds brass bell].
+      WHEN PLAYER attacks @henry
+      [
+          |then (cause PLAYER speaks @henry
+          |then (cause PLAYER sounds @brass bell
+      ].
 
-      WHEN
-      [player sounds brass bell
-      <then> (damage player].
+      WHEN PLAYER sounds @brass bell
+      [
+          |then (damage PLAYER
+      ].
     BSHARP
 
     result = machine.run_event('player attacks henry')
@@ -192,19 +217,23 @@ class TestFollowUpEvents < Minitest::Test
   def test_failed_body_discards_its_staged_follow_ups
     machine = runtime(<<~BSHARP)
       DEFINE
-      [a guard named henry
-      a guard named mara
-      a device named brass bell].
+      [
+          @henry is a #guard
+          @mara is a #guard
+          @brass bell is a #device
+      ].
 
-      WHEN
-      [player sounds brass bell
-      <then> (damage henry
-      <then> (cause henry attacks player
-      <then> (change health of mara to 7].
+      WHEN PLAYER sounds @brass bell
+      [
+          |then (damage @henry
+          |then (cause @henry attacks PLAYER
+          |then (change health of @mara to 7
+      ].
 
-      WHEN
-      [henry attacks player
-      <then> (damage player].
+      WHEN @henry attacks PLAYER
+      [
+          |then (damage PLAYER
+      ].
     BSHARP
 
     result = machine.run_event('player sounds brass bell')
@@ -221,26 +250,33 @@ class TestFollowUpEvents < Minitest::Test
   def test_if_settlement_failure_discards_direct_and_if_caused_events
     machine = runtime(<<~BSHARP)
       DEFINE
-      [a guard named henry
-      a guard named mara
-      a device named brass bell].
+      [
+          @henry is a #guard
+          @mara is a #guard
+          @brass bell is a #device
+      ].
 
       START
-      [henry is calm].
+      [
+          @henry is calm
+      ].
 
-      WHEN
-      [player sounds brass bell
-      <then> (cause henry attacks player
-      <then> (change henry to angry].
+      WHEN PLAYER sounds @brass bell
+      [
+          |then (cause @henry attacks PLAYER
+          |then (change @henry to angry
+      ].
 
-      IF
-      [henry is angry
-      <then> (cause mara sounds brass bell
-      <then> (change health of mara to 7].
+      IF @henry is angry
+      [
+          |then (cause @mara sounds @brass bell
+          |then (change health of @mara to 7
+      ].
 
-      WHEN
-      [henry attacks player
-      <then> (damage player].
+      WHEN @henry attacks PLAYER
+      [
+          |then (damage PLAYER
+      ].
     BSHARP
 
     result = machine.run_event('player sounds brass bell')
@@ -256,21 +292,26 @@ class TestFollowUpEvents < Minitest::Test
   def test_runtime_error_in_follow_up_stops_later_waiting_events
     document = resolve(<<~BSHARP).to_h
       DEFINE
-      [a guard named henry
-      a device named brass bell].
+      [
+          @henry is a #guard
+          @brass bell is a #device
+      ].
 
-      WHEN
-      [player attacks henry
-      <then> (cause henry attacks player
-      <then> (cause player sounds brass bell].
+      WHEN PLAYER attacks @henry
+      [
+          |then (cause @henry attacks PLAYER
+          |then (cause PLAYER sounds @brass bell
+      ].
 
-      WHEN
-      [henry attacks player
-      <then> (damage player].
+      WHEN @henry attacks PLAYER
+      [
+          |then (damage PLAYER
+      ].
 
-      WHEN
-      [player sounds brass bell
-      <then> (damage player].
+      WHEN PLAYER sounds @brass bell
+      [
+          |then (damage PLAYER
+      ].
     BSHARP
     bad_rule = document.fetch(:events).find { |rule| rule.dig('when', 'raw') == 'henry attacks player' }
     bad_rule.fetch('then').first['action'] = 'explode'
@@ -285,11 +326,14 @@ class TestFollowUpEvents < Minitest::Test
   def test_event_chain_stops_after_1024_follow_ups_and_report_is_bounded
     machine = runtime(<<~BSHARP)
       DEFINE
-      [a device named brass bell].
+      [
+          @brass bell is a #device
+      ].
 
-      WHEN
-      [player sounds brass bell
-      <then> (cause player sounds brass bell].
+      WHEN PLAYER sounds @brass bell
+      [
+          |then (cause PLAYER sounds @brass bell
+      ].
     BSHARP
 
     result = machine.run_event('player sounds brass bell')
@@ -308,16 +352,20 @@ class TestFollowUpEvents < Minitest::Test
   def test_damage_and_change_do_not_create_hidden_events
     machine = runtime(<<~BSHARP)
       DEFINE
-      [a guard named henry].
+      [
+          @henry is a #guard
+      ].
 
-      WHEN
-      [player attacks henry
-      <then> (damage henry
-      <then> (change henry to angry].
+      WHEN PLAYER attacks @henry
+      [
+          |then (damage @henry
+          |then (change @henry to angry
+      ].
 
-      WHEN
-      [henry sounds player
-      <then> (damage player].
+      WHEN @henry sounds PLAYER
+      [
+          |then (damage PLAYER
+      ].
     BSHARP
 
     result = machine.run_event('player attacks henry')
@@ -331,18 +379,24 @@ class TestFollowUpEvents < Minitest::Test
   def test_starting_if_can_cause_and_finish_a_follow_up_event
     machine = runtime(<<~BSHARP)
       DEFINE
-      [a device named brass bell].
+      [
+          @brass bell is a #device
+      ].
 
       START
-      [brass bell is on].
+      [
+          @brass bell is on
+      ].
 
-      IF
-      [brass bell is on
-      <then> (cause player sounds brass bell].
+      IF @brass bell is on
+      [
+          |then (cause PLAYER sounds @brass bell
+      ].
 
-      WHEN
-      [player sounds brass bell
-      <then> (damage player].
+      WHEN PLAYER sounds @brass bell
+      [
+          |then (damage PLAYER
+      ].
     BSHARP
 
     assert_equal ['player sounds brass bell'], machine.startup_follow_up_events.map { |entry| entry.fetch('event') }
@@ -378,15 +432,19 @@ class TestFollowUpEvents < Minitest::Test
   def test_plain_report_explains_follow_up_origin_and_actions
     machine = runtime(<<~BSHARP)
       DEFINE
-      [a guard named henry].
+      [
+          @henry is a #guard
+      ].
 
-      WHEN
-      [player attacks henry
-      <then> (cause henry attacks player].
+      WHEN PLAYER attacks @henry
+      [
+          |then (cause @henry attacks PLAYER
+      ].
 
-      WHEN
-      [henry attacks player
-      <then> (damage player].
+      WHEN @henry attacks PLAYER
+      [
+          |then (damage PLAYER
+      ].
     BSHARP
     report = machine.report(machine.run_event('player attacks henry'))
 
@@ -401,38 +459,50 @@ class TestFollowUpEvents < Minitest::Test
   def test_cause_requires_a_concrete_event_thing
     vague = resolve(<<~BSHARP)
       DEFINE
-      [a guard named henry].
-      WHEN
-      [player attacks henry
-      <then> (cause a guard attacks player].
+      [
+          @henry is a #guard
+      ].
+      WHEN PLAYER attacks @henry
+      [
+          |then (cause a #guard attacks PLAYER
+      ].
     BSHARP
     every = resolve(<<~BSHARP)
       DEFINE
-      [a guard named henry].
-      WHEN
-      [player attacks henry
-      <then> (cause every guard attacks player].
+      [
+          @henry is a #guard
+      ].
+      WHEN PLAYER attacks @henry
+      [
+          |then (cause every #guard attacks PLAYER
+      ].
     BSHARP
     unbound = resolve(<<~BSHARP)
       DEFINE
-      [a guard named henry].
-      WHEN
-      [player attacks henry
-      <then> (cause that guard attacks player].
+      [
+          @henry is a #guard
+      ].
+      WHEN PLAYER speaks
+      [
+          |then (cause it attacks PLAYER
+      ].
     BSHARP
 
     assert_includes vague.diagnostics.map(&:message).join("\n"), 'cannot choose one guard for this caused event'
     assert_includes every.diagnostics.map(&:message).join("\n"), "'every guard' cannot be used inside (cause yet"
-    assert_includes unbound.diagnostics.map(&:message).join("\n"), "'that guard' has no selected guard here"
+    assert_includes unbound.diagnostics.map(&:message).join("\n"), "'it' has no single object established in this scene"
   end
 
   def test_runtime_rejects_malformed_saved_cause_entry
     document = resolve(<<~BSHARP).to_h
       DEFINE
-      [a guard named henry].
-      WHEN
-      [player attacks henry
-      <then> (cause henry attacks player].
+      [
+          @henry is a #guard
+      ].
+      WHEN PLAYER attacks @henry
+      [
+          |then (cause @henry attacks PLAYER
+      ].
     BSHARP
     document.fetch(:events).first.fetch('then').first.delete('event')
 
@@ -443,12 +513,15 @@ class TestFollowUpEvents < Minitest::Test
   def test_cause_is_an_official_word_not_an_event_word
     document = resolve(<<~BSHARP)
       DEFINE
-      [a device named brass bell].
-      WHEN
-      [player causes brass bell
-      <then> (damage player].
+      [
+          @brass bell is a #device
+      ].
+      WHEN PLAYER causes @brass bell
+      [
+          |then (damage PLAYER
+      ].
     BSHARP
 
-    assert_includes document.diagnostics.map(&:message).join("\n"), "event does not contain a known event word: 'player causes brass bell'"
+    assert_includes document.diagnostics.map(&:message).join("\n"), "event does not contain a known event word: 'PLAYER causes @brass bell'"
   end
 end

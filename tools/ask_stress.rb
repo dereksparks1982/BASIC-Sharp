@@ -31,47 +31,56 @@ def resolve(source)
   document
 end
 
-kind_lines = ['captain is a guard']
+kind_lines = ['#captain is a #guard']
 definitions = []
 start_lines = []
 DIRECT_GUARDS.times do |index|
   name = format('guard%03d', index)
-  definitions << "a guard named #{name}"
-  start_lines << "#{name} is calm"
-  start_lines << "#{name} has 10 health"
+  definitions << "@#{name} is a #guard"
+  start_lines << "@#{name} is calm"
+  start_lines << "@#{name} has 10 health"
 end
 CAPTAINS.times do |index|
   name = format('captain%03d', index)
-  definitions << "a captain named #{name}"
-  start_lines << "#{name} is calm"
-  start_lines << "#{name} has 10 health"
+  definitions << "@#{name} is a #captain"
+  start_lines << "@#{name} is calm"
+  start_lines << "@#{name} has 10 health"
 end
-definitions.concat(['a device named brass bell', 'a key named brass key', 'a table named oak table'])
-start_lines << 'brass key is on oak table'
+definitions.concat(['@brass bell is a #device', '@brass key is a #key', '@oak table is a #table'])
+start_lines << '@brass key is on @oak table'
 
 source = <<~BSHARP
   KINDS
-  [#{kind_lines.join("\n")}].
+  [
+      #{kind_lines.join("\n")}
+  ].
 
   DEFINE
-  [#{definitions.join("\n")}].
+  [
+      #{definitions.join("\n")}
+  ].
 
   START
-  [#{start_lines.join("\n")}].
+  [
+      #{start_lines.join("\n")}
+  ].
 
-  WHEN
-  [player attacks a guard
-  <then> (damage that guard by 3
-  <then> (cause that guard attacks player
-  <then> (change that guard to angry].
+  WHEN PLAYER attacks a #guard
+  [
+      |then (damage it by 3
+      |then (cause it attacks PLAYER
+      |then (change it to angry
+  ].
 
-  WHEN
-  [a guard attacks player
-  <then> (damage player].
+  WHEN a #guard attacks PLAYER
+  [
+      |then (damage PLAYER
+  ].
 
-  IF
-  [guard000 has 3 damage
-  <then> (change captain000 to angry].
+  IF @guard000 has 3 damage
+  [
+      |then (change @captain000 to angry
+  ].
 BSHARP
 
 document = resolve(source)

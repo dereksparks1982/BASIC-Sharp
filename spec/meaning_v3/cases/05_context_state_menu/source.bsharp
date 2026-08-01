@@ -1,0 +1,13 @@
+DEFINE
+[
+    @north door is a #door
+].
+START
+[
+    @north door is closed
+].
+CONTEXT for #door
+[
+    "Open" when it is closed (change it to open
+    "Close" when it is open (change it to closed
+].

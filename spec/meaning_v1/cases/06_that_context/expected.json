@@ -139,7 +139,7 @@
         "follow_up_events": [
           {
             "caused_by": "(cause mara attacks player",
-            "caused_by_line": 11,
+            "caused_by_line": 15,
             "context": {
               "guard": "mara"
             },

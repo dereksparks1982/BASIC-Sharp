@@ -1,17 +1,25 @@
 KINDS
-[guard is a person].
+[
+    #guard is a #person
+].
 
 DEFINE
-[a guard named henry].
+[
+    @henry is a #guard
+].
 
 START
-[henry has 10 health].
+[
+    @henry has 10 health
+].
 
-WHEN
-[player attacks henry
-<then> (damage henry by 3
-<then> (change health of henry to 7].
+WHEN PLAYER attacks @henry
+[
+    |then (damage @henry by 3
+    |then (change health of @henry to 7
+].
 
-IF
-[henry has 3 damage
-<then> (change henry to angry].
+IF @henry has 3 damage
+[
+    |then (change @henry to angry
+].

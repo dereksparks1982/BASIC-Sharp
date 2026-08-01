@@ -107,18 +107,24 @@ raise 'failed restore mutated the existing VM world' unless recovery_vm.snapshot
 
 if_loop_source = <<~BSHARP
   DEFINE
-  [a creature named ember].
+  [
+      @ember is a #creature
+  ].
 
   START
-  [ember is calm].
+  [
+      @ember is calm
+  ].
 
-  IF
-  [ember is calm
-  <then> (change ember to angry].
+  IF @ember is calm
+  [
+      |then (change @ember to angry
+  ].
 
-  IF
-  [ember is angry
-  <then> (change ember to calm].
+  IF @ember is angry
+  [
+      |then (change @ember to calm
+  ].
 BSHARP
 parser = BasicSharp::Parser.new(if_loop_source)
 resolved = BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve
@@ -128,11 +134,14 @@ raise 'IF loop guard did not stop the VM' unless if_loop_vm.startup_if_error.to_
 
 event_loop_source = <<~BSHARP
   DEFINE
-  [a device named brass bell].
+  [
+      @brass bell is a #device
+  ].
 
-  WHEN
-  [player sounds brass bell
-  <then> (cause player sounds brass bell].
+  WHEN PLAYER sounds @brass bell
+  [
+      |then (cause PLAYER sounds @brass bell
+  ].
 BSHARP
 parser = BasicSharp::Parser.new(event_loop_source)
 resolved = BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve

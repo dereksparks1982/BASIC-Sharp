@@ -1,0 +1,13 @@
+DEFINE
+[
+    @north door is a #door
+].
+START
+[
+    @north door is closed
+].
+CONTEXT for @north door
+[
+    "Open" (change it to open
+    "Examine" (cause PLAYER examines it
+].

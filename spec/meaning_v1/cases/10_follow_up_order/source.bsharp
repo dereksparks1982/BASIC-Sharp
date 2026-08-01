@@ -1,20 +1,27 @@
 KINDS
-[guard is a person].
+[
+    #guard is a #person
+].
 
 DEFINE
-[a guard named henry
- a guard named mara
- a device named brass bell].
+[
+    @henry is a #guard
+    @mara is a #guard
+    @brass bell is a #device
+].
 
-WHEN
-[player attacks henry
-<then> (cause henry attacks player
-<then> (cause mara sounds brass bell].
+WHEN PLAYER attacks @henry
+[
+    |then (cause @henry attacks PLAYER
+    |then (cause @mara sounds @brass bell
+].
 
-WHEN
-[henry attacks player
-<then> (damage player].
+WHEN @henry attacks PLAYER
+[
+    |then (damage PLAYER
+].
 
-WHEN
-[mara sounds brass bell
-<then> (change mara to angry].
+WHEN @mara sounds @brass bell
+[
+    |then (change @mara to angry
+].

@@ -1,6 +1,9 @@
 DEFINE
-[a guard named henry].
+[
+    @henry is a #guard
+].
 
-WHEN
-[player attacks henry
-<thne> (damage henry].
+WHEN PLAYER attacks @henry
+[
+    <thne> (damage @henry
+].

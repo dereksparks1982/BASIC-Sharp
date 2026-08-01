@@ -2,67 +2,76 @@
 
 ## Current candidate
 
-- **Accepted base:** v0.1.31 BSharp VM Preferred Runtime Transition and Shadow Parity Verification
-- **Accepted commit:** `e7126c1f7e1963a72abb367687bfa0483fb59b64`
-- **Accepted tag:** `v0.1.31`
+- **Accepted base:** v0.1.32 Meaning Profile 2 and BSharp Bytecode Profile 2
+- **Accepted commit:** `3566b02`
+- **Accepted tag:** `v0.1.32`
 - **Accepted branch:** `main`
-- **Candidate:** v0.1.32 Meaning Profile 2: Creator-Facing Text Values and BSharp Bytecode Profile 2
+- **Rejected builds:** v0.1.33 and v0.1.34; both rolled back automatically and neither was committed or tagged
+- **Candidate:** v0.1.35 Direct BSBC Runtime-Transition Validation Repair and Complete Profile 3 Re-Carry
 - **Project path:** `/home/dereksparks1982/DKLab/Projects/BASIC#`
-- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_32_MEANING_PROFILE_2_CREATOR_FACING_TEXT_VALUES_AND_BSHARP_BYTECODE_PROFILE_2_CHANGED_FILES_ONLY.zip`
+- **Project scope:** 107 modified paths, 76 added paths, 0 deleted paths, 183 total project paths
+- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_35_DIRECT_BSBC_RUNTIME_TRANSITION_VALIDATION_REPAIR_AND_COMPLETE_PROFILE_3_RE_CARRY_CHANGED_FILES_ONLY.zip`
 
 ## Canonical authority
 
 Read `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md` from beginning to end before every build.
 
-## v0.1.32 completed candidate work
+## v0.1.33 failure
 
-- Added creator-facing exact text values with straight double quotes, single-line UTF-8, and preserved case, punctuation, and spaces.
-- Carried typed text through AST, resolution, BSIR, deterministic fingerprints, reference runtime, preferred VM, ASK, typed Save/restore, and shadow parity.
-- Added Stable Meaning Profile 2 and conformance fixtures while retaining Profile 1 selection for programs that do not use text.
-- Added BSharp Bytecode Profile 2 with role-aware strings and `START_TEXT_VALUE`, `CHANGE_TEXT_VALUE`, and `TEXT_VALUE_EQUALS`.
-- Added complete Profile 2 emission, loading, validation, disassembly, VM execution, negative cases, deterministic fixtures, and stress coverage.
-- Preserved committed Profile 1 BSBC bytes, disassembly, fingerprints, and runtime meaning.
+Derek installed v0.1.33 from the exact accepted v0.1.32 base. Base checks, hashes, installation, Ruby syntax, JSON parsing, the complete suite, and thirteen focused lanes passed. The complete suite reported 368 runs and 7,686 assertions with zero failures, errors, or skips. `tools/bytecode_emitter.rb` then failed because `BasicSharp::BytecodeEmitter` stored Profile 3 internally but did not expose the public read-only `profile` method used by the tool. The installer restored the exact v0.1.32 state. v0.1.33 is rejected history, not a baseline.
 
-## Validation floor and environment
+## v0.1.34 failure
 
-The accepted v0.1.31 floor is:
+Derek installed v0.1.34 from the exact accepted v0.1.32 base. Git/base checks, all hashes, the exact 174-path installation, Ruby syntax, JSON parsing, the complete suite, and every focused lane through `tools/bytecode_vm_stress.rb` passed. The suite reported 369 runs and 7,692 assertions with zero failures, errors, or skips. `tools/runtime_transition.rb` then failed `Direct BSBC remains BSharp VM` because its validator still searched for a v0.1.32 banner while the candidate correctly reported v0.1.34. The direct `.bsbc` route itself remained the BSharp VM. The installer restored exact v0.1.32. v0.1.34 is rejected history, not a baseline.
+
+## v0.1.35 completed candidate work
+
+- Re-carried the entire owner-approved v0.1.33 visual grammar, comments, game controls, hover, context, Meaning Profile 3, Bytecode Profile 3, Save format 3, ASK, and runtime-parity work from accepted v0.1.32.
+- Preserved `PLAYER`, `#Kind`, `@object`, `(action`, `|then`, `//` … `/.`, and canonical `[` … `].` Bodies.
+- Preserved the public read-only `BasicSharp::BytecodeEmitter#profile` repair and Profile 1/2/3 regression coverage.
+- Preserved the corrected Profile 2 deterministic Save-document fixture chain.
+- Bound direct-BSBC and explicit reference-runtime banner validation to `BasicSharp::VERSION` instead of a retired numeric literal.
+- Added regression coverage that rejects hard-coded runtime banners and tightened direct `.bsbc` CLI coverage to require the exact active VM identity.
+- Preserved Profile 1 and Profile 2 BSBC and disassembly artifacts.
+- Preserved both rejected-build failures and rollbacks in handshakes, audits, session logs, validation records, roadmap, and this handoff.
+- Repaired streamed one-command installation and retained direct extracted-script execution.
+
+## Validation gate
+
+Native owner validation must report at least:
 
 ```text
-309 runs
-7,376 assertions
+370 runs
+7,698 assertions
 0 failures
 0 errors
 0 skips
+0 Ruby warnings or stderr
 ```
 
-Focused Profile 2 tests and deterministic stress lanes pass in the build environment. The available WebAssembly Ruby runtime cannot provide native `Open3`, atomic rename, or the exact installed extension set, so the final full-suite, warning-free count remains an owner-side installer gate on native Ruby. The package must not be accepted or committed unless that gate passes.
+Every established and Profile 3 focused tool must pass, including `tools/bytecode_emitter.rb` and the formerly failing `tools/runtime_transition.rb`. The installer must preserve every Profile 1/2 compatibility artifact, verify the exact manifest scope, and automatically restore v0.1.32 if any post-mutation check fails.
 
 ## Explicit exclusions
 
-No interpolation, concatenation, escape-sequence language, multiline text, `(speak ...)`, text event matching, arithmetic on text, editor work, IDE, engine bridge, self-hosting, licensing, monetization, optimizer, JIT, native machine code, or unrelated syntax.
+No syntax or meaning beyond the owner-approved v0.1.33 scope; no collision, physics, rendering, controller remapping, arithmetic, repetition, modules, editor, IDE, engine bridge, self-hosting, licensing, monetization, optimizer, JIT, or native machine code.
 
 ## Risks and controls
 
-- Literal contents never pass through identifier lowercasing.
-- Value schemas reject text/whole-number conflicts before execution or restore.
-- Profile 2 instructions are rejected under Profile 1 identity.
-- Role-aware string validation preserves literal text without weakening canonical identifiers.
-- Profile 1 artifact hashes and deterministic meaning remain regression gates.
-- Ruby/VM verification stops on the first semantic disagreement.
-- Save documents are typed and versioned; Profile 1 save validation remains accepted.
+- The repair is intentionally surgical: two version-bound banner checks plus direct regression coverage.
+- The entire rejected feature set is re-carried because v0.1.33 and v0.1.34 rolled back and cannot be used as a base.
+- The installer requires the exact accepted commit, tag, branch, clean tree, and base hashes before mutation.
+- Any native validation failure restores all replaced v0.1.32 files and removes all added candidate paths.
 
 ## Rollback
 
 ```text
-commit e7126c1f7e1963a72abb367687bfa0483fb59b64
-tag v0.1.31
+commit 3566b02
+tag v0.1.32
 ```
-
-The installer verifies the exact accepted base, applies only the approved paths, runs validation, and restores the pre-install state if a post-mutation gate fails.
 
 ## Continuation
 
-Derek installs and validates v0.1.32 before commit or tag. After acceptance, the next explicit discussion is a separate focused proposal for plain-English left/right platformer movement with creator-chosen speed. The compiler/runtime bridge should hide input polling, direction math, frame timing, velocity, collision movement, and engine calls. No movement syntax or behavior is part of v0.1.32, and exact words—including Derek's rough `PLAYER` and `<move>` ideas—remain owner decisions. The editor remains a staged long-term destination and is not part of v0.1.32.
+Derek installs and validates v0.1.35 before commit or tag. After acceptance, commit and tag v0.1.35, capture the accepted full project snapshot and current v0.1.35 handshake, then discuss the previously requested plain-English movement commands. No next feature begins before those acceptance steps.
 
 ## Accepted recent history
 
@@ -71,3 +80,6 @@ Derek installs and validates v0.1.32 before commit or tag. After acceptance, the
 - v0.1.26-v0.1.28 Bytecode Profile 1 architecture, emission, disassembly, loading, and validation.
 - v0.1.29-v0.1.30 first BSharp VM, parity, Save, ASK, and hardening.
 - v0.1.31 preferred BSharp VM runtime and shadow parity, `e7126c1`.
+- v0.1.32 creator-facing text values and Profile 2, `3566b02`.
+- v0.1.33 rejected after focused emitter validation; automatic rollback restored v0.1.32.
+- v0.1.34 rejected after version-stale runtime-transition validation; automatic rollback restored v0.1.32.

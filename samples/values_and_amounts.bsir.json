@@ -1,11 +1,11 @@
 {
-  "version": "0.1.32",
+  "version": "0.1.35",
   "format": "bsir.debug.json",
   "kinds": [
     {
       "name": "captain",
       "parent": "guard",
-      "line_number": 2
+      "line_number": 3
     }
   ],
   "objects": [
@@ -19,24 +19,24 @@
       "name": "henry",
       "kind": "guard",
       "builtin": false,
-      "line_number": 5
+      "line_number": 8
     },
     {
       "name": "mara",
       "kind": "captain",
       "builtin": false,
-      "line_number": 6
+      "line_number": 9
     },
     {
       "name": "brass bell",
       "kind": "device",
       "builtin": false,
-      "line_number": 7
+      "line_number": 10
     }
   ],
   "facts": [
     {
-      "line_number": 10,
+      "line_number": 15,
       "subject": {
         "type": "object",
         "text": "henry",
@@ -50,11 +50,11 @@
         "subject": "henry",
         "relation": "has",
         "value": "10 health",
-        "line_number": 10
+        "line_number": 15
       }
     },
     {
-      "line_number": 11,
+      "line_number": 16,
       "subject": {
         "type": "object",
         "text": "mara",
@@ -68,11 +68,11 @@
         "subject": "mara",
         "relation": "has",
         "value": "10 health",
-        "line_number": 11
+        "line_number": 16
       }
     },
     {
-      "line_number": 12,
+      "line_number": 17,
       "subject": {
         "type": "object",
         "text": "brass bell",
@@ -86,11 +86,11 @@
         "subject": "brass bell",
         "relation": "has",
         "value": "3 charges",
-        "line_number": 12
+        "line_number": 17
       }
     },
     {
-      "line_number": 13,
+      "line_number": 18,
       "subject": {
         "type": "object",
         "text": "henry",
@@ -106,11 +106,11 @@
         "subject": "henry",
         "relation": "is",
         "value": "calm",
-        "line_number": 13
+        "line_number": 18
       }
     },
     {
-      "line_number": 14,
+      "line_number": 19,
       "subject": {
         "type": "object",
         "text": "mara",
@@ -126,13 +126,13 @@
         "subject": "mara",
         "relation": "is",
         "value": "calm",
-        "line_number": 14
+        "line_number": 19
       }
     }
   ],
   "events": [
     {
-      "line_number": 16,
+      "line_number": 22,
       "when": {
         "raw": "player sounds brass bell",
         "actor": {
@@ -151,7 +151,7 @@
       },
       "then": [
         {
-          "line_number": 18,
+          "line_number": 24,
           "action": "damage",
           "target": {
             "type": "kind_set",
@@ -166,7 +166,7 @@
           "amount": 3
         },
         {
-          "line_number": 19,
+          "line_number": 25,
           "action": "change",
           "value_name": "health",
           "target": {
@@ -182,7 +182,7 @@
           "to_amount": 7
         },
         {
-          "line_number": 20,
+          "line_number": 26,
           "action": "change",
           "value_name": "charges",
           "target": {
@@ -198,7 +198,7 @@
   ],
   "if_rules": [
     {
-      "line_number": 22,
+      "line_number": 29,
       "if": {
         "raw": "henry has 3 damage",
         "subject": {
@@ -213,7 +213,7 @@
       },
       "then": [
         {
-          "line_number": 24,
+          "line_number": 31,
           "action": "change",
           "target": {
             "type": "object",
@@ -228,6 +228,15 @@
         }
       ]
     }
+  ],
+  "controls": [
+
+  ],
+  "hover_declarations": [
+
+  ],
+  "context_declarations": [
+
   ],
   "diagnostics": [
 

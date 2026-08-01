@@ -1,5 +1,9 @@
 DEFINE
-[a door named north gate].
+[
+    @north gate is a #door
+].
 
 START
-[north gate has "North  Gate — OPEN!" title].
+[
+    @north gate has "North  Gate — OPEN!" title
+].

@@ -1,0 +1,16 @@
+DEFINE
+[
+    @north door is a #door
+].
+START
+[
+    @north door is closed
+    @north door has "Oak door." description
+].
+HOVER for #door
+[
+    name
+    kind
+    state
+    description
+].

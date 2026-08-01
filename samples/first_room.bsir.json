@@ -1,21 +1,21 @@
 {
-  "version": "0.1.32",
+  "version": "0.1.35",
   "format": "bsir.debug.json",
   "kinds": [
     {
       "name": "creature",
       "parent": "thing",
-      "line_number": 2
+      "line_number": 3
     },
     {
       "name": "dragon",
       "parent": "creature",
-      "line_number": 3
+      "line_number": 4
     },
     {
       "name": "wyrm",
       "parent": "dragon",
-      "line_number": 4
+      "line_number": 5
     }
   ],
   "objects": [
@@ -29,42 +29,42 @@
       "name": "ember",
       "kind": "wyrm",
       "builtin": false,
-      "line_number": 7
+      "line_number": 10
     },
     {
       "name": "cinder",
       "kind": "wyrm",
       "builtin": false,
-      "line_number": 8
+      "line_number": 11
     },
     {
       "name": "north door",
       "kind": "door",
       "builtin": false,
-      "line_number": 9
+      "line_number": 12
     },
     {
       "name": "brass key",
       "kind": "key",
       "builtin": false,
-      "line_number": 10
+      "line_number": 13
     },
     {
       "name": "oak table",
       "kind": "table",
       "builtin": false,
-      "line_number": 11
+      "line_number": 14
     },
     {
       "name": "henry",
       "kind": "guard",
       "builtin": false,
-      "line_number": 12
+      "line_number": 15
     }
   ],
   "facts": [
     {
-      "line_number": 15,
+      "line_number": 20,
       "subject": {
         "type": "object",
         "text": "ember",
@@ -80,11 +80,11 @@
         "subject": "ember",
         "relation": "is",
         "value": "calm",
-        "line_number": 15
+        "line_number": 20
       }
     },
     {
-      "line_number": 16,
+      "line_number": 21,
       "subject": {
         "type": "object",
         "text": "cinder",
@@ -100,11 +100,11 @@
         "subject": "cinder",
         "relation": "is",
         "value": "calm",
-        "line_number": 16
+        "line_number": 21
       }
     },
     {
-      "line_number": 17,
+      "line_number": 22,
       "subject": {
         "type": "object",
         "text": "north door",
@@ -120,11 +120,11 @@
         "subject": "north door",
         "relation": "is",
         "value": "locked",
-        "line_number": 17
+        "line_number": 22
       }
     },
     {
-      "line_number": 18,
+      "line_number": 23,
       "subject": {
         "type": "object",
         "text": "brass key",
@@ -143,11 +143,11 @@
         "subject": "brass key",
         "relation": "is",
         "value": "on the table",
-        "line_number": 18
+        "line_number": 23
       }
     },
     {
-      "line_number": 19,
+      "line_number": 24,
       "subject": {
         "type": "object",
         "text": "henry",
@@ -163,13 +163,13 @@
         "subject": "henry",
         "relation": "is",
         "value": "calm",
-        "line_number": 19
+        "line_number": 24
       }
     }
   ],
   "events": [
     {
-      "line_number": 21,
+      "line_number": 27,
       "when": {
         "raw": "player takes brass key",
         "actor": {
@@ -188,7 +188,7 @@
       },
       "then": [
         {
-          "line_number": 23,
+          "line_number": 29,
           "action": "carry",
           "target": {
             "type": "object",
@@ -200,7 +200,7 @@
       ]
     },
     {
-      "line_number": 29,
+      "line_number": 37,
       "when": {
         "raw": "player attacks ember",
         "actor": {
@@ -219,7 +219,7 @@
       },
       "then": [
         {
-          "line_number": 31,
+          "line_number": 39,
           "action": "damage",
           "target": {
             "type": "object",
@@ -230,7 +230,7 @@
           "amount": 1
         },
         {
-          "line_number": 32,
+          "line_number": 40,
           "action": "change",
           "target": {
             "type": "object",
@@ -246,7 +246,7 @@
       ]
     },
     {
-      "line_number": 34,
+      "line_number": 43,
       "when": {
         "raw": "player attacks a creature",
         "actor": {
@@ -269,7 +269,7 @@
       },
       "then": [
         {
-          "line_number": 36,
+          "line_number": 45,
           "action": "damage",
           "target": {
             "type": "previous",
@@ -280,7 +280,7 @@
           "amount": 1
         },
         {
-          "line_number": 37,
+          "line_number": 46,
           "action": "change",
           "target": {
             "type": "previous",
@@ -296,7 +296,7 @@
       ]
     },
     {
-      "line_number": 39,
+      "line_number": 49,
       "when": {
         "raw": "player attacks a guard",
         "actor": {
@@ -318,7 +318,7 @@
       },
       "then": [
         {
-          "line_number": 41,
+          "line_number": 51,
           "action": "damage",
           "target": {
             "type": "previous",
@@ -329,7 +329,7 @@
           "amount": 1
         },
         {
-          "line_number": 42,
+          "line_number": 52,
           "action": "change",
           "target": {
             "type": "previous",
@@ -347,7 +347,7 @@
   ],
   "if_rules": [
     {
-      "line_number": 25,
+      "line_number": 32,
       "if": {
         "raw": "north door is locked",
         "subject": {
@@ -364,7 +364,7 @@
       },
       "then": [
         {
-          "line_number": 27,
+          "line_number": 34,
           "action": "unlock",
           "target": {
             "type": "object",
@@ -376,7 +376,7 @@
       ]
     },
     {
-      "line_number": 44,
+      "line_number": 55,
       "if": {
         "raw": "cinder is angry",
         "subject": {
@@ -393,7 +393,7 @@
       },
       "then": [
         {
-          "line_number": 46,
+          "line_number": 57,
           "action": "damage",
           "target": {
             "type": "object",
@@ -405,6 +405,15 @@
         }
       ]
     }
+  ],
+  "controls": [
+
+  ],
+  "hover_declarations": [
+
+  ],
+  "context_declarations": [
+
   ],
   "diagnostics": [
 

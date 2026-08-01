@@ -1,0 +1,299 @@
+{
+  "version": "0.1.35",
+  "format": "bsir.debug.json",
+  "kinds": [
+    {
+      "name": "gate",
+      "parent": "door",
+      "line_number": 5
+    }
+  ],
+  "objects": [
+    {
+      "name": "player",
+      "kind": "person",
+      "builtin": true,
+      "line_number": null
+    },
+    {
+      "name": "north gate",
+      "kind": "gate",
+      "builtin": false,
+      "line_number": 10
+    },
+    {
+      "name": "iron sword",
+      "kind": "weapon",
+      "builtin": false,
+      "line_number": 11
+    }
+  ],
+  "facts": [
+    {
+      "line_number": 16,
+      "subject": {
+        "type": "object",
+        "text": "player",
+        "name": "player",
+        "object_kind": "person"
+      },
+      "relation": "has",
+      "value_name": "speed",
+      "amount": 3,
+      "raw": {
+        "subject": "player",
+        "relation": "has",
+        "value": "3 speed",
+        "line_number": 16
+      }
+    },
+    {
+      "line_number": 17,
+      "subject": {
+        "type": "object",
+        "text": "north gate",
+        "name": "north gate",
+        "object_kind": "gate"
+      },
+      "relation": "is",
+      "value": {
+        "kind": "state",
+        "name": "closed"
+      },
+      "raw": {
+        "subject": "north gate",
+        "relation": "is",
+        "value": "closed",
+        "line_number": 17
+      }
+    },
+    {
+      "line_number": 18,
+      "subject": {
+        "type": "object",
+        "text": "north gate",
+        "name": "north gate",
+        "object_kind": "gate"
+      },
+      "relation": "has",
+      "value_name": "description",
+      "text_value": "A heavy oak gate.",
+      "raw": {
+        "subject": "north gate",
+        "relation": "has",
+        "value": {
+          "kind": "text",
+          "value": "A heavy oak gate."
+        },
+        "line_number": 18,
+        "value_name": "description"
+      }
+    }
+  ],
+  "events": [
+    {
+      "line_number": 46,
+      "when": {
+        "raw": "player opens north gate",
+        "actor": {
+          "type": "object",
+          "text": "player",
+          "name": "player",
+          "object_kind": "person"
+        },
+        "action": "open",
+        "target": {
+          "type": "object",
+          "text": "north gate",
+          "name": "north gate",
+          "object_kind": "gate"
+        }
+      },
+      "then": [
+        {
+          "line_number": 48,
+          "action": "change",
+          "target": {
+            "type": "object",
+            "text": "it",
+            "name": "north gate",
+            "object_kind": "gate"
+          },
+          "to": {
+            "kind": "state",
+            "name": "open"
+          }
+        }
+      ]
+    }
+  ],
+  "if_rules": [
+
+  ],
+  "controls": [
+    {
+      "line_number": 21,
+      "subject": {
+        "type": "object",
+        "text": "player",
+        "name": "player",
+        "object_kind": "person"
+      },
+      "instructions": [
+        {
+          "type": "key_move",
+          "key": "W",
+          "direction": "north",
+          "line_number": 23
+        },
+        {
+          "type": "key_move",
+          "key": "S",
+          "direction": "south",
+          "line_number": 24
+        },
+        {
+          "type": "key_move",
+          "key": "A",
+          "direction": "west",
+          "line_number": 25
+        },
+        {
+          "type": "key_move",
+          "key": "D",
+          "direction": "east",
+          "line_number": 26
+        },
+        {
+          "type": "face_pointer",
+          "line_number": 27
+        },
+        {
+          "type": "right_mouse_move",
+          "line_number": 28
+        }
+      ]
+    }
+  ],
+  "hover_declarations": [
+    {
+      "line_number": 31,
+      "subject": {
+        "type": "kind_declaration",
+        "text": "#door",
+        "kind_name": "door"
+      },
+      "fields": [
+        {
+          "name": "name",
+          "line_number": 33
+        },
+        {
+          "name": "kind",
+          "line_number": 34
+        },
+        {
+          "name": "state",
+          "line_number": 35
+        },
+        {
+          "name": "description",
+          "line_number": 36
+        }
+      ]
+    }
+  ],
+  "context_declarations": [
+    {
+      "line_number": 39,
+      "subject": {
+        "type": "kind_declaration",
+        "text": "#door",
+        "kind_name": "door"
+      },
+      "entries": [
+        {
+          "line_number": 41,
+          "label": "Open",
+          "condition": {
+            "subject": {
+              "type": "context_it",
+              "text": "it"
+            },
+            "relation": "is",
+            "value": {
+              "kind": "state",
+              "name": "closed"
+            }
+          },
+          "action": {
+            "line_number": 41,
+            "action": "change",
+            "target": {
+              "type": "context_it",
+              "text": "it"
+            },
+            "to": {
+              "kind": "state",
+              "name": "open"
+            }
+          }
+        },
+        {
+          "line_number": 42,
+          "label": "Close",
+          "condition": {
+            "subject": {
+              "type": "context_it",
+              "text": "it"
+            },
+            "relation": "is",
+            "value": {
+              "kind": "state",
+              "name": "open"
+            }
+          },
+          "action": {
+            "line_number": 42,
+            "action": "change",
+            "target": {
+              "type": "context_it",
+              "text": "it"
+            },
+            "to": {
+              "kind": "state",
+              "name": "closed"
+            }
+          }
+        },
+        {
+          "line_number": 43,
+          "label": "Examine",
+          "condition": null,
+          "action": {
+            "line_number": 43,
+            "action": "cause",
+            "event": {
+              "raw": "player examines it",
+              "actor": {
+                "type": "object",
+                "text": "player",
+                "name": "player",
+                "object_kind": "person"
+              },
+              "action": "examine",
+              "target": {
+                "type": "context_it",
+                "text": "it"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "diagnostics": [
+
+  ],
+  "meaning_profile": "bsharp.meaning.v3"
+}

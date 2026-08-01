@@ -41,40 +41,48 @@ def stress_source
   names = []
   DIRECT_GUARDS.times do |index|
     name = "guard #{index + 1}"
-    definitions << "a guard named #{name}"
+    definitions << "@#{name} is a #guard"
     names << name
   end
   CAPTAINS.times do |index|
     name = "captain #{index + 1}"
-    definitions << "a captain named #{name}"
+    definitions << "@#{name} is a #captain"
     names << name
   end
-  UNRELATED_KEYS.times { |index| definitions << "a key named key #{index + 1}" }
-  definitions << 'a device named alarm bell'
+  UNRELATED_KEYS.times { |index| definitions << "@key #{index + 1} is a #key" }
+  definitions << '@alarm bell is a #device'
 
   values = names.flat_map do |name|
-    ["#{name} has 100 health", "#{name} has 5 courage"]
+    ["@#{name} has 100 health", "@#{name} has 5 courage"]
   end
-  values << 'alarm bell has 0 signals'
+  values << '@alarm bell has 0 signals'
 
   <<~BS
     KINDS
-    [captain is a guard].
+    [
+        #captain is a #guard
+    ].
 
     DEFINE
-    [#{definitions.join("\n")}].
+    [
+        #{definitions.join("\n")}
+    ].
 
     START
-    [#{values.join("\n")}].
+    [
+        #{values.join("\n")}
+    ].
 
-    WHEN
-    [player sounds alarm bell
-    <then> (damage every guard by #{DAMAGE_AMOUNT}
-    <then> (change courage of every guard to 0].
+    WHEN PLAYER sounds @alarm bell
+    [
+        |then (damage every #guard by #{DAMAGE_AMOUNT}
+        |then (change courage of every #guard to 0
+    ].
 
-    IF
-    [guard 1 has 3 damage
-    <then> (change signals of alarm bell to 1].
+    IF @guard 1 has 3 damage
+    [
+        |then (change signals of @alarm bell to 1
+    ].
   BS
 end
 
@@ -130,16 +138,21 @@ Dir.mktmpdir do |dir|
 
   missing_source = <<~BS
     DEFINE
-    [a guard named henry
-    a guard named otto
-    a device named bell].
+    [
+        @henry is a #guard
+        @otto is a #guard
+        @bell is a #device
+    ].
 
     START
-    [henry has 10 health].
+    [
+        @henry has 10 health
+    ].
 
-    WHEN
-    [player sounds bell
-    <then> (change health of every guard to 7].
+    WHEN PLAYER sounds @bell
+    [
+        |then (change health of every #guard to 7
+    ].
   BS
   missing_machine = BasicSharp::Runtime.new(resolve(missing_source))
   missing_result = missing_machine.run_event('player sounds bell')
@@ -148,17 +161,22 @@ Dir.mktmpdir do |dir|
 
   overflow_source = <<~BS
     DEFINE
-    [a guard named henry
-    a guard named otto
-    a device named bell].
+    [
+        @henry is a #guard
+        @otto is a #guard
+        @bell is a #device
+    ].
 
     START
-    [henry has #{MAX - 5} damage
-    otto has 2 damage].
+    [
+        @henry has #{MAX - 5} damage
+        @otto has 2 damage
+    ].
 
-    WHEN
-    [player sounds bell
-    <then> (damage every guard by 10].
+    WHEN PLAYER sounds @bell
+    [
+        |then (damage every #guard by 10
+    ].
   BS
   overflow_machine = BasicSharp::Runtime.new(resolve(overflow_source))
   overflow_result = overflow_machine.run_event('player sounds bell')

@@ -47,10 +47,14 @@ class TestBodyStructureAndKinds < Minitest::Test
   def test_user_defined_kind_is_registered_before_define
     program = parse(<<~DKS)
       KINDS
-      [dragon is a creature].
+      [
+          #dragon is a #creature
+      ].
 
       DEFINE
-      [a dragon named ember].
+      [
+          @ember is a #dragon
+      ].
     DKS
 
     assert_equal ['dragon'], program.kind_definitions.map(&:name)
@@ -62,12 +66,16 @@ class TestBodyStructureAndKinds < Minitest::Test
   def test_existing_builtin_kind_can_receive_one_direct_parent
     program = parse(<<~DKS)
       KINDS
-      [creature is a thing
-      dragon is a creature
-      wyrm is a dragon].
+      [
+          #creature is a #thing
+          #dragon is a #creature
+          #wyrm is a #dragon
+      ].
 
       DEFINE
-      [a wyrm named ember].
+      [
+          @ember is a #wyrm
+      ].
     DKS
 
     assert_equal %w[creature dragon wyrm], program.kind_definitions.map(&:name)
@@ -78,8 +86,10 @@ class TestBodyStructureAndKinds < Minitest::Test
   def test_kind_can_have_only_one_direct_parent
     program = parse(<<~DKS)
       KINDS
-      [creature is a thing
-      creature is a place].
+      [
+          #creature is a #thing
+          #creature is a #place
+      ].
     DKS
 
     errors = program.diagnostics.select { |d| d.severity == 'error' }.map(&:message)
@@ -89,9 +99,11 @@ class TestBodyStructureAndKinds < Minitest::Test
   def test_kind_family_loop_is_rejected_with_the_loop_shown
     program = parse(<<~DKS)
       KINDS
-      [creature is a thing
-      dragon is a creature
-      thing is a dragon].
+      [
+          #creature is a #thing
+          #dragon is a #creature
+          #thing is a #dragon
+      ].
     DKS
 
     errors = program.diagnostics.select { |d| d.severity == 'error' }.map(&:message)
@@ -101,11 +113,14 @@ class TestBodyStructureAndKinds < Minitest::Test
   def test_than_is_accepted_as_then_result
     program = parse(<<~DKS)
       DEFINE
-      [a guard named henry].
+      [
+          @henry is a #guard
+      ].
 
-      WHEN
-      [player attacks henry
-      <than> (damage henry].
+      WHEN PLAYER attacks @henry
+      [
+          |then (damage @henry
+      ].
     DKS
 
     assert_equal ['damage'], program.event_rules.first.actions.map(&:verb)

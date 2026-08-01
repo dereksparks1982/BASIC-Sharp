@@ -13,11 +13,15 @@ module BasicSharp
     FORMAT = 'bsharp.save.json'
     FORMAT_VERSION = 1
     FORMAT_VERSION_2 = 2
+    FORMAT_VERSION_3 = 3
     FINGERPRINT_ALGORITHM = 'sha256-bsir-meaning-v1'
     FINGERPRINT_ALGORITHM_2 = 'sha256-bsir-meaning-v2'
+    FINGERPRINT_ALGORITHM_3 = 'sha256-bsir-meaning-v3'
     MEANING_PROFILE_1 = 'bsharp.meaning.v1'
     MEANING_PROFILE_2 = 'bsharp.meaning.v2'
+    MEANING_PROFILE_3 = 'bsharp.meaning.v3'
     MEANING_KEYS = %w[kinds objects facts events if_rules].freeze
+    MEANING_KEYS_3 = (MEANING_KEYS + %w[controls hover_declarations context_declarations]).freeze
 
     module_function
 
@@ -37,7 +41,8 @@ module BasicSharp
 
     def program_fingerprint(document)
       source = stringify_keys(document.respond_to?(:to_h) ? document.to_h : document)
-      meaning = MEANING_KEYS.each_with_object({}) do |key, result|
+      keys = source['meaning_profile'] == MEANING_PROFILE_3 ? MEANING_KEYS_3 : MEANING_KEYS
+      meaning = keys.each_with_object({}) do |key, result|
         result[key] = source.fetch(key, [])
       end
       Digest::SHA256.hexdigest(JSON.generate(canonicalize(meaning)))
@@ -47,10 +52,10 @@ module BasicSharp
       profile = runtime.respond_to?(:meaning_profile) ? runtime.meaning_profile : MEANING_PROFILE_1
       {
         'format' => FORMAT,
-        'format_version' => profile == MEANING_PROFILE_2 ? FORMAT_VERSION_2 : FORMAT_VERSION,
+        'format_version' => save_format_version(profile),
         'created_by_basic_sharp' => VERSION,
         'program_fingerprint' => {
-          'algorithm' => profile == MEANING_PROFILE_2 ? FINGERPRINT_ALGORITHM_2 : FINGERPRINT_ALGORITHM,
+          'algorithm' => fingerprint_algorithm(profile),
           'value' => runtime.program_fingerprint
         },
         'world' => runtime.world_save_state
@@ -73,7 +78,7 @@ module BasicSharp
         raise WorldSaveError, 'BSharp Save cannot load because this is not a BSharp Save file.'
       end
 
-      expected_version = meaning_profile == MEANING_PROFILE_2 ? FORMAT_VERSION_2 : FORMAT_VERSION
+      expected_version = save_format_version(meaning_profile)
       version = document['format_version']
       unless version == expected_version
         shown = version.nil? ? '(missing)' : version
@@ -81,7 +86,7 @@ module BasicSharp
       end
 
       fingerprint = document['program_fingerprint']
-      expected_algorithm = meaning_profile == MEANING_PROFILE_2 ? FINGERPRINT_ALGORITHM_2 : FINGERPRINT_ALGORITHM
+      expected_algorithm = fingerprint_algorithm(meaning_profile)
       unless fingerprint.is_a?(Hash) && fingerprint['algorithm'] == expected_algorithm && fingerprint['value'].is_a?(String)
         raise WorldSaveError, 'BSharp Save cannot load because its program fingerprint is missing or invalid.'
       end
@@ -129,7 +134,18 @@ module BasicSharp
 
     def meaning_profile(document)
       source = stringify_keys(document.respond_to?(:to_h) ? document.to_h : document)
+      return MEANING_PROFILE_3 if source['meaning_profile'] == MEANING_PROFILE_3
       source['meaning_profile'] == MEANING_PROFILE_2 ? MEANING_PROFILE_2 : MEANING_PROFILE_1
+    end
+
+    def save_format_version(profile)
+      return FORMAT_VERSION_3 if profile == MEANING_PROFILE_3
+      profile == MEANING_PROFILE_2 ? FORMAT_VERSION_2 : FORMAT_VERSION
+    end
+
+    def fingerprint_algorithm(profile)
+      return FINGERPRINT_ALGORITHM_3 if profile == MEANING_PROFILE_3
+      profile == MEANING_PROFILE_2 ? FINGERPRINT_ALGORITHM_2 : FINGERPRINT_ALGORITHM
     end
 
     def stringify_keys(value)

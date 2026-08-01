@@ -13,6 +13,9 @@ require_relative 'bytecode_emitter'
 require_relative 'bytecode_loader'
 require_relative 'bytecode_virtual_machine'
 require_relative 'runtime_transition'
+require_relative 'host_adapter'
+require_relative 'game_input'
+require_relative 'game_interaction'
 
 if ARGV.empty?
   warn 'Usage: ruby compiler/basic_sharp.rb source.bsharp [--json|--emit-ast|--emit-ir|--emit-bytecode] [--out path] [--run "event"]'

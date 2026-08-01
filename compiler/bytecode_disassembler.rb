@@ -7,7 +7,8 @@ module BasicSharp
       pair = [@model.fetch(:profile), @model.fetch(:meaning_profile)]
       supported = [
         [BytecodeContract::PROFILE, BytecodeContract::MEANING_PROFILE],
-        [BytecodeContract::PROFILE_2, BytecodeContract::MEANING_PROFILE_2]
+        [BytecodeContract::PROFILE_2, BytecodeContract::MEANING_PROFILE_2],
+        [BytecodeContract::PROFILE_3, BytecodeContract::MEANING_PROFILE_3]
       ]
       raise ArgumentError, 'BSharp Bytecode disassembly requires a supported profile pair.' unless supported.include?(pair)
     end
@@ -51,6 +52,8 @@ module BasicSharp
       end
       lines << '' unless @model.fetch(:if_rules).empty?
 
+      render_game_declarations(lines) if @model.fetch(:profile) == BytecodeContract::PROFILE_3
+
       @model.fetch(:blocks).each do |block|
         lines << "BLOCK #{block.fetch(:id)}"
         block.fetch(:instructions).each { |instruction| lines << "    #{render_instruction(instruction)}" }
@@ -62,6 +65,34 @@ module BasicSharp
     end
 
     private
+
+    def render_game_declarations(lines)
+      @model.fetch(:controls, []).each do |entry|
+        lines << "CONTROLS #{render_game_subject(entry.fetch(:subject))}"
+        entry.fetch(:instructions).each do |instruction|
+          details = instruction.keys.reject { |key| key == :type }.sort.map { |key| "#{key}=#{instruction[key]}" }
+          lines << "    #{instruction.fetch(:type).upcase} #{details.join(' ')}".rstrip
+        end
+        lines << 'END'
+      end
+      @model.fetch(:hover_declarations, []).each do |entry|
+        lines << "HOVER #{render_game_subject(entry.fetch(:subject))} #{entry.fetch(:fields).map { |field| field.fetch(:name) }.join(' ')}"
+      end
+      @model.fetch(:context_declarations, []).each do |entry|
+        lines << "CONTEXT #{render_game_subject(entry.fetch(:subject))}"
+        entry.fetch(:entries).each { |item| lines << "    ITEM #{item.fetch(:label).inspect}" }
+        lines << 'END'
+      end
+      lines << ''
+    end
+
+    def render_game_subject(subject)
+      case subject.fetch(:type)
+      when 'object' then "THING[#{subject.fetch(:name)}]"
+      when 'kind_declaration' then "KIND[#{subject.fetch(:kind_name)}]"
+      else subject.fetch(:type).upcase
+      end
+    end
 
     def render_instruction(instruction)
       name = instruction.fetch(:name)

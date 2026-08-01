@@ -98,15 +98,20 @@ class TestRuntime < Minitest::Test
   def test_kind_trigger_reports_wrong_kind
     machine = BasicSharp::Runtime.new(resolve(<<~DKS))
       KINDS
-      [dragon is a creature].
+      [
+          #dragon is a #creature
+      ].
 
       DEFINE
-      [a guard named henry
-      a dragon named ember].
+      [
+          @henry is a #guard
+          @ember is a #dragon
+      ].
 
-      WHEN
-      [player attacks a guard
-      <then> (damage that guard].
+      WHEN PLAYER attacks a #guard
+      [
+          |then (damage it
+      ].
     DKS
 
     result = machine.run_event('player attacks ember')
@@ -183,28 +188,36 @@ class TestRuntime < Minitest::Test
   def test_wyrm_matches_parent_grandparent_and_root_triggers
     source = <<~DKS
       KINDS
-      [creature is a thing
-      dragon is a creature
-      wyrm is a dragon].
+      [
+          #creature is a #thing
+          #dragon is a #creature
+          #wyrm is a #dragon
+      ].
 
       DEFINE
-      [a wyrm named ember].
+      [
+          @ember is a #wyrm
+      ].
 
-      WHEN
-      [player takes a wyrm
-      <then> (damage that wyrm].
+      WHEN PLAYER takes a #wyrm
+      [
+          |then (damage it
+      ].
 
-      WHEN
-      [player attacks a dragon
-      <then> (damage that dragon].
+      WHEN PLAYER attacks a #dragon
+      [
+          |then (damage it
+      ].
 
-      WHEN
-      [player speaks a creature
-      <then> (damage that creature].
+      WHEN PLAYER speaks a #creature
+      [
+          |then (damage it
+      ].
 
-      WHEN
-      [player gives a thing
-      <then> (damage that thing].
+      WHEN PLAYER gives a #thing
+      [
+          |then (damage it
+      ].
     DKS
     machine = BasicSharp::Runtime.new(resolve(source))
 
@@ -227,20 +240,26 @@ class TestRuntime < Minitest::Test
   def test_nearest_kind_trigger_wins_over_more_distant_ancestor
     machine = BasicSharp::Runtime.new(resolve(<<~DKS))
       KINDS
-      [creature is a thing
-      dragon is a creature
-      wyrm is a dragon].
+      [
+          #creature is a #thing
+          #dragon is a #creature
+          #wyrm is a #dragon
+      ].
 
       DEFINE
-      [a wyrm named ember].
+      [
+          @ember is a #wyrm
+      ].
 
-      WHEN
-      [player attacks a creature
-      <then> (change that creature to hostile].
+      WHEN PLAYER attacks a #creature
+      [
+          |then (change it to hostile
+      ].
 
-      WHEN
-      [player attacks a dragon
-      <then> (change that dragon to angry].
+      WHEN PLAYER attacks a #dragon
+      [
+          |then (change it to angry
+      ].
     DKS
 
     result = machine.run_event('player attacks ember')

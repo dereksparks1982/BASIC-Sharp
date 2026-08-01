@@ -21,38 +21,48 @@ class TestKindFamilyHardening < Minitest::Test
   def base_document
     resolve(<<~BASIC_SHARP).to_h
       DEFINE
-      [a guard named henry].
+      [
+          @henry is a #guard
+      ].
     BASIC_SHARP
   end
 
   def deep_family_source(depth: 256)
     kinds = (1..depth).map do |number|
       parent = number == 1 ? 'thing' : format('kind%03d', number - 1)
-      "#{format('kind%03d', number)} is a #{parent}"
+      "##{format('kind%03d', number)} is a ##{parent}"
     end
 
     <<~BASIC_SHARP
       KINDS
-      [#{kinds.join("\n")}].
+      [
+          #{kinds.join("\n")}
+      ].
 
       DEFINE
-      [a #{format('kind%03d', depth)} named deep heir].
+      [
+          @deep heir is a ##{format('kind%03d', depth)}
+      ].
 
-      WHEN
-      [player takes a #{format('kind%03d', depth)}
-      <then> (damage that #{format('kind%03d', depth)}].
+      WHEN PLAYER takes a ##{format('kind%03d', depth)}
+      [
+          |then (damage it
+      ].
 
-      WHEN
-      [player attacks a #{format('kind%03d', depth - 1)}
-      <then> (damage that #{format('kind%03d', depth - 1)}].
+      WHEN PLAYER attacks a ##{format('kind%03d', depth - 1)}
+      [
+          |then (damage it
+      ].
 
-      WHEN
-      [player speaks a kind128
-      <then> (damage that kind128].
+      WHEN PLAYER speaks a #kind128
+      [
+          |then (damage it
+      ].
 
-      WHEN
-      [player gives a thing
-      <then> (damage that thing].
+      WHEN PLAYER gives a #thing
+      [
+          |then (damage it
+      ].
     BASIC_SHARP
   end
 
@@ -99,13 +109,15 @@ class TestKindFamilyHardening < Minitest::Test
   def test_same_distance_kind_trigger_tie_keeps_first_source_rule
     source = deep_family_source + <<~BASIC_SHARP
 
-      WHEN
-      [player wears a kind255
-      <then> (damage that kind255].
+      WHEN PLAYER wears a #kind255
+      [
+          |then (damage it
+      ].
 
-      WHEN
-      [player wears a kind255
-      <then> (change that kind255 to hostile].
+      WHEN PLAYER wears a #kind255
+      [
+          |then (change it to hostile
+      ].
     BASIC_SHARP
     machine = BasicSharp::Runtime.new(resolve(source))
     result = machine.run_event('player wears deep heir')

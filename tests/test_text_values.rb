@@ -16,19 +16,25 @@ class TestTextValues < Minitest::Test
   def source(start_text: 'North  Gate!', changed_text: 'OPEN — RubyVM!')
     <<~BS
       DEFINE
-      [a door named north gate
-      a device named brass bell].
+      [
+          @north gate is a #door
+          @brass bell is a #device
+      ].
 
       START
-      [north gate has "#{start_text}" title].
+      [
+          @north gate has "#{start_text}" title
+      ].
 
-      WHEN
-      [player sounds brass bell
-      <then> (change title of north gate to "#{changed_text}"].
+      WHEN PLAYER sounds @brass bell
+      [
+          |then (change title of @north gate to "#{changed_text}"
+      ].
 
-      IF
-      [north gate has "#{changed_text}" title
-      <then> (damage player].
+      IF @north gate has "#{changed_text}" title
+      [
+          |then (damage PLAYER
+      ].
     BS
   end
 
@@ -147,12 +153,16 @@ class TestTextValues < Minitest::Test
   def test_one_value_name_cannot_change_type_between_things
     text = <<~BS
       DEFINE
-      [a door named north gate
-      a door named south gate].
+      [
+          @north gate is a #door
+          @south gate is a #door
+      ].
 
       START
-      [north gate has "OPEN" title
-      south gate has 7 title].
+      [
+          @north gate has "OPEN" title
+          @south gate has 7 title
+      ].
     BS
     assert errors(text).any? { |message| message.include?('Starting value cannot use title') }
 

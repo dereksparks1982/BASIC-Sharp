@@ -295,7 +295,8 @@ class TestBytecodeLoader < Minitest::Test
       profile: 'bsharp.bytecode.v1', meaning_profile: 'bsharp.meaning.v1',
       fingerprint: '2065082c70bd242b0ec905b928855752a452100096354fde0e955f1ed88a3b84',
       strings: 26, kinds: 9, things: 7, start_records: 5,
-      events: 4, if_rules: 2, code_blocks: 6, instructions: 9
+      events: 4, if_rules: 2, code_blocks: 6, instructions: 9,
+      controls: 0, hover_declarations: 0, context_declarations: 0
     }
     assert_equal expected, loader.summary
     assert loader.summary.frozen?
@@ -329,7 +330,7 @@ class TestBytecodeLoader < Minitest::Test
     bytecode = File.join(ROOT, 'samples/first_room.bsbc')
     stdout, stderr, status = Open3.capture3(RUBY, compiler, bytecode, '--run', 'player attacks ember', chdir: ROOT)
     assert status.success?, stderr
-    assert_includes stdout, 'BSharp Virtual Machine'
+    assert_includes stdout, "BSharp Virtual Machine v#{BasicSharp::VERSION}"
     assert_includes stdout, 'ember damage is now 1'
 
     _stdout, stderr, status = Open3.capture3(

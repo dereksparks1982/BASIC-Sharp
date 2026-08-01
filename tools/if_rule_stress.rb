@@ -13,73 +13,91 @@ UNRELATED_EVENTS = Integer(ENV.fetch('BASIC_SHARP_IF_UNRELATED_EVENTS', '1000'))
 REACTIVATION_CYCLES = Integer(ENV.fetch('BASIC_SHARP_IF_REACTIVATION_CYCLES', '100'))
 
 def source_text
-  doors = (1..CHAIN_RULES).map { |index| "a door named chain door #{index}" }
-  definitions = ['a creature named trigger', 'a creature named beacon'] + doors
-  starts = ['trigger is calm', 'beacon is calm'] + (1..CHAIN_RULES).map { |index| "chain door #{index} is locked" }
+  doors = (1..CHAIN_RULES).map { |index| "@chain door #{index} is a #door" }
+  definitions = ['@trigger is a #creature', '@beacon is a #creature'] + doors
+  starts = ['@trigger is calm', '@beacon is calm'] + (1..CHAIN_RULES).map { |index| "@chain door #{index} is locked" }
 
   chain = []
   chain << <<~RULE
-    IF
-    [trigger is angry
-    <then> (unlock chain door 1].
+    IF @trigger is angry
+    [
+        |then (unlock @chain door 1
+    ].
   RULE
   (1...CHAIN_RULES).each do |index|
     chain << <<~RULE
-      IF
-      [chain door #{index} is unlocked
-      <then> (unlock chain door #{index + 1}].
+      IF @chain door #{index} is unlocked
+      [
+          |then (unlock @chain door #{index + 1}
+      ].
     RULE
   end
 
   <<~BASIC_SHARP
     DEFINE
-    [#{definitions.join("\n")}].
+    [
+        #{definitions.join("\n")}
+    ].
 
     START
-    [#{starts.join("\n")}].
+    [
+        #{starts.join("\n")}
+    ].
 
-    WHEN
-    [player attacks trigger
-    <then> (change trigger to angry].
+    WHEN PLAYER attacks @trigger
+    [
+        |then (change @trigger to angry
+    ].
 
-    WHEN
-    [player speaks trigger
-    <then> (damage trigger].
+    WHEN PLAYER speaks @trigger
+    [
+        |then (damage @trigger
+    ].
 
-    WHEN
-    [player attacks beacon
-    <then> (change beacon to angry].
+    WHEN PLAYER attacks @beacon
+    [
+        |then (change @beacon to angry
+    ].
 
-    WHEN
-    [player speaks beacon
-    <then> (change beacon to calm].
+    WHEN PLAYER speaks @beacon
+    [
+        |then (change @beacon to calm
+    ].
 
     #{chain.join("\n")}
-    IF
-    [beacon is angry
-    <then> (damage player].
+    IF @beacon is angry
+    [
+        |then (damage PLAYER
+    ].
   BASIC_SHARP
 end
 
 def loop_source
   <<~BASIC_SHARP
     DEFINE
-    [a creature named ember].
+    [
+        @ember is a #creature
+    ].
 
     START
-    [ember is friendly].
+    [
+        @ember is friendly
+    ].
 
-    WHEN
-    [player attacks ember
-    <then> (change ember to calm].
+    WHEN PLAYER attacks @ember
+    [
+        |then (change @ember to calm
+    ].
 
-    IF
-    [ember is calm
-    <then> (change ember to angry].
+    IF @ember is calm
+    [
+        |then (change @ember to angry
+    ].
 
-    IF
-    [ember is angry
-    <then> (change ember to calm].
+    IF @ember is angry
+    [
+        |then (change @ember to calm
+    ].
   BASIC_SHARP
 end
 

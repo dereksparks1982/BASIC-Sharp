@@ -1,7 +1,7 @@
 {
   "format": "bsharp.save.json",
   "format_version": 2,
-  "created_by_basic_sharp": "0.1.32",
+  "created_by_basic_sharp": "0.1.35",
   "program_fingerprint": {
     "algorithm": "sha256-bsir-meaning-v2",
     "value": "8510a13d4cebb0edbd9ab12625faa2c513a086c96d7a7da3f5426ad6a8dbe3fd"
@@ -21,7 +21,7 @@
         "values": {
           "damage": {
             "type": "whole_number",
-            "value": 1
+            "value": 0
           }
         }
       },
@@ -41,7 +41,7 @@
           },
           "title": {
             "type": "text",
-            "value": "OPEN — RubyVM!"
+            "value": "North  Gate!"
           }
         }
       },
@@ -61,7 +61,7 @@
           },
           "title": {
             "type": "text",
-            "value": "OPEN — RubyVM!"
+            "value": "South Gate."
           }
         }
       },
@@ -86,7 +86,7 @@
       {
         "index": 0,
         "condition": "north gate has \"OPEN — RubyVM!\" title",
-        "active": true
+        "active": false
       }
     ]
   }

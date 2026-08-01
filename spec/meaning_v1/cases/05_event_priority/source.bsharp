@@ -1,19 +1,26 @@
 KINDS
-[guard is a person
-captain is a guard
-commander is a captain].
+[
+    #guard is a #person
+    #captain is a #guard
+    #commander is a #captain
+].
 
 DEFINE
-[a commander named general].
+[
+    @general is a #commander
+].
 
-WHEN
-[player attacks a guard
-<then> (damage general].
+WHEN PLAYER attacks a #guard
+[
+    |then (damage @general
+].
 
-WHEN
-[player attacks a captain
-<then> (damage general by 2].
+WHEN PLAYER attacks a #captain
+[
+    |then (damage @general by 2
+].
 
-WHEN
-[player attacks a captain
-<then> (damage general by 3].
+WHEN PLAYER attacks a #captain
+[
+    |then (damage @general by 3
+].

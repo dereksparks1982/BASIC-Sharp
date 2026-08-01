@@ -1,0 +1,10 @@
+:CONTROLS for player
+[W moves player north].
+HOVER for door
+[
+    mystery
+].
+CONTEXT for @missing door
+[
+    Open (change it to open
+].

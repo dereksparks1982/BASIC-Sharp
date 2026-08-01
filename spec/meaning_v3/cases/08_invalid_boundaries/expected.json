@@ -1,0 +1,85 @@
+{
+  "case_id": "08_invalid_boundaries",
+  "compile": {
+    "errors": [
+      {
+        "message": "Game-system Heads do not begin with a colon. Write CONTROLS, HOVER, or CONTEXT directly.",
+        "severity": "error"
+      },
+      {
+        "message": "expected a Head before the Body",
+        "severity": "error"
+      },
+      {
+        "message": "HOVER must target a #Kind or @particular object",
+        "severity": "error"
+      },
+      {
+        "message": "HOVER information must be name, kind, state, or description",
+        "severity": "error"
+      },
+      {
+        "message": "CONTEXT uses unknown object '@missing door'",
+        "severity": "error"
+      },
+      {
+        "message": "CONTEXT entry must look like \"Open\" when it is closed (change it to open",
+        "severity": "error"
+      }
+    ],
+    "meaning": {
+      "context_declarations": [
+        {
+          "entries": [
+
+          ],
+          "subject": {
+            "name": "missing door",
+            "object_kind": null,
+            "text": "@missing door",
+            "type": "object"
+          }
+        }
+      ],
+      "controls": [
+
+      ],
+      "events": [
+
+      ],
+      "facts": [
+
+      ],
+      "hover_declarations": [
+        {
+          "fields": [
+
+          ],
+          "subject": {
+            "text": "door",
+            "type": "unknown"
+          }
+        }
+      ],
+      "if_rules": [
+
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v3"
+}

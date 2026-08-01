@@ -28,39 +28,47 @@ EXACT_THING = "heir #{EXACT_THING_NUMBER}"
 def source_text
   kinds = (1..DEPTH).map do |number|
     parent = number == 1 ? 'thing' : format('kind%03d', number - 1)
-    "#{format('kind%03d', number)} is a #{parent}"
+    "##{format('kind%03d', number)} is a ##{parent}"
   end
 
-  definitions = (1..THINGS).map { |number| "a #{LEAF_KIND} named heir #{number}" }
+  definitions = (1..THINGS).map { |number| "@heir #{number} is a ##{LEAF_KIND}" }
   first_trigger_kind = DEPTH - TRIGGERS
   ancestor_rules = (first_trigger_kind...(DEPTH)).map do |number|
     kind = format('kind%03d', number)
     <<~RULE
-      WHEN
-      [player attacks a #{kind}
-      <then> (damage that #{kind}].
+      WHEN PLAYER attacks a ##{kind}
+      [
+          |then (damage it
+      ].
     RULE
   end
 
   <<~BASIC_SHARP
     KINDS
-    [#{kinds.join("\n")}].
+    [
+        #{kinds.join("\n")}
+    ].
 
     DEFINE
-    [#{definitions.join("\n")}].
+    [
+        #{definitions.join("\n")}
+    ].
 
-    WHEN
-    [player attacks #{EXACT_THING}
-    <then> (change #{EXACT_THING} to friendly].
+    WHEN PLAYER attacks @#{EXACT_THING}
+    [
+        |then (change @#{EXACT_THING} to friendly
+    ].
 
     #{ancestor_rules.join("\n")}
-    WHEN
-    [player gives a #{NEAREST_KIND}
-    <then> (damage that #{NEAREST_KIND}].
+    WHEN PLAYER gives a ##{NEAREST_KIND}
+    [
+        |then (damage it
+    ].
 
-    WHEN
-    [player gives a #{NEAREST_KIND}
-    <then> (change that #{NEAREST_KIND} to hostile].
+    WHEN PLAYER gives a ##{NEAREST_KIND}
+    [
+        |then (change it to hostile
+    ].
   BASIC_SHARP
 end
 

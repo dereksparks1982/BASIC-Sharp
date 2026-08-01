@@ -176,7 +176,7 @@
         "follow_up_events": [
           {
             "caused_by": "(cause henry attacks player",
-            "caused_by_line": 11,
+            "caused_by_line": 15,
             "context": {
             },
             "error": null,
@@ -204,7 +204,7 @@
           },
           {
             "caused_by": "(cause mara sounds brass bell",
-            "caused_by_line": 12,
+            "caused_by_line": 16,
             "context": {
             },
             "error": null,

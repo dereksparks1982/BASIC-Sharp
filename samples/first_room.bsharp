@@ -1,46 +1,58 @@
 KINDS
-[creature is a thing
-dragon is a creature
-wyrm is a dragon].
+[
+    #creature is a #thing
+    #dragon is a #creature
+    #wyrm is a #dragon
+].
 
 DEFINE
-[a wyrm named ember
-a wyrm named cinder
-a door named north door
-a key named brass key
-a table named oak table
-a guard named henry].
+[
+    @ember is a #wyrm
+    @cinder is a #wyrm
+    @north door is a #door
+    @brass key is a #key
+    @oak table is a #table
+    @henry is a #guard
+].
 
 START
-[ember is calm
-cinder is calm
-north door is locked
-brass key is on the table
-henry is calm].
+[
+    @ember is calm
+    @cinder is calm
+    @north door is locked
+    @brass key is on the #table
+    @henry is calm
+].
 
-WHEN
-[player takes brass key
-<then> (carry brass key].
+WHEN PLAYER takes @brass key
+[
+    |then (carry @brass key
+].
 
-IF
-[north door is locked
-<then> (unlock north door].
+IF @north door is locked
+[
+    |then (unlock @north door
+].
 
-WHEN
-[player attacks ember
-<than> (damage ember
-<then> (change ember to angry].
+WHEN PLAYER attacks @ember
+[
+    |then (damage @ember
+    |then (change @ember to angry
+].
 
-WHEN
-[player attacks a creature
-<then> (damage that creature
-<then> (change that creature to angry].
+WHEN PLAYER attacks a #creature
+[
+    |then (damage it
+    |then (change it to angry
+].
 
-WHEN
-[player attacks a guard
-<then> (damage that guard
-<then> (change that guard to angry].
+WHEN PLAYER attacks a #guard
+[
+    |then (damage it
+    |then (change it to angry
+].
 
-IF
-[cinder is angry
-<then> (damage player].
+IF @cinder is angry
+[
+    |then (damage PLAYER
+].

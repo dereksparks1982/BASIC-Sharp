@@ -1,0 +1,22 @@
+{
+  "format": "bsharp.bytecode.profile.v3.fixtures.json",
+  "format_version": 1,
+  "profile": "bsharp.bytecode.v3",
+  "sample": "samples/demon_killer_controls.bsharp",
+  "binary_sha256": "d4e696046882060a9498570fa3c7be2c5b05431342a182aa712c837ec7807e9d",
+  "disassembly_sha256": "2698471a3343f2dab4ceb434356ffd176b3f4a34843fee65f6af2d0d004c7d03",
+  "fingerprint": "edf2a19cbd548fbe07a4284511c43e578a32c9b4b3df2a62d480b0e26a6b6c79",
+  "section_order": [
+    "STRS",
+    "META",
+    "KIND",
+    "THNG",
+    "STRT",
+    "EVNT",
+    "IFRL",
+    "CTRL",
+    "HOVR",
+    "CTXT",
+    "CODE"
+  ]
+}

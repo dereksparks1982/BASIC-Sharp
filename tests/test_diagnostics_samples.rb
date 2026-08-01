@@ -34,7 +34,7 @@ class TestDiagnosticsSamples < Minitest::Test
 
   def test_unknown_object_sample_reports_one_plain_reference_error
     assert_no_duplicate_diagnostics('unknown_object.bsharp')
-    assert_equal ["unknown reference 'ghost': not a defined object and not a known kind"], messages_for('unknown_object.bsharp', severity: 'error')
+    assert_equal ["unknown reference 'ghost': not a defined @object and not a known #Kind"], messages_for('unknown_object.bsharp', severity: 'error')
     assert_empty messages_for('unknown_object.bsharp', severity: 'warning')
   end
 
@@ -60,13 +60,13 @@ class TestDiagnosticsSamples < Minitest::Test
     assert_no_duplicate_diagnostics('ambiguous_door.bsharp')
     diagnostics = diagnostics_for('ambiguous_door.bsharp')
 
-    assert_equal [5, 7], diagnostics.map(&:line_number)
+    assert_equal [7, 9], diagnostics.map(&:line_number)
     assert_equal ['which door? found: north door, cellar door', 'which door? found: north door, cellar door'], diagnostics.map(&:message)
   end
 
   def test_bad_line_command_sample_reports_only_the_typo
     assert_no_duplicate_diagnostics('bad_line_command.bsharp')
-    assert_equal ["unknown Connector '<thne>'; did you mean <then>?"], messages_for('bad_line_command.bsharp', severity: 'error')
+    assert_equal ["Unknown retired result marker '<thne>'. Use |then."], messages_for('bad_line_command.bsharp', severity: 'error')
     assert_empty messages_for('bad_line_command.bsharp', severity: 'warning')
   end
 end

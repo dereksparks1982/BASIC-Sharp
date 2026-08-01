@@ -18,6 +18,7 @@ module BasicSharp
       'what Things are guards',
       'what happens when player attacks henry',
       'what IF rules are true',
+      'what game systems are declared',
       'what is the world',
       'what is the save'
     ].freeze
@@ -69,6 +70,13 @@ module BasicSharp
           answer_world
         when 'what is the save'
           answer_save
+        when 'what game systems are declared'
+          declarations = @runtime.game_declarations
+          { 'type' => 'game_declarations', 'answer' => declarations.merge(
+            'control_count' => declarations.fetch('controls').length,
+            'hover_count' => declarations.fetch('hover').length,
+            'context_count' => declarations.fetch('context').length
+          ) }
         else
           parse_named_question(normalized)
         end
@@ -250,6 +258,10 @@ module BasicSharp
         append_world(lines, answer)
       when 'save'
         append_save(lines, answer)
+      when 'game_declarations'
+        lines << "CONTROLS declarations: #{answer.fetch('control_count')}"
+        lines << "HOVER declarations: #{answer.fetch('hover_count')}"
+        lines << "CONTEXT declarations: #{answer.fetch('context_count')}"
       else
         raise AskError, unsupported_question_message
       end

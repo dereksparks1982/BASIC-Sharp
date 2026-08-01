@@ -1,0 +1,38 @@
+[
+  {
+    "type": "pointer_move",
+    "x": 12,
+    "y": -4,
+    "distance": 40,
+    "maximum_distance": 100
+  },
+  {
+    "type": "key_down",
+    "key": "W"
+  },
+  {
+    "type": "key_down",
+    "key": "D"
+  },
+  {
+    "type": "frame",
+    "time_ms": 100
+  },
+  {
+    "type": "right_mouse_down",
+    "time_ms": 200
+  },
+  {
+    "type": "frame",
+    "time_ms": 450
+  },
+  {
+    "type": "right_mouse_up",
+    "time_ms": 500
+  },
+  {
+    "type": "right_mouse_down",
+    "time_ms": 600,
+    "object": "north gate"
+  }
+]

@@ -37,6 +37,23 @@ module BasicSharp
 
     attr_reader :startup_ran, :startup_if_rules, :startup_if_error, :startup_follow_up_events
 
+    def game_declarations
+      canonical_game_data({
+        'controls' => @program.fetch(:controls, []),
+        'hover' => @program.fetch(:hover_declarations, []),
+        'context' => @program.fetch(:context_declarations, [])
+      })
+    end
+
+    def canonical_game_data(value)
+      case value
+      when Hash then value.each_with_object({}) { |(key, entry), result| result[key.to_s] = canonical_game_data(entry) unless %w[line_number raw].include?(key.to_s) }
+      when Array then value.map { |entry| canonical_game_data(entry) }
+      else value
+      end
+    end
+    private :canonical_game_data
+
     def initialize(loader, world_save: nil)
       unless loader.is_a?(BytecodeLoader)
         raise BytecodeVirtualMachineError,
@@ -132,7 +149,7 @@ module BasicSharp
         'settled' => true,
         'things' => snapshot.map do |thing|
           saved = thing.reject { |key, _| key == 'damage' }
-          saved['values'] = typed_save_values(saved.fetch('values')) if meaning_profile == WorldSave::MEANING_PROFILE_2
+          saved['values'] = typed_save_values(saved.fetch('values')) unless meaning_profile == WorldSave::MEANING_PROFILE_1
           saved
         end,
         'if_rules' => @program.fetch(:if_rules).each_with_index.map do |rule, index|
@@ -253,7 +270,7 @@ module BasicSharp
         'if_rules' => rules.length,
         'whole_number_values' => things.sum { |thing| thing.fetch('values').values.count { |value| value.is_a?(Integer) } }
       }
-      if meaning_profile == WorldSave::MEANING_PROFILE_2
+      unless meaning_profile == WorldSave::MEANING_PROFILE_1
         summary['text_values'] = things.sum { |thing| thing.fetch('values').values.count { |value| value.is_a?(String) } }
       end
       summary
@@ -324,7 +341,70 @@ module BasicSharp
       lines.join("\n")
     end
 
+    def execute_context_action(action, object_name)
+      supplied = deep_symbolize(action)
+      index = @thing_indexes_by_name[normalize(object_name)]
+      raise BytecodeVirtualMachineError, "Context action object '#{object_name}' is not defined." unless index
+
+      @save_ready = false
+      step, follow_up = execute_semantic_context_action(supplied, index)
+      settlement = settle_if_rules(cause: 'context')
+      chain = drain_follow_up_events(([follow_up].compact + settlement.fetch('follow_ups', [])))
+      error = settlement['error'] || chain['error']
+      @save_ready = error.nil?
+      {
+        'object' => normalize(object_name),
+        'ran' => [step && step['word']].compact,
+        'steps' => [step].compact,
+        'if_rules' => settlement.fetch('rules'),
+        'follow_up_events' => chain.fetch('events'),
+        'error' => error,
+        'state' => snapshot
+      }
+    end
+
     private
+
+    def execute_semantic_context_action(action, target_index)
+      target = world_thing(target_index)
+      name = normalize(action.fetch(:action))
+      case name
+      when 'change'
+        if action[:value_name]
+          value_name = normalize(action[:value_name])
+          new_value = action.key?(:to_text) ? action[:to_text] : action[:to_amount]
+          target.fetch(:values)[value_name] = new_value
+          return [{ 'word' => "(change #{value_name} of #{target.fetch(:name)} to #{new_value}", 'change' => "#{target.fetch(:name)} #{value_name} changed" }, nil]
+        end
+        state = normalize(action.dig(:to, :name) || action.dig(:to, :text))
+        set_state(target, state, OPPOSITE_STATES[state])
+        [{ 'word' => "(change #{target.fetch(:name)} to #{state}", 'change' => "#{target.fetch(:name)} is now #{state}" }, nil]
+      when 'damage'
+        amount = action.fetch(:amount, 1)
+        target.fetch(:values)['damage'] = target.fetch(:values).fetch('damage', 0) + amount
+        [{ 'word' => "(damage #{target.fetch(:name)}", 'change' => "#{target.fetch(:name)} damage is now #{target.fetch(:values)['damage']}" }, nil]
+      when 'unlock'
+        set_state(target, 'unlocked')
+        [{ 'word' => "(unlock #{target.fetch(:name)}", 'change' => "#{target.fetch(:name)} is now unlocked" }, nil]
+      when 'carry'
+        target.fetch(:relations)['carried by'] = 'player'
+        [{ 'word' => "(carry #{target.fetch(:name)}", 'change' => "#{target.fetch(:name)} is now carried by player" }, nil]
+      when 'cause'
+        event = action.fetch(:event)
+        raw = event.fetch(:raw).to_s.gsub(/\bit\b/, target.fetch(:name))
+        [{ 'word' => "(cause #{raw}", 'change' => "event queued: #{raw}" }, { 'event' => raw, 'caused_by' => "(cause #{raw}" }]
+      else
+        raise BytecodeVirtualMachineError, "BSharp VM context action does not support (#{name}."
+      end
+    end
+
+    def deep_symbolize(value)
+      case value
+      when Hash then value.each_with_object({}) { |(key, entry), result| result[key.to_sym] = deep_symbolize(entry) }
+      when Array then value.map { |entry| deep_symbolize(entry) }
+      else value
+      end
+    end
 
     def ask_plural_kind(kind)
       return "#{kind[0...-1]}ies" if kind.end_with?('y') && kind.length > 1
@@ -497,7 +577,7 @@ module BasicSharp
           raise WorldSaveError, "BSharp Save value name '#{name}' for #{thing_name} must be one plain word."
         end
         expected_type = expected_values.fetch(name).is_a?(String) ? 'text' : 'whole_number'
-        value = if save_version == WorldSave::FORMAT_VERSION_2
+        value = if [WorldSave::FORMAT_VERSION_2, WorldSave::FORMAT_VERSION_3].include?(save_version)
                   validate_typed_saved_value!(saved_value, name, thing_name, expected_type)
                 else
                   saved_value
@@ -540,7 +620,7 @@ module BasicSharp
     end
 
     def canonical_saved_condition(value, label)
-      return canonical_save_text(value, label) unless meaning_profile == WorldSave::MEANING_PROFILE_2
+      return canonical_save_text(value, label) if meaning_profile == WorldSave::MEANING_PROFILE_1
       raise WorldSaveError, "BSharp Save #{label} must be text." unless value.is_a?(String)
       raise WorldSaveError, "BSharp Save #{label} cannot be empty." if value.empty?
       value
@@ -550,7 +630,8 @@ module BasicSharp
       pair = [@program.fetch(:profile), @program.fetch(:meaning_profile)]
       supported = [
         [BytecodeContract::PROFILE, BytecodeContract::MEANING_PROFILE],
-        [BytecodeContract::PROFILE_2, BytecodeContract::MEANING_PROFILE_2]
+        [BytecodeContract::PROFILE_2, BytecodeContract::MEANING_PROFILE_2],
+        [BytecodeContract::PROFILE_3, BytecodeContract::MEANING_PROFILE_3]
       ]
       unless supported.include?(pair)
         raise BytecodeVirtualMachineError, 'The BSharp Virtual Machine cannot execute this bytecode profile.'

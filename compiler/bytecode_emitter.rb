@@ -17,6 +17,7 @@ module BasicSharp
   class BytecodeEmitter
     PROFILE_FORMAT_VERSION = 1
     PROFILE_FORMAT_VERSION_2 = 2
+    PROFILE_FORMAT_VERSION_3 = 3
     MANDATORY_STRINGS = [
       BytecodeContract::PROFILE,
       BytecodeContract::MEANING_PROFILE,
@@ -35,15 +36,31 @@ module BasicSharp
     }.freeze
     FORBIDDEN_BINARY_TERMS = %w[BasicSharp RubyVM ObjectSpace Marshal].freeze
 
-    attr_reader :model
+    attr_reader :model, :profile
 
     def initialize(document)
       @document = stringify_keys(document.respond_to?(:to_h) ? document.to_h : document)
       validate_document!
-      @profile = @document['meaning_profile'] == BytecodeContract::MEANING_PROFILE_2 ? BytecodeContract::PROFILE_2 : BytecodeContract::PROFILE
-      @meaning_profile = @profile == BytecodeContract::PROFILE_2 ? BytecodeContract::MEANING_PROFILE_2 : BytecodeContract::MEANING_PROFILE
-      @fingerprint_algorithm = @profile == BytecodeContract::PROFILE_2 ? WorldSave::FINGERPRINT_ALGORITHM_2 : WorldSave::FINGERPRINT_ALGORITHM
-      @profile_format_version = @profile == BytecodeContract::PROFILE_2 ? PROFILE_FORMAT_VERSION_2 : PROFILE_FORMAT_VERSION
+      @profile = case @document['meaning_profile']
+                 when BytecodeContract::MEANING_PROFILE_3 then BytecodeContract::PROFILE_3
+                 when BytecodeContract::MEANING_PROFILE_2 then BytecodeContract::PROFILE_2
+                 else BytecodeContract::PROFILE
+                 end
+      @meaning_profile = {
+        BytecodeContract::PROFILE => BytecodeContract::MEANING_PROFILE,
+        BytecodeContract::PROFILE_2 => BytecodeContract::MEANING_PROFILE_2,
+        BytecodeContract::PROFILE_3 => BytecodeContract::MEANING_PROFILE_3
+      }.fetch(@profile)
+      @fingerprint_algorithm = {
+        BytecodeContract::PROFILE => WorldSave::FINGERPRINT_ALGORITHM,
+        BytecodeContract::PROFILE_2 => WorldSave::FINGERPRINT_ALGORITHM_2,
+        BytecodeContract::PROFILE_3 => WorldSave::FINGERPRINT_ALGORITHM_3
+      }.fetch(@profile)
+      @profile_format_version = {
+        BytecodeContract::PROFILE => PROFILE_FORMAT_VERSION,
+        BytecodeContract::PROFILE_2 => PROFILE_FORMAT_VERSION_2,
+        BytecodeContract::PROFILE_3 => PROFILE_FORMAT_VERSION_3
+      }.fetch(@profile)
       @instruction_codes = BytecodeContract.instruction_codes(@profile)
       @condition_codes = BytecodeContract.condition_codes(@profile)
       @strings = []
@@ -91,15 +108,19 @@ module BasicSharp
         raise BytecodeEmitterError, "BSharp Bytecode was not written because the program has #{warnings.length} warning#{warnings.length == 1 ? '' : 's'}."
       end
       profile = @document['meaning_profile']
-      unless profile.nil? || [BytecodeContract::MEANING_PROFILE, BytecodeContract::MEANING_PROFILE_2].include?(profile)
+      unless profile.nil? || [BytecodeContract::MEANING_PROFILE, BytecodeContract::MEANING_PROFILE_2, BytecodeContract::MEANING_PROFILE_3].include?(profile)
         raise BytecodeEmitterError, "BSharp Bytecode does not support meaning profile '#{profile}'."
       end
       text_used = document_uses_text_values?
-      if text_used && profile != BytecodeContract::MEANING_PROFILE_2
-        raise BytecodeEmitterError, 'Creator-facing text values require bsharp.meaning.v2 in BSharp IR.'
+      if text_used && ![BytecodeContract::MEANING_PROFILE_2, BytecodeContract::MEANING_PROFILE_3].include?(profile)
+        raise BytecodeEmitterError, 'Creator-facing text values require bsharp.meaning.v2 or bsharp.meaning.v3 in BSharp IR.'
       end
       if profile == BytecodeContract::MEANING_PROFILE_2 && !text_used
         raise BytecodeEmitterError, 'bsharp.meaning.v2 requires at least one creator-facing text value.'
+      end
+      game_used = Array(@document['controls']).any? || Array(@document['hover_declarations']).any? || Array(@document['context_declarations']).any?
+      if profile == BytecodeContract::MEANING_PROFILE_3 && !game_used
+        raise BytecodeEmitterError, 'bsharp.meaning.v3 requires game input or interaction meaning.'
       end
     end
 
@@ -137,7 +158,10 @@ module BasicSharp
         start_records: start_records,
         events: events,
         if_rules: if_rules,
-        blocks: blocks
+        blocks: blocks,
+        controls: canonical_game_data(Array(@document['controls'])),
+        hover_declarations: canonical_game_data(Array(@document['hover_declarations'])),
+        context_declarations: canonical_game_data(Array(@document['context_declarations']))
       }
     end
 
@@ -177,6 +201,8 @@ module BasicSharp
       Array(@document['if_rules']).each do |rule|
         Array(rule['then']).each { |action| collect_action_kinds(action, references) }
       end
+      Array(@document['hover_declarations']).each { |entry| collect_reference_kind(entry['subject'], references) }
+      Array(@document['context_declarations']).each { |entry| collect_reference_kind(entry['subject'], references) }
       references.reject(&:empty?)
     end
 
@@ -433,10 +459,20 @@ module BasicSharp
         'CODE' => model.fetch(:blocks).length
       }
 
-      offset = BytecodeContract::HEADER_SIZE_BYTES + BytecodeContract::SECTION_ORDER.length * BytecodeContract::DIRECTORY_ENTRY_SIZE_BYTES
+      if @profile == BytecodeContract::PROFILE_3
+        section_data['CTRL'] = encode_game_section(model.fetch(:controls))
+        section_data['HOVR'] = encode_game_section(model.fetch(:hover_declarations))
+        section_data['CTXT'] = encode_game_section(model.fetch(:context_declarations))
+        record_counts['CTRL'] = model.fetch(:controls).length
+        record_counts['HOVR'] = model.fetch(:hover_declarations).length
+        record_counts['CTXT'] = model.fetch(:context_declarations).length
+      end
+
+      section_order = BytecodeContract.section_order(@profile)
+      offset = BytecodeContract::HEADER_SIZE_BYTES + section_order.length * BytecodeContract::DIRECTORY_ENTRY_SIZE_BYTES
       entries = []
       body = +''
-      BytecodeContract::SECTION_ORDER.each do |section_id|
+      section_order.each do |section_id|
         padding = padding_for(offset)
         body << "\x00" * padding
         offset += padding
@@ -449,7 +485,7 @@ module BasicSharp
       header = [
         BytecodeContract::MAGIC,
         [BytecodeContract::BINARY_FORMAT_VERSION, @profile_format_version].pack('v2'),
-        [BytecodeContract::HEADER_SIZE_BYTES, BytecodeContract::SECTION_ORDER.length, BytecodeContract::HEADER_SIZE_BYTES, BytecodeContract::DIRECTORY_ENTRY_SIZE_BYTES, file_size, 0].pack('V6')
+        [BytecodeContract::HEADER_SIZE_BYTES, section_order.length, BytecodeContract::HEADER_SIZE_BYTES, BytecodeContract::DIRECTORY_ENTRY_SIZE_BYTES, file_size, 0].pack('V6')
       ].join
       directory = entries.map { |id, entry_offset, length, count| id + [entry_offset, length, count].pack('V3') }.join
       result = header + directory + body
@@ -515,6 +551,24 @@ module BasicSharp
     def encode_record(record)
       operands = record.fetch(:operands)
       [record.fetch(:opcode), operands.length, 0].pack('CCv') + pack_u32(*operands)
+    end
+
+    def encode_game_section(entries)
+      JSON.generate(entries).encode(Encoding::UTF_8).b
+    end
+
+    def canonical_game_data(value)
+      case value
+      when Hash
+        value.keys.map(&:to_s).reject { |key| %w[line_number raw].include?(key) }.sort.each_with_object({}) do |key, result|
+          source_value = value[key] || value[key.to_sym]
+          result[key.to_sym] = canonical_game_data(source_value)
+        end
+      when Array
+        value.map { |entry| canonical_game_data(entry) }
+      else
+        value
+      end
     end
 
     def pack_u32(*values)

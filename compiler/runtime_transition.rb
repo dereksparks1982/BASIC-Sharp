@@ -143,6 +143,10 @@ module BasicSharp
       verified_call('ASK IF rules', :ask_if_rules)
     end
 
+    def game_declarations
+      verified_call('ASK game declarations', :game_declarations)
+    end
+
     def ask_world_summary
       verified_call('ASK world summary', :ask_world_summary)
     end

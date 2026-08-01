@@ -1,2 +1,4 @@
 DEFINE
-[a dragon named ember].
+[
+    @ember is a #dragon
+].

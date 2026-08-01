@@ -1,0 +1,62 @@
+{
+  "format": "bsharp.meaning.conformance.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v3",
+  "title": "BASIC# Stable Meaning Profile 3: game input and interaction",
+  "cases": [
+    {
+      "id": "01_control_declaration",
+      "source": "spec/meaning_v3/cases/01_control_declaration/source.bsharp",
+      "expected": "spec/meaning_v3/cases/01_control_declaration/expected.json",
+      "expected_sha256": "a3f5784a4ed948b4687f65f50663133a21a0e2a360a71647cba08f0c7eff595f"
+    },
+    {
+      "id": "02_keyboard_movement",
+      "source": "spec/meaning_v3/cases/02_keyboard_movement/source.bsharp",
+      "expected": "spec/meaning_v3/cases/02_keyboard_movement/expected.json",
+      "expected_sha256": "57ee4d6d240283582e43e561d4bb203e9e1722ddea04ba0ca5afec4ab3c37932"
+    },
+    {
+      "id": "03_mouse_facing_and_hold",
+      "source": "spec/meaning_v3/cases/03_mouse_facing_and_hold/source.bsharp",
+      "expected": "spec/meaning_v3/cases/03_mouse_facing_and_hold/expected.json",
+      "expected_sha256": "279e23d54bfa6e4ec2fbe3f622ce47fa174cce05ba4c87092af8c14b1aa8aa8e"
+    },
+    {
+      "id": "04_hover_information",
+      "source": "spec/meaning_v3/cases/04_hover_information/source.bsharp",
+      "expected": "spec/meaning_v3/cases/04_hover_information/expected.json",
+      "expected_sha256": "c98b389e37396041f27da4b65937543a959894109a8e39f83b806df161a53799"
+    },
+    {
+      "id": "05_context_state_menu",
+      "source": "spec/meaning_v3/cases/05_context_state_menu/source.bsharp",
+      "expected": "spec/meaning_v3/cases/05_context_state_menu/expected.json",
+      "expected_sha256": "1d04aa812ec8b4cbc98c1a41cb75406fc0ab2bcff21272471fd4b1677f60a466"
+    },
+    {
+      "id": "06_context_action_execution",
+      "source": "spec/meaning_v3/cases/06_context_action_execution/source.bsharp",
+      "expected": "spec/meaning_v3/cases/06_context_action_execution/expected.json",
+      "expected_sha256": "5e49fa9a4901c1a42473b3306e1ed4e345798324afae05cde4aa7ac219b4302d"
+    },
+    {
+      "id": "07_inheritance_and_override",
+      "source": "spec/meaning_v3/cases/07_inheritance_and_override/source.bsharp",
+      "expected": "spec/meaning_v3/cases/07_inheritance_and_override/expected.json",
+      "expected_sha256": "7440379d7aa3282d51506a7e96cea774cf1839b78326f296defcfff8aea81d88"
+    },
+    {
+      "id": "08_invalid_boundaries",
+      "source": "spec/meaning_v3/cases/08_invalid_boundaries/source.bsharp",
+      "expected": "spec/meaning_v3/cases/08_invalid_boundaries/expected.json",
+      "expected_sha256": "cbda6faf2a45554368be3f5f02d6577477ec229fff09bdddc408ff1ad8a05c51"
+    },
+    {
+      "id": "09_comments",
+      "source": "spec/meaning_v3/cases/09_comments/source.bsharp",
+      "expected": "spec/meaning_v3/cases/09_comments/expected.json",
+      "expected_sha256": "9102034ab2889129c863a2fcb6f144a5aad30cbb4c6379bc44144e38618587f5"
+    }
+  ]
+}

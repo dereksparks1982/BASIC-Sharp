@@ -1,7 +1,10 @@
 DEFINE
-[a door named north door
-a door named cellar door].
+[
+    @north door is a #door
+    @cellar door is a #door
+].
 
-IF
-[the door is locked
-<then> (unlock the door].
+IF the #door is locked
+[
+    |then (unlock the #door
+].

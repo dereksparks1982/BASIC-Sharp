@@ -1,5 +1,5 @@
 {
-  "version": "0.1.32",
+  "version": "0.1.35",
   "format": "bsir.debug.json",
   "kinds": [
 
@@ -15,24 +15,24 @@
       "name": "henry",
       "kind": "guard",
       "builtin": false,
-      "line_number": 2
+      "line_number": 3
     },
     {
       "name": "mara",
       "kind": "guard",
       "builtin": false,
-      "line_number": 3
+      "line_number": 4
     },
     {
       "name": "brass bell",
       "kind": "device",
       "builtin": false,
-      "line_number": 4
+      "line_number": 5
     }
   ],
   "facts": [
     {
-      "line_number": 7,
+      "line_number": 10,
       "subject": {
         "type": "object",
         "text": "henry",
@@ -48,11 +48,11 @@
         "subject": "henry",
         "relation": "is",
         "value": "calm",
-        "line_number": 7
+        "line_number": 10
       }
     },
     {
-      "line_number": 8,
+      "line_number": 11,
       "subject": {
         "type": "object",
         "text": "mara",
@@ -68,13 +68,13 @@
         "subject": "mara",
         "relation": "is",
         "value": "calm",
-        "line_number": 8
+        "line_number": 11
       }
     }
   ],
   "events": [
     {
-      "line_number": 10,
+      "line_number": 14,
       "when": {
         "raw": "player attacks a guard",
         "actor": {
@@ -97,7 +97,7 @@
       },
       "then": [
         {
-          "line_number": 12,
+          "line_number": 16,
           "action": "damage",
           "target": {
             "type": "previous",
@@ -108,7 +108,7 @@
           "amount": 1
         },
         {
-          "line_number": 13,
+          "line_number": 17,
           "action": "cause",
           "event": {
             "raw": "that guard attacks player",
@@ -128,7 +128,7 @@
           }
         },
         {
-          "line_number": 14,
+          "line_number": 18,
           "action": "change",
           "target": {
             "type": "previous",
@@ -144,7 +144,7 @@
       ]
     },
     {
-      "line_number": 20,
+      "line_number": 26,
       "when": {
         "raw": "a guard attacks player",
         "actor": {
@@ -167,7 +167,7 @@
       },
       "then": [
         {
-          "line_number": 22,
+          "line_number": 28,
           "action": "damage",
           "target": {
             "type": "object",
@@ -180,7 +180,7 @@
       ]
     },
     {
-      "line_number": 24,
+      "line_number": 31,
       "when": {
         "raw": "mara sounds brass bell",
         "actor": {
@@ -199,7 +199,7 @@
       },
       "then": [
         {
-          "line_number": 26,
+          "line_number": 33,
           "action": "change",
           "target": {
             "type": "object",
@@ -217,7 +217,7 @@
   ],
   "if_rules": [
     {
-      "line_number": 16,
+      "line_number": 21,
       "if": {
         "raw": "henry is angry",
         "subject": {
@@ -234,7 +234,7 @@
       },
       "then": [
         {
-          "line_number": 18,
+          "line_number": 23,
           "action": "cause",
           "event": {
             "raw": "mara sounds brass bell",
@@ -255,6 +255,15 @@
         }
       ]
     }
+  ],
+  "controls": [
+
+  ],
+  "hover_declarations": [
+
+  ],
+  "context_declarations": [
+
   ],
   "diagnostics": [
 

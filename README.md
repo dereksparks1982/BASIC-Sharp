@@ -1,8 +1,8 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.32
+# BASIC# Ruby Bootstrap Compiler v0.1.35
 
 > A scripting language made for non-programmers, by non-programmers.
 
-BASIC# v0.1.32 adds creator-facing text values through the complete preferred-runtime pipeline:
+BASIC# v0.1.35 re-carries the canonical visual grammar, multiline comments, and engine-neutral game input and interaction through the complete preferred-runtime pipeline. It also binds runtime-transition banner validation to the active compiler version so direct BSBC and explicit reference-runtime checks cannot drift during a version bump:
 
 ```text
 .bsharp source -> BSharp IR -> BSharp Bytecode -> validated BSharp VM
@@ -11,29 +11,38 @@ quoted text     -> exact UTF-8 value -> Save, ASK, restore, and parity
 
 Ruby remains the bootstrap host. The BSharp VM is the preferred runtime, while `BasicSharp::Runtime` remains the protected reference oracle used by explicit diagnostic and shadow-parity modes.
 
-## Creator-facing text values
-
-Text is written between straight double quotes and followed by a one-word value name:
+## Canonical visual grammar
 
 ```bsharp
+KINDS
+[
+    #gate is a #door
+].
+
+DEFINE
+[
+    @north gate is a #gate
+].
+
 START
-[north gate has "North Gate — CLOSED" label].
+[
+    PLAYER has 3 speed
+    @north gate has "North Gate — CLOSED" label
+].
 
-WHEN
-[player sounds brass bell
-<then> (change label of every gate to "OPEN — RubyVM!"].
-
-IF
-[north gate has "OPEN — RubyVM!" label
-<then> (damage player by 1].
+WHEN PLAYER opens @north gate
+[
+    |then (change it to open
+].
 ```
 
-Text preserves UTF-8, case, punctuation, and spaces exactly. v0.1.32 does not add interpolation, concatenation, escape sequences, multiline text, arithmetic on text, or text-based event matching.
+Comments begin with `//` and end with `/.`; `[` opens every Body and `].` closes it.
 
 ## Profile selection and compatibility
 
 - Programs using only accepted Profile 1 meaning remain `bsharp.meaning.v1` and emit `bsharp.bytecode.v1`.
 - Any creator-facing text value selects `bsharp.meaning.v2` and emits `bsharp.bytecode.v2`.
+- Controls, hover, or context declarations select `bsharp.meaning.v3` and emit `bsharp.bytecode.v3`.
 - Profile 1 source, BSIR meaning fingerprints, committed `.bsbc` bytes, and disassembly remain compatible.
 - Profile 2 adds `START_TEXT_VALUE`, `CHANGE_TEXT_VALUE`, and `TEXT_VALUE_EQUALS`.
 - Identifier strings remain canonical lowercase; creator text strings retain their exact spelling through role-aware validation.
@@ -52,6 +61,7 @@ ruby compiler/basic_sharp.rb samples/text_values.bsharp --ask "what is north gat
 ```bash
 ruby tools/meaning_conformance.rb
 ruby tools/meaning_profile_2.rb
+ruby tools/meaning_profile_3.rb
 ruby tools/company_bible_audit.rb
 ruby tools/bytecode_contract.rb
 ruby tools/bytecode_emitter.rb
@@ -73,6 +83,10 @@ docs/specification/BASIC_SHARP_STABLE_MEANING_SPECIFICATION_v2.md
 docs/bytecode/BASIC_SHARP_BYTECODE_PROFILE_2_v0_1_32.md
 docs/runtime_contract_v0_1_32.md
 docs/validation/BASIC_SHARP_VALIDATION_v0_1_32.md
+docs/language/BASIC_SHARP_COMMENT_SYNTAX_v0_1_33.md
+docs/language/BASIC_SHARP_DEMON_KILLER_CONTROLS_HOVER_AND_CONTEXT_v0_1_33.md
+docs/bytecode/BASIC_SHARP_BYTECODE_PROFILE_3_v0_1_33.md
+docs/validation/BASIC_SHARP_VALIDATION_v0_1_35.md
 ```
 
 ## Current identity
@@ -87,7 +101,7 @@ Inspection: BSharp ASK
 Bytecode: BSharp Bytecode / BSBC / .bsbc
 Preferred runtime: BSharp Virtual Machine / BSharp VM
 Reference oracle: BasicSharp::Runtime
-Meaning profiles: bsharp.meaning.v1 and bsharp.meaning.v2
-Bytecode profiles: bsharp.bytecode.v1 and bsharp.bytecode.v2
-Version: 0.1.32
+Meaning profiles: bsharp.meaning.v1, bsharp.meaning.v2, and bsharp.meaning.v3
+Bytecode profiles: bsharp.bytecode.v1, bsharp.bytecode.v2, and bsharp.bytecode.v3
+Version: 0.1.35
 ```

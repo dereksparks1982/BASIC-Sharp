@@ -15,17 +15,18 @@ EVENTS = Integer(ENV.fetch('BASIC_SHARP_STRESS_EVENTS', '10000'))
 
 def source_text
   definitions = []
-  GUARDS.times { |index| definitions << "a guard named guard #{index + 1}" }
-  DRAGONS.times { |index| definitions << "a wyrm named dragon #{index + 1}" }
-  definitions << 'a key named stress key'
-  definitions << 'a table named stress table'
-  definitions << 'a door named stress door'
+  GUARDS.times { |index| definitions << "@guard #{index + 1} is a #guard" }
+  DRAGONS.times { |index| definitions << "@dragon #{index + 1} is a #wyrm" }
+  definitions << '@stress key is a #key'
+  definitions << '@stress table is a #table'
+  definitions << '@stress door is a #door'
 
   exact_rule = if GUARDS >= 250
                  <<~RULE
-                   WHEN
-                   [player attacks guard 250
-                   <then> (change guard 250 to hostile].
+                   WHEN PLAYER attacks @guard 250
+                   [
+                       |then (change @guard 250 to hostile
+                   ].
 
                  RULE
                else
@@ -34,41 +35,52 @@ def source_text
 
   <<~DKS
     KINDS
-    [creature is a thing
-    dragon is a creature
-    wyrm is a dragon].
+    [
+        #creature is a #thing
+        #dragon is a #creature
+        #wyrm is a #dragon
+    ].
 
     DEFINE
-    [#{definitions.join("\n")}].
+    [
+        #{definitions.join("\n")}
+    ].
 
     START
-    [guard 1 is calm
-    dragon 1 is calm
-    stress key is on stress table
-    stress door is locked].
+    [
+        @guard 1 is calm
+        @dragon 1 is calm
+        @stress key is on @stress table
+        @stress door is locked
+    ].
 
-    IF
-    [stress door is locked
-    <then> (unlock stress door].
+    IF @stress door is locked
+    [
+        |then (unlock @stress door
+    ].
 
-    #{exact_rule}WHEN
-    [player attacks a guard
-    <then> (damage that guard
-    <then> (change that guard to angry].
+    #{exact_rule}WHEN PLAYER attacks a #guard
+    [
+        |then (damage it
+        |then (change it to angry
+    ].
 
-    WHEN
-    [player attacks dragon 1
-    <then> (damage dragon 1
-    <then> (change dragon 1 to angry].
+    WHEN PLAYER attacks @dragon 1
+    [
+        |then (damage @dragon 1
+        |then (change @dragon 1 to angry
+    ].
 
-    WHEN
-    [player attacks a creature
-    <then> (damage that creature
-    <then> (change that creature to angry].
+    WHEN PLAYER attacks a #creature
+    [
+        |then (damage it
+        |then (change it to angry
+    ].
 
-    WHEN
-    [player takes stress key
-    <then> (carry stress key].
+    WHEN PLAYER takes @stress key
+    [
+        |then (carry @stress key
+    ].
   DKS
 end
 

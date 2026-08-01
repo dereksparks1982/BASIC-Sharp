@@ -56,10 +56,14 @@ class TestAsk < Minitest::Test
   def test_ambiguous_thing_and_kind_name_is_not_guessed
     source = <<~BSHARP
       KINDS
-      [guard is a thing].
+      [
+          #guard is a #thing
+      ].
 
       DEFINE
-      [a guard named guard].
+      [
+          @guard is a #guard
+      ].
     BSHARP
     error = assert_raises(BasicSharp::AskError) { answer(runtime(source), 'what is guard') }
 
@@ -104,15 +108,19 @@ class TestAsk < Minitest::Test
   def test_event_inspection_preserves_exact_thing_priority
     source = <<~BSHARP
       DEFINE
-      [a guard named henry].
+      [
+          @henry is a #guard
+      ].
 
-      WHEN
-      [player attacks a guard
-      <then> (damage that guard].
+      WHEN PLAYER attacks a #guard
+      [
+          |then (damage it
+      ].
 
-      WHEN
-      [player attacks henry
-      <then> (change henry to angry].
+      WHEN PLAYER attacks @henry
+      [
+          |then (change @henry to angry
+      ].
     BSHARP
     entry = answer(runtime(source), 'what happens when player attacks henry')
 
@@ -123,20 +131,26 @@ class TestAsk < Minitest::Test
   def test_event_inspection_preserves_nearest_kind_priority
     source = <<~BSHARP
       KINDS
-      [creature is a thing
-       dragon is a creature
-       wyrm is a dragon].
+      [
+          #creature is a #thing
+          #dragon is a #creature
+          #wyrm is a #dragon
+      ].
 
       DEFINE
-      [a wyrm named ember].
+      [
+          @ember is a #wyrm
+      ].
 
-      WHEN
-      [player attacks a creature
-      <then> (damage that creature].
+      WHEN PLAYER attacks a #creature
+      [
+          |then (damage it
+      ].
 
-      WHEN
-      [player attacks a dragon
-      <then> (change that dragon to angry].
+      WHEN PLAYER attacks a #dragon
+      [
+          |then (change it to angry
+      ].
     BSHARP
     entry = answer(runtime(source), 'what happens when player attacks ember')
 
@@ -146,15 +160,19 @@ class TestAsk < Minitest::Test
   def test_event_inspection_preserves_source_order_for_equal_kind_distance
     source = <<~BSHARP
       DEFINE
-      [a guard named henry].
+      [
+          @henry is a #guard
+      ].
 
-      WHEN
-      [player attacks a guard
-      <then> (damage that guard].
+      WHEN PLAYER attacks a #guard
+      [
+          |then (damage it
+      ].
 
-      WHEN
-      [player attacks a guard
-      <then> (change that guard to angry].
+      WHEN PLAYER attacks a #guard
+      [
+          |then (change it to angry
+      ].
     BSHARP
     entry = answer(runtime(source), 'what happens when player attacks henry')
 
@@ -239,6 +257,20 @@ class TestAsk < Minitest::Test
     assert_equal ['what is henry', 'what is the world', 'what is the save'], answers.map { |entry| entry.fetch('question') }
   end
 
+  def test_game_system_inspection_is_structured_and_read_only
+    parser = BasicSharp::Parser.new(File.read(File.join(ROOT, 'samples/demon_killer_controls.bsharp')))
+    document = BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve
+    machine = BasicSharp::Runtime.new(document)
+    before = machine.snapshot
+    entry = BasicSharp::Ask.new(machine).answer_many(['what game systems are declared']).first
+
+    assert_equal 'game_declarations', entry.fetch('type')
+    assert_equal 1, entry.dig('answer', 'control_count')
+    assert_equal 1, entry.dig('answer', 'hover_count')
+    assert_equal 1, entry.dig('answer', 'context_count')
+    assert_equal before, machine.snapshot
+  end
+
   def test_256_question_boundary
     inspector = BasicSharp::Ask.new(runtime)
     assert_equal 256, inspector.answer_many(Array.new(256, 'what is henry')).length
@@ -250,8 +282,8 @@ class TestAsk < Minitest::Test
   end
 
   def test_human_kind_output_is_bounded_but_json_is_complete
-    definitions = (1..75).map { |index| "a guard named guard #{index}" }.join("\n ")
-    source = "DEFINE\n[#{definitions}].\n"
+    definitions = (1..75).map { |index| "    @guard #{index} is a #guard" }.join("\n")
+    source = "DEFINE\n[\n#{definitions}\n].\n"
     inspector = BasicSharp::Ask.new(runtime(source))
     answers = inspector.answer_many(['what Things are guards'])
     report = inspector.report(answers)
@@ -264,10 +296,10 @@ class TestAsk < Minitest::Test
 
   def test_human_if_output_is_bounded_but_json_is_complete
     conditions = (1..60).map do |index|
-      "IF\n[player has #{index} value#{index}\n<then> (damage player]."
+      "IF PLAYER has #{index} value#{index}\n[\n    |then (damage PLAYER\n]."
     end.join("\n\n")
-    facts = (1..60).map { |index| "player has #{index} value#{index}" }.join("\n ")
-    source = "START\n[#{facts}].\n\n#{conditions}\n"
+    facts = (1..60).map { |index| "    PLAYER has #{index} value#{index}" }.join("\n")
+    source = "START\n[\n#{facts}\n].\n\n#{conditions}\n"
     inspector = BasicSharp::Ask.new(runtime(source))
     answers = inspector.answer_many(['what IF rules are true'])
     report = inspector.report(answers)
@@ -351,7 +383,7 @@ class TestAsk < Minitest::Test
     assert_empty stderr
     document = JSON.parse(stdout)
     assert_equal 'bsharp.ask.json', document.fetch('format')
-    assert_equal '0.1.32', document.fetch('created_by_basic_sharp')
+    assert_equal '0.1.35', document.fetch('created_by_basic_sharp')
     assert_equal ['what is henry', 'what is the world'], document.fetch('answers').map { |entry| entry.fetch('question') }
   end
 

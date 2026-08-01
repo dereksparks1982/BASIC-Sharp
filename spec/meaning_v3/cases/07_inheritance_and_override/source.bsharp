@@ -1,0 +1,31 @@
+KINDS
+[
+    #gate is a #door
+].
+DEFINE
+[
+    @north gate is a #gate
+].
+START
+[
+    @north gate is closed
+    @north gate has "North gate." description
+].
+HOVER for #door
+[
+    name
+    kind
+].
+HOVER for #gate
+[
+    state
+    description
+].
+CONTEXT for #door
+[
+    "Open" (change it to open
+].
+CONTEXT for @north gate
+[
+    "Open" (change it to closed
+].

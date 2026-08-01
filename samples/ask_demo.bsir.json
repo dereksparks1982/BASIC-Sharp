@@ -1,11 +1,11 @@
 {
-  "version": "0.1.32",
+  "version": "0.1.35",
   "format": "bsir.debug.json",
   "kinds": [
     {
       "name": "captain",
       "parent": "guard",
-      "line_number": 2
+      "line_number": 3
     }
   ],
   "objects": [
@@ -19,36 +19,36 @@
       "name": "henry",
       "kind": "guard",
       "builtin": false,
-      "line_number": 5
+      "line_number": 8
     },
     {
       "name": "mara",
       "kind": "captain",
       "builtin": false,
-      "line_number": 6
+      "line_number": 9
     },
     {
       "name": "brass bell",
       "kind": "device",
       "builtin": false,
-      "line_number": 7
+      "line_number": 10
     },
     {
       "name": "brass key",
       "kind": "key",
       "builtin": false,
-      "line_number": 8
+      "line_number": 11
     },
     {
       "name": "oak table",
       "kind": "table",
       "builtin": false,
-      "line_number": 9
+      "line_number": 12
     }
   ],
   "facts": [
     {
-      "line_number": 12,
+      "line_number": 17,
       "subject": {
         "type": "object",
         "text": "henry",
@@ -64,11 +64,11 @@
         "subject": "henry",
         "relation": "is",
         "value": "calm",
-        "line_number": 12
+        "line_number": 17
       }
     },
     {
-      "line_number": 13,
+      "line_number": 18,
       "subject": {
         "type": "object",
         "text": "mara",
@@ -84,11 +84,11 @@
         "subject": "mara",
         "relation": "is",
         "value": "calm",
-        "line_number": 13
+        "line_number": 18
       }
     },
     {
-      "line_number": 14,
+      "line_number": 19,
       "subject": {
         "type": "object",
         "text": "brass key",
@@ -106,11 +106,11 @@
         "subject": "brass key",
         "relation": "is",
         "value": "on oak table",
-        "line_number": 14
+        "line_number": 19
       }
     },
     {
-      "line_number": 15,
+      "line_number": 20,
       "subject": {
         "type": "object",
         "text": "henry",
@@ -124,13 +124,13 @@
         "subject": "henry",
         "relation": "has",
         "value": "10 health",
-        "line_number": 15
+        "line_number": 20
       }
     }
   ],
   "events": [
     {
-      "line_number": 17,
+      "line_number": 23,
       "when": {
         "raw": "player attacks a guard",
         "actor": {
@@ -153,7 +153,7 @@
       },
       "then": [
         {
-          "line_number": 19,
+          "line_number": 25,
           "action": "damage",
           "target": {
             "type": "previous",
@@ -164,7 +164,7 @@
           "amount": 3
         },
         {
-          "line_number": 20,
+          "line_number": 26,
           "action": "cause",
           "event": {
             "raw": "that guard attacks player",
@@ -184,7 +184,7 @@
           }
         },
         {
-          "line_number": 21,
+          "line_number": 27,
           "action": "change",
           "target": {
             "type": "previous",
@@ -200,7 +200,7 @@
       ]
     },
     {
-      "line_number": 23,
+      "line_number": 30,
       "when": {
         "raw": "a guard attacks player",
         "actor": {
@@ -223,7 +223,7 @@
       },
       "then": [
         {
-          "line_number": 25,
+          "line_number": 32,
           "action": "damage",
           "target": {
             "type": "object",
@@ -238,7 +238,7 @@
   ],
   "if_rules": [
     {
-      "line_number": 27,
+      "line_number": 35,
       "if": {
         "raw": "henry has 3 damage",
         "subject": {
@@ -253,7 +253,7 @@
       },
       "then": [
         {
-          "line_number": 29,
+          "line_number": 37,
           "action": "change",
           "target": {
             "type": "object",
@@ -268,6 +268,15 @@
         }
       ]
     }
+  ],
+  "controls": [
+
+  ],
+  "hover_declarations": [
+
+  ],
+  "context_declarations": [
+
   ],
   "diagnostics": [
 

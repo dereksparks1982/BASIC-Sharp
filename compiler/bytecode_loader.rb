@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'json'
 require_relative 'bytecode_contract'
 require_relative 'bytecode_disassembler'
 
@@ -93,7 +94,10 @@ module BasicSharp
         events: model.fetch(:events).length,
         if_rules: model.fetch(:if_rules).length,
         code_blocks: model.fetch(:blocks).length,
-        instructions: instruction_count
+        instructions: instruction_count,
+        controls: model.fetch(:controls, []).length,
+        hover_declarations: model.fetch(:hover_declarations, []).length,
+        context_declarations: model.fetch(:context_declarations, []).length
       }.freeze
     end
 
@@ -118,6 +122,7 @@ module BasicSharp
       parse_start_records!
       parse_events!
       parse_if_rules!
+      parse_game_sections!
       parse_code!
       validate_count_agreement!
       validate_string_usage_and_order!
@@ -138,7 +143,10 @@ module BasicSharp
         start_records: @start_records,
         events: @events,
         if_rules: @if_rules,
-        blocks: @blocks
+        blocks: @blocks,
+        controls: @controls,
+        hover_declarations: @hover_declarations,
+        context_declarations: @context_declarations
       }
     end
 
@@ -171,12 +179,13 @@ module BasicSharp
       unless binary_version == BytecodeContract::BINARY_FORMAT_VERSION
         raise BytecodeLoaderError, "BSharp Bytecode binary format version #{binary_version} is not supported."
       end
-      unless [1, 2].include?(profile_version)
+      unless [1, 2, 3].include?(profile_version)
         raise BytecodeLoaderError, "BSharp Bytecode profile format version #{profile_version} is not supported."
       end
       @profile_format_version = profile_version
       raise BytecodeLoaderError, 'BSharp Bytecode header size is wrong.' unless header_size == BytecodeContract::HEADER_SIZE_BYTES
-      raise BytecodeLoaderError, 'BSharp Bytecode section count is wrong.' unless section_count == BytecodeContract::SECTION_ORDER.length
+      expected_order = BytecodeContract.section_order_for_format(profile_version)
+      raise BytecodeLoaderError, 'BSharp Bytecode section count is wrong.' unless section_count == expected_order.length
       raise BytecodeLoaderError, 'BSharp Bytecode section directory offset is wrong.' unless directory_offset == BytecodeContract::HEADER_SIZE_BYTES
       unless directory_entry_size == BytecodeContract::DIRECTORY_ENTRY_SIZE_BYTES
         raise BytecodeLoaderError, 'BSharp Bytecode section-directory entry size is wrong.'
@@ -201,10 +210,10 @@ module BasicSharp
       if ids.uniq.length != ids.length
         raise BytecodeLoaderError, 'BSharp Bytecode contains a duplicate section.'
       end
-      unless (BytecodeContract::SECTION_ORDER - ids).empty? && (ids - BytecodeContract::SECTION_ORDER).empty?
+      unless (expected_order - ids).empty? && (ids - expected_order).empty?
         raise BytecodeLoaderError, 'BSharp Bytecode is missing a required section.'
       end
-      unless ids == BytecodeContract::SECTION_ORDER
+      unless ids == expected_order
         raise BytecodeLoaderError, 'BSharp Bytecode sections are in the wrong order.'
       end
 
@@ -278,7 +287,9 @@ module BasicSharp
       unless @strings.uniq.length == @strings.length
         raise BytecodeLoaderError, 'BSharp Bytecode string table contains a duplicate deterministic entry.'
       end
-      mandatory = if @profile_format_version == 2
+      mandatory = if @profile_format_version == 3
+                    [BytecodeContract::PROFILE_3, BytecodeContract::MEANING_PROFILE_3, 'sha256-bsir-meaning-v3']
+                  elsif @profile_format_version == 2
                     [BytecodeContract::PROFILE_2, BytecodeContract::MEANING_PROFILE_2, 'sha256-bsir-meaning-v2']
                   else
                     [BytecodeContract::PROFILE, BytecodeContract::MEANING_PROFILE, 'sha256-bsir-meaning-v1']
@@ -298,9 +309,9 @@ module BasicSharp
       fingerprint = data.byteslice(12, 32).unpack1('H*')
       kind_count, thing_count, start_count, event_count, if_count, block_count = data.byteslice(44, 24).unpack('V6')
       [profile_index, meaning_index, fingerprint_algorithm_index].each { |index| validate_string_index!(index) }
-      expected_profile = @profile_format_version == 2 ? BytecodeContract::PROFILE_2 : BytecodeContract::PROFILE
-      expected_meaning = @profile_format_version == 2 ? BytecodeContract::MEANING_PROFILE_2 : BytecodeContract::MEANING_PROFILE
-      expected_fingerprint = @profile_format_version == 2 ? 'sha256-bsir-meaning-v2' : 'sha256-bsir-meaning-v1'
+      expected_profile = { 1 => BytecodeContract::PROFILE, 2 => BytecodeContract::PROFILE_2, 3 => BytecodeContract::PROFILE_3 }.fetch(@profile_format_version)
+      expected_meaning = { 1 => BytecodeContract::MEANING_PROFILE, 2 => BytecodeContract::MEANING_PROFILE_2, 3 => BytecodeContract::MEANING_PROFILE_3 }.fetch(@profile_format_version)
+      expected_fingerprint = { 1 => 'sha256-bsir-meaning-v1', 2 => 'sha256-bsir-meaning-v2', 3 => 'sha256-bsir-meaning-v3' }.fetch(@profile_format_version)
       unless @strings.fetch(profile_index) == expected_profile
         raise BytecodeLoaderError, 'BSharp Bytecode uses an unsupported bytecode profile.'
       end
@@ -446,6 +457,42 @@ module BasicSharp
       end
       unless cursor == data.bytesize
         raise BytecodeLoaderError, 'BSharp Bytecode IFRL section contains a truncated record or trailing bytes.'
+      end
+    end
+
+    def parse_game_sections!
+      @controls = []
+      @hover_declarations = []
+      @context_declarations = []
+      return unless @profile_format_version == 3
+
+      @controls = parse_game_section!('CTRL', 'controls')
+      @hover_declarations = parse_game_section!('HOVR', 'hover declarations')
+      @context_declarations = parse_game_section!('CTXT', 'context declarations')
+    end
+
+    def parse_game_section!(id, label)
+      data = section(id)
+      unless data.dup.force_encoding(Encoding::UTF_8).valid_encoding?
+        raise BytecodeLoaderError, "BSharp Bytecode #{id} section is not valid UTF-8."
+      end
+      parsed = JSON.parse(data)
+      unless parsed.is_a?(Array) && parsed.length == directory_entry(id).fetch(:count)
+        raise BytecodeLoaderError, "BSharp Bytecode #{label} count does not match its section directory."
+      end
+      deep_symbolize(parsed)
+    rescue JSON::ParserError
+      raise BytecodeLoaderError, "BSharp Bytecode #{id} section is not valid canonical game data."
+    end
+
+    def deep_symbolize(value)
+      case value
+      when Hash
+        value.each_with_object({}) { |(key, entry), result| result[key.to_sym] = deep_symbolize(entry) }
+      when Array
+        value.map { |entry| deep_symbolize(entry) }
+      else
+        value
       end
     end
 
@@ -890,13 +937,13 @@ module BasicSharp
     end
 
     def profile_name
-      @profile_format_version == 2 ? BytecodeContract::PROFILE_2 : BytecodeContract::PROFILE
+      { 1 => BytecodeContract::PROFILE, 2 => BytecodeContract::PROFILE_2, 3 => BytecodeContract::PROFILE_3 }.fetch(@profile_format_version)
     end
 
     def require_profile_2!(name)
-      return if @profile_format_version == 2
+      return if [2, 3].include?(@profile_format_version)
 
-      raise BytecodeLoaderError, "BSharp Bytecode #{name} requires Profile 2."
+      raise BytecodeLoaderError, "BSharp Bytecode #{name} requires Profile 2 or Profile 3."
     end
 
     def validate_string_roles!

@@ -1,7 +1,7 @@
 {
   "format": "bsharp.save.json",
   "format_version": 1,
-  "created_by_basic_sharp": "0.1.32",
+  "created_by_basic_sharp": "0.1.35",
   "program_fingerprint": {
     "algorithm": "sha256-bsir-meaning-v1",
     "value": "f5d9e178e8e6ff29321630d829fba723957b8dcc01913a11b3f9f2f655796375"
@@ -19,7 +19,7 @@
         "relations": {
         },
         "values": {
-          "damage": 1
+          "damage": 0
         }
       },
       {
@@ -27,12 +27,12 @@
         "kind": "guard",
         "builtin": false,
         "states": [
-          "angry"
+          "calm"
         ],
         "relations": {
         },
         "values": {
-          "damage": 3,
+          "damage": 0,
           "health": 10
         }
       },
@@ -41,7 +41,7 @@
         "kind": "captain",
         "builtin": false,
         "states": [
-          "angry"
+          "calm"
         ],
         "relations": {
         },
@@ -94,7 +94,7 @@
       {
         "index": 0,
         "condition": "henry has 3 damage",
-        "active": true
+        "active": false
       }
     ]
   }

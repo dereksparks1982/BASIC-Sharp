@@ -69,7 +69,8 @@ bsir_default = bsir_machine.preferred? && bsir_result.fetch('matched') &&
 bsbc_out, bsbc_err, bsbc_status = PreferredRuntimeAudit.cli(
   File.join(ROOT, 'samples/first_room.bsbc'), '--run', 'player attacks cinder'
 )
-direct_bsbc = bsbc_status.success? && bsbc_err.empty? && bsbc_out.include?('BSharp Virtual Machine v0.1.32')
+direct_bsbc = bsbc_status.success? && bsbc_err.empty? &&
+              bsbc_out.include?("BSharp Virtual Machine v#{BasicSharp::VERSION}")
 
 in_memory = source_machine.loader.is_a?(BasicSharp::BytecodeLoader) &&
             source_machine.loader.source_label == '(in-memory preferred runtime bytecode)' &&
@@ -84,7 +85,7 @@ end
 reference_machine = PreferredRuntimeAudit.transition(first, mode: :reference)
 reference_result = reference_machine.run_event('player attacks cinder')
 reference_opt_in = reference_machine.reference? && reference_machine.loader.nil? &&
-                   reference_machine.report(reference_result).include?('BASIC# Runtime v0.1.32')
+                   reference_machine.report(reference_result).include?("BASIC# Runtime v#{BasicSharp::VERSION}")
 
 default_independence = begin
   singleton = BasicSharp::Runtime.singleton_class
@@ -167,6 +168,10 @@ text_profile_shadow = text_result.fetch('matched') && text_result['error'].nil? 
                       text_machine.meaning_profile == 'bsharp.meaning.v2' &&
                       text_machine.snapshot.any? { |entry| entry.dig('values', 'title') == 'OPEN — RubyVM!' }
 
+game_source = File.join(ROOT, 'samples/demon_killer_controls.bsharp')
+game_machine = PreferredRuntimeAudit.transition({ 'source' => 'samples/demon_killer_controls.bsharp' }, mode: :verify, document: PreferredRuntimeAudit.resolve(game_source))
+game_profile_shadow = game_machine.meaning_profile == 'bsharp.meaning.v3' && game_machine.game_declarations.fetch('controls').length == 1
+
 checks = {
   'Source defaults to BSharp VM' => source_default,
   'BSIR defaults to BSharp VM' => bsir_default,
@@ -185,12 +190,13 @@ checks = {
   'Restore and replay shadow parity' => restore_shadow,
   'Mismatch detection' => mismatch_detection,
   'Deterministic repeated execution' => deterministic,
-  'Meaning Profile 2 text shadow parity' => text_profile_shadow
+  'Meaning Profile 2 text shadow parity' => text_profile_shadow,
+  'Meaning Profile 3 game shadow parity' => game_profile_shadow
 }
 
 checks.each { |label, passed| PreferredRuntimeAudit.assert!(passed, label) }
 
-puts 'BASIC# Preferred Runtime Transition v0.1.32'
+puts "BASIC# Preferred Runtime Transition v#{BasicSharp::VERSION}"
 puts "Sample programs: #{FIXTURE.fetch('samples').length}"
 puts "Valid Meaning Profile cases: #{FIXTURE.fetch('meaning_cases').length}"
 puts

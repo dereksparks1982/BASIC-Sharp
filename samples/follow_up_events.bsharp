@@ -1,26 +1,34 @@
 DEFINE
-[a guard named henry
- a guard named mara
- a device named brass bell].
+[
+    @henry is a #guard
+    @mara is a #guard
+    @brass bell is a #device
+].
 
 START
-[henry is calm
- mara is calm].
+[
+    @henry is calm
+    @mara is calm
+].
 
-WHEN
-[player attacks a guard
-<then> (damage that guard
-<then> (cause that guard attacks player
-<then> (change that guard to angry].
+WHEN PLAYER attacks a #guard
+[
+    |then (damage it
+    |then (cause it attacks PLAYER
+    |then (change it to angry
+].
 
-IF
-[henry is angry
-<then> (cause mara sounds brass bell].
+IF @henry is angry
+[
+    |then (cause @mara sounds @brass bell
+].
 
-WHEN
-[a guard attacks player
-<then> (damage player].
+WHEN a #guard attacks PLAYER
+[
+    |then (damage PLAYER
+].
 
-WHEN
-[mara sounds brass bell
-<then> (change mara to angry].
+WHEN @mara sounds @brass bell
+[
+    |then (change @mara to angry
+].

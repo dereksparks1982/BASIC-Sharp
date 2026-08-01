@@ -87,6 +87,8 @@ assert_pass(invalid_rejected, 'Invalid-program rejection')
 assert_pass(atomic_output, 'Atomic output safety')
 assert_pass(!forbidden_data, 'No Ruby-specific serialized data')
 assert_pass(text_profile, 'Profile 2 exact text emission')
+game_emitter = BasicSharp::BytecodeEmitter.new(resolve(File.join(ROOT, 'samples/demon_killer_controls.bsharp')))
+assert_pass(game_emitter.profile == 'bsharp.bytecode.v3', 'Profile 3 game emission')
 
 fixture_path = File.join(ROOT, 'spec/bytecode_v1/BASIC_SHARP_BYTECODE_EMITTER_FIXTURES_v1.json')
 fixture = JSON.parse(File.read(fixture_path))
@@ -106,9 +108,10 @@ Array(fixture['meaning_cases']).each do |entry|
 end
 assert_pass(fixture_hashes, 'Fixture hashes')
 
-puts 'BSharp Bytecode Emitter v0.1.32'
+puts 'BSharp Bytecode Emitter v0.1.35'
 puts "Profile 1 sample artifacts: #{PROFILE_1_SAMPLES.length}"
 puts 'Profile 2 sample artifacts: 1'
+puts 'Profile 3 sample artifacts: 1'
 puts 'Valid Meaning Profile cases: 12'
 puts
 puts 'Source and BSIR byte parity: PASS'

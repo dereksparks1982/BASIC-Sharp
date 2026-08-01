@@ -1,27 +1,37 @@
 KINDS
-[guard is a person].
+[
+    #guard is a #person
+].
 
 DEFINE
-[a guard named henry
- a device named brass bell].
+[
+    @henry is a #guard
+    @brass bell is a #device
+].
 
 START
-[henry is calm
-brass bell is off].
+[
+    @henry is calm
+    @brass bell is off
+].
 
-WHEN
-[player attacks henry
-<then> (change henry to angry].
+WHEN PLAYER attacks @henry
+[
+    |then (change @henry to angry
+].
 
-WHEN
-[player sounds brass bell
-<then> (change henry to calm
-<then> (change brass bell to off].
+WHEN PLAYER sounds @brass bell
+[
+    |then (change @henry to calm
+    |then (change @brass bell to off
+].
 
-IF
-[henry is angry
-<then> (change brass bell to on].
+IF @henry is angry
+[
+    |then (change @brass bell to on
+].
 
-IF
-[brass bell is on
-<then> (damage player].
+IF @brass bell is on
+[
+    |then (damage PLAYER
+].

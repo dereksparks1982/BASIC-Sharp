@@ -1,9 +1,13 @@
 KINDS
-[guard is a person
-captain is a guard
-elite is a captain].
+[
+    #guard is a #person
+    #captain is a #guard
+    #elite is a #captain
+].
 
 DEFINE
-[a elite named mara
- a guard named henry
- a captain named june].
+[
+    @mara is a #elite
+    @henry is a #guard
+    @june is a #captain
+].

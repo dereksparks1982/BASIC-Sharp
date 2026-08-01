@@ -51,10 +51,14 @@ class TestResolver < Minitest::Test
   def test_warns_about_unresolved_definite_kind
     document = resolve(<<~DKS)
       DEFINE
-      [a key named brass key].
+      [
+          @brass key is a #key
+      ].
 
       START
-      [brass key is on the table].
+      [
+          @brass key is on the #table
+      ].
     DKS
 
     warnings = document.diagnostics.select { |diagnostic| diagnostic.severity == 'warning' }.map(&:message)
@@ -68,12 +72,15 @@ class TestResolver < Minitest::Test
   def test_reports_ambiguous_definite_kind
     document = resolve(<<~DKS)
       DEFINE
-      [a door named north door
-      a door named cellar door].
+      [
+          @north door is a #door
+          @cellar door is a #door
+      ].
 
-      IF
-      [the door is locked
-      <then> (unlock the door].
+      IF the #door is locked
+      [
+          |then (unlock the #door
+      ].
     DKS
 
     messages = document.diagnostics.map(&:message)
@@ -84,14 +91,19 @@ class TestResolver < Minitest::Test
   def test_reports_unknown_action_and_state
     document = resolve(<<~DKS)
       DEFINE
-      [a guard named henry].
+      [
+          @henry is a #guard
+      ].
 
       START
-      [henry is sleepy].
+      [
+          @henry is sleepy
+      ].
 
-      WHEN
-      [player attacks henry
-      <then> (explode henry].
+      WHEN PLAYER attacks @henry
+      [
+          |then (explode @henry
+      ].
     DKS
 
     errors = document.diagnostics.select { |diagnostic| diagnostic.severity == 'error' }.map(&:message)
@@ -102,16 +114,21 @@ class TestResolver < Minitest::Test
   def test_inherited_kind_selector_finds_descendant_object
     document = resolve(<<~DKS)
       KINDS
-      [creature is a thing
-      dragon is a creature
-      wyrm is a dragon].
+      [
+          #creature is a #thing
+          #dragon is a #creature
+          #wyrm is a #dragon
+      ].
 
       DEFINE
-      [a wyrm named ember].
+      [
+          @ember is a #wyrm
+      ].
 
-      IF
-      [the creature is calm
-      <then> (damage the creature].
+      IF the #creature is calm
+      [
+          |then (damage the #creature
+      ].
     DKS
 
     subject = document.if_rules.first.dig('if', 'subject')
@@ -121,12 +138,16 @@ class TestResolver < Minitest::Test
 
     parser = BasicSharp::Parser.new(<<~DKS)
       KINDS
-      [creature is a thing
-      dragon is a creature
-      wyrm is a dragon].
+      [
+          #creature is a #thing
+          #dragon is a #creature
+          #wyrm is a #dragon
+      ].
 
       DEFINE
-      [a wyrm named ember].
+      [
+          @ember is a #wyrm
+      ].
     DKS
     parser.parse
     assert_equal ['ember'], parser.dictionary.objects_by_kind('creature')

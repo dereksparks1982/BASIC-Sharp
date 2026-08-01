@@ -7,6 +7,8 @@ root = File.expand_path('..', __dir__)
 path = File.join(root, 'spec/bytecode_v1/BASIC_SHARP_BYTECODE_PROFILE_v1.json')
 profile = BasicSharp::BytecodeContract.load_profile(path)
 BasicSharp::BytecodeContract.validate_profile!(profile, root: root)
+profile_3 = BasicSharp::BytecodeContract.load_profile(File.join(root, 'spec/bytecode_v3/BASIC_SHARP_BYTECODE_PROFILE_v3.json'))
+BasicSharp::BytecodeContract.validate_profile!(profile_3, root: root)
 
 puts 'BSharp Bytecode Contract v1'
 puts 'Artifact identity: PASS'
@@ -17,6 +19,7 @@ puts 'Selector and condition identities: PASS'
 puts 'Operand contracts: PASS'
 puts 'Reserved ranges: PASS'
 puts 'Profile 1 coverage: PASS'
+puts 'Profile 3 CTRL/HOVR/CTXT coverage: PASS'
 puts 'Readable disassembly grammar: PASS'
 puts 'Emission ordering and atomic-output rules: PASS'
 puts 'Loader boundary and trusted-model rules: PASS'

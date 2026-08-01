@@ -1,19 +1,27 @@
 KINDS
-[gate is a door].
+[
+    #gate is a #door
+].
 
 DEFINE
-[a gate named north gate
-a gate named south gate
-a device named brass bell].
+[
+    @north gate is a #gate
+    @south gate is a #gate
+    @brass bell is a #device
+].
 
 START
-[north gate has "North  Gate!" title
-south gate has "South Gate." title].
+[
+    @north gate has "North  Gate!" title
+    @south gate has "South Gate." title
+].
 
-WHEN
-[player sounds brass bell
-<then> (change title of every gate to "OPEN — RubyVM!"].
+WHEN PLAYER sounds @brass bell
+[
+    |then (change title of every #gate to "OPEN — RubyVM!"
+].
 
-IF
-[north gate has "OPEN — RubyVM!" title
-<then> (damage player].
+IF @north gate has "OPEN — RubyVM!" title
+[
+    |then (damage PLAYER
+].

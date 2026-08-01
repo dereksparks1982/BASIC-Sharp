@@ -28,30 +28,41 @@ class TestMultipleSelection < Minitest::Test
   end
 
   def base_source(actions: ['(damage every guard'])
+    actions = actions.map do |line|
+      line.gsub(/every (guard|key|door)/, 'every #\\1')
+          .gsub(/\b(henry|mara|otto|brass bell|brass key|iron key|north door|south door)\b/, '@\\1')
+    end
     <<~BS
       KINDS
-      [captain is a guard].
+      [
+          #captain is a #guard
+      ].
 
       DEFINE
-      [a guard named henry
-      a captain named mara
-      a guard named otto
-      a device named brass bell
-      a key named brass key
-      a key named iron key
-      a door named north door
-      a door named south door].
+      [
+          @henry is a #guard
+          @mara is a #captain
+          @otto is a #guard
+          @brass bell is a #device
+          @brass key is a #key
+          @iron key is a #key
+          @north door is a #door
+          @south door is a #door
+      ].
 
       START
-      [henry is calm
-      mara is calm
-      otto is calm
-      north door is locked
-      south door is locked].
+      [
+          @henry is calm
+          @mara is calm
+          @otto is calm
+          @north door is locked
+          @south door is locked
+      ].
 
-      WHEN
-      [player sounds brass bell
-      #{actions.map { |action| "<then> #{action}" }.join("\n")}].
+      WHEN PLAYER sounds @brass bell
+      [
+          #{actions.map { |action| "|then #{action}" }.join("\n")}
+      ].
     BS
   end
 
@@ -97,17 +108,22 @@ class TestMultipleSelection < Minitest::Test
   def test_plural_action_never_overwrites_singular_that_kind_context
     source = <<~BS
       KINDS
-      [captain is a guard].
+      [
+          #captain is a #guard
+      ].
 
       DEFINE
-      [a guard named henry
-      a captain named mara
-      a guard named otto].
+      [
+          @henry is a #guard
+          @mara is a #captain
+          @otto is a #guard
+      ].
 
-      WHEN
-      [player attacks a guard
-      <then> (damage every guard
-      <then> (change that guard to angry].
+      WHEN PLAYER attacks a #guard
+      [
+          |then (damage every #guard
+          |then (change it to angry
+      ].
     BS
 
     result = runtime(source).run_event('player attacks henry')
@@ -124,13 +140,16 @@ class TestMultipleSelection < Minitest::Test
   def test_named_and_definite_single_targets_keep_existing_meaning
     source = <<~BS
       DEFINE
-      [a guard named henry
-      a door named north door].
+      [
+          @henry is a #guard
+          @north door is a #door
+      ].
 
-      WHEN
-      [player attacks henry
-      <then> (damage henry
-      <then> (unlock the door].
+      WHEN PLAYER attacks @henry
+      [
+          |then (damage @henry
+          |then (unlock the #door
+      ].
     BS
 
     result = runtime(source).run_event('player attacks henry')
@@ -141,12 +160,15 @@ class TestMultipleSelection < Minitest::Test
   def test_known_empty_set_is_nonfatal_and_explained
     source = <<~BS
       DEFINE
-      [a device named brass bell].
+      [
+          @brass bell is a #device
+      ].
 
-      WHEN
-      [player sounds brass bell
-      <then> (damage every guard
-      <then> (change brass bell to on].
+      WHEN PLAYER sounds @brass bell
+      [
+          |then (damage every #guard
+          |then (change @brass bell to on
+      ].
     BS
 
     machine = runtime(source)
@@ -165,39 +187,49 @@ class TestMultipleSelection < Minitest::Test
   def test_unknown_set_kind_remains_a_compiler_error
     document = resolve(<<~BS)
       DEFINE
-      [a device named brass bell].
+      [
+          @brass bell is a #device
+      ].
 
-      WHEN
-      [player sounds brass bell
-      <then> (damage every martian].
+      WHEN PLAYER sounds @brass bell
+      [
+          |then (damage every #martian
+      ].
     BS
 
     messages = document.diagnostics.select { |diagnostic| diagnostic.severity == 'error' }.map(&:message)
-    assert_includes messages, "unknown kind 'martian'"
+    assert_includes messages, "unknown Kind '#martian'"
   end
 
   def test_every_is_rejected_in_when_trigger_with_plain_guidance
     document = resolve(<<~BS)
       DEFINE
-      [a guard named henry].
+      [
+          @henry is a #guard
+      ].
 
-      WHEN
-      [player attacks every guard
-      <then> (damage henry].
+      WHEN PLAYER attacks every #guard
+      [
+          |then (damage @henry
+      ].
     BS
 
     message = document.diagnostics.map(&:message).find { |item| item.include?('WHEN still describes one event Thing') }
     refute_nil message
-    assert_includes message, "'every guard' can be used as an action target after <then>."
+    assert_includes message, "'every guard' can be used as an action target after |then."
   end
 
   def test_every_is_rejected_in_start_with_plain_guidance
     document = resolve(<<~BS)
       DEFINE
-      [a guard named henry].
+      [
+          @henry is a #guard
+      ].
 
       START
-      [every guard is calm].
+      [
+          every #guard is calm
+      ].
     BS
 
     message = document.diagnostics.map(&:message).find { |item| item.include?('START still describes one Thing at a time') }
@@ -207,11 +239,14 @@ class TestMultipleSelection < Minitest::Test
   def test_every_is_rejected_in_if_condition_without_guessing_all_or_any
     document = resolve(<<~BS)
       DEFINE
-      [a guard named henry].
+      [
+          @henry is a #guard
+      ].
 
-      IF
-      [every guard is calm
-      <then> (damage henry].
+      IF every #guard is calm
+      [
+          |then (damage @henry
+      ].
     BS
 
     message = document.diagnostics.map(&:message).find { |item| item.include?('not yet supported inside an IF condition') }
@@ -222,12 +257,15 @@ class TestMultipleSelection < Minitest::Test
   def test_unbound_a_kind_action_target_gets_plain_correction
     document = resolve(<<~BS)
       DEFINE
-      [a guard named henry
-      a device named brass bell].
+      [
+          @henry is a #guard
+          @brass bell is a #device
+      ].
 
-      WHEN
-      [player sounds brass bell
-      <then> (damage a guard].
+      WHEN PLAYER sounds @brass bell
+      [
+          |then (damage a #guard
+      ].
     BS
 
     message = document.diagnostics.map(&:message).find { |item| item.include?('cannot choose one guard here') }
@@ -238,16 +276,21 @@ class TestMultipleSelection < Minitest::Test
   def test_if_action_can_target_every_kind
     source = <<~BS
       DEFINE
-      [a guard named henry
-      a guard named otto
-      a device named alarm].
+      [
+          @henry is a #guard
+          @otto is a #guard
+          @alarm is a #device
+      ].
 
       START
-      [alarm is on].
+      [
+          @alarm is on
+      ].
 
-      IF
-      [alarm is on
-      <then> (damage every guard].
+      IF @alarm is on
+      [
+          |then (damage every #guard
+      ].
     BS
 
     machine = runtime(source)
@@ -294,15 +337,18 @@ class TestMultipleSelection < Minitest::Test
   end
 
   def test_large_human_report_is_bounded_while_structured_results_are_complete
-    guards = (1..20).map { |index| "a guard named guard #{index}" }.join("\n")
+    guards = (1..20).map { |index| "@guard #{index} is a #guard" }.join("\n")
     source = <<~BS
       DEFINE
-      [#{guards}
-      a device named brass bell].
+      [
+          #{guards}
+          @brass bell is a #device
+      ].
 
-      WHEN
-      [player sounds brass bell
-      <then> (damage every guard].
+      WHEN PLAYER sounds @brass bell
+      [
+          |then (damage every #guard
+      ].
     BS
 
     machine = runtime(source)

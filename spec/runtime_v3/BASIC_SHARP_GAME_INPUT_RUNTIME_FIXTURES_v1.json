@@ -1,0 +1,8 @@
+{
+  "format": "bsharp.game.input.runtime.fixtures.json",
+  "format_version": 1,
+  "meaning_profile": "bsharp.meaning.v3",
+  "input": "samples/demon_killer_controls.input.json",
+  "expected": "samples/demon_killer_controls.expected.json",
+  "expected_sha256": "ce55d21a264a06416c3a8cc6c20174f4858fcc39d3192f4f3ee5328924e7e678"
+}

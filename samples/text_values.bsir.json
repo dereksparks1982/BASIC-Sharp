@@ -1,11 +1,11 @@
 {
-  "version": "0.1.32",
+  "version": "0.1.35",
   "format": "bsir.debug.json",
   "kinds": [
     {
       "name": "gate",
       "parent": "door",
-      "line_number": 2
+      "line_number": 3
     }
   ],
   "objects": [
@@ -19,24 +19,24 @@
       "name": "north gate",
       "kind": "gate",
       "builtin": false,
-      "line_number": 5
+      "line_number": 8
     },
     {
       "name": "south gate",
       "kind": "gate",
       "builtin": false,
-      "line_number": 6
+      "line_number": 9
     },
     {
       "name": "brass bell",
       "kind": "device",
       "builtin": false,
-      "line_number": 7
+      "line_number": 10
     }
   ],
   "facts": [
     {
-      "line_number": 10,
+      "line_number": 15,
       "subject": {
         "type": "object",
         "text": "north gate",
@@ -53,12 +53,12 @@
           "kind": "text",
           "value": "North  Gate!"
         },
-        "line_number": 10,
+        "line_number": 15,
         "value_name": "title"
       }
     },
     {
-      "line_number": 11,
+      "line_number": 16,
       "subject": {
         "type": "object",
         "text": "south gate",
@@ -75,14 +75,14 @@
           "kind": "text",
           "value": "South Gate."
         },
-        "line_number": 11,
+        "line_number": 16,
         "value_name": "title"
       }
     }
   ],
   "events": [
     {
-      "line_number": 13,
+      "line_number": 19,
       "when": {
         "raw": "player sounds brass bell",
         "actor": {
@@ -101,7 +101,7 @@
       },
       "then": [
         {
-          "line_number": 15,
+          "line_number": 21,
           "action": "change",
           "value_name": "title",
           "target": {
@@ -121,7 +121,7 @@
   ],
   "if_rules": [
     {
-      "line_number": 17,
+      "line_number": 24,
       "if": {
         "raw": "north gate has \"OPEN — RubyVM!\" title",
         "subject": {
@@ -136,7 +136,7 @@
       },
       "then": [
         {
-          "line_number": 19,
+          "line_number": 26,
           "action": "damage",
           "target": {
             "type": "object",
@@ -148,6 +148,15 @@
         }
       ]
     }
+  ],
+  "controls": [
+
+  ],
+  "hover_declarations": [
+
+  ],
+  "context_declarations": [
+
   ],
   "diagnostics": [
 

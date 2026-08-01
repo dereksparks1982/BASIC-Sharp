@@ -1,0 +1,73 @@
+{
+  "format": "bsharp.save.json",
+  "format_version": 3,
+  "created_by_basic_sharp": "0.1.35",
+  "program_fingerprint": {
+    "algorithm": "sha256-bsir-meaning-v3",
+    "value": "edf2a19cbd548fbe07a4284511c43e578a32c9b4b3df2a62d480b0e26a6b6c79"
+  },
+  "world": {
+    "settled": true,
+    "things": [
+      {
+        "name": "player",
+        "kind": "person",
+        "builtin": true,
+        "states": [
+
+        ],
+        "relations": {
+        },
+        "values": {
+          "damage": {
+            "type": "whole_number",
+            "value": 0
+          },
+          "speed": {
+            "type": "whole_number",
+            "value": 3
+          }
+        }
+      },
+      {
+        "name": "north gate",
+        "kind": "gate",
+        "builtin": false,
+        "states": [
+          "closed"
+        ],
+        "relations": {
+        },
+        "values": {
+          "damage": {
+            "type": "whole_number",
+            "value": 0
+          },
+          "description": {
+            "type": "text",
+            "value": "A heavy oak gate."
+          }
+        }
+      },
+      {
+        "name": "iron sword",
+        "kind": "weapon",
+        "builtin": false,
+        "states": [
+
+        ],
+        "relations": {
+        },
+        "values": {
+          "damage": {
+            "type": "whole_number",
+            "value": 0
+          }
+        }
+      }
+    ],
+    "if_rules": [
+
+    ]
+  }
+}

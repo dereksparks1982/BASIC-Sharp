@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 module BasicSharp
-  VERSION = '0.1.32'
+  VERSION = '0.1.35'
 
-  Statement = Struct.new(:starter, :children, :line_number, keyword_init: true) do
+  Statement = Struct.new(:starter, :head, :children, :line_number, keyword_init: true) do
     def to_h
       {
         starter: starter,
+        head: head,
         line_number: line_number,
         children: children.map(&:to_h)
       }
@@ -71,7 +72,35 @@ module BasicSharp
     end
   end
 
-  Program = Struct.new(:statements, :kind_definitions, :definitions, :facts, :event_rules, :if_rules, :diagnostics, keyword_init: true) do
+  ControlDeclaration = Struct.new(:subject, :instructions, :line_number, keyword_init: true) do
+    def to_h
+      { subject: subject, instructions: instructions, line_number: line_number }
+    end
+  end
+
+  HoverDeclaration = Struct.new(:subject, :fields, :line_number, keyword_init: true) do
+    def to_h
+      { subject: subject, fields: fields, line_number: line_number }
+    end
+  end
+
+  ContextEntry = Struct.new(:label, :condition, :action, :line_number, keyword_init: true) do
+    def to_h
+      { label: label, condition: condition, action: action&.to_h, line_number: line_number }
+    end
+  end
+
+  ContextDeclaration = Struct.new(:subject, :entries, :line_number, keyword_init: true) do
+    def to_h
+      { subject: subject, entries: entries.map(&:to_h), line_number: line_number }
+    end
+  end
+
+  Program = Struct.new(
+    :statements, :kind_definitions, :definitions, :facts, :event_rules, :if_rules,
+    :controls, :hover_declarations, :context_declarations, :diagnostics,
+    keyword_init: true
+  ) do
     def to_h
       {
         version: VERSION,
@@ -81,6 +110,9 @@ module BasicSharp
         facts: facts.map(&:to_h),
         event_rules: event_rules.map(&:to_h),
         if_rules: if_rules.map(&:to_h),
+        controls: controls.map(&:to_h),
+        hover_declarations: hover_declarations.map(&:to_h),
+        context_declarations: context_declarations.map(&:to_h),
         diagnostics: diagnostics.map(&:to_h)
       }
     end

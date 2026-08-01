@@ -1,0 +1,213 @@
+{
+  "case_id": "05_context_state_menu",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "context_declarations": [
+        {
+          "entries": [
+            {
+              "action": {
+                "action": "change",
+                "target": {
+                  "text": "it",
+                  "type": "context_it"
+                },
+                "to": {
+                  "kind": "state",
+                  "name": "open"
+                }
+              },
+              "condition": {
+                "relation": "is",
+                "subject": {
+                  "text": "it",
+                  "type": "context_it"
+                },
+                "value": {
+                  "kind": "state",
+                  "name": "closed"
+                }
+              },
+              "label": "Open"
+            },
+            {
+              "action": {
+                "action": "change",
+                "target": {
+                  "text": "it",
+                  "type": "context_it"
+                },
+                "to": {
+                  "kind": "state",
+                  "name": "closed"
+                }
+              },
+              "condition": {
+                "relation": "is",
+                "subject": {
+                  "text": "it",
+                  "type": "context_it"
+                },
+                "value": {
+                  "kind": "state",
+                  "name": "open"
+                }
+              },
+              "label": "Close"
+            }
+          ],
+          "subject": {
+            "kind_name": "door",
+            "text": "#door",
+            "type": "kind_declaration"
+          }
+        }
+      ],
+      "controls": [
+
+      ],
+      "events": [
+
+      ],
+      "facts": [
+        {
+          "relation": "is",
+          "subject": {
+            "name": "north door",
+            "object_kind": "door",
+            "text": "north door",
+            "type": "object"
+          },
+          "value": {
+            "kind": "state",
+            "name": "closed"
+          }
+        }
+      ],
+      "hover_declarations": [
+
+      ],
+      "if_rules": [
+
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "door",
+          "name": "north door"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "events": [
+
+    ],
+    "final": {
+      "if_rules": [
+
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "door",
+          "name": "north door",
+          "relations": {
+          },
+          "states": [
+            "closed"
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 2,
+        "true_if_rules": 0,
+        "whole_number_values": 2
+      }
+    },
+    "startup": {
+      "if_rules": [
+
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "door",
+          "name": "north door",
+          "relations": {
+          },
+          "states": [
+            "closed"
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 2,
+        "true_if_rules": 0,
+        "whole_number_values": 2
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v3",
+  "source_bsir_parity": true
+}

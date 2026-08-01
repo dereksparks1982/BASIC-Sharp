@@ -9,6 +9,7 @@ require_relative '../compiler/runtime'
 require_relative '../compiler/bytecode_emitter'
 require_relative '../compiler/bytecode_loader'
 require_relative '../compiler/bytecode_virtual_machine'
+require_relative '../compiler/game_interaction'
 
 ROOT = File.expand_path('..', __dir__)
 FIXTURE_PATH = File.join(ROOT, 'spec/bytecode_v1/BASIC_SHARP_BYTECODE_VM_FIXTURES_v1.json')
@@ -95,29 +96,38 @@ text_profile_parity = VMConformance.semantic_result(text_runtime_result) == VMCo
 
 if_loop_source = <<~BSHARP
   DEFINE
-  [a creature named ember].
+  [
+      @ember is a #creature
+  ].
 
   START
-  [ember is calm].
+  [
+      @ember is calm
+  ].
 
-  IF
-  [ember is calm
-  <then> (change ember to angry].
+  IF @ember is calm
+  [
+      |then (change @ember to angry
+  ].
 
-  IF
-  [ember is angry
-  <then> (change ember to calm].
+  IF @ember is angry
+  [
+      |then (change @ember to calm
+  ].
 BSHARP
 if_loop_vm = VMConformance.vm_from_resolved(VMConformance.resolve(if_loop_source, file: false))
 if_loop_protection = if_loop_vm.startup_if_error.to_s.include?('kept waking each other')
 
 event_loop_source = <<~BSHARP
   DEFINE
-  [a device named brass bell].
+  [
+      @brass bell is a #device
+  ].
 
-  WHEN
-  [player sounds brass bell
-  <then> (cause player sounds brass bell].
+  WHEN PLAYER sounds @brass bell
+  [
+      |then (cause PLAYER sounds @brass bell
+  ].
 BSHARP
 event_loop_vm = VMConformance.vm_from_resolved(VMConformance.resolve(event_loop_source, file: false))
 event_loop_result = event_loop_vm.run_event('player sounds brass bell')
@@ -164,12 +174,19 @@ checks = {
   'Meaning Profile 2 text parity' => text_profile_parity
 }
 
+game_loader = BasicSharp::BytecodeLoader.read(File.join(ROOT, 'samples/demon_killer_controls.bsbc'))
+game_vm = BasicSharp::BytecodeVirtualMachine.new(game_loader)
+interaction = BasicSharp::GameInteraction.new(game_loader.model, machine: game_vm)
+game_result = interaction.execute('north gate', 'Open')
+checks['Meaning Profile 3 context execution'] = game_result['error'].nil? && game_vm.ask_thing('north gate').fetch('states') == ['open']
+
 checks.each { |label, passed| VMConformance.assert!(passed, label) }
 
-puts 'BSharp Virtual Machine v0.1.32'
+puts 'BSharp Virtual Machine v0.1.35'
 puts "Sample programs: #{FIXTURE.fetch('sample_programs').length}"
 puts "Valid Meaning Profile cases: #{FIXTURE.fetch('meaning_cases').length}"
 puts 'Valid Meaning Profile 2 text sample: 1'
+puts 'Valid Meaning Profile 3 game sample: 1'
 puts
 checks.each { |label, _passed| puts "#{label}: PASS" }
 puts

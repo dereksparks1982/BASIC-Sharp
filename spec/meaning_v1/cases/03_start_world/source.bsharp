@@ -1,9 +1,13 @@
 DEFINE
-[a guard named henry
- a key named brass key
- a table named oak table].
+[
+    @henry is a #guard
+    @brass key is a #key
+    @oak table is a #table
+].
 
 START
-[henry is calm
-henry has 10 health
-brass key is on oak table].
+[
+    @henry is calm
+    @henry has 10 health
+    @brass key is on @oak table
+].

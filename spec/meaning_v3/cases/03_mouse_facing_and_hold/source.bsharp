@@ -1,0 +1,5 @@
+CONTROLS for PLAYER
+[
+    PLAYER faces mouse pointer
+    holding right mouse moves PLAYER toward mouse pointer
+].

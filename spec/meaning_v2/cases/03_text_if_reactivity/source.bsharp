@@ -1,18 +1,25 @@
 DEFINE
-[a door named north gate
-a device named brass bell].
+[
+    @north gate is a #door
+    @brass bell is a #device
+].
 
 START
-[north gate has "closed" label].
+[
+    @north gate has "closed" label
+].
 
-WHEN
-[player sounds brass bell
-<then> (change label of north gate to "OPEN"].
+WHEN PLAYER sounds @brass bell
+[
+    |then (change label of @north gate to "OPEN"
+].
 
-WHEN
-[player speaks brass bell
-<then> (change label of north gate to "closed"].
+WHEN PLAYER speaks @brass bell
+[
+    |then (change label of @north gate to "closed"
+].
 
-IF
-[north gate has "OPEN" label
-<then> (damage player].
+IF @north gate has "OPEN" label
+[
+    |then (damage PLAYER
+].

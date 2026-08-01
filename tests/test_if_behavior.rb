@@ -30,14 +30,19 @@ class TestIfBehavior < Minitest::Test
   def test_startup_true_if_wakes_once_and_records_reason
     machine = runtime(<<~BASIC_SHARP)
       DEFINE
-      [a door named north door].
+      [
+          @north door is a #door
+      ].
 
       START
-      [north door is locked].
+      [
+          @north door is locked
+      ].
 
-      IF
-      [north door is locked
-      <then> (unlock north door].
+      IF @north door is locked
+      [
+          |then (unlock @north door
+      ].
     BASIC_SHARP
 
     assert_equal ['(unlock north door'], machine.startup_ran
@@ -51,14 +56,19 @@ class TestIfBehavior < Minitest::Test
   def test_startup_false_if_stays_asleep
     machine = runtime(<<~BASIC_SHARP)
       DEFINE
-      [a person named henry].
+      [
+          @henry is a #person
+      ].
 
       START
-      [henry is calm].
+      [
+          @henry is calm
+      ].
 
-      IF
-      [henry is angry
-      <then> (damage player].
+      IF @henry is angry
+      [
+          |then (damage PLAYER
+      ].
     BASIC_SHARP
 
     assert_empty machine.startup_if_rules
@@ -69,18 +79,24 @@ class TestIfBehavior < Minitest::Test
   def test_when_can_make_if_true_after_complete_action_list
     machine = runtime(<<~BASIC_SHARP)
       DEFINE
-      [a creature named ember].
+      [
+          @ember is a #creature
+      ].
 
       START
-      [ember is calm].
+      [
+          @ember is calm
+      ].
 
-      WHEN
-      [player attacks ember
-      <then> (change ember to angry].
+      WHEN PLAYER attacks @ember
+      [
+          |then (change @ember to angry
+      ].
 
-      IF
-      [ember is angry
-      <then> (damage player].
+      IF @ember is angry
+      [
+          |then (damage PLAYER
+      ].
     BASIC_SHARP
 
     result = machine.run_event('player attacks ember')
@@ -118,19 +134,25 @@ class TestIfBehavior < Minitest::Test
   def test_mid_when_state_does_not_wake_if_final_state_is_false
     machine = runtime(<<~BASIC_SHARP)
       DEFINE
-      [a creature named ember].
+      [
+          @ember is a #creature
+      ].
 
       START
-      [ember is calm].
+      [
+          @ember is calm
+      ].
 
-      WHEN
-      [player attacks ember
-      <then> (change ember to angry
-      <then> (change ember to calm].
+      WHEN PLAYER attacks @ember
+      [
+          |then (change @ember to angry
+          |then (change @ember to calm
+      ].
 
-      IF
-      [ember is angry
-      <then> (damage player].
+      IF @ember is angry
+      [
+          |then (damage PLAYER
+      ].
     BASIC_SHARP
 
     result = machine.run_event('player attacks ember')
@@ -143,22 +165,28 @@ class TestIfBehavior < Minitest::Test
   def test_isnt_condition_wakes_after_unlock
     machine = runtime(<<~BASIC_SHARP)
       DEFINE
-      [a creature named ember
-      a door named north door
-      a person named henry].
+      [
+          @ember is a #creature
+          @north door is a #door
+          @henry is a #person
+      ].
 
       START
-      [ember is calm
-      north door is locked
-      henry is calm].
+      [
+          @ember is calm
+          @north door is locked
+          @henry is calm
+      ].
 
-      WHEN
-      [player attacks ember
-      <then> (unlock north door].
+      WHEN PLAYER attacks @ember
+      [
+          |then (unlock @north door
+      ].
 
-      IF
-      [north door isnt locked
-      <then> (change henry to friendly].
+      IF @north door isnt locked
+      [
+          |then (change @henry to friendly
+      ].
     BASIC_SHARP
 
     result = machine.run_event('player attacks ember')
@@ -170,17 +198,22 @@ class TestIfBehavior < Minitest::Test
   def test_relationship_condition_wakes_at_startup
     machine = runtime(<<~BASIC_SHARP)
       DEFINE
-      [a key named brass key
-      a table named oak table
-      a door named north door].
+      [
+          @brass key is a #key
+          @oak table is a #table
+          @north door is a #door
+      ].
 
       START
-      [brass key is on oak table
-      north door is locked].
+      [
+          @brass key is on @oak table
+          @north door is locked
+      ].
 
-      IF
-      [brass key is on oak table
-      <then> (unlock north door].
+      IF @brass key is on @oak table
+      [
+          |then (unlock @north door
+      ].
     BASIC_SHARP
 
     assert_equal ['unlocked'], thing(machine.snapshot, 'north door').fetch('states')
@@ -190,22 +223,28 @@ class TestIfBehavior < Minitest::Test
   def test_if_rules_run_in_source_order
     machine = runtime(<<~BASIC_SHARP)
       DEFINE
-      [a creature named ember
-      a door named north door
-      a person named henry].
+      [
+          @ember is a #creature
+          @north door is a #door
+          @henry is a #person
+      ].
 
       START
-      [ember is angry
-      north door is locked
-      henry is calm].
+      [
+          @ember is angry
+          @north door is locked
+          @henry is calm
+      ].
 
-      IF
-      [ember is angry
-      <then> (unlock north door].
+      IF @ember is angry
+      [
+          |then (unlock @north door
+      ].
 
-      IF
-      [ember is angry
-      <then> (change henry to friendly].
+      IF @ember is angry
+      [
+          |then (change @henry to friendly
+      ].
     BASIC_SHARP
 
     assert_equal ['(unlock north door', '(change henry to friendly'], machine.startup_ran
@@ -214,26 +253,33 @@ class TestIfBehavior < Minitest::Test
   def test_later_rule_can_wake_earlier_rule_on_next_pass
     machine = runtime(<<~BASIC_SHARP)
       DEFINE
-      [a creature named ember
-      a door named north door
-      a person named henry].
+      [
+          @ember is a #creature
+          @north door is a #door
+          @henry is a #person
+      ].
 
       START
-      [ember is calm
-      north door is locked
-      henry is calm].
+      [
+          @ember is calm
+          @north door is locked
+          @henry is calm
+      ].
 
-      WHEN
-      [player attacks ember
-      <then> (change ember to angry].
+      WHEN PLAYER attacks @ember
+      [
+          |then (change @ember to angry
+      ].
 
-      IF
-      [north door is unlocked
-      <then> (change henry to friendly].
+      IF @north door is unlocked
+      [
+          |then (change @henry to friendly
+      ].
 
-      IF
-      [ember is angry
-      <then> (unlock north door].
+      IF @ember is angry
+      [
+          |then (unlock @north door
+      ].
     BASIC_SHARP
 
     result = machine.run_event('player attacks ember')
@@ -245,22 +291,28 @@ class TestIfBehavior < Minitest::Test
   def test_startup_if_cascade_settles
     machine = runtime(<<~BASIC_SHARP)
       DEFINE
-      [a creature named ember
-      a door named north door
-      a person named henry].
+      [
+          @ember is a #creature
+          @north door is a #door
+          @henry is a #person
+      ].
 
       START
-      [ember is angry
-      north door is locked
-      henry is calm].
+      [
+          @ember is angry
+          @north door is locked
+          @henry is calm
+      ].
 
-      IF
-      [ember is angry
-      <then> (unlock north door].
+      IF @ember is angry
+      [
+          |then (unlock @north door
+      ].
 
-      IF
-      [north door is unlocked
-      <then> (change henry to friendly].
+      IF @north door is unlocked
+      [
+          |then (change @henry to friendly
+      ].
     BASIC_SHARP
 
     assert_equal ['ember is angry', 'north door is unlocked'], machine.startup_if_rules.map { |entry| entry.fetch('condition') }
@@ -300,18 +352,24 @@ class TestIfBehavior < Minitest::Test
   def test_startup_loop_is_stopped_without_raising
     machine = runtime(<<~BASIC_SHARP)
       DEFINE
-      [a creature named ember].
+      [
+          @ember is a #creature
+      ].
 
       START
-      [ember is calm].
+      [
+          @ember is calm
+      ].
 
-      IF
-      [ember is calm
-      <then> (change ember to angry].
+      IF @ember is calm
+      [
+          |then (change @ember to angry
+      ].
 
-      IF
-      [ember is angry
-      <then> (change ember to calm].
+      IF @ember is angry
+      [
+          |then (change @ember to calm
+      ].
     BASIC_SHARP
 
     assert_includes machine.startup_if_error, 'IF rules kept waking each other.'
@@ -323,22 +381,29 @@ class TestIfBehavior < Minitest::Test
   def test_event_time_loop_is_stopped_and_world_remains_visible
     machine = runtime(<<~BASIC_SHARP)
       DEFINE
-      [a creature named ember].
+      [
+          @ember is a #creature
+      ].
 
       START
-      [ember is friendly].
+      [
+          @ember is friendly
+      ].
 
-      WHEN
-      [player attacks ember
-      <then> (change ember to calm].
+      WHEN PLAYER attacks @ember
+      [
+          |then (change @ember to calm
+      ].
 
-      IF
-      [ember is calm
-      <then> (change ember to angry].
+      IF @ember is calm
+      [
+          |then (change @ember to angry
+      ].
 
-      IF
-      [ember is angry
-      <then> (change ember to calm].
+      IF @ember is angry
+      [
+          |then (change @ember to calm
+      ].
     BASIC_SHARP
 
     result = machine.run_event('player attacks ember')
@@ -365,27 +430,35 @@ class TestIfBehavior < Minitest::Test
   def reactivation_source
     <<~BASIC_SHARP
       DEFINE
-      [a creature named ember
-      a key named brass key].
+      [
+          @ember is a #creature
+          @brass key is a #key
+      ].
 
       START
-      [ember is calm].
+      [
+          @ember is calm
+      ].
 
-      WHEN
-      [player attacks ember
-      <then> (change ember to angry].
+      WHEN PLAYER attacks @ember
+      [
+          |then (change @ember to angry
+      ].
 
-      WHEN
-      [player speaks ember
-      <then> (change ember to calm].
+      WHEN PLAYER speaks @ember
+      [
+          |then (change @ember to calm
+      ].
 
-      WHEN
-      [player gives brass key
-      <then> (carry brass key].
+      WHEN PLAYER gives @brass key
+      [
+          |then (carry @brass key
+      ].
 
-      IF
-      [ember is angry
-      <then> (damage player].
+      IF @ember is angry
+      [
+          |then (damage PLAYER
+      ].
     BASIC_SHARP
   end
 end
