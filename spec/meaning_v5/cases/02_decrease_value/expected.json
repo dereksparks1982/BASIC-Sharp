@@ -1,0 +1,341 @@
+{
+  "case_id": "02_decrease_value",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "context_declarations": [
+
+      ],
+      "controls": [
+
+      ],
+      "events": [
+        {
+          "then": [
+            {
+              "action": "decrease",
+              "amount": 3,
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "value_name": "health"
+            }
+          ],
+          "when": {
+            "action": "attack",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "name": "spikes",
+              "object_kind": "thing",
+              "text": "spikes",
+              "type": "object"
+            }
+          }
+        }
+      ],
+      "facts": [
+        {
+          "amount": 10,
+          "relation": "has",
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          },
+          "value_name": "health"
+        }
+      ],
+      "hover_declarations": [
+
+      ],
+      "if_rules": [
+
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "thing",
+          "name": "spikes"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "ask": {
+      "answers": [
+        {
+          "answer": {
+            "name": "player",
+            "values": {
+              "damage": 0,
+              "health": 7
+            }
+          },
+          "ok": true,
+          "question": "what values does player have",
+          "type": "thing_values"
+        }
+      ],
+      "questions": [
+        "what values does player have"
+      ]
+    },
+    "events": [
+      {
+        "context": {
+        },
+        "error": null,
+        "event": "player attacks spikes",
+        "event_trail": [
+
+        ],
+        "follow_up_events": [
+
+        ],
+        "if_rules": [
+
+        ],
+        "matched": true,
+        "matched_when": "player attacks spikes",
+        "ran": [
+          "(decrease health of player by 3"
+        ],
+        "selections": [
+
+        ],
+        "steps": [
+          {
+            "change": "player health changed from 10 to 7",
+            "value_change": {
+              "action_amount": 3,
+              "new_amount": 7,
+              "old_amount": 10,
+              "operation": "decrease",
+              "value_name": "health"
+            },
+            "word": "(decrease health of player by 3"
+          }
+        ],
+        "understood": [
+
+        ]
+      }
+    ],
+    "final": {
+      "if_rules": [
+
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0,
+            "health": 7
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "thing",
+          "name": "spikes",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 2,
+        "true_if_rules": 0,
+        "whole_number_values": 3
+      }
+    },
+    "save": {
+      "document": {
+        "format": "bsharp.save.json",
+        "format_version": 5,
+        "program_fingerprint": {
+          "algorithm": "sha256-bsir-meaning-v5",
+          "value": "6d28c03c8bd1cc76c051f2c8fab5b7bd6e408f204243526879bc96732ce86214"
+        },
+        "world": {
+          "if_rules": [
+
+          ],
+          "settled": true,
+          "things": [
+            {
+              "builtin": true,
+              "kind": "person",
+              "name": "player",
+              "relations": {
+              },
+              "states": [
+
+              ],
+              "values": {
+                "damage": {
+                  "type": "whole_number",
+                  "value": 0
+                },
+                "health": {
+                  "type": "whole_number",
+                  "value": 7
+                }
+              }
+            },
+            {
+              "builtin": false,
+              "kind": "thing",
+              "name": "spikes",
+              "relations": {
+              },
+              "states": [
+
+              ],
+              "values": {
+                "damage": {
+                  "type": "whole_number",
+                  "value": 0
+                }
+              }
+            }
+          ]
+        }
+      },
+      "restored": {
+        "if_rules": [
+
+        ],
+        "save_ready": true,
+        "snapshot": [
+          {
+            "builtin": true,
+            "kind": "person",
+            "name": "player",
+            "relations": {
+            },
+            "states": [
+
+            ],
+            "values": {
+              "damage": 0,
+              "health": 7
+            }
+          },
+          {
+            "builtin": false,
+            "kind": "thing",
+            "name": "spikes",
+            "relations": {
+            },
+            "states": [
+
+            ],
+            "values": {
+              "damage": 0
+            }
+          }
+        ],
+        "world": {
+          "if_rules": 0,
+          "kinds_used": 2,
+          "origin": "BSharp Save",
+          "settled": true,
+          "text_values": 0,
+          "things": 2,
+          "true_if_rules": 0,
+          "whole_number_values": 3
+        }
+      },
+      "startup_replayed": false
+    },
+    "startup": {
+      "if_rules": [
+
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0,
+            "health": 10
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "thing",
+          "name": "spikes",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 2,
+        "true_if_rules": 0,
+        "whole_number_values": 3
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v5",
+  "source_bsir_parity": true
+}

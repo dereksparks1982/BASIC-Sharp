@@ -1,0 +1,48 @@
+DEFINE
+[
+    @gold coin is a #thing
+    @spikes is a #thing
+    @bow is a #weapon
+].
+
+START
+[
+    PLAYER has 0 score
+    PLAYER has 10 health
+    @bow has 3 ammo
+].
+
+WHEN PLAYER takes @gold coin
+[
+    |then (increase score of PLAYER by 10
+].
+
+WHEN PLAYER attacks @spikes
+[
+    |then (decrease health of PLAYER by 3
+].
+
+WHEN PLAYER attacks @bow
+[
+    |then (decrease ammo of @bow by 1
+].
+
+IF PLAYER has at least 100 score
+[
+    |then (change PLAYER to friendly
+].
+
+IF PLAYER has more than 0 score
+[
+    |then (change PLAYER to alive
+].
+
+IF @bow has at most 0 ammo
+[
+    |then (change @bow to off
+].
+
+IF PLAYER has less than 1 health
+[
+    |then (change PLAYER to dead
+].

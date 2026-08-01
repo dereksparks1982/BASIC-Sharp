@@ -1,0 +1,317 @@
+{
+  "case_id": "03_threshold_comparisons",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "context_declarations": [
+
+      ],
+      "controls": [
+
+      ],
+      "events": [
+
+      ],
+      "facts": [
+        {
+          "amount": 10,
+          "relation": "has",
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          },
+          "value_name": "score"
+        }
+      ],
+      "hover_declarations": [
+
+      ],
+      "if_rules": [
+        {
+          "if": {
+            "amount": 10,
+            "comparison": "at_least",
+            "relation": "has",
+            "subject": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "value_name": "score"
+          },
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "alive"
+              }
+            }
+          ]
+        },
+        {
+          "if": {
+            "amount": 10,
+            "comparison": "more_than",
+            "relation": "has",
+            "subject": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "value_name": "score"
+          },
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "angry"
+              }
+            }
+          ]
+        },
+        {
+          "if": {
+            "amount": 10,
+            "comparison": "at_most",
+            "relation": "has",
+            "subject": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "value_name": "score"
+          },
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "friendly"
+              }
+            }
+          ]
+        },
+        {
+          "if": {
+            "amount": 10,
+            "comparison": "less_than",
+            "relation": "has",
+            "subject": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "value_name": "score"
+          },
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "dead"
+              }
+            }
+          ]
+        }
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "ask": {
+      "answers": [
+        {
+          "answer": {
+            "rules": [
+              {
+                "active": true,
+                "condition": "player has at least 10 score",
+                "index": 0,
+                "true": true
+              },
+              {
+                "active": true,
+                "condition": "player has at most 10 score",
+                "index": 2,
+                "true": true
+              }
+            ],
+            "total_count": 4,
+            "true_count": 2
+          },
+          "ok": true,
+          "question": "what IF rules are true",
+          "type": "if_rules_true"
+        }
+      ],
+      "questions": [
+        "what IF rules are true"
+      ]
+    },
+    "events": [
+
+    ],
+    "final": {
+      "if_rules": [
+        {
+          "active": true,
+          "condition": "player has at least 10 score",
+          "index": 0,
+          "true": true
+        },
+        {
+          "active": false,
+          "condition": "player has more than 10 score",
+          "index": 1,
+          "true": false
+        },
+        {
+          "active": true,
+          "condition": "player has at most 10 score",
+          "index": 2,
+          "true": true
+        },
+        {
+          "active": false,
+          "condition": "player has less than 10 score",
+          "index": 3,
+          "true": false
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+            "alive",
+            "friendly"
+          ],
+          "values": {
+            "damage": 0,
+            "score": 10
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 4,
+        "kinds_used": 1,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 1,
+        "true_if_rules": 2,
+        "whole_number_values": 2
+      }
+    },
+    "startup": {
+      "if_rules": [
+        {
+          "active": true,
+          "condition": "player has at least 10 score",
+          "index": 0,
+          "true": true
+        },
+        {
+          "active": false,
+          "condition": "player has more than 10 score",
+          "index": 1,
+          "true": false
+        },
+        {
+          "active": true,
+          "condition": "player has at most 10 score",
+          "index": 2,
+          "true": true
+        },
+        {
+          "active": false,
+          "condition": "player has less than 10 score",
+          "index": 3,
+          "true": false
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+            "alive",
+            "friendly"
+          ],
+          "values": {
+            "damage": 0,
+            "score": 10
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 4,
+        "kinds_used": 1,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 1,
+        "true_if_rules": 2,
+        "whole_number_values": 2
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v5",
+  "source_bsir_parity": true
+}

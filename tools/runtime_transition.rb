@@ -181,6 +181,19 @@ platform_machine = PreferredRuntimeAudit.transition(
 platform_profile_shadow = platform_machine.meaning_profile == 'bsharp.meaning.v4' &&
                           platform_machine.game_declarations.fetch('controls').fetch(0).fetch('instructions').length == 3
 
+number_source = File.join(ROOT, 'samples/number_changes.bsharp')
+number_machine = PreferredRuntimeAudit.transition(
+  { 'source' => 'samples/number_changes.bsharp' },
+  mode: :verify,
+  document: PreferredRuntimeAudit.resolve(number_source)
+)
+number_results = ['player takes gold coin', 'player attacks spikes', 'player attacks bow'].map do |event|
+  number_machine.run_event(event)
+end
+number_profile_shadow = number_results.all? { |result| result.fetch('matched') && result['error'].nil? } &&
+                        number_machine.meaning_profile == 'bsharp.meaning.v5' &&
+                        number_machine.loader.model.fetch(:profile) == 'bsharp.bytecode.v5'
+
 checks = {
   'Source defaults to BSharp VM' => source_default,
   'BSIR defaults to BSharp VM' => bsir_default,
@@ -201,7 +214,8 @@ checks = {
   'Deterministic repeated execution' => deterministic,
   'Meaning Profile 2 text shadow parity' => text_profile_shadow,
   'Meaning Profile 3 game shadow parity' => game_profile_shadow,
-  'Meaning Profile 4 platform shadow parity' => platform_profile_shadow
+  'Meaning Profile 4 platform shadow parity' => platform_profile_shadow,
+  'Meaning Profile 5 number-change shadow parity' => number_profile_shadow
 }
 
 checks.each { |label, passed| PreferredRuntimeAudit.assert!(passed, label) }

@@ -1,0 +1,9 @@
+{
+  "format": "bsharp.bytecode.fixture.json",
+  "format_version": 1,
+  "profile": "bsharp.bytecode.v5",
+  "meaning_profile": "bsharp.meaning.v5",
+  "sample": "samples/number_changes.bsharp",
+  "binary_sha256": "a4b48636650c6b01767e32a41cf705f8b25f3f47616aee088d5b77bec63fab7b",
+  "disassembly_sha256": "b969476c8d7ee4df3306ccc5cacb585e7c48c83c7040f7a105d5b02f36175e9f"
+}

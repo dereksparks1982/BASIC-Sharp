@@ -190,14 +190,23 @@ checks['Meaning Profile 4 platform movement'] = platform_vm.meaning_profile == '
                                                 platform_command.fetch('command') == 'move_with_collisions' &&
                                                 platform_command.fetch('velocity_x') == 6.0
 
+number_document = resolve(File.join(ROOT, 'samples/number_changes.bsharp'))
+number_loader = BasicSharp::BytecodeLoader.read(File.join(ROOT, 'samples/number_changes.bsbc'))
+number_vm = BasicSharp::BytecodeVirtualMachine.new(number_loader)
+number_reference = BasicSharp::Runtime.new(number_document)
+number_events = ['player takes gold coin', 'player attacks spikes', 'player attacks bow']
+number_parity = number_events.all? { |event| number_vm.run_event(event) == number_reference.run_event(event) }
+checks['Meaning Profile 5 number changes and thresholds'] = number_vm.meaning_profile == 'bsharp.meaning.v5' && number_parity
+
 checks.each { |label, passed| VMConformance.assert!(passed, label) }
 
-puts 'BSharp Virtual Machine v0.1.36'
+puts 'BSharp Virtual Machine v0.1.37'
 puts "Sample programs: #{FIXTURE.fetch('sample_programs').length}"
 puts "Valid Meaning Profile cases: #{FIXTURE.fetch('meaning_cases').length}"
 puts 'Valid Meaning Profile 2 text sample: 1'
 puts 'Valid Meaning Profile 3 game sample: 1'
 puts 'Valid Meaning Profile 4 platform sample: 1'
+puts 'Valid Meaning Profile 5 number-change sample: 1'
 puts
 checks.each { |label, _passed| puts "#{label}: PASS" }
 puts

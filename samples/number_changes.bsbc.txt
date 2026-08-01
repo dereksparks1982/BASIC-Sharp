@@ -1,0 +1,56 @@
+BSharp Bytecode bsharp.bytecode.v5
+Meaning Profile: bsharp.meaning.v5
+Fingerprint: 6bb19a8e6b6a4f3b6d75e69df454a068dc407131898dbb806d81359e0aa0fe0a
+
+KIND 0 person PARENT NONE
+KIND 1 thing PARENT NONE
+KIND 2 weapon PARENT NONE
+
+THING 0 player KIND[person]
+THING 1 gold coin KIND[thing]
+THING 2 spikes KIND[thing]
+THING 3 bow KIND[weapon]
+
+START
+    START_VALUE THING[player] score 0
+    START_VALUE THING[player] health 10
+    START_VALUE THING[bow] ammo 3
+END
+
+WHEN actor=THING[player] action=take target=THING[gold coin] BLOCK 0
+WHEN actor=THING[player] action=attack target=THING[spikes] BLOCK 1
+WHEN actor=THING[player] action=attack target=THING[bow] BLOCK 2
+
+IF VALUE_AT_LEAST THING[player] score 100 BLOCK 3
+IF VALUE_MORE_THAN THING[player] score 0 BLOCK 4
+IF VALUE_AT_MOST THING[bow] ammo 0 BLOCK 5
+IF VALUE_LESS_THAN THING[player] health 1 BLOCK 6
+
+
+BLOCK 0
+    INCREASE_VALUE THING[player] score 10
+END
+
+BLOCK 1
+    DECREASE_VALUE THING[player] health 3
+END
+
+BLOCK 2
+    DECREASE_VALUE THING[bow] ammo 1
+END
+
+BLOCK 3
+    CHANGE_STATE THING[player] friendly REMOVE hostile
+END
+
+BLOCK 4
+    CHANGE_STATE THING[player] alive REMOVE dead
+END
+
+BLOCK 5
+    CHANGE_STATE THING[bow] off REMOVE on
+END
+
+BLOCK 6
+    CHANGE_STATE THING[player] dead REMOVE alive
+END

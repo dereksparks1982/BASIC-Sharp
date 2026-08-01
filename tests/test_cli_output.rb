@@ -27,7 +27,7 @@ class TestCLIOutput < Minitest::Test
       assert_includes stdout, "wrote: #{out_path}"
       assert File.file?(out_path), 'expected --out to create the IR file'
       json = JSON.parse(File.read(out_path))
-      assert_equal '0.1.36', json.fetch('version')
+      assert_equal '0.1.37', json.fetch('version')
     end
   end
 
@@ -42,7 +42,7 @@ class TestCLIOutput < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BSharp Virtual Machine v0.1.36'
+    assert_includes stdout, 'BSharp Virtual Machine v0.1.37'
     assert_includes stdout, 'matched: yes'
     assert_includes stdout, 'what matched:'
     assert_includes stdout, 'player attacks ember'
@@ -93,7 +93,7 @@ class TestCLIOutput < Minitest::Test
       )
 
       assert status.success?, stderr
-      assert_includes stdout, 'BSharp Virtual Machine v0.1.36'
+      assert_includes stdout, 'BSharp Virtual Machine v0.1.37'
       assert_includes stdout, 'matched: yes'
       assert_includes stdout, 'what matched:'
       assert_includes stdout, 'player attacks a guard'
@@ -130,7 +130,7 @@ class TestCLIOutput < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BSharp Virtual Machine v0.1.36'
+    assert_includes stdout, 'BSharp Virtual Machine v0.1.37'
     assert_includes stdout, 'matched: yes'
     assert_includes stdout, 'what matched:'
     assert_includes stdout, 'player attacks a guard'
@@ -226,8 +226,8 @@ class TestCLIOutput < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BASIC# Runtime v0.1.36'
-    refute_includes stdout, 'BSharp Virtual Machine v0.1.36'
+    assert_includes stdout, 'BASIC# Runtime v0.1.37'
+    refute_includes stdout, 'BSharp Virtual Machine v0.1.37'
   end
 
   def test_shadow_parity_mode_reports_only_preferred_vm_result
@@ -242,8 +242,8 @@ class TestCLIOutput < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BSharp Virtual Machine v0.1.36'
-    refute_includes stdout, 'BASIC# Runtime v0.1.36'
+    assert_includes stdout, 'BSharp Virtual Machine v0.1.37'
+    refute_includes stdout, 'BASIC# Runtime v0.1.37'
     assert_includes stdout, 'cinder damage is now 1'
   end
 
@@ -292,9 +292,30 @@ class TestCLIOutput < Minitest::Test
     )
     assert status.success?, stderr
     assert_empty stderr
-    assert_includes stdout, 'BSharp Virtual Machine v0.1.36'
+    assert_includes stdout, 'BSharp Virtual Machine v0.1.37'
     assert_includes stdout, 'north gate title changed from "North  Gate!" to "OPEN — RubyVM!"'
     assert_includes stdout, 'north gate: kind=gate; title="OPEN — RubyVM!"'
+  end
+
+  def test_cli_runs_profile_5_source_and_direct_bytecode
+    [
+      File.join(ROOT, 'samples/number_changes.bsharp'),
+      File.join(ROOT, 'samples/number_changes.bsbc')
+    ].each do |program|
+      stdout, stderr, status = Open3.capture3(
+        RUBY,
+        File.join(ROOT, 'compiler/basic_sharp.rb'),
+        program,
+        '--run',
+        'player takes gold coin',
+        chdir: ROOT
+      )
+      assert status.success?, stderr
+      assert_empty stderr
+      assert_includes stdout, 'BSharp Virtual Machine v0.1.37'
+      assert_includes stdout, '(increase score of player by 10'
+      assert_includes stdout, 'player score changed from 0 to 10'
+    end
   end
 
 end

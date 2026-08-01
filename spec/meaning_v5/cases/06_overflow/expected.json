@@ -1,0 +1,221 @@
+{
+  "case_id": "06_overflow",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "context_declarations": [
+
+      ],
+      "controls": [
+
+      ],
+      "events": [
+        {
+          "then": [
+            {
+              "action": "increase",
+              "amount": 1,
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "value_name": "score"
+            }
+          ],
+          "when": {
+            "action": "take",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "name": "coin",
+              "object_kind": "thing",
+              "text": "coin",
+              "type": "object"
+            }
+          }
+        }
+      ],
+      "facts": [
+        {
+          "amount": 2147483647,
+          "relation": "has",
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          },
+          "value_name": "score"
+        }
+      ],
+      "hover_declarations": [
+
+      ],
+      "if_rules": [
+
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "thing",
+          "name": "coin"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "events": [
+      {
+        "context": {
+        },
+        "error": "player score would be greater than 2147483647.",
+        "event": "player takes coin",
+        "event_trail": [
+
+        ],
+        "follow_up_events": [
+
+        ],
+        "if_rules": [
+
+        ],
+        "matched": true,
+        "matched_when": "player takes coin",
+        "ran": [
+          "(increase score of player by 1"
+        ],
+        "selections": [
+
+        ],
+        "steps": [
+          {
+            "notice_lines": [
+              "player score would be greater than 2147483647.",
+              "Nothing in this action line was changed."
+            ],
+            "targets": [
+              "player"
+            ],
+            "word": "(increase score of player by 1"
+          }
+        ],
+        "understood": [
+
+        ]
+      }
+    ],
+    "final": {
+      "if_rules": [
+
+      ],
+      "save_ready": false,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0,
+            "score": 2147483647
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "thing",
+          "name": "coin",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": false,
+        "text_values": 0,
+        "things": 2,
+        "true_if_rules": 0,
+        "whole_number_values": 3
+      }
+    },
+    "startup": {
+      "if_rules": [
+
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0,
+            "score": 2147483647
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "thing",
+          "name": "coin",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 2,
+        "true_if_rules": 0,
+        "whole_number_values": 3
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v5",
+  "source_bsir_parity": true
+}

@@ -17,7 +17,7 @@ module BasicSharp
         open closed locked unlocked alive dead calm angry friendly hostile visible hidden carried dropped broken whole on off
       ]
       @actions = %w[
-        take drop carry open close lock unlock attack damage change speak give eat wear remove sound examine cause
+        take drop carry open close lock unlock attack damage change increase decrease speak give eat wear remove sound examine cause
       ]
       @relations = ['is', 'isnt', 'in', 'on', 'held by', 'worn by', 'connects', 'unlocks', 'owned by']
       @objects = {}

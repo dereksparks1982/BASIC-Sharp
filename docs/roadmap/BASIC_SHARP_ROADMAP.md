@@ -15,7 +15,8 @@ BASIC# source
 -> v0.1.33 Profile 3 candidate  [REJECTED: focused emitter validator]
 -> v0.1.34 repaired emitter but retained stale runtime-banner validation  [REJECTED]
 -> complete Profile 3 re-carry and runtime-transition validation repair  [ACCEPTED: v0.1.35]
--> plain-English platform movement and Profile 4  [CURRENT CANDIDATE: v0.1.36]
+-> plain-English platform movement and Profile 4  [ACCEPTED: v0.1.36]
+-> plain-English number changes, comparisons, and Profile 5  [CURRENT CANDIDATE: v0.1.37]
 -> owner validation and acceptance
 -> expand the usable language and standard library
 -> mature the BSharp VM through real programs and games
@@ -25,19 +26,18 @@ BASIC# source
 -> complete BASIC# IDE
 ```
 
-## Current v0.1.36 lane
+## Current v0.1.37 lane
 
-- Accept `A moves PLAYER left at 6 speed`, `D moves PLAYER right at 6 speed`, and `SPACE makes PLAYER jump at 10 speed` inside `CONTROLS for PLAYER`.
-- Hide held-key polling, release, frame timing, horizontal and vertical velocity, gravity, grounded jump gating, and wall/ceiling/landing response beneath creator-facing words.
-- Emit deterministic engine-neutral `move_with_collisions` commands without an engine-specific dependency.
-- Carry platform meaning through BSIR, Meaning Profile 4, BSharp Bytecode Profile 4, loader, BSharp VM, reference runtime, ASK, Save format 4, and shadow parity.
-- Preserve accepted top-down Profile 3 controls unchanged.
-- Preserve Profile 1 through Profile 3 BSBC and disassembly artifacts byte-for-byte.
+- Accept `(increase score of PLAYER by 10` and `(decrease health of PLAYER by 3` for existing whole-number values.
+- Accept exact equality plus `at least`, `more than`, `at most`, and `less than` IF comparisons.
+- Stop missing-value, type mismatch, overflow, and underflow failures atomically before any selected Thing changes.
+- Carry the new meaning through BSIR, Meaning Profile 5, BSharp Bytecode Profile 5, loader, BSharp VM, reference runtime, ASK, Save format 5, and shadow parity.
+- Preserve all accepted Profile 1 through Profile 4 behavior and committed BSBC/disassembly bytes.
 
-## Continuation after v0.1.36
+## Continuation after v0.1.37
 
 1. Install and complete owner-side native validation.
-2. Commit and tag v0.1.36 immediately after every gate passes, then capture the accepted full project snapshot.
+2. Commit and tag v0.1.37 immediately after every gate passes, then capture the accepted full project snapshot.
 3. Discuss the next focused creator-language build; no engine bridge begins without its own exact proposal and approval.
 4. Expand creator-useful language meaning: more values, computation, conditions, events, collections, reusable behavior, official words, and non-programmer diagnostics.
 5. Mature the BSharp VM as the permanent normal runtime while Ruby remains the bootstrap/reference oracle until replacement is proven.

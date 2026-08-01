@@ -1,0 +1,20 @@
+START
+[
+    PLAYER has 10 score
+].
+IF PLAYER has at least 10 score
+[
+    |then (change PLAYER to alive
+].
+IF PLAYER has more than 10 score
+[
+    |then (change PLAYER to angry
+].
+IF PLAYER has at most 10 score
+[
+    |then (change PLAYER to friendly
+].
+IF PLAYER has less than 10 score
+[
+    |then (change PLAYER to dead
+].

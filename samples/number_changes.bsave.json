@@ -1,0 +1,113 @@
+{
+  "format": "bsharp.save.json",
+  "format_version": 5,
+  "created_by_basic_sharp": "0.1.37",
+  "program_fingerprint": {
+    "algorithm": "sha256-bsir-meaning-v5",
+    "value": "6bb19a8e6b6a4f3b6d75e69df454a068dc407131898dbb806d81359e0aa0fe0a"
+  },
+  "world": {
+    "settled": true,
+    "things": [
+      {
+        "name": "player",
+        "kind": "person",
+        "builtin": true,
+        "states": [
+          "alive",
+          "friendly"
+        ],
+        "relations": {
+        },
+        "values": {
+          "damage": {
+            "type": "whole_number",
+            "value": 0
+          },
+          "health": {
+            "type": "whole_number",
+            "value": 1
+          },
+          "score": {
+            "type": "whole_number",
+            "value": 100
+          }
+        }
+      },
+      {
+        "name": "gold coin",
+        "kind": "thing",
+        "builtin": false,
+        "states": [
+
+        ],
+        "relations": {
+        },
+        "values": {
+          "damage": {
+            "type": "whole_number",
+            "value": 0
+          }
+        }
+      },
+      {
+        "name": "spikes",
+        "kind": "thing",
+        "builtin": false,
+        "states": [
+
+        ],
+        "relations": {
+        },
+        "values": {
+          "damage": {
+            "type": "whole_number",
+            "value": 0
+          }
+        }
+      },
+      {
+        "name": "bow",
+        "kind": "weapon",
+        "builtin": false,
+        "states": [
+          "off"
+        ],
+        "relations": {
+        },
+        "values": {
+          "ammo": {
+            "type": "whole_number",
+            "value": 0
+          },
+          "damage": {
+            "type": "whole_number",
+            "value": 0
+          }
+        }
+      }
+    ],
+    "if_rules": [
+      {
+        "index": 0,
+        "condition": "player has at least 100 score",
+        "active": true
+      },
+      {
+        "index": 1,
+        "condition": "player has more than 0 score",
+        "active": true
+      },
+      {
+        "index": 2,
+        "condition": "bow has at most 0 ammo",
+        "active": true
+      },
+      {
+        "index": 3,
+        "condition": "player has less than 1 health",
+        "active": false
+      }
+    ]
+  }
+}

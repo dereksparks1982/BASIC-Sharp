@@ -1,0 +1,91 @@
+{
+  "case_id": "08_type_mismatch",
+  "compile": {
+    "errors": [
+      {
+        "message": "Increase value cannot use title because that value is text.",
+        "severity": "error"
+      }
+    ],
+    "meaning": {
+      "context_declarations": [
+
+      ],
+      "controls": [
+
+      ],
+      "events": [
+        {
+          "then": [
+            {
+              "action": "increase",
+              "amount": 1,
+              "target": {
+                "name": "sign",
+                "object_kind": "thing",
+                "text": "sign",
+                "type": "object"
+              },
+              "value_name": "title"
+            }
+          ],
+          "when": {
+            "action": "examine",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "name": "sign",
+              "object_kind": "thing",
+              "text": "sign",
+              "type": "object"
+            }
+          }
+        }
+      ],
+      "facts": [
+        {
+          "relation": "has",
+          "subject": {
+            "name": "sign",
+            "object_kind": "thing",
+            "text": "sign",
+            "type": "object"
+          },
+          "text_value": "Welcome",
+          "value_name": "title"
+        }
+      ],
+      "hover_declarations": [
+
+      ],
+      "if_rules": [
+
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "thing",
+          "name": "sign"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v5"
+}

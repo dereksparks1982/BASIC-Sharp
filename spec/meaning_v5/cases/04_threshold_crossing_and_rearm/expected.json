@@ -1,0 +1,585 @@
+{
+  "case_id": "04_threshold_crossing_and_rearm",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "context_declarations": [
+
+      ],
+      "controls": [
+
+      ],
+      "events": [
+        {
+          "then": [
+            {
+              "action": "increase",
+              "amount": 10,
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "value_name": "score"
+            }
+          ],
+          "when": {
+            "action": "take",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "name": "coin",
+              "object_kind": "thing",
+              "text": "coin",
+              "type": "object"
+            }
+          }
+        },
+        {
+          "then": [
+            {
+              "action": "decrease",
+              "amount": 10,
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "value_name": "score"
+            }
+          ],
+          "when": {
+            "action": "attack",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "name": "toll",
+              "object_kind": "thing",
+              "text": "toll",
+              "type": "object"
+            }
+          }
+        }
+      ],
+      "facts": [
+        {
+          "amount": 0,
+          "relation": "has",
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          },
+          "value_name": "score"
+        }
+      ],
+      "hover_declarations": [
+
+      ],
+      "if_rules": [
+        {
+          "if": {
+            "amount": 10,
+            "comparison": "at_least",
+            "relation": "has",
+            "subject": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "value_name": "score"
+          },
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "on"
+              }
+            }
+          ]
+        }
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "thing",
+          "name": "coin"
+        },
+        {
+          "builtin": false,
+          "kind": "thing",
+          "name": "toll"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "ask": {
+      "answers": [
+        {
+          "answer": {
+            "rules": [
+              {
+                "active": true,
+                "condition": "player has at least 10 score",
+                "index": 0,
+                "true": true
+              }
+            ],
+            "total_count": 1,
+            "true_count": 1
+          },
+          "ok": true,
+          "question": "what IF rules are true",
+          "type": "if_rules_true"
+        }
+      ],
+      "questions": [
+        "what IF rules are true"
+      ]
+    },
+    "events": [
+      {
+        "context": {
+        },
+        "error": null,
+        "event": "player takes coin",
+        "event_trail": [
+
+        ],
+        "follow_up_events": [
+
+        ],
+        "if_rules": [
+          {
+            "condition": "player has at least 10 score",
+            "reason": "became true after the event",
+            "selections": [
+
+            ],
+            "steps": [
+              {
+                "change": "player is now on",
+                "word": "(change player to on"
+              }
+            ]
+          }
+        ],
+        "matched": true,
+        "matched_when": "player takes coin",
+        "ran": [
+          "(increase score of player by 10"
+        ],
+        "selections": [
+
+        ],
+        "steps": [
+          {
+            "change": "player score changed from 0 to 10",
+            "value_change": {
+              "action_amount": 10,
+              "new_amount": 10,
+              "old_amount": 0,
+              "operation": "increase",
+              "value_name": "score"
+            },
+            "word": "(increase score of player by 10"
+          }
+        ],
+        "understood": [
+
+        ]
+      },
+      {
+        "context": {
+        },
+        "error": null,
+        "event": "player attacks toll",
+        "event_trail": [
+
+        ],
+        "follow_up_events": [
+
+        ],
+        "if_rules": [
+
+        ],
+        "matched": true,
+        "matched_when": "player attacks toll",
+        "ran": [
+          "(decrease score of player by 10"
+        ],
+        "selections": [
+
+        ],
+        "steps": [
+          {
+            "change": "player score changed from 10 to 0",
+            "value_change": {
+              "action_amount": 10,
+              "new_amount": 0,
+              "old_amount": 10,
+              "operation": "decrease",
+              "value_name": "score"
+            },
+            "word": "(decrease score of player by 10"
+          }
+        ],
+        "understood": [
+
+        ]
+      },
+      {
+        "context": {
+        },
+        "error": null,
+        "event": "player takes coin",
+        "event_trail": [
+
+        ],
+        "follow_up_events": [
+
+        ],
+        "if_rules": [
+          {
+            "condition": "player has at least 10 score",
+            "reason": "became true after the event",
+            "selections": [
+
+            ],
+            "steps": [
+              {
+                "change": "player is now on",
+                "word": "(change player to on"
+              }
+            ]
+          }
+        ],
+        "matched": true,
+        "matched_when": "player takes coin",
+        "ran": [
+          "(increase score of player by 10"
+        ],
+        "selections": [
+
+        ],
+        "steps": [
+          {
+            "change": "player score changed from 0 to 10",
+            "value_change": {
+              "action_amount": 10,
+              "new_amount": 10,
+              "old_amount": 0,
+              "operation": "increase",
+              "value_name": "score"
+            },
+            "word": "(increase score of player by 10"
+          }
+        ],
+        "understood": [
+
+        ]
+      }
+    ],
+    "final": {
+      "if_rules": [
+        {
+          "active": true,
+          "condition": "player has at least 10 score",
+          "index": 0,
+          "true": true
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+            "on"
+          ],
+          "values": {
+            "damage": 0,
+            "score": 10
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "thing",
+          "name": "coin",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "thing",
+          "name": "toll",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 3,
+        "true_if_rules": 1,
+        "whole_number_values": 4
+      }
+    },
+    "save": {
+      "document": {
+        "format": "bsharp.save.json",
+        "format_version": 5,
+        "program_fingerprint": {
+          "algorithm": "sha256-bsir-meaning-v5",
+          "value": "dfbd39ded74d96787994cdd8c1f9117d5743809a216aabdecb73617186043fc1"
+        },
+        "world": {
+          "if_rules": [
+            {
+              "active": true,
+              "condition": "player has at least 10 score",
+              "index": 0
+            }
+          ],
+          "settled": true,
+          "things": [
+            {
+              "builtin": true,
+              "kind": "person",
+              "name": "player",
+              "relations": {
+              },
+              "states": [
+                "on"
+              ],
+              "values": {
+                "damage": {
+                  "type": "whole_number",
+                  "value": 0
+                },
+                "score": {
+                  "type": "whole_number",
+                  "value": 10
+                }
+              }
+            },
+            {
+              "builtin": false,
+              "kind": "thing",
+              "name": "coin",
+              "relations": {
+              },
+              "states": [
+
+              ],
+              "values": {
+                "damage": {
+                  "type": "whole_number",
+                  "value": 0
+                }
+              }
+            },
+            {
+              "builtin": false,
+              "kind": "thing",
+              "name": "toll",
+              "relations": {
+              },
+              "states": [
+
+              ],
+              "values": {
+                "damage": {
+                  "type": "whole_number",
+                  "value": 0
+                }
+              }
+            }
+          ]
+        }
+      },
+      "restored": {
+        "if_rules": [
+          {
+            "active": true,
+            "condition": "player has at least 10 score",
+            "index": 0,
+            "true": true
+          }
+        ],
+        "save_ready": true,
+        "snapshot": [
+          {
+            "builtin": true,
+            "kind": "person",
+            "name": "player",
+            "relations": {
+            },
+            "states": [
+              "on"
+            ],
+            "values": {
+              "damage": 0,
+              "score": 10
+            }
+          },
+          {
+            "builtin": false,
+            "kind": "thing",
+            "name": "coin",
+            "relations": {
+            },
+            "states": [
+
+            ],
+            "values": {
+              "damage": 0
+            }
+          },
+          {
+            "builtin": false,
+            "kind": "thing",
+            "name": "toll",
+            "relations": {
+            },
+            "states": [
+
+            ],
+            "values": {
+              "damage": 0
+            }
+          }
+        ],
+        "world": {
+          "if_rules": 1,
+          "kinds_used": 2,
+          "origin": "BSharp Save",
+          "settled": true,
+          "text_values": 0,
+          "things": 3,
+          "true_if_rules": 1,
+          "whole_number_values": 4
+        }
+      },
+      "startup_replayed": false
+    },
+    "startup": {
+      "if_rules": [
+        {
+          "active": false,
+          "condition": "player has at least 10 score",
+          "index": 0,
+          "true": false
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0,
+            "score": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "thing",
+          "name": "coin",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "thing",
+          "name": "toll",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 3,
+        "true_if_rules": 0,
+        "whole_number_values": 4
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v5",
+  "source_bsir_parity": true
+}

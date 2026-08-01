@@ -276,6 +276,10 @@ game_loader = BasicSharp::BytecodeLoader.read(File.join(ROOT, 'samples/demon_kil
 assert_pass(game_loader.model[:profile] == 'bsharp.bytecode.v3' && game_loader.model[:controls].length == 1, 'Profile 3 game sections')
 platform_loader = BasicSharp::BytecodeLoader.read(File.join(ROOT, 'samples/platform_movement.bsbc'))
 assert_pass(platform_loader.model[:profile] == 'bsharp.bytecode.v4' && platform_loader.model[:controls].length == 1, 'Profile 4 platform sections')
+number_loader = BasicSharp::BytecodeLoader.read(File.join(ROOT, 'samples/number_changes.bsbc'))
+assert_pass(number_loader.model[:profile] == 'bsharp.bytecode.v5', 'Profile 5 number-change instructions')
+assert_pass(number_loader.model[:blocks].flat_map { |block| block[:instructions] }.any? { |instruction| instruction[:name] == 'INCREASE_VALUE' }, 'Profile 5 INCREASE_VALUE loading')
+assert_pass(number_loader.model[:if_rules].any? { |rule| rule.dig(:condition, :name) == 'VALUE_AT_LEAST' }, 'Profile 5 threshold loading')
 
 original = File.binread(File.join(ROOT, FIXTURE.fetch('source_artifact')))
 assert_pass(FIXTURE.fetch('malformed_case_count') == 41, 'Malformed fixture count')
@@ -298,11 +302,12 @@ end
   end
 end
 
-puts 'BSharp Bytecode Loader v0.1.36'
+puts 'BSharp Bytecode Loader v0.1.37'
 puts "Profile 1 sample artifacts: #{SAMPLES.length}"
 puts 'Profile 2 sample artifacts: 1'
 puts 'Profile 3 sample artifacts: 1'
 puts 'Profile 4 sample artifacts: 1'
+puts 'Profile 5 sample artifacts: 1'
 puts 'Valid Meaning Profile cases: 12'
 puts "Malformed fixture cases: #{FIXTURE.fetch('malformed_case_count')}"
 puts
@@ -326,5 +331,6 @@ puts 'Truncation sweep: PASS'
 puts 'No partial model exposure: PASS'
 puts 'Profile 2 role-aware string loading: PASS'
 puts 'Profile 4 platform loading: PASS'
+puts 'Profile 5 number-change loading: PASS'
 puts
 puts 'BYTECODE LOADER: PASS'

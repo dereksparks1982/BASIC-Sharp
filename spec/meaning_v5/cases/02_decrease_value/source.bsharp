@@ -1,0 +1,12 @@
+DEFINE
+[
+    @spikes is a #thing
+].
+START
+[
+    PLAYER has 10 health
+].
+WHEN PLAYER attacks @spikes
+[
+    |then (decrease health of PLAYER by 3
+].

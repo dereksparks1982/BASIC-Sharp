@@ -25,6 +25,8 @@ module BasicSharp
       'CHANGE_STATE' => 4,
       'CHANGE_VALUE' => 4,
       'CHANGE_TEXT_VALUE' => 4,
+      'INCREASE_VALUE' => 4,
+      'DECREASE_VALUE' => 4,
       'CARRY' => 2,
       'UNLOCK' => 2,
       'CAUSE_EVENT' => 5
@@ -34,10 +36,14 @@ module BasicSharp
       'STATE_ISNT' => 2,
       'RELATION_EXISTS' => 3,
       'VALUE_EQUALS' => 3,
-      'TEXT_VALUE_EQUALS' => 3
+      'TEXT_VALUE_EQUALS' => 3,
+      'VALUE_AT_LEAST' => 3,
+      'VALUE_MORE_THAN' => 3,
+      'VALUE_AT_MOST' => 3,
+      'VALUE_LESS_THAN' => 3
     }.freeze
     START_INSTRUCTIONS = %w[START_STATE START_RELATION START_VALUE START_TEXT_VALUE].freeze
-    ACTION_INSTRUCTIONS = %w[DAMAGE CHANGE_STATE CHANGE_VALUE CHANGE_TEXT_VALUE CARRY UNLOCK CAUSE_EVENT].freeze
+    ACTION_INSTRUCTIONS = %w[DAMAGE CHANGE_STATE CHANGE_VALUE CHANGE_TEXT_VALUE INCREASE_VALUE DECREASE_VALUE CARRY UNLOCK CAUSE_EVENT].freeze
     EVENT_ACTOR_SELECTORS = %w[EXACT_THING ONE_KIND].freeze
     EVENT_TARGET_SELECTORS = %w[EXACT_THING ONE_KIND NO_REFERENCE].freeze
     ACTION_TARGET_SELECTORS = %w[EXACT_THING BOUND_THAT_KIND EVERY_KIND].freeze
@@ -179,7 +185,7 @@ module BasicSharp
       unless binary_version == BytecodeContract::BINARY_FORMAT_VERSION
         raise BytecodeLoaderError, "BSharp Bytecode binary format version #{binary_version} is not supported."
       end
-      unless [1, 2, 3, 4].include?(profile_version)
+      unless [1, 2, 3, 4, 5].include?(profile_version)
         raise BytecodeLoaderError, "BSharp Bytecode profile format version #{profile_version} is not supported."
       end
       @profile_format_version = profile_version
@@ -287,7 +293,9 @@ module BasicSharp
       unless @strings.uniq.length == @strings.length
         raise BytecodeLoaderError, 'BSharp Bytecode string table contains a duplicate deterministic entry.'
       end
-      mandatory = if @profile_format_version == 4
+      mandatory = if @profile_format_version == 5
+                    [BytecodeContract::PROFILE_5, BytecodeContract::MEANING_PROFILE_5, 'sha256-bsir-meaning-v5']
+                  elsif @profile_format_version == 4
                     [BytecodeContract::PROFILE_4, BytecodeContract::MEANING_PROFILE_4, 'sha256-bsir-meaning-v4']
                   elsif @profile_format_version == 3
                     [BytecodeContract::PROFILE_3, BytecodeContract::MEANING_PROFILE_3, 'sha256-bsir-meaning-v3']
@@ -311,9 +319,9 @@ module BasicSharp
       fingerprint = data.byteslice(12, 32).unpack1('H*')
       kind_count, thing_count, start_count, event_count, if_count, block_count = data.byteslice(44, 24).unpack('V6')
       [profile_index, meaning_index, fingerprint_algorithm_index].each { |index| validate_string_index!(index) }
-      expected_profile = { 1 => BytecodeContract::PROFILE, 2 => BytecodeContract::PROFILE_2, 3 => BytecodeContract::PROFILE_3, 4 => BytecodeContract::PROFILE_4 }.fetch(@profile_format_version)
-      expected_meaning = { 1 => BytecodeContract::MEANING_PROFILE, 2 => BytecodeContract::MEANING_PROFILE_2, 3 => BytecodeContract::MEANING_PROFILE_3, 4 => BytecodeContract::MEANING_PROFILE_4 }.fetch(@profile_format_version)
-      expected_fingerprint = { 1 => 'sha256-bsir-meaning-v1', 2 => 'sha256-bsir-meaning-v2', 3 => 'sha256-bsir-meaning-v3', 4 => 'sha256-bsir-meaning-v4' }.fetch(@profile_format_version)
+      expected_profile = { 1 => BytecodeContract::PROFILE, 2 => BytecodeContract::PROFILE_2, 3 => BytecodeContract::PROFILE_3, 4 => BytecodeContract::PROFILE_4, 5 => BytecodeContract::PROFILE_5 }.fetch(@profile_format_version)
+      expected_meaning = { 1 => BytecodeContract::MEANING_PROFILE, 2 => BytecodeContract::MEANING_PROFILE_2, 3 => BytecodeContract::MEANING_PROFILE_3, 4 => BytecodeContract::MEANING_PROFILE_4, 5 => BytecodeContract::MEANING_PROFILE_5 }.fetch(@profile_format_version)
+      expected_fingerprint = { 1 => 'sha256-bsir-meaning-v1', 2 => 'sha256-bsir-meaning-v2', 3 => 'sha256-bsir-meaning-v3', 4 => 'sha256-bsir-meaning-v4', 5 => 'sha256-bsir-meaning-v5' }.fetch(@profile_format_version)
       unless @strings.fetch(profile_index) == expected_profile
         raise BytecodeLoaderError, 'BSharp Bytecode uses an unsupported bytecode profile.'
       end
@@ -466,7 +474,7 @@ module BasicSharp
       @controls = []
       @hover_declarations = []
       @context_declarations = []
-      return unless [3, 4].include?(@profile_format_version)
+      return unless [3, 4, 5].include?(@profile_format_version)
 
       @controls = parse_game_section!('CTRL', 'controls')
       @hover_declarations = parse_game_section!('HOVR', 'hover declarations')
@@ -638,6 +646,11 @@ module BasicSharp
         validate_selector_operands!(operands[0], operands[1], ACTION_TARGET_SELECTORS, 'CHANGE_VALUE target')
         validate_string_index!(operands[2])
         validate_whole_number!(operands[3])
+      when 'INCREASE_VALUE', 'DECREASE_VALUE'
+        require_profile_5!(name)
+        validate_selector_operands!(operands[0], operands[1], ACTION_TARGET_SELECTORS, "#{name} target")
+        validate_string_index!(operands[2])
+        validate_whole_number!(operands[3], minimum: 1)
       when 'CHANGE_TEXT_VALUE'
         require_profile_2!(name)
         validate_selector_operands!(operands[0], operands[1], ACTION_TARGET_SELECTORS, 'CHANGE_TEXT_VALUE target')
@@ -662,6 +675,11 @@ module BasicSharp
         validate_string_index!(operands[1])
         validate_thing_index!(operands[2])
       when 'VALUE_EQUALS'
+        validate_thing_index!(operands[0])
+        validate_string_index!(operands[1])
+        validate_whole_number!(operands[2])
+      when 'VALUE_AT_LEAST', 'VALUE_MORE_THAN', 'VALUE_AT_MOST', 'VALUE_LESS_THAN'
+        require_profile_5!(name)
         validate_thing_index!(operands[0])
         validate_string_index!(operands[1])
         validate_whole_number!(operands[2])
@@ -729,7 +747,7 @@ module BasicSharp
       when 'CHANGE_STATE'
         add_string_use(encountered, operands[2])
         add_optional_string_use(encountered, operands[3])
-      when 'CHANGE_VALUE'
+      when 'CHANGE_VALUE', 'INCREASE_VALUE', 'DECREASE_VALUE'
         add_string_use(encountered, operands[2])
       when 'CHANGE_TEXT_VALUE'
         add_string_use(encountered, operands[2], role: :identifier)
@@ -771,7 +789,7 @@ module BasicSharp
                   [selector_display(operands[0], operands[1]), operands[2].to_s]
                 when 'CHANGE_STATE'
                   [selector_display(operands[0], operands[1]), string_at(operands[2]), remove_display(operands[3])]
-                when 'CHANGE_VALUE'
+                when 'CHANGE_VALUE', 'INCREASE_VALUE', 'DECREASE_VALUE'
                   [selector_display(operands[0], operands[1]), string_at(operands[2]), operands[3].to_s]
                 when 'CHANGE_TEXT_VALUE'
                   [selector_display(operands[0], operands[1]), string_at(operands[2]), quote_text(string_at(operands[3]))]
@@ -792,7 +810,7 @@ module BasicSharp
                   [thing_display(operands[0]), string_at(operands[1])]
                 when 'RELATION_EXISTS'
                   [thing_display(operands[0]), string_at(operands[1]), thing_display(operands[2])]
-                when 'VALUE_EQUALS'
+                when 'VALUE_EQUALS', 'VALUE_AT_LEAST', 'VALUE_MORE_THAN', 'VALUE_AT_MOST', 'VALUE_LESS_THAN'
                   [thing_display(operands[0]), string_at(operands[1]), operands[2].to_s]
                 when 'TEXT_VALUE_EQUALS'
                   [thing_display(operands[0]), string_at(operands[1]), quote_text(string_at(operands[2]))]
@@ -939,13 +957,19 @@ module BasicSharp
     end
 
     def profile_name
-      { 1 => BytecodeContract::PROFILE, 2 => BytecodeContract::PROFILE_2, 3 => BytecodeContract::PROFILE_3, 4 => BytecodeContract::PROFILE_4 }.fetch(@profile_format_version)
+      { 1 => BytecodeContract::PROFILE, 2 => BytecodeContract::PROFILE_2, 3 => BytecodeContract::PROFILE_3, 4 => BytecodeContract::PROFILE_4, 5 => BytecodeContract::PROFILE_5 }.fetch(@profile_format_version)
     end
 
     def require_profile_2!(name)
-      return if [2, 3, 4].include?(@profile_format_version)
+      return if [2, 3, 4, 5].include?(@profile_format_version)
 
       raise BytecodeLoaderError, "BSharp Bytecode #{name} requires Profile 2 or later."
+    end
+
+    def require_profile_5!(name)
+      return if @profile_format_version == 5
+
+      raise BytecodeLoaderError, "BSharp Bytecode #{name} requires Profile 5."
     end
 
     def validate_string_roles!
@@ -999,7 +1023,7 @@ module BasicSharp
       @if_rules.each do |rule|
         condition = rule.fetch(:condition)
         type = condition.fetch(:name) == 'TEXT_VALUE_EQUALS' ? :text : :whole_number
-        next unless %w[TEXT_VALUE_EQUALS VALUE_EQUALS].include?(condition.fetch(:name))
+        next unless %w[TEXT_VALUE_EQUALS VALUE_EQUALS VALUE_AT_LEAST VALUE_MORE_THAN VALUE_AT_MOST VALUE_LESS_THAN].include?(condition.fetch(:name))
 
         validate_known_bytecode_value_type!(schemas, condition.fetch(:operands)[1], type, condition.fetch(:name))
       end
@@ -1007,7 +1031,7 @@ module BasicSharp
       @blocks.each do |block|
         block.fetch(:instructions).each do |instruction|
           type = instruction.fetch(:name) == 'CHANGE_TEXT_VALUE' ? :text : :whole_number
-          next unless %w[CHANGE_TEXT_VALUE CHANGE_VALUE].include?(instruction.fetch(:name))
+          next unless %w[CHANGE_TEXT_VALUE CHANGE_VALUE INCREASE_VALUE DECREASE_VALUE].include?(instruction.fetch(:name))
 
           operands = instruction.fetch(:operands)
           validate_known_bytecode_value_type!(schemas, operands[2], type, instruction.fetch(:name))

@@ -1,0 +1,18 @@
+KINDS
+[
+    #guard is a #thing
+].
+DEFINE
+[
+    @henry is a #guard
+    @mara is a #guard
+    @bell is a #device
+].
+START
+[
+    @henry has 5 health
+].
+WHEN PLAYER sounds @bell
+[
+    |then (decrease health of every #guard by 1
+].

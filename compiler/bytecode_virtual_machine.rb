@@ -436,6 +436,8 @@ module BasicSharp
       when 'CHANGE_STATE' then "(change #{target} to #{string(operands.fetch(2))}"
       when 'CHANGE_VALUE' then "(change #{string(operands.fetch(2))} of #{target} to #{operands.fetch(3)}"
       when 'CHANGE_TEXT_VALUE' then "(change #{string(operands.fetch(2))} of #{target} to #{quote_text(string(operands.fetch(3)))}"
+      when 'INCREASE_VALUE' then "(increase #{string(operands.fetch(2))} of #{target} by #{operands.fetch(3)}"
+      when 'DECREASE_VALUE' then "(decrease #{string(operands.fetch(2))} of #{target} by #{operands.fetch(3)}"
       when 'CARRY' then "(carry #{target}"
       when 'UNLOCK' then "(unlock #{target}"
       else "(#{canonical_action_name(instruction)} #{target}"
@@ -577,7 +579,7 @@ module BasicSharp
           raise WorldSaveError, "BSharp Save value name '#{name}' for #{thing_name} must be one plain word."
         end
         expected_type = expected_values.fetch(name).is_a?(String) ? 'text' : 'whole_number'
-        value = if [WorldSave::FORMAT_VERSION_2, WorldSave::FORMAT_VERSION_3, WorldSave::FORMAT_VERSION_4].include?(save_version)
+        value = if [WorldSave::FORMAT_VERSION_2, WorldSave::FORMAT_VERSION_3, WorldSave::FORMAT_VERSION_4, WorldSave::FORMAT_VERSION_5].include?(save_version)
                   validate_typed_saved_value!(saved_value, name, thing_name, expected_type)
                 else
                   saved_value
@@ -632,7 +634,8 @@ module BasicSharp
         [BytecodeContract::PROFILE, BytecodeContract::MEANING_PROFILE],
         [BytecodeContract::PROFILE_2, BytecodeContract::MEANING_PROFILE_2],
         [BytecodeContract::PROFILE_3, BytecodeContract::MEANING_PROFILE_3],
-        [BytecodeContract::PROFILE_4, BytecodeContract::MEANING_PROFILE_4]
+        [BytecodeContract::PROFILE_4, BytecodeContract::MEANING_PROFILE_4],
+        [BytecodeContract::PROFILE_5, BytecodeContract::MEANING_PROFILE_5]
       ]
       unless supported.include?(pair)
         raise BytecodeVirtualMachineError, 'The BSharp Virtual Machine cannot execute this bytecode profile.'
@@ -937,6 +940,20 @@ module BasicSharp
         return "#{thing_name(missing)} does not have a value named #{value_name}." if missing
         wrong_type = targets.find { |index| !world_thing(index).fetch(:values).fetch(value_name).is_a?(Integer) }
         "#{thing_name(wrong_type)} value #{value_name} is not a whole number." if wrong_type
+      when 'INCREASE_VALUE', 'DECREASE_VALUE'
+        value_name = string(operands.fetch(2))
+        missing = targets.find { |index| !world_thing(index).fetch(:values).key?(value_name) }
+        return "#{thing_name(missing)} does not have a value named #{value_name}." if missing
+        wrong_type = targets.find { |index| !world_thing(index).fetch(:values).fetch(value_name).is_a?(Integer) }
+        return "#{thing_name(wrong_type)} value #{value_name} is not a whole number." if wrong_type
+        amount = operands.fetch(3)
+        if instruction.fetch(:name) == 'INCREASE_VALUE'
+          overflowing = targets.find { |index| world_thing(index).fetch(:values).fetch(value_name) > MAX_WHOLE_NUMBER - amount }
+          return "#{thing_name(overflowing)} #{value_name} would be greater than #{MAX_WHOLE_NUMBER}." if overflowing
+        else
+          underflowing = targets.find { |index| world_thing(index).fetch(:values).fetch(value_name) < amount }
+          return "#{thing_name(underflowing)} #{value_name} would be less than 0." if underflowing
+        end
       when 'CHANGE_TEXT_VALUE'
         value_name = string(operands.fetch(2))
         missing = targets.find { |index| !world_thing(index).fetch(:values).key?(value_name) }
@@ -991,6 +1008,22 @@ module BasicSharp
           'word' => "(change #{value_name} of #{target_name} to #{quote_text(new_text)}",
           'change' => "#{target_name} #{value_name} changed from #{quote_text(old_text)} to #{quote_text(new_text)}",
           'value_change' => { 'value_name' => value_name, 'old_text' => old_text, 'new_text' => new_text }
+        }
+      when 'INCREASE_VALUE', 'DECREASE_VALUE'
+        value_name = string(operands.fetch(2))
+        old_amount = target.fetch(:values).fetch(value_name)
+        action_amount = operands.fetch(3)
+        operation = instruction.fetch(:name) == 'INCREASE_VALUE' ? 'increase' : 'decrease'
+        new_amount = operation == 'increase' ? old_amount + action_amount : old_amount - action_amount
+        target.fetch(:values)[value_name] = new_amount
+        {
+          'word' => "(#{operation} #{value_name} of #{target_name} by #{action_amount}",
+          'change' => "#{target_name} #{value_name} changed from #{old_amount} to #{new_amount}",
+          'value_change' => {
+            'value_name' => value_name, 'old_amount' => old_amount,
+            'new_amount' => new_amount, 'action_amount' => action_amount,
+            'operation' => operation
+          }
         }
       when 'CARRY'
         carrier = actor_index.nil? ? 'player' : thing_name(actor_index)
@@ -1111,6 +1144,18 @@ module BasicSharp
         subject.fetch(:relations)[string(operands.fetch(1))] == thing_name(operands.fetch(2))
       when 'VALUE_EQUALS'
         subject.fetch(:values)[string(operands.fetch(1))] == operands.fetch(2)
+      when 'VALUE_AT_LEAST'
+        value = subject.fetch(:values)[string(operands.fetch(1))]
+        !value.nil? && value >= operands.fetch(2)
+      when 'VALUE_MORE_THAN'
+        value = subject.fetch(:values)[string(operands.fetch(1))]
+        !value.nil? && value > operands.fetch(2)
+      when 'VALUE_AT_MOST'
+        value = subject.fetch(:values)[string(operands.fetch(1))]
+        !value.nil? && value <= operands.fetch(2)
+      when 'VALUE_LESS_THAN'
+        value = subject.fetch(:values)[string(operands.fetch(1))]
+        !value.nil? && value < operands.fetch(2)
       when 'TEXT_VALUE_EQUALS'
         subject.fetch(:values)[string(operands.fetch(1))] == string(operands.fetch(2))
       else
@@ -1185,6 +1230,10 @@ module BasicSharp
       when 'STATE_ISNT' then "#{subject} isnt #{string(operands.fetch(1))}"
       when 'RELATION_EXISTS' then "#{subject} is #{string(operands.fetch(1))} #{thing_name(operands.fetch(2))}"
       when 'VALUE_EQUALS' then "#{subject} has #{operands.fetch(2)} #{string(operands.fetch(1))}"
+      when 'VALUE_AT_LEAST' then "#{subject} has at least #{operands.fetch(2)} #{string(operands.fetch(1))}"
+      when 'VALUE_MORE_THAN' then "#{subject} has more than #{operands.fetch(2)} #{string(operands.fetch(1))}"
+      when 'VALUE_AT_MOST' then "#{subject} has at most #{operands.fetch(2)} #{string(operands.fetch(1))}"
+      when 'VALUE_LESS_THAN' then "#{subject} has less than #{operands.fetch(2)} #{string(operands.fetch(1))}"
       when 'TEXT_VALUE_EQUALS' then "#{subject} has #{quote_text(string(operands.fetch(2)))} #{string(operands.fetch(1))}"
       end
     end
@@ -1276,6 +1325,10 @@ module BasicSharp
         amount == 1 ? "(damage #{text}" : "(damage #{text} by #{amount}"
       when 'CHANGE_VALUE'
         "(change #{string(operands.fetch(2))} of #{text} to #{operands.fetch(3)}"
+      when 'INCREASE_VALUE'
+        "(increase #{string(operands.fetch(2))} of #{text} by #{operands.fetch(3)}"
+      when 'DECREASE_VALUE'
+        "(decrease #{string(operands.fetch(2))} of #{text} by #{operands.fetch(3)}"
       when 'CHANGE_TEXT_VALUE'
         "(change #{string(operands.fetch(2))} of #{text} to #{quote_text(string(operands.fetch(3)))}"
       when 'CHANGE_STATE'
@@ -1289,6 +1342,7 @@ module BasicSharp
     def canonical_action_name(instruction)
       {
         'DAMAGE' => 'damage', 'CHANGE_STATE' => 'change', 'CHANGE_VALUE' => 'change', 'CHANGE_TEXT_VALUE' => 'change',
+        'INCREASE_VALUE' => 'increase', 'DECREASE_VALUE' => 'decrease',
         'CARRY' => 'carry', 'UNLOCK' => 'unlock', 'CAUSE_EVENT' => 'cause'
       }.fetch(instruction.fetch(:name), instruction.fetch(:name).downcase)
     end

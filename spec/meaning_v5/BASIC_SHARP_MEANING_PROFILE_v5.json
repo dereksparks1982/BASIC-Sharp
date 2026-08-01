@@ -1,0 +1,140 @@
+{
+  "cases": [
+    {
+      "ask": [
+        "what values does player have"
+      ],
+      "events": [
+        "player takes coin"
+      ],
+      "expected": "spec/meaning_v5/cases/01_increase_value/expected.json",
+      "expected_sha256": "e76a6ff63a87a021f3042b0ef1a440df9bb010bab43c40287a34b09851022548",
+      "id": "01_increase_value",
+      "save": true,
+      "source": "spec/meaning_v5/cases/01_increase_value/source.bsharp"
+    },
+    {
+      "ask": [
+        "what values does player have"
+      ],
+      "events": [
+        "player attacks spikes"
+      ],
+      "expected": "spec/meaning_v5/cases/02_decrease_value/expected.json",
+      "expected_sha256": "e801d8c074917619e46b70913762d5665b4d74eb1569401fbc9edf316791a3f0",
+      "id": "02_decrease_value",
+      "save": true,
+      "source": "spec/meaning_v5/cases/02_decrease_value/source.bsharp"
+    },
+    {
+      "ask": [
+        "what IF rules are true"
+      ],
+      "events": [
+
+      ],
+      "expected": "spec/meaning_v5/cases/03_threshold_comparisons/expected.json",
+      "expected_sha256": "e2d9de29064658e90c9514352986340cddd1460a40ef775af984fcd905bfb285",
+      "id": "03_threshold_comparisons",
+      "save": false,
+      "source": "spec/meaning_v5/cases/03_threshold_comparisons/source.bsharp"
+    },
+    {
+      "ask": [
+        "what IF rules are true"
+      ],
+      "events": [
+        "player takes coin",
+        "player attacks toll",
+        "player takes coin"
+      ],
+      "expected": "spec/meaning_v5/cases/04_threshold_crossing_and_rearm/expected.json",
+      "expected_sha256": "b1aed5c59fceb095f428ad9fdb3054b41ab0ccac8ed9e982b8f7face2cc8e77a",
+      "id": "04_threshold_crossing_and_rearm",
+      "save": true,
+      "source": "spec/meaning_v5/cases/04_threshold_crossing_and_rearm/source.bsharp"
+    },
+    {
+      "ask": [
+
+      ],
+      "events": [
+        "player sounds bell"
+      ],
+      "expected": "spec/meaning_v5/cases/05_set_atomicity/expected.json",
+      "expected_sha256": "571ee7d157c0b765040f07aaaa3cb3b8a6d050a1854a72593d3b72609a36e4b9",
+      "id": "05_set_atomicity",
+      "save": false,
+      "source": "spec/meaning_v5/cases/05_set_atomicity/source.bsharp"
+    },
+    {
+      "ask": [
+
+      ],
+      "events": [
+        "player takes coin"
+      ],
+      "expected": "spec/meaning_v5/cases/06_overflow/expected.json",
+      "expected_sha256": "13ba69691f7c6349bd4c0ef7d2f9940cdfff2e95e5e8f4502cc33cc860439f6c",
+      "id": "06_overflow",
+      "save": false,
+      "source": "spec/meaning_v5/cases/06_overflow/source.bsharp"
+    },
+    {
+      "ask": [
+
+      ],
+      "events": [
+        "player attacks spikes"
+      ],
+      "expected": "spec/meaning_v5/cases/07_underflow/expected.json",
+      "expected_sha256": "6e1609f9dd1d327a7b6fc7c16daa49f54efa61d1b796c59e788e046463711303",
+      "id": "07_underflow",
+      "save": false,
+      "source": "spec/meaning_v5/cases/07_underflow/source.bsharp"
+    },
+    {
+      "ask": [
+
+      ],
+      "events": [
+
+      ],
+      "expected": "spec/meaning_v5/cases/08_type_mismatch/expected.json",
+      "expected_sha256": "0df8e65067c054c0cd6bfa19e250b238f2d6539763fd7c0cef2fa0ac8ca42e12",
+      "id": "08_type_mismatch",
+      "save": false,
+      "source": "spec/meaning_v5/cases/08_type_mismatch/source.bsharp"
+    },
+    {
+      "ask": [
+
+      ],
+      "events": [
+
+      ],
+      "expected": "spec/meaning_v5/cases/09_invalid_amount/expected.json",
+      "expected_sha256": "216d4ab6f794be525989ad4a29ad0fc769ba5b14c58e54b89dad5ddc3d8d282f",
+      "id": "09_invalid_amount",
+      "save": false,
+      "source": "spec/meaning_v5/cases/09_invalid_amount/source.bsharp"
+    },
+    {
+      "ask": [
+        "what values does player have"
+      ],
+      "events": [
+        "player takes coin"
+      ],
+      "expected": "spec/meaning_v5/cases/10_numbers_with_platform_controls/expected.json",
+      "expected_sha256": "cc0d9fc57e57463809a74dc4c25d008867a91fe5f2c0abe27602bbeffa16082d",
+      "id": "10_numbers_with_platform_controls",
+      "save": true,
+      "source": "spec/meaning_v5/cases/10_numbers_with_platform_controls/source.bsharp"
+    }
+  ],
+  "format": "bsharp.meaning.conformance.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v5",
+  "title": "BASIC# Stable Meaning Profile 5: plain-English number changes and comparisons"
+}

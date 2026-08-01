@@ -1,0 +1,300 @@
+{
+  "case_id": "05_set_atomicity",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "context_declarations": [
+
+      ],
+      "controls": [
+
+      ],
+      "events": [
+        {
+          "then": [
+            {
+              "action": "decrease",
+              "amount": 1,
+              "target": {
+                "candidates": [
+                  "henry",
+                  "mara"
+                ],
+                "kind_name": "guard",
+                "selector": "every",
+                "text": "every guard",
+                "type": "kind_set"
+              },
+              "value_name": "health"
+            }
+          ],
+          "when": {
+            "action": "sound",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "name": "bell",
+              "object_kind": "device",
+              "text": "bell",
+              "type": "object"
+            }
+          }
+        }
+      ],
+      "facts": [
+        {
+          "amount": 5,
+          "relation": "has",
+          "subject": {
+            "name": "henry",
+            "object_kind": "guard",
+            "text": "henry",
+            "type": "object"
+          },
+          "value_name": "health"
+        }
+      ],
+      "hover_declarations": [
+
+      ],
+      "if_rules": [
+
+      ],
+      "kinds": [
+        {
+          "name": "guard",
+          "parent": "thing"
+        }
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry"
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "mara"
+        },
+        {
+          "builtin": false,
+          "kind": "device",
+          "name": "bell"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "events": [
+      {
+        "context": {
+        },
+        "error": "mara does not have a value named health.",
+        "event": "player sounds bell",
+        "event_trail": [
+
+        ],
+        "follow_up_events": [
+
+        ],
+        "if_rules": [
+
+        ],
+        "matched": true,
+        "matched_when": "player sounds bell",
+        "ran": [
+          "(decrease health of every guard by 1"
+        ],
+        "selections": [
+          {
+            "count": 2,
+            "kind_name": "guard",
+            "set": true,
+            "targets": [
+              "henry",
+              "mara"
+            ],
+            "text": "every guard"
+          }
+        ],
+        "steps": [
+          {
+            "notice_lines": [
+              "mara does not have a value named health.",
+              "Nothing in this action line was changed."
+            ],
+            "targets": [
+              "henry",
+              "mara"
+            ],
+            "word": "(decrease health of every guard by 1"
+          }
+        ],
+        "understood": [
+
+        ]
+      }
+    ],
+    "final": {
+      "if_rules": [
+
+      ],
+      "save_ready": false,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0,
+            "health": 5
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "mara",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "device",
+          "name": "bell",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 3,
+        "origin": "START",
+        "settled": false,
+        "text_values": 0,
+        "things": 4,
+        "true_if_rules": 0,
+        "whole_number_values": 5
+      }
+    },
+    "startup": {
+      "if_rules": [
+
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "henry",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0,
+            "health": 5
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "guard",
+          "name": "mara",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "device",
+          "name": "bell",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 3,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 4,
+        "true_if_rules": 0,
+        "whole_number_values": 5
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v5",
+  "source_bsir_parity": true
+}

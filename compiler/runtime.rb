@@ -139,6 +139,7 @@ module BasicSharp
     end
 
     def meaning_profile
+      return WorldSave::MEANING_PROFILE_5 if @ir['meaning_profile'] == WorldSave::MEANING_PROFILE_5
       return WorldSave::MEANING_PROFILE_4 if @ir['meaning_profile'] == WorldSave::MEANING_PROFILE_4
       return WorldSave::MEANING_PROFILE_3 if @ir['meaning_profile'] == WorldSave::MEANING_PROFILE_3
       @ir['meaning_profile'] == WorldSave::MEANING_PROFILE_2 ? WorldSave::MEANING_PROFILE_2 : WorldSave::MEANING_PROFILE_1
@@ -438,6 +439,9 @@ module BasicSharp
         value = word.key?('to_text') ? quote_text(word['to_text']) : word['to_amount']
         return "(change #{normalize(word['value_name'])} of #{target} to #{value}"
       end
+      if %w[increase decrease].include?(action)
+        return "(#{action} #{normalize(word['value_name'])} of #{target} by #{word['amount']}"
+      end
       if action == 'change'
         state = normalize(word.dig('to', 'name') || word.dig('to', 'text'))
         return "(change #{target} to #{state}"
@@ -605,7 +609,7 @@ module BasicSharp
           raise WorldSaveError, "BSharp Save value name '#{name}' for #{thing_name} must be one plain word."
         end
         expected_type = expected_values.fetch(name).is_a?(String) ? 'text' : 'whole_number'
-        value = if [WorldSave::FORMAT_VERSION_2, WorldSave::FORMAT_VERSION_3, WorldSave::FORMAT_VERSION_4].include?(save_version)
+        value = if [WorldSave::FORMAT_VERSION_2, WorldSave::FORMAT_VERSION_3, WorldSave::FORMAT_VERSION_4, WorldSave::FORMAT_VERSION_5].include?(save_version)
                   validate_typed_saved_value!(saved_value, name, thing_name, expected_type)
                 else
                   saved_value
@@ -662,7 +666,7 @@ module BasicSharp
       if normalize(condition['relation']) == 'has'
         value_name = normalize(condition['value_name'])
         expected = condition.key?('text_value') ? condition['text_value'] : condition['amount']
-        return subject.fetch('values')[value_name] == expected
+        return compare_value(subject.fetch('values')[value_name], expected, condition['comparison'])
       end
 
       if condition['target']
@@ -698,12 +702,12 @@ module BasicSharp
       end
 
       profile = @ir['meaning_profile']
-      supported_profiles = [nil, '', WorldSave::MEANING_PROFILE_1, WorldSave::MEANING_PROFILE_2, WorldSave::MEANING_PROFILE_3, WorldSave::MEANING_PROFILE_4]
+      supported_profiles = [nil, '', WorldSave::MEANING_PROFILE_1, WorldSave::MEANING_PROFILE_2, WorldSave::MEANING_PROFILE_3, WorldSave::MEANING_PROFILE_4, WorldSave::MEANING_PROFILE_5]
       unless supported_profiles.include?(profile)
         raise ArgumentError, "BSharp IR meaning profile '#{profile}' is not supported"
       end
       text_used = ir_uses_text_values?
-      if text_used && ![WorldSave::MEANING_PROFILE_2, WorldSave::MEANING_PROFILE_3, WorldSave::MEANING_PROFILE_4].include?(profile)
+      if text_used && ![WorldSave::MEANING_PROFILE_2, WorldSave::MEANING_PROFILE_3, WorldSave::MEANING_PROFILE_4, WorldSave::MEANING_PROFILE_5].include?(profile)
         raise ArgumentError, 'Creator-facing text values require bsharp.meaning.v2 or later in BSharp IR'
       end
       if profile == WorldSave::MEANING_PROFILE_2 && !text_used
@@ -719,6 +723,9 @@ module BasicSharp
       if profile == WorldSave::MEANING_PROFILE_4 && !platform_used
         raise ArgumentError, 'bsharp.meaning.v4 requires platform movement meaning'
       end
+      if profile == WorldSave::MEANING_PROFILE_5 && !ir_uses_number_changes_or_comparisons?
+        raise ArgumentError, 'bsharp.meaning.v5 requires number-change or threshold-comparison meaning'
+      end
 
       raise ArgumentError, 'BSharp IR contains errors and cannot run' if ir_errors.any?
     end
@@ -729,6 +736,15 @@ module BasicSharp
         @ir.fetch('if_rules', []).any? do |rule|
           rule.fetch('if', {}).key?('text_value') || rule.fetch('then', []).any? { |word| word.key?('to_text') }
         end
+    end
+
+    def ir_uses_number_changes_or_comparisons?
+      @ir.fetch('events', []).any? do |event|
+        event.fetch('then', []).any? { |word| %w[increase decrease].include?(normalize(word['action'])) }
+      end || @ir.fetch('if_rules', []).any? do |rule|
+        rule.fetch('if', {}).key?('comparison') ||
+          rule.fetch('then', []).any? { |word| %w[increase decrease].include?(normalize(word['action'])) }
+      end
     end
 
     def ir_errors
@@ -906,6 +922,10 @@ Choose one starting amount."
             validate_established_value_type!(condition['subject'], value_name, :text, value_types, 'IF text comparison')
           else
             validate_whole_number_field!(condition, 'amount', minimum: 0, label: "IF #{value_name} amount")
+            comparison = normalize(condition.fetch('comparison', 'equals'))
+            unless %w[equals at_least more_than at_most less_than].include?(comparison)
+              raise ArgumentError, "IF #{value_name} comparison '#{comparison}' is not supported"
+            end
             validate_established_value_type!(condition['subject'], value_name, :whole_number, value_types, 'IF whole-number comparison')
           end
         end
@@ -919,6 +939,13 @@ Choose one starting amount."
         return unless word.key?('amount')
 
         validate_whole_number_field!(word, 'amount', minimum: 1, label: 'Damage amount')
+        return
+      end
+
+      if %w[increase decrease].include?(action)
+        value_name = validate_value_name_field!(word, 'value_name', "#{action.capitalize} value")
+        validate_whole_number_field!(word, 'amount', minimum: 1, label: "#{action.capitalize} amount")
+        validate_established_value_type!(word['target'], value_name, :whole_number, value_types, "#{action.capitalize} value")
         return
       end
 
@@ -1327,6 +1354,9 @@ Choose one starting amount."
         value = word.key?('to_text') ? quote_text(word['to_text']) : word['to_amount']
         return "(change #{normalize(word['value_name'])} of #{text} to #{value}"
       end
+      if %w[increase decrease].include?(action)
+        return "(#{action} #{normalize(word['value_name'])} of #{text} by #{word['amount']}"
+      end
 
       "(#{action} #{text}"
     end
@@ -1348,6 +1378,20 @@ Choose one starting amount."
         if wrong_type
           expected = wants_text ? 'text' : 'a whole number'
           return "#{wrong_type.fetch('name')} value #{value_name} is not #{expected}."
+        end
+      elsif %w[increase decrease].include?(action)
+        value_name = normalize(word['value_name'])
+        missing = targets.find { |target| !target.fetch('values').key?(value_name) }
+        return "#{missing.fetch('name')} does not have a value named #{value_name}." if missing
+        wrong_type = targets.find { |target| !target.fetch('values').fetch(value_name).is_a?(Integer) }
+        return "#{wrong_type.fetch('name')} value #{value_name} is not a whole number." if wrong_type
+        amount = word.fetch('amount')
+        if action == 'increase'
+          overflowing = targets.find { |target| target.fetch('values').fetch(value_name) > MAX_WHOLE_NUMBER - amount }
+          return "#{overflowing.fetch('name')} #{value_name} would be greater than #{MAX_WHOLE_NUMBER}." if overflowing
+        else
+          underflowing = targets.find { |target| target.fetch('values').fetch(value_name) < amount }
+          return "#{underflowing.fetch('name')} #{value_name} would be less than 0." if underflowing
         end
       end
 
@@ -1376,7 +1420,7 @@ Choose one starting amount."
       if normalize(condition['relation']) == 'has'
         value_name = normalize(condition['value_name'])
         expected = condition.key?('text_value') ? condition['text_value'] : condition['amount']
-        return subject.fetch('values')[value_name] == expected
+        return compare_value(subject.fetch('values')[value_name], expected, condition['comparison'])
       end
 
       if condition['target']
@@ -1666,6 +1710,24 @@ Choose one starting amount."
         state_name = normalize(state)
         set_state(target, state_name)
         { 'word' => "(change #{target_name} to #{state_name}", 'change' => "#{target_name} is now #{state_name}" }
+      when 'increase', 'decrease'
+        value_name = normalize(word['value_name'])
+        old_amount = target.fetch('values').fetch(value_name)
+        action_amount = word.fetch('amount')
+        new_amount = name == 'increase' ? old_amount + action_amount : old_amount - action_amount
+        target.fetch('values')[value_name] = new_amount
+        target['damage'] = new_amount if value_name == 'damage'
+        {
+          'word' => "(#{name} #{value_name} of #{target_name} by #{action_amount}",
+          'change' => "#{target_name} #{value_name} changed from #{old_amount} to #{new_amount}",
+          'value_change' => {
+            'value_name' => value_name,
+            'old_amount' => old_amount,
+            'new_amount' => new_amount,
+            'action_amount' => action_amount,
+            'operation' => name
+          }
+        }
       when 'carry'
         carrier = actor || 'player'
         target.fetch('relations').delete('on')
@@ -1955,6 +2017,17 @@ Choose one starting amount."
 
       subject = reference_name(condition['subject']) || normalize(condition.dig('subject', 'text'))
       "#{subject} has #{quote_text(condition['text_value'])} #{normalize(condition['value_name'])}"
+    end
+
+    def compare_value(actual, expected, comparison)
+      return false if actual.nil?
+      case normalize(comparison || 'equals')
+      when 'at_least' then actual >= expected
+      when 'more_than' then actual > expected
+      when 'at_most' then actual <= expected
+      when 'less_than' then actual < expected
+      else actual == expected
+      end
     end
 
     def typed_save_values(values)

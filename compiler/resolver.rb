@@ -319,6 +319,7 @@ module BasicSharp
 
       return resolve_damage_action(action, verb, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed) if verb == 'damage'
       return resolve_change_action(action, verb, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed) if verb == 'change'
+      return resolve_number_change_action(action, verb, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed) if %w[increase decrease].include?(verb)
       return resolve_cause_action(
         action,
         bound_kinds: bound_kinds,
@@ -510,6 +511,44 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
       resolved
     end
 
+    def resolve_number_change_action(action, verb, bound_kinds:, established_objects:, context_it_allowed:)
+      target_text = action.target.to_s.strip
+      tail = normalize_name(action.tail)
+      value_target = target_text.match(/\A([a-z][a-z0-9]*)\s+of\s+(.+)\z/i)
+      amount_match = tail.match(/\Aby\s+(.+)\z/)
+
+      unless value_target && amount_match
+        diagnostics.error(
+          action.line_number,
+          "Number change must look like '(#{verb} health of PLAYER by 3'"
+        )
+      end
+
+      value_name = resolve_value_name(value_target ? value_target[1] : '', action.line_number)
+      target_source = value_target ? value_target[2] : target_text
+      target = resolve_reference(
+        target_source,
+        action.line_number,
+        usage: :action_target,
+        bound_kinds: bound_kinds,
+        established_objects: established_objects,
+        context_it_allowed: context_it_allowed
+      )
+      amount = resolve_whole_number(
+        amount_match ? amount_match[1] : '', action.line_number,
+        minimum: 1, purpose: "#{verb} amount"
+      )
+      validate_known_value_type(target, value_name, 'whole_number', action.line_number, "#{verb.capitalize} value")
+
+      {
+        'line_number' => action.line_number,
+        'action' => verb,
+        'value_name' => value_name,
+        'target' => target,
+        'amount' => amount
+      }
+    end
+
     def parse_condition_fact(text, line_number)
       supplied = text.to_s.strip
       if (text_match = supplied.match(/\A(.+?)\s+has\s+(.+)\z/i)) && TextLiteral.quote_present?(text_match[2])
@@ -532,16 +571,19 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
 
       normalized = semantic_text(supplied)
       if (has_match = supplied.match(/\A(.+?)\s+has\s+(.+)\z/i))
-        amount, value_name = resolve_amount_and_value_name(has_match[2], line_number)
+        comparison, amount_text = parse_number_comparison(has_match[2])
+        amount, value_name = resolve_amount_and_value_name(amount_text, line_number)
         subject = resolve_reference(has_match[1], line_number, usage: :condition)
         validate_known_value_type(subject, value_name, 'whole_number', line_number, 'IF whole-number comparison')
-        return {
+        result = {
           'raw' => semantic_text(supplied),
           'subject' => subject,
           'relation' => 'has',
           'value_name' => value_name,
           'amount' => amount
         }
+        result['comparison'] = comparison unless comparison == 'equals'
+        return result
       end
 
       match = supplied.match(/\A(.+?)\s+(is|isnt)\s+(.+)\z/i)
@@ -583,6 +625,20 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
       [amount, value_name]
     end
 
+    def parse_number_comparison(text)
+      normalized = normalize_name(text)
+      prefixes = {
+        'at least ' => 'at_least',
+        'more than ' => 'more_than',
+        'at most ' => 'at_most',
+        'less than ' => 'less_than'
+      }
+      prefix, comparison = prefixes.find { |shown, _kind| normalized.start_with?(shown) }
+      return ['equals', normalized] unless prefix
+
+      [comparison, normalized.delete_prefix(prefix)]
+    end
+
     def resolve_value_name(text, line_number)
       normalized = normalize_name(text)
       unless VALUE_NAME_PATTERN.match?(normalized)
@@ -614,6 +670,14 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
     end
 
     def meaning_profile_for(facts, events, if_rules, controls, hover_declarations, context_declarations)
+      number_changes_used = events.any? do |event|
+        event.fetch('then', []).any? { |action| %w[increase decrease].include?(action['action']) }
+      end || if_rules.any? do |rule|
+        rule.fetch('if', {}).key?('comparison') ||
+          rule.fetch('then', []).any? { |action| %w[increase decrease].include?(action['action']) }
+      end
+      return 'bsharp.meaning.v5' if number_changes_used
+
       platform_used = controls.any? do |declaration|
         declaration.fetch('instructions', []).any? { |instruction| instruction['type'].to_s.start_with?('platform_') }
       end

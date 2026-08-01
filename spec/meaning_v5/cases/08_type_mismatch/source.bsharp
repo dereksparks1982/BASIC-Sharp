@@ -1,0 +1,12 @@
+DEFINE
+[
+    @sign is a #thing
+].
+START
+[
+    @sign has "Welcome" title
+].
+WHEN PLAYER examines @sign
+[
+    |then (increase title of @sign by 1
+].
