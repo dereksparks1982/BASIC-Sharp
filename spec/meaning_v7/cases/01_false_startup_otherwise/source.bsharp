@@ -1,0 +1,13 @@
+START
+[
+    PLAYER is alive
+    PLAYER has 0 branches
+].
+IF PLAYER is dead
+[
+    |then (increase branches of PLAYER by 10
+].
+OTHERWISE
+[
+    |then (increase branches of PLAYER by 1
+].

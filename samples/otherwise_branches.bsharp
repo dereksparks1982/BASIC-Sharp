@@ -1,0 +1,31 @@
+DEFINE
+[
+    @lamp is a #thing
+    @switch is a #thing
+].
+
+START
+[
+    @lamp is off
+    PLAYER has 0 ifruns
+    PLAYER has 0 otherwiseruns
+].
+
+WHEN PLAYER attacks @switch
+[
+    |then (change @lamp to on
+].
+
+WHEN PLAYER speaks @switch
+[
+    |then (change @lamp to off
+].
+
+IF @lamp is on
+[
+    |then (increase ifruns of PLAYER by 1
+].
+OTHERWISE
+[
+    |then (increase otherwiseruns of PLAYER by 1
+].

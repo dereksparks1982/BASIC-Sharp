@@ -85,6 +85,7 @@ module BasicSharp
       @startup_if_error = nil
       @startup_follow_up_events = []
       @if_active = Array.new(@ir.fetch('if_rules', []).length, false)
+      @if_branches = Array.new(@ir.fetch('if_rules', []).length)
       @world_origin = world_save ? 'BSharp Save' : 'START'
       @loaded_world_save = world_save ? stringify_keys(world_save) : nil
       load_kind_families
@@ -139,6 +140,7 @@ module BasicSharp
     end
 
     def meaning_profile
+      return WorldSave::MEANING_PROFILE_7 if @ir['meaning_profile'] == WorldSave::MEANING_PROFILE_7
       return WorldSave::MEANING_PROFILE_6 if @ir['meaning_profile'] == WorldSave::MEANING_PROFILE_6
       return WorldSave::MEANING_PROFILE_5 if @ir['meaning_profile'] == WorldSave::MEANING_PROFILE_5
       return WorldSave::MEANING_PROFILE_4 if @ir['meaning_profile'] == WorldSave::MEANING_PROFILE_4
@@ -159,11 +161,13 @@ module BasicSharp
           saved
         end,
         'if_rules' => @ir.fetch('if_rules', []).each_with_index.map do |rule, index|
-          {
+          entry = {
             'index' => index,
             'condition' => canonical_condition_text(rule.fetch('if')),
             'active' => @if_active.fetch(index)
           }
+          entry['branch'] = @if_branches.fetch(index) ? 'IF' : 'OTHERWISE' if rule.key?('otherwise')
+          entry
         end
       }
     end
@@ -175,9 +179,10 @@ module BasicSharp
     def restore_world_save!(document)
       WorldSave.validate_header!(document, @ir)
       world = document['world']
-      candidate_objects, candidate_if_active = validate_world_save_state!(world, save_version: document['format_version'])
+      candidate_objects, candidate_if_active, candidate_if_branches = validate_world_save_state!(world, save_version: document['format_version'])
       @objects = candidate_objects
       @if_active = candidate_if_active
+      @if_branches = candidate_if_branches
       @startup_ran = []
       @startup_if_rules = []
       @startup_if_error = nil
@@ -254,12 +259,14 @@ module BasicSharp
 
     def ask_if_rules
       @ir.fetch('if_rules', []).each_with_index.map do |rule, index|
-        {
+        entry = {
           'index' => index,
           'condition' => canonical_condition_text(rule.fetch('if')),
           'true' => condition_true?(rule.fetch('if')),
           'active' => @if_active.fetch(index)
         }
+        entry['branch'] = @if_branches.fetch(index) ? 'IF' : 'OTHERWISE' if rule.key?('otherwise')
+        entry
       end
     end
 
@@ -531,6 +538,7 @@ module BasicSharp
         raise WorldSaveError, "BSharp Save contains #{if_rules.length} IF-rule records, but this program defines #{expected_rules.length}."
       end
 
+      candidate_if_branches = Array.new(expected_rules.length)
       candidate_if_active = if_rules.each_with_index.map do |entry, index|
         unless entry.is_a?(Hash)
           raise WorldSaveError, "BSharp Save IF-rule record #{index + 1} is invalid."
@@ -554,10 +562,23 @@ module BasicSharp
         unless active == truth
           raise WorldSaveError, "BSharp Save IF-rule '#{expected_condition}' does not match the restored world."
         end
+        if expected_rules.fetch(index).key?('otherwise')
+          branch = entry['branch']
+          unless %w[IF OTHERWISE].include?(branch)
+            raise WorldSaveError, "BSharp Save IF-rule #{index + 1} branch must be IF or OTHERWISE."
+          end
+          expected_branch = truth ? 'IF' : 'OTHERWISE'
+          unless branch == expected_branch
+            raise WorldSaveError, "BSharp Save IF-rule '#{expected_condition}' branch does not match the restored world."
+          end
+          candidate_if_branches[index] = truth
+        elsif entry.key?('branch')
+          raise WorldSaveError, "BSharp Save IF-rule #{index + 1} has an unexpected branch entry."
+        end
         active
       end
 
-      [candidate_objects, candidate_if_active]
+      [candidate_objects, candidate_if_active, candidate_if_branches]
     end
 
     def validate_saved_states!(entries, thing_name)
@@ -610,7 +631,7 @@ module BasicSharp
           raise WorldSaveError, "BSharp Save value name '#{name}' for #{thing_name} must be one plain word."
         end
         expected_type = expected_values.fetch(name).is_a?(String) ? 'text' : 'whole_number'
-        value = if [WorldSave::FORMAT_VERSION_2, WorldSave::FORMAT_VERSION_3, WorldSave::FORMAT_VERSION_4, WorldSave::FORMAT_VERSION_5, WorldSave::FORMAT_VERSION_6].include?(save_version)
+        value = if [WorldSave::FORMAT_VERSION_2, WorldSave::FORMAT_VERSION_3, WorldSave::FORMAT_VERSION_4, WorldSave::FORMAT_VERSION_5, WorldSave::FORMAT_VERSION_6, WorldSave::FORMAT_VERSION_7].include?(save_version)
                   validate_typed_saved_value!(saved_value, name, thing_name, expected_type)
                 else
                   saved_value
@@ -707,12 +728,12 @@ module BasicSharp
       end
 
       profile = @ir['meaning_profile']
-      supported_profiles = [nil, '', WorldSave::MEANING_PROFILE_1, WorldSave::MEANING_PROFILE_2, WorldSave::MEANING_PROFILE_3, WorldSave::MEANING_PROFILE_4, WorldSave::MEANING_PROFILE_5, WorldSave::MEANING_PROFILE_6]
+      supported_profiles = [nil, '', WorldSave::MEANING_PROFILE_1, WorldSave::MEANING_PROFILE_2, WorldSave::MEANING_PROFILE_3, WorldSave::MEANING_PROFILE_4, WorldSave::MEANING_PROFILE_5, WorldSave::MEANING_PROFILE_6, WorldSave::MEANING_PROFILE_7]
       unless supported_profiles.include?(profile)
         raise ArgumentError, "BSharp IR meaning profile '#{profile}' is not supported"
       end
       text_used = ir_uses_text_values?
-      if text_used && ![WorldSave::MEANING_PROFILE_2, WorldSave::MEANING_PROFILE_3, WorldSave::MEANING_PROFILE_4, WorldSave::MEANING_PROFILE_5, WorldSave::MEANING_PROFILE_6].include?(profile)
+      if text_used && ![WorldSave::MEANING_PROFILE_2, WorldSave::MEANING_PROFILE_3, WorldSave::MEANING_PROFILE_4, WorldSave::MEANING_PROFILE_5, WorldSave::MEANING_PROFILE_6, WorldSave::MEANING_PROFILE_7].include?(profile)
         raise ArgumentError, 'Creator-facing text values require bsharp.meaning.v2 or later in BSharp IR'
       end
       if profile == WorldSave::MEANING_PROFILE_2 && !text_used
@@ -734,7 +755,11 @@ module BasicSharp
       if profile == WorldSave::MEANING_PROFILE_6 && !ir_uses_compound_if_conditions?
         raise ArgumentError, 'bsharp.meaning.v6 requires a compound IF condition'
       end
+      if profile == WorldSave::MEANING_PROFILE_7 && !ir_uses_otherwise_branches?
+        raise ArgumentError, 'bsharp.meaning.v7 requires an OTHERWISE branch'
+      end
       validate_compound_if_contracts!(profile)
+      validate_otherwise_contracts!(profile)
 
       raise ArgumentError, 'BSharp IR contains errors and cannot run' if ir_errors.any?
     end
@@ -743,7 +768,7 @@ module BasicSharp
       @ir.fetch('facts', []).any? { |fact| fact.key?('text_value') } ||
         @ir.fetch('events', []).any? { |event| event.fetch('then', []).any? { |word| word.key?('to_text') } } ||
         @ir.fetch('if_rules', []).any? do |rule|
-          condition_clauses(rule.fetch('if', {})).any? { |condition| condition.key?('text_value') } || rule.fetch('then', []).any? { |word| word.key?('to_text') }
+          condition_clauses(rule.fetch('if', {})).any? { |condition| condition.key?('text_value') } || if_action_lists(rule).flatten.any? { |word| word.key?('to_text') }
         end
     end
 
@@ -752,7 +777,7 @@ module BasicSharp
         event.fetch('then', []).any? { |word| %w[increase decrease].include?(normalize(word['action'])) }
       end || @ir.fetch('if_rules', []).any? do |rule|
         condition_clauses(rule.fetch('if', {})).any? { |condition| condition.key?('comparison') } ||
-          rule.fetch('then', []).any? { |word| %w[increase decrease].include?(normalize(word['action'])) }
+          if_action_lists(rule).flatten.any? { |word| %w[increase decrease].include?(normalize(word['action'])) }
       end
     end
 
@@ -760,11 +785,17 @@ module BasicSharp
       @ir.fetch('if_rules', []).any? { |rule| rule.fetch('if', {}).key?('connector') }
     end
 
+    def ir_uses_otherwise_branches?
+      @ir.fetch('if_rules', []).any? { |rule| rule.key?('otherwise') }
+    end
+
     def validate_compound_if_contracts!(profile)
       @ir.fetch('if_rules', []).each do |rule|
         condition = rule.fetch('if', {})
         next unless condition.key?('connector')
-        raise ArgumentError, 'Compound IF conditions require bsharp.meaning.v6 in BSharp IR' unless profile == WorldSave::MEANING_PROFILE_6
+        unless [WorldSave::MEANING_PROFILE_6, WorldSave::MEANING_PROFILE_7].include?(profile)
+          raise ArgumentError, 'Compound IF conditions require bsharp.meaning.v6 or later in BSharp IR'
+        end
         connector = normalize(condition['connector'])
         raise ArgumentError, "Compound IF connector '#{connector}' is not supported" unless %w[and or].include?(connector)
         clauses = condition['clauses']
@@ -773,6 +804,20 @@ module BasicSharp
           raise ArgumentError, 'Compound IF conditions cannot contain nested condition groups'
         end
       end
+    end
+
+    def validate_otherwise_contracts!(profile)
+      @ir.fetch('if_rules', []).each do |rule|
+        next unless rule.key?('otherwise')
+        raise ArgumentError, 'OTHERWISE branches require bsharp.meaning.v7 in BSharp IR' unless profile == WorldSave::MEANING_PROFILE_7
+        unless rule['otherwise'].is_a?(Array) && !rule['otherwise'].empty?
+          raise ArgumentError, 'An OTHERWISE branch must contain at least one action'
+        end
+      end
+    end
+
+    def if_action_lists(rule)
+      [rule.fetch('then', []), rule.fetch('otherwise', [])]
     end
 
     def condition_clauses(condition)
@@ -803,6 +848,7 @@ module BasicSharp
           validate_reference!(condition['target'], location: :condition) if condition['target']
         end
         rule.fetch('then', []).each { |word| validate_action_reference!(word, bound_kinds: []) }
+        rule.fetch('otherwise', []).each { |word| validate_action_reference!(word, bound_kinds: []) }
       end
     end
     def validate_action_reference!(word, bound_kinds:)
@@ -964,6 +1010,7 @@ Choose one starting amount."
           end
         end
         rule.fetch('then', []).each { |word| validate_numeric_action!(word, value_types) }
+        rule.fetch('otherwise', []).each { |word| validate_numeric_action!(word, value_types) }
       end
     end
 
@@ -1215,6 +1262,57 @@ Choose one starting amount."
 
         rules.each_with_index do |rule, index|
           current = condition_true?(rule['if'])
+          if rule.key?('otherwise')
+            next if @if_branches[index] == current
+
+            if fired.length >= firing_limit
+              error = if_loop_error(condition_trail)
+              discard_if_follow_up_steps!(fired, 'IF rules did not finish, so this event will not happen.')
+              return { 'rules' => fired, 'error' => error, 'follow_ups' => [] }
+            end
+
+            seen ||= { if_world_signature => true }
+            @if_branches[index] = current
+            @if_active[index] = current
+            branch = current ? 'IF' : 'OTHERWISE'
+            selections = []
+            action_result = run_action_list(rule.fetch(current ? 'then' : 'otherwise'), actor: nil, context: {}, selections: selections)
+            condition = canonical_condition_text(rule.fetch('if'))
+            reason = if cause == 'START' && !fired_indexes.include?(index)
+                       "#{branch} was selected after START"
+                     elsif !fired_indexes.include?(index)
+                       "#{branch} became active after the event"
+                     else
+                       "#{branch} became active"
+                     end
+            fired << {
+              'condition' => condition,
+              'branch' => branch,
+              'reason' => reason,
+              'steps' => action_result.fetch('steps'),
+              'selections' => selections
+            }
+            follow_ups.concat(action_result.fetch('follow_ups', []))
+            fired_indexes.add(index)
+            condition_trail << "#{condition} -> #{branch}"
+            condition_trail.shift while condition_trail.length > 3
+            fired_this_pass = true
+
+            if action_result['error']
+              discard_if_follow_up_steps!(fired, 'IF rules did not finish, so this event will not happen.')
+              return { 'rules' => fired, 'error' => action_result['error'], 'follow_ups' => [] }
+            end
+
+            rearm_false_if_rules!
+            signature = if_world_signature
+            if seen.key?(signature)
+              error = if_loop_error(condition_trail)
+              discard_if_follow_up_steps!(fired, 'IF rules did not finish, so this event will not happen.')
+              return { 'rules' => fired, 'error' => error, 'follow_ups' => [] }
+            end
+            seen[signature] = true
+            next
+          end
           unless current
             @if_active[index] = false
             next
@@ -1434,12 +1532,14 @@ Choose one starting amount."
 
     def rearm_false_if_rules!
       @ir.fetch('if_rules', []).each_with_index do |rule, index|
+        next if rule.key?('otherwise')
+
         @if_active[index] = false unless condition_true?(rule['if'])
       end
     end
 
     def if_world_signature
-      JSON.generate([snapshot, @if_active])
+      JSON.generate([snapshot, @if_active, @if_branches])
     end
 
     def if_loop_error(condition_trail)

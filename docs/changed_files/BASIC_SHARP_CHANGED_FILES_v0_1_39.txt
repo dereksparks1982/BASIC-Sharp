@@ -1,0 +1,6 @@
+BASIC# v0.1.39 changed-files ledger
+Title: Plain-English OTHERWISE Branches and BSharp Profile 7
+Required base: commit 3a92d4e, tag v0.1.38, branch main, clean tree
+Scope: 58 modified, 53 added, 0 deleted; 111 project paths
+
+The exact sorted arrays and SHA-256 records in BASIC_SHARP_PATCH_MANIFEST.json are authoritative. This build changes the compiler/runtime/VM path, active records, generated JSON version surfaces, Profile 1 invalid-boundary fixture, runtime hashes, and validation tools; it adds the Profile 7 contracts, fixtures, sample, tests, stress tool, and release records. No project path is deleted.

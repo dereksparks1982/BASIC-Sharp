@@ -24,6 +24,8 @@ module BasicSharp
     MEANING_PROFILE_5 = 'bsharp.meaning.v5'
     PROFILE_6 = 'bsharp.bytecode.v6'
     MEANING_PROFILE_6 = 'bsharp.meaning.v6'
+    PROFILE_7 = 'bsharp.bytecode.v7'
+    MEANING_PROFILE_7 = 'bsharp.meaning.v7'
     MAGIC = 'BSBC'
     BYTE_ORDER = 'little-endian'
     TEXT_ENCODING = 'UTF-8'
@@ -59,6 +61,7 @@ module BasicSharp
       'DECREASE_VALUE' => 0x28
     ).freeze
     PROFILE_6_INSTRUCTIONS = PROFILE_5_INSTRUCTIONS
+    PROFILE_7_INSTRUCTIONS = PROFILE_6_INSTRUCTIONS
     CONDITIONS = {
       'STATE_IS' => 0x30,
       'STATE_ISNT' => 0x31,
@@ -73,6 +76,7 @@ module BasicSharp
       'VALUE_LESS_THAN' => 0x38
     ).freeze
     PROFILE_6_CONDITIONS = PROFILE_5_CONDITIONS.merge('ALL_CONDITIONS' => 0x39, 'ANY_CONDITIONS' => 0x3A).freeze
+    PROFILE_7_CONDITIONS = PROFILE_6_CONDITIONS
     WHOLE_NUMBER_RANGE = (0..2_147_483_647)
     NO_REFERENCE_U32 = 0xFFFF_FFFF
     REQUIRED_MALFORMED_RULES = [
@@ -136,9 +140,9 @@ module BasicSharp
 
     def validate_artifact!(artifact)
       profile_name = artifact['profile']
-      expected_profile = [PROFILE, PROFILE_2, PROFILE_3, PROFILE_4, PROFILE_5, PROFILE_6].include?(profile_name) ? profile_name : PROFILE
-      required_meaning = { PROFILE => MEANING_PROFILE, PROFILE_2 => MEANING_PROFILE_2, PROFILE_3 => MEANING_PROFILE_3, PROFILE_4 => MEANING_PROFILE_4, PROFILE_5 => MEANING_PROFILE_5, PROFILE_6 => MEANING_PROFILE_6 }.fetch(expected_profile)
-      algorithm = { PROFILE => 'sha256-bsir-meaning-v1', PROFILE_2 => 'sha256-bsir-meaning-v2', PROFILE_3 => 'sha256-bsir-meaning-v3', PROFILE_4 => 'sha256-bsir-meaning-v4', PROFILE_5 => 'sha256-bsir-meaning-v5', PROFILE_6 => 'sha256-bsir-meaning-v6' }.fetch(expected_profile)
+      expected_profile = [PROFILE, PROFILE_2, PROFILE_3, PROFILE_4, PROFILE_5, PROFILE_6, PROFILE_7].include?(profile_name) ? profile_name : PROFILE
+      required_meaning = { PROFILE => MEANING_PROFILE, PROFILE_2 => MEANING_PROFILE_2, PROFILE_3 => MEANING_PROFILE_3, PROFILE_4 => MEANING_PROFILE_4, PROFILE_5 => MEANING_PROFILE_5, PROFILE_6 => MEANING_PROFILE_6, PROFILE_7 => MEANING_PROFILE_7 }.fetch(expected_profile)
+      algorithm = { PROFILE => 'sha256-bsir-meaning-v1', PROFILE_2 => 'sha256-bsir-meaning-v2', PROFILE_3 => 'sha256-bsir-meaning-v3', PROFILE_4 => 'sha256-bsir-meaning-v4', PROFILE_5 => 'sha256-bsir-meaning-v5', PROFILE_6 => 'sha256-bsir-meaning-v6', PROFILE_7 => 'sha256-bsir-meaning-v7' }.fetch(expected_profile)
       expected = {
         'name' => ARTIFACT_NAME,
         'short_name' => SHORT_NAME,
@@ -225,7 +229,10 @@ module BasicSharp
       profile_4 = profile_name == PROFILE_4
       profile_5 = profile_name == PROFILE_5
       profile_6 = profile_name == PROFILE_6
-      meaning_path = if profile_6
+      profile_7 = profile_name == PROFILE_7
+      meaning_path = if profile_7
+                       File.join(root, 'spec/meaning_v7/BASIC_SHARP_MEANING_PROFILE_v7.json')
+                     elsif profile_6
                        File.join(root, 'spec/meaning_v6/BASIC_SHARP_MEANING_PROFILE_v6.json')
                      elsif profile_5
                        File.join(root, 'spec/meaning_v5/BASIC_SHARP_MEANING_PROFILE_v5.json')
@@ -242,7 +249,7 @@ module BasicSharp
       expected_ids = meaning.fetch('cases').map { |entry| entry.fetch('id') }
       actual_ids = coverage.map { |entry| entry['case_id'] }
       unless actual_ids == expected_ids
-        label = profile_6 ? 'Meaning Profile 6 cases' : (profile_5 ? 'Meaning Profile 5 cases' : (profile_4 ? 'Meaning Profile 4 cases' : (profile_3 ? 'Meaning Profile 3 cases' : (profile_2 ? 'Meaning Profile 2 cases' : 'all 13 Meaning Profile cases'))))
+        label = profile_7 ? 'Meaning Profile 7 cases' : (profile_6 ? 'Meaning Profile 6 cases' : (profile_5 ? 'Meaning Profile 5 cases' : (profile_4 ? 'Meaning Profile 4 cases' : (profile_3 ? 'Meaning Profile 3 cases' : (profile_2 ? 'Meaning Profile 2 cases' : 'all 13 Meaning Profile cases')))))
         raise BytecodeContractError, "Bytecode coverage must name #{label} in order."
       end
       coverage.each do |entry|
@@ -260,7 +267,9 @@ module BasicSharp
 
     def validate_emission!(emission)
       profile = emission.fetch('mandatory_string_prefix').first
-      expected_prefix = if profile == PROFILE_6
+      expected_prefix = if profile == PROFILE_7
+                          [PROFILE_7, MEANING_PROFILE_7, 'sha256-bsir-meaning-v7']
+                        elsif profile == PROFILE_6
                           [PROFILE_6, MEANING_PROFILE_6, 'sha256-bsir-meaning-v6']
                         elsif profile == PROFILE_5
                           [PROFILE_5, MEANING_PROFILE_5, 'sha256-bsir-meaning-v5']
@@ -289,7 +298,9 @@ module BasicSharp
     end
 
     def validate_loading!(loading, profile_name: PROFILE)
-      expected_status = if profile_name == PROFILE_6
+      expected_status = if profile_name == PROFILE_7
+                          'implemented by BASIC# v0.1.39'
+                        elsif profile_name == PROFILE_6
                           'implemented by BASIC# v0.1.38'
                         elsif profile_name == PROFILE_5
                           'implemented by BASIC# v0.1.37'
@@ -320,7 +331,9 @@ module BasicSharp
     end
 
     def validate_execution!(execution, profile_name: PROFILE)
-      expected_status = if profile_name == PROFILE_6
+      expected_status = if profile_name == PROFILE_7
+                          'preferred by BASIC# v0.1.39'
+                        elsif profile_name == PROFILE_6
                           'preferred by BASIC# v0.1.38'
                         elsif profile_name == PROFILE_5
                           'preferred by BASIC# v0.1.37'
@@ -356,15 +369,16 @@ module BasicSharp
         'RELATION_EXISTS', 'VALUE_EQUALS', 'nearest inherited Kind', 'Thing definition order',
         'reactive IF', 'first-created first-run', 'independent mutable world',
         'canonical reconstructed wording', 'BSharp Save', 'BSharp ASK', 'source, saved BSIR', 'save/restore/replay', '1,024-event protection', 'emitted to BSBC in memory', '--reference-runtime', '--verify-runtime-parity', 'stops on disagreement',
-        profile_name == PROFILE_6 ? 'preferred Profile 1, Profile 2, Profile 3, Profile 4, Profile 5, and Profile 6 runtime' : (profile_name == PROFILE_5 ? 'preferred Profile 1, Profile 2, Profile 3, Profile 4, and Profile 5 runtime' : (profile_name == PROFILE_4 ? 'preferred Profile 1, Profile 2, Profile 3, and Profile 4 runtime' : (profile_name == PROFILE_3 ? 'preferred Profile 1, Profile 2, and Profile 3 runtime' : (profile_name == PROFILE_2 ? 'preferred Profile 1 and Profile 2 runtime' : 'preferred Profile 1 runtime'))))
+        profile_name == PROFILE_7 ? 'preferred Profile 1, Profile 2, Profile 3, Profile 4, Profile 5, Profile 6, and Profile 7 runtime' : (profile_name == PROFILE_6 ? 'preferred Profile 1, Profile 2, Profile 3, Profile 4, Profile 5, and Profile 6 runtime' : (profile_name == PROFILE_5 ? 'preferred Profile 1, Profile 2, Profile 3, Profile 4, and Profile 5 runtime' : (profile_name == PROFILE_4 ? 'preferred Profile 1, Profile 2, Profile 3, and Profile 4 runtime' : (profile_name == PROFILE_3 ? 'preferred Profile 1, Profile 2, and Profile 3 runtime' : (profile_name == PROFILE_2 ? 'preferred Profile 1 and Profile 2 runtime' : 'preferred Profile 1 runtime')))))
       ]
-      if [PROFILE_2, PROFILE_3, PROFILE_4, PROFILE_5, PROFILE_6].include?(profile_name)
+      if [PROFILE_2, PROFILE_3, PROFILE_4, PROFILE_5, PROFILE_6, PROFILE_7].include?(profile_name)
         required.concat(['START_TEXT_VALUE', 'CHANGE_TEXT_VALUE', 'TEXT_VALUE_EQUALS', 'exact creator-facing text'])
       end
-      required.concat(['CTRL', 'HOVR', 'CTXT', 'engine-neutral host commands']) if [PROFILE_3, PROFILE_4, PROFILE_5, PROFILE_6].include?(profile_name)
-      required.concat(['platform movement', 'gravity', 'grounded jump', 'collision movement']) if [PROFILE_4, PROFILE_5, PROFILE_6].include?(profile_name)
-      required.concat(['INCREASE_VALUE', 'DECREASE_VALUE', 'VALUE_AT_LEAST', 'VALUE_MORE_THAN', 'VALUE_AT_MOST', 'VALUE_LESS_THAN', 'atomic overflow', 'atomic underflow']) if [PROFILE_5, PROFILE_6].include?(profile_name)
-      required.concat(['ALL_CONDITIONS', 'ANY_CONDITIONS', 'compound IF', 'false-to-true', 'rearming']) if profile_name == PROFILE_6
+      required.concat(['CTRL', 'HOVR', 'CTXT', 'engine-neutral host commands']) if [PROFILE_3, PROFILE_4, PROFILE_5, PROFILE_6, PROFILE_7].include?(profile_name)
+      required.concat(['platform movement', 'gravity', 'grounded jump', 'collision movement']) if [PROFILE_4, PROFILE_5, PROFILE_6, PROFILE_7].include?(profile_name)
+      required.concat(['INCREASE_VALUE', 'DECREASE_VALUE', 'VALUE_AT_LEAST', 'VALUE_MORE_THAN', 'VALUE_AT_MOST', 'VALUE_LESS_THAN', 'atomic overflow', 'atomic underflow']) if [PROFILE_5, PROFILE_6, PROFILE_7].include?(profile_name)
+      required.concat(['ALL_CONDITIONS', 'ANY_CONDITIONS', 'compound IF', 'false-to-true', 'rearming']) if [PROFILE_6, PROFILE_7].include?(profile_name)
+      required.concat(['OTHERWISE', 'startup branch', 'true-to-false', 'last settled branch']) if profile_name == PROFILE_7
       text = execution.values.flatten.join("\n")
       missing = required.reject { |entry| text.include?(entry) }
       raise BytecodeContractError, "BSharp VM rules are incomplete: #{missing.join(', ')}" unless missing.empty?
@@ -372,7 +386,7 @@ module BasicSharp
 
     def validate_malformed_rules!(rules, profile_name: PROFILE)
       required = REQUIRED_MALFORMED_RULES.dup
-      required.concat(PROFILE_2_REQUIRED_MALFORMED_RULES) if [PROFILE_2, PROFILE_3, PROFILE_4, PROFILE_5, PROFILE_6].include?(profile_name)
+      required.concat(PROFILE_2_REQUIRED_MALFORMED_RULES) if [PROFILE_2, PROFILE_3, PROFILE_4, PROFILE_5, PROFILE_6, PROFILE_7].include?(profile_name)
       missing = required - rules
       raise BytecodeContractError, "Malformed-bytecode rules are incomplete: #{missing.join(', ')}" unless missing.empty?
       raise BytecodeContractError, 'Malformed-bytecode rules must be unique.' unless rules.uniq.length == rules.length
@@ -404,23 +418,25 @@ module BasicSharp
     end
 
     def instruction_codes(profile_name)
+      return PROFILE_7_INSTRUCTIONS if profile_name == PROFILE_7
       return PROFILE_6_INSTRUCTIONS if profile_name == PROFILE_6
       return PROFILE_5_INSTRUCTIONS if profile_name == PROFILE_5
       [PROFILE_2, PROFILE_3, PROFILE_4].include?(profile_name) ? PROFILE_2_INSTRUCTIONS : INSTRUCTIONS
     end
 
     def condition_codes(profile_name)
+      return PROFILE_7_CONDITIONS if profile_name == PROFILE_7
       return PROFILE_6_CONDITIONS if profile_name == PROFILE_6
       return PROFILE_5_CONDITIONS if profile_name == PROFILE_5
       [PROFILE_2, PROFILE_3, PROFILE_4].include?(profile_name) ? PROFILE_2_CONDITIONS : CONDITIONS
     end
 
     def section_order(profile_name)
-      [PROFILE_3, PROFILE_4, PROFILE_5, PROFILE_6].include?(profile_name) ? SECTION_ORDER_3 : SECTION_ORDER
+      [PROFILE_3, PROFILE_4, PROFILE_5, PROFILE_6, PROFILE_7].include?(profile_name) ? SECTION_ORDER_3 : SECTION_ORDER
     end
 
     def section_order_for_format(profile_format_version)
-      [3, 4, 5, 6].include?(profile_format_version) ? SECTION_ORDER_3 : SECTION_ORDER
+      [3, 4, 5, 6, 7].include?(profile_format_version) ? SECTION_ORDER_3 : SECTION_ORDER
     end
 
     def validate_ranges!(ranges, active_codes, label)

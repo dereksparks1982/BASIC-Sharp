@@ -1,0 +1,38 @@
+BSharp Bytecode bsharp.bytecode.v7
+Meaning Profile: bsharp.meaning.v7
+Fingerprint: 861e881e55e4942f5bafde63c99b7c6582d9029635517116b675849fb06d48bf
+
+KIND 0 person PARENT NONE
+KIND 1 thing PARENT NONE
+
+THING 0 player KIND[person]
+THING 1 lamp KIND[thing]
+THING 2 switch KIND[thing]
+
+START
+    START_STATE THING[lamp] off REMOVE on
+    START_VALUE THING[player] ifruns 0
+    START_VALUE THING[player] otherwiseruns 0
+END
+
+WHEN actor=THING[player] action=attack target=THING[switch] BLOCK 0
+WHEN actor=THING[player] action=speak target=THING[switch] BLOCK 1
+
+IF STATE_IS THING[lamp] on BLOCK 2 OTHERWISE BLOCK 3
+
+
+BLOCK 0
+    CHANGE_STATE THING[lamp] on REMOVE off
+END
+
+BLOCK 1
+    CHANGE_STATE THING[lamp] off REMOVE on
+END
+
+BLOCK 2
+    INCREASE_VALUE THING[player] ifruns 1
+END
+
+BLOCK 3
+    INCREASE_VALUE THING[player] otherwiseruns 1
+END

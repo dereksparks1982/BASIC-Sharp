@@ -1,0 +1,540 @@
+{
+  "case_id": "08_follow_up_order",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "context_declarations": [
+
+      ],
+      "controls": [
+
+      ],
+      "events": [
+        {
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "dead"
+              }
+            },
+            {
+              "action": "cause",
+              "event": {
+                "action": "speak",
+                "actor": {
+                  "name": "player",
+                  "object_kind": "person",
+                  "text": "player",
+                  "type": "object"
+                },
+                "target": {
+                  "name": "switch",
+                  "object_kind": "thing",
+                  "text": "switch",
+                  "type": "object"
+                }
+              }
+            }
+          ],
+          "when": {
+            "action": "attack",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "name": "switch",
+              "object_kind": "thing",
+              "text": "switch",
+              "type": "object"
+            }
+          }
+        },
+        {
+          "then": [
+            {
+              "action": "increase",
+              "amount": 100,
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "value_name": "branches"
+            }
+          ],
+          "when": {
+            "action": "speak",
+            "actor": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "target": {
+              "name": "switch",
+              "object_kind": "thing",
+              "text": "switch",
+              "type": "object"
+            }
+          }
+        }
+      ],
+      "facts": [
+        {
+          "relation": "is",
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          },
+          "value": {
+            "kind": "state",
+            "name": "alive"
+          }
+        },
+        {
+          "amount": 0,
+          "relation": "has",
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          },
+          "value_name": "branches"
+        }
+      ],
+      "hover_declarations": [
+
+      ],
+      "if_rules": [
+        {
+          "if": {
+            "relation": "is",
+            "subject": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "value": {
+              "kind": "state",
+              "name": "dead"
+            }
+          },
+          "otherwise": [
+            {
+              "action": "increase",
+              "amount": 1,
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "value_name": "branches"
+            }
+          ],
+          "otherwise_line_number": 23,
+          "then": [
+            {
+              "action": "increase",
+              "amount": 10,
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "value_name": "branches"
+            }
+          ]
+        }
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "thing",
+          "name": "switch"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "ask": {
+      "answers": [
+        {
+          "answer": {
+            "name": "player",
+            "values": {
+              "branches": 111,
+              "damage": 0
+            }
+          },
+          "ok": true,
+          "question": "what values does player have",
+          "type": "thing_values"
+        },
+        {
+          "answer": {
+            "rules": [
+              {
+                "active": true,
+                "branch": "IF",
+                "condition": "player is dead",
+                "index": 0,
+                "true": true
+              }
+            ],
+            "total_count": 1,
+            "true_count": 1
+          },
+          "ok": true,
+          "question": "what IF rules are true",
+          "type": "if_rules_true"
+        }
+      ],
+      "questions": [
+        "what values does player have",
+        "what IF rules are true"
+      ]
+    },
+    "events": [
+      {
+        "context": {
+        },
+        "error": null,
+        "event": "player attacks switch",
+        "event_trail": [
+          "player speaks switch"
+        ],
+        "follow_up_events": [
+          {
+            "caused_by": "(cause player speaks switch",
+            "caused_by_line": 13,
+            "context": {
+            },
+            "error": null,
+            "event": "player speaks switch",
+            "if_rules": [
+
+            ],
+            "matched": true,
+            "matched_when": "player speaks switch",
+            "ran": [
+              "(increase branches of player by 100"
+            ],
+            "selections": [
+
+            ],
+            "steps": [
+              {
+                "change": "player branches changed from 11 to 111",
+                "value_change": {
+                  "action_amount": 100,
+                  "new_amount": 111,
+                  "old_amount": 11,
+                  "operation": "increase",
+                  "value_name": "branches"
+                },
+                "word": "(increase branches of player by 100"
+              }
+            ],
+            "understood": [
+
+            ]
+          }
+        ],
+        "if_rules": [
+          {
+            "branch": "IF",
+            "condition": "player is dead",
+            "reason": "IF became active after the event",
+            "selections": [
+
+            ],
+            "steps": [
+              {
+                "change": "player branches changed from 1 to 11",
+                "value_change": {
+                  "action_amount": 10,
+                  "new_amount": 11,
+                  "old_amount": 1,
+                  "operation": "increase",
+                  "value_name": "branches"
+                },
+                "word": "(increase branches of player by 10"
+              }
+            ]
+          }
+        ],
+        "matched": true,
+        "matched_when": "player attacks switch",
+        "ran": [
+          "(change player to dead",
+          "(cause player speaks switch"
+        ],
+        "selections": [
+
+        ],
+        "steps": [
+          {
+            "change": "player is now dead",
+            "word": "(change player to dead"
+          },
+          {
+            "caused_event": "player speaks switch",
+            "change": "player speaks switch will happen next",
+            "word": "(cause player speaks switch"
+          }
+        ],
+        "understood": [
+
+        ]
+      }
+    ],
+    "final": {
+      "if_rules": [
+        {
+          "active": true,
+          "branch": "IF",
+          "condition": "player is dead",
+          "index": 0,
+          "true": true
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+            "dead"
+          ],
+          "values": {
+            "branches": 111,
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "thing",
+          "name": "switch",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 2,
+        "true_if_rules": 1,
+        "whole_number_values": 3
+      }
+    },
+    "save": {
+      "document": {
+        "format": "bsharp.save.json",
+        "format_version": 7,
+        "program_fingerprint": {
+          "algorithm": "sha256-bsir-meaning-v7",
+          "value": "e19131be24f7a37f8c6e136e678e6d421741fda940265ea5d7833d300ba5bdfb"
+        },
+        "world": {
+          "if_rules": [
+            {
+              "active": true,
+              "branch": "IF",
+              "condition": "player is dead",
+              "index": 0
+            }
+          ],
+          "settled": true,
+          "things": [
+            {
+              "builtin": true,
+              "kind": "person",
+              "name": "player",
+              "relations": {
+              },
+              "states": [
+                "dead"
+              ],
+              "values": {
+                "branches": {
+                  "type": "whole_number",
+                  "value": 111
+                },
+                "damage": {
+                  "type": "whole_number",
+                  "value": 0
+                }
+              }
+            },
+            {
+              "builtin": false,
+              "kind": "thing",
+              "name": "switch",
+              "relations": {
+              },
+              "states": [
+
+              ],
+              "values": {
+                "damage": {
+                  "type": "whole_number",
+                  "value": 0
+                }
+              }
+            }
+          ]
+        }
+      },
+      "restored": {
+        "if_rules": [
+          {
+            "active": true,
+            "branch": "IF",
+            "condition": "player is dead",
+            "index": 0,
+            "true": true
+          }
+        ],
+        "save_ready": true,
+        "snapshot": [
+          {
+            "builtin": true,
+            "kind": "person",
+            "name": "player",
+            "relations": {
+            },
+            "states": [
+              "dead"
+            ],
+            "values": {
+              "branches": 111,
+              "damage": 0
+            }
+          },
+          {
+            "builtin": false,
+            "kind": "thing",
+            "name": "switch",
+            "relations": {
+            },
+            "states": [
+
+            ],
+            "values": {
+              "damage": 0
+            }
+          }
+        ],
+        "world": {
+          "if_rules": 1,
+          "kinds_used": 2,
+          "origin": "BSharp Save",
+          "settled": true,
+          "text_values": 0,
+          "things": 2,
+          "true_if_rules": 1,
+          "whole_number_values": 3
+        }
+      },
+      "startup_replayed": false
+    },
+    "startup": {
+      "if_rules": [
+        {
+          "active": false,
+          "branch": "OTHERWISE",
+          "condition": "player is dead",
+          "index": 0,
+          "true": false
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+            "alive"
+          ],
+          "values": {
+            "branches": 1,
+            "damage": 0
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "thing",
+          "name": "switch",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 2,
+        "true_if_rules": 0,
+        "whole_number_values": 3
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v7",
+  "source_bsir_parity": true
+}

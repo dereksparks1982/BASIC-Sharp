@@ -176,11 +176,16 @@ module BasicSharp
 
     def resolve_if_rule(rule)
       condition_fact = parse_if_condition(rule.condition, rule.line_number)
-      {
+      result = {
         'line_number' => rule.line_number,
         'if' => condition_fact,
         'then' => rule.actions.map { |action| resolve_action(action, bound_kinds: []) }
       }
+      if rule.otherwise_actions
+        result['otherwise_line_number'] = rule.otherwise_line_number
+        result['otherwise'] = rule.otherwise_actions.map { |action| resolve_action(action, bound_kinds: []) }
+      end
+      result
     end
 
     def parse_if_condition(text, line_number)
@@ -718,6 +723,8 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
     end
 
     def meaning_profile_for(facts, events, if_rules, controls, hover_declarations, context_declarations)
+      return 'bsharp.meaning.v7' if if_rules.any? { |rule| rule.key?('otherwise') }
+
       compound_conditions_used = if_rules.any? { |rule| rule.fetch('if', {}).key?('connector') }
       return 'bsharp.meaning.v6' if compound_conditions_used
 

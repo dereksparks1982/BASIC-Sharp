@@ -1,0 +1,50 @@
+{
+  "case_id": "09_misplaced_otherwise",
+  "compile": {
+    "errors": [
+      {
+        "message": "OTHERWISE must directly follow the IF Body it belongs to.",
+        "severity": "error"
+      }
+    ],
+    "meaning": {
+      "events": [
+
+      ],
+      "facts": [
+        {
+          "relation": "is",
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          },
+          "value": {
+            "kind": "state",
+            "name": "alive"
+          }
+        }
+      ],
+      "if_rules": [
+
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v7"
+}

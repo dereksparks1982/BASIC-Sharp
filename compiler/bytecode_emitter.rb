@@ -21,6 +21,7 @@ module BasicSharp
     PROFILE_FORMAT_VERSION_4 = 4
     PROFILE_FORMAT_VERSION_5 = 5
     PROFILE_FORMAT_VERSION_6 = 6
+    PROFILE_FORMAT_VERSION_7 = 7
     MANDATORY_STRINGS = [
       BytecodeContract::PROFILE,
       BytecodeContract::MEANING_PROFILE,
@@ -45,6 +46,7 @@ module BasicSharp
       @document = stringify_keys(document.respond_to?(:to_h) ? document.to_h : document)
       validate_document!
       @profile = case @document['meaning_profile']
+                 when BytecodeContract::MEANING_PROFILE_7 then BytecodeContract::PROFILE_7
                  when BytecodeContract::MEANING_PROFILE_6 then BytecodeContract::PROFILE_6
                  when BytecodeContract::MEANING_PROFILE_5 then BytecodeContract::PROFILE_5
                  when BytecodeContract::MEANING_PROFILE_4 then BytecodeContract::PROFILE_4
@@ -58,7 +60,8 @@ module BasicSharp
         BytecodeContract::PROFILE_3 => BytecodeContract::MEANING_PROFILE_3,
         BytecodeContract::PROFILE_4 => BytecodeContract::MEANING_PROFILE_4,
         BytecodeContract::PROFILE_5 => BytecodeContract::MEANING_PROFILE_5,
-        BytecodeContract::PROFILE_6 => BytecodeContract::MEANING_PROFILE_6
+        BytecodeContract::PROFILE_6 => BytecodeContract::MEANING_PROFILE_6,
+        BytecodeContract::PROFILE_7 => BytecodeContract::MEANING_PROFILE_7
       }.fetch(@profile)
       @fingerprint_algorithm = {
         BytecodeContract::PROFILE => WorldSave::FINGERPRINT_ALGORITHM,
@@ -66,7 +69,8 @@ module BasicSharp
         BytecodeContract::PROFILE_3 => WorldSave::FINGERPRINT_ALGORITHM_3,
         BytecodeContract::PROFILE_4 => WorldSave::FINGERPRINT_ALGORITHM_4,
         BytecodeContract::PROFILE_5 => WorldSave::FINGERPRINT_ALGORITHM_5,
-        BytecodeContract::PROFILE_6 => WorldSave::FINGERPRINT_ALGORITHM_6
+        BytecodeContract::PROFILE_6 => WorldSave::FINGERPRINT_ALGORITHM_6,
+        BytecodeContract::PROFILE_7 => WorldSave::FINGERPRINT_ALGORITHM_7
       }.fetch(@profile)
       @profile_format_version = {
         BytecodeContract::PROFILE => PROFILE_FORMAT_VERSION,
@@ -74,7 +78,8 @@ module BasicSharp
         BytecodeContract::PROFILE_3 => PROFILE_FORMAT_VERSION_3,
         BytecodeContract::PROFILE_4 => PROFILE_FORMAT_VERSION_4,
         BytecodeContract::PROFILE_5 => PROFILE_FORMAT_VERSION_5,
-        BytecodeContract::PROFILE_6 => PROFILE_FORMAT_VERSION_6
+        BytecodeContract::PROFILE_6 => PROFILE_FORMAT_VERSION_6,
+        BytecodeContract::PROFILE_7 => PROFILE_FORMAT_VERSION_7
       }.fetch(@profile)
       @instruction_codes = BytecodeContract.instruction_codes(@profile)
       @condition_codes = BytecodeContract.condition_codes(@profile)
@@ -123,11 +128,11 @@ module BasicSharp
         raise BytecodeEmitterError, "BSharp Bytecode was not written because the program has #{warnings.length} warning#{warnings.length == 1 ? '' : 's'}."
       end
       profile = @document['meaning_profile']
-      unless profile.nil? || [BytecodeContract::MEANING_PROFILE, BytecodeContract::MEANING_PROFILE_2, BytecodeContract::MEANING_PROFILE_3, BytecodeContract::MEANING_PROFILE_4, BytecodeContract::MEANING_PROFILE_5, BytecodeContract::MEANING_PROFILE_6].include?(profile)
+      unless profile.nil? || [BytecodeContract::MEANING_PROFILE, BytecodeContract::MEANING_PROFILE_2, BytecodeContract::MEANING_PROFILE_3, BytecodeContract::MEANING_PROFILE_4, BytecodeContract::MEANING_PROFILE_5, BytecodeContract::MEANING_PROFILE_6, BytecodeContract::MEANING_PROFILE_7].include?(profile)
         raise BytecodeEmitterError, "BSharp Bytecode does not support meaning profile '#{profile}'."
       end
       text_used = document_uses_text_values?
-      if text_used && ![BytecodeContract::MEANING_PROFILE_2, BytecodeContract::MEANING_PROFILE_3, BytecodeContract::MEANING_PROFILE_4, BytecodeContract::MEANING_PROFILE_5, BytecodeContract::MEANING_PROFILE_6].include?(profile)
+      if text_used && ![BytecodeContract::MEANING_PROFILE_2, BytecodeContract::MEANING_PROFILE_3, BytecodeContract::MEANING_PROFILE_4, BytecodeContract::MEANING_PROFILE_5, BytecodeContract::MEANING_PROFILE_6, BytecodeContract::MEANING_PROFILE_7].include?(profile)
         raise BytecodeEmitterError, 'Creator-facing text values require bsharp.meaning.v2 or later in BSharp IR.'
       end
       if profile == BytecodeContract::MEANING_PROFILE_2 && !text_used
@@ -150,6 +155,9 @@ module BasicSharp
       if profile == BytecodeContract::MEANING_PROFILE_6 && !document_uses_compound_if_conditions?
         raise BytecodeEmitterError, 'bsharp.meaning.v6 requires a compound IF condition.'
       end
+      if profile == BytecodeContract::MEANING_PROFILE_7 && !document_uses_otherwise_branches?
+        raise BytecodeEmitterError, 'bsharp.meaning.v7 requires an OTHERWISE branch.'
+      end
     end
 
     def diagnostic_severity(entry)
@@ -161,7 +169,7 @@ module BasicSharp
         Array(event['then']).any? { |word| %w[increase decrease].include?(normalize(word['action'])) }
       end || Array(@document['if_rules']).any? do |rule|
         condition_clauses(rule.fetch('if', {})).any? { |condition| condition.key?('comparison') } ||
-          Array(rule['then']).any? { |word| %w[increase decrease].include?(normalize(word['action'])) }
+          [Array(rule['then']), Array(rule['otherwise'])].flatten.any? { |word| %w[increase decrease].include?(normalize(word['action'])) }
       end
     end
 
@@ -174,12 +182,24 @@ module BasicSharp
       # KIND, THNG, STRT, EVNT, IFRL, then CODE.
       events = Array(@document['events']).each_with_index.map { |event, index| lower_event(event, index) }
       event_count = events.length
+      if_rule_count = Array(@document['if_rules']).length
+      next_otherwise_block = event_count + if_rule_count
       if_rules = Array(@document['if_rules']).each_with_index.map do |rule, index|
-        lower_if_rule(rule, event_count + index)
+        otherwise_block_index = if rule.key?('otherwise')
+                                  assigned = next_otherwise_block
+                                  next_otherwise_block += 1
+                                  assigned
+                                else
+                                  BytecodeContract::NO_REFERENCE_U32
+                                end
+        lower_if_rule(rule, event_count + index, otherwise_block_index)
       end
       event_blocks = Array(@document['events']).map { |event| lower_actions(event.fetch('then')) }
       if_blocks = Array(@document['if_rules']).map { |rule| lower_actions(rule.fetch('then')) }
-      blocks = (event_blocks + if_blocks).each_with_index.map do |instructions, index|
+      otherwise_blocks = Array(@document['if_rules']).filter_map do |rule|
+        lower_actions(rule.fetch('otherwise')) if rule.key?('otherwise')
+      end
+      blocks = (event_blocks + if_blocks + otherwise_blocks).each_with_index.map do |instructions, index|
         { id: index, instructions: instructions }
       end
 
@@ -329,13 +349,15 @@ module BasicSharp
       }
     end
 
-    def lower_if_rule(rule, block_index)
+    def lower_if_rule(rule, block_index, otherwise_block_index)
       condition = lower_condition(rule.fetch('if'))
-      {
+      result = {
         condition: condition,
         block_index: block_index,
         source_order: block_index - Array(@document['events']).length
       }
+      result[:otherwise_block_index] = otherwise_block_index if @profile == BytecodeContract::PROFILE_7
+      result
     end
 
     def lower_condition(condition)
@@ -526,7 +548,7 @@ module BasicSharp
         'CODE' => model.fetch(:blocks).length
       }
 
-      if [BytecodeContract::PROFILE_3, BytecodeContract::PROFILE_4, BytecodeContract::PROFILE_5, BytecodeContract::PROFILE_6].include?(@profile)
+      if [BytecodeContract::PROFILE_3, BytecodeContract::PROFILE_4, BytecodeContract::PROFILE_5, BytecodeContract::PROFILE_6, BytecodeContract::PROFILE_7].include?(@profile)
         section_data['CTRL'] = encode_game_section(model.fetch(:controls))
         section_data['HOVR'] = encode_game_section(model.fetch(:hover_declarations))
         section_data['CTXT'] = encode_game_section(model.fetch(:context_declarations))
@@ -599,7 +621,12 @@ module BasicSharp
       condition = entry.fetch(:condition)
       encoded = encode_record(condition)
       encoded += Array(condition[:clauses]).map { |clause| encode_record(clause) }.join if condition[:clauses]
-      encoded + pack_u32(entry[:block_index], entry[:source_order])
+      fields = if @profile == BytecodeContract::PROFILE_7
+                 [entry[:block_index], entry.fetch(:otherwise_block_index), entry[:source_order]]
+               else
+                 [entry[:block_index], entry[:source_order]]
+               end
+      encoded + pack_u32(*fields)
     end
 
     def encode_code
@@ -734,12 +761,17 @@ module BasicSharp
       Array(@document['facts']).any? { |fact| fact.key?('text_value') } ||
         Array(@document['events']).any? { |event| Array(event['then']).any? { |action| action.key?('to_text') } } ||
         Array(@document['if_rules']).any? do |rule|
-          condition_clauses(rule.fetch('if', {})).any? { |condition| condition.key?('text_value') } || Array(rule['then']).any? { |action| action.key?('to_text') }
+          condition_clauses(rule.fetch('if', {})).any? { |condition| condition.key?('text_value') } ||
+            [Array(rule['then']), Array(rule['otherwise'])].flatten.any? { |action| action.key?('to_text') }
         end
     end
 
     def document_uses_compound_if_conditions?
       Array(@document['if_rules']).any? { |rule| rule.fetch('if', {}).key?('connector') }
+    end
+
+    def document_uses_otherwise_branches?
+      Array(@document['if_rules']).any? { |rule| rule.key?('otherwise') }
     end
 
     def condition_clauses(condition)

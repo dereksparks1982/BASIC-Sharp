@@ -8,9 +8,9 @@ require_relative 'text_literal'
 
 module BasicSharp
   class Parser
-    BLOCK_HEADS = %w[KINDS DEFINE START WHEN IF CONTROLS HOVER CONTEXT].freeze
+    BLOCK_HEADS = %w[KINDS DEFINE START WHEN IF OTHERWISE CONTROLS HOVER CONTEXT].freeze
     STATEMENT_STARTERS = BLOCK_HEADS
-    DORMANT_HEADS = %w[WORLD STATES RELATIONS ACTIONS WHILE OTHERWISE].freeze
+    DORMANT_HEADS = %w[WORLD STATES RELATIONS ACTIONS WHILE].freeze
     HOVER_FIELDS = %w[name kind state description].freeze
 
     attr_reader :dictionary, :diagnostics
@@ -32,7 +32,7 @@ module BasicSharp
       hover_declarations = []
       context_declarations = []
 
-      statements.each do |statement|
+      statements.each_with_index do |statement, index|
         case statement.starter
         when 'DEFINE' then definitions.concat(parse_definitions(statement))
         when 'START' then facts.concat(parse_start_facts(statement))
@@ -42,6 +42,19 @@ module BasicSharp
         when 'IF'
           rule = parse_if(statement)
           if_rules << rule if rule
+        when 'OTHERWISE'
+          previous = index.positive? ? statements[index - 1] : nil
+          if previous&.starter == 'IF' && if_rules.last&.line_number == previous.line_number && if_rules.last.otherwise_actions.nil?
+            actions = parse_otherwise(statement)
+            if_rules.last.otherwise_actions = actions
+            if_rules.last.otherwise_line_number = statement.line_number
+          elsif previous&.starter == 'OTHERWISE'
+            diagnostics.error(statement.line_number, 'An IF can have only one OTHERWISE Body.')
+            parse_otherwise(statement)
+          else
+            diagnostics.error(statement.line_number, 'OTHERWISE must directly follow the IF Body it belongs to.')
+            parse_otherwise(statement)
+          end
         when 'CONTROLS'
           declaration = parse_controls(statement)
           controls << declaration if declaration
@@ -151,8 +164,16 @@ module BasicSharp
 
     def parse_head(line)
       text = line.text
+      if text == 'ELSE' || text.start_with?('ELSE ')
+        diagnostics.error(line.number, 'BASIC# uses OTHERWISE instead of ELSE.')
+        return { starter: 'ELSE', detail: text.delete_prefix('ELSE').strip }
+      end
+      if text.start_with?('OTHERWISE ')
+        diagnostics.error(line.number, 'OTHERWISE stands alone on its Head line. Put no condition after it.')
+        return { starter: 'OTHERWISE', detail: text.delete_prefix('OTHERWISE').strip }
+      end
       return dormant_head(line, text) if DORMANT_HEADS.include?(text)
-      return { starter: text, detail: nil } if %w[KINDS DEFINE START].include?(text)
+      return { starter: text, detail: nil } if %w[KINDS DEFINE START OTHERWISE].include?(text)
 
       if (match = text.match(/\A(WHEN|IF)\s+(.+)\z/))
         return { starter: match[1], detail: match[2].strip }
@@ -181,7 +202,7 @@ module BasicSharp
     end
 
     def head_line?(text)
-      BLOCK_HEADS.any? { |head| text == head || text.start_with?("#{head} ") } || DORMANT_HEADS.include?(text)
+      BLOCK_HEADS.any? { |head| text == head || text.start_with?("#{head} ") } || DORMANT_HEADS.include?(text) || text == 'ELSE' || text.start_with?('ELSE ')
     end
 
     def unsupported_head_message(head)
@@ -341,7 +362,21 @@ module BasicSharp
       diagnostics.error(statement.line_number, 'IF needs at least one |then followed by an official word') if results.empty?
       return nil if statement.head.to_s.empty?
 
-      IfRule.new(condition: statement.head, actions: results.map { |child| parse_order(child) }.compact, line_number: statement.line_number)
+      IfRule.new(
+        condition: statement.head,
+        actions: results.map { |child| parse_order(child) }.compact,
+        otherwise_actions: nil,
+        line_number: statement.line_number,
+        otherwise_line_number: nil
+      )
+    end
+
+    def parse_otherwise(statement)
+      invalid = statement.children.reject { |child| child.line_command == 'then' }
+      invalid.each { |child| diagnostics.error(child.line_number, 'Every OTHERWISE Body instruction must begin with |then') }
+      results = statement.children.select { |child| child.line_command == 'then' }
+      diagnostics.error(statement.line_number, 'OTHERWISE needs at least one |then followed by an official word') if results.empty?
+      results.map { |child| parse_order(child) }.compact
     end
 
     def parse_controls(statement)

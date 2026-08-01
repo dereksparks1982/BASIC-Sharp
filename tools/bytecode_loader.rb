@@ -284,6 +284,9 @@ compound_loader = BasicSharp::BytecodeLoader.read(File.join(ROOT, 'samples/compo
 assert_pass(compound_loader.model[:profile] == 'bsharp.bytecode.v6', 'Profile 6 compound IF instructions')
 assert_pass(compound_loader.model[:if_rules].map { |rule| rule.dig(:condition, :name) } == %w[ALL_CONDITIONS ANY_CONDITIONS], 'Profile 6 condition-group loading')
 assert_pass(compound_loader.model[:if_rules].all? { |rule| rule.dig(:condition, :clauses)&.length == 2 }, 'Profile 6 clause loading')
+otherwise_loader = BasicSharp::BytecodeLoader.read(File.join(ROOT, 'samples/otherwise_branches.bsbc'))
+assert_pass(otherwise_loader.model[:profile] == 'bsharp.bytecode.v7', 'Profile 7 OTHERWISE instructions')
+assert_pass(otherwise_loader.model[:if_rules].all? { |rule| rule[:otherwise_block_index] != BasicSharp::BytecodeContract::NO_REFERENCE_U32 }, 'Profile 7 OTHERWISE block loading')
 
 original = File.binread(File.join(ROOT, FIXTURE.fetch('source_artifact')))
 assert_pass(FIXTURE.fetch('malformed_case_count') == 41, 'Malformed fixture count')
@@ -306,13 +309,14 @@ end
   end
 end
 
-puts 'BSharp Bytecode Loader v0.1.38'
+puts 'BSharp Bytecode Loader v0.1.39'
 puts "Profile 1 sample artifacts: #{SAMPLES.length}"
 puts 'Profile 2 sample artifacts: 1'
 puts 'Profile 3 sample artifacts: 1'
 puts 'Profile 4 sample artifacts: 1'
 puts 'Profile 5 sample artifacts: 1'
 puts 'Profile 6 sample artifacts: 1'
+puts 'Profile 7 sample artifacts: 1'
 puts 'Valid Meaning Profile cases: 12'
 puts "Malformed fixture cases: #{FIXTURE.fetch('malformed_case_count')}"
 puts
@@ -338,5 +342,6 @@ puts 'Profile 2 role-aware string loading: PASS'
 puts 'Profile 4 platform loading: PASS'
 puts 'Profile 5 number-change loading: PASS'
 puts 'Profile 6 compound IF loading: PASS'
+puts 'Profile 7 IF and OTHERWISE loading: PASS'
 puts
 puts 'BYTECODE LOADER: PASS'

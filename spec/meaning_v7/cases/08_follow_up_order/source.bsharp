@@ -1,0 +1,26 @@
+DEFINE
+[
+    @switch is a #thing
+].
+START
+[
+    PLAYER is alive
+    PLAYER has 0 branches
+].
+WHEN PLAYER attacks @switch
+[
+    |then (change PLAYER to dead
+    |then (cause PLAYER speaks @switch
+].
+WHEN PLAYER speaks @switch
+[
+    |then (increase branches of PLAYER by 100
+].
+IF PLAYER is dead
+[
+    |then (increase branches of PLAYER by 10
+].
+OTHERWISE
+[
+    |then (increase branches of PLAYER by 1
+].

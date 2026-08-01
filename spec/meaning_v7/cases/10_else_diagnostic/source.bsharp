@@ -1,0 +1,8 @@
+IF PLAYER is alive
+[
+    |then (change PLAYER to friendly
+].
+ELSE
+[
+    |then (change PLAYER to hostile
+].

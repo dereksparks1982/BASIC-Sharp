@@ -1,0 +1,218 @@
+{
+  "version": "0.1.39",
+  "format": "bsir.debug.json",
+  "kinds": [
+
+  ],
+  "objects": [
+    {
+      "name": "player",
+      "kind": "person",
+      "builtin": true,
+      "line_number": null
+    },
+    {
+      "name": "lamp",
+      "kind": "thing",
+      "builtin": false,
+      "line_number": 3
+    },
+    {
+      "name": "switch",
+      "kind": "thing",
+      "builtin": false,
+      "line_number": 4
+    }
+  ],
+  "facts": [
+    {
+      "line_number": 9,
+      "subject": {
+        "type": "object",
+        "text": "lamp",
+        "name": "lamp",
+        "object_kind": "thing"
+      },
+      "relation": "is",
+      "value": {
+        "kind": "state",
+        "name": "off"
+      },
+      "raw": {
+        "subject": "lamp",
+        "relation": "is",
+        "value": "off",
+        "line_number": 9
+      }
+    },
+    {
+      "line_number": 10,
+      "subject": {
+        "type": "object",
+        "text": "player",
+        "name": "player",
+        "object_kind": "person"
+      },
+      "relation": "has",
+      "value_name": "ifruns",
+      "amount": 0,
+      "raw": {
+        "subject": "player",
+        "relation": "has",
+        "value": "0 ifruns",
+        "line_number": 10
+      }
+    },
+    {
+      "line_number": 11,
+      "subject": {
+        "type": "object",
+        "text": "player",
+        "name": "player",
+        "object_kind": "person"
+      },
+      "relation": "has",
+      "value_name": "otherwiseruns",
+      "amount": 0,
+      "raw": {
+        "subject": "player",
+        "relation": "has",
+        "value": "0 otherwiseruns",
+        "line_number": 11
+      }
+    }
+  ],
+  "events": [
+    {
+      "line_number": 14,
+      "when": {
+        "raw": "player attacks switch",
+        "actor": {
+          "type": "object",
+          "text": "player",
+          "name": "player",
+          "object_kind": "person"
+        },
+        "action": "attack",
+        "target": {
+          "type": "object",
+          "text": "switch",
+          "name": "switch",
+          "object_kind": "thing"
+        }
+      },
+      "then": [
+        {
+          "line_number": 16,
+          "action": "change",
+          "target": {
+            "type": "object",
+            "text": "lamp",
+            "name": "lamp",
+            "object_kind": "thing"
+          },
+          "to": {
+            "kind": "state",
+            "name": "on"
+          }
+        }
+      ]
+    },
+    {
+      "line_number": 19,
+      "when": {
+        "raw": "player speaks switch",
+        "actor": {
+          "type": "object",
+          "text": "player",
+          "name": "player",
+          "object_kind": "person"
+        },
+        "action": "speak",
+        "target": {
+          "type": "object",
+          "text": "switch",
+          "name": "switch",
+          "object_kind": "thing"
+        }
+      },
+      "then": [
+        {
+          "line_number": 21,
+          "action": "change",
+          "target": {
+            "type": "object",
+            "text": "lamp",
+            "name": "lamp",
+            "object_kind": "thing"
+          },
+          "to": {
+            "kind": "state",
+            "name": "off"
+          }
+        }
+      ]
+    }
+  ],
+  "if_rules": [
+    {
+      "line_number": 24,
+      "if": {
+        "raw": "lamp is on",
+        "subject": {
+          "type": "object",
+          "text": "lamp",
+          "name": "lamp",
+          "object_kind": "thing"
+        },
+        "relation": "is",
+        "value": {
+          "kind": "state",
+          "name": "on"
+        }
+      },
+      "then": [
+        {
+          "line_number": 26,
+          "action": "increase",
+          "value_name": "ifruns",
+          "target": {
+            "type": "object",
+            "text": "player",
+            "name": "player",
+            "object_kind": "person"
+          },
+          "amount": 1
+        }
+      ],
+      "otherwise_line_number": 28,
+      "otherwise": [
+        {
+          "line_number": 30,
+          "action": "increase",
+          "value_name": "otherwiseruns",
+          "target": {
+            "type": "object",
+            "text": "player",
+            "name": "player",
+            "object_kind": "person"
+          },
+          "amount": 1
+        }
+      ]
+    }
+  ],
+  "controls": [
+
+  ],
+  "hover_declarations": [
+
+  ],
+  "context_declarations": [
+
+  ],
+  "diagnostics": [
+
+  ],
+  "meaning_profile": "bsharp.meaning.v7"
+}

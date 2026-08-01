@@ -101,6 +101,10 @@ compound_source = BasicSharp::BytecodeEmitter.new(resolve(File.join(ROOT, 'sampl
 compound_bsir = BasicSharp::BytecodeEmitter.new(JSON.parse(File.read(File.join(ROOT, 'samples/compound_if_conditions.bsir.json'))))
 assert_pass(compound_source.profile == 'bsharp.bytecode.v6', 'Profile 6 compound IF emission')
 assert_pass(compound_source.binary == compound_bsir.binary && compound_source.disassembly == compound_bsir.disassembly, 'Profile 6 source and BSIR parity')
+otherwise_source = BasicSharp::BytecodeEmitter.new(resolve(File.join(ROOT, 'samples/otherwise_branches.bsharp')))
+otherwise_bsir = BasicSharp::BytecodeEmitter.new(JSON.parse(File.read(File.join(ROOT, 'samples/otherwise_branches.bsir.json'))))
+assert_pass(otherwise_source.profile == 'bsharp.bytecode.v7', 'Profile 7 OTHERWISE emission')
+assert_pass(otherwise_source.binary == otherwise_bsir.binary && otherwise_source.disassembly == otherwise_bsir.disassembly, 'Profile 7 source and BSIR parity')
 
 fixture_path = File.join(ROOT, 'spec/bytecode_v1/BASIC_SHARP_BYTECODE_EMITTER_FIXTURES_v1.json')
 fixture = JSON.parse(File.read(fixture_path))
@@ -120,13 +124,14 @@ Array(fixture['meaning_cases']).each do |entry|
 end
 assert_pass(fixture_hashes, 'Fixture hashes')
 
-puts 'BSharp Bytecode Emitter v0.1.38'
+puts 'BSharp Bytecode Emitter v0.1.39'
 puts "Profile 1 sample artifacts: #{PROFILE_1_SAMPLES.length}"
 puts 'Profile 2 sample artifacts: 1'
 puts 'Profile 3 sample artifacts: 1'
 puts 'Profile 4 sample artifacts: 1'
 puts 'Profile 5 sample artifacts: 1'
 puts 'Profile 6 sample artifacts: 1'
+puts 'Profile 7 sample artifacts: 1'
 puts 'Valid Meaning Profile cases: 12'
 puts
 puts 'Source and BSIR byte parity: PASS'
@@ -146,5 +151,6 @@ puts 'Profile 2 exact text emission: PASS'
 puts 'Profile 4 platform emission: PASS'
 puts 'Profile 5 number-change emission: PASS'
 puts 'Profile 6 compound IF emission: PASS'
+puts 'Profile 7 IF and OTHERWISE emission: PASS'
 puts
 puts 'BYTECODE EMITTER: PASS'

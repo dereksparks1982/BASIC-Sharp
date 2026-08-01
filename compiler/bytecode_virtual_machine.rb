@@ -67,6 +67,7 @@ module BasicSharp
       create_world
       execute_start_records
       @if_active = Array.new(@program.fetch(:if_rules).length, false)
+      @if_branches = Array.new(@program.fetch(:if_rules).length)
       @startup_ran = []
       @startup_if_rules = []
       @startup_if_error = nil
@@ -153,11 +154,13 @@ module BasicSharp
           saved
         end,
         'if_rules' => @program.fetch(:if_rules).each_with_index.map do |rule, index|
-          {
+          entry = {
             'index' => index,
             'condition' => canonical_condition(rule.fetch(:condition)),
             'active' => @if_active.fetch(index)
           }
+          entry['branch'] = @if_branches.fetch(index) ? 'IF' : 'OTHERWISE' if otherwise_rule?(rule)
+          entry
         end
       }
     end
@@ -168,9 +171,10 @@ module BasicSharp
 
     def restore_world_save!(document)
       WorldSave.validate_header_for_fingerprint!(document, program_fingerprint, meaning_profile: meaning_profile)
-      candidate_world, candidate_if_active = validate_world_save_state!(document['world'], save_version: document['format_version'])
+      candidate_world, candidate_if_active, candidate_if_branches = validate_world_save_state!(document['world'], save_version: document['format_version'])
       @world = candidate_world
       @if_active = candidate_if_active
+      @if_branches = candidate_if_branches
       @startup_ran = []
       @startup_if_rules = []
       @startup_if_error = nil
@@ -249,12 +253,14 @@ module BasicSharp
 
     def ask_if_rules
       @program.fetch(:if_rules).each_with_index.map do |rule, index|
-        {
+        entry = {
           'index' => index,
           'condition' => canonical_condition(rule.fetch(:condition)),
           'true' => condition_true?(rule.fetch(:condition)),
           'active' => @if_active.fetch(index)
         }
+        entry['branch'] = @if_branches.fetch(index) ? 'IF' : 'OTHERWISE' if otherwise_rule?(rule)
+        entry
       end
     end
 
@@ -510,6 +516,7 @@ module BasicSharp
       end
       previous_world = @world
       @world = candidate_world
+      candidate_if_branches = Array.new(@program.fetch(:if_rules).length)
       candidate_if_active = rules.each_with_index.map do |entry, index|
         unless entry.is_a?(Hash) && entry['index'] == index
           raise WorldSaveError, "BSharp Save IF-rule record #{index + 1} has the wrong index."
@@ -527,9 +534,23 @@ module BasicSharp
         unless active == truth
           raise WorldSaveError, "BSharp Save IF-rule '#{expected_condition}' does not match the restored world."
         end
+        expected_rule = @program.fetch(:if_rules).fetch(index)
+        if otherwise_rule?(expected_rule)
+          branch = entry['branch']
+          unless %w[IF OTHERWISE].include?(branch)
+            raise WorldSaveError, "BSharp Save IF-rule #{index + 1} branch must be IF or OTHERWISE."
+          end
+          expected_branch = truth ? 'IF' : 'OTHERWISE'
+          unless branch == expected_branch
+            raise WorldSaveError, "BSharp Save IF-rule '#{expected_condition}' branch does not match the restored world."
+          end
+          candidate_if_branches[index] = truth
+        elsif entry.key?('branch')
+          raise WorldSaveError, "BSharp Save IF-rule #{index + 1} has an unexpected branch entry."
+        end
         active
       end
-      [candidate_world, candidate_if_active]
+      [candidate_world, candidate_if_active, candidate_if_branches]
     ensure
       @world = previous_world if defined?(previous_world) && previous_world
     end
@@ -579,7 +600,7 @@ module BasicSharp
           raise WorldSaveError, "BSharp Save value name '#{name}' for #{thing_name} must be one plain word."
         end
         expected_type = expected_values.fetch(name).is_a?(String) ? 'text' : 'whole_number'
-        value = if [WorldSave::FORMAT_VERSION_2, WorldSave::FORMAT_VERSION_3, WorldSave::FORMAT_VERSION_4, WorldSave::FORMAT_VERSION_5, WorldSave::FORMAT_VERSION_6].include?(save_version)
+        value = if [WorldSave::FORMAT_VERSION_2, WorldSave::FORMAT_VERSION_3, WorldSave::FORMAT_VERSION_4, WorldSave::FORMAT_VERSION_5, WorldSave::FORMAT_VERSION_6, WorldSave::FORMAT_VERSION_7].include?(save_version)
                   validate_typed_saved_value!(saved_value, name, thing_name, expected_type)
                 else
                   saved_value
@@ -636,7 +657,8 @@ module BasicSharp
         [BytecodeContract::PROFILE_3, BytecodeContract::MEANING_PROFILE_3],
         [BytecodeContract::PROFILE_4, BytecodeContract::MEANING_PROFILE_4],
         [BytecodeContract::PROFILE_5, BytecodeContract::MEANING_PROFILE_5],
-        [BytecodeContract::PROFILE_6, BytecodeContract::MEANING_PROFILE_6]
+        [BytecodeContract::PROFILE_6, BytecodeContract::MEANING_PROFILE_6],
+        [BytecodeContract::PROFILE_7, BytecodeContract::MEANING_PROFILE_7]
       ]
       unless supported.include?(pair)
         raise BytecodeVirtualMachineError, 'The BSharp Virtual Machine cannot execute this bytecode profile.'
@@ -1079,6 +1101,58 @@ module BasicSharp
         fired_this_pass = false
         rules.each_with_index do |rule, index|
           current = condition_true?(rule.fetch(:condition))
+          if otherwise_rule?(rule)
+            next if @if_branches[index] == current
+
+            if fired.length >= firing_limit
+              error = if_loop_error(condition_trail)
+              discard_if_follow_up_steps!(fired, 'IF rules did not finish, so this event will not happen.')
+              return { 'rules' => fired, 'error' => error, 'follow_ups' => [] }
+            end
+
+            seen ||= { if_world_signature => true }
+            @if_branches[index] = current
+            @if_active[index] = current
+            branch = current ? 'IF' : 'OTHERWISE'
+            block_index = current ? rule.fetch(:block_index) : rule.fetch(:otherwise_block_index)
+            selections = []
+            action_result = execute_block(block_index, actor_index: nil, context: {}, selections: selections)
+            condition = canonical_condition(rule.fetch(:condition))
+            reason = if cause == 'START' && !fired_indexes.include?(index)
+                       "#{branch} was selected after START"
+                     elsif !fired_indexes.include?(index)
+                       "#{branch} became active after the event"
+                     else
+                       "#{branch} became active"
+                     end
+            fired << {
+              'condition' => condition,
+              'branch' => branch,
+              'reason' => reason,
+              'steps' => action_result.fetch('steps'),
+              'selections' => selections
+            }
+            follow_ups.concat(action_result.fetch('follow_ups'))
+            fired_indexes.add(index)
+            condition_trail << "#{condition} -> #{branch}"
+            condition_trail.shift while condition_trail.length > 3
+            fired_this_pass = true
+
+            if action_result['error']
+              discard_if_follow_up_steps!(fired, 'IF rules did not finish, so this event will not happen.')
+              return { 'rules' => fired, 'error' => action_result['error'], 'follow_ups' => [] }
+            end
+
+            rearm_false_if_rules!
+            signature = if_world_signature
+            if seen.key?(signature)
+              error = if_loop_error(condition_trail)
+              discard_if_follow_up_steps!(fired, 'IF rules did not finish, so this event will not happen.')
+              return { 'rules' => fired, 'error' => error, 'follow_ups' => [] }
+            end
+            seen[signature] = true
+            next
+          end
           unless current
             @if_active[index] = false
             next
@@ -1197,12 +1271,18 @@ module BasicSharp
 
     def rearm_false_if_rules!
       @program.fetch(:if_rules).each_with_index do |rule, index|
+        next if otherwise_rule?(rule)
+
         @if_active[index] = false unless condition_true?(rule.fetch(:condition))
       end
     end
 
     def if_world_signature
-      JSON.generate([snapshot, @if_active])
+      JSON.generate([snapshot, @if_active, @if_branches])
+    end
+
+    def otherwise_rule?(rule)
+      rule.fetch(:otherwise_block_index, BytecodeContract::NO_REFERENCE_U32) != BytecodeContract::NO_REFERENCE_U32
     end
 
     def if_loop_error(condition_trail)

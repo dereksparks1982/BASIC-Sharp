@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module BasicSharp
-  VERSION = '0.1.38'
+  VERSION = '0.1.39'
 
   Statement = Struct.new(:starter, :head, :children, :line_number, keyword_init: true) do
     def to_h
@@ -66,9 +66,14 @@ module BasicSharp
     end
   end
 
-  IfRule = Struct.new(:condition, :actions, :line_number, keyword_init: true) do
+  IfRule = Struct.new(:condition, :actions, :otherwise_actions, :line_number, :otherwise_line_number, keyword_init: true) do
     def to_h
-      { condition: condition, line_number: line_number, actions: actions.map(&:to_h) }
+      result = { condition: condition, line_number: line_number, actions: actions.map(&:to_h) }
+      if otherwise_actions
+        result[:otherwise_actions] = otherwise_actions.map(&:to_h)
+        result[:otherwise_line_number] = otherwise_line_number
+      end
+      result
     end
   end
 

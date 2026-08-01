@@ -127,7 +127,7 @@ class TestBytecodeEmitter < Minitest::Test
     error = assert_raises(BasicSharp::BytecodeEmitterError) do
       BasicSharp::BytecodeEmitter.new(resolve_source(paths.last))
     end
-    assert_includes error.message, '8 errors'
+    assert_includes error.message, '10 errors'
   end
 
   def test_warning_rejects_emission

@@ -1,0 +1,8 @@
+{
+  "binary": "samples/otherwise_branches.bsbc",
+  "binary_sha256": "4af08d447c2bf4fc9e70d90c6dbb4098d441d67dbba012b9d245f51dc7b9a613",
+  "disassembly": "samples/otherwise_branches.bsbc.txt",
+  "disassembly_sha256": "59623528ed600520ca6a3fcc5a6cb97115fa061c0ab323a981545a5aab22cc3e",
+  "profile": "bsharp.bytecode.v7",
+  "sample": "samples/otherwise_branches.bsharp"
+}

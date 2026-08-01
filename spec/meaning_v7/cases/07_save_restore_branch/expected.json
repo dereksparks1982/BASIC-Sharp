@@ -1,0 +1,298 @@
+{
+  "case_id": "07_save_restore_branch",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "context_declarations": [
+
+      ],
+      "controls": [
+
+      ],
+      "events": [
+
+      ],
+      "facts": [
+        {
+          "relation": "is",
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          },
+          "value": {
+            "kind": "state",
+            "name": "alive"
+          }
+        },
+        {
+          "amount": 0,
+          "relation": "has",
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          },
+          "value_name": "branches"
+        }
+      ],
+      "hover_declarations": [
+
+      ],
+      "if_rules": [
+        {
+          "if": {
+            "relation": "is",
+            "subject": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "value": {
+              "kind": "state",
+              "name": "dead"
+            }
+          },
+          "otherwise": [
+            {
+              "action": "increase",
+              "amount": 1,
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "value_name": "branches"
+            }
+          ],
+          "otherwise_line_number": 10,
+          "then": [
+            {
+              "action": "increase",
+              "amount": 10,
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "value_name": "branches"
+            }
+          ]
+        }
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "ask": {
+      "answers": [
+        {
+          "answer": {
+            "false_count": 1,
+            "rules": [
+              {
+                "active": false,
+                "branch": "OTHERWISE",
+                "condition": "player is dead",
+                "index": 0,
+                "true": false
+              }
+            ],
+            "total_count": 1,
+            "truth": false
+          },
+          "ok": true,
+          "question": "what IF rules are false",
+          "type": "if_rules_false"
+        }
+      ],
+      "questions": [
+        "what IF rules are false"
+      ]
+    },
+    "events": [
+
+    ],
+    "final": {
+      "if_rules": [
+        {
+          "active": false,
+          "branch": "OTHERWISE",
+          "condition": "player is dead",
+          "index": 0,
+          "true": false
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+            "alive"
+          ],
+          "values": {
+            "branches": 1,
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 1,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 1,
+        "true_if_rules": 0,
+        "whole_number_values": 2
+      }
+    },
+    "save": {
+      "document": {
+        "format": "bsharp.save.json",
+        "format_version": 7,
+        "program_fingerprint": {
+          "algorithm": "sha256-bsir-meaning-v7",
+          "value": "c5145a9677a8532ec78a9fbcec8e0cc162d1657cfad0a77bad697144b5600780"
+        },
+        "world": {
+          "if_rules": [
+            {
+              "active": false,
+              "branch": "OTHERWISE",
+              "condition": "player is dead",
+              "index": 0
+            }
+          ],
+          "settled": true,
+          "things": [
+            {
+              "builtin": true,
+              "kind": "person",
+              "name": "player",
+              "relations": {
+              },
+              "states": [
+                "alive"
+              ],
+              "values": {
+                "branches": {
+                  "type": "whole_number",
+                  "value": 1
+                },
+                "damage": {
+                  "type": "whole_number",
+                  "value": 0
+                }
+              }
+            }
+          ]
+        }
+      },
+      "restored": {
+        "if_rules": [
+          {
+            "active": false,
+            "branch": "OTHERWISE",
+            "condition": "player is dead",
+            "index": 0,
+            "true": false
+          }
+        ],
+        "save_ready": true,
+        "snapshot": [
+          {
+            "builtin": true,
+            "kind": "person",
+            "name": "player",
+            "relations": {
+            },
+            "states": [
+              "alive"
+            ],
+            "values": {
+              "branches": 1,
+              "damage": 0
+            }
+          }
+        ],
+        "world": {
+          "if_rules": 1,
+          "kinds_used": 1,
+          "origin": "BSharp Save",
+          "settled": true,
+          "text_values": 0,
+          "things": 1,
+          "true_if_rules": 0,
+          "whole_number_values": 2
+        }
+      },
+      "startup_replayed": false
+    },
+    "startup": {
+      "if_rules": [
+        {
+          "active": false,
+          "branch": "OTHERWISE",
+          "condition": "player is dead",
+          "index": 0,
+          "true": false
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+            "alive"
+          ],
+          "values": {
+            "branches": 1,
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 1,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 1,
+        "true_if_rules": 0,
+        "whole_number_values": 2
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v7",
+  "source_bsir_parity": true
+}

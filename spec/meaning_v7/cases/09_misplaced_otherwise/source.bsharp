@@ -1,0 +1,8 @@
+START
+[
+    PLAYER is alive
+].
+OTHERWISE
+[
+    |then (change PLAYER to dead
+].

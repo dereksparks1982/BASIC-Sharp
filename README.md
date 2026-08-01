@@ -1,13 +1,13 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.38
+# BASIC# Ruby Bootstrap Compiler v0.1.39
 
 > A scripting language made for non-programmers, by non-programmers.
 
-BASIC# v0.1.38 adds plain-English compound IF conditions without programming precedence rules:
+BASIC# v0.1.39 adds two-sided reactive rules using the creator-facing word `OTHERWISE`:
 
 ```text
 .bsharp source -> BSharp IR -> BSharp Bytecode -> validated BSharp VM
 quoted text     -> exact UTF-8 value -> Save, ASK, restore, and parity
-and/or clauses  -> Profile 6 -> one deterministic reactive condition
+IF/OTHERWISE    -> Profile 7 -> one deterministic two-sided rule
 ```
 
 Ruby remains the bootstrap host. The BSharp VM is the preferred runtime, while `BasicSharp::Runtime` remains the protected reference oracle used by explicit diagnostic and shadow-parity modes.
@@ -89,6 +89,21 @@ IF PLAYER has less than 1 health or @bridge is broken
 
 `and` requires every clause; `or` requires at least one. The complete result wakes once on false-to-true and rearms after becoming false. State, relation, text, exact-number, and threshold clauses may be combined. Operator words inside quoted text remain literal. Mixing `and` and `or`, nesting groups, or using parentheses is rejected with a creator-facing explanation.
 
+## Plain-English OTHERWISE branches
+
+```bsharp
+IF PLAYER has less than 1 health
+[
+    |then (change PLAYER to defeated
+].
+OTHERWISE
+[
+    |then (change PLAYER to alive
+].
+```
+
+`OTHERWISE` directly follows its matching IF block, allowing only blank lines and comments between them. At START, the currently matching branch runs once. Later false-to-true transitions run the IF branch and true-to-false transitions run OTHERWISE; an unchanged result stays quiet. BASIC# deliberately uses **IF / OTHERWISE**, not IF / ELSE. `ELSE` is rejected with guidance to use `OTHERWISE`.
+
 ## Profile selection and compatibility
 
 - Programs using only accepted Profile 1 meaning remain `bsharp.meaning.v1` and emit `bsharp.bytecode.v1`.
@@ -97,6 +112,7 @@ IF PLAYER has less than 1 health or @bridge is broken
 - Platform left/right/jump declarations select `bsharp.meaning.v4` and emit `bsharp.bytecode.v4`.
 - Number increase/decrease actions or threshold comparisons select `bsharp.meaning.v5` and emit `bsharp.bytecode.v5`.
 - Compound IF conditions select `bsharp.meaning.v6` and emit `bsharp.bytecode.v6`.
+- IF rules with an OTHERWISE branch select `bsharp.meaning.v7` and emit `bsharp.bytecode.v7`.
 - Profile 1 source, BSIR meaning fingerprints, committed `.bsbc` bytes, and disassembly remain compatible.
 - Profile 2 adds `START_TEXT_VALUE`, `CHANGE_TEXT_VALUE`, and `TEXT_VALUE_EQUALS`.
 - Identifier strings remain canonical lowercase; creator text strings retain their exact spelling through role-aware validation.
@@ -119,6 +135,7 @@ ruby tools/meaning_profile_3.rb
 ruby tools/meaning_profile_4.rb
 ruby tools/meaning_profile_5.rb
 ruby tools/meaning_profile_6.rb
+ruby tools/meaning_profile_7.rb
 ruby tools/company_bible_audit.rb
 ruby tools/bytecode_contract.rb
 ruby tools/bytecode_emitter.rb
@@ -133,6 +150,8 @@ ruby tools/bytecode_profile_5.rb
 ruby tools/number_change_stress.rb
 ruby tools/bytecode_profile_6.rb
 ruby tools/compound_if_stress.rb
+ruby tools/bytecode_profile_7.rb
+ruby tools/otherwise_branch_stress.rb
 ```
 
 ## Canonical current records
@@ -157,6 +176,9 @@ docs/validation/BASIC_SHARP_VALIDATION_v0_1_37.md
 docs/language/BASIC_SHARP_PLAIN_ENGLISH_COMPOUND_IF_CONDITIONS_v0_1_38.md
 docs/bytecode/BASIC_SHARP_BYTECODE_PROFILE_6_v0_1_38.md
 docs/validation/BASIC_SHARP_VALIDATION_v0_1_38.md
+docs/language/BASIC_SHARP_PLAIN_ENGLISH_OTHERWISE_BRANCHES_v0_1_39.md
+docs/bytecode/BASIC_SHARP_BYTECODE_PROFILE_7_v0_1_39.md
+docs/validation/BASIC_SHARP_VALIDATION_v0_1_39.md
 ```
 
 ## Current identity
@@ -171,7 +193,7 @@ Inspection: BSharp ASK
 Bytecode: BSharp Bytecode / BSBC / .bsbc
 Preferred runtime: BSharp Virtual Machine / BSharp VM
 Reference oracle: BasicSharp::Runtime
-Meaning profiles: bsharp.meaning.v1 through bsharp.meaning.v6
-Bytecode profiles: bsharp.bytecode.v1 through bsharp.bytecode.v6
-Version: 0.1.38
+Meaning profiles: bsharp.meaning.v1 through bsharp.meaning.v7
+Bytecode profiles: bsharp.bytecode.v1 through bsharp.bytecode.v7
+Version: 0.1.39
 ```

@@ -1,0 +1,67 @@
+{
+  "case_id": "10_else_diagnostic",
+  "compile": {
+    "errors": [
+      {
+        "message": "BASIC# uses OTHERWISE instead of ELSE.",
+        "severity": "error"
+      }
+    ],
+    "meaning": {
+      "events": [
+
+      ],
+      "facts": [
+
+      ],
+      "if_rules": [
+        {
+          "if": {
+            "relation": "is",
+            "subject": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "value": {
+              "kind": "state",
+              "name": "alive"
+            }
+          },
+          "then": [
+            {
+              "action": "change",
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "to": {
+                "kind": "state",
+                "name": "friendly"
+              }
+            }
+          ]
+        }
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v7"
+}

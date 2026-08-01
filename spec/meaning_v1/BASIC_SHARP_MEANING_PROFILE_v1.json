@@ -194,7 +194,7 @@
       "title": "Invalid and unsupported language boundaries",
       "source": "spec/meaning_v1/cases/13_invalid_boundaries/source.bsharp",
       "expected": "spec/meaning_v1/cases/13_invalid_boundaries/expected.json",
-      "expected_sha256": "be751623c9be3c1e96133f924c9b544325f4906a1b2dcf4fe7dde314a62ebf5f",
+      "expected_sha256": "b0b304710d2548c80b8544ee7d609d9c274045503e9f2e8456c14a1fe7ae977b",
       "events": [
 
       ],

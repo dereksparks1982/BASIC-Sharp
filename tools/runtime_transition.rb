@@ -208,6 +208,20 @@ compound_profile_shadow = compound_results.all? { |result| result.fetch('matched
                           compound_machine.loader.model.fetch(:profile) == 'bsharp.bytecode.v6' &&
                           compound_machine.ask_if_rules.count { |entry| entry.fetch('active') } == 2
 
+otherwise_source = File.join(ROOT, 'samples/otherwise_branches.bsharp')
+otherwise_machine = PreferredRuntimeAudit.transition(
+  { 'source' => 'samples/otherwise_branches.bsharp' },
+  mode: :verify,
+  document: PreferredRuntimeAudit.resolve(otherwise_source)
+)
+otherwise_results = ['player attacks switch', 'player attacks switch', 'player speaks switch'].map do |event|
+  otherwise_machine.run_event(event)
+end
+otherwise_profile_shadow = otherwise_results.all? { |result| result.fetch('matched') && result['error'].nil? } &&
+                           otherwise_machine.meaning_profile == 'bsharp.meaning.v7' &&
+                           otherwise_machine.loader.model.fetch(:profile) == 'bsharp.bytecode.v7' &&
+                           otherwise_machine.ask_if_rules.first.fetch('branch') == 'OTHERWISE'
+
 checks = {
   'Source defaults to BSharp VM' => source_default,
   'BSIR defaults to BSharp VM' => bsir_default,
@@ -230,7 +244,8 @@ checks = {
   'Meaning Profile 3 game shadow parity' => game_profile_shadow,
   'Meaning Profile 4 platform shadow parity' => platform_profile_shadow,
   'Meaning Profile 5 number-change shadow parity' => number_profile_shadow,
-  'Meaning Profile 6 compound IF shadow parity' => compound_profile_shadow
+  'Meaning Profile 6 compound IF shadow parity' => compound_profile_shadow,
+  'Meaning Profile 7 IF and OTHERWISE shadow parity' => otherwise_profile_shadow
 }
 
 checks.each { |label, passed| PreferredRuntimeAudit.assert!(passed, label) }

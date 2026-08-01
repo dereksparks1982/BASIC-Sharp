@@ -1,0 +1,78 @@
+{
+  "format": "bsharp.save.json",
+  "format_version": 7,
+  "created_by_basic_sharp": "0.1.39",
+  "program_fingerprint": {
+    "algorithm": "sha256-bsir-meaning-v7",
+    "value": "861e881e55e4942f5bafde63c99b7c6582d9029635517116b675849fb06d48bf"
+  },
+  "world": {
+    "settled": true,
+    "things": [
+      {
+        "name": "player",
+        "kind": "person",
+        "builtin": true,
+        "states": [
+
+        ],
+        "relations": {
+        },
+        "values": {
+          "damage": {
+            "type": "whole_number",
+            "value": 0
+          },
+          "ifruns": {
+            "type": "whole_number",
+            "value": 1
+          },
+          "otherwiseruns": {
+            "type": "whole_number",
+            "value": 2
+          }
+        }
+      },
+      {
+        "name": "lamp",
+        "kind": "thing",
+        "builtin": false,
+        "states": [
+          "off"
+        ],
+        "relations": {
+        },
+        "values": {
+          "damage": {
+            "type": "whole_number",
+            "value": 0
+          }
+        }
+      },
+      {
+        "name": "switch",
+        "kind": "thing",
+        "builtin": false,
+        "states": [
+
+        ],
+        "relations": {
+        },
+        "values": {
+          "damage": {
+            "type": "whole_number",
+            "value": 0
+          }
+        }
+      }
+    ],
+    "if_rules": [
+      {
+        "index": 0,
+        "condition": "lamp is on",
+        "active": false,
+        "branch": "OTHERWISE"
+      }
+    ]
+  }
+}

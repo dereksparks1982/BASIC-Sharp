@@ -1,0 +1,451 @@
+{
+  "events": [
+    {
+      "event": "player attacks switch",
+      "matched": true,
+      "matched_when": "player attacks switch",
+      "understood": [
+
+      ],
+      "ran": [
+        "(change lamp to on"
+      ],
+      "steps": [
+        {
+          "word": "(change lamp to on",
+          "change": "lamp is now on"
+        }
+      ],
+      "selections": [
+
+      ],
+      "if_rules": [
+        {
+          "condition": "lamp is on",
+          "branch": "IF",
+          "reason": "IF became active after the event",
+          "steps": [
+            {
+              "word": "(increase ifruns of player by 1",
+              "change": "player ifruns changed from 0 to 1",
+              "value_change": {
+                "value_name": "ifruns",
+                "old_amount": 0,
+                "new_amount": 1,
+                "action_amount": 1,
+                "operation": "increase"
+              }
+            }
+          ],
+          "selections": [
+
+          ]
+        }
+      ],
+      "context": {
+      },
+      "error": null,
+      "follow_up_events": [
+
+      ],
+      "event_trail": [
+
+      ],
+      "state": [
+        {
+          "name": "player",
+          "kind": "person",
+          "builtin": true,
+          "states": [
+
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0,
+            "ifruns": 1,
+            "otherwiseruns": 1
+          }
+        },
+        {
+          "name": "lamp",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+            "on"
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "name": "switch",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        }
+      ]
+    },
+    {
+      "event": "player attacks switch",
+      "matched": true,
+      "matched_when": "player attacks switch",
+      "understood": [
+
+      ],
+      "ran": [
+        "(change lamp to on"
+      ],
+      "steps": [
+        {
+          "word": "(change lamp to on",
+          "change": "lamp is now on"
+        }
+      ],
+      "selections": [
+
+      ],
+      "if_rules": [
+
+      ],
+      "context": {
+      },
+      "error": null,
+      "follow_up_events": [
+
+      ],
+      "event_trail": [
+
+      ],
+      "state": [
+        {
+          "name": "player",
+          "kind": "person",
+          "builtin": true,
+          "states": [
+
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0,
+            "ifruns": 1,
+            "otherwiseruns": 1
+          }
+        },
+        {
+          "name": "lamp",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+            "on"
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "name": "switch",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        }
+      ]
+    },
+    {
+      "event": "player speaks switch",
+      "matched": true,
+      "matched_when": "player speaks switch",
+      "understood": [
+
+      ],
+      "ran": [
+        "(change lamp to off"
+      ],
+      "steps": [
+        {
+          "word": "(change lamp to off",
+          "change": "lamp is now off"
+        }
+      ],
+      "selections": [
+
+      ],
+      "if_rules": [
+        {
+          "condition": "lamp is on",
+          "branch": "OTHERWISE",
+          "reason": "OTHERWISE became active after the event",
+          "steps": [
+            {
+              "word": "(increase otherwiseruns of player by 1",
+              "change": "player otherwiseruns changed from 1 to 2",
+              "value_change": {
+                "value_name": "otherwiseruns",
+                "old_amount": 1,
+                "new_amount": 2,
+                "action_amount": 1,
+                "operation": "increase"
+              }
+            }
+          ],
+          "selections": [
+
+          ]
+        }
+      ],
+      "context": {
+      },
+      "error": null,
+      "follow_up_events": [
+
+      ],
+      "event_trail": [
+
+      ],
+      "state": [
+        {
+          "name": "player",
+          "kind": "person",
+          "builtin": true,
+          "states": [
+
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0,
+            "ifruns": 1,
+            "otherwiseruns": 2
+          }
+        },
+        {
+          "name": "lamp",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+            "off"
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        },
+        {
+          "name": "switch",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": 0
+          }
+        }
+      ]
+    }
+  ],
+  "ask": [
+    {
+      "question": "what values does player have",
+      "type": "thing_values",
+      "ok": true,
+      "answer": {
+        "name": "player",
+        "values": {
+          "damage": 0,
+          "ifruns": 1,
+          "otherwiseruns": 2
+        }
+      }
+    },
+    {
+      "question": "what IF rules are true",
+      "type": "if_rules_true",
+      "ok": true,
+      "answer": {
+        "rules": [
+
+        ],
+        "true_count": 0,
+        "total_count": 1
+      }
+    },
+    {
+      "question": "what IF rules are false",
+      "type": "if_rules_false",
+      "ok": true,
+      "answer": {
+        "rules": [
+          {
+            "index": 0,
+            "condition": "lamp is on",
+            "true": false,
+            "active": false,
+            "branch": "OTHERWISE"
+          }
+        ],
+        "false_count": 1,
+        "truth": false,
+        "total_count": 1
+      }
+    },
+    {
+      "question": "what is the world",
+      "type": "world",
+      "ok": true,
+      "answer": {
+        "origin": "START",
+        "settled": true,
+        "things": 3,
+        "kinds_used": 2,
+        "true_if_rules": 0,
+        "if_rules": 1,
+        "whole_number_values": 5,
+        "text_values": 0
+      }
+    }
+  ],
+  "final_state": [
+    {
+      "name": "player",
+      "kind": "person",
+      "builtin": true,
+      "states": [
+
+      ],
+      "relations": {
+      },
+      "values": {
+        "damage": 0,
+        "ifruns": 1,
+        "otherwiseruns": 2
+      }
+    },
+    {
+      "name": "lamp",
+      "kind": "thing",
+      "builtin": false,
+      "states": [
+        "off"
+      ],
+      "relations": {
+      },
+      "values": {
+        "damage": 0
+      }
+    },
+    {
+      "name": "switch",
+      "kind": "thing",
+      "builtin": false,
+      "states": [
+
+      ],
+      "relations": {
+      },
+      "values": {
+        "damage": 0
+      }
+    }
+  ],
+  "save": {
+    "format": "bsharp.save.json",
+    "format_version": 7,
+    "created_by_basic_sharp": "0.1.39",
+    "program_fingerprint": {
+      "algorithm": "sha256-bsir-meaning-v7",
+      "value": "861e881e55e4942f5bafde63c99b7c6582d9029635517116b675849fb06d48bf"
+    },
+    "world": {
+      "settled": true,
+      "things": [
+        {
+          "name": "player",
+          "kind": "person",
+          "builtin": true,
+          "states": [
+
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": {
+              "type": "whole_number",
+              "value": 0
+            },
+            "ifruns": {
+              "type": "whole_number",
+              "value": 1
+            },
+            "otherwiseruns": {
+              "type": "whole_number",
+              "value": 2
+            }
+          }
+        },
+        {
+          "name": "lamp",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+            "off"
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": {
+              "type": "whole_number",
+              "value": 0
+            }
+          }
+        },
+        {
+          "name": "switch",
+          "kind": "thing",
+          "builtin": false,
+          "states": [
+
+          ],
+          "relations": {
+          },
+          "values": {
+            "damage": {
+              "type": "whole_number",
+              "value": 0
+            }
+          }
+        }
+      ],
+      "if_rules": [
+        {
+          "index": 0,
+          "condition": "lamp is on",
+          "active": false,
+          "branch": "OTHERWISE"
+        }
+      ]
+    }
+  }
+}

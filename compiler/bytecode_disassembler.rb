@@ -11,7 +11,8 @@ module BasicSharp
         [BytecodeContract::PROFILE_3, BytecodeContract::MEANING_PROFILE_3],
         [BytecodeContract::PROFILE_4, BytecodeContract::MEANING_PROFILE_4],
         [BytecodeContract::PROFILE_5, BytecodeContract::MEANING_PROFILE_5],
-        [BytecodeContract::PROFILE_6, BytecodeContract::MEANING_PROFILE_6]
+        [BytecodeContract::PROFILE_6, BytecodeContract::MEANING_PROFILE_6],
+        [BytecodeContract::PROFILE_7, BytecodeContract::MEANING_PROFILE_7]
       ]
       raise ArgumentError, 'BSharp Bytecode disassembly requires a supported profile pair.' unless supported.include?(pair)
     end
@@ -51,11 +52,15 @@ module BasicSharp
       lines << '' unless @model.fetch(:events).empty?
 
       @model.fetch(:if_rules).each do |rule|
-        lines << "IF #{render_condition(rule.fetch(:condition))} BLOCK #{rule.fetch(:block_index)}"
+        line = "IF #{render_condition(rule.fetch(:condition))} BLOCK #{rule.fetch(:block_index)}"
+        if rule.fetch(:otherwise_block_index, BytecodeContract::NO_REFERENCE_U32) != BytecodeContract::NO_REFERENCE_U32
+          line << " OTHERWISE BLOCK #{rule.fetch(:otherwise_block_index)}"
+        end
+        lines << line
       end
       lines << '' unless @model.fetch(:if_rules).empty?
 
-      render_game_declarations(lines) if [BytecodeContract::PROFILE_3, BytecodeContract::PROFILE_4, BytecodeContract::PROFILE_5, BytecodeContract::PROFILE_6].include?(@model.fetch(:profile))
+      render_game_declarations(lines) if [BytecodeContract::PROFILE_3, BytecodeContract::PROFILE_4, BytecodeContract::PROFILE_5, BytecodeContract::PROFILE_6, BytecodeContract::PROFILE_7].include?(@model.fetch(:profile))
 
       @model.fetch(:blocks).each do |block|
         lines << "BLOCK #{block.fetch(:id)}"

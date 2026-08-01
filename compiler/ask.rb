@@ -18,6 +18,7 @@ module BasicSharp
       'what Things are guards',
       'what happens when player attacks henry',
       'what IF rules are true',
+      'what IF rules are false',
       'what game systems are declared',
       'what is the world',
       'what is the save'
@@ -65,7 +66,9 @@ module BasicSharp
       payload =
         case normalized
         when 'what if rules are true'
-          answer_true_if_rules
+          answer_if_rules(true)
+        when 'what if rules are false'
+          answer_if_rules(false)
         when 'what is the world'
           answer_world
         when 'what is the save'
@@ -201,16 +204,17 @@ module BasicSharp
       }
     end
 
-    def answer_true_if_rules
+    def answer_if_rules(truth)
       rules = @runtime.ask_if_rules
-      true_rules = rules.select { |rule| rule.fetch('true') }
+      selected = rules.select { |rule| rule.fetch('true') == truth }
+      answer = if truth
+                 { 'rules' => selected, 'true_count' => selected.length, 'total_count' => rules.length }
+               else
+                 { 'rules' => selected, 'false_count' => selected.length, 'truth' => false, 'total_count' => rules.length }
+               end
       {
-        'type' => 'if_rules_true',
-        'answer' => {
-          'rules' => true_rules,
-          'true_count' => true_rules.length,
-          'total_count' => rules.length
-        }
+        'type' => truth ? 'if_rules_true' : 'if_rules_false',
+        'answer' => answer
       }
     end
 
@@ -252,7 +256,7 @@ module BasicSharp
         append_kind_membership(lines, answer)
       when 'event_match'
         append_event_match(lines, answer)
-      when 'if_rules_true'
+      when 'if_rules_true', 'if_rules_false'
         append_if_rules(lines, answer)
       when 'world'
         append_world(lines, answer)
@@ -332,15 +336,17 @@ module BasicSharp
 
     def append_if_rules(lines, answer)
       rules = answer.fetch('rules')
+      truth = answer.fetch('truth', true)
       if rules.empty?
-        lines << 'No IF rules are currently true.'
+        lines << "No IF rules are currently #{truth ? 'true' : 'false'}."
       else
         shown, remaining = bounded(rules)
         shown.each_with_index do |rule, display_index|
           lines << "IF rule #{rule.fetch('index') + 1}:"
           lines << "  #{rule.fetch('condition')}"
-          lines << '  currently true'
+          lines << "  currently #{truth ? 'true' : 'false'}"
           lines << "  active: #{rule.fetch('active') ? 'yes' : 'no'}"
+          lines << "  branch: #{rule.fetch('branch')}" if rule.key?('branch')
           lines << '' unless display_index == shown.length - 1 && remaining.zero?
         end
         if remaining.positive?
@@ -349,7 +355,8 @@ module BasicSharp
         end
       end
       lines << ''
-      lines << "#{answer.fetch('true_count')} of #{answer.fetch('total_count')} IF rules are currently true."
+      count = truth ? answer.fetch('true_count') : answer.fetch('false_count')
+      lines << "#{count} of #{answer.fetch('total_count')} IF rules are currently #{truth ? 'true' : 'false'}."
     end
 
     def append_world(lines, answer)

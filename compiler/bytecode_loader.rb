@@ -187,7 +187,7 @@ module BasicSharp
       unless binary_version == BytecodeContract::BINARY_FORMAT_VERSION
         raise BytecodeLoaderError, "BSharp Bytecode binary format version #{binary_version} is not supported."
       end
-      unless [1, 2, 3, 4, 5, 6].include?(profile_version)
+      unless [1, 2, 3, 4, 5, 6, 7].include?(profile_version)
         raise BytecodeLoaderError, "BSharp Bytecode profile format version #{profile_version} is not supported."
       end
       @profile_format_version = profile_version
@@ -295,7 +295,9 @@ module BasicSharp
       unless @strings.uniq.length == @strings.length
         raise BytecodeLoaderError, 'BSharp Bytecode string table contains a duplicate deterministic entry.'
       end
-      mandatory = if @profile_format_version == 6
+      mandatory = if @profile_format_version == 7
+                    [BytecodeContract::PROFILE_7, BytecodeContract::MEANING_PROFILE_7, 'sha256-bsir-meaning-v7']
+                  elsif @profile_format_version == 6
                     [BytecodeContract::PROFILE_6, BytecodeContract::MEANING_PROFILE_6, 'sha256-bsir-meaning-v6']
                   elsif @profile_format_version == 5
                     [BytecodeContract::PROFILE_5, BytecodeContract::MEANING_PROFILE_5, 'sha256-bsir-meaning-v5']
@@ -323,9 +325,9 @@ module BasicSharp
       fingerprint = data.byteslice(12, 32).unpack1('H*')
       kind_count, thing_count, start_count, event_count, if_count, block_count = data.byteslice(44, 24).unpack('V6')
       [profile_index, meaning_index, fingerprint_algorithm_index].each { |index| validate_string_index!(index) }
-      expected_profile = { 1 => BytecodeContract::PROFILE, 2 => BytecodeContract::PROFILE_2, 3 => BytecodeContract::PROFILE_3, 4 => BytecodeContract::PROFILE_4, 5 => BytecodeContract::PROFILE_5, 6 => BytecodeContract::PROFILE_6 }.fetch(@profile_format_version)
-      expected_meaning = { 1 => BytecodeContract::MEANING_PROFILE, 2 => BytecodeContract::MEANING_PROFILE_2, 3 => BytecodeContract::MEANING_PROFILE_3, 4 => BytecodeContract::MEANING_PROFILE_4, 5 => BytecodeContract::MEANING_PROFILE_5, 6 => BytecodeContract::MEANING_PROFILE_6 }.fetch(@profile_format_version)
-      expected_fingerprint = { 1 => 'sha256-bsir-meaning-v1', 2 => 'sha256-bsir-meaning-v2', 3 => 'sha256-bsir-meaning-v3', 4 => 'sha256-bsir-meaning-v4', 5 => 'sha256-bsir-meaning-v5', 6 => 'sha256-bsir-meaning-v6' }.fetch(@profile_format_version)
+      expected_profile = { 1 => BytecodeContract::PROFILE, 2 => BytecodeContract::PROFILE_2, 3 => BytecodeContract::PROFILE_3, 4 => BytecodeContract::PROFILE_4, 5 => BytecodeContract::PROFILE_5, 6 => BytecodeContract::PROFILE_6, 7 => BytecodeContract::PROFILE_7 }.fetch(@profile_format_version)
+      expected_meaning = { 1 => BytecodeContract::MEANING_PROFILE, 2 => BytecodeContract::MEANING_PROFILE_2, 3 => BytecodeContract::MEANING_PROFILE_3, 4 => BytecodeContract::MEANING_PROFILE_4, 5 => BytecodeContract::MEANING_PROFILE_5, 6 => BytecodeContract::MEANING_PROFILE_6, 7 => BytecodeContract::MEANING_PROFILE_7 }.fetch(@profile_format_version)
+      expected_fingerprint = { 1 => 'sha256-bsir-meaning-v1', 2 => 'sha256-bsir-meaning-v2', 3 => 'sha256-bsir-meaning-v3', 4 => 'sha256-bsir-meaning-v4', 5 => 'sha256-bsir-meaning-v5', 6 => 'sha256-bsir-meaning-v6', 7 => 'sha256-bsir-meaning-v7' }.fetch(@profile_format_version)
       unless @strings.fetch(profile_index) == expected_profile
         raise BytecodeLoaderError, 'BSharp Bytecode uses an unsupported bytecode profile.'
       end
@@ -455,6 +457,8 @@ module BasicSharp
       data = section('IFRL')
       cursor = 0
       event_count = directory_entry('EVNT').fetch(:count)
+      if_count = entry.fetch(:count)
+      next_otherwise_block = event_count + if_count
       @if_rules = entry.fetch(:count).times.map do |index|
         condition, cursor = parse_condition_record(data, cursor, data.bytesize)
         if %w[ALL_CONDITIONS ANY_CONDITIONS].include?(condition.fetch(:name))
@@ -469,9 +473,15 @@ module BasicSharp
           end
           condition = condition.merge(clauses: clauses)
         end
-        ensure_bytes!(data, cursor, 8, 'IFRL block fields')
-        block_index, source_order = data.byteslice(cursor, 8).unpack('V2')
-        cursor += 8
+        field_bytes = @profile_format_version == 7 ? 12 : 8
+        ensure_bytes!(data, cursor, field_bytes, 'IFRL block fields')
+        if @profile_format_version == 7
+          block_index, otherwise_block_index, source_order = data.byteslice(cursor, field_bytes).unpack('V3')
+        else
+          block_index, source_order = data.byteslice(cursor, field_bytes).unpack('V2')
+          otherwise_block_index = BytecodeContract::NO_REFERENCE_U32
+        end
+        cursor += field_bytes
         validate_record_block_reference!(block_index)
         unless block_index == event_count + index
           raise BytecodeLoaderError, 'BSharp Bytecode IF block order is not canonical.'
@@ -479,7 +489,16 @@ module BasicSharp
         unless source_order == index
           raise BytecodeLoaderError, 'BSharp Bytecode IF source order is not canonical.'
         end
-        { condition: decorate_condition(condition), block_index: block_index, source_order: source_order }
+        if otherwise_block_index != BytecodeContract::NO_REFERENCE_U32
+          validate_record_block_reference!(otherwise_block_index)
+          unless otherwise_block_index == next_otherwise_block
+            raise BytecodeLoaderError, 'BSharp Bytecode OTHERWISE block order is not canonical.'
+          end
+          next_otherwise_block += 1
+        end
+        result = { condition: decorate_condition(condition), block_index: block_index, source_order: source_order }
+        result[:otherwise_block_index] = otherwise_block_index if @profile_format_version == 7
+        result
       end
       unless cursor == data.bytesize
         raise BytecodeLoaderError, 'BSharp Bytecode IFRL section contains a truncated record or trailing bytes.'
@@ -490,7 +509,7 @@ module BasicSharp
       @controls = []
       @hover_declarations = []
       @context_declarations = []
-      return unless [3, 4, 5, 6].include?(@profile_format_version)
+      return unless [3, 4, 5, 6, 7].include?(@profile_format_version)
 
       @controls = parse_game_section!('CTRL', 'controls')
       @hover_declarations = parse_game_section!('HOVR', 'hover declarations')
@@ -726,8 +745,11 @@ module BasicSharp
           raise BytecodeLoaderError, "BSharp Bytecode META count disagrees with #{id}."
         end
       end
-      unless @blocks.length == @events.length + @if_rules.length
-        raise BytecodeLoaderError, 'BSharp Bytecode code-block count must equal WHEN plus IF blocks.'
+      otherwise_count = @if_rules.count do |rule|
+        rule.fetch(:otherwise_block_index, BytecodeContract::NO_REFERENCE_U32) != BytecodeContract::NO_REFERENCE_U32
+      end
+      unless @blocks.length == @events.length + @if_rules.length + otherwise_count
+        raise BytecodeLoaderError, 'BSharp Bytecode code-block count must equal WHEN, IF, and OTHERWISE blocks.'
       end
     end
 
@@ -986,23 +1008,23 @@ module BasicSharp
     end
 
     def profile_name
-      { 1 => BytecodeContract::PROFILE, 2 => BytecodeContract::PROFILE_2, 3 => BytecodeContract::PROFILE_3, 4 => BytecodeContract::PROFILE_4, 5 => BytecodeContract::PROFILE_5, 6 => BytecodeContract::PROFILE_6 }.fetch(@profile_format_version)
+      { 1 => BytecodeContract::PROFILE, 2 => BytecodeContract::PROFILE_2, 3 => BytecodeContract::PROFILE_3, 4 => BytecodeContract::PROFILE_4, 5 => BytecodeContract::PROFILE_5, 6 => BytecodeContract::PROFILE_6, 7 => BytecodeContract::PROFILE_7 }.fetch(@profile_format_version)
     end
 
     def require_profile_2!(name)
-      return if [2, 3, 4, 5, 6].include?(@profile_format_version)
+      return if [2, 3, 4, 5, 6, 7].include?(@profile_format_version)
 
       raise BytecodeLoaderError, "BSharp Bytecode #{name} requires Profile 2 or later."
     end
 
     def require_profile_5!(name)
-      return if [5, 6].include?(@profile_format_version)
+      return if [5, 6, 7].include?(@profile_format_version)
 
       raise BytecodeLoaderError, "BSharp Bytecode #{name} requires Profile 5."
     end
 
     def require_profile_6!(name)
-      return if @profile_format_version == 6
+      return if [6, 7].include?(@profile_format_version)
       raise BytecodeLoaderError, "BSharp Bytecode #{name} requires Profile 6."
     end
 

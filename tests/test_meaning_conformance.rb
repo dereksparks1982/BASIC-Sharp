@@ -41,8 +41,8 @@ class TestMeaningConformance < Minitest::Test
   end
 
   def test_current_heads_are_accepted
-    assert_equal %w[KINDS DEFINE START WHEN IF CONTROLS HOVER CONTEXT], BasicSharp::Parser::STATEMENT_STARTERS
-    assert_equal %w[WORLD STATES RELATIONS ACTIONS WHILE OTHERWISE], BasicSharp::Parser::DORMANT_HEADS
+    assert_equal %w[KINDS DEFINE START WHEN IF OTHERWISE CONTROLS HOVER CONTEXT], BasicSharp::Parser::STATEMENT_STARTERS
+    assert_equal %w[WORLD STATES RELATIONS ACTIONS WHILE], BasicSharp::Parser::DORMANT_HEADS
   end
 
   def test_each_dormant_head_receives_the_plain_profile_boundary_message
@@ -59,6 +59,7 @@ class TestMeaningConformance < Minitest::Test
         '  START',
         '  WHEN',
         '  IF',
+        '  OTHERWISE',
         '  CONTROLS',
         '  HOVER',
         '  CONTEXT'

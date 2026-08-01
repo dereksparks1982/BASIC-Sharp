@@ -1,0 +1,276 @@
+{
+  "case_id": "06_compound_condition",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "context_declarations": [
+
+      ],
+      "controls": [
+
+      ],
+      "events": [
+
+      ],
+      "facts": [
+        {
+          "amount": 100,
+          "relation": "has",
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          },
+          "value_name": "score"
+        },
+        {
+          "amount": 0,
+          "relation": "has",
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          },
+          "value_name": "branches"
+        },
+        {
+          "relation": "is",
+          "subject": {
+            "name": "boss",
+            "object_kind": "creature",
+            "text": "boss",
+            "type": "object"
+          },
+          "value": {
+            "kind": "state",
+            "name": "alive"
+          }
+        }
+      ],
+      "hover_declarations": [
+
+      ],
+      "if_rules": [
+        {
+          "if": {
+            "clauses": [
+              {
+                "amount": 100,
+                "comparison": "at_least",
+                "relation": "has",
+                "subject": {
+                  "name": "player",
+                  "object_kind": "person",
+                  "text": "player",
+                  "type": "object"
+                },
+                "value_name": "score"
+              },
+              {
+                "relation": "is",
+                "subject": {
+                  "name": "boss",
+                  "object_kind": "creature",
+                  "text": "boss",
+                  "type": "object"
+                },
+                "value": {
+                  "kind": "state",
+                  "name": "alive"
+                }
+              }
+            ],
+            "connector": "and"
+          },
+          "otherwise": [
+            {
+              "action": "increase",
+              "amount": 10,
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "value_name": "branches"
+            }
+          ],
+          "otherwise_line_number": 15,
+          "then": [
+            {
+              "action": "increase",
+              "amount": 1,
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "value_name": "branches"
+            }
+          ]
+        }
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        },
+        {
+          "builtin": false,
+          "kind": "creature",
+          "name": "boss"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "ask": {
+      "answers": [
+        {
+          "answer": {
+            "rules": [
+              {
+                "active": true,
+                "branch": "IF",
+                "condition": "player has at least 100 score and boss is alive",
+                "index": 0,
+                "true": true
+              }
+            ],
+            "total_count": 1,
+            "true_count": 1
+          },
+          "ok": true,
+          "question": "what IF rules are true",
+          "type": "if_rules_true"
+        }
+      ],
+      "questions": [
+        "what IF rules are true"
+      ]
+    },
+    "events": [
+
+    ],
+    "final": {
+      "if_rules": [
+        {
+          "active": true,
+          "branch": "IF",
+          "condition": "player has at least 100 score and boss is alive",
+          "index": 0,
+          "true": true
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "branches": 1,
+            "damage": 0,
+            "score": 100
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "creature",
+          "name": "boss",
+          "relations": {
+          },
+          "states": [
+            "alive"
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 2,
+        "true_if_rules": 1,
+        "whole_number_values": 4
+      }
+    },
+    "startup": {
+      "if_rules": [
+        {
+          "active": true,
+          "branch": "IF",
+          "condition": "player has at least 100 score and boss is alive",
+          "index": 0,
+          "true": true
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "branches": 1,
+            "damage": 0,
+            "score": 100
+          }
+        },
+        {
+          "builtin": false,
+          "kind": "creature",
+          "name": "boss",
+          "relations": {
+          },
+          "states": [
+            "alive"
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 2,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 2,
+        "true_if_rules": 1,
+        "whole_number_values": 4
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v7",
+  "source_bsir_parity": true
+}

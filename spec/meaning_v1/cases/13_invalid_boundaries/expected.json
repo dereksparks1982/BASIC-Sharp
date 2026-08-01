@@ -3,27 +3,35 @@
   "compile": {
     "errors": [
       {
-        "message": "BASIC# does not have a WORLD Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF\n  CONTROLS\n  HOVER\n  CONTEXT",
+        "message": "BASIC# does not have a WORLD Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF\n  OTHERWISE\n  CONTROLS\n  HOVER\n  CONTEXT",
         "severity": "error"
       },
       {
-        "message": "BASIC# does not have a STATES Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF\n  CONTROLS\n  HOVER\n  CONTEXT",
+        "message": "BASIC# does not have a STATES Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF\n  OTHERWISE\n  CONTROLS\n  HOVER\n  CONTEXT",
         "severity": "error"
       },
       {
-        "message": "BASIC# does not have a RELATIONS Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF\n  CONTROLS\n  HOVER\n  CONTEXT",
+        "message": "BASIC# does not have a RELATIONS Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF\n  OTHERWISE\n  CONTROLS\n  HOVER\n  CONTEXT",
         "severity": "error"
       },
       {
-        "message": "BASIC# does not have a ACTIONS Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF\n  CONTROLS\n  HOVER\n  CONTEXT",
+        "message": "BASIC# does not have a ACTIONS Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF\n  OTHERWISE\n  CONTROLS\n  HOVER\n  CONTEXT",
         "severity": "error"
       },
       {
-        "message": "BASIC# does not have a WHILE Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF\n  CONTROLS\n  HOVER\n  CONTEXT",
+        "message": "BASIC# does not have a WHILE Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF\n  OTHERWISE\n  CONTROLS\n  HOVER\n  CONTEXT",
         "severity": "error"
       },
       {
-        "message": "BASIC# does not have a OTHERWISE Head.\n\nCurrent Heads are:\n  KINDS\n  DEFINE\n  START\n  WHEN\n  IF\n  CONTROLS\n  HOVER\n  CONTEXT",
+        "message": "OTHERWISE must directly follow the IF Body it belongs to.",
+        "severity": "error"
+      },
+      {
+        "message": "OTHERWISE needs at least one |then followed by an official word",
+        "severity": "error"
+      },
+      {
+        "message": "Every OTHERWISE Body instruction must begin with |then",
         "severity": "error"
       },
       {

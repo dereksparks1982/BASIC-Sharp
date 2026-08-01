@@ -1,0 +1,98 @@
+{
+  "cases": [
+    {
+      "ask": ["what IF rules are false"],
+      "events": [],
+      "expected": "spec/meaning_v7/cases/01_false_startup_otherwise/expected.json",
+      "expected_sha256": "0e5525d809064b4d780fbd44dfcf56fdba24a6d3bf28bf0831eb0ef9a679cef7",
+      "id": "01_false_startup_otherwise",
+      "save": false,
+      "source": "spec/meaning_v7/cases/01_false_startup_otherwise/source.bsharp"
+    },
+    {
+      "ask": ["what IF rules are true"],
+      "events": [],
+      "expected": "spec/meaning_v7/cases/02_true_startup_if/expected.json",
+      "expected_sha256": "cefc3c2bcbe18634e897c692589bdfae262a1c93f96004fdbd842f26822dd826",
+      "id": "02_true_startup_if",
+      "save": false,
+      "source": "spec/meaning_v7/cases/02_true_startup_if/source.bsharp"
+    },
+    {
+      "ask": ["what IF rules are true"],
+      "events": ["player attacks switch"],
+      "expected": "spec/meaning_v7/cases/03_false_to_true/expected.json",
+      "expected_sha256": "ff5997218eb7373059b5dbb62df9d46c272a8c423dab76f38ae448e19b99d398",
+      "id": "03_false_to_true",
+      "save": true,
+      "source": "spec/meaning_v7/cases/03_false_to_true/source.bsharp"
+    },
+    {
+      "ask": ["what IF rules are false"],
+      "events": ["player attacks switch"],
+      "expected": "spec/meaning_v7/cases/04_true_to_false/expected.json",
+      "expected_sha256": "6451a8ff782b3272b19c1bdd1e2277a7b322c651caa9e8fb4831ba6dbc83976d",
+      "id": "04_true_to_false",
+      "save": true,
+      "source": "spec/meaning_v7/cases/04_true_to_false/source.bsharp"
+    },
+    {
+      "ask": ["what IF rules are true"],
+      "events": ["player attacks switch", "player attacks switch"],
+      "expected": "spec/meaning_v7/cases/05_quiet_unchanged_branch/expected.json",
+      "expected_sha256": "82ec277c632a7944943987075d28aaea8a9841ccbfcb46611de59e57e958face",
+      "id": "05_quiet_unchanged_branch",
+      "save": false,
+      "source": "spec/meaning_v7/cases/05_quiet_unchanged_branch/source.bsharp"
+    },
+    {
+      "ask": ["what IF rules are true"],
+      "events": [],
+      "expected": "spec/meaning_v7/cases/06_compound_condition/expected.json",
+      "expected_sha256": "2e7b6d6bdffb801a88f160afb78ecc2078482c4735cdd671e3a4da341403bba0",
+      "id": "06_compound_condition",
+      "save": false,
+      "source": "spec/meaning_v7/cases/06_compound_condition/source.bsharp"
+    },
+    {
+      "ask": ["what IF rules are false"],
+      "events": [],
+      "expected": "spec/meaning_v7/cases/07_save_restore_branch/expected.json",
+      "expected_sha256": "742c371e1531f8f26c1637d6c525bef16b7177ff108a14c42005949b0e53367c",
+      "id": "07_save_restore_branch",
+      "save": true,
+      "source": "spec/meaning_v7/cases/07_save_restore_branch/source.bsharp"
+    },
+    {
+      "ask": ["what values does player have", "what IF rules are true"],
+      "events": ["player attacks switch"],
+      "expected": "spec/meaning_v7/cases/08_follow_up_order/expected.json",
+      "expected_sha256": "01174ce1c968b8a7867162771a6343f298d1b1da6bf5dc689e057d567ce58c0d",
+      "id": "08_follow_up_order",
+      "save": true,
+      "source": "spec/meaning_v7/cases/08_follow_up_order/source.bsharp"
+    },
+    {
+      "ask": [],
+      "events": [],
+      "expected": "spec/meaning_v7/cases/09_misplaced_otherwise/expected.json",
+      "expected_sha256": "aaefcf9b62f3ee8e8393c630499bb036e0a6c1e52c5128363936c88f73e91a19",
+      "id": "09_misplaced_otherwise",
+      "save": false,
+      "source": "spec/meaning_v7/cases/09_misplaced_otherwise/source.bsharp"
+    },
+    {
+      "ask": [],
+      "events": [],
+      "expected": "spec/meaning_v7/cases/10_else_diagnostic/expected.json",
+      "expected_sha256": "70807ee2aeef2fd478a91b0a845b3b065d866bf88c15d772644297bc2aa05fa1",
+      "id": "10_else_diagnostic",
+      "save": false,
+      "source": "spec/meaning_v7/cases/10_else_diagnostic/source.bsharp"
+    }
+  ],
+  "format": "bsharp.meaning.conformance.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v7",
+  "title": "BASIC# Stable Meaning Profile 7: plain-English OTHERWISE branches"
+}

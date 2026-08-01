@@ -1,0 +1,215 @@
+{
+  "case_id": "02_true_startup_if",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "context_declarations": [
+
+      ],
+      "controls": [
+
+      ],
+      "events": [
+
+      ],
+      "facts": [
+        {
+          "relation": "is",
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          },
+          "value": {
+            "kind": "state",
+            "name": "alive"
+          }
+        },
+        {
+          "amount": 0,
+          "relation": "has",
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          },
+          "value_name": "branches"
+        }
+      ],
+      "hover_declarations": [
+
+      ],
+      "if_rules": [
+        {
+          "if": {
+            "relation": "is",
+            "subject": {
+              "name": "player",
+              "object_kind": "person",
+              "text": "player",
+              "type": "object"
+            },
+            "value": {
+              "kind": "state",
+              "name": "alive"
+            }
+          },
+          "otherwise": [
+            {
+              "action": "increase",
+              "amount": 10,
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "value_name": "branches"
+            }
+          ],
+          "otherwise_line_number": 10,
+          "then": [
+            {
+              "action": "increase",
+              "amount": 1,
+              "target": {
+                "name": "player",
+                "object_kind": "person",
+                "text": "player",
+                "type": "object"
+              },
+              "value_name": "branches"
+            }
+          ]
+        }
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "ask": {
+      "answers": [
+        {
+          "answer": {
+            "rules": [
+              {
+                "active": true,
+                "branch": "IF",
+                "condition": "player is alive",
+                "index": 0,
+                "true": true
+              }
+            ],
+            "total_count": 1,
+            "true_count": 1
+          },
+          "ok": true,
+          "question": "what IF rules are true",
+          "type": "if_rules_true"
+        }
+      ],
+      "questions": [
+        "what IF rules are true"
+      ]
+    },
+    "events": [
+
+    ],
+    "final": {
+      "if_rules": [
+        {
+          "active": true,
+          "branch": "IF",
+          "condition": "player is alive",
+          "index": 0,
+          "true": true
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+            "alive"
+          ],
+          "values": {
+            "branches": 1,
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 1,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 1,
+        "true_if_rules": 1,
+        "whole_number_values": 2
+      }
+    },
+    "startup": {
+      "if_rules": [
+        {
+          "active": true,
+          "branch": "IF",
+          "condition": "player is alive",
+          "index": 0,
+          "true": true
+        }
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+            "alive"
+          ],
+          "values": {
+            "branches": 1,
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 1,
+        "kinds_used": 1,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 1,
+        "true_if_rules": 1,
+        "whole_number_values": 2
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v7",
+  "source_bsir_parity": true
+}

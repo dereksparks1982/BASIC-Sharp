@@ -208,9 +208,19 @@ checks['Meaning Profile 6 compound IF conditions'] = compound_vm.meaning_profile
                                                      compound_parity &&
                                                      compound_vm.ask_if_rules.count { |entry| entry.fetch('active') } == 2
 
+otherwise_document = resolve(File.join(ROOT, 'samples/otherwise_branches.bsharp'))
+otherwise_loader = BasicSharp::BytecodeLoader.read(File.join(ROOT, 'samples/otherwise_branches.bsbc'))
+otherwise_vm = BasicSharp::BytecodeVirtualMachine.new(otherwise_loader)
+otherwise_reference = BasicSharp::Runtime.new(otherwise_document)
+otherwise_events = ['player attacks switch', 'player attacks switch', 'player speaks switch']
+otherwise_parity = otherwise_events.all? { |event| otherwise_vm.run_event(event) == otherwise_reference.run_event(event) }
+checks['Meaning Profile 7 IF and OTHERWISE branches'] = otherwise_vm.meaning_profile == 'bsharp.meaning.v7' &&
+                                                        otherwise_parity &&
+                                                        otherwise_vm.ask_if_rules.first.fetch('branch') == 'OTHERWISE'
+
 checks.each { |label, passed| VMConformance.assert!(passed, label) }
 
-puts 'BSharp Virtual Machine v0.1.38'
+puts 'BSharp Virtual Machine v0.1.39'
 puts "Sample programs: #{FIXTURE.fetch('sample_programs').length}"
 puts "Valid Meaning Profile cases: #{FIXTURE.fetch('meaning_cases').length}"
 puts 'Valid Meaning Profile 2 text sample: 1'
@@ -218,6 +228,7 @@ puts 'Valid Meaning Profile 3 game sample: 1'
 puts 'Valid Meaning Profile 4 platform sample: 1'
 puts 'Valid Meaning Profile 5 number-change sample: 1'
 puts 'Valid Meaning Profile 6 compound IF sample: 1'
+puts 'Valid Meaning Profile 7 IF and OTHERWISE sample: 1'
 puts
 checks.each { |label, _passed| puts "#{label}: PASS" }
 puts
