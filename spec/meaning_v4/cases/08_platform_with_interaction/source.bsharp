@@ -1,0 +1,22 @@
+KINDS
+[
+    #gate is a #door
+].
+
+DEFINE
+[
+    @exit gate is a #gate
+].
+
+CONTROLS for PLAYER
+[
+    A moves PLAYER left at 6 speed
+    D moves PLAYER right at 6 speed
+    SPACE makes PLAYER jump at 10 speed
+].
+
+HOVER for #door
+[
+    name
+    kind
+].

@@ -1,0 +1,73 @@
+{
+  "case_id": "05_duplicate_key",
+  "compile": {
+    "errors": [
+      {
+        "message": "D already has a platform movement job in CONTROLS.",
+        "severity": "error"
+      }
+    ],
+    "meaning": {
+      "context_declarations": [
+
+      ],
+      "controls": [
+        {
+          "instructions": [
+            {
+              "direction": "left",
+              "key": "A",
+              "speed": 6,
+              "type": "platform_move"
+            },
+            {
+              "direction": "right",
+              "key": "D",
+              "speed": 6,
+              "type": "platform_move"
+            },
+            {
+              "key": "D",
+              "speed": 10,
+              "type": "platform_jump"
+            }
+          ],
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          }
+        }
+      ],
+      "events": [
+
+      ],
+      "facts": [
+
+      ],
+      "hover_declarations": [
+
+      ],
+      "if_rules": [
+
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v4"
+}

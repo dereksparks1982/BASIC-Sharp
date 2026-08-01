@@ -18,6 +18,7 @@ module BasicSharp
     PROFILE_FORMAT_VERSION = 1
     PROFILE_FORMAT_VERSION_2 = 2
     PROFILE_FORMAT_VERSION_3 = 3
+    PROFILE_FORMAT_VERSION_4 = 4
     MANDATORY_STRINGS = [
       BytecodeContract::PROFILE,
       BytecodeContract::MEANING_PROFILE,
@@ -42,6 +43,7 @@ module BasicSharp
       @document = stringify_keys(document.respond_to?(:to_h) ? document.to_h : document)
       validate_document!
       @profile = case @document['meaning_profile']
+                 when BytecodeContract::MEANING_PROFILE_4 then BytecodeContract::PROFILE_4
                  when BytecodeContract::MEANING_PROFILE_3 then BytecodeContract::PROFILE_3
                  when BytecodeContract::MEANING_PROFILE_2 then BytecodeContract::PROFILE_2
                  else BytecodeContract::PROFILE
@@ -49,17 +51,20 @@ module BasicSharp
       @meaning_profile = {
         BytecodeContract::PROFILE => BytecodeContract::MEANING_PROFILE,
         BytecodeContract::PROFILE_2 => BytecodeContract::MEANING_PROFILE_2,
-        BytecodeContract::PROFILE_3 => BytecodeContract::MEANING_PROFILE_3
+        BytecodeContract::PROFILE_3 => BytecodeContract::MEANING_PROFILE_3,
+        BytecodeContract::PROFILE_4 => BytecodeContract::MEANING_PROFILE_4
       }.fetch(@profile)
       @fingerprint_algorithm = {
         BytecodeContract::PROFILE => WorldSave::FINGERPRINT_ALGORITHM,
         BytecodeContract::PROFILE_2 => WorldSave::FINGERPRINT_ALGORITHM_2,
-        BytecodeContract::PROFILE_3 => WorldSave::FINGERPRINT_ALGORITHM_3
+        BytecodeContract::PROFILE_3 => WorldSave::FINGERPRINT_ALGORITHM_3,
+        BytecodeContract::PROFILE_4 => WorldSave::FINGERPRINT_ALGORITHM_4
       }.fetch(@profile)
       @profile_format_version = {
         BytecodeContract::PROFILE => PROFILE_FORMAT_VERSION,
         BytecodeContract::PROFILE_2 => PROFILE_FORMAT_VERSION_2,
-        BytecodeContract::PROFILE_3 => PROFILE_FORMAT_VERSION_3
+        BytecodeContract::PROFILE_3 => PROFILE_FORMAT_VERSION_3,
+        BytecodeContract::PROFILE_4 => PROFILE_FORMAT_VERSION_4
       }.fetch(@profile)
       @instruction_codes = BytecodeContract.instruction_codes(@profile)
       @condition_codes = BytecodeContract.condition_codes(@profile)
@@ -108,12 +113,12 @@ module BasicSharp
         raise BytecodeEmitterError, "BSharp Bytecode was not written because the program has #{warnings.length} warning#{warnings.length == 1 ? '' : 's'}."
       end
       profile = @document['meaning_profile']
-      unless profile.nil? || [BytecodeContract::MEANING_PROFILE, BytecodeContract::MEANING_PROFILE_2, BytecodeContract::MEANING_PROFILE_3].include?(profile)
+      unless profile.nil? || [BytecodeContract::MEANING_PROFILE, BytecodeContract::MEANING_PROFILE_2, BytecodeContract::MEANING_PROFILE_3, BytecodeContract::MEANING_PROFILE_4].include?(profile)
         raise BytecodeEmitterError, "BSharp Bytecode does not support meaning profile '#{profile}'."
       end
       text_used = document_uses_text_values?
-      if text_used && ![BytecodeContract::MEANING_PROFILE_2, BytecodeContract::MEANING_PROFILE_3].include?(profile)
-        raise BytecodeEmitterError, 'Creator-facing text values require bsharp.meaning.v2 or bsharp.meaning.v3 in BSharp IR.'
+      if text_used && ![BytecodeContract::MEANING_PROFILE_2, BytecodeContract::MEANING_PROFILE_3, BytecodeContract::MEANING_PROFILE_4].include?(profile)
+        raise BytecodeEmitterError, 'Creator-facing text values require bsharp.meaning.v2 or later in BSharp IR.'
       end
       if profile == BytecodeContract::MEANING_PROFILE_2 && !text_used
         raise BytecodeEmitterError, 'bsharp.meaning.v2 requires at least one creator-facing text value.'
@@ -121,6 +126,12 @@ module BasicSharp
       game_used = Array(@document['controls']).any? || Array(@document['hover_declarations']).any? || Array(@document['context_declarations']).any?
       if profile == BytecodeContract::MEANING_PROFILE_3 && !game_used
         raise BytecodeEmitterError, 'bsharp.meaning.v3 requires game input or interaction meaning.'
+      end
+      platform_used = Array(@document['controls']).any? do |declaration|
+        Array(declaration['instructions']).any? { |instruction| instruction['type'].to_s.start_with?('platform_') }
+      end
+      if profile == BytecodeContract::MEANING_PROFILE_4 && !platform_used
+        raise BytecodeEmitterError, 'bsharp.meaning.v4 requires platform movement meaning.'
       end
     end
 
@@ -459,7 +470,7 @@ module BasicSharp
         'CODE' => model.fetch(:blocks).length
       }
 
-      if @profile == BytecodeContract::PROFILE_3
+      if [BytecodeContract::PROFILE_3, BytecodeContract::PROFILE_4].include?(@profile)
         section_data['CTRL'] = encode_game_section(model.fetch(:controls))
         section_data['HOVR'] = encode_game_section(model.fetch(:hover_declarations))
         section_data['CTXT'] = encode_game_section(model.fetch(:context_declarations))

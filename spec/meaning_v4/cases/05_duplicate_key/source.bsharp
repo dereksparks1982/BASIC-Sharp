@@ -1,0 +1,6 @@
+CONTROLS for PLAYER
+[
+    A moves PLAYER left at 6 speed
+    D moves PLAYER right at 6 speed
+    D makes PLAYER jump at 10 speed
+].

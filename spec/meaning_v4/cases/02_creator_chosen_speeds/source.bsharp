@@ -1,0 +1,6 @@
+CONTROLS for PLAYER
+[
+    LEFT moves PLAYER left at 4 speed
+    RIGHT moves PLAYER right at 7 speed
+    UP makes PLAYER jump at 12 speed
+].

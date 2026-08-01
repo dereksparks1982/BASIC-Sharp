@@ -24,7 +24,7 @@
     "event_result_sha256": "6bf65c917a53ab3c96546911c26aa408df1305446243c6fbb573424c95df3d7a",
     "final_snapshot_sha256": "d6cec44d81b271b501d3ca9a6d14983d54e28061dd7a999a9e978d6e5234d5e0",
     "ask_answers_sha256": "2555c0ce34f69720e45b7ec8a1e7e783d2f9fea742eda63481b716b1bf9b30c2",
-    "save_document_sha256": "f0c9ba1d067ae102a60af082112ed2f8bb1fbcacaebc2aa18657948cc7d31666",
+    "save_document_sha256": "500fd027af336e450bdfa946497fc65b449ecde4b363d048de8da582fd4fea22",
     "restored_snapshot_sha256": "d6cec44d81b271b501d3ca9a6d14983d54e28061dd7a999a9e978d6e5234d5e0"
   }
 }

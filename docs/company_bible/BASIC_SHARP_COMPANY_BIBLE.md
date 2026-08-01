@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.35  
+**Version:** v0.1.36  
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -221,12 +221,14 @@ Inspection system: BSharp ASK
 Stable Meaning Profile 1: bsharp.meaning.v1
 Stable Meaning Profile 2: bsharp.meaning.v2
 Stable Meaning Profile 3: bsharp.meaning.v3
+Stable Meaning Profile 4: bsharp.meaning.v4
 Executable bytecode: BSharp Bytecode
 Short bytecode name: BSBC
 Bytecode extension: .bsbc
 Bytecode Profile 1: bsharp.bytecode.v1
 Bytecode Profile 2: bsharp.bytecode.v2
 Bytecode Profile 3: bsharp.bytecode.v3
+Bytecode Profile 4: bsharp.bytecode.v4
 Virtual machine: BSharp Virtual Machine
 Virtual machine short name: BSharp VM
 ```
@@ -241,7 +243,7 @@ Protected rules:
 - “Forgiving input, dependable meaning, canonical output” remains the long-term direction, but tolerance is added only through approved, tested builds.
 - Stable Meaning Profile 1 remains the implementation-neutral meaning authority for its covered language behavior. Stable Meaning Profile 2 extends it only with approved creator-facing text values; programs that use no Profile 2 meaning remain Profile 1.
 - Profile 2 creator-facing text uses straight double quotes, one-line valid UTF-8, and exact case, punctuation, and spaces. Identifier normalization must never alter literal text. Interpolation, concatenation, escape sequences, and multiline text require later approval.
-- **BSharp Bytecode** and **BSBC** are the protected names for compact execution artifacts governed by `bsharp.bytecode.v1`, `bsharp.bytecode.v2`, and `bsharp.bytecode.v3`. The accepted Ruby bootstrap may emit deterministic `.bsbc` files, completely validate them into deeply frozen trusted models, reconstruct `.bsbc.txt` diagnostic disassembly, and execute all accepted profiles through the **BSharp Virtual Machine**. The BSharp VM interprets the validated bytecode model directly and must not reconstruct BSIR or call the reference Ruby runtime. Profile 2 adds typed text instructions and role-aware literal strings without weakening Profile 1 identifier validation. Profile 3 adds deterministic controls, hover information, context interaction, and the `CTRL`, `HOVR`, and `CTXT` sections.
+- **BSharp Bytecode** and **BSBC** are the protected names for compact execution artifacts governed by `bsharp.bytecode.v1` through `bsharp.bytecode.v4`. The accepted Ruby bootstrap may emit deterministic `.bsbc` files, completely validate them into deeply frozen trusted models, reconstruct `.bsbc.txt` diagnostic disassembly, and execute all accepted profiles through the **BSharp Virtual Machine**. The BSharp VM interprets the validated bytecode model directly and must not reconstruct BSIR or call the reference Ruby runtime. Profile 2 adds typed text instructions and role-aware literal strings without weakening Profile 1 identifier validation. Profile 3 adds deterministic controls, hover information, context interaction, and the `CTRL`, `HOVR`, and `CTXT` sections. Profile 4 adds plain-English left/right platform movement, grounded jumping, built-in gravity, frame timing, collision response, and engine-neutral collision-movement commands without changing Profile 1 through Profile 3 meaning.
 - The **BSharp VM is the preferred runtime** for `.bsharp`, `.bsir.json`, and `.bsbc`. Source and saved BSIR enter it through deterministic BSBC emission and complete validation in memory. `BasicSharp::Runtime` remains a protected reference oracle available only through explicit diagnostic use and conformance testing. Shadow parity verification must stop on disagreement rather than silently choosing one engine's result.
 
 Language grammar and runtime behavior belong in specifications and contracts, not duplicated as mutable Company Bible prose.

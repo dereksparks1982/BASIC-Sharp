@@ -1,0 +1,58 @@
+{
+  "commands": [
+    {
+      "command": "move_with_collisions",
+      "subject": "player",
+      "velocity_x": 6.0,
+      "velocity_y": 0.0,
+      "delta_seconds": 0.0,
+      "gravity": 30.0,
+      "grounded": true
+    },
+    {
+      "command": "move_with_collisions",
+      "subject": "player",
+      "velocity_x": 6.0,
+      "velocity_y": -9.52,
+      "delta_seconds": 0.016,
+      "gravity": 30.0,
+      "grounded": true
+    },
+    {
+      "command": "move_with_collisions",
+      "subject": "player",
+      "velocity_x": 6.0,
+      "velocity_y": -6.52,
+      "delta_seconds": 0.1,
+      "gravity": 30.0,
+      "grounded": false
+    },
+    {
+      "command": "move_with_collisions",
+      "subject": "player",
+      "velocity_x": 0.0,
+      "velocity_y": -6.04,
+      "delta_seconds": 0.016,
+      "gravity": 30.0,
+      "grounded": false
+    },
+    {
+      "command": "move_with_collisions",
+      "subject": "player",
+      "velocity_x": 0.0,
+      "velocity_y": -5.56,
+      "delta_seconds": 0.016,
+      "gravity": 30.0,
+      "grounded": false
+    },
+    {
+      "command": "move_with_collisions",
+      "subject": "player",
+      "velocity_x": 6.0,
+      "velocity_y": 0.0,
+      "delta_seconds": 0.25,
+      "gravity": 30.0,
+      "grounded": true
+    }
+  ]
+}

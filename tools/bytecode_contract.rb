@@ -9,6 +9,8 @@ profile = BasicSharp::BytecodeContract.load_profile(path)
 BasicSharp::BytecodeContract.validate_profile!(profile, root: root)
 profile_3 = BasicSharp::BytecodeContract.load_profile(File.join(root, 'spec/bytecode_v3/BASIC_SHARP_BYTECODE_PROFILE_v3.json'))
 BasicSharp::BytecodeContract.validate_profile!(profile_3, root: root)
+profile_4 = BasicSharp::BytecodeContract.load_profile(File.join(root, 'spec/bytecode_v4/BASIC_SHARP_BYTECODE_PROFILE_v4.json'))
+BasicSharp::BytecodeContract.validate_profile!(profile_4, root: root)
 
 puts 'BSharp Bytecode Contract v1'
 puts 'Artifact identity: PASS'
@@ -20,6 +22,7 @@ puts 'Operand contracts: PASS'
 puts 'Reserved ranges: PASS'
 puts 'Profile 1 coverage: PASS'
 puts 'Profile 3 CTRL/HOVR/CTXT coverage: PASS'
+puts 'Profile 4 platform movement coverage: PASS'
 puts 'Readable disassembly grammar: PASS'
 puts 'Emission ordering and atomic-output rules: PASS'
 puts 'Loader boundary and trusted-model rules: PASS'

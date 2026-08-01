@@ -1,0 +1,56 @@
+{
+  "format": "bsharp.meaning.conformance.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v4",
+  "title": "BASIC# Stable Meaning Profile 4: plain-English platform movement",
+  "cases": [
+    {
+      "id": "01_platform_declaration",
+      "source": "spec/meaning_v4/cases/01_platform_declaration/source.bsharp",
+      "expected": "spec/meaning_v4/cases/01_platform_declaration/expected.json",
+      "expected_sha256": "92c26ea3d065ae56d23dd13b25c8fe9ceaa7d4d1bb46550a5eb5a46a3512eeb7"
+    },
+    {
+      "id": "02_creator_chosen_speeds",
+      "source": "spec/meaning_v4/cases/02_creator_chosen_speeds/source.bsharp",
+      "expected": "spec/meaning_v4/cases/02_creator_chosen_speeds/expected.json",
+      "expected_sha256": "3904a0f05903b1d2873702cae83b3302ff05f3478edd24564a6679dd83bc2984"
+    },
+    {
+      "id": "03_invalid_speed",
+      "source": "spec/meaning_v4/cases/03_invalid_speed/source.bsharp",
+      "expected": "spec/meaning_v4/cases/03_invalid_speed/expected.json",
+      "expected_sha256": "7ece254bfd02bbd51a24bdde37a669ce85fc695686c09d4e44fe22bcc73efb7e"
+    },
+    {
+      "id": "04_missing_jump",
+      "source": "spec/meaning_v4/cases/04_missing_jump/source.bsharp",
+      "expected": "spec/meaning_v4/cases/04_missing_jump/expected.json",
+      "expected_sha256": "583207ec4c327f086aba9ef6b7415a9bc222377dfbf106740d86d8114f10fb46"
+    },
+    {
+      "id": "05_duplicate_key",
+      "source": "spec/meaning_v4/cases/05_duplicate_key/source.bsharp",
+      "expected": "spec/meaning_v4/cases/05_duplicate_key/expected.json",
+      "expected_sha256": "396a9fe9727ee6d369c70e39896aaab798415849b57b7bda3a8750d9c8da3482"
+    },
+    {
+      "id": "06_mixed_movement_models",
+      "source": "spec/meaning_v4/cases/06_mixed_movement_models/source.bsharp",
+      "expected": "spec/meaning_v4/cases/06_mixed_movement_models/expected.json",
+      "expected_sha256": "f9465869e6d7cccce2865b3d1673043856afe5a8d5d5c14779b1981274a1fe6c"
+    },
+    {
+      "id": "07_comments",
+      "source": "spec/meaning_v4/cases/07_comments/source.bsharp",
+      "expected": "spec/meaning_v4/cases/07_comments/expected.json",
+      "expected_sha256": "34a284142ee136f4b10d52cd3573038e9f8d5abbe88e28dcdd42059008d397a5"
+    },
+    {
+      "id": "08_platform_with_interaction",
+      "source": "spec/meaning_v4/cases/08_platform_with_interaction/source.bsharp",
+      "expected": "spec/meaning_v4/cases/08_platform_with_interaction/expected.json",
+      "expected_sha256": "57a65c8507686a8d486fe37201ff0daaae42157873a720c6fbb33fc06b61e567"
+    }
+  ]
+}

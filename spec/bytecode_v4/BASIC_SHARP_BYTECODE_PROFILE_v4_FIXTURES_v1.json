@@ -1,0 +1,22 @@
+{
+  "format": "bsharp.bytecode.profile.v4.fixtures.json",
+  "format_version": 1,
+  "profile": "bsharp.bytecode.v4",
+  "sample": "samples/platform_movement.bsharp",
+  "binary_sha256": "41bcab1173735b3664db2d28e2ff0076212039cfeadaabb33021aef78fdfe902",
+  "disassembly_sha256": "2c8763cfb898e311f17fcd1e3464ee1f946dc74f174e61fdad86b17554963be8",
+  "fingerprint": "c207e0d477692c9f899334f03a258541e2c86a9e98f8447c1883355452a77ca4",
+  "section_order": [
+    "STRS",
+    "META",
+    "KIND",
+    "THNG",
+    "STRT",
+    "EVNT",
+    "IFRL",
+    "CTRL",
+    "HOVR",
+    "CTXT",
+    "CODE"
+  ]
+}

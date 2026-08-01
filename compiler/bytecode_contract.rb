@@ -18,6 +18,8 @@ module BasicSharp
     MEANING_PROFILE_2 = 'bsharp.meaning.v2'
     PROFILE_3 = 'bsharp.bytecode.v3'
     MEANING_PROFILE_3 = 'bsharp.meaning.v3'
+    PROFILE_4 = 'bsharp.bytecode.v4'
+    MEANING_PROFILE_4 = 'bsharp.meaning.v4'
     MAGIC = 'BSBC'
     BYTE_ORDER = 'little-endian'
     TEXT_ENCODING = 'UTF-8'
@@ -118,9 +120,9 @@ module BasicSharp
 
     def validate_artifact!(artifact)
       profile_name = artifact['profile']
-      expected_profile = [PROFILE, PROFILE_2, PROFILE_3].include?(profile_name) ? profile_name : PROFILE
-      required_meaning = { PROFILE => MEANING_PROFILE, PROFILE_2 => MEANING_PROFILE_2, PROFILE_3 => MEANING_PROFILE_3 }.fetch(expected_profile)
-      algorithm = { PROFILE => 'sha256-bsir-meaning-v1', PROFILE_2 => 'sha256-bsir-meaning-v2', PROFILE_3 => 'sha256-bsir-meaning-v3' }.fetch(expected_profile)
+      expected_profile = [PROFILE, PROFILE_2, PROFILE_3, PROFILE_4].include?(profile_name) ? profile_name : PROFILE
+      required_meaning = { PROFILE => MEANING_PROFILE, PROFILE_2 => MEANING_PROFILE_2, PROFILE_3 => MEANING_PROFILE_3, PROFILE_4 => MEANING_PROFILE_4 }.fetch(expected_profile)
+      algorithm = { PROFILE => 'sha256-bsir-meaning-v1', PROFILE_2 => 'sha256-bsir-meaning-v2', PROFILE_3 => 'sha256-bsir-meaning-v3', PROFILE_4 => 'sha256-bsir-meaning-v4' }.fetch(expected_profile)
       expected = {
         'name' => ARTIFACT_NAME,
         'short_name' => SHORT_NAME,
@@ -204,7 +206,10 @@ module BasicSharp
     def validate_coverage!(coverage, root:, profile_name: PROFILE)
       profile_2 = profile_name == PROFILE_2
       profile_3 = profile_name == PROFILE_3
-      meaning_path = if profile_3
+      profile_4 = profile_name == PROFILE_4
+      meaning_path = if profile_4
+                       File.join(root, 'spec/meaning_v4/BASIC_SHARP_MEANING_PROFILE_v4.json')
+                     elsif profile_3
                        File.join(root, 'spec/meaning_v3/BASIC_SHARP_MEANING_PROFILE_v3.json')
                      elsif profile_2
                        File.join(root, 'spec/meaning_v2/BASIC_SHARP_MEANING_PROFILE_v2.json')
@@ -215,7 +220,7 @@ module BasicSharp
       expected_ids = meaning.fetch('cases').map { |entry| entry.fetch('id') }
       actual_ids = coverage.map { |entry| entry['case_id'] }
       unless actual_ids == expected_ids
-        label = profile_3 ? 'Meaning Profile 3 cases' : (profile_2 ? 'Meaning Profile 2 cases' : 'all 13 Meaning Profile cases')
+        label = profile_4 ? 'Meaning Profile 4 cases' : (profile_3 ? 'Meaning Profile 3 cases' : (profile_2 ? 'Meaning Profile 2 cases' : 'all 13 Meaning Profile cases'))
         raise BytecodeContractError, "Bytecode coverage must name #{label} in order."
       end
       coverage.each do |entry|
@@ -233,7 +238,9 @@ module BasicSharp
 
     def validate_emission!(emission)
       profile = emission.fetch('mandatory_string_prefix').first
-      expected_prefix = if profile == PROFILE_3
+      expected_prefix = if profile == PROFILE_4
+                          [PROFILE_4, MEANING_PROFILE_4, 'sha256-bsir-meaning-v4']
+                        elsif profile == PROFILE_3
                           [PROFILE_3, MEANING_PROFILE_3, 'sha256-bsir-meaning-v3']
                         elsif profile == PROFILE_2
                           [PROFILE_2, MEANING_PROFILE_2, 'sha256-bsir-meaning-v2']
@@ -256,7 +263,9 @@ module BasicSharp
     end
 
     def validate_loading!(loading, profile_name: PROFILE)
-      expected_status = if profile_name == PROFILE_3
+      expected_status = if profile_name == PROFILE_4
+                          'implemented by BASIC# v0.1.36'
+                        elsif profile_name == PROFILE_3
                           'implemented by BASIC# v0.1.35'
                         elsif profile_name == PROFILE_2
                           'implemented by BASIC# v0.1.32'
@@ -281,7 +290,9 @@ module BasicSharp
     end
 
     def validate_execution!(execution, profile_name: PROFILE)
-      expected_status = if profile_name == PROFILE_3
+      expected_status = if profile_name == PROFILE_4
+                          'preferred by BASIC# v0.1.36'
+                        elsif profile_name == PROFILE_3
                           'preferred by BASIC# v0.1.35'
                         elsif profile_name == PROFILE_2
                           'preferred by BASIC# v0.1.32'
@@ -311,12 +322,13 @@ module BasicSharp
         'RELATION_EXISTS', 'VALUE_EQUALS', 'nearest inherited Kind', 'Thing definition order',
         'reactive IF', 'first-created first-run', 'independent mutable world',
         'canonical reconstructed wording', 'BSharp Save', 'BSharp ASK', 'source, saved BSIR', 'save/restore/replay', '1,024-event protection', 'emitted to BSBC in memory', '--reference-runtime', '--verify-runtime-parity', 'stops on disagreement',
-        profile_name == PROFILE_3 ? 'preferred Profile 1, Profile 2, and Profile 3 runtime' : (profile_name == PROFILE_2 ? 'preferred Profile 1 and Profile 2 runtime' : 'preferred Profile 1 runtime')
+        profile_name == PROFILE_4 ? 'preferred Profile 1, Profile 2, Profile 3, and Profile 4 runtime' : (profile_name == PROFILE_3 ? 'preferred Profile 1, Profile 2, and Profile 3 runtime' : (profile_name == PROFILE_2 ? 'preferred Profile 1 and Profile 2 runtime' : 'preferred Profile 1 runtime'))
       ]
-      if [PROFILE_2, PROFILE_3].include?(profile_name)
+      if [PROFILE_2, PROFILE_3, PROFILE_4].include?(profile_name)
         required.concat(['START_TEXT_VALUE', 'CHANGE_TEXT_VALUE', 'TEXT_VALUE_EQUALS', 'exact creator-facing text'])
       end
-      required.concat(['CTRL', 'HOVR', 'CTXT', 'engine-neutral host commands']) if profile_name == PROFILE_3
+      required.concat(['CTRL', 'HOVR', 'CTXT', 'engine-neutral host commands']) if [PROFILE_3, PROFILE_4].include?(profile_name)
+      required.concat(['platform movement', 'gravity', 'grounded jump', 'collision movement']) if profile_name == PROFILE_4
       text = execution.values.flatten.join("\n")
       missing = required.reject { |entry| text.include?(entry) }
       raise BytecodeContractError, "BSharp VM rules are incomplete: #{missing.join(', ')}" unless missing.empty?
@@ -324,7 +336,7 @@ module BasicSharp
 
     def validate_malformed_rules!(rules, profile_name: PROFILE)
       required = REQUIRED_MALFORMED_RULES.dup
-      required.concat(PROFILE_2_REQUIRED_MALFORMED_RULES) if [PROFILE_2, PROFILE_3].include?(profile_name)
+      required.concat(PROFILE_2_REQUIRED_MALFORMED_RULES) if [PROFILE_2, PROFILE_3, PROFILE_4].include?(profile_name)
       missing = required - rules
       raise BytecodeContractError, "Malformed-bytecode rules are incomplete: #{missing.join(', ')}" unless missing.empty?
       raise BytecodeContractError, 'Malformed-bytecode rules must be unique.' unless rules.uniq.length == rules.length
@@ -356,19 +368,19 @@ module BasicSharp
     end
 
     def instruction_codes(profile_name)
-      [PROFILE_2, PROFILE_3].include?(profile_name) ? PROFILE_2_INSTRUCTIONS : INSTRUCTIONS
+      [PROFILE_2, PROFILE_3, PROFILE_4].include?(profile_name) ? PROFILE_2_INSTRUCTIONS : INSTRUCTIONS
     end
 
     def condition_codes(profile_name)
-      [PROFILE_2, PROFILE_3].include?(profile_name) ? PROFILE_2_CONDITIONS : CONDITIONS
+      [PROFILE_2, PROFILE_3, PROFILE_4].include?(profile_name) ? PROFILE_2_CONDITIONS : CONDITIONS
     end
 
     def section_order(profile_name)
-      profile_name == PROFILE_3 ? SECTION_ORDER_3 : SECTION_ORDER
+      [PROFILE_3, PROFILE_4].include?(profile_name) ? SECTION_ORDER_3 : SECTION_ORDER
     end
 
     def section_order_for_format(profile_format_version)
-      profile_format_version == 3 ? SECTION_ORDER_3 : SECTION_ORDER
+      [3, 4].include?(profile_format_version) ? SECTION_ORDER_3 : SECTION_ORDER
     end
 
     def validate_ranges!(ranges, active_codes, label)

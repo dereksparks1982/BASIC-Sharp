@@ -139,6 +139,7 @@ module BasicSharp
     end
 
     def meaning_profile
+      return WorldSave::MEANING_PROFILE_4 if @ir['meaning_profile'] == WorldSave::MEANING_PROFILE_4
       return WorldSave::MEANING_PROFILE_3 if @ir['meaning_profile'] == WorldSave::MEANING_PROFILE_3
       @ir['meaning_profile'] == WorldSave::MEANING_PROFILE_2 ? WorldSave::MEANING_PROFILE_2 : WorldSave::MEANING_PROFILE_1
     end
@@ -604,7 +605,7 @@ module BasicSharp
           raise WorldSaveError, "BSharp Save value name '#{name}' for #{thing_name} must be one plain word."
         end
         expected_type = expected_values.fetch(name).is_a?(String) ? 'text' : 'whole_number'
-        value = if [WorldSave::FORMAT_VERSION_2, WorldSave::FORMAT_VERSION_3].include?(save_version)
+        value = if [WorldSave::FORMAT_VERSION_2, WorldSave::FORMAT_VERSION_3, WorldSave::FORMAT_VERSION_4].include?(save_version)
                   validate_typed_saved_value!(saved_value, name, thing_name, expected_type)
                 else
                   saved_value
@@ -697,13 +698,13 @@ module BasicSharp
       end
 
       profile = @ir['meaning_profile']
-      supported_profiles = [nil, '', WorldSave::MEANING_PROFILE_1, WorldSave::MEANING_PROFILE_2, WorldSave::MEANING_PROFILE_3]
+      supported_profiles = [nil, '', WorldSave::MEANING_PROFILE_1, WorldSave::MEANING_PROFILE_2, WorldSave::MEANING_PROFILE_3, WorldSave::MEANING_PROFILE_4]
       unless supported_profiles.include?(profile)
         raise ArgumentError, "BSharp IR meaning profile '#{profile}' is not supported"
       end
       text_used = ir_uses_text_values?
-      if text_used && ![WorldSave::MEANING_PROFILE_2, WorldSave::MEANING_PROFILE_3].include?(profile)
-        raise ArgumentError, 'Creator-facing text values require bsharp.meaning.v2 or bsharp.meaning.v3 in BSharp IR'
+      if text_used && ![WorldSave::MEANING_PROFILE_2, WorldSave::MEANING_PROFILE_3, WorldSave::MEANING_PROFILE_4].include?(profile)
+        raise ArgumentError, 'Creator-facing text values require bsharp.meaning.v2 or later in BSharp IR'
       end
       if profile == WorldSave::MEANING_PROFILE_2 && !text_used
         raise ArgumentError, 'bsharp.meaning.v2 requires at least one creator-facing text value'
@@ -711,6 +712,12 @@ module BasicSharp
       game_used = Array(@ir['controls']).any? || Array(@ir['hover_declarations']).any? || Array(@ir['context_declarations']).any?
       if profile == WorldSave::MEANING_PROFILE_3 && !game_used
         raise ArgumentError, 'bsharp.meaning.v3 requires game input or interaction meaning'
+      end
+      platform_used = Array(@ir['controls']).any? do |declaration|
+        Array(declaration['instructions']).any? { |instruction| instruction['type'].to_s.start_with?('platform_') }
+      end
+      if profile == WorldSave::MEANING_PROFILE_4 && !platform_used
+        raise ArgumentError, 'bsharp.meaning.v4 requires platform movement meaning'
       end
 
       raise ArgumentError, 'BSharp IR contains errors and cannot run' if ir_errors.any?

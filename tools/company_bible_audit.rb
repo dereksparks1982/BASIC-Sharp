@@ -114,7 +114,9 @@ MANDATORY_TEXT = [
   'Bytecode extension: .bsbc',
   'Bytecode Profile 1: bsharp.bytecode.v1',
   'Bytecode Profile 2: bsharp.bytecode.v2',
+  'Bytecode Profile 4: bsharp.bytecode.v4',
   'Stable Meaning Profile 2: bsharp.meaning.v2',
+  'Stable Meaning Profile 4: bsharp.meaning.v4',
   'Virtual machine: BSharp Virtual Machine',
   'must not reconstruct BSIR or call the reference Ruby runtime',
   'Protected BASIC# visual grammar',
@@ -126,7 +128,7 @@ files = Dir.glob(File.join(ROOT, 'docs/company_bible/*'), File::FNM_DOTMATCH).re
   [File.join(ROOT, 'docs/company_bible/.'), File.join(ROOT, 'docs/company_bible/..')].include?(path)
 end
 raise "Expected one Company Bible file, found #{files.length}" unless files == [CANONICAL_FULL_PATH]
-puts 'BASIC# Company Bible Audit v0.1.35'
+puts 'BASIC# Company Bible Audit v0.1.36'
 puts 'Canonical file count: PASS'
 
 text = File.read(CANONICAL_FULL_PATH, encoding: 'UTF-8')

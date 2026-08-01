@@ -184,10 +184,52 @@ module BasicSharp
     end
 
     def resolve_controls(declaration)
+      directions = {}
+      keys = {}
+      instruction_types = declaration.instructions.map { |entry| entry['type'] }
+      platform_used = instruction_types.any? { |type| type.start_with?('platform_') }
+      top_down_used = instruction_types.any? { |type| %w[key_move face_pointer right_mouse_move].include?(type) }
+      if platform_used && top_down_used
+        diagnostics.error(declaration.line_number, 'CONTROLS cannot mix platform movement with top-down movement in one declaration.')
+      end
+
+      instructions = declaration.instructions.map do |instruction|
+        resolved = instruction.dup
+        next resolved unless instruction['type'].start_with?('platform_')
+
+        key = instruction['key']
+        if keys[key]
+          diagnostics.error(instruction['line_number'], "#{key} already has a platform movement job in CONTROLS.")
+        else
+          keys[key] = true
+        end
+        if instruction['type'] == 'platform_move'
+          direction = instruction['direction']
+          if directions[direction]
+            diagnostics.error(instruction['line_number'], "PLAYER already has a #{direction} movement control.")
+          else
+            directions[direction] = true
+          end
+        elsif directions['jump']
+          diagnostics.error(instruction['line_number'], 'PLAYER already has a jump control.')
+        else
+          directions['jump'] = true
+        end
+        resolved['speed'] = resolve_whole_number(
+          instruction['speed'], instruction['line_number'], minimum: 1, purpose: 'movement speed'
+        )
+        resolved
+      end
+
+      if platform_used
+        %w[left right jump].each do |job|
+          diagnostics.error(declaration.line_number, "Platform CONTROLS must declare PLAYER #{job} movement.") unless directions[job]
+        end
+      end
       {
         'line_number' => declaration.line_number,
         'subject' => resolve_reference(declaration.subject, declaration.line_number, usage: :control),
-        'instructions' => declaration.instructions
+        'instructions' => instructions
       }
     end
 
@@ -572,6 +614,11 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
     end
 
     def meaning_profile_for(facts, events, if_rules, controls, hover_declarations, context_declarations)
+      platform_used = controls.any? do |declaration|
+        declaration.fetch('instructions', []).any? { |instruction| instruction['type'].to_s.start_with?('platform_') }
+      end
+      return 'bsharp.meaning.v4' if platform_used
+
       game_used = !controls.empty? || !hover_declarations.empty? || !context_declarations.empty?
       return 'bsharp.meaning.v3' if game_used
 

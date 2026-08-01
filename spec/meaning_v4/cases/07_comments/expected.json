@@ -1,0 +1,138 @@
+{
+  "case_id": "07_comments",
+  "compile": {
+    "errors": [
+
+    ],
+    "meaning": {
+      "context_declarations": [
+
+      ],
+      "controls": [
+        {
+          "instructions": [
+            {
+              "direction": "left",
+              "key": "A",
+              "speed": 6,
+              "type": "platform_move"
+            },
+            {
+              "direction": "right",
+              "key": "D",
+              "speed": 6,
+              "type": "platform_move"
+            },
+            {
+              "key": "SPACE",
+              "speed": 10,
+              "type": "platform_jump"
+            }
+          ],
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          }
+        }
+      ],
+      "events": [
+
+      ],
+      "facts": [
+
+      ],
+      "hover_declarations": [
+
+      ],
+      "if_rules": [
+
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "execution": {
+    "events": [
+
+    ],
+    "final": {
+      "if_rules": [
+
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 1,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 1,
+        "true_if_rules": 0,
+        "whole_number_values": 1
+      }
+    },
+    "startup": {
+      "if_rules": [
+
+      ],
+      "save_ready": true,
+      "snapshot": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player",
+          "relations": {
+          },
+          "states": [
+
+          ],
+          "values": {
+            "damage": 0
+          }
+        }
+      ],
+      "world": {
+        "if_rules": 0,
+        "kinds_used": 1,
+        "origin": "START",
+        "settled": true,
+        "text_values": 0,
+        "things": 1,
+        "true_if_rules": 0,
+        "whole_number_values": 1
+      }
+    }
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v4",
+  "source_bsir_parity": true
+}

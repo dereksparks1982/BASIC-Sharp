@@ -1,0 +1,68 @@
+{
+  "case_id": "04_missing_jump",
+  "compile": {
+    "errors": [
+      {
+        "message": "Platform CONTROLS must declare PLAYER jump movement.",
+        "severity": "error"
+      }
+    ],
+    "meaning": {
+      "context_declarations": [
+
+      ],
+      "controls": [
+        {
+          "instructions": [
+            {
+              "direction": "left",
+              "key": "A",
+              "speed": 6,
+              "type": "platform_move"
+            },
+            {
+              "direction": "right",
+              "key": "D",
+              "speed": 6,
+              "type": "platform_move"
+            }
+          ],
+          "subject": {
+            "name": "player",
+            "object_kind": "person",
+            "text": "player",
+            "type": "object"
+          }
+        }
+      ],
+      "events": [
+
+      ],
+      "facts": [
+
+      ],
+      "hover_declarations": [
+
+      ],
+      "if_rules": [
+
+      ],
+      "kinds": [
+
+      ],
+      "objects": [
+        {
+          "builtin": true,
+          "kind": "person",
+          "name": "player"
+        }
+      ]
+    },
+    "warnings": [
+
+    ]
+  },
+  "format": "bsharp.meaning.case.json",
+  "format_version": 1,
+  "profile": "bsharp.meaning.v4"
+}

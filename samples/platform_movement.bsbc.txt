@@ -1,0 +1,16 @@
+BSharp Bytecode bsharp.bytecode.v4
+Meaning Profile: bsharp.meaning.v4
+Fingerprint: c207e0d477692c9f899334f03a258541e2c86a9e98f8447c1883355452a77ca4
+
+KIND 0 person PARENT NONE
+
+THING 0 player KIND[person]
+
+START
+END
+
+CONTROLS THING[player]
+    PLATFORM_MOVE direction=left key=A speed=6
+    PLATFORM_MOVE direction=right key=D speed=6
+    PLATFORM_JUMP key=SPACE speed=10
+END

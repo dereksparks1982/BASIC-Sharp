@@ -1,0 +1,12 @@
+[
+  { "type": "key_down", "key": "D" },
+  { "type": "frame", "time_ms": 0, "grounded": true },
+  { "type": "key_down", "key": "SPACE" },
+  { "type": "frame", "time_ms": 16, "grounded": true },
+  { "type": "frame", "time_ms": 116, "grounded": false },
+  { "type": "key_down", "key": "A" },
+  { "type": "frame", "time_ms": 132, "grounded": false },
+  { "type": "key_up", "key": "A" },
+  { "type": "frame", "time_ms": 148, "grounded": false, "hit_right": true },
+  { "type": "frame", "time_ms": 500, "grounded": true }
+]

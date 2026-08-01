@@ -1,0 +1,8 @@
+//A complete side-scroller movement declaration with the machinery hidden./.
+
+CONTROLS for PLAYER
+[
+    A moves PLAYER left at 6 speed
+    D moves PLAYER right at 6 speed
+    SPACE makes PLAYER jump at 10 speed
+].

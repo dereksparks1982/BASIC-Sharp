@@ -577,7 +577,7 @@ module BasicSharp
           raise WorldSaveError, "BSharp Save value name '#{name}' for #{thing_name} must be one plain word."
         end
         expected_type = expected_values.fetch(name).is_a?(String) ? 'text' : 'whole_number'
-        value = if [WorldSave::FORMAT_VERSION_2, WorldSave::FORMAT_VERSION_3].include?(save_version)
+        value = if [WorldSave::FORMAT_VERSION_2, WorldSave::FORMAT_VERSION_3, WorldSave::FORMAT_VERSION_4].include?(save_version)
                   validate_typed_saved_value!(saved_value, name, thing_name, expected_type)
                 else
                   saved_value
@@ -631,7 +631,8 @@ module BasicSharp
       supported = [
         [BytecodeContract::PROFILE, BytecodeContract::MEANING_PROFILE],
         [BytecodeContract::PROFILE_2, BytecodeContract::MEANING_PROFILE_2],
-        [BytecodeContract::PROFILE_3, BytecodeContract::MEANING_PROFILE_3]
+        [BytecodeContract::PROFILE_3, BytecodeContract::MEANING_PROFILE_3],
+        [BytecodeContract::PROFILE_4, BytecodeContract::MEANING_PROFILE_4]
       ]
       unless supported.include?(pair)
         raise BytecodeVirtualMachineError, 'The BSharp Virtual Machine cannot execute this bytecode profile.'

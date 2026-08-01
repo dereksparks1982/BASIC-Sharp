@@ -10,6 +10,7 @@ require_relative '../compiler/bytecode_emitter'
 require_relative '../compiler/bytecode_loader'
 require_relative '../compiler/bytecode_virtual_machine'
 require_relative '../compiler/game_interaction'
+require_relative '../compiler/game_input'
 
 ROOT = File.expand_path('..', __dir__)
 FIXTURE_PATH = File.join(ROOT, 'spec/bytecode_v1/BASIC_SHARP_BYTECODE_VM_FIXTURES_v1.json')
@@ -180,13 +181,23 @@ interaction = BasicSharp::GameInteraction.new(game_loader.model, machine: game_v
 game_result = interaction.execute('north gate', 'Open')
 checks['Meaning Profile 3 context execution'] = game_result['error'].nil? && game_vm.ask_thing('north gate').fetch('states') == ['open']
 
+platform_loader = BasicSharp::BytecodeLoader.read(File.join(ROOT, 'samples/platform_movement.bsbc'))
+platform_vm = BasicSharp::BytecodeVirtualMachine.new(platform_loader)
+platform_input = BasicSharp::GameInput.new(platform_loader.model)
+platform_input.process('type' => 'key_down', 'key' => 'D')
+platform_command = platform_input.process('type' => 'frame', 'time_ms' => 0, 'grounded' => true).fetch(0)
+checks['Meaning Profile 4 platform movement'] = platform_vm.meaning_profile == 'bsharp.meaning.v4' &&
+                                                platform_command.fetch('command') == 'move_with_collisions' &&
+                                                platform_command.fetch('velocity_x') == 6.0
+
 checks.each { |label, passed| VMConformance.assert!(passed, label) }
 
-puts 'BSharp Virtual Machine v0.1.35'
+puts 'BSharp Virtual Machine v0.1.36'
 puts "Sample programs: #{FIXTURE.fetch('sample_programs').length}"
 puts "Valid Meaning Profile cases: #{FIXTURE.fetch('meaning_cases').length}"
 puts 'Valid Meaning Profile 2 text sample: 1'
 puts 'Valid Meaning Profile 3 game sample: 1'
+puts 'Valid Meaning Profile 4 platform sample: 1'
 puts
 checks.each { |label, _passed| puts "#{label}: PASS" }
 puts

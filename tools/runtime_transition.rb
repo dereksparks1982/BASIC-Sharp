@@ -172,6 +172,15 @@ game_source = File.join(ROOT, 'samples/demon_killer_controls.bsharp')
 game_machine = PreferredRuntimeAudit.transition({ 'source' => 'samples/demon_killer_controls.bsharp' }, mode: :verify, document: PreferredRuntimeAudit.resolve(game_source))
 game_profile_shadow = game_machine.meaning_profile == 'bsharp.meaning.v3' && game_machine.game_declarations.fetch('controls').length == 1
 
+platform_source = File.join(ROOT, 'samples/platform_movement.bsharp')
+platform_machine = PreferredRuntimeAudit.transition(
+  { 'source' => 'samples/platform_movement.bsharp' },
+  mode: :verify,
+  document: PreferredRuntimeAudit.resolve(platform_source)
+)
+platform_profile_shadow = platform_machine.meaning_profile == 'bsharp.meaning.v4' &&
+                          platform_machine.game_declarations.fetch('controls').fetch(0).fetch('instructions').length == 3
+
 checks = {
   'Source defaults to BSharp VM' => source_default,
   'BSIR defaults to BSharp VM' => bsir_default,
@@ -191,7 +200,8 @@ checks = {
   'Mismatch detection' => mismatch_detection,
   'Deterministic repeated execution' => deterministic,
   'Meaning Profile 2 text shadow parity' => text_profile_shadow,
-  'Meaning Profile 3 game shadow parity' => game_profile_shadow
+  'Meaning Profile 3 game shadow parity' => game_profile_shadow,
+  'Meaning Profile 4 platform shadow parity' => platform_profile_shadow
 }
 
 checks.each { |label, passed| PreferredRuntimeAudit.assert!(passed, label) }

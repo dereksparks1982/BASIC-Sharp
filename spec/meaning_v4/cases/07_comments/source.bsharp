@@ -1,0 +1,7 @@
+//Platform movement comments do not change meaning./.
+CONTROLS for PLAYER
+[
+    A moves PLAYER left at 6 speed //Left./.
+    D moves PLAYER right at 6 speed
+    SPACE makes PLAYER jump at 10 speed
+].

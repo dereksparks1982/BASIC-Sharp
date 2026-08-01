@@ -1,0 +1,8 @@
+{
+  "format": "bsharp.platform.movement.runtime.fixtures.json",
+  "format_version": 1,
+  "meaning_profile": "bsharp.meaning.v4",
+  "input": "samples/platform_movement.input.json",
+  "expected": "samples/platform_movement.expected.json",
+  "expected_sha256": "4c43d7ed97578f61b7e9af13f29d747aa0e0fbb11a37c67fb7396a0f8223371b"
+}

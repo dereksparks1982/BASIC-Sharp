@@ -179,7 +179,7 @@ module BasicSharp
       unless binary_version == BytecodeContract::BINARY_FORMAT_VERSION
         raise BytecodeLoaderError, "BSharp Bytecode binary format version #{binary_version} is not supported."
       end
-      unless [1, 2, 3].include?(profile_version)
+      unless [1, 2, 3, 4].include?(profile_version)
         raise BytecodeLoaderError, "BSharp Bytecode profile format version #{profile_version} is not supported."
       end
       @profile_format_version = profile_version
@@ -287,7 +287,9 @@ module BasicSharp
       unless @strings.uniq.length == @strings.length
         raise BytecodeLoaderError, 'BSharp Bytecode string table contains a duplicate deterministic entry.'
       end
-      mandatory = if @profile_format_version == 3
+      mandatory = if @profile_format_version == 4
+                    [BytecodeContract::PROFILE_4, BytecodeContract::MEANING_PROFILE_4, 'sha256-bsir-meaning-v4']
+                  elsif @profile_format_version == 3
                     [BytecodeContract::PROFILE_3, BytecodeContract::MEANING_PROFILE_3, 'sha256-bsir-meaning-v3']
                   elsif @profile_format_version == 2
                     [BytecodeContract::PROFILE_2, BytecodeContract::MEANING_PROFILE_2, 'sha256-bsir-meaning-v2']
@@ -309,9 +311,9 @@ module BasicSharp
       fingerprint = data.byteslice(12, 32).unpack1('H*')
       kind_count, thing_count, start_count, event_count, if_count, block_count = data.byteslice(44, 24).unpack('V6')
       [profile_index, meaning_index, fingerprint_algorithm_index].each { |index| validate_string_index!(index) }
-      expected_profile = { 1 => BytecodeContract::PROFILE, 2 => BytecodeContract::PROFILE_2, 3 => BytecodeContract::PROFILE_3 }.fetch(@profile_format_version)
-      expected_meaning = { 1 => BytecodeContract::MEANING_PROFILE, 2 => BytecodeContract::MEANING_PROFILE_2, 3 => BytecodeContract::MEANING_PROFILE_3 }.fetch(@profile_format_version)
-      expected_fingerprint = { 1 => 'sha256-bsir-meaning-v1', 2 => 'sha256-bsir-meaning-v2', 3 => 'sha256-bsir-meaning-v3' }.fetch(@profile_format_version)
+      expected_profile = { 1 => BytecodeContract::PROFILE, 2 => BytecodeContract::PROFILE_2, 3 => BytecodeContract::PROFILE_3, 4 => BytecodeContract::PROFILE_4 }.fetch(@profile_format_version)
+      expected_meaning = { 1 => BytecodeContract::MEANING_PROFILE, 2 => BytecodeContract::MEANING_PROFILE_2, 3 => BytecodeContract::MEANING_PROFILE_3, 4 => BytecodeContract::MEANING_PROFILE_4 }.fetch(@profile_format_version)
+      expected_fingerprint = { 1 => 'sha256-bsir-meaning-v1', 2 => 'sha256-bsir-meaning-v2', 3 => 'sha256-bsir-meaning-v3', 4 => 'sha256-bsir-meaning-v4' }.fetch(@profile_format_version)
       unless @strings.fetch(profile_index) == expected_profile
         raise BytecodeLoaderError, 'BSharp Bytecode uses an unsupported bytecode profile.'
       end
@@ -464,7 +466,7 @@ module BasicSharp
       @controls = []
       @hover_declarations = []
       @context_declarations = []
-      return unless @profile_format_version == 3
+      return unless [3, 4].include?(@profile_format_version)
 
       @controls = parse_game_section!('CTRL', 'controls')
       @hover_declarations = parse_game_section!('HOVR', 'hover declarations')
@@ -937,13 +939,13 @@ module BasicSharp
     end
 
     def profile_name
-      { 1 => BytecodeContract::PROFILE, 2 => BytecodeContract::PROFILE_2, 3 => BytecodeContract::PROFILE_3 }.fetch(@profile_format_version)
+      { 1 => BytecodeContract::PROFILE, 2 => BytecodeContract::PROFILE_2, 3 => BytecodeContract::PROFILE_3, 4 => BytecodeContract::PROFILE_4 }.fetch(@profile_format_version)
     end
 
     def require_profile_2!(name)
-      return if [2, 3].include?(@profile_format_version)
+      return if [2, 3, 4].include?(@profile_format_version)
 
-      raise BytecodeLoaderError, "BSharp Bytecode #{name} requires Profile 2 or Profile 3."
+      raise BytecodeLoaderError, "BSharp Bytecode #{name} requires Profile 2 or later."
     end
 
     def validate_string_roles!
