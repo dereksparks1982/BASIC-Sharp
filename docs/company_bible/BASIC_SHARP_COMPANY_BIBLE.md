@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.39  
+**Version:** v0.1.42  
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -149,6 +149,8 @@ Derek may explicitly accept a documented exception. Automated gates advise and p
 Do not repeat generic environment-limit boilerplate in every delivery. Mention a limitation when it materially affects that build or Derek asks about it.
 
 Failed runs, rejected packages, contaminated packages, and embarrassing mistakes are permanent evidence. Correct them through dated errata, new current-state entries, failure logs, or a new numbered repair. Do not silently scrub history.
+
+Before sealing any numbered package, audit every generated artifact, expected-result file, manifest, fixture, and protected hash whose bytes can contain or depend on the target version. Regenerate and validate the complete version-bearing fixture inventory together. Do not stop after repairing only the first failed version-sensitive gate, and do not weaken a fixture or validator to make stale expected data pass.
 
 ## 10. Documentation and continuity
 

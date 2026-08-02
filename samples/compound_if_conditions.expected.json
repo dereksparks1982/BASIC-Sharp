@@ -4,9 +4,7 @@
       "event": "player takes coin",
       "matched": true,
       "matched_when": "player takes coin",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(increase score of player by 50"
       ],
@@ -23,31 +21,19 @@
           }
         }
       ],
-      "selections": [
-
-      ],
-      "if_rules": [
-
-      ],
-      "context": {
-      },
+      "selections": [],
+      "if_rules": [],
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
           "kind": "person",
           "builtin": true,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 10,
@@ -62,8 +48,7 @@
           "states": [
             "alive"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -75,8 +60,7 @@
           "states": [
             "whole"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -85,11 +69,8 @@
           "name": "coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -100,9 +81,7 @@
       "event": "player takes coin",
       "matched": true,
       "matched_when": "player takes coin",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(increase score of player by 50"
       ],
@@ -119,31 +98,19 @@
           }
         }
       ],
-      "selections": [
-
-      ],
-      "if_rules": [
-
-      ],
-      "context": {
-      },
+      "selections": [],
+      "if_rules": [],
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
           "kind": "person",
           "builtin": true,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 10,
@@ -158,8 +125,7 @@
           "states": [
             "alive"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -171,8 +137,7 @@
           "states": [
             "whole"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -181,11 +146,8 @@
           "name": "coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -196,9 +158,7 @@
       "event": "player attacks boss",
       "matched": true,
       "matched_when": "player attacks boss",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(change boss to dead"
       ],
@@ -208,9 +168,7 @@
           "change": "boss is now dead"
         }
       ],
-      "selections": [
-
-      ],
+      "selections": [],
       "if_rules": [
         {
           "condition": "player has at least 100 score and boss is dead",
@@ -228,30 +186,20 @@
               }
             }
           ],
-          "selections": [
-
-          ]
+          "selections": []
         }
       ],
-      "context": {
-      },
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
           "kind": "person",
           "builtin": true,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 10,
@@ -266,8 +214,7 @@
           "states": [
             "dead"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -279,8 +226,7 @@
           "states": [
             "whole"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -289,11 +235,8 @@
           "name": "coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -304,9 +247,7 @@
       "event": "player speaks boss",
       "matched": true,
       "matched_when": "player speaks boss",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(change boss to alive"
       ],
@@ -316,31 +257,19 @@
           "change": "boss is now alive"
         }
       ],
-      "selections": [
-
-      ],
-      "if_rules": [
-
-      ],
-      "context": {
-      },
+      "selections": [],
+      "if_rules": [],
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
           "kind": "person",
           "builtin": true,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 10,
@@ -355,8 +284,7 @@
           "states": [
             "alive"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -368,8 +296,7 @@
           "states": [
             "whole"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -378,11 +305,8 @@
           "name": "coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -393,9 +317,7 @@
       "event": "player attacks boss",
       "matched": true,
       "matched_when": "player attacks boss",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(change boss to dead"
       ],
@@ -405,9 +327,7 @@
           "change": "boss is now dead"
         }
       ],
-      "selections": [
-
-      ],
+      "selections": [],
       "if_rules": [
         {
           "condition": "player has at least 100 score and boss is dead",
@@ -425,30 +345,20 @@
               }
             }
           ],
-          "selections": [
-
-          ]
+          "selections": []
         }
       ],
-      "context": {
-      },
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
           "kind": "person",
           "builtin": true,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 10,
@@ -463,8 +373,7 @@
           "states": [
             "dead"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -476,8 +385,7 @@
           "states": [
             "whole"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -486,11 +394,8 @@
           "name": "coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -501,9 +406,7 @@
       "event": "player attacks bridge",
       "matched": true,
       "matched_when": "player attacks bridge",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(change bridge to broken"
       ],
@@ -513,9 +416,7 @@
           "change": "bridge is now broken"
         }
       ],
-      "selections": [
-
-      ],
+      "selections": [],
       "if_rules": [
         {
           "condition": "player has less than 1 health or bridge is broken",
@@ -526,20 +427,13 @@
               "change": "player is now dead"
             }
           ],
-          "selections": [
-
-          ]
+          "selections": []
         }
       ],
-      "context": {
-      },
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
@@ -548,8 +442,7 @@
           "states": [
             "dead"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 10,
@@ -564,8 +457,7 @@
           "states": [
             "dead"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -577,8 +469,7 @@
           "states": [
             "broken"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -587,11 +478,8 @@
           "name": "coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -661,8 +549,7 @@
       "states": [
         "dead"
       ],
-      "relations": {
-      },
+      "relations": {},
       "values": {
         "damage": 0,
         "health": 10,
@@ -677,8 +564,7 @@
       "states": [
         "dead"
       ],
-      "relations": {
-      },
+      "relations": {},
       "values": {
         "damage": 0
       }
@@ -690,8 +576,7 @@
       "states": [
         "broken"
       ],
-      "relations": {
-      },
+      "relations": {},
       "values": {
         "damage": 0
       }
@@ -700,11 +585,8 @@
       "name": "coin",
       "kind": "thing",
       "builtin": false,
-      "states": [
-
-      ],
-      "relations": {
-      },
+      "states": [],
+      "relations": {},
       "values": {
         "damage": 0
       }
@@ -713,7 +595,7 @@
   "save": {
     "format": "bsharp.save.json",
     "format_version": 6,
-    "created_by_basic_sharp": "0.1.39",
+    "created_by_basic_sharp": "0.1.42",
     "program_fingerprint": {
       "algorithm": "sha256-bsir-meaning-v6",
       "value": "3256430f1d363552e1746b851f91c3909e637f8d15f4c4e9b1e6ea91039405a5"
@@ -728,8 +610,7 @@
           "states": [
             "dead"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": {
               "type": "whole_number",
@@ -756,8 +637,7 @@
           "states": [
             "dead"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": {
               "type": "whole_number",
@@ -772,8 +652,7 @@
           "states": [
             "broken"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": {
               "type": "whole_number",
@@ -785,11 +664,8 @@
           "name": "coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": {
               "type": "whole_number",

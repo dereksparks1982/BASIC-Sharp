@@ -124,7 +124,7 @@ Array(fixture['meaning_cases']).each do |entry|
 end
 assert_pass(fixture_hashes, 'Fixture hashes')
 
-puts 'BSharp Bytecode Emitter v0.1.39'
+puts 'BSharp Bytecode Emitter v0.1.42'
 puts "Profile 1 sample artifacts: #{PROFILE_1_SAMPLES.length}"
 puts 'Profile 2 sample artifacts: 1'
 puts 'Profile 3 sample artifacts: 1'

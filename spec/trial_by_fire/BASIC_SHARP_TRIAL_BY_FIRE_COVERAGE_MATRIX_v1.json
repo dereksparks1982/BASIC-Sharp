@@ -1,0 +1,4354 @@
+{
+  "format": "bsharp.trial_by_fire.coverage.json",
+  "format_version": 1,
+  "seed": 11862336,
+  "program_count": 256,
+  "programs": [
+    {
+      "index": 0,
+      "profile": 1,
+      "kind_depth": 3,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 1,
+      "profile": 2,
+      "kind_depth": 4,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 2,
+      "profile": 3,
+      "kind_depth": 5,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 3,
+      "profile": 4,
+      "kind_depth": 2,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 4,
+      "profile": 5,
+      "kind_depth": 3,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 5,
+      "profile": 6,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and"
+      ]
+    },
+    {
+      "index": 6,
+      "profile": 7,
+      "kind_depth": 5,
+      "object_count": 2,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 7,
+      "profile": 1,
+      "kind_depth": 2,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 8,
+      "profile": 2,
+      "kind_depth": 3,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 9,
+      "profile": 3,
+      "kind_depth": 4,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 10,
+      "profile": 4,
+      "kind_depth": 5,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 11,
+      "profile": 5,
+      "kind_depth": 2,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 12,
+      "profile": 6,
+      "kind_depth": 3,
+      "object_count": 5,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and"
+      ]
+    },
+    {
+      "index": 13,
+      "profile": 7,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 14,
+      "profile": 1,
+      "kind_depth": 5,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 15,
+      "profile": 2,
+      "kind_depth": 2,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 16,
+      "profile": 3,
+      "kind_depth": 3,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 17,
+      "profile": 4,
+      "kind_depth": 4,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 18,
+      "profile": 5,
+      "kind_depth": 5,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 19,
+      "profile": 6,
+      "kind_depth": 2,
+      "object_count": 6,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and"
+      ]
+    },
+    {
+      "index": 20,
+      "profile": 7,
+      "kind_depth": 3,
+      "object_count": 6,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 21,
+      "profile": 1,
+      "kind_depth": 4,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 22,
+      "profile": 2,
+      "kind_depth": 5,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 23,
+      "profile": 3,
+      "kind_depth": 2,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 24,
+      "profile": 4,
+      "kind_depth": 3,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 25,
+      "profile": 5,
+      "kind_depth": 4,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 26,
+      "profile": 6,
+      "kind_depth": 5,
+      "object_count": 4,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or"
+      ]
+    },
+    {
+      "index": 27,
+      "profile": 7,
+      "kind_depth": 2,
+      "object_count": 6,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 28,
+      "profile": 1,
+      "kind_depth": 3,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 29,
+      "profile": 2,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 30,
+      "profile": 3,
+      "kind_depth": 5,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 31,
+      "profile": 4,
+      "kind_depth": 2,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 32,
+      "profile": 5,
+      "kind_depth": 3,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 33,
+      "profile": 6,
+      "kind_depth": 4,
+      "object_count": 5,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or"
+      ]
+    },
+    {
+      "index": 34,
+      "profile": 7,
+      "kind_depth": 5,
+      "object_count": 5,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 35,
+      "profile": 1,
+      "kind_depth": 2,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 36,
+      "profile": 2,
+      "kind_depth": 3,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 37,
+      "profile": 3,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 38,
+      "profile": 4,
+      "kind_depth": 5,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 39,
+      "profile": 5,
+      "kind_depth": 2,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 40,
+      "profile": 6,
+      "kind_depth": 3,
+      "object_count": 3,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or"
+      ]
+    },
+    {
+      "index": 41,
+      "profile": 7,
+      "kind_depth": 4,
+      "object_count": 4,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 42,
+      "profile": 1,
+      "kind_depth": 5,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 43,
+      "profile": 2,
+      "kind_depth": 2,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 44,
+      "profile": 3,
+      "kind_depth": 3,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 45,
+      "profile": 4,
+      "kind_depth": 4,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 46,
+      "profile": 5,
+      "kind_depth": 5,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 47,
+      "profile": 6,
+      "kind_depth": 2,
+      "object_count": 4,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or"
+      ]
+    },
+    {
+      "index": 48,
+      "profile": 7,
+      "kind_depth": 3,
+      "object_count": 3,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 49,
+      "profile": 1,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 50,
+      "profile": 2,
+      "kind_depth": 5,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 51,
+      "profile": 3,
+      "kind_depth": 2,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 52,
+      "profile": 4,
+      "kind_depth": 3,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 53,
+      "profile": 5,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 54,
+      "profile": 6,
+      "kind_depth": 5,
+      "object_count": 5,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or"
+      ]
+    },
+    {
+      "index": 55,
+      "profile": 7,
+      "kind_depth": 2,
+      "object_count": 2,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 56,
+      "profile": 1,
+      "kind_depth": 3,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 57,
+      "profile": 2,
+      "kind_depth": 4,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 58,
+      "profile": 3,
+      "kind_depth": 5,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 59,
+      "profile": 4,
+      "kind_depth": 2,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 60,
+      "profile": 5,
+      "kind_depth": 3,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 61,
+      "profile": 6,
+      "kind_depth": 4,
+      "object_count": 4,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and"
+      ]
+    },
+    {
+      "index": 62,
+      "profile": 7,
+      "kind_depth": 5,
+      "object_count": 2,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 63,
+      "profile": 1,
+      "kind_depth": 2,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 64,
+      "profile": 2,
+      "kind_depth": 3,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 65,
+      "profile": 3,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 66,
+      "profile": 4,
+      "kind_depth": 5,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 67,
+      "profile": 5,
+      "kind_depth": 2,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 68,
+      "profile": 6,
+      "kind_depth": 3,
+      "object_count": 3,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and"
+      ]
+    },
+    {
+      "index": 69,
+      "profile": 7,
+      "kind_depth": 4,
+      "object_count": 4,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 70,
+      "profile": 1,
+      "kind_depth": 5,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 71,
+      "profile": 2,
+      "kind_depth": 2,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 72,
+      "profile": 3,
+      "kind_depth": 3,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 73,
+      "profile": 4,
+      "kind_depth": 4,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 74,
+      "profile": 5,
+      "kind_depth": 5,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 75,
+      "profile": 6,
+      "kind_depth": 2,
+      "object_count": 2,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and"
+      ]
+    },
+    {
+      "index": 76,
+      "profile": 7,
+      "kind_depth": 3,
+      "object_count": 3,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 77,
+      "profile": 1,
+      "kind_depth": 4,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 78,
+      "profile": 2,
+      "kind_depth": 5,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 79,
+      "profile": 3,
+      "kind_depth": 2,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 80,
+      "profile": 4,
+      "kind_depth": 3,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 81,
+      "profile": 5,
+      "kind_depth": 4,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 82,
+      "profile": 6,
+      "kind_depth": 5,
+      "object_count": 3,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and"
+      ]
+    },
+    {
+      "index": 83,
+      "profile": 7,
+      "kind_depth": 2,
+      "object_count": 3,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 84,
+      "profile": 1,
+      "kind_depth": 3,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 85,
+      "profile": 2,
+      "kind_depth": 4,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 86,
+      "profile": 3,
+      "kind_depth": 5,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 87,
+      "profile": 4,
+      "kind_depth": 2,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 88,
+      "profile": 5,
+      "kind_depth": 3,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 89,
+      "profile": 6,
+      "kind_depth": 4,
+      "object_count": 4,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and"
+      ]
+    },
+    {
+      "index": 90,
+      "profile": 7,
+      "kind_depth": 5,
+      "object_count": 2,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 91,
+      "profile": 1,
+      "kind_depth": 2,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 92,
+      "profile": 2,
+      "kind_depth": 3,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 93,
+      "profile": 3,
+      "kind_depth": 4,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 94,
+      "profile": 4,
+      "kind_depth": 5,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 95,
+      "profile": 5,
+      "kind_depth": 2,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 96,
+      "profile": 6,
+      "kind_depth": 3,
+      "object_count": 3,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or"
+      ]
+    },
+    {
+      "index": 97,
+      "profile": 7,
+      "kind_depth": 4,
+      "object_count": 6,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 98,
+      "profile": 1,
+      "kind_depth": 5,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 99,
+      "profile": 2,
+      "kind_depth": 2,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 100,
+      "profile": 3,
+      "kind_depth": 3,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 101,
+      "profile": 4,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 102,
+      "profile": 5,
+      "kind_depth": 5,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 103,
+      "profile": 6,
+      "kind_depth": 2,
+      "object_count": 3,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or"
+      ]
+    },
+    {
+      "index": 104,
+      "profile": 7,
+      "kind_depth": 3,
+      "object_count": 6,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 105,
+      "profile": 1,
+      "kind_depth": 4,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 106,
+      "profile": 2,
+      "kind_depth": 5,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 107,
+      "profile": 3,
+      "kind_depth": 2,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 108,
+      "profile": 4,
+      "kind_depth": 3,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 109,
+      "profile": 5,
+      "kind_depth": 4,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 110,
+      "profile": 6,
+      "kind_depth": 5,
+      "object_count": 6,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or"
+      ]
+    },
+    {
+      "index": 111,
+      "profile": 7,
+      "kind_depth": 2,
+      "object_count": 4,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 112,
+      "profile": 1,
+      "kind_depth": 3,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 113,
+      "profile": 2,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 114,
+      "profile": 3,
+      "kind_depth": 5,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 115,
+      "profile": 4,
+      "kind_depth": 2,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 116,
+      "profile": 5,
+      "kind_depth": 3,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 117,
+      "profile": 6,
+      "kind_depth": 4,
+      "object_count": 6,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or"
+      ]
+    },
+    {
+      "index": 118,
+      "profile": 7,
+      "kind_depth": 5,
+      "object_count": 2,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 119,
+      "profile": 1,
+      "kind_depth": 2,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 120,
+      "profile": 2,
+      "kind_depth": 3,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 121,
+      "profile": 3,
+      "kind_depth": 4,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 122,
+      "profile": 4,
+      "kind_depth": 5,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 123,
+      "profile": 5,
+      "kind_depth": 2,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 124,
+      "profile": 6,
+      "kind_depth": 3,
+      "object_count": 5,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and"
+      ]
+    },
+    {
+      "index": 125,
+      "profile": 7,
+      "kind_depth": 4,
+      "object_count": 5,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 126,
+      "profile": 1,
+      "kind_depth": 5,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 127,
+      "profile": 2,
+      "kind_depth": 2,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 128,
+      "profile": 3,
+      "kind_depth": 3,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 129,
+      "profile": 4,
+      "kind_depth": 4,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 130,
+      "profile": 5,
+      "kind_depth": 5,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 131,
+      "profile": 6,
+      "kind_depth": 2,
+      "object_count": 5,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and"
+      ]
+    },
+    {
+      "index": 132,
+      "profile": 7,
+      "kind_depth": 3,
+      "object_count": 2,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 133,
+      "profile": 1,
+      "kind_depth": 4,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 134,
+      "profile": 2,
+      "kind_depth": 5,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 135,
+      "profile": 3,
+      "kind_depth": 2,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 136,
+      "profile": 4,
+      "kind_depth": 3,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 137,
+      "profile": 5,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 138,
+      "profile": 6,
+      "kind_depth": 5,
+      "object_count": 6,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and"
+      ]
+    },
+    {
+      "index": 139,
+      "profile": 7,
+      "kind_depth": 2,
+      "object_count": 3,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 140,
+      "profile": 1,
+      "kind_depth": 3,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 141,
+      "profile": 2,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 142,
+      "profile": 3,
+      "kind_depth": 5,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 143,
+      "profile": 4,
+      "kind_depth": 2,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 144,
+      "profile": 5,
+      "kind_depth": 3,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 145,
+      "profile": 6,
+      "kind_depth": 4,
+      "object_count": 5,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and"
+      ]
+    },
+    {
+      "index": 146,
+      "profile": 7,
+      "kind_depth": 5,
+      "object_count": 4,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 147,
+      "profile": 1,
+      "kind_depth": 2,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 148,
+      "profile": 2,
+      "kind_depth": 3,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 149,
+      "profile": 3,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 150,
+      "profile": 4,
+      "kind_depth": 5,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 151,
+      "profile": 5,
+      "kind_depth": 2,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 152,
+      "profile": 6,
+      "kind_depth": 3,
+      "object_count": 4,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and"
+      ]
+    },
+    {
+      "index": 153,
+      "profile": 7,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 154,
+      "profile": 1,
+      "kind_depth": 5,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 155,
+      "profile": 2,
+      "kind_depth": 2,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 156,
+      "profile": 3,
+      "kind_depth": 3,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 157,
+      "profile": 4,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 158,
+      "profile": 5,
+      "kind_depth": 5,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 159,
+      "profile": 6,
+      "kind_depth": 2,
+      "object_count": 3,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or"
+      ]
+    },
+    {
+      "index": 160,
+      "profile": 7,
+      "kind_depth": 3,
+      "object_count": 2,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 161,
+      "profile": 1,
+      "kind_depth": 4,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 162,
+      "profile": 2,
+      "kind_depth": 5,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 163,
+      "profile": 3,
+      "kind_depth": 2,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 164,
+      "profile": 4,
+      "kind_depth": 3,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 165,
+      "profile": 5,
+      "kind_depth": 4,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 166,
+      "profile": 6,
+      "kind_depth": 5,
+      "object_count": 3,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or"
+      ]
+    },
+    {
+      "index": 167,
+      "profile": 7,
+      "kind_depth": 2,
+      "object_count": 3,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 168,
+      "profile": 1,
+      "kind_depth": 3,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 169,
+      "profile": 2,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 170,
+      "profile": 3,
+      "kind_depth": 5,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 171,
+      "profile": 4,
+      "kind_depth": 2,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 172,
+      "profile": 5,
+      "kind_depth": 3,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 173,
+      "profile": 6,
+      "kind_depth": 4,
+      "object_count": 3,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or"
+      ]
+    },
+    {
+      "index": 174,
+      "profile": 7,
+      "kind_depth": 5,
+      "object_count": 5,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 175,
+      "profile": 1,
+      "kind_depth": 2,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 176,
+      "profile": 2,
+      "kind_depth": 3,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 177,
+      "profile": 3,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 178,
+      "profile": 4,
+      "kind_depth": 5,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 179,
+      "profile": 5,
+      "kind_depth": 2,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 180,
+      "profile": 6,
+      "kind_depth": 3,
+      "object_count": 4,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or"
+      ]
+    },
+    {
+      "index": 181,
+      "profile": 7,
+      "kind_depth": 4,
+      "object_count": 6,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 182,
+      "profile": 1,
+      "kind_depth": 5,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 183,
+      "profile": 2,
+      "kind_depth": 2,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 184,
+      "profile": 3,
+      "kind_depth": 3,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 185,
+      "profile": 4,
+      "kind_depth": 4,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 186,
+      "profile": 5,
+      "kind_depth": 5,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 187,
+      "profile": 6,
+      "kind_depth": 2,
+      "object_count": 4,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or"
+      ]
+    },
+    {
+      "index": 188,
+      "profile": 7,
+      "kind_depth": 3,
+      "object_count": 4,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 189,
+      "profile": 1,
+      "kind_depth": 4,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 190,
+      "profile": 2,
+      "kind_depth": 5,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 191,
+      "profile": 3,
+      "kind_depth": 2,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 192,
+      "profile": 4,
+      "kind_depth": 3,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 193,
+      "profile": 5,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 194,
+      "profile": 6,
+      "kind_depth": 5,
+      "object_count": 4,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and"
+      ]
+    },
+    {
+      "index": 195,
+      "profile": 7,
+      "kind_depth": 2,
+      "object_count": 5,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 196,
+      "profile": 1,
+      "kind_depth": 3,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 197,
+      "profile": 2,
+      "kind_depth": 4,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 198,
+      "profile": 3,
+      "kind_depth": 5,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 199,
+      "profile": 4,
+      "kind_depth": 2,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 200,
+      "profile": 5,
+      "kind_depth": 3,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 201,
+      "profile": 6,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and"
+      ]
+    },
+    {
+      "index": 202,
+      "profile": 7,
+      "kind_depth": 5,
+      "object_count": 4,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 203,
+      "profile": 1,
+      "kind_depth": 2,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 204,
+      "profile": 2,
+      "kind_depth": 3,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 205,
+      "profile": 3,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 206,
+      "profile": 4,
+      "kind_depth": 5,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 207,
+      "profile": 5,
+      "kind_depth": 2,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 208,
+      "profile": 6,
+      "kind_depth": 3,
+      "object_count": 2,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and"
+      ]
+    },
+    {
+      "index": 209,
+      "profile": 7,
+      "kind_depth": 4,
+      "object_count": 3,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 210,
+      "profile": 1,
+      "kind_depth": 5,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 211,
+      "profile": 2,
+      "kind_depth": 2,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 212,
+      "profile": 3,
+      "kind_depth": 3,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 213,
+      "profile": 4,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 214,
+      "profile": 5,
+      "kind_depth": 5,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 215,
+      "profile": 6,
+      "kind_depth": 2,
+      "object_count": 6,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and"
+      ]
+    },
+    {
+      "index": 216,
+      "profile": 7,
+      "kind_depth": 3,
+      "object_count": 3,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 217,
+      "profile": 1,
+      "kind_depth": 4,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 218,
+      "profile": 2,
+      "kind_depth": 5,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 219,
+      "profile": 3,
+      "kind_depth": 2,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 220,
+      "profile": 4,
+      "kind_depth": 3,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 221,
+      "profile": 5,
+      "kind_depth": 4,
+      "object_count": 6,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 222,
+      "profile": 6,
+      "kind_depth": 5,
+      "object_count": 2,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and"
+      ]
+    },
+    {
+      "index": 223,
+      "profile": 7,
+      "kind_depth": 2,
+      "object_count": 6,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 224,
+      "profile": 1,
+      "kind_depth": 3,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 225,
+      "profile": 2,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 226,
+      "profile": 3,
+      "kind_depth": 5,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 227,
+      "profile": 4,
+      "kind_depth": 2,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 228,
+      "profile": 5,
+      "kind_depth": 3,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 229,
+      "profile": 6,
+      "kind_depth": 4,
+      "object_count": 5,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or"
+      ]
+    },
+    {
+      "index": 230,
+      "profile": 7,
+      "kind_depth": 5,
+      "object_count": 4,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 231,
+      "profile": 1,
+      "kind_depth": 2,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 232,
+      "profile": 2,
+      "kind_depth": 3,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 233,
+      "profile": 3,
+      "kind_depth": 4,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 234,
+      "profile": 4,
+      "kind_depth": 5,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 235,
+      "profile": 5,
+      "kind_depth": 2,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 236,
+      "profile": 6,
+      "kind_depth": 3,
+      "object_count": 6,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or"
+      ]
+    },
+    {
+      "index": 237,
+      "profile": 7,
+      "kind_depth": 4,
+      "object_count": 6,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 238,
+      "profile": 1,
+      "kind_depth": 5,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 239,
+      "profile": 2,
+      "kind_depth": 2,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 240,
+      "profile": 3,
+      "kind_depth": 3,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 241,
+      "profile": 4,
+      "kind_depth": 4,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 242,
+      "profile": 5,
+      "kind_depth": 5,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 243,
+      "profile": 6,
+      "kind_depth": 2,
+      "object_count": 2,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or"
+      ]
+    },
+    {
+      "index": 244,
+      "profile": 7,
+      "kind_depth": 3,
+      "object_count": 4,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 245,
+      "profile": 1,
+      "kind_depth": 4,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 246,
+      "profile": 2,
+      "kind_depth": 5,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 247,
+      "profile": 3,
+      "kind_depth": 2,
+      "object_count": 2,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 248,
+      "profile": 4,
+      "kind_depth": 3,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    },
+    {
+      "index": 249,
+      "profile": 5,
+      "kind_depth": 4,
+      "object_count": 5,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change"
+      ]
+    },
+    {
+      "index": 250,
+      "profile": 6,
+      "kind_depth": 5,
+      "object_count": 4,
+      "connector": "or",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_or"
+      ]
+    },
+    {
+      "index": 251,
+      "profile": 7,
+      "kind_depth": 2,
+      "object_count": 6,
+      "connector": "and",
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement",
+        "number_change",
+        "compound_and",
+        "otherwise_branch"
+      ]
+    },
+    {
+      "index": 252,
+      "profile": 1,
+      "kind_depth": 3,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order"
+      ]
+    },
+    {
+      "index": 253,
+      "profile": 2,
+      "kind_depth": 4,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries"
+      ]
+    },
+    {
+      "index": 254,
+      "profile": 3,
+      "kind_depth": 5,
+      "object_count": 4,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls"
+      ]
+    },
+    {
+      "index": 255,
+      "profile": 4,
+      "kind_depth": 2,
+      "object_count": 3,
+      "connector": null,
+      "tags": [
+        "kind_ancestry",
+        "inherited_selection",
+        "exact_event_priority",
+        "source_order",
+        "action_order",
+        "text_boundaries",
+        "controls",
+        "platform_movement"
+      ]
+    }
+  ]
+}

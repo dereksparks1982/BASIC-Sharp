@@ -1,0 +1,94 @@
+BSharp Bytecode bsharp.bytecode.v7
+Meaning Profile: bsharp.meaning.v7
+Fingerprint: 51d6285e56da172c01c767117b0b3ca315ff510a292c5263c146b5e8c6fa7d80
+
+KIND 0 guard PARENT NONE
+KIND 1 sentinel PARENT KIND[guard]
+KIND 2 captain PARENT KIND[sentinel]
+KIND 3 person PARENT NONE
+KIND 4 door PARENT NONE
+KIND 5 device PARENT NONE
+KIND 6 key PARENT NONE
+
+THING 0 player KIND[person]
+THING 1 mara KIND[captain]
+THING 2 henry KIND[sentinel]
+THING 3 north gate KIND[door]
+THING 4 brass bell KIND[device]
+THING 5 iron key KIND[key]
+
+START
+    START_VALUE THING[player] score 0
+    START_VALUE THING[player] health 12
+    START_VALUE THING[player] victories 0
+    START_VALUE THING[player] setbacks 0
+    START_TEXT_VALUE THING[player] motto "Ready for the trial."
+    START_STATE THING[mara] calm REMOVE angry
+    START_STATE THING[henry] calm REMOVE angry
+    START_STATE THING[north gate] closed REMOVE open
+    START_TEXT_VALUE THING[north gate] description "A heavy gate built to take a beating."
+    START_RELATION THING[iron key] on THING[north gate]
+END
+
+WHEN actor=THING[player] action=attack target=ONE_KIND[guard] BLOCK 0
+WHEN actor=ONE_KIND[guard] action=attack target=THING[player] BLOCK 1
+WHEN actor=THING[player] action=sound target=THING[brass bell] BLOCK 2
+WHEN actor=THING[player] action=take target=THING[iron key] BLOCK 3
+WHEN actor=THING[player] action=open target=THING[north gate] BLOCK 4
+WHEN actor=THING[player] action=close target=THING[north gate] BLOCK 5
+
+IF ALL_CONDITIONS [VALUE_AT_LEAST THING[player] score 2] AND [STATE_IS THING[north gate] open] BLOCK 6 OTHERWISE BLOCK 8
+IF ANY_CONDITIONS [VALUE_LESS_THAN THING[player] health 1] OR [STATE_IS THING[mara] dead] BLOCK 7
+
+CONTROLS THING[player]
+    PLATFORM_MOVE direction=left key=A speed=6
+    PLATFORM_MOVE direction=right key=D speed=6
+    PLATFORM_JUMP key=SPACE speed=10
+END
+HOVER KIND[door] name kind state description
+CONTEXT KIND[door]
+    ITEM "Open"
+    ITEM "Close"
+    ITEM "Examine"
+END
+
+BLOCK 0
+    DAMAGE BOUND_THAT_KIND[guard] 1
+    CHANGE_STATE BOUND_THAT_KIND[guard] angry REMOVE calm
+    CAUSE_EVENT BOUND_THAT_KIND[guard] attack THING[player]
+END
+
+BLOCK 1
+    DECREASE_VALUE THING[player] health 1
+END
+
+BLOCK 2
+    DAMAGE EVERY_KIND[guard] 1
+    INCREASE_VALUE THING[player] score 1
+END
+
+BLOCK 3
+    CARRY THING[iron key]
+END
+
+BLOCK 4
+    CHANGE_STATE THING[north gate] open REMOVE closed
+    CHANGE_TEXT_VALUE THING[player] motto "The gate is open."
+END
+
+BLOCK 5
+    CHANGE_STATE THING[north gate] closed REMOVE open
+    CHANGE_TEXT_VALUE THING[player] motto "The gate is closed."
+END
+
+BLOCK 6
+    INCREASE_VALUE THING[player] victories 1
+END
+
+BLOCK 7
+    CHANGE_STATE THING[player] dead REMOVE alive
+END
+
+BLOCK 8
+    INCREASE_VALUE THING[player] setbacks 1
+END

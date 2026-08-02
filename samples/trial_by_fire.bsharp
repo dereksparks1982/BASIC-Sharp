@@ -1,0 +1,101 @@
+//BASIC# v0.1.42 whole-language proving ground for accepted Profiles 1 through 7./.
+
+KINDS
+[
+    #sentinel is a #guard
+    #captain is a #sentinel
+].
+
+DEFINE
+[
+    @mara is a #captain
+    @henry is a #sentinel
+    @north gate is a #door
+    @brass bell is a #device
+    @iron key is a #key
+].
+
+START
+[
+    PLAYER has 0 score
+    PLAYER has 12 health
+    PLAYER has 0 victories
+    PLAYER has 0 setbacks
+    PLAYER has "Ready for the trial." motto
+    @mara is calm
+    @henry is calm
+    @north gate is closed
+    @north gate has "A heavy gate built to take a beating." description
+    @iron key is on the #door
+].
+
+CONTROLS for PLAYER
+[
+    A moves PLAYER left at 6 speed
+    D moves PLAYER right at 6 speed
+    SPACE makes PLAYER jump at 10 speed
+].
+
+HOVER for #door
+[
+    name
+    kind
+    state
+    description
+].
+
+CONTEXT for #door
+[
+    "Open" when it is closed (change it to open
+    "Close" when it is open (change it to closed
+    "Examine" (cause PLAYER examines it
+].
+
+WHEN PLAYER attacks a #guard
+[
+    |then (damage it by 1
+    |then (change it to angry
+    |then (cause it attacks PLAYER
+].
+
+WHEN a #guard attacks PLAYER
+[
+    |then (decrease health of PLAYER by 1
+].
+
+WHEN PLAYER sounds @brass bell
+[
+    |then (damage every #guard by 1
+    |then (increase score of PLAYER by 1
+].
+
+WHEN PLAYER takes @iron key
+[
+    |then (carry @iron key
+].
+
+WHEN PLAYER opens @north gate
+[
+    |then (change @north gate to open
+    |then (change motto of PLAYER to "The gate is open."
+].
+
+WHEN PLAYER closes @north gate
+[
+    |then (change @north gate to closed
+    |then (change motto of PLAYER to "The gate is closed."
+].
+
+IF PLAYER has at least 2 score and @north gate is open
+[
+    |then (increase victories of PLAYER by 1
+].
+OTHERWISE
+[
+    |then (increase setbacks of PLAYER by 1
+].
+
+IF PLAYER has less than 1 health or @mara is dead
+[
+    |then (change PLAYER to dead
+].

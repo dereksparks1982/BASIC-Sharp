@@ -1,16 +1,26 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.39
+# BASIC# Ruby Bootstrap Compiler v0.1.42
 
 > A scripting language made for non-programmers, by non-programmers.
 
-BASIC# v0.1.39 adds two-sided reactive rules using the creator-facing word `OTHERWISE`:
+BASIC# v0.1.42 completely re-carries the failed v0.1.40 and v0.1.41 Trial-by-Fire work, repairs the complete known set of version-bearing runtime fixtures, and adds no creator-facing word. Trial by Fire attacks everything already accepted in Profiles 1–7 and hardens the BSharp VM boundary:
 
 ```text
 .bsharp source -> BSharp IR -> BSharp Bytecode -> validated BSharp VM
-quoted text     -> exact UTF-8 value -> Save, ASK, restore, and parity
-IF/OTHERWISE    -> Profile 7 -> one deterministic two-sided rule
+fixed campaign -> independently locked trace -> source/BSIR/VM verification
+seeded programs + hostile artifacts -> deterministic rejection and parity
 ```
 
 Ruby remains the bootstrap host. The BSharp VM is the preferred runtime, while `BasicSharp::Runtime` remains the protected reference oracle used by explicit diagnostic and shadow-parity modes.
+
+## Trial by Fire
+
+The v0.1.40 native installer passed 448 tests and 8,012 assertions plus every earlier phase, then correctly stopped at `tools/text_value_stress.rb` because its package omitted the version-owned Save fixture update. Automatic rollback restored exact v0.1.39.
+
+v0.1.41 repaired that gate and passed it, but later stopped at `tools/number_change_stress.rb`. The same audit found stale version stamps in number-change, compound-IF, and OTHERWISE expected results. Its installer again restored exact v0.1.39. v0.1.42 regenerates all four version-sensitive fixtures together and adds a canonical Company Bible rule requiring this complete audit before future packages are sealed.
+
+The principal `samples/trial_by_fire.bsharp` program combines Kind ancestry, large selections, states, relationships, whole numbers, exact text, exact and inherited events, follow-ups, reactive IF/OTHERWISE rules, controls, platform movement declarations, ASK, and Save/restore. Its expected campaign is locked independently in `spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_GOLDEN_TRACE_v1.json`.
+
+The native gauntlet defaults to 100,000 events on every execution path, 100,000 movement frames, 25,000 read-only ASK questions, 1,000 Save/restore checkpoints, 256 simultaneous worlds, all follow-up boundaries around 1,024, 256 seeded programs, 2,048 mutations at each of four artifact boundaries, and every truncated prefix of the principal BSBC. The same seed must reproduce byte-identical source, BSIR, BSBC, disassembly, and final hashes.
 
 ## Canonical visual grammar
 
@@ -152,6 +162,9 @@ ruby tools/bytecode_profile_6.rb
 ruby tools/compound_if_stress.rb
 ruby tools/bytecode_profile_7.rb
 ruby tools/otherwise_branch_stress.rb
+ruby tools/trial_by_fire_generator.rb
+ruby tools/trial_by_fire_mutation.rb
+ruby tools/trial_by_fire_gauntlet.rb
 ```
 
 ## Canonical current records
@@ -179,6 +192,8 @@ docs/validation/BASIC_SHARP_VALIDATION_v0_1_38.md
 docs/language/BASIC_SHARP_PLAIN_ENGLISH_OTHERWISE_BRANCHES_v0_1_39.md
 docs/bytecode/BASIC_SHARP_BYTECODE_PROFILE_7_v0_1_39.md
 docs/validation/BASIC_SHARP_VALIDATION_v0_1_39.md
+docs/testing/BASIC_SHARP_TRIAL_BY_FIRE_v0_1_42.md
+docs/validation/BASIC_SHARP_VALIDATION_v0_1_42.md
 ```
 
 ## Current identity
@@ -195,5 +210,5 @@ Preferred runtime: BSharp Virtual Machine / BSharp VM
 Reference oracle: BasicSharp::Runtime
 Meaning profiles: bsharp.meaning.v1 through bsharp.meaning.v7
 Bytecode profiles: bsharp.bytecode.v1 through bsharp.bytecode.v7
-Version: 0.1.39
+Version: 0.1.42
 ```

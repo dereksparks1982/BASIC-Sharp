@@ -1,0 +1,148 @@
+{
+  "format": "bsharp.save.json",
+  "format_version": 7,
+  "created_by_basic_sharp": "0.1.42",
+  "program_fingerprint": {
+    "algorithm": "sha256-bsir-meaning-v7",
+    "value": "51d6285e56da172c01c767117b0b3ca315ff510a292c5263c146b5e8c6fa7d80"
+  },
+  "world": {
+    "settled": true,
+    "things": [
+      {
+        "name": "player",
+        "kind": "person",
+        "builtin": true,
+        "states": [
+
+        ],
+        "relations": {
+        },
+        "values": {
+          "damage": {
+            "type": "whole_number",
+            "value": 0
+          },
+          "health": {
+            "type": "whole_number",
+            "value": 11
+          },
+          "motto": {
+            "type": "text",
+            "value": "The gate is closed."
+          },
+          "score": {
+            "type": "whole_number",
+            "value": 3
+          },
+          "setbacks": {
+            "type": "whole_number",
+            "value": 2
+          },
+          "victories": {
+            "type": "whole_number",
+            "value": 1
+          }
+        }
+      },
+      {
+        "name": "mara",
+        "kind": "captain",
+        "builtin": false,
+        "states": [
+          "angry"
+        ],
+        "relations": {
+        },
+        "values": {
+          "damage": {
+            "type": "whole_number",
+            "value": 4
+          }
+        }
+      },
+      {
+        "name": "henry",
+        "kind": "sentinel",
+        "builtin": false,
+        "states": [
+          "calm"
+        ],
+        "relations": {
+        },
+        "values": {
+          "damage": {
+            "type": "whole_number",
+            "value": 3
+          }
+        }
+      },
+      {
+        "name": "north gate",
+        "kind": "door",
+        "builtin": false,
+        "states": [
+          "closed"
+        ],
+        "relations": {
+        },
+        "values": {
+          "damage": {
+            "type": "whole_number",
+            "value": 0
+          },
+          "description": {
+            "type": "text",
+            "value": "A heavy gate built to take a beating."
+          }
+        }
+      },
+      {
+        "name": "brass bell",
+        "kind": "device",
+        "builtin": false,
+        "states": [
+
+        ],
+        "relations": {
+        },
+        "values": {
+          "damage": {
+            "type": "whole_number",
+            "value": 0
+          }
+        }
+      },
+      {
+        "name": "iron key",
+        "kind": "key",
+        "builtin": false,
+        "states": [
+
+        ],
+        "relations": {
+          "carried by": "player"
+        },
+        "values": {
+          "damage": {
+            "type": "whole_number",
+            "value": 0
+          }
+        }
+      }
+    ],
+    "if_rules": [
+      {
+        "index": 0,
+        "condition": "player has at least 2 score and north gate is open",
+        "active": false,
+        "branch": "OTHERWISE"
+      },
+      {
+        "index": 1,
+        "condition": "player has less than 1 health or mara is dead",
+        "active": false
+      }
+    ]
+  }
+}

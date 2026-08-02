@@ -220,7 +220,7 @@ checks['Meaning Profile 7 IF and OTHERWISE branches'] = otherwise_vm.meaning_pro
 
 checks.each { |label, passed| VMConformance.assert!(passed, label) }
 
-puts 'BSharp Virtual Machine v0.1.39'
+puts 'BSharp Virtual Machine v0.1.42'
 puts "Sample programs: #{FIXTURE.fetch('sample_programs').length}"
 puts "Valid Meaning Profile cases: #{FIXTURE.fetch('meaning_cases').length}"
 puts 'Valid Meaning Profile 2 text sample: 1'

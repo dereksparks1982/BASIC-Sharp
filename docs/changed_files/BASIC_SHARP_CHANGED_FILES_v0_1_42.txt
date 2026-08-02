@@ -1,0 +1,65 @@
+BASIC# v0.1.42 changed-files record
+Base: commit 066e715, tag v0.1.39
+Modified: 24
+Added: 28
+Deleted: 0
+Total project paths: 52
+
+MODIFIED
+BASIC_SHARP_PATCH_MANIFEST.json
+README.md
+compiler/ast_nodes.rb
+docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
+docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
+docs/roadmap/BASIC_SHARP_ROADMAP.md
+samples/compound_if_conditions.expected.json
+samples/number_changes.expected.json
+samples/otherwise_branches.expected.json
+spec/runtime_v2/BASIC_SHARP_TEXT_VALUE_RUNTIME_FIXTURES_v1.json
+spec/runtime_v5/BASIC_SHARP_NUMBER_CHANGE_RUNTIME_FIXTURES_v1.json
+spec/runtime_v6/BASIC_SHARP_COMPOUND_IF_RUNTIME_FIXTURES_v1.json
+spec/runtime_v7/BASIC_SHARP_OTHERWISE_RUNTIME_FIXTURES_v1.json
+tests/test_ask.rb
+tests/test_bsir_identity_migration.rb
+tests/test_cli_output.rb
+tests/test_identity_migration.rb
+tests/test_ir_output.rb
+tests/test_runtime_transition.rb
+tests/test_world_save.rb
+tools/bytecode_emitter.rb
+tools/bytecode_loader.rb
+tools/bytecode_virtual_machine.rb
+tools/company_bible_audit.rb
+
+ADDED
+BUILD_HANDSHAKE_v0_1_42.md
+docs/bytecode/BASIC_SHARP_BSHARP_VM_HARDENING_v0_1_42.md
+docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_42.txt
+docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_42.md
+docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_42.md
+docs/research/BASIC_SHARP_SEMANTIC_ORACLE_FUTURE_CONCEPT.md
+docs/runtime_contract_v0_1_42.md
+docs/session_logs/BASIC_SHARP_v0_1_42_SESSION_LOG.md
+docs/testing/BASIC_SHARP_TRIAL_BY_FIRE_v0_1_42.md
+docs/validation/BASIC_SHARP_VALIDATION_v0_1_42.md
+samples/trial_by_fire.bsave.json
+samples/trial_by_fire.bsbc
+samples/trial_by_fire.bsbc.txt
+samples/trial_by_fire.bsharp
+samples/trial_by_fire.bsir.json
+spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_COVERAGE_MATRIX_v1.json
+spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_GOLDEN_TRACE_v1.json
+spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_REGRESSION_CAPSULE_INDEX_v1.json
+spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_VALIDATION_INVENTORY_v1.json
+tests/test_trial_by_fire_gauntlet.rb
+tests/test_trial_by_fire_generator.rb
+tests/test_trial_by_fire_mutation.rb
+tests/test_trial_by_fire_support.rb
+tools/trial_by_fire_gauntlet.rb
+tools/trial_by_fire_generator.rb
+tools/trial_by_fire_inventory.rb
+tools/trial_by_fire_mutation.rb
+tools/trial_by_fire_support.rb
+
+DELETED
+(none)
