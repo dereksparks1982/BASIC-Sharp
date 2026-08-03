@@ -1,0 +1,75 @@
+{
+  "format": "bsharp.self_hosting.subset.json",
+  "format_version": 1,
+  "target_version": "0.1.44",
+  "title": "Self-Hosting Foundation and Compiler Subset Contract",
+  "status": "foundation_contract_only",
+  "purpose": "Define the first BASIC# subset allowed for future compiler-writing work while Ruby remains the bootstrap compiler and reference authority.",
+  "approved_profiles_available_to_creator_programs": [
+    "bsharp.meaning.v1",
+    "bsharp.meaning.v2",
+    "bsharp.meaning.v3",
+    "bsharp.meaning.v4",
+    "bsharp.meaning.v5",
+    "bsharp.meaning.v6",
+    "bsharp.meaning.v7"
+  ],
+  "compiler_subset_name": "BSharp Compiler Subset 0",
+  "compiler_subset_status": "planning_contract",
+  "compiler_subset_allows": [
+    "file-shaped source text handled by the existing Ruby bootstrap during this build",
+    "deterministic token records for future reader work",
+    "plain data contracts expressed as JSON specifications",
+    "existing KINDS, DEFINE, START, WHEN, IF, OTHERWISE, CONTROLS, HOVER, and CONTEXT meaning as preserved creator surface",
+    "future compiler examples only when they are marked non-executable sketches until the subset can run them"
+  ],
+  "compiler_subset_forbids_until_later_approval": [
+    "replacing the Ruby bootstrap compiler",
+    "claiming BASIC# is self-hosted",
+    "Profile 8",
+    "new creator syntax",
+    "new bytecode instructions",
+    "loops",
+    "functions or reusable user-defined words",
+    "collections",
+    "string concatenation or interpolation",
+    "arithmetic beyond accepted whole-number increase/decrease meaning",
+    "native code generation",
+    "engine bridge work",
+    "BSharp native document application work"
+  ],
+  "self_hosting_sequence": [
+    {
+      "version_lane": "v0.1.44",
+      "goal": "Record the rejected v0.1.43 package, then freeze this foundation contract and validation gate."
+    },
+    {
+      "version_lane": "next",
+      "goal": "Build a BASIC# tokenizer/reader contract and fixture set before implementation."
+    },
+    {
+      "version_lane": "later",
+      "goal": "Implement tokenizer pieces with Ruby as referee and compare deterministic records."
+    },
+    {
+      "version_lane": "later",
+      "goal": "Parse a small approved compiler subset into BSharp IR."
+    },
+    {
+      "version_lane": "later",
+      "goal": "Emit BSBC from BASIC# compiler code and require byte-for-byte parity before replacing Ruby."
+    }
+  ],
+  "acceptance_rules": [
+    "All existing Profiles 1-7 validation remains mandatory.",
+    "Ruby remains the bootstrap and reference oracle in v0.1.44.",
+    "The self-hosting contract tool must pass before package acceptance.",
+    "No future build may call BASIC# self-hosted until the BASIC# compiler reproduces approved outputs under locked validation."
+  ],
+  "documents": {
+    "contract": "docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FOUNDATION_v0_1_44.md",
+    "spec": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json",
+    "tool": "tools/self_hosting_contract.rb",
+    "test": "tests/test_self_hosting_contract.rb"
+  }
+}

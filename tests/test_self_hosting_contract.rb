@@ -1,0 +1,41 @@
+# frozen_string_literal: true
+
+require 'json'
+require 'minitest/autorun'
+require_relative '../compiler/ast_nodes'
+
+class TestSelfHostingContract < Minitest::Test
+  ROOT = File.expand_path('..', __dir__)
+  SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json')
+
+  def spec
+    @spec ||= JSON.parse(File.read(SPEC_PATH, encoding: 'UTF-8'))
+  end
+
+  def test_spec_targets_the_live_basic_sharp_version
+    assert_equal '0.1.44', BasicSharp::VERSION
+    assert_equal BasicSharp::VERSION, spec.fetch('target_version')
+  end
+
+  def test_contract_is_foundation_only
+    assert_equal 'foundation_contract_only', spec.fetch('status')
+    assert_equal 'BSharp Compiler Subset 0', spec.fetch('compiler_subset_name')
+    assert_equal 'planning_contract', spec.fetch('compiler_subset_status')
+  end
+
+  def test_future_work_is_explicitly_excluded
+    forbidden = spec.fetch('compiler_subset_forbids_until_later_approval')
+
+    assert_includes forbidden, 'replacing the Ruby bootstrap compiler'
+    assert_includes forbidden, 'claiming BASIC# is self-hosted'
+    assert_includes forbidden, 'Profile 8'
+    assert_includes forbidden, 'BSharp native document application work'
+  end
+
+  def test_trial_by_fire_inventory_runs_the_contract_tool
+    inventory = JSON.parse(File.read(File.join(ROOT, 'spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_VALIDATION_INVENTORY_v1.json'), encoding: 'UTF-8'))
+    tools = inventory.fetch('required_tools').map { |entry| entry.fetch('path') }
+
+    assert_includes tools, 'tools/self_hosting_contract.rb'
+  end
+end

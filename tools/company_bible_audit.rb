@@ -124,14 +124,16 @@ MANDATORY_TEXT = [
   'Protected BASIC# visual grammar',
   '`PLAYER` for the built-in player',
   '`CONTROLS`, `HOVER`, and `CONTEXT`',
-  'BASIC# uses IF / OTHERWISE, never IF / ELSE.'
+  'BASIC# uses IF / OTHERWISE, never IF / ELSE.',
+  'Self-hosting must be earned in stages.',
+  'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json'
 ].freeze
 
 files = Dir.glob(File.join(ROOT, 'docs/company_bible/*'), File::FNM_DOTMATCH).reject do |path|
   [File.join(ROOT, 'docs/company_bible/.'), File.join(ROOT, 'docs/company_bible/..')].include?(path)
 end
 raise "Expected one Company Bible file, found #{files.length}" unless files == [CANONICAL_FULL_PATH]
-puts 'BASIC# Company Bible Audit v0.1.42'
+puts 'BASIC# Company Bible Audit v0.1.44'
 puts 'Canonical file count: PASS'
 
 text = File.read(CANONICAL_FULL_PATH, encoding: 'UTF-8')

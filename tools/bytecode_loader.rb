@@ -309,7 +309,7 @@ end
   end
 end
 
-puts 'BSharp Bytecode Loader v0.1.42'
+puts "BSharp Bytecode Loader v#{BasicSharp::VERSION}"
 puts "Profile 1 sample artifacts: #{SAMPLES.length}"
 puts 'Profile 2 sample artifacts: 1'
 puts 'Profile 3 sample artifacts: 1'

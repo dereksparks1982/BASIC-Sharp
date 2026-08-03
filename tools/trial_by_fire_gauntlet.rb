@@ -24,7 +24,7 @@ run_phase = lambda do |name, maximum_seconds: nil, &block|
   puts format('PHASE PASS: %s (%.3f seconds)', name, seconds)
 end
 
-puts 'BASIC# v0.1.42 TRIAL BY FIRE — WHOLE-LANGUAGE GAUNTLET'
+puts "BASIC# v#{BasicSharp::VERSION} TRIAL BY FIRE — WHOLE-LANGUAGE GAUNTLET"
 puts "Counts: events=#{EVENTS}/path frames=#{FRAMES} ASK=#{QUESTIONS} saves=#{CHECKPOINTS} worlds=#{WORLDS} programs=#{PROGRAMS} mutations=#{MUTATIONS}/boundary"
 
 run_phase.call('independent golden trace') { TrialByFire.verify_golden_trace! }
@@ -68,4 +68,4 @@ summary = {
   'results_sha256' => TrialByFire.semantic_sha256(results)
 }
 puts JSON.generate(summary)
-puts 'BASIC# v0.1.42 TRIAL BY FIRE: PASS'
+puts "BASIC# v#{BasicSharp::VERSION} TRIAL BY FIRE: PASS"

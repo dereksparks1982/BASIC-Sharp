@@ -293,7 +293,7 @@ module BasicSharp
                  end
 
       <<~BSHARP
-        //Deterministic BASIC# v0.1.42 seed #{seed}, program #{n}, Profile #{p.fetch(:profile)}./.
+        //Deterministic BASIC# v#{BasicSharp::VERSION} seed #{seed}, program #{n}, Profile #{p.fetch(:profile)}./.
         KINDS
         [
         #{kinds.join("\n")}

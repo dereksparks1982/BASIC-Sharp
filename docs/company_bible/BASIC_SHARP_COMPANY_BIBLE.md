@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.42  
+**Version:** v0.1.44  
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -99,6 +99,8 @@ The default deliverable is one **changed-files-only ZIP**.
 - Every user-facing archive name includes its numeric version.
 - Do not create a separate loose SHA/checksum file unless Derek asks. Package and base hashes belong inside the manifest and installer validation.
 - A full-project archive is created only when Derek explicitly requests one.
+
+Installer scripts are text control files and must contain zero literal NUL bytes. Any manifest-array transport that uses NUL separators must emit escaped `\0` at runtime, not embed binary NUL characters in the installer source. A NUL-bearing installer is a malformed package and must be rejected rather than worked around.
 
 Every installable BASIC# changed-files package must carry `BASIC_SHARP_PATCH_MANIFEST.json` using:
 
@@ -253,6 +255,7 @@ Protected rules:
 - Profile 2 creator-facing text uses straight double quotes, one-line valid UTF-8, and exact case, punctuation, and spaces. Identifier normalization must never alter literal text. Interpolation, concatenation, escape sequences, and multiline text require later approval.
 - **BSharp Bytecode** and **BSBC** are the protected names for compact execution artifacts governed by `bsharp.bytecode.v1` through `bsharp.bytecode.v7`. The accepted Ruby bootstrap may emit deterministic `.bsbc` files, completely validate them into deeply frozen trusted models, reconstruct `.bsbc.txt` diagnostic disassembly, and execute all accepted profiles through the **BSharp Virtual Machine**. The BSharp VM interprets the validated bytecode model directly and must not reconstruct BSIR or call the reference Ruby runtime. Profile 2 adds typed text instructions and role-aware literal strings without weakening Profile 1 identifier validation. Profile 3 adds deterministic controls, hover information, context interaction, and the `CTRL`, `HOVR`, and `CTXT` sections. Profile 4 adds plain-English left/right platform movement, grounded jumping, built-in gravity, frame timing, collision response, and engine-neutral collision-movement commands. Profile 5 adds atomic whole-number increase/decrease actions and exact threshold comparisons. Profile 6 adds ordered plain-English `and` or `or` IF clauses whose complete result owns false-to-true waking and rearming, without changing Profile 1 through Profile 5 meaning. Profile 7 adds an optional `OTHERWISE` action block: the current branch runs once at START, IF runs on false-to-true, OTHERWISE runs on true-to-false, and unchanged truth remains quiet. The protected creator-facing pair is **IF / OTHERWISE**; `ELSE` is not an alias.
 - The **BSharp VM is the preferred runtime** for `.bsharp`, `.bsir.json`, and `.bsbc`. Source and saved BSIR enter it through deterministic BSBC emission and complete validation in memory. `BasicSharp::Runtime` remains a protected reference oracle available only through explicit diagnostic use and conformance testing. Shadow parity verification must stop on disagreement rather than silently choosing one engine's result.
+- Self-hosting must be earned in stages. The first compiler-writing subset is governed by `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json` and `docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FOUNDATION_v0_1_44.md`; Ruby remains the bootstrap and reference authority until a BASIC# compiler can reproduce approved outputs under locked validation.
 
 Language grammar and runtime behavior belong in specifications and contracts, not duplicated as mutable Company Bible prose.
 
