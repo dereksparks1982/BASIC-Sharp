@@ -1,4 +1,4 @@
-# BASIC# Changelog v0.1.57
+# BASIC# Changelog v0.1.58
 
 ## Added
 
@@ -7,8 +7,8 @@
 - Added `tools/small_compiler_subset_ir_parity_harness.rb`.
 - Added `tests/test_small_compiler_subset_ir_parity_harness.rb`.
 - Added `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_52.md`.
-- Advanced live BASIC# version truth to `0.1.57`.
-- Regenerated current version-bearing runtime fixture hashes for v0.1.57.
+- Advanced live BASIC# version truth to `0.1.58`.
+- Regenerated current version-bearing runtime fixture hashes for v0.1.58.
 
 ## Preserved
 

@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.scene_block_expansion.contract.json",
   "format_version": 1,
-  "target_version": "0.1.57",
+  "target_version": "0.1.58",
   "title": "Small Compiler Subset Scene/Block Expansion",
   "status": "scene_block_expansion_under_ruby_referee",
   "purpose": "Expand the sealed small compiler subset fixture lane across larger scene and block shapes while Ruby remains the production parser, resolver, compiler path, and referee.",
@@ -60,7 +60,7 @@
         "diagnostics": 1,
         "meaning_profile": "bsharp.meaning.v7"
       },
-      "expected_ir_sha256": "1b33683dafb24625d13b17dc022fdad65de8e6e1d642d1a040fe24a54368e0d1"
+      "expected_ir_sha256": "91863d23bd3156209bc09038e2495eff837a4ebde92f3917374eb0faaa4bdb39"
     },
     {
       "name": "game_interface_scene_blocks",
@@ -85,7 +85,7 @@
         "diagnostics": 4,
         "meaning_profile": "bsharp.meaning.v4"
       },
-      "expected_ir_sha256": "4d3ca70265d90470b89856df5655480fc965b759989513ee44827fd4ad19015f"
+      "expected_ir_sha256": "83063b8522762b2e31670c5687ef3c484d1f2b9ab91171ac356fd4428ed7066d"
     }
   ],
   "invalid_fixtures": [

@@ -1,6 +1,6 @@
 # BASIC# Documentation Map
 
-**Version:** v0.1.57  
+**Version:** v0.1.58  
 **Status:** Canonical navigation guide  
 **Purpose:** Give Derek, future assistants, contributors, and reviewers a front door into the BASIC# documentation stack.
 
@@ -86,7 +86,7 @@ Before proposing or building a BASIC# patch, read in this order:
 
 This map is not a replacement for the Company Bible, roadmap, specifications, validation inventory, or handoff. It is the front door that tells a reader which room to enter first.
 
-## v0.1.57 expansion note
+## v0.1.58 expansion note
 
 The scene/block expansion lane is documented at `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_1_53.md`.
 
@@ -99,23 +99,23 @@ ByteTide decision record: the name was considered as a creator-facing metaphor f
 Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_1_54.md`.
 
 
-### v0.1.57 small compiler subset BSBC emission
+### v0.1.58 small compiler subset BSBC emission
 
-BASIC# v0.1.57 adds the first small compiler subset lane that emits real BSBC bytecode under Ruby referee control. It proves source -> BSharp IR -> BSBC bytes -> bytecode loader for sealed fixtures without replacing Ruby and without claiming BASIC# is self-hosted.
+BASIC# v0.1.58 adds the first small compiler subset lane that emits real BSBC bytecode under Ruby referee control. It proves source -> BSharp IR -> BSBC bytes -> bytecode loader for sealed fixtures without replacing Ruby and without claiming BASIC# is self-hosted.
 
 Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json`.
 Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v0_1_55.md`.
 
 
-### v0.1.57 small compiler subset BSBC golden parity
+### v0.1.58 small compiler subset BSBC golden parity
 
-BASIC# v0.1.57 adds the BSBC Golden Parity Harness under Ruby referee control. It locks approved subset source -> BSharp IR -> BSBC bytes -> bytecode loader summaries against sealed golden expectations without replacing Ruby and without claiming BASIC# is self-hosted.
+BASIC# v0.1.58 adds the BSBC Golden Parity Harness under Ruby referee control. It locks approved subset source -> BSharp IR -> BSBC bytes -> bytecode loader summaries against sealed golden expectations without replacing Ruby and without claiming BASIC# is self-hosted.
 
 Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json`.
 Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_1_56.md`.
 
 
-## v0.1.57 Self-Hosting Fixture Corpus
+## v0.1.58 Self-Hosting Fixture Corpus
 
 - Spec: `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json`
 - Doc: `docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v0_1_57.md`
@@ -123,3 +123,5 @@ Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARN
 - Tool: `tools/self_hosting_fixture_corpus.rb`
 - Test: `tests/test_self_hosting_fixture_corpus.rb`
 - DKLab is retained as the internal workspace and lab name in homage to Demon Killer. Elderred Softworks LLC remains the official company identity.
+- v0.1.58: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v0_1_58.md` documents the compiler subset runtime smoke lane.
+

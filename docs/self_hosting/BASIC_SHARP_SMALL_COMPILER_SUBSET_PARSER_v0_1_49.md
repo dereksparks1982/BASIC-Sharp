@@ -48,6 +48,6 @@ v0.1.49 is accepted only when:
 
 This lane is carried by `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json` and its build-specific parser spec `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json`.
 
-## v0.1.57 continuation
+## v0.1.58 continuation
 
-The parser lane is the required input for the next self-hosting bridge record: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json`. The v0.1.57 emitter may consume parser records, but the parser remains non-production and Ruby remains the referee.
+The parser lane is the required input for the next self-hosting bridge record: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json`. The v0.1.58 emitter may consume parser records, but the parser remains non-production and Ruby remains the referee.

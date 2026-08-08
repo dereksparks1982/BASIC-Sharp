@@ -1,6 +1,6 @@
 {
   "expected": "samples/otherwise_branches.expected.json",
-  "expected_sha256": "fe128ce1dfcf3ef4f7398de2b790fc0f44cf020dfcf607a3dca981a295ab1445",
+  "expected_sha256": "215b4f6cd33ff91c6a3829eba71de2a27d9311b0056a8475e276dd286960b558",
   "input": "samples/otherwise_branches.input.json",
   "input_sha256": "616ea0e64dffa9357663300dedc7389948288c1e720e18d13bb79c438fd26eec",
   "profile": "bsharp.meaning.v7",

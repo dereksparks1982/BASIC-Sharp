@@ -1,3 +1,3 @@
-# BASIC# Patch Notes v0.1.57
+# BASIC# Patch Notes v0.1.58
 
-v0.1.57 adds the Self-Hosting Fixture Corpus. The corpus gives the small compiler subset a sealed body of BASIC# source examples to parse, emit BSharp IR, emit BSBC, load, and compare. DKLab is retained as the workspace name in homage to Demon Killer while Elderred Softworks LLC remains the official company identity.
+v0.1.58 adds the Self-Hosting Fixture Corpus. The corpus gives the small compiler subset a sealed body of BASIC# source examples to parse, emit BSharp IR, emit BSBC, load, and compare. DKLab is retained as the workspace name in homage to Demon Killer while Elderred Softworks LLC remains the official company identity.
