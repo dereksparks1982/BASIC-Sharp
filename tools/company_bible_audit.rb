@@ -133,7 +133,7 @@ files = Dir.glob(File.join(ROOT, 'docs/company_bible/*'), File::FNM_DOTMATCH).re
   [File.join(ROOT, 'docs/company_bible/.'), File.join(ROOT, 'docs/company_bible/..')].include?(path)
 end
 raise "Expected one Company Bible file, found #{files.length}" unless files == [CANONICAL_FULL_PATH]
-puts 'BASIC# Company Bible Audit v0.1.46'
+puts 'BASIC# Company Bible Audit v0.1.47'
 puts 'Canonical file count: PASS'
 
 text = File.read(CANONICAL_FULL_PATH, encoding: 'UTF-8')

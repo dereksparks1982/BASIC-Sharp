@@ -13,7 +13,7 @@ class TestSelfHostingContract < Minitest::Test
   end
 
   def test_spec_targets_the_live_basic_sharp_version
-    assert_equal '0.1.46', BasicSharp::VERSION
+    assert_equal '0.1.47', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
   end
 
@@ -30,6 +30,16 @@ class TestSelfHostingContract < Minitest::Test
     assert_includes forbidden, 'claiming BASIC# is self-hosted'
     assert_includes forbidden, 'Profile 8'
     assert_includes forbidden, 'BSharp native document application work'
+  end
+
+
+  def test_tokenizer_reader_contract_is_linked
+    documents = spec.fetch('documents')
+
+    assert_equal 'spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json', documents.fetch('tokenizer_reader_spec')
+    assert File.file?(File.join(ROOT, documents.fetch('tokenizer_reader_contract')))
+    assert File.file?(File.join(ROOT, documents.fetch('tokenizer_reader_tool')))
+    assert File.file?(File.join(ROOT, documents.fetch('tokenizer_reader_test')))
   end
 
   def test_trial_by_fire_inventory_runs_the_contract_tool

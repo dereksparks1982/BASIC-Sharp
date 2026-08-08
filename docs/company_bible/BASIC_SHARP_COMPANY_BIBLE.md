@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.46  
+**Version:** v0.1.47  
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -257,6 +257,8 @@ Protected rules:
 - The **BSharp VM is the preferred runtime** for `.bsharp`, `.bsir.json`, and `.bsbc`. Source and saved BSIR enter it through deterministic BSBC emission and complete validation in memory. `BasicSharp::Runtime` remains a protected reference oracle available only through explicit diagnostic use and conformance testing. Shadow parity verification must stop on disagreement rather than silently choosing one engine's result.
 - Self-hosting must be earned in stages. The first compiler-writing subset is governed by `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json` and `docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FOUNDATION_v0_1_44.md`; Ruby remains the bootstrap and reference authority until a BASIC# compiler can reproduce approved outputs under locked validation.
 - The input-device meaning layer is governed by `spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json` and `docs/language/BASIC_SHARP_PLAIN_ENGLISH_MOVEMENT_AND_INPUT_v0_1_46.md`. Keyboard, mouse/keyboard, PS5, Xbox, and generic gamepad events map beneath existing creator-facing `CONTROLS for PLAYER` declarations. This is not permission for new syntax, controller remapping UI, platform-specific drivers, engine bridge work, haptics, graphics, or Profile 8.
+- The tokenizer/reader self-hosting contract is governed by `spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json` and `docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md`. It freezes deterministic reader records, comment handling, current Head words, and future token-record shape while Ruby remains the reader authority. This is not permission to replace `compiler/lexer.rb`, replace `compiler/parser.rb`, claim BASIC# is self-hosted, add Profile 8, add syntax, or change runtime behavior.
+- The long-term strategic doctrine is governed by `docs/strategy/BASIC_SHARP_UNIVERSAL_STANDARD_AND_AI_TOOLING_DOCTRINE_v0_1_47.md`. BASIC# / BSharp aims toward a universal creator-facing programming standard for websites, apps, games, tools, automation, and business systems. Compatibility comes before replacement: BASIC# should export to existing standards such as HTML, CSS, JavaScript, and later WebAssembly before any BASIC#/BSharp-native browser is considered. Performance is a first-class goal, but claims must be earned through validated backends rather than hype. This doctrine does not authorize licensing work, funding claims, OpenAI outreach, browser work, or implementation beyond the approved build scope.
 
 Language grammar and runtime behavior belong in specifications and contracts, not duplicated as mutable Company Bible prose.
 

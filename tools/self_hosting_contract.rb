@@ -7,11 +7,14 @@ require_relative '../compiler/ast_nodes'
 ROOT = File.expand_path('..', __dir__)
 SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json')
 DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FOUNDATION_v0_1_44.md')
+TOKENIZER_READER_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json')
+TOKENIZER_READER_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md')
 REFERENCE_PATHS = [
   'README.md',
   'docs/roadmap/BASIC_SHARP_ROADMAP.md',
   'docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md',
-  'docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md'
+  'docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md',
+  'docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md'
 ].freeze
 
 spec = JSON.parse(File.read(SPEC_PATH, encoding: 'UTF-8'))
@@ -38,6 +41,11 @@ assert_contract!(forbidden.include?('replacing the Ruby bootstrap compiler'), 'R
 assert_contract!(forbidden.include?('claiming BASIC# is self-hosted'), 'self-hosting claim must stay forbidden')
 assert_contract!(forbidden.include?('BSharp native document application work'), 'document app must stay out of the current build')
 
+documents = spec.fetch('documents')
+assert_contract!(documents.fetch('tokenizer_reader_spec') == 'spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json', 'tokenizer/reader spec path missing')
+assert_contract!(File.file?(TOKENIZER_READER_SPEC_PATH), 'tokenizer/reader spec is missing')
+assert_contract!(File.file?(TOKENIZER_READER_DOC_PATH), 'tokenizer/reader document is missing')
+
 rules = spec.fetch('acceptance_rules')
 assert_contract!(rules.any? { |entry| entry.include?('Ruby remains the bootstrap') }, 'Ruby referee rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('Profiles 1-7 validation') }, 'Profiles 1-7 validation rule missing')
@@ -54,6 +62,10 @@ REFERENCE_PATHS.each do |relative|
   assert_contract!(reference.include?('spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json'), "#{relative} does not reference the self-hosting spec")
 end
 
+tokenizer_doc = File.read(TOKENIZER_READER_DOC_PATH, encoding: 'UTF-8')
+assert_contract!(tokenizer_doc.include?('contract only'), 'tokenizer/reader contract must remain contract only')
+assert_contract!(tokenizer_doc.include?('Ruby bootstrap'), 'tokenizer/reader contract must keep Ruby referee')
+
 puts "BASIC# Self-Hosting Contract v#{BasicSharp::VERSION}"
 puts "Compiler subset: #{spec.fetch('compiler_subset_name')}"
 puts "Allowed creator profiles: #{profiles.length}"
@@ -61,4 +73,5 @@ puts "Forbidden future items: #{forbidden.length}"
 puts 'Ruby bootstrap remains: PASS'
 puts 'No self-hosting claim: PASS'
 puts 'No Profile 8 or new syntax: PASS'
+puts 'Tokenizer/reader contract linked: PASS'
 puts 'SELF-HOSTING CONTRACT: PASS'

@@ -1,0 +1,91 @@
+{
+  "format": "bsharp.tokenizer_reader.contract.json",
+  "format_version": 1,
+  "target_version": "0.1.47",
+  "title": "BASIC# Tokenizer and Reader Contract",
+  "status": "contract_only",
+  "purpose": "Freeze the first self-hosting reader contract before any BASIC# tokenizer implementation replaces Ruby referee behavior.",
+  "scope": {
+    "allowed": [
+      "documenting how BASIC# source text is converted into deterministic reader records",
+      "locking line numbers, raw line text, trimmed text, comment handling, block body boundaries, and current Head detection",
+      "creating executable contract fixtures that compare the Ruby bootstrap reader against expected records",
+      "defining future token-record shape for self-hosting work"
+    ],
+    "forbidden_until_later_approval": [
+      "replacing compiler/lexer.rb or compiler/parser.rb as the authority",
+      "claiming BASIC# is self-hosted",
+      "adding Profile 8",
+      "adding new creator-facing syntax",
+      "adding loops, functions, reusable words, collections, interpolation, or multiline text",
+      "changing runtime meaning, BSharp IR, BSharp Bytecode, Save format, ASK output, input devices, graphics, engine bridge, browser work, or Ruby retirement"
+    ]
+  },
+  "reader_record_schema": {
+    "number": "one-based source line number after comment preservation",
+    "raw": "comment-stripped source line with original non-comment characters and without trailing newline",
+    "text": "raw line trimmed at both ends; blank lines are omitted"
+  },
+  "comment_rules": [
+    "// opens a BASIC# block comment when outside a quoted text value",
+    "/. closes a BASIC# block comment when outside a quoted text value",
+    "commented characters are replaced by spaces so later column positions remain stable",
+    "newlines inside comments are preserved",
+    "// and /. inside quoted text values are ordinary text",
+    "a comment closing marker without an open comment produces a reader issue",
+    "a nested comment opening marker produces a reader issue",
+    "an unclosed comment produces a reader issue pointing at the opening position"
+  ],
+  "current_head_words": [
+    "KINDS",
+    "DEFINE",
+    "START",
+    "WHEN",
+    "IF",
+    "OTHERWISE",
+    "CONTROLS",
+    "HOVER",
+    "CONTEXT"
+  ],
+  "future_token_record_schema": {
+    "kind": "head, body_open, body_close, body_line, result_line, action_word, quoted_text, comment_issue, or diagnostic_anchor",
+    "line": "one-based source line number",
+    "column": "one-based source column where the token begins after comment preservation",
+    "text": "exact creator-facing text for the token",
+    "normalized": "canonical comparison form only when an existing accepted rule already defines one"
+  },
+  "fixtures": [
+    {
+      "name": "comments_preserve_reader_shape",
+      "source": "START\n[\n    PLAYER has \"// not a comment /.\" motto\n    // hidden action /.\n    |then (change PLAYER to ready\n].\n",
+      "expected_lines": [
+        { "number": 1, "raw": "START", "text": "START" },
+        { "number": 2, "raw": "[", "text": "[" },
+        { "number": 3, "raw": "    PLAYER has \"// not a comment /.\" motto", "text": "PLAYER has \"// not a comment /.\" motto" },
+        { "number": 5, "raw": "    |then (change PLAYER to ready", "text": "|then (change PLAYER to ready" },
+        { "number": 6, "raw": "].", "text": "]." }
+      ],
+      "expected_issues": []
+    },
+    {
+      "name": "reader_reports_comment_errors",
+      "source": "START\n[\n    /.\n    // outer // inner /.\n    // never closed\n",
+      "expected_issue_fragments": [
+        "comment closing marker has no opening",
+        "Comments cannot begin inside another comment",
+        "opened with // but was never closed"
+      ]
+    }
+  ],
+  "acceptance_rules": [
+    "The tokenizer/reader contract tool must pass in the Trial-by-Fire validation inventory.",
+    "The contract must not change Profiles 1 through 7, BSharp Bytecode Profiles 1 through 7, Save format, runtime behavior, or input meaning.",
+    "The next implementation build must use the Ruby bootstrap as referee and compare deterministic reader records before any Ruby retirement work."
+  ],
+  "documents": {
+    "contract": "docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md",
+    "spec": "spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json",
+    "tool": "tools/tokenizer_reader_contract.rb",
+    "test": "tests/test_tokenizer_reader_contract.rb"
+  }
+}

@@ -1,0 +1,87 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'json'
+require_relative '../compiler/ast_nodes'
+require_relative '../compiler/lexer'
+require_relative '../compiler/parser'
+
+ROOT = File.expand_path('..', __dir__)
+SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json')
+DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md')
+REFERENCE_PATHS = [
+  'README.md',
+  'docs/roadmap/BASIC_SHARP_ROADMAP.md',
+  'docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md',
+  'docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md',
+  'docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md',
+  'docs/strategy/BASIC_SHARP_UNIVERSAL_STANDARD_AND_AI_TOOLING_DOCTRINE_v0_1_47.md'
+].freeze
+
+spec = JSON.parse(File.read(SPEC_PATH, encoding: 'UTF-8'))
+
+def assert_contract!(condition, message)
+  raise "Tokenizer/reader contract failed: #{message}" unless condition
+end
+
+assert_contract!(spec.fetch('format') == 'bsharp.tokenizer_reader.contract.json', 'wrong spec identity')
+assert_contract!(spec.fetch('format_version') == 1, 'wrong format version')
+assert_contract!(spec.fetch('target_version') == BasicSharp::VERSION, 'target version does not match BasicSharp::VERSION')
+assert_contract!(spec.fetch('status') == 'contract_only', 'status must remain contract_only')
+
+allowed_heads = %w[KINDS DEFINE START WHEN IF OTHERWISE CONTROLS HOVER CONTEXT]
+assert_contract!(spec.fetch('current_head_words') == allowed_heads, 'Head list drifted')
+assert_contract!(BasicSharp::Parser::BLOCK_HEADS == allowed_heads, 'Parser Head list differs from contract')
+
+forbidden = spec.fetch('scope').fetch('forbidden_until_later_approval')
+[
+  'replacing compiler/lexer.rb or compiler/parser.rb as the authority',
+  'claiming BASIC# is self-hosted',
+  'adding Profile 8',
+  'adding new creator-facing syntax',
+  'changing runtime meaning, BSharp IR, BSharp Bytecode, Save format, ASK output, input devices, graphics, engine bridge, browser work, or Ruby retirement'
+].each do |entry|
+  assert_contract!(forbidden.include?(entry), "missing exclusion: #{entry}")
+end
+
+schema = spec.fetch('reader_record_schema')
+assert_contract!(schema.keys.sort == %w[number raw text], 'reader record schema changed')
+
+spec.fetch('fixtures').each do |fixture|
+  lexer = BasicSharp::Lexer.new(fixture.fetch('source'))
+  lines = lexer.lines.map { |line| { 'number' => line.number, 'raw' => line.raw, 'text' => line.text } }
+  issues = lexer.issues.map(&:message)
+
+  if fixture.key?('expected_lines')
+    assert_contract!(lines == fixture.fetch('expected_lines'), "fixture #{fixture.fetch('name')} line records changed")
+    assert_contract!(issues == fixture.fetch('expected_issues'), "fixture #{fixture.fetch('name')} issues changed")
+  end
+
+  if fixture.key?('expected_issue_fragments')
+    fixture.fetch('expected_issue_fragments').each do |fragment|
+      assert_contract!(issues.any? { |message| message.include?(fragment) }, "fixture #{fixture.fetch('name')} missing issue fragment #{fragment}")
+    end
+  end
+end
+
+unless File.file?(DOC_PATH)
+  raise "Tokenizer/reader contract document is missing: #{DOC_PATH}"
+end
+
+REFERENCE_PATHS.each do |relative|
+  text = File.read(File.join(ROOT, relative), encoding: 'UTF-8')
+  assert_contract!(text.include?('spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json'), "#{relative} does not reference the tokenizer/reader spec")
+end
+
+strategy = File.read(File.join(ROOT, 'docs/strategy/BASIC_SHARP_UNIVERSAL_STANDARD_AND_AI_TOOLING_DOCTRINE_v0_1_47.md'), encoding: 'UTF-8')
+['Compatibility before conquest.', 'Validation before replacement.', 'Performance before hype.', 'Creator clarity before programmer tradition.'].each do |line|
+  assert_contract!(strategy.include?(line), "universal doctrine missing #{line}")
+end
+
+puts "BASIC# Tokenizer/Reader Contract v#{BasicSharp::VERSION}"
+puts "Reader fixtures: #{spec.fetch('fixtures').length}"
+puts "Current Heads: #{allowed_heads.join(', ')}"
+puts 'Ruby bootstrap remains reader authority: PASS'
+puts 'Comment and line-shape fixtures: PASS'
+puts 'No Profile 8, syntax, runtime, or browser work: PASS'
+puts 'TOKENIZER/READER CONTRACT: PASS'

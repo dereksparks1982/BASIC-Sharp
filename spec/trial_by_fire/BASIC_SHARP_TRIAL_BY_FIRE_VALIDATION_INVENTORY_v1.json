@@ -1,16 +1,16 @@
 {
   "format": "bsharp.trial_by_fire.validation_inventory.json",
   "format_version": 1,
-  "target_version": "0.1.46",
+  "target_version": "0.1.47",
   "accepted_base": {
-    "commit": "b630b031666a527d8549e6715e59065071a3efd0",
-    "tag": "v0.1.44",
+    "commit": "b4d8ea2c5274e63cab3de6e6fcf003e2aef25a35",
+    "tag": "v0.1.46",
     "branch": "main"
   },
   "suite_floor": {
-    "discovered_test_files": 48,
-    "minimum_runs": 458,
-    "minimum_assertions": 8043,
+    "discovered_test_files": 49,
+    "minimum_runs": 464,
+    "minimum_assertions": 8069,
     "failures": 0,
     "errors": 0,
     "skips": 0,
@@ -36,12 +36,12 @@
     {
       "path": "tests/test_ask.rb",
       "bytes": 15918,
-      "sha256": "c40c2f4508cfb085affece862df8d1a83bc5034397c3a6e36be93915ad85b051"
+      "sha256": "f11bba4308ab8447632f5d5130e037265d723f2f29346554c8145a16bac0c389"
     },
     {
       "path": "tests/test_bsir_identity_migration.rb",
       "bytes": 2527,
-      "sha256": "2c12cb527a29cc2369792707baa0765781002217c2953e6ba56a4cf0e4418d60"
+      "sha256": "79eebd6e6fac5afedfb587a0b9b7e08f648cd5119ee6efb5812e64ffc9c25a6d"
     },
     {
       "path": "tests/test_bytecode_contract.rb",
@@ -96,7 +96,7 @@
     {
       "path": "tests/test_cli_output.rb",
       "bytes": 10091,
-      "sha256": "7e50025b714ff87f4a6feff47122b8046828974d60f82a7d2531c355c01409d4"
+      "sha256": "c758b2f4fb09343c61db3d4b3e08389e09ccae837eab80e4df9050f31a0be6e0"
     },
     {
       "path": "tests/test_comments.rb",
@@ -146,7 +146,7 @@
     {
       "path": "tests/test_identity_migration.rb",
       "bytes": 3488,
-      "sha256": "34fb331bb097953a61bc8cdd176b3fad88d6499f8cd8156eca19e9b60e4eba79"
+      "sha256": "93b318960ef042c2125c4ff10aa912beaf11e88813ab7816715c83f1a1630426"
     },
     {
       "path": "tests/test_if_behavior.rb",
@@ -156,12 +156,12 @@
     {
       "path": "tests/test_input_device_contract.rb",
       "bytes": 1068,
-      "sha256": "4082fa348264e3d000d002b2bff0c9ed09581f174dbe09224a24f93ac6babf37"
+      "sha256": "9bd678ba3f90de36eb7c5a08aefe1fae2de3a3ffa19ec1fb1275a2f6bc4029c2"
     },
     {
       "path": "tests/test_ir_output.rb",
       "bytes": 3121,
-      "sha256": "6e960f57aa10bb5e99b3d42d68a830ad44e7c3336e0c1148ba04a28d7ab5bdf7"
+      "sha256": "3c52565ba28132a4b5ce18c1044770e5ef12f5b4d3163b1892f1045b685d606f"
     },
     {
       "path": "tests/test_kind_family_hardening.rb",
@@ -231,17 +231,22 @@
     {
       "path": "tests/test_runtime_transition.rb",
       "bytes": 10066,
-      "sha256": "03a8409692d5e4ba4c6104382f23f838c7c141b061b5187c40c052dd302c1616"
+      "sha256": "a28cfbda4f15cb5db8356df0065cdf51774cf4b38a13bd12e6033bd5bd8df4b2"
     },
     {
       "path": "tests/test_self_hosting_contract.rb",
-      "bytes": 1562,
-      "sha256": "2d2f85f3864df2c0eb94ccd28dc7303c40b49fb44cdf3d333bab655f05a58c84"
+      "bytes": 2030,
+      "sha256": "c74e6f79d9a8d199a81eaf40e4938e86d593b9fa3f0f103fecf65cd3cf2c5212"
     },
     {
       "path": "tests/test_text_values.rb",
       "bytes": 9601,
       "sha256": "0da7963f4de4d61796ff038ffce7ae4d944e6af32004b40a04491042276236cd"
+    },
+    {
+      "path": "tests/test_tokenizer_reader_contract.rb",
+      "bytes": 2160,
+      "sha256": "889ae4cb79bf63d0ea70ac815bf7a4b3dd94c7f1071a28bc4daad57e0a80a6f8"
     },
     {
       "path": "tests/test_trial_by_fire_gauntlet.rb",
@@ -271,7 +276,7 @@
     {
       "path": "tests/test_world_save.rb",
       "bytes": 13997,
-      "sha256": "f9519f3aa83cb8f6950aabe9deac6463455d29ba7b1a70e6be678b053c06aef1"
+      "sha256": "e0fdf8ebd441e4b0358132e3c843fdb72cce24ad2a21a032384ace026d601f00"
     }
   ],
   "required_tools": [
@@ -353,12 +358,17 @@
     {
       "path": "tools/company_bible_audit.rb",
       "bytes": 10253,
-      "sha256": "7c19d33d5db762bbcebe41347d4b6e90a725bc19935e1e9a9cc360d002dd1d6b"
+      "sha256": "67d1122718cd8e4cf5e60ae36971c8cf4033600bf11ad43f758c4a4c1910b36b"
     },
     {
       "path": "tools/self_hosting_contract.rb",
-      "bytes": 3345,
-      "sha256": "39a384db1b97d635c76533df6cc135da1dcf6d0263e4bad7e8dd45b8c9b42f9f"
+      "bytes": 4378,
+      "sha256": "5c2f468fcc26191ebda5717f970f52533308520d6cc78a437a31944749340556"
+    },
+    {
+      "path": "tools/tokenizer_reader_contract.rb",
+      "bytes": 4177,
+      "sha256": "d462661446667834c5df6610524dbb8c7fba2f4e5ad344ec7fc83c325d3f652a"
     },
     {
       "path": "tools/bytecode_contract.rb",
@@ -474,8 +484,8 @@
     },
     {
       "path": "samples/trial_by_fire.bsir.json",
-      "bytes": 18116,
-      "sha256": "c26ace1c10e5c2f20cfe271632f1420699a267e205af1160516eae11fa8b41b1"
+      "bytes": 18120,
+      "sha256": "5c9a1da0ed5414fd7d47bed51cdbb4eb879623ec948eca7ac135b7354949f8ba"
     },
     {
       "path": "samples/trial_by_fire.bsbc",
@@ -489,8 +499,8 @@
     },
     {
       "path": "samples/trial_by_fire.bsave.json",
-      "bytes": 2961,
-      "sha256": "d6d24a847835a91fbeb2206c9eae085437a1f87d3bbcc50a73527e75a0f33775"
+      "bytes": 3040,
+      "sha256": "e421f7023edb1f6f163600dfc6aec51b965aadba3e3438b1a17a5164dd922dc4"
     },
     {
       "path": "spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_GOLDEN_TRACE_v1.json",
@@ -505,7 +515,7 @@
     {
       "path": "spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_REGRESSION_CAPSULE_INDEX_v1.json",
       "bytes": 225,
-      "sha256": "4469494257826a2e00f460f28e762a4b4ee105755d685e43d72aa2158c6a5a02"
+      "sha256": "bcb0c9bcebbce2bdb594625444d56935bfc73d0a68483bcf5ca016f344ea21b9"
     },
     {
       "path": "tools/trial_by_fire_support.rb",
@@ -525,28 +535,48 @@
     {
       "path": "spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json",
       "bytes": 2370,
-      "sha256": "b23c9689fc20d0aed94c5c3d94d6a3257b062d165ba5fbc91e715f49d7857bf5"
+      "sha256": "349364d0ed7960aad54d9bab5655fe2f857bb751b00d30d0ddc57576e1c19dcc"
     },
     {
       "path": "docs/language/BASIC_SHARP_PLAIN_ENGLISH_MOVEMENT_AND_INPUT_v0_1_46.md",
       "bytes": 1765,
       "sha256": "fd915e760c4e7ef7aac1e4e42da0fa0e9ce32cd5ce540e3a97d1a1e2c04415fd"
+    },
+    {
+      "path": "spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json",
+      "bytes": 4476,
+      "sha256": "822ff34914f5d2945f41d301c6bb96a9d22b40a255b8ae7cb1c83e27410be546"
+    },
+    {
+      "path": "docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md",
+      "bytes": 2948,
+      "sha256": "303103c9c3be3dd209da897b3b9278ac2da9cf0e171f359a686a7cf9115fe1c5"
+    },
+    {
+      "path": "docs/strategy/BASIC_SHARP_UNIVERSAL_STANDARD_AND_AI_TOOLING_DOCTRINE_v0_1_47.md",
+      "bytes": 3149,
+      "sha256": "5229a6ae5599f5625c9cb4c3fc30d83f5cc59eb9e6510e473fe588a860ecf30f"
+    },
+    {
+      "path": "docs/runtime_contract_v0_1_47.md",
+      "bytes": 1190,
+      "sha256": "e4dc5abc2bd30950e3c628b4c492d65b7885a9e9a80fb7b6f21c27975ccac56c"
     }
   ],
   "protected_artifacts": {
-    "samples/compound_if_conditions.bsbc": "df14c0ce8c003e622ccebf5cd652bf7a9fde8c2b8eaa778e00e49dbde9fccfd5",
-    "samples/compound_if_conditions.bsbc.txt": "56aaf086235d6c62a5b4d60d53b7521729e50ce9f859662c3ff32500b8fcb512",
-    "samples/demon_killer_controls.bsbc": "d4e696046882060a9498570fa3c7be2c5b05431342a182aa712c837ec7807e9d",
-    "samples/demon_killer_controls.bsbc.txt": "2698471a3343f2dab4ceb434356ffd176b3f4a34843fee65f6af2d0d004c7d03",
     "samples/first_room.bsbc": "c09c60886cdb341accc427d07a0ac68350b675b4f4e2d1571e02dac216870ee1",
     "samples/first_room.bsbc.txt": "3034d2b9a76be2b4c67c603642707319f316c243fd110e647604588cd80a20d3",
-    "samples/number_changes.bsbc": "a4b48636650c6b01767e32a41cf705f8b25f3f47616aee088d5b77bec63fab7b",
-    "samples/number_changes.bsbc.txt": "b969476c8d7ee4df3306ccc5cacb585e7c48c83c7040f7a105d5b02f36175e9f",
-    "samples/otherwise_branches.bsbc": "4af08d447c2bf4fc9e70d90c6dbb4098d441d67dbba012b9d245f51dc7b9a613",
-    "samples/otherwise_branches.bsbc.txt": "59623528ed600520ca6a3fcc5a6cb97115fa061c0ab323a981545a5aab22cc3e",
+    "samples/text_values.bsbc": "fd0d0315d76aa44c7a143af7c0e6b9a0b61508da1f63f435dab6dfebbbe50403",
+    "samples/text_values.bsbc.txt": "0e860ca11f208c906bdcbd83222f8a97c0911f244ce0dc54246e0825bef251d6",
+    "samples/demon_killer_controls.bsbc": "d4e696046882060a9498570fa3c7be2c5b05431342a182aa712c837ec7807e9d",
+    "samples/demon_killer_controls.bsbc.txt": "2698471a3343f2dab4ceb434356ffd176b3f4a34843fee65f6af2d0d004c7d03",
     "samples/platform_movement.bsbc": "41bcab1173735b3664db2d28e2ff0076212039cfeadaabb33021aef78fdfe902",
     "samples/platform_movement.bsbc.txt": "2c8763cfb898e311f17fcd1e3464ee1f946dc74f174e61fdad86b17554963be8",
-    "samples/text_values.bsbc": "fd0d0315d76aa44c7a143af7c0e6b9a0b61508da1f63f435dab6dfebbbe50403",
-    "samples/text_values.bsbc.txt": "0e860ca11f208c906bdcbd83222f8a97c0911f244ce0dc54246e0825bef251d6"
+    "samples/number_changes.bsbc": "a4b48636650c6b01767e32a41cf705f8b25f3f47616aee088d5b77bec63fab7b",
+    "samples/number_changes.bsbc.txt": "b969476c8d7ee4df3306ccc5cacb585e7c48c83c7040f7a105d5b02f36175e9f",
+    "samples/compound_if_conditions.bsbc": "df14c0ce8c003e622ccebf5cd652bf7a9fde8c2b8eaa778e00e49dbde9fccfd5",
+    "samples/compound_if_conditions.bsbc.txt": "56aaf086235d6c62a5b4d60d53b7521729e50ce9f859662c3ff32500b8fcb512",
+    "samples/otherwise_branches.bsbc": "4af08d447c2bf4fc9e70d90c6dbb4098d441d67dbba012b9d245f51dc7b9a613",
+    "samples/otherwise_branches.bsbc.txt": "59623528ed600520ca6a3fcc5a6cb97115fa061c0ab323a981545a5aab22cc3e"
   }
 }

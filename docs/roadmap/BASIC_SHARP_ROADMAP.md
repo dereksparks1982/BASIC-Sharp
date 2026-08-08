@@ -13,22 +13,35 @@ BASIC# source
 -> v0.1.43 malformed self-hosting package  [REJECTED: installer NUL-byte bug, no mutation]
 -> Self-Hosting Foundation and Rejected Package Repair Record  [ACCEPTED: v0.1.44]
 -> v0.1.45 movement/input package  [REJECTED: native test timing failure, rollback restored v0.1.44]
--> Plain-English Movement and Input Contract  [CURRENT CANDIDATE: v0.1.46]
--> BASIC# tokenizer/reader contract
+-> Plain-English Movement and Input Contract  [ACCEPTED: v0.1.46]
+-> BASIC# Tokenizer/Reader Contract  [CURRENT CANDIDATE: v0.1.47]
 -> BASIC# tokenizer/reader implementation under Ruby referee
 -> small compiler subset parser
 -> BASIC# compiler subset emits BSharp IR
 -> BASIC# compiler subset emits BSBC
 -> byte-for-byte parity against approved Ruby bootstrap outputs
 -> staged Ruby retirement only after validation earns it
+-> BSharp web/app export contracts
 -> BSharp native document app
 -> game-engine bridge
 -> independent BASIC# Semantic Oracle  [FUTURE CONCEPT]
 -> staged BASIC# editor: Notepad -> Notepad++ -> Sublime-class
 -> complete BASIC# IDE
+-> BASIC#/BSharp-native browser only after web export and demand are real
 ```
 
-## Current v0.1.46 lane
+## Current v0.1.47 lane
+
+- Define the tokenizer/reader contract for the self-hosting runway.
+- Freeze deterministic reader records: one-based line number, comment-stripped raw line, and trimmed text.
+- Preserve current comment behavior for `//` and `/.`, including quoted text, preserved newlines, nested-comment diagnostics, unmatched-close diagnostics, and unclosed-comment diagnostics.
+- Preserve the current Head words: `KINDS`, `DEFINE`, `START`, `WHEN`, `IF`, `OTHERWISE`, `CONTROLS`, `HOVER`, and `CONTEXT`.
+- Define future token-record shape without implementing a replacement tokenizer.
+- Add executable contract, tests, and Trial-by-Fire inventory coverage.
+- Record the BASIC# universal-standard and AI-tooling doctrine.
+- Exclude Ruby replacement, self-hosting claims, Profile 8, new syntax, runtime behavior changes, BSharp IR changes, BSharp Bytecode changes, Save/ASK changes, web export, browser work, engine bridge, licensing work, funding claims, and OpenAI outreach.
+
+## Accepted v0.1.46 lane
 
 - Define the input-device meaning layer for keyboard, mouse/keyboard, PS5, Xbox, and generic gamepad events.
 - Preserve the existing creator-facing `CONTROLS for PLAYER` language.
@@ -40,21 +53,37 @@ BASIC# source
 
 - Preserve v0.1.43 as rejected and do not reuse its number.
 - Add a permanent rejected-package audit and installer NUL-byte package rule.
-
 - Define BSharp Compiler Subset 0.
 - Add self-hosting foundation documentation, JSON spec, validator tool, and focused test.
 - Preserve Ruby as bootstrap compiler and reference authority.
 - Preserve all accepted Profiles 1-7 meaning and Trial-by-Fire gates.
-- Regenerate all current version-bearing runtime fixtures for `0.1.44` together.
+- Regenerate all current version-bearing runtime fixtures together.
 - Add no creator syntax, Profile 8, runtime semantics, engine bridge, document app, or Ruby replacement.
 
-## Continuation after v0.1.46
+## Future web/app/company lane
 
-1. Install and complete owner-side native validation from exact accepted commit `b630b031666a527d8549e6715e59065071a3efd0` and tag `v0.1.44`.
-2. Commit and tag v0.1.46 immediately after every gate passes, then capture the accepted full-project snapshot.
-3. Next focused build may either tighten movement wording further or return to the self-hosting tokenizer/reader contract.
+BASIC# / BSharp aims to become a universal creator-facing standard for websites, apps, games, tools, automation, and business systems.
+
+The staged web strategy is compatibility first:
+
+```text
+BASIC# source
+-> HTML for structure
+-> CSS for style
+-> JavaScript for browser behavior
+-> WebAssembly or native targets later
+-> BASIC#/BSharp-native browser only much later, after proven demand
+```
+
+The future sponsorship strategy is proof first. A future sponsor packet may target AI tooling support, API credits, founder attention, or partnership discussion only after the language has a clear demo, validation proof, and roadmap evidence.
+
+## Continuation after v0.1.47
+
+1. Install and complete owner-side native validation from exact accepted commit `b4d8ea2c5274e63cab3de6e6fcf003e2aef25a35` and tag `v0.1.46`.
+2. Commit and tag v0.1.47 immediately after every gate passes, then capture the accepted full-project snapshot.
+3. Next focused build should implement tokenizer/reader records under Ruby referee and compare deterministic output against the v0.1.47 contract fixtures.
 4. Ruby remains the referee until BASIC# compiler pieces reproduce approved output deterministically.
-5. BSharp native documents remain valuable, but they wait until the self-hosting runway is credible.
+5. Web/app export and BSharp native documents remain valuable, but they wait until the self-hosting runway is credible.
 
 ## Shelved commercial lane
 
@@ -66,9 +95,11 @@ Private/proprietary distribution remains under consideration, but licensing and 
 - BASIC# is the language name; BSharp is used where `#` is unsafe.
 - No new `DK`-prefixed name without Derek's explicit approval.
 - Difficult machinery belongs beneath understandable creator-facing language.
+- Compatibility before conquest; validation before replacement; performance before hype; creator clarity before programmer tradition.
 - The BSharp VM is preferred; Ruby remains temporary bootstrap support and reference verification.
 - Self-hosting is earned through staged contracts and parity, not declared early.
 - Every build requires an exact accepted base, approval, validation, changed-files-only package, handshake, commit, and tag.
 - The complete Company Bible is `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md`.
 - The active self-hosting contract is `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json`.
+- The active tokenizer/reader contract is `spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json`.
 - The active input-device contract is `spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json`.

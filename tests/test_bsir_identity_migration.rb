@@ -28,7 +28,7 @@ class TestBSIRIdentityMigration < Minitest::Test
   def test_new_documents_use_bsharp_ir_identity
     document = bsir_document
 
-    assert_equal '0.1.46', document.fetch(:version)
+    assert_equal '0.1.47', document.fetch(:version)
     assert_equal 'bsir.debug.json', document.fetch(:format)
   end
 
