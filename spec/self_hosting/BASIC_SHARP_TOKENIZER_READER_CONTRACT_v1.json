@@ -1,24 +1,26 @@
 {
   "format": "bsharp.tokenizer_reader.contract.json",
   "format_version": 1,
-  "target_version": "0.1.47",
-  "title": "BASIC# Tokenizer and Reader Contract",
-  "status": "contract_only",
-  "purpose": "Freeze the first self-hosting reader contract before any BASIC# tokenizer implementation replaces Ruby referee behavior.",
+  "target_version": "0.1.48",
+  "title": "BASIC# Tokenizer and Reader Implementation Under Ruby Referee",
+  "status": "implementation_under_ruby_referee",
+  "purpose": "Begin the first BASIC# tokenizer/reader implementation while keeping the Ruby bootstrap lexer as the reference referee.",
   "scope": {
     "allowed": [
-      "documenting how BASIC# source text is converted into deterministic reader records",
+      "implementing compiler/tokenizer_reader.rb as a deterministic reader/token-record producer",
+      "comparing BASIC# tokenizer/reader reader records against the existing Ruby Lexer referee",
       "locking line numbers, raw line text, trimmed text, comment handling, block body boundaries, and current Head detection",
-      "creating executable contract fixtures that compare the Ruby bootstrap reader against expected records",
-      "defining future token-record shape for self-hosting work"
+      "adding executable implementation fixtures for head, Body, result marker, action word, and quoted text token records",
+      "preserving current Ruby parser, runtime, BSharp IR, BSharp Bytecode, Save, ASK, and input-device behavior"
     ],
     "forbidden_until_later_approval": [
       "replacing compiler/lexer.rb or compiler/parser.rb as the authority",
+      "routing the production parser through compiler/tokenizer_reader.rb",
       "claiming BASIC# is self-hosted",
       "adding Profile 8",
       "adding new creator-facing syntax",
       "adding loops, functions, reusable words, collections, interpolation, or multiline text",
-      "changing runtime meaning, BSharp IR, BSharp Bytecode, Save format, ASK output, input devices, graphics, engine bridge, browser work, or Ruby retirement"
+      "changing runtime meaning, BSharp IR, BSharp Bytecode, Save format, ASK output, input devices, graphics, engine bridge, browser work, web export, or Ruby retirement"
     ]
   },
   "reader_record_schema": {
@@ -59,13 +61,89 @@
       "name": "comments_preserve_reader_shape",
       "source": "START\n[\n    PLAYER has \"// not a comment /.\" motto\n    // hidden action /.\n    |then (change PLAYER to ready\n].\n",
       "expected_lines": [
-        { "number": 1, "raw": "START", "text": "START" },
-        { "number": 2, "raw": "[", "text": "[" },
-        { "number": 3, "raw": "    PLAYER has \"// not a comment /.\" motto", "text": "PLAYER has \"// not a comment /.\" motto" },
-        { "number": 5, "raw": "    |then (change PLAYER to ready", "text": "|then (change PLAYER to ready" },
-        { "number": 6, "raw": "].", "text": "]." }
+        {
+          "number": 1,
+          "raw": "START",
+          "text": "START"
+        },
+        {
+          "number": 2,
+          "raw": "[",
+          "text": "["
+        },
+        {
+          "number": 3,
+          "raw": "    PLAYER has \"// not a comment /.\" motto",
+          "text": "PLAYER has \"// not a comment /.\" motto"
+        },
+        {
+          "number": 5,
+          "raw": "    |then (change PLAYER to ready",
+          "text": "|then (change PLAYER to ready"
+        },
+        {
+          "number": 6,
+          "raw": "].",
+          "text": "]."
+        }
       ],
-      "expected_issues": []
+      "expected_issues": [],
+      "expected_tokens": [
+        {
+          "kind": "head",
+          "line": 1,
+          "column": 1,
+          "text": "START",
+          "normalized": "START"
+        },
+        {
+          "kind": "body_open",
+          "line": 2,
+          "column": 1,
+          "text": "[",
+          "normalized": "["
+        },
+        {
+          "kind": "body_line",
+          "line": 3,
+          "column": 5,
+          "text": "PLAYER has \"// not a comment /.\" motto"
+        },
+        {
+          "kind": "quoted_text",
+          "line": 3,
+          "column": 16,
+          "text": "\"// not a comment /.\""
+        },
+        {
+          "kind": "result_line",
+          "line": 5,
+          "column": 5,
+          "text": "|then",
+          "normalized": "|then"
+        },
+        {
+          "kind": "result_marker",
+          "line": 5,
+          "column": 5,
+          "text": "|then",
+          "normalized": "|then"
+        },
+        {
+          "kind": "action_word",
+          "line": 5,
+          "column": 11,
+          "text": "(change",
+          "normalized": "change"
+        },
+        {
+          "kind": "body_close",
+          "line": 6,
+          "column": 1,
+          "text": "].",
+          "normalized": "]."
+        }
+      ]
     },
     {
       "name": "reader_reports_comment_errors",
@@ -74,18 +152,54 @@
         "comment closing marker has no opening",
         "Comments cannot begin inside another comment",
         "opened with // but was never closed"
+      ],
+      "expected_tokens": [
+        {
+          "kind": "head",
+          "line": 1,
+          "column": 1,
+          "text": "START",
+          "normalized": "START"
+        },
+        {
+          "kind": "body_open",
+          "line": 2,
+          "column": 1,
+          "text": "[",
+          "normalized": "["
+        }
       ]
     }
   ],
   "acceptance_rules": [
     "The tokenizer/reader contract tool must pass in the Trial-by-Fire validation inventory.",
-    "The contract must not change Profiles 1 through 7, BSharp Bytecode Profiles 1 through 7, Save format, runtime behavior, or input meaning.",
-    "The next implementation build must use the Ruby bootstrap as referee and compare deterministic reader records before any Ruby retirement work."
+    "compiler/tokenizer_reader.rb must produce reader records equal to the Ruby Lexer referee for every contract fixture.",
+    "The implementation must not be used as the production parser authority until a later approved build.",
+    "The contract must not change Profiles 1 through 7, BSharp Bytecode Profiles 1 through 7, Save format, runtime behavior, ASK behavior, or input meaning.",
+    "Ruby remains the bootstrap compiler and reference referee until BASIC# compiler pieces reproduce approved output deterministically."
   ],
   "documents": {
     "contract": "docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md",
+    "implementation": "docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_IMPLEMENTATION_v0_1_48.md",
     "spec": "spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json",
+    "implementation_file": "compiler/tokenizer_reader.rb",
     "tool": "tools/tokenizer_reader_contract.rb",
-    "test": "tests/test_tokenizer_reader_contract.rb"
-  }
+    "test": "tests/test_tokenizer_reader_contract.rb",
+    "implementation_test": "tests/test_tokenizer_reader_implementation.rb"
+  },
+  "implementation_record_schema": {
+    "reader_records": "deterministic records that must equal the Ruby Lexer referee line records",
+    "token_records": "deterministic future-facing token records generated from accepted reader records",
+    "issues": "comment and reader issues mirrored from the Ruby Lexer referee"
+  },
+  "token_kinds_implemented": [
+    "head",
+    "body_open",
+    "body_close",
+    "body_line",
+    "result_line",
+    "result_marker",
+    "action_word",
+    "quoted_text"
+  ]
 }

@@ -14,8 +14,8 @@ BASIC# source
 -> Self-Hosting Foundation and Rejected Package Repair Record  [ACCEPTED: v0.1.44]
 -> v0.1.45 movement/input package  [REJECTED: native test timing failure, rollback restored v0.1.44]
 -> Plain-English Movement and Input Contract  [ACCEPTED: v0.1.46]
--> BASIC# Tokenizer/Reader Contract  [CURRENT CANDIDATE: v0.1.47]
--> BASIC# tokenizer/reader implementation under Ruby referee
+-> BASIC# Tokenizer/Reader Contract  [ACCEPTED: v0.1.47]
+-> BASIC# tokenizer/reader implementation under Ruby referee  [CURRENT CANDIDATE: v0.1.48]
 -> small compiler subset parser
 -> BASIC# compiler subset emits BSharp IR
 -> BASIC# compiler subset emits BSBC
@@ -30,16 +30,25 @@ BASIC# source
 -> BASIC#/BSharp-native browser only after web export and demand are real
 ```
 
-## Current v0.1.47 lane
+## Current v0.1.48 lane
+
+- Implement `compiler/tokenizer_reader.rb` as the first deterministic tokenizer/reader implementation.
+- Keep the Ruby `Lexer` as referee and compare reader records exactly.
+- Preserve current comment behavior for `//` and `/.`, including quoted text, preserved newlines, nested-comment diagnostics, unmatched-close diagnostics, and unclosed-comment diagnostics.
+- Preserve the current Head words: `KINDS`, `DEFINE`, `START`, `WHEN`, `IF`, `OTHERWISE`, `CONTROLS`, `HOVER`, and `CONTEXT`.
+- Emit first deterministic token records for Heads, Body boundaries, result markers, action words, quoted text, and ordinary Body lines.
+- Keep the existing parser authority unchanged.
+- Add executable implementation tests and Trial-by-Fire inventory coverage.
+- Exclude Ruby replacement, parser migration, self-hosting claims, Profile 8, new syntax, runtime behavior changes, BSharp IR changes, BSharp Bytecode changes, Save/ASK changes, web export, browser work, engine bridge, licensing work, funding claims, and OpenAI outreach.
+
+## Accepted v0.1.47 lane
 
 - Define the tokenizer/reader contract for the self-hosting runway.
 - Freeze deterministic reader records: one-based line number, comment-stripped raw line, and trimmed text.
-- Preserve current comment behavior for `//` and `/.`, including quoted text, preserved newlines, nested-comment diagnostics, unmatched-close diagnostics, and unclosed-comment diagnostics.
-- Preserve the current Head words: `KINDS`, `DEFINE`, `START`, `WHEN`, `IF`, `OTHERWISE`, `CONTROLS`, `HOVER`, and `CONTEXT`.
+- Preserve current comment behavior and current Head words.
 - Define future token-record shape without implementing a replacement tokenizer.
 - Add executable contract, tests, and Trial-by-Fire inventory coverage.
 - Record the BASIC# universal-standard and AI-tooling doctrine.
-- Exclude Ruby replacement, self-hosting claims, Profile 8, new syntax, runtime behavior changes, BSharp IR changes, BSharp Bytecode changes, Save/ASK changes, web export, browser work, engine bridge, licensing work, funding claims, and OpenAI outreach.
 
 ## Accepted v0.1.46 lane
 
@@ -77,11 +86,11 @@ BASIC# source
 
 The future sponsorship strategy is proof first. A future sponsor packet may target AI tooling support, API credits, founder attention, or partnership discussion only after the language has a clear demo, validation proof, and roadmap evidence.
 
-## Continuation after v0.1.47
+## Continuation after v0.1.48
 
-1. Install and complete owner-side native validation from exact accepted commit `b4d8ea2c5274e63cab3de6e6fcf003e2aef25a35` and tag `v0.1.46`.
-2. Commit and tag v0.1.47 immediately after every gate passes, then capture the accepted full-project snapshot.
-3. Next focused build should implement tokenizer/reader records under Ruby referee and compare deterministic output against the v0.1.47 contract fixtures.
+1. Install and complete owner-side native validation from exact accepted commit `3e0832f052b91507cfd0615be44e65960f38740f` and tag `v0.1.47`.
+2. Commit and tag v0.1.48 immediately after every gate passes, then capture the accepted full-project snapshot.
+3. Next focused build should begin the small compiler subset parser only after tokenizer/reader implementation records remain stable under Ruby referee.
 4. Ruby remains the referee until BASIC# compiler pieces reproduce approved output deterministically.
 5. Web/app export and BSharp native documents remain valuable, but they wait until the self-hosting runway is credible.
 

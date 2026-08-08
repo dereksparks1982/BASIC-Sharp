@@ -1,29 +1,27 @@
 {
   "format": "BASIC_SHARP_CHANGED_FILES_PATCH",
   "format_version": 1,
-  "target_version": "v0.1.47",
-  "base_version": "v0.1.46",
-  "base_commit": "b4d8ea2c5274e63cab3de6e6fcf003e2aef25a35",
-  "base_tag": "v0.1.46",
+  "target_version": "v0.1.48",
+  "base_version": "v0.1.47",
+  "base_commit": "3e0832f052b91507cfd0615be44e65960f38740f",
+  "base_tag": "v0.1.47",
   "base_branch": "main",
-  "package_name": "BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_47_TOKENIZER_READER_CONTRACT_CHANGED_FILES_ONLY.zip",
-  "added_path_count": 12,
-  "modified_path_count": 30,
+  "package_name": "BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_48_TOKENIZER_READER_IMPLEMENTATION_CHANGED_FILES_ONLY.zip",
+  "added_path_count": 10,
+  "modified_path_count": 33,
   "deleted_path_count": 0,
-  "changed_path_count_including_manifest": 42,
+  "changed_path_count_including_manifest": 43,
   "added_paths": [
-    "BUILD_HANDSHAKE_v0_1_47.md",
-    "docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_47.md",
-    "docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_47.md",
-    "docs/runtime_contract_v0_1_47.md",
-    "docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md",
-    "docs/session_logs/BASIC_SHARP_v0_1_47_SESSION_LOG.md",
-    "docs/strategy/BASIC_SHARP_UNIVERSAL_STANDARD_AND_AI_TOOLING_DOCTRINE_v0_1_47.md",
-    "docs/validation/BASIC_SHARP_VALIDATION_v0_1_47.md",
-    "docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_47.txt",
-    "spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json",
-    "tests/test_tokenizer_reader_contract.rb",
-    "tools/tokenizer_reader_contract.rb"
+    "BUILD_HANDSHAKE_v0_1_48.md",
+    "compiler/tokenizer_reader.rb",
+    "docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_48.txt",
+    "docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_48.md",
+    "docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_48.md",
+    "docs/runtime_contract_v0_1_48.md",
+    "docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_IMPLEMENTATION_v0_1_48.md",
+    "docs/session_logs/BASIC_SHARP_v0_1_48_SESSION_LOG.md",
+    "docs/validation/BASIC_SHARP_VALIDATION_v0_1_48.md",
+    "tests/test_tokenizer_reader_implementation.rb"
   ],
   "modified_paths": [
     "BASIC_SHARP_PATCH_MANIFEST.json",
@@ -43,6 +41,7 @@
     "spec/runtime_v6/BASIC_SHARP_COMPOUND_IF_RUNTIME_FIXTURES_v1.json",
     "spec/runtime_v7/BASIC_SHARP_OTHERWISE_RUNTIME_FIXTURES_v1.json",
     "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json",
+    "spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json",
     "spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_REGRESSION_CAPSULE_INDEX_v1.json",
     "spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_VALIDATION_INVENTORY_v1.json",
     "tests/test_ask.rb",
@@ -53,12 +52,231 @@
     "tests/test_ir_output.rb",
     "tests/test_runtime_transition.rb",
     "tests/test_self_hosting_contract.rb",
+    "tests/test_tokenizer_reader_contract.rb",
     "tests/test_world_save.rb",
     "tools/company_bible_audit.rb",
-    "tools/self_hosting_contract.rb"
+    "tools/self_hosting_contract.rb",
+    "tools/tokenizer_reader_contract.rb"
   ],
   "deleted_paths": [],
   "files": [
+    {
+      "path": "README.md",
+      "bytes": 5266,
+      "sha256": "4d324f4d62f49bb8de701d50d95dd832c72b6e2d6d69132fd9dba5c09f96f428"
+    },
+    {
+      "path": "compiler/ast_nodes.rb",
+      "bytes": 3813,
+      "sha256": "adeae6f668ba9c1d01b6b363a28216f2d181b110ea223dbf54990886bc6119e2"
+    },
+    {
+      "path": "docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md",
+      "bytes": 38851,
+      "sha256": "a35541ce25c42c8137c1511abb51a8fd0efb79101c949008b6caa1c9b7b1b528"
+    },
+    {
+      "path": "docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md",
+      "bytes": 6062,
+      "sha256": "d73598704e97579b7a9e3fac6f16e2982b94b31614945c7015af23a0a41a96c9"
+    },
+    {
+      "path": "docs/roadmap/BASIC_SHARP_ROADMAP.md",
+      "bytes": 6876,
+      "sha256": "15f61786b04f2635cd51667e3841fab5156939b9a074b1c3a42d1785295215b0"
+    },
+    {
+      "path": "samples/compound_if_conditions.expected.json",
+      "bytes": 16041,
+      "sha256": "acb9f8ce8924dc7fe680ea4067c6036ba00ddc0e282dfbc5870d9cd0db027980"
+    },
+    {
+      "path": "samples/number_changes.expected.json",
+      "bytes": 34871,
+      "sha256": "f13edee43c0fa64fa2956719032a81895d0b4b853d170da6436c962b1c706117"
+    },
+    {
+      "path": "samples/otherwise_branches.expected.json",
+      "bytes": 8746,
+      "sha256": "5a9a3e55d871fad34e24a569e7c6ab4c7b632d57a357bb08ca022daf796ffe74"
+    },
+    {
+      "path": "samples/trial_by_fire.bsave.json",
+      "bytes": 3040,
+      "sha256": "d329ed47d4984431c7ccdf66c053c9b3e2a79b0299e828b2f1adb94092adbe33"
+    },
+    {
+      "path": "samples/trial_by_fire.bsir.json",
+      "bytes": 18120,
+      "sha256": "2874918eaf23a9147e8069c6f926d0da902adbc8e81a98d59e02230e472fd763"
+    },
+    {
+      "path": "spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json",
+      "bytes": 3026,
+      "sha256": "7e844d8c13e6fbd89121e1c9f526f84d0aaad9eec7eb4828e484fd0a891be82c"
+    },
+    {
+      "path": "spec/runtime_v2/BASIC_SHARP_TEXT_VALUE_RUNTIME_FIXTURES_v1.json",
+      "bytes": 1234,
+      "sha256": "783a61bd5711dc963e6cf7548e07f3b31f9fff525b67b36c806853cf43e2e35f"
+    },
+    {
+      "path": "spec/runtime_v5/BASIC_SHARP_NUMBER_CHANGE_RUNTIME_FIXTURES_v1.json",
+      "bytes": 380,
+      "sha256": "59cda12a729c5ff29db904e13432aa59c61c4ad8fcf78c140de93a6227d6007c"
+    },
+    {
+      "path": "spec/runtime_v6/BASIC_SHARP_COMPOUND_IF_RUNTIME_FIXTURES_v1.json",
+      "bytes": 455,
+      "sha256": "fcd0d4934e459191bbfaeae7ef6849f812acba2ed15a0308aa8337931501dea9"
+    },
+    {
+      "path": "spec/runtime_v7/BASIC_SHARP_OTHERWISE_RUNTIME_FIXTURES_v1.json",
+      "bytes": 371,
+      "sha256": "556c1f8102893f6d7d4c827d98b91a0d91676830320df613725e16e49f413c71"
+    },
+    {
+      "path": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json",
+      "bytes": 3538,
+      "sha256": "ebedc0629652a4b522d8941d00ef38c5ef756ece999c2758833d52282faa6857"
+    },
+    {
+      "path": "spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json",
+      "bytes": 7527,
+      "sha256": "ba4fdb6b45175e4d526a420c0302f153e7b68300dc8534af32e5db53f23d2bcd"
+    },
+    {
+      "path": "spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_REGRESSION_CAPSULE_INDEX_v1.json",
+      "bytes": 225,
+      "sha256": "8baffa5dba1871f48488fa96f727d55ab962f69f089ed709767349896a4ebbbb"
+    },
+    {
+      "path": "spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_VALIDATION_INVENTORY_v1.json",
+      "bytes": 21648,
+      "sha256": "4a7b8c96d559579a8062598d28fc1826307a59b8dea254210d752f97060b6b76"
+    },
+    {
+      "path": "tests/test_ask.rb",
+      "bytes": 15918,
+      "sha256": "80477296c15bffb19a240cc052bf5cd9429acdafb9880f60d07ac746a552ef75"
+    },
+    {
+      "path": "tests/test_bsir_identity_migration.rb",
+      "bytes": 2527,
+      "sha256": "d6db03e871667aec7679911f725c05d6e736f0b021a54e4497195df4690d10fc"
+    },
+    {
+      "path": "tests/test_cli_output.rb",
+      "bytes": 10091,
+      "sha256": "3fe829bf7141eb582a2935d317be658041218fa9c5c60eef9badd5467fd9e2cb"
+    },
+    {
+      "path": "tests/test_identity_migration.rb",
+      "bytes": 3488,
+      "sha256": "4acc1fc12217a0c9ea049ff0c3d79a05c5f348074470650552f29624fbdde9c0"
+    },
+    {
+      "path": "tests/test_input_device_contract.rb",
+      "bytes": 1068,
+      "sha256": "b4c867dccc90278136d0a157d9f7bac9a55cff533fa48f204c470fc842cddeba"
+    },
+    {
+      "path": "tests/test_ir_output.rb",
+      "bytes": 3121,
+      "sha256": "a576508ae0a19c804f869732a3e2807416d5f39c21b3ffa0a111d84c468b2c34"
+    },
+    {
+      "path": "tests/test_runtime_transition.rb",
+      "bytes": 10066,
+      "sha256": "794b69d6f0dfdf2032fc7bcdf98c09acfa4bd90d5c7a0aead1405a755b145229"
+    },
+    {
+      "path": "tests/test_self_hosting_contract.rb",
+      "bytes": 2030,
+      "sha256": "cbc6f5b5bea6b3181480a708b1124226981d1e1a546a0108d26791085839aaf1"
+    },
+    {
+      "path": "tests/test_tokenizer_reader_contract.rb",
+      "bytes": 2855,
+      "sha256": "fb32059843161798ed7516c92dfb84b67bfb9a7eef2f1df6a0177d77c25918e2"
+    },
+    {
+      "path": "tests/test_world_save.rb",
+      "bytes": 13997,
+      "sha256": "32d87b89296423df3e291fb486b5802e93e0691a9df6edd5eed01118e36b2df6"
+    },
+    {
+      "path": "tools/company_bible_audit.rb",
+      "bytes": 10253,
+      "sha256": "a4c8a04d2b56890c68f08d07693fff6b9c9d0e2d83e353be41354c9794ba36c5"
+    },
+    {
+      "path": "tools/self_hosting_contract.rb",
+      "bytes": 5040,
+      "sha256": "47057f491624de8f0d4325a2330e7b818b3fbf418cdb481ee74d613e38fb228b"
+    },
+    {
+      "path": "tools/tokenizer_reader_contract.rb",
+      "bytes": 6333,
+      "sha256": "d67385212f535d3289819b77372bd9a8332c5941abd3483c0ec71584904e5897"
+    },
+    {
+      "path": "BUILD_HANDSHAKE_v0_1_48.md",
+      "bytes": 1372,
+      "sha256": "16b847ee27532d2a65244766308306547264600c700c6cace6deabcde7bb3cd7"
+    },
+    {
+      "path": "compiler/tokenizer_reader.rb",
+      "bytes": 5180,
+      "sha256": "204b4905ff1ccad386686ce011c11ef0436908a2726ce7a2aea41d7e1ad21422"
+    },
+    {
+      "path": "docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_48.txt",
+      "bytes": 1924,
+      "sha256": "6611ff778b97214bbde7a54a72b0600d866591a42d2dde3f7b31f288c6d8b824"
+    },
+    {
+      "path": "docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_48.md",
+      "bytes": 987,
+      "sha256": "bc09d77f0cd293e39daa67582734f4e683d9750f1ca5e9fd31dde15e76b601ae"
+    },
+    {
+      "path": "docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_48.md",
+      "bytes": 868,
+      "sha256": "6ab146c1ec41c9b0d965934305adfad73d286d6e1cce76577ec13c1b2c9feab3"
+    },
+    {
+      "path": "docs/runtime_contract_v0_1_48.md",
+      "bytes": 833,
+      "sha256": "33ed3771ae06ef7dc9cec363bd0823b37faab9146c0f53017d2d288b39c0b579"
+    },
+    {
+      "path": "docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_IMPLEMENTATION_v0_1_48.md",
+      "bytes": 2771,
+      "sha256": "d812d03106beca22e6bc94a74f005fe0b3375a3776455af81d005459a6e9b91d"
+    },
+    {
+      "path": "docs/session_logs/BASIC_SHARP_v0_1_48_SESSION_LOG.md",
+      "bytes": 1051,
+      "sha256": "0d14f973af258699cf4ec867540f3f6c9264fcc8407113155936d048fe8c1f80"
+    },
+    {
+      "path": "docs/validation/BASIC_SHARP_VALIDATION_v0_1_48.md",
+      "bytes": 2330,
+      "sha256": "3b06e839b000eada7c4228f1f9721a3d035fb08b665902a189dc1c50c6fefe07"
+    },
+    {
+      "path": "tests/test_tokenizer_reader_implementation.rb",
+      "bytes": 2524,
+      "sha256": "b0538e6f23f09bb8cc100a2fd5a9f5af55e5279a4c2a98c8a35224d5c38c572a"
+    }
+  ],
+  "base_files": [
+    {
+      "path": "BASIC_SHARP_PATCH_MANIFEST.json",
+      "bytes": 17944,
+      "sha256": "7c956339566c49633d69be4e1491c97c340c1d79882971881846176a89467f1b"
+    },
     {
       "path": "README.md",
       "bytes": 4816,
@@ -140,6 +358,11 @@
       "sha256": "570ab0eb460afb87bd0b1fb9b82bcf299e9456cce6df861139446c7bdf7bf8f0"
     },
     {
+      "path": "spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json",
+      "bytes": 4476,
+      "sha256": "822ff34914f5d2945f41d301c6bb96a9d22b40a255b8ae7cb1c83e27410be546"
+    },
+    {
       "path": "spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_REGRESSION_CAPSULE_INDEX_v1.json",
       "bytes": 225,
       "sha256": "bcb0c9bcebbce2bdb594625444d56935bfc73d0a68483bcf5ca016f344ea21b9"
@@ -190,6 +413,11 @@
       "sha256": "c74e6f79d9a8d199a81eaf40e4938e86d593b9fa3f0f103fecf65cd3cf2c5212"
     },
     {
+      "path": "tests/test_tokenizer_reader_contract.rb",
+      "bytes": 2160,
+      "sha256": "889ae4cb79bf63d0ea70ac815bf7a4b3dd94c7f1071a28bc4daad57e0a80a6f8"
+    },
+    {
       "path": "tests/test_world_save.rb",
       "bytes": 13997,
       "sha256": "e0fdf8ebd441e4b0358132e3c843fdb72cce24ad2a21a032384ace026d601f00"
@@ -205,216 +433,9 @@
       "sha256": "5c2f468fcc26191ebda5717f970f52533308520d6cc78a437a31944749340556"
     },
     {
-      "path": "BUILD_HANDSHAKE_v0_1_47.md",
-      "bytes": 2103,
-      "sha256": "9f1686a837b4d5d6a7d4e3baa3287511be115c34ae19982ee50762338a03ca66"
-    },
-    {
-      "path": "docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_47.md",
-      "bytes": 1310,
-      "sha256": "4d246aefe7c31bb559524858e0ead60106016bf883bff6267b2cda1ed5dcf0e1"
-    },
-    {
-      "path": "docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_47.md",
-      "bytes": 684,
-      "sha256": "d94466ee50036ee9352ae25a9ef3c1ba565cc5d41ffaec66c0cde44cba495612"
-    },
-    {
-      "path": "docs/runtime_contract_v0_1_47.md",
-      "bytes": 1190,
-      "sha256": "e4dc5abc2bd30950e3c628b4c492d65b7885a9e9a80fb7b6f21c27975ccac56c"
-    },
-    {
-      "path": "docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md",
-      "bytes": 2948,
-      "sha256": "303103c9c3be3dd209da897b3b9278ac2da9cf0e171f359a686a7cf9115fe1c5"
-    },
-    {
-      "path": "docs/session_logs/BASIC_SHARP_v0_1_47_SESSION_LOG.md",
-      "bytes": 1484,
-      "sha256": "3a6eb1e9c75b72b00a87adc7e86b2bd835f584ccff330e8cca89fed401bff4bb"
-    },
-    {
-      "path": "docs/strategy/BASIC_SHARP_UNIVERSAL_STANDARD_AND_AI_TOOLING_DOCTRINE_v0_1_47.md",
-      "bytes": 3149,
-      "sha256": "5229a6ae5599f5625c9cb4c3fc30d83f5cc59eb9e6510e473fe588a860ecf30f"
-    },
-    {
-      "path": "docs/validation/BASIC_SHARP_VALIDATION_v0_1_47.md",
-      "bytes": 3170,
-      "sha256": "0833782d0fdf0637a78975f3469ee7805fb2d140264067fc65b657dd9f1749a9"
-    },
-    {
-      "path": "docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_47.txt",
-      "bytes": 1923,
-      "sha256": "eff5935d149208bcaaaf46f393f84839c0c2e275083fd8d2b7d5e6d30149fd60"
-    },
-    {
-      "path": "spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json",
-      "bytes": 4476,
-      "sha256": "822ff34914f5d2945f41d301c6bb96a9d22b40a255b8ae7cb1c83e27410be546"
-    },
-    {
-      "path": "tests/test_tokenizer_reader_contract.rb",
-      "bytes": 2160,
-      "sha256": "889ae4cb79bf63d0ea70ac815bf7a4b3dd94c7f1071a28bc4daad57e0a80a6f8"
-    },
-    {
       "path": "tools/tokenizer_reader_contract.rb",
       "bytes": 4177,
       "sha256": "d462661446667834c5df6610524dbb8c7fba2f4e5ad344ec7fc83c325d3f652a"
-    }
-  ],
-  "base_files": [
-    {
-      "path": "BASIC_SHARP_PATCH_MANIFEST.json",
-      "bytes": 19250,
-      "sha256": "b50566f95e0316a098130f894b41433312845e4fca76f92dc26cab62d0699b4e"
-    },
-    {
-      "path": "README.md",
-      "bytes": 3309,
-      "sha256": "067511567ff494699914e3165ef40456fb7da42f5a1bcd6c579112551ddd3b5d"
-    },
-    {
-      "path": "compiler/ast_nodes.rb",
-      "bytes": 3813,
-      "sha256": "d9bef283acfa1d49ae834e82af19cdf62ccb61fcc4c9030f45b59f1b4d21605a"
-    },
-    {
-      "path": "docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md",
-      "bytes": 37385,
-      "sha256": "e4cedc162fca01378f2f16dd7f5163e46680407a3e72aa1833e8c2f07cde0b80"
-    },
-    {
-      "path": "docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md",
-      "bytes": 6662,
-      "sha256": "81daf9b6c70d3a6a656b9d4a58db0b6d650c1504e52c86ef853eb62fb6261d4e"
-    },
-    {
-      "path": "docs/roadmap/BASIC_SHARP_ROADMAP.md",
-      "bytes": 4249,
-      "sha256": "919973c2104919d12b8a468b229934e07f2eac5653de4457396acc02e6f5a622"
-    },
-    {
-      "path": "samples/compound_if_conditions.expected.json",
-      "bytes": 15259,
-      "sha256": "4b26523add4393d83923796fcf1b6000cbea590fcd685862a0e4afdb3d4053ae"
-    },
-    {
-      "path": "samples/number_changes.expected.json",
-      "bytes": 32727,
-      "sha256": "5aff7cf11f60937e0f2b1f9d1551b07b65442ca3791e5c70385c7b08d246dd76"
-    },
-    {
-      "path": "samples/otherwise_branches.expected.json",
-      "bytes": 8322,
-      "sha256": "e7bf4ea88b6785fb2bc75979c665be1aaca0d9129d6e27b017c0b418187c4f6e"
-    },
-    {
-      "path": "samples/trial_by_fire.bsave.json",
-      "bytes": 2961,
-      "sha256": "d6d24a847835a91fbeb2206c9eae085437a1f87d3bbcc50a73527e75a0f33775"
-    },
-    {
-      "path": "samples/trial_by_fire.bsir.json",
-      "bytes": 18116,
-      "sha256": "c26ace1c10e5c2f20cfe271632f1420699a267e205af1160516eae11fa8b41b1"
-    },
-    {
-      "path": "spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json",
-      "bytes": 2370,
-      "sha256": "b23c9689fc20d0aed94c5c3d94d6a3257b062d165ba5fbc91e715f49d7857bf5"
-    },
-    {
-      "path": "spec/runtime_v2/BASIC_SHARP_TEXT_VALUE_RUNTIME_FIXTURES_v1.json",
-      "bytes": 1234,
-      "sha256": "bfbd187448377d5b13b2a9cfce9f0c065b96cf77e84660b1ead37a5bed5f6629"
-    },
-    {
-      "path": "spec/runtime_v5/BASIC_SHARP_NUMBER_CHANGE_RUNTIME_FIXTURES_v1.json",
-      "bytes": 380,
-      "sha256": "7b4fe943b7fe012c44f5a63c4e29f9d679b77b85a4b790f0779a8a850a4fe524"
-    },
-    {
-      "path": "spec/runtime_v6/BASIC_SHARP_COMPOUND_IF_RUNTIME_FIXTURES_v1.json",
-      "bytes": 455,
-      "sha256": "31cd53b0324da2e0592dc62df9e5107b50b65a4d1db6efbc72cee2aefb0d26cc"
-    },
-    {
-      "path": "spec/runtime_v7/BASIC_SHARP_OTHERWISE_RUNTIME_FIXTURES_v1.json",
-      "bytes": 371,
-      "sha256": "5d31041fc8d80730e7366fe73a7e86c5ed3c955ac54c7d190107cbe62050aff5"
-    },
-    {
-      "path": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json",
-      "bytes": 3073,
-      "sha256": "e3e7ccffb8294864d5cdf245c2a74d9b08e920812d9965f6c01ad0d6de7a045d"
-    },
-    {
-      "path": "spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_REGRESSION_CAPSULE_INDEX_v1.json",
-      "bytes": 225,
-      "sha256": "4469494257826a2e00f460f28e762a4b4ee105755d685e43d72aa2158c6a5a02"
-    },
-    {
-      "path": "spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_VALIDATION_INVENTORY_v1.json",
-      "bytes": 18887,
-      "sha256": "efe965918b227c1d476053e3255d225e2f9da2f97c76b86943d0eaafe4cf9b26"
-    },
-    {
-      "path": "tests/test_ask.rb",
-      "bytes": 15918,
-      "sha256": "c40c2f4508cfb085affece862df8d1a83bc5034397c3a6e36be93915ad85b051"
-    },
-    {
-      "path": "tests/test_bsir_identity_migration.rb",
-      "bytes": 2527,
-      "sha256": "2c12cb527a29cc2369792707baa0765781002217c2953e6ba56a4cf0e4418d60"
-    },
-    {
-      "path": "tests/test_cli_output.rb",
-      "bytes": 10091,
-      "sha256": "7e50025b714ff87f4a6feff47122b8046828974d60f82a7d2531c355c01409d4"
-    },
-    {
-      "path": "tests/test_identity_migration.rb",
-      "bytes": 3488,
-      "sha256": "34fb331bb097953a61bc8cdd176b3fad88d6499f8cd8156eca19e9b60e4eba79"
-    },
-    {
-      "path": "tests/test_input_device_contract.rb",
-      "bytes": 1068,
-      "sha256": "4082fa348264e3d000d002b2bff0c9ed09581f174dbe09224a24f93ac6babf37"
-    },
-    {
-      "path": "tests/test_ir_output.rb",
-      "bytes": 3121,
-      "sha256": "6e960f57aa10bb5e99b3d42d68a830ad44e7c3336e0c1148ba04a28d7ab5bdf7"
-    },
-    {
-      "path": "tests/test_runtime_transition.rb",
-      "bytes": 10066,
-      "sha256": "03a8409692d5e4ba4c6104382f23f838c7c141b061b5187c40c052dd302c1616"
-    },
-    {
-      "path": "tests/test_self_hosting_contract.rb",
-      "bytes": 1562,
-      "sha256": "2d2f85f3864df2c0eb94ccd28dc7303c40b49fb44cdf3d333bab655f05a58c84"
-    },
-    {
-      "path": "tests/test_world_save.rb",
-      "bytes": 13997,
-      "sha256": "f9519f3aa83cb8f6950aabe9deac6463455d29ba7b1a70e6be678b053c06aef1"
-    },
-    {
-      "path": "tools/company_bible_audit.rb",
-      "bytes": 10253,
-      "sha256": "7c19d33d5db762bbcebe41347d4b6e90a725bc19935e1e9a9cc360d002dd1d6b"
-    },
-    {
-      "path": "tools/self_hosting_contract.rb",
-      "bytes": 3345,
-      "sha256": "39a384db1b97d635c76533df6cc135da1dcf6d0263e4bad7e8dd45b8c9b42f9f"
     }
   ],
   "compatibility_artifacts": [
@@ -490,12 +511,12 @@
     }
   ],
   "validation_inventory": {
-    "test_files": 49,
+    "test_files": 50,
     "required_tools": 39,
-    "sealed_artifacts": 17,
+    "sealed_artifacts": 25,
     "protected_artifacts": 14,
-    "minimum_runs": 464,
-    "minimum_assertions": 8069
+    "minimum_runs": 468,
+    "minimum_assertions": 8089
   },
   "direct_project_root_payload": true,
   "changed_files_only": true,

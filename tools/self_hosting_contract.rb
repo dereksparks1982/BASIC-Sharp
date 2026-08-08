@@ -9,12 +9,14 @@ SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v
 DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FOUNDATION_v0_1_44.md')
 TOKENIZER_READER_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json')
 TOKENIZER_READER_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md')
+TOKENIZER_READER_IMPLEMENTATION_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_IMPLEMENTATION_v0_1_48.md')
 REFERENCE_PATHS = [
   'README.md',
   'docs/roadmap/BASIC_SHARP_ROADMAP.md',
   'docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md',
   'docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md',
-  'docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md'
+  'docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md',
+  'docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_IMPLEMENTATION_v0_1_48.md'
 ].freeze
 
 spec = JSON.parse(File.read(SPEC_PATH, encoding: 'UTF-8'))
@@ -44,7 +46,8 @@ assert_contract!(forbidden.include?('BSharp native document application work'), 
 documents = spec.fetch('documents')
 assert_contract!(documents.fetch('tokenizer_reader_spec') == 'spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json', 'tokenizer/reader spec path missing')
 assert_contract!(File.file?(TOKENIZER_READER_SPEC_PATH), 'tokenizer/reader spec is missing')
-assert_contract!(File.file?(TOKENIZER_READER_DOC_PATH), 'tokenizer/reader document is missing')
+assert_contract!(File.file?(TOKENIZER_READER_DOC_PATH), 'tokenizer/reader contract document is missing')
+assert_contract!(File.file?(TOKENIZER_READER_IMPLEMENTATION_DOC_PATH), 'tokenizer/reader implementation document is missing')
 
 rules = spec.fetch('acceptance_rules')
 assert_contract!(rules.any? { |entry| entry.include?('Ruby remains the bootstrap') }, 'Ruby referee rule missing')
@@ -63,8 +66,10 @@ REFERENCE_PATHS.each do |relative|
 end
 
 tokenizer_doc = File.read(TOKENIZER_READER_DOC_PATH, encoding: 'UTF-8')
-assert_contract!(tokenizer_doc.include?('contract only'), 'tokenizer/reader contract must remain contract only')
-assert_contract!(tokenizer_doc.include?('Ruby bootstrap'), 'tokenizer/reader contract must keep Ruby referee')
+implementation_doc = File.read(TOKENIZER_READER_IMPLEMENTATION_DOC_PATH, encoding: 'UTF-8')
+assert_contract!(tokenizer_doc.include?('contract only'), 'tokenizer/reader contract history must remain contract only')
+assert_contract!(implementation_doc.include?('Ruby referee'), 'tokenizer/reader implementation must keep Ruby referee')
+assert_contract!(implementation_doc.include?('not the production parser authority'), 'tokenizer/reader implementation must not become parser authority')
 
 puts "BASIC# Self-Hosting Contract v#{BasicSharp::VERSION}"
 puts "Compiler subset: #{spec.fetch('compiler_subset_name')}"
@@ -74,4 +79,5 @@ puts 'Ruby bootstrap remains: PASS'
 puts 'No self-hosting claim: PASS'
 puts 'No Profile 8 or new syntax: PASS'
 puts 'Tokenizer/reader contract linked: PASS'
+puts 'Tokenizer/reader implementation linked: PASS'
 puts 'SELF-HOSTING CONTRACT: PASS'

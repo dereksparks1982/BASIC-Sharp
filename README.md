@@ -1,35 +1,38 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.47
+# BASIC# Ruby Bootstrap Compiler v0.1.48
 
 > A scripting language made for non-programmers, by non-programmers.
 
-BASIC# v0.1.47 defines the tokenizer/reader contract for the self-hosting runway while preserving all accepted Profiles 1 through 7, BSharp Bytecode Profiles 1 through 7, the BSharp VM preferred runtime, and the v0.1.46 plain-English movement/input layer.
+BASIC# v0.1.48 begins the tokenizer/reader implementation lane while preserving all accepted Profiles 1 through 7, BSharp Bytecode Profiles 1 through 7, the BSharp VM preferred runtime, the v0.1.46 movement/input layer, and the v0.1.47 tokenizer/reader contract.
 
-Ruby remains the bootstrap compiler, reader authority, and reference referee. v0.1.47 is contract-only for tokenizer/reader work: it adds validation, fixtures, doctrine, and documentation without replacing lexer/parser behavior.
+Ruby remains the bootstrap compiler, production parser authority, and reference referee. v0.1.48 adds `compiler/tokenizer_reader.rb` beside the existing lexer/parser and proves its reader records against the Ruby Lexer referee before any future parser migration.
 
-## Tokenizer/reader foundation
+## Tokenizer/reader implementation
 
-The new tokenizer/reader contract lives here:
+The active tokenizer/reader records live here:
 
 ```text
 spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json
 docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md
+docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_IMPLEMENTATION_v0_1_48.md
+compiler/tokenizer_reader.rb
 tools/tokenizer_reader_contract.rb
 tests/test_tokenizer_reader_contract.rb
+tests/test_tokenizer_reader_implementation.rb
 ```
 
-The contract freezes deterministic reader records:
+The implementation exposes deterministic records:
 
 ```text
-number = one-based source line number
-raw    = comment-stripped source line without trailing newline
-text   = trimmed reader text
+reader_records = one-based source line number, raw comment-stripped line, trimmed text
+token_records  = future-facing token records for Heads, Body boundaries, result markers, action words, quoted text, and Body lines
+issues         = comment and reader issues mirrored from the Ruby Lexer referee
 ```
 
-It also locks current comment behavior, current Head words, future token-record shape, and the rule that any later BASIC# implementation must use the Ruby bootstrap as referee before claiming parity.
+`compiler/tokenizer_reader.rb` is not the production parser authority yet. It is a checked implementation under Ruby referee supervision.
 
 ## Universal standard doctrine
 
-v0.1.47 records the long-term BASIC# / BSharp ambition here:
+The long-term BASIC# / BSharp ambition remains recorded here:
 
 ```text
 docs/strategy/BASIC_SHARP_UNIVERSAL_STANDARD_AND_AI_TOOLING_DOCTRINE_v0_1_47.md
@@ -69,7 +72,8 @@ tests/test_input_device_contract.rb
 Forbidden in this build:
 
 - replacing the Ruby bootstrap compiler;
-- replacing `compiler/lexer.rb` or `compiler/parser.rb` as authority;
+- replacing `compiler/lexer.rb` or `compiler/parser.rb` as production authority;
+- routing production parsing through `compiler/tokenizer_reader.rb`;
 - claiming BASIC# is self-hosted;
 - new creator syntax;
 - Profile 8;
@@ -104,10 +108,11 @@ docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
 docs/roadmap/BASIC_SHARP_ROADMAP.md
 spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json
 docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md
+docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_IMPLEMENTATION_v0_1_48.md
 docs/strategy/BASIC_SHARP_UNIVERSAL_STANDARD_AND_AI_TOOLING_DOCTRINE_v0_1_47.md
 spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json
 spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json
-docs/validation/BASIC_SHARP_VALIDATION_v0_1_47.md
+docs/validation/BASIC_SHARP_VALIDATION_v0_1_48.md
 ```
 
 ## Current identity
@@ -125,7 +130,7 @@ Reference oracle: BasicSharp::Runtime
 Meaning profiles: bsharp.meaning.v1 through bsharp.meaning.v7
 Bytecode profiles: bsharp.bytecode.v1 through bsharp.bytecode.v7
 Self-hosting contract: BSharp Compiler Subset 0
-Tokenizer/reader contract: contract-only deterministic reader records
+Tokenizer/reader implementation: implementation under Ruby referee
 Input contract: keyboard, mouse/keyboard, PS5, Xbox, generic gamepad
-Version: 0.1.47
+Version: 0.1.48
 ```
