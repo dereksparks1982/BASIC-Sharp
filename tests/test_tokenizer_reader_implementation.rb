@@ -59,7 +59,7 @@ class TestTokenizerReaderImplementation < Minitest::Test
     document = reader.to_h
 
     assert_equal 'bsharp.tokenizer_reader.implementation.record', document.fetch(:format)
-    assert_equal '0.1.55', document.fetch(:version)
+    assert_equal '0.1.56', document.fetch(:version)
     assert_equal [:format, :version, :reader_records, :token_records, :issues], document.keys
     assert document.fetch(:token_records).any? { |record| record[:kind] == 'head' && record[:normalized] == 'WHEN' }
     assert document.fetch(:token_records).any? { |record| record[:kind] == 'action_word' && record[:normalized] == 'move' }

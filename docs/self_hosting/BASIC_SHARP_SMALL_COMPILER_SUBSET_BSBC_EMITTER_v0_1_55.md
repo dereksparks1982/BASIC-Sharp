@@ -1,6 +1,6 @@
-# BASIC# Small Compiler Subset BSBC Emitter v0.1.55
+# BASIC# Small Compiler Subset BSBC Emitter v0.1.56
 
-v0.1.55 adds the first small compiler subset lane that emits real BSBC bytecode while Ruby remains the parser, resolver, compiler, runtime, and referee authority.
+v0.1.56 adds the first small compiler subset lane that emits real BSBC bytecode while Ruby remains the parser, resolver, compiler, runtime, and referee authority.
 
 The lane is intentionally narrow:
 

@@ -1,10 +1,10 @@
-# BASIC# Small Compiler Subset Scene/Block Expansion v0.1.55
+# BASIC# Small Compiler Subset Scene/Block Expansion v0.1.56
 
-**Build:** v0.1.55  
+**Build:** v0.1.56  
 **Status:** non-production expansion harness under Ruby referee  
 **Canonical spec:** `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json`
 
-v0.1.55 adds the small compiler subset **scene/block expansion** lane. It validates larger ordered BASIC# scene and block shapes while Ruby remains the production parser, resolver, compiler path, and referee.
+v0.1.56 adds the small compiler subset **scene/block expansion** lane. It validates larger ordered BASIC# scene and block shapes while Ruby remains the production parser, resolver, compiler path, and referee.
 
 The expansion harness is implemented in `compiler/small_compiler_subset_scene_block_expansion.rb` and executed by `tools/small_compiler_subset_scene_block_expansion.rb`.
 

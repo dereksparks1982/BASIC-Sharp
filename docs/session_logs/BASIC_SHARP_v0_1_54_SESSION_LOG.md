@@ -1,4 +1,4 @@
-# BASIC# Session Log v0.1.55
+# BASIC# Session Log v0.1.56
 
 Intent: add a symbol-table contract for the small compiler subset after v0.1.53 expanded scene/block coverage.
 

@@ -383,7 +383,7 @@ class TestAsk < Minitest::Test
     assert_empty stderr
     document = JSON.parse(stdout)
     assert_equal 'bsharp.ask.json', document.fetch('format')
-    assert_equal '0.1.55', document.fetch('created_by_basic_sharp')
+    assert_equal '0.1.56', document.fetch('created_by_basic_sharp')
     assert_equal ['what is henry', 'what is the world'], document.fetch('answers').map { |entry| entry.fetch('question') }
   end
 

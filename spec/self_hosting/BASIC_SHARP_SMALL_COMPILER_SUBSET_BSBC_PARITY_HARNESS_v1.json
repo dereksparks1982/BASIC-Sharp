@@ -1,0 +1,147 @@
+{
+  "format": "bsharp.small_compiler_subset.bsbc_golden_parity.contract.json",
+  "format_version": 1,
+  "target_version": "0.1.56",
+  "title": "BSharp Bytecode Golden Parity Harness Under Ruby Referee",
+  "status": "bsbc_golden_parity_under_ruby_referee",
+  "purpose": "Lock golden BSBC bytecode parity digests for the approved small compiler subset so future BASIC# compiler work must emit byte-for-byte compatible BSharp Bytecode before it carries more authority.",
+  "self_hosting_spec": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json",
+  "scope": {
+    "allowed": [
+      "adding compiler/small_compiler_subset_bsbc_parity_harness.rb as a non-production parity harness",
+      "checking subset source to BSharp IR to BSBC bytes to bytecode loader summary",
+      "comparing emitted BSBC bytes against sealed golden SHA256 digests",
+      "comparing loader summaries against sealed golden summaries",
+      "preserving existing runtime, bytecode profiles, Save, ASK, input devices, web, and browser behavior"
+    ],
+    "forbidden_until_later_approval": [
+      "replacing compiler/parser.rb as the production parser authority",
+      "routing normal BASIC# compilation through compiler/small_compiler_subset_bsbc_parity_harness.rb",
+      "claiming BASIC# is self-hosted",
+      "adding Profile 8",
+      "renaming bytecode or BSBC",
+      "adding new creator-facing syntax",
+      "changing runtime meaning, BSharp Bytecode, Save format, ASK output, input devices, graphics, engine bridge, browser work, web export, or Ruby retirement"
+    ]
+  },
+  "input_contracts": [
+    "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json",
+    "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json"
+  ],
+  "output_schema": {
+    "format": "bsharp.small_compiler_subset.bsbc_golden_parity.record",
+    "version": "live BasicSharp::VERSION",
+    "status": "bsbc_golden_parity_under_ruby_referee",
+    "fixture_count": "number of sealed BSBC fixtures checked",
+    "all_pass": "true only when every fixture matches parser, IR, BSBC byte digest, fingerprint, loader summary, and profile expectations",
+    "fixtures": "per-fixture BSBC parity records"
+  },
+  "fixtures": [
+    {
+      "name": "first_room",
+      "source": "KINDS\n[\n    #creature is a #thing\n    #dragon is a #creature\n    #wyrm is a #dragon\n].\n\nDEFINE\n[\n    @ember is a #wyrm\n    @cinder is a #wyrm\n    @north door is a #door\n    @brass key is a #key\n    @oak table is a #table\n    @henry is a #guard\n].\n\nSTART\n[\n    @ember is calm\n    @cinder is calm\n    @north door is locked\n    @brass key is on the #table\n    @henry is calm\n].\n\nWHEN PLAYER takes @brass key\n[\n    |then (carry @brass key\n].\n\nIF @north door is locked\n[\n    |then (unlock @north door\n].\n\nWHEN PLAYER attacks @ember\n[\n    |then (damage @ember\n    |then (change @ember to angry\n].\n\nWHEN PLAYER attacks a #creature\n[\n    |then (damage it\n    |then (change it to angry\n].\n\nWHEN PLAYER attacks a #guard\n[\n    |then (damage it\n    |then (change it to angry\n].\n\nIF @cinder is angry\n[\n    |then (damage PLAYER\n].\n",
+      "expected_profile": "bsharp.bytecode.v1",
+      "expected_binary_bytes": 1240,
+      "expected_binary_sha256": "c09c60886cdb341accc427d07a0ac68350b675b4f4e2d1571e02dac216870ee1",
+      "expected_disassembly_sha256": "3034d2b9a76be2b4c67c603642707319f316c243fd110e647604588cd80a20d3",
+      "expected_bsharp_ir_sha256": "74f101e8eac9183d464702b58308469a9ed79aa21e5624ffd6b71ea756f7ef20",
+      "expected_loader_summary": {
+        "binary_format": "bsharp.bytecode.bin",
+        "binary_format_version": 1,
+        "profile": "bsharp.bytecode.v1",
+        "meaning_profile": "bsharp.meaning.v1",
+        "fingerprint": "2065082c70bd242b0ec905b928855752a452100096354fde0e955f1ed88a3b84",
+        "strings": 26,
+        "kinds": 9,
+        "things": 7,
+        "start_records": 5,
+        "events": 4,
+        "if_rules": 2,
+        "code_blocks": 6,
+        "instructions": 9,
+        "controls": 0,
+        "hover_declarations": 0,
+        "context_declarations": 0
+      },
+      "expected_loader_summary_sha256": "657d9861a1f67b4f33840f350dc680b16128294c45ddc748b8b8d78b3a1bac7d",
+      "expected_fingerprint": "2065082c70bd242b0ec905b928855752a452100096354fde0e955f1ed88a3b84"
+    },
+    {
+      "name": "platform_movement",
+      "source": "//A complete side-scroller movement declaration with the machinery hidden./.\n\nCONTROLS for PLAYER\n[\n    A moves PLAYER left at 6 speed\n    D moves PLAYER right at 6 speed\n    SPACE makes PLAYER jump at 10 speed\n].\n",
+      "expected_profile": "bsharp.bytecode.v4",
+      "expected_binary_bytes": 696,
+      "expected_binary_sha256": "41bcab1173735b3664db2d28e2ff0076212039cfeadaabb33021aef78fdfe902",
+      "expected_disassembly_sha256": "2c8763cfb898e311f17fcd1e3464ee1f946dc74f174e61fdad86b17554963be8",
+      "expected_bsharp_ir_sha256": "72a0d22db0f472aae29da1c7cd78b74b05dd16175bda80d956b81aab18791f0a",
+      "expected_loader_summary": {
+        "binary_format": "bsharp.bytecode.bin",
+        "binary_format_version": 1,
+        "profile": "bsharp.bytecode.v4",
+        "meaning_profile": "bsharp.meaning.v4",
+        "fingerprint": "c207e0d477692c9f899334f03a258541e2c86a9e98f8447c1883355452a77ca4",
+        "strings": 5,
+        "kinds": 1,
+        "things": 1,
+        "start_records": 0,
+        "events": 0,
+        "if_rules": 0,
+        "code_blocks": 0,
+        "instructions": 0,
+        "controls": 1,
+        "hover_declarations": 0,
+        "context_declarations": 0
+      },
+      "expected_loader_summary_sha256": "c9e7810cc6bb10d6f2b575034cdffeb05a5d11a37d29c62ff3bbb0db1eec0bbc",
+      "expected_fingerprint": "c207e0d477692c9f899334f03a258541e2c86a9e98f8447c1883355452a77ca4"
+    },
+    {
+      "name": "text_values",
+      "source": "KINDS\n[\n    #gate is a #door\n].\n\nDEFINE\n[\n    @north gate is a #gate\n    @south gate is a #gate\n    @brass bell is a #device\n].\n\nSTART\n[\n    @north gate has \"North  Gate!\" title\n    @south gate has \"South Gate.\" title\n].\n\nWHEN PLAYER sounds @brass bell\n[\n    |then (change title of every #gate to \"OPEN — RubyVM!\"\n].\n\nIF @north gate has \"OPEN — RubyVM!\" title\n[\n    |then (damage PLAYER\n].\n",
+      "expected_profile": "bsharp.bytecode.v2",
+      "expected_binary_bytes": 732,
+      "expected_binary_sha256": "fd0d0315d76aa44c7a143af7c0e6b9a0b61508da1f63f435dab6dfebbbe50403",
+      "expected_disassembly_sha256": "0e860ca11f208c906bdcbd83222f8a97c0911f244ce0dc54246e0825bef251d6",
+      "expected_bsharp_ir_sha256": "f4ed3c5c0fec401555af11c7d58ad53b4ad01230490fdb8abac425c4aae84f27",
+      "expected_loader_summary": {
+        "binary_format": "bsharp.bytecode.bin",
+        "binary_format_version": 1,
+        "profile": "bsharp.bytecode.v2",
+        "meaning_profile": "bsharp.meaning.v2",
+        "fingerprint": "8510a13d4cebb0edbd9ab12625faa2c513a086c96d7a7da3f5426ad6a8dbe3fd",
+        "strings": 16,
+        "kinds": 4,
+        "things": 4,
+        "start_records": 2,
+        "events": 1,
+        "if_rules": 1,
+        "code_blocks": 2,
+        "instructions": 2,
+        "controls": 0,
+        "hover_declarations": 0,
+        "context_declarations": 0
+      },
+      "expected_loader_summary_sha256": "bd70b382823c750426c6cbd53968085fbc513cc7a648c0411d1bda064e6236d2",
+      "expected_fingerprint": "8510a13d4cebb0edbd9ab12625faa2c513a086c96d7a7da3f5426ad6a8dbe3fd"
+    }
+  ],
+  "acceptance_rules": [
+    "The BSharp Bytecode golden parity harness tool must pass in the Trial-by-Fire validation inventory.",
+    "Every accepted fixture must produce the exact locked BSBC byte SHA256 digest.",
+    "Every accepted fixture must produce the exact locked bytecode loader summary digest.",
+    "Subset-emitted BSBC bytes must stay compatible with the existing bytecode loader.",
+    "The new parity harness must not become the production compiler path in this build.",
+    "No Profile 8, syntax, runtime, bytecode rename, web export, browser, engine bridge, or Ruby retirement work is allowed."
+  ],
+  "documents": {
+    "spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json",
+    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_1_56.md",
+    "implementation_file": "compiler/small_compiler_subset_bsbc_parity_harness.rb",
+    "tool": "tools/small_compiler_subset_bsbc_parity_harness.rb",
+    "test": "tests/test_small_compiler_subset_bsbc_parity_harness.rb",
+    "bsbc_emitter_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json",
+    "bsbc_emitter_file": "compiler/small_compiler_subset_bsbc_emitter.rb",
+    "bytecode_emitter_referee": "compiler/bytecode_emitter.rb",
+    "bytecode_loader_referee": "compiler/bytecode_loader.rb"
+  }
+}

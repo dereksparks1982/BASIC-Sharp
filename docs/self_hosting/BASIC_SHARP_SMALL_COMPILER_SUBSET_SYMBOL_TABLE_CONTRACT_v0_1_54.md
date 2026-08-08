@@ -1,6 +1,6 @@
-# BASIC# Small Compiler Subset Symbol Table Contract v0.1.55
+# BASIC# Small Compiler Subset Symbol Table Contract v0.1.56
 
-v0.1.55 adds a symbol-table contract for the small compiler subset while Ruby remains the parser, resolver, compiler, runtime, and referee authority.
+v0.1.56 adds a symbol-table contract for the small compiler subset while Ruby remains the parser, resolver, compiler, runtime, and referee authority.
 
 The contract records deterministic symbol tables for approved BASIC# subset examples. It tracks:
 
