@@ -15,7 +15,7 @@ class TestSmallCompilerSubsetErrorContract < Minitest::Test
   end
 
   def test_spec_targets_the_live_basic_sharp_version
-    assert_equal '0.1.52', BasicSharp::VERSION
+    assert_equal '0.1.53', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
     assert_equal 'plain_english_error_contract_under_ruby_referee', spec.fetch('status')
   end
@@ -24,7 +24,7 @@ class TestSmallCompilerSubsetErrorContract < Minitest::Test
     record = BasicSharp::SmallCompilerSubsetErrorContract.new(spec.fetch('fixtures')).to_h
 
     assert_equal 'bsharp.small_compiler_subset.error_contract.record', record.fetch(:format)
-    assert_equal '0.1.52', record.fetch(:version)
+    assert_equal '0.1.53', record.fetch(:version)
     assert_equal spec.fetch('fixtures').length, record.fetch(:fixture_count)
     assert_equal true, record.fetch(:all_pass)
 

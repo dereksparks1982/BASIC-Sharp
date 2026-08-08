@@ -1,4 +1,4 @@
-# BASIC# Changelog v0.1.52
+# BASIC# Changelog v0.1.53
 
 ## Added
 
@@ -7,8 +7,8 @@
 - Added `tools/small_compiler_subset_error_contract.rb`.
 - Added `tests/test_small_compiler_subset_error_contract.rb`.
 - Added `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_1_52.md`.
-- Advanced live BASIC# version truth to `0.1.52`.
-- Regenerated current version-bearing runtime fixture hashes for v0.1.52.
+- Advanced live BASIC# version truth to `0.1.53`.
+- Regenerated current version-bearing runtime fixture hashes for v0.1.53.
 
 ## Preserved
 
@@ -18,7 +18,7 @@
 
 ## Repaired
 
-- Repaired the v0.1.52 text-value Save fixture hash so `tools/text_value_stress.rb` passes after the version advance to `0.1.52`.
+- Repaired the v0.1.53 text-value Save fixture hash so `tools/text_value_stress.rb` passes after the version advance to `0.1.53`.
 - Added the Five Point Paradigm to the canonical Company Bible.
 - Added `docs/BASIC_SHARP_DOCUMENTATION_MAP.md` as the documentation front door.
 - Updated README, roadmap, handoff, and Company Bible references so the docs are navigable instead of unindexed.

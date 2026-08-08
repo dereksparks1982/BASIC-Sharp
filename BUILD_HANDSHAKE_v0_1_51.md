@@ -1,8 +1,8 @@
-# BASIC# Build Handshake v0.1.52
+# BASIC# Build Handshake v0.1.53
 
 ## Identity
 
-- Version: v0.1.52
+- Version: v0.1.53
 - Name: Small Compiler Subset IR Golden Parity Harness
 - Required base: v0.1.50
 - Required commit: `8506fcec102c9ab0c7f8577a03414abb721d7a5a`
@@ -20,8 +20,8 @@ No Profile 8. No new syntax. No runtime changes. No BSharp Bytecode changes. No 
 
 ## Rollback
 
-If any installer phase fails after mutation begins, the installer restores the exact v0.1.50 base files and removes candidate v0.1.52 added paths.
+If any installer phase fails after mutation begins, the installer restores the exact v0.1.50 base files and removes candidate v0.1.53 added paths.
 
 ## Acceptance
 
-The package is accepted only after the installer reports full native validation PASS on Derek's machine, then Derek commits the exact tree and tags `v0.1.52`.
+The package is accepted only after the installer reports full native validation PASS on Derek's machine, then Derek commits the exact tree and tags `v0.1.53`.

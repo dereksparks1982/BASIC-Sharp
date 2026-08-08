@@ -1,0 +1,140 @@
+{
+  "format": "bsharp.small_compiler_subset.scene_block_expansion.contract.json",
+  "format_version": 1,
+  "target_version": "0.1.53",
+  "title": "Small Compiler Subset Scene/Block Expansion",
+  "status": "scene_block_expansion_under_ruby_referee",
+  "purpose": "Expand the sealed small compiler subset fixture lane across larger scene and block shapes while Ruby remains the production parser, resolver, compiler path, and referee.",
+  "scope": {
+    "allowed": [
+      "adding compiler/small_compiler_subset_scene_block_expansion.rb as a non-production expansion harness",
+      "validating larger ordered scene/block programs that combine KINDS, DEFINE, START, WHEN, IF, OTHERWISE, CONTROLS, HOVER, and CONTEXT",
+      "locking expanded subset BSharp IR digests against the Ruby Parser plus SemanticResolver referee",
+      "locking plain-English errors for broken expanded block shapes through the existing error contract",
+      "preserving existing runtime, BSharp Bytecode, Save, ASK, input devices, web, browser, and engine bridge behavior"
+    ],
+    "forbidden_until_later_approval": [
+      "replacing compiler/parser.rb as the production parser authority",
+      "routing normal BASIC# compilation through compiler/small_compiler_subset_scene_block_expansion.rb",
+      "claiming BASIC# is self-hosted",
+      "adding Profile 8",
+      "adding new creator-facing syntax",
+      "changing runtime meaning, BSharp Bytecode, Save format, ASK output, input devices, graphics, engine bridge, browser work, web export, or Ruby retirement"
+    ]
+  },
+  "input_contracts": [
+    "spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json",
+    "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json",
+    "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json",
+    "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json",
+    "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json",
+    "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json"
+  ],
+  "valid_fixtures": [
+    {
+      "name": "ordered_world_scene_blocks",
+      "source": "KINDS\n[\n    #creature is a #thing\n    #door is a #thing\n    #key is a #thing\n    #guard is a #creature\n    #table is a #thing\n].\n\nDEFINE\n[\n    @north door is a #door\n    @brass key is a #key\n    @henry is a #guard\n    @oak table is a #table\n].\n\nSTART\n[\n    @north door is locked\n    @brass key is on the #table\n    @henry is calm\n].\n\nWHEN PLAYER takes @brass key\n[\n    |then (carry @brass key\n    |then (change @henry to alert\n].\n\nIF @north door is locked\n[\n    |then (unlock @north door\n].\n\nOTHERWISE\n[\n    |then (open @north door\n].\n",
+      "expected_starters": [
+        "KINDS",
+        "DEFINE",
+        "START",
+        "WHEN",
+        "IF",
+        "OTHERWISE"
+      ],
+      "expected_actions": [
+        "carry",
+        "change",
+        "unlock",
+        "open"
+      ],
+      "expected_counts": {
+        "kinds": 5,
+        "objects": 5,
+        "facts": 3,
+        "events": 1,
+        "if_rules": 1,
+        "controls": 0,
+        "hover_declarations": 0,
+        "context_declarations": 0,
+        "diagnostics": 1,
+        "meaning_profile": "bsharp.meaning.v7"
+      },
+      "expected_ir_sha256": "e0cf9b6959864514ed1cac6b3c361c55d9343a1975c3647876517fd56656a2c9"
+    },
+    {
+      "name": "game_interface_scene_blocks",
+      "source": "CONTROLS for PLAYER\n[\n    A moves PLAYER left at 6 speed\n    D moves PLAYER right at 6 speed\n    SPACE makes PLAYER jump at 10 speed\n].\n\nHOVER for PLAYER\n[\n    name\n    kind\n    speed\n].\n\nCONTEXT for DOOR\n[\n    Open when DOOR is closed: (change DOOR to open\n].\n",
+      "expected_starters": [
+        "CONTROLS",
+        "HOVER",
+        "CONTEXT"
+      ],
+      "expected_actions": [
+
+      ],
+      "expected_counts": {
+        "kinds": 0,
+        "objects": 1,
+        "facts": 0,
+        "events": 0,
+        "if_rules": 0,
+        "controls": 1,
+        "hover_declarations": 1,
+        "context_declarations": 1,
+        "diagnostics": 4,
+        "meaning_profile": "bsharp.meaning.v4"
+      },
+      "expected_ir_sha256": "e8ab3e46cb016afe224064beda41fea812c289e48ddde03d017ab9e28e616ed4"
+    }
+  ],
+  "invalid_fixtures": [
+    {
+      "name": "head_inside_unclosed_start_body",
+      "source": "START\n[\n    @lamp is unlit\nWHEN PLAYER lights @lamp\n[\n    |then (change @lamp to lit\n].\n",
+      "expected_errors": [
+        {
+          "id": "BSE1002",
+          "line_number": 1,
+          "severity": "error",
+          "plain_message": "This Body is missing its closing ]. line.",
+          "source_message": "START Body is missing its End ]."
+        }
+      ],
+      "expected_errors_sha256": "5cfeaff9d759f4efa6e4e75d6b5e280f3cf361634edf48de2d986f035fe8b05e"
+    },
+    {
+      "name": "otherwise_separated_from_if",
+      "source": "IF @north door is locked\n[\n    |then (unlock @north door\n].\n\nSTART\n[\n    @north door is locked\n].\n\nOTHERWISE\n[\n    |then (open @north door\n].\n",
+      "expected_errors": [
+        {
+          "id": "BSE3001",
+          "line_number": 11,
+          "severity": "error",
+          "plain_message": "OTHERWISE must come immediately after the IF Body it belongs to.",
+          "source_message": "OTHERWISE must directly follow the IF Body it belongs to."
+        }
+      ],
+      "expected_errors_sha256": "cbb69bf96853c0040d40ee573ba4037754d1b24cf837d459777ec9e76d7b4e9e"
+    }
+  ],
+  "acceptance_rules": [
+    "The scene/block expansion tool must pass in the Trial-by-Fire validation inventory.",
+    "Every valid expanded fixture must match Ruby Parser plus SemanticResolver BSharp IR output.",
+    "Every valid expanded fixture must match its locked normalized BSharp IR SHA256 digest.",
+    "Every invalid expanded fixture must map to stable plain-English error records.",
+    "The expansion harness must not become the production compiler path in this build.",
+    "No Profile 8, new syntax, runtime, bytecode, web export, browser, engine bridge, or Ruby retirement work is allowed."
+  ],
+  "documents": {
+    "spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json",
+    "implementation": "compiler/small_compiler_subset_scene_block_expansion.rb",
+    "tool": "tools/small_compiler_subset_scene_block_expansion.rb",
+    "test": "tests/test_small_compiler_subset_scene_block_expansion.rb",
+    "documentation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_1_53.md",
+    "parser": "compiler/small_compiler_subset_parser.rb",
+    "ir_emitter": "compiler/small_compiler_subset_ir_emitter.rb",
+    "ir_parity_harness": "compiler/small_compiler_subset_ir_parity_harness.rb",
+    "error_contract": "compiler/small_compiler_subset_error_contract.rb"
+  }
+}

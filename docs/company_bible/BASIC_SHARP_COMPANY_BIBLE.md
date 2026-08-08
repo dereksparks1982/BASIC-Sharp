@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.52  
+**Version:** v0.1.53  
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -439,7 +439,7 @@ A future package fails Bible integrity when it creates a second file in this fol
 - The small compiler subset IR golden parity harness lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_51.md`, and `compiler/small_compiler_subset_ir_parity_harness.rb`. It locks deterministic BSharp IR SHA256 digests for sealed small compiler subset fixtures and compares them against the Ruby Parser plus SemanticResolver referee. It is not the production compiler path and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
 
 
-### v0.1.52 Small Compiler Subset Error Contract
+### v0.1.53 Small Compiler Subset Error Contract
 
 - The small compiler subset plain-English error contract lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_1_52.md`, and `compiler/small_compiler_subset_error_contract.rb`. It locks stable error IDs, line numbers, severities, creator-facing explanations, and source diagnostics for invalid small compiler subset examples. It is not the production compiler path and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
 
@@ -475,3 +475,10 @@ docs/BASIC_SHARP_DOCUMENTATION_MAP.md
 The map is the front door to the documentation library. It does not replace the Company Bible, roadmap, handoff, specifications, validation inventory, changelogs, patch notes, or session logs. It tells future readers where those records live and what order to read them in.
 
 The documentation stack should remain a navigable library, not an unindexed dragon hoard. New major documentation areas must either be listed in the map or intentionally explained elsewhere in the same accepted build.
+
+
+### v0.1.53 Small Compiler Subset Scene/Block Expansion
+
+- The small compiler subset scene/block expansion lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_1_53.md`, and `compiler/small_compiler_subset_scene_block_expansion.rb`.
+- It expands the sealed subset to larger ordered scene/block fixtures while Ruby remains the production parser, resolver, compiler path, and referee.
+- It is not the production compiler path and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.

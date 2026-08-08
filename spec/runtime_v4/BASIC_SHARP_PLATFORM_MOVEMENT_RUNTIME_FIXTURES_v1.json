@@ -4,5 +4,6 @@
   "meaning_profile": "bsharp.meaning.v4",
   "input": "samples/platform_movement.input.json",
   "expected": "samples/platform_movement.expected.json",
-  "expected_sha256": "4c43d7ed97578f61b7e9af13f29d747aa0e0fbb11a37c67fb7396a0f8223371b"
+  "expected_sha256": "4c43d7ed97578f61b7e9af13f29d747aa0e0fbb11a37c67fb7396a0f8223371b",
+  "input_sha256": "d910c9f59b1a5aed3bdcd21e6204da99835803567d5c6d4d8da3f7432500fb67"
 }

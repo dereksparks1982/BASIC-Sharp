@@ -138,14 +138,17 @@ MANDATORY_TEXT = [
   'Breakthrough Machine',
   'Proof Under Fire',
   'Creator Ownership',
-  'docs/BASIC_SHARP_DOCUMENTATION_MAP.md'
+  'docs/BASIC_SHARP_DOCUMENTATION_MAP.md',
+  'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json',
+  'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_1_53.md',
+  'compiler/small_compiler_subset_scene_block_expansion.rb'
 ].freeze
 
 files = Dir.glob(File.join(ROOT, 'docs/company_bible/*'), File::FNM_DOTMATCH).reject do |path|
   [File.join(ROOT, 'docs/company_bible/.'), File.join(ROOT, 'docs/company_bible/..')].include?(path)
 end
 raise "Expected one Company Bible file, found #{files.length}" unless files == [CANONICAL_FULL_PATH]
-puts 'BASIC# Company Bible Audit v0.1.52'
+puts 'BASIC# Company Bible Audit v0.1.53'
 puts 'Canonical file count: PASS'
 
 text = File.read(CANONICAL_FULL_PATH, encoding: 'UTF-8')

@@ -1,6 +1,6 @@
 # BASIC# Documentation Map
 
-**Version:** v0.1.52  
+**Version:** v0.1.53  
 **Status:** Canonical navigation guide  
 **Purpose:** Give Derek, future assistants, contributors, and reviewers a front door into the BASIC# documentation stack.
 
@@ -38,6 +38,7 @@ These records govern the current march toward BASIC# understanding a sealed subs
 - `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json`
 - `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json`
 - `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json`
+- `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json`
 - `docs/self_hosting/` implementation notes for each self-hosting lane.
 
 ## 5. Runtime and Bytecode Contracts
@@ -84,3 +85,7 @@ Before proposing or building a BASIC# patch, read in this order:
 ## 9. What This Map Is Not
 
 This map is not a replacement for the Company Bible, roadmap, specifications, validation inventory, or handoff. It is the front door that tells a reader which room to enter first.
+
+## v0.1.53 expansion note
+
+The scene/block expansion lane is documented at `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_1_53.md`.
