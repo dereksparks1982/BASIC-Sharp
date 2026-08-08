@@ -15,8 +15,8 @@ BASIC# source
 -> v0.1.45 movement/input package  [REJECTED: native test timing failure, rollback restored v0.1.44]
 -> Plain-English Movement and Input Contract  [ACCEPTED: v0.1.46]
 -> BASIC# Tokenizer/Reader Contract  [ACCEPTED: v0.1.47]
--> BASIC# tokenizer/reader implementation under Ruby referee  [CURRENT CANDIDATE: v0.1.48]
--> small compiler subset parser
+-> BASIC# tokenizer/reader implementation under Ruby referee  [ACCEPTED: v0.1.49]
+-> small compiler subset parser under Ruby referee  [CURRENT CANDIDATE: v0.1.49]
 -> BASIC# compiler subset emits BSharp IR
 -> BASIC# compiler subset emits BSBC
 -> byte-for-byte parity against approved Ruby bootstrap outputs
@@ -30,7 +30,7 @@ BASIC# source
 -> BASIC#/BSharp-native browser only after web export and demand are real
 ```
 
-## Current v0.1.48 lane
+## Current v0.1.49 lane
 
 - Implement `compiler/tokenizer_reader.rb` as the first deterministic tokenizer/reader implementation.
 - Keep the Ruby `Lexer` as referee and compare reader records exactly.
@@ -86,10 +86,10 @@ BASIC# source
 
 The future sponsorship strategy is proof first. A future sponsor packet may target AI tooling support, API credits, founder attention, or partnership discussion only after the language has a clear demo, validation proof, and roadmap evidence.
 
-## Continuation after v0.1.48
+## Continuation after v0.1.49
 
 1. Install and complete owner-side native validation from exact accepted commit `3e0832f052b91507cfd0615be44e65960f38740f` and tag `v0.1.47`.
-2. Commit and tag v0.1.48 immediately after every gate passes, then capture the accepted full-project snapshot.
+2. Commit and tag v0.1.49 immediately after every gate passes, then capture the accepted full-project snapshot.
 3. Next focused build should begin the small compiler subset parser only after tokenizer/reader implementation records remain stable under Ruby referee.
 4. Ruby remains the referee until BASIC# compiler pieces reproduce approved output deterministically.
 5. Web/app export and BSharp native documents remain valuable, but they wait until the self-hosting runway is credible.
@@ -112,3 +112,8 @@ Private/proprietary distribution remains under consideration, but licensing and 
 - The active self-hosting contract is `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json`.
 - The active tokenizer/reader contract is `spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json`.
 - The active input-device contract is `spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json`.
+
+
+## v0.1.49 parser lane guardrail
+
+`spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json` governs the small compiler subset parser. Ruby remains the production parser authority.

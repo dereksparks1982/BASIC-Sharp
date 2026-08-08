@@ -1,10 +1,10 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.48
+# BASIC# Ruby Bootstrap Compiler v0.1.49
 
 > A scripting language made for non-programmers, by non-programmers.
 
-BASIC# v0.1.48 begins the tokenizer/reader implementation lane while preserving all accepted Profiles 1 through 7, BSharp Bytecode Profiles 1 through 7, the BSharp VM preferred runtime, the v0.1.46 movement/input layer, and the v0.1.47 tokenizer/reader contract.
+BASIC# v0.1.49 begins the small compiler subset parser lane while preserving all accepted Profiles 1 through 7, BSharp Bytecode Profiles 1 through 7, the BSharp VM preferred runtime, the v0.1.46 movement/input layer, and the v0.1.47 tokenizer/reader contract.
 
-Ruby remains the bootstrap compiler, production parser authority, and reference referee. v0.1.48 adds `compiler/tokenizer_reader.rb` beside the existing lexer/parser and proves its reader records against the Ruby Lexer referee before any future parser migration.
+Ruby remains the bootstrap compiler, production parser authority, and reference referee. v0.1.49 adds `compiler/small_compiler_subset_parser.rb` beside the existing parser and proves subset parser records against the Ruby Parser referee before any future parser migration.
 
 ## Tokenizer/reader implementation
 
@@ -14,6 +14,7 @@ The active tokenizer/reader records live here:
 spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json
 docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md
 docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_IMPLEMENTATION_v0_1_48.md
+docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v0_1_49.md
 compiler/tokenizer_reader.rb
 tools/tokenizer_reader_contract.rb
 tests/test_tokenizer_reader_contract.rb
@@ -109,10 +110,11 @@ docs/roadmap/BASIC_SHARP_ROADMAP.md
 spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json
 docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md
 docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_IMPLEMENTATION_v0_1_48.md
+docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v0_1_49.md
 docs/strategy/BASIC_SHARP_UNIVERSAL_STANDARD_AND_AI_TOOLING_DOCTRINE_v0_1_47.md
 spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json
 spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json
-docs/validation/BASIC_SHARP_VALIDATION_v0_1_48.md
+docs/validation/BASIC_SHARP_VALIDATION_v0_1_49.md
 ```
 
 ## Current identity
@@ -132,5 +134,8 @@ Bytecode profiles: bsharp.bytecode.v1 through bsharp.bytecode.v7
 Self-hosting contract: BSharp Compiler Subset 0
 Tokenizer/reader implementation: implementation under Ruby referee
 Input contract: keyboard, mouse/keyboard, PS5, Xbox, generic gamepad
-Version: 0.1.48
+Version: 0.1.49
 ```
+
+
+Small compiler subset parser spec: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json`

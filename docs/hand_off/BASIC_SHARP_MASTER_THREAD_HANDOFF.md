@@ -1,80 +1,29 @@
 # BASIC# Master Thread Handoff
 
-## Current candidate
+## Current state
 
-- **Accepted base:** v0.1.47 Tokenizer Reader Contract
-- **Accepted commit:** `3e0832f052b91507cfd0615be44e65960f38740f`
-- **Accepted tag:** `v0.1.47`
-- **Accepted branch:** `main`
-- **Accepted native validation:** Derek reported v0.1.47 installer PASS, complete suite PASS, Trial-by-Fire PASS, clean commit/tag, and email checks PASS.
-- **Accepted full-project snapshot:** `BASIC_SHARP_v0_1_47_ACCEPTED_FULL_PROJECT_2026-08-07_22-04-54.tar.gz`
-- **Accepted full-project snapshot SHA-256:** `c7c49598732b0ee25d6742185c22e2c24ec3c37b72677d27a6493840b540541a`
-- **Candidate:** v0.1.48 Tokenizer/Reader Implementation Under Ruby Referee
-- **Project path:** `/home/dereksparks1982/DKLab/Projects/BASIC#`
-- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_48_TOKENIZER_READER_IMPLEMENTATION_CHANGED_FILES_ONLY.zip`
-- **Language scope:** Profiles 1-7 only; no new creator syntax, bytecode profile, Save format, engine bridge, web export, browser work, OpenAI outreach, licensing work, or Ruby replacement
+- **Accepted baseline:** v0.1.48
+- **Accepted commit:** `c67c74251aaa58e4f2fcded1144ea5187eebfb25`
+- **Candidate:** v0.1.49 Small Compiler Subset Parser Under Ruby Referee
+- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_49_SMALL_COMPILER_SUBSET_PARSER_CHANGED_FILES_ONLY.zip`
 
-## Canonical authority
+Read `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md` completely before any proposal or build. The active self-hosting foundation is `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json`. The active tokenizer/reader contract is `spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json`. The active small compiler subset parser contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json`.
 
-Read `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md` completely before any proposal or build. The active self-hosting foundation is `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json`. The active tokenizer/reader contract is `spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json`. The active tokenizer/reader implementation document is `docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_IMPLEMENTATION_v0_1_48.md`. The active input-device contract is `spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json`.
+## v0.1.49 candidate work
 
-## v0.1.48 candidate work
+- Adds `compiler/small_compiler_subset_parser.rb`.
+- Adds `tests/test_small_compiler_subset_parser.rb`.
+- Adds `tools/small_compiler_subset_parser.rb`.
+- Adds `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v0_1_49.md`.
+- Advances live version truth to `0.1.49`.
+- Preserves Ruby as production parser authority.
 
-- Adds `compiler/tokenizer_reader.rb`.
-- Adds `tests/test_tokenizer_reader_implementation.rb`.
-- Adds `docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_IMPLEMENTATION_v0_1_48.md`.
-- Updates `spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json` to `implementation_under_ruby_referee`.
-- Keeps Ruby `Lexer` as the referee for reader records.
-- Produces deterministic reader records, issue records, and first token records.
-- Token records cover Heads, Body boundaries, result lines, result markers, action words, quoted text, and ordinary Body lines.
-- Updates `tools/tokenizer_reader_contract.rb` to compare implementation output against the Ruby Lexer referee.
-- Preserves existing `compiler/lexer.rb` and `compiler/parser.rb` as production authority.
-- Updates self-hosting records, Company Bible, README, roadmap, runtime contract, validation, changelog, patch notes, session log, changed-files record, and master handoff.
-- Advances live version truth to `0.1.48`.
+## Exclusions
 
-## Explicit exclusions
+No Profile 8, new creator syntax, production parser migration, runtime behavior change, BSharp IR meaning change, BSharp Bytecode instruction change, Save/ASK behavior change, input-device behavior change, web export, browser work, engine bridge, OpenAI outreach, or Ruby retirement.
 
-No Profile 8, new creator syntax, loops, functions, reusable words, collections, interpolation, multiline text, production parser migration, runtime behavior change, BSharp IR change, BSharp Bytecode change, Save format change, ASK behavior change, input-device behavior change, controller remapping UI, platform-specific driver layer, haptics, camera controls, graphics, engine bridge, web export, browser work, licensing, monetization, funding claim, OpenAI outreach, Project Oracle, BASIC# Semantic Oracle implementation, or Ruby replacement.
+## Required owner validation
 
-## Validation status
+The installer requires exact accepted v0.1.48 commit `c67c74251aaa58e4f2fcded1144ea5187eebfb25`, tag `v0.1.48`, branch `main`, clean tree, base hashes, payload hashes, and exact manifest scope. Any post-mutation failure restores every replaced v0.1.48 file and removes every v0.1.49 path.
 
-Candidate validation was run in the build workspace.
-
-Expected owner-side native validation is the installer validation from exact accepted v0.1.47 commit `3e0832f052b91507cfd0615be44e65960f38740f` and tag `v0.1.47`.
-
-The v0.1.48 version-bearing fixture hashes are recorded in `docs/validation/BASIC_SHARP_VALIDATION_v0_1_48.md` after candidate validation.
-
-## Package scope and rollback
-
-The installer requires exact accepted v0.1.47 commit `3e0832f052b91507cfd0615be44e65960f38740f`, tag `v0.1.47`, branch `main`, clean tree, base hashes, payload hashes, and exact manifest scope. Any post-mutation failure restores every replaced v0.1.47 file and removes every v0.1.48 path.
-
-## Owner installation sequence
-
-1. Download the exact changed-files-only ZIP into `~/Downloads`.
-2. Run the one-command installer supplied with delivery.
-3. Do not commit if any phase fails; rollback is automatic.
-4. After the installer prints native PASS, commit all manifest-listed changes and tag `v0.1.48`.
-5. Create the accepted full-project snapshot and record its SHA-256 before beginning another build.
-
-## Next action
-
-Run native owner installation and validation. v0.1.48 is not accepted until Derek's machine reports every sealed gate as PASS and Derek commits/tags the result.
-
-## Accepted and failed recent history
-
-- v0.1.31 preferred BSharp VM runtime and shadow parity, `e7126c1`.
-- v0.1.32 creator-facing text values and Profile 2, `3566b02`.
-- v0.1.33 and v0.1.34 rejected; rollback restored v0.1.32.
-- v0.1.35 complete Profile 3 re-carry and runtime-transition repair, `8c5f096`.
-- v0.1.36 plain-English platform movement and Profile 4, `ef43056`.
-- v0.1.37 number changes, comparisons, and Profile 5, `8eb1fbe`.
-- v0.1.38 compound IF conditions and Profile 6, `3a92d4e`.
-- v0.1.39 OTHERWISE branches and Profile 7, `066e715`.
-- v0.1.40 failed at stale text Save fixture and rolled back cleanly.
-- v0.1.41 passed the text repair, failed at stale number-change result, exposed two more downstream stale fixtures, and rolled back cleanly.
-- v0.1.42 complete Trial-by-Fire repair accepted, `1d79a6221a388ffd6e372d6bfe21d9df1cb38c2c`.
-- v0.1.43 rejected before mutation due to malformed installer NUL-byte package bug; version number not reused.
-- v0.1.44 self-hosting foundation and rejected package repair accepted, `b630b03`.
-- v0.1.45 rejected by native test timing/isolation failure in the Xbox jump assertion; rollback restored v0.1.44.
-- v0.1.46 plain-English movement and input contract accepted by Derek at `b4d8ea2c5274e63cab3de6e6fcf003e2aef25a35` with clean final snapshot SHA-256 `1be06999d74855f8ce7c423888498766f9f1570f94068b3b0456f98940ae1beb`.
-- v0.1.47 tokenizer/reader contract accepted by Derek at `3e0832f052b91507cfd0615be44e65960f38740f` with accepted snapshot SHA-256 `c7c49598732b0ee25d6742185c22e2c24ec3c37b72677d27a6493840b540541a`.
+After the installer prints native PASS, commit all manifest-listed changes and tag `v0.1.49`.

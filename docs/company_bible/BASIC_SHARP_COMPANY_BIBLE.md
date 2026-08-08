@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.48  
+**Version:** v0.1.49  
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -429,3 +429,5 @@ ruby tools/company_bible_audit.rb
 ```
 
 A future package fails Bible integrity when it creates a second file in this folder, revives a retired addendum as active authority, omits mandatory sections, or points current records at a superseded Bible path.
+
+- The small compiler subset parser lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v0_1_49.md`, and `compiler/small_compiler_subset_parser.rb`. It parses deterministic subset records from TokenizerReader output and compares them against the Ruby Parser referee. It is not the production parser authority and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, web export, browser work, engine bridge, or Ruby retirement.
