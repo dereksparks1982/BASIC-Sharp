@@ -1,16 +1,16 @@
 {
   "format": "bsharp.trial_by_fire.validation_inventory.json",
   "format_version": 1,
-  "target_version": "0.1.44",
+  "target_version": "0.1.46",
   "accepted_base": {
-    "commit": "1d79a6221a388ffd6e372d6bfe21d9df1cb38c2c",
-    "tag": "v0.1.42",
+    "commit": "b630b031666a527d8549e6715e59065071a3efd0",
+    "tag": "v0.1.44",
     "branch": "main"
   },
   "suite_floor": {
-    "discovered_test_files": 47,
-    "minimum_runs": 452,
-    "minimum_assertions": 8022,
+    "discovered_test_files": 48,
+    "minimum_runs": 458,
+    "minimum_assertions": 8043,
     "failures": 0,
     "errors": 0,
     "skips": 0,
@@ -36,12 +36,12 @@
     {
       "path": "tests/test_ask.rb",
       "bytes": 15918,
-      "sha256": "2b6047409db2011d8c6b0ddf451b892ad2cab7219eaec693402deb03fe1db1b3"
+      "sha256": "c40c2f4508cfb085affece862df8d1a83bc5034397c3a6e36be93915ad85b051"
     },
     {
       "path": "tests/test_bsir_identity_migration.rb",
       "bytes": 2527,
-      "sha256": "c96a1efbda028e5139782264628222b161a5cf886367bb55593837e1b5bc9e19"
+      "sha256": "2c12cb527a29cc2369792707baa0765781002217c2953e6ba56a4cf0e4418d60"
     },
     {
       "path": "tests/test_bytecode_contract.rb",
@@ -96,7 +96,7 @@
     {
       "path": "tests/test_cli_output.rb",
       "bytes": 10091,
-      "sha256": "31f19b71d3778757604398760070890c4dd136c39cea18a2bb34c4fae3708f15"
+      "sha256": "7e50025b714ff87f4a6feff47122b8046828974d60f82a7d2531c355c01409d4"
     },
     {
       "path": "tests/test_comments.rb",
@@ -115,8 +115,8 @@
     },
     {
       "path": "tests/test_demon_killer_input.rb",
-      "bytes": 2581,
-      "sha256": "58155d7c3c0edaed1210cb4815161105a7151dbbbe9dfa2c8efa1ecb7b9e2e78"
+      "bytes": 3770,
+      "sha256": "68a14b00865d94e0f1ec0c21a47941b21f4a149704c17e5766911d05519fdbbc"
     },
     {
       "path": "tests/test_diagnostics_samples.rb",
@@ -146,7 +146,7 @@
     {
       "path": "tests/test_identity_migration.rb",
       "bytes": 3488,
-      "sha256": "24f950b83741fa74aa9117da691bb38e032fa2249fef8e33143ab096721c2848"
+      "sha256": "34fb331bb097953a61bc8cdd176b3fad88d6499f8cd8156eca19e9b60e4eba79"
     },
     {
       "path": "tests/test_if_behavior.rb",
@@ -154,9 +154,14 @@
       "sha256": "c6ab5d382621dd4fde595c9f157053ac974a43c92e7c8c582367fce694870a90"
     },
     {
+      "path": "tests/test_input_device_contract.rb",
+      "bytes": 1068,
+      "sha256": "4082fa348264e3d000d002b2bff0c9ed09581f174dbe09224a24f93ac6babf37"
+    },
+    {
       "path": "tests/test_ir_output.rb",
       "bytes": 3121,
-      "sha256": "367c6b68a6f114a5daf53872ed483d0d13d1e38c7913af50b13f81c1807421b4"
+      "sha256": "6e960f57aa10bb5e99b3d42d68a830ad44e7c3336e0c1148ba04a28d7ab5bdf7"
     },
     {
       "path": "tests/test_kind_family_hardening.rb",
@@ -205,8 +210,8 @@
     },
     {
       "path": "tests/test_platform_movement.rb",
-      "bytes": 6549,
-      "sha256": "0b73345734919bb738140668c1f43b3f0ba12a0bf5ae8d4f5ed0b35b85ff6444"
+      "bytes": 8591,
+      "sha256": "661e233b6fd5b4c3e89420a61ece0d826c4ed2d3c9ae285a0a73593bbee4113a"
     },
     {
       "path": "tests/test_resolver.rb",
@@ -226,12 +231,12 @@
     {
       "path": "tests/test_runtime_transition.rb",
       "bytes": 10066,
-      "sha256": "184fd07238e6c5a685e099d50ad4f5c8b90656ad9de3680adaa26c9475f30f01"
+      "sha256": "03a8409692d5e4ba4c6104382f23f838c7c141b061b5187c40c052dd302c1616"
     },
     {
       "path": "tests/test_self_hosting_contract.rb",
       "bytes": 1562,
-      "sha256": "751a61c085c0227b31d2086e58f915c1efddbd238409a7717a8ba6fba9b36b41"
+      "sha256": "2d2f85f3864df2c0eb94ccd28dc7303c40b49fb44cdf3d333bab655f05a58c84"
     },
     {
       "path": "tests/test_text_values.rb",
@@ -266,7 +271,7 @@
     {
       "path": "tests/test_world_save.rb",
       "bytes": 13997,
-      "sha256": "35ac1aebcfce1cf4a95bbb2fd33cbc24ddf534c2820cc05eeef02e93c3d5ed79"
+      "sha256": "f9519f3aa83cb8f6950aabe9deac6463455d29ba7b1a70e6be678b053c06aef1"
     }
   ],
   "required_tools": [
@@ -348,12 +353,12 @@
     {
       "path": "tools/company_bible_audit.rb",
       "bytes": 10253,
-      "sha256": "d42273d11600f63564c2bbd43a29a72e03457bca4698dbd04574ffb0e6f5d388"
+      "sha256": "7c19d33d5db762bbcebe41347d4b6e90a725bc19935e1e9a9cc360d002dd1d6b"
     },
     {
       "path": "tools/self_hosting_contract.rb",
-      "bytes": 3309,
-      "sha256": "1c9d77eb1dec0143b85585f7b29ec10ff0253d14964652e206debdc04420294f"
+      "bytes": 3345,
+      "sha256": "39a384db1b97d635c76533df6cc135da1dcf6d0263e4bad7e8dd45b8c9b42f9f"
     },
     {
       "path": "tools/bytecode_contract.rb",
@@ -412,8 +417,8 @@
     },
     {
       "path": "tools/demon_killer_input_stress.rb",
-      "bytes": 819,
-      "sha256": "7626450aa769b9c5e3d8133283cd1edeeee25b4184fd25660603072ff758e129"
+      "bytes": 1990,
+      "sha256": "04e30420b60605637ec8e3ce56e308ad3220aad003d4cf04e86ccce07cf0e37d"
     },
     {
       "path": "tools/game_interaction_stress.rb",
@@ -427,8 +432,8 @@
     },
     {
       "path": "tools/platform_movement_stress.rb",
-      "bytes": 1874,
-      "sha256": "05e3338d1d0032f4e73d7acab2de6054f7405d1481d955c081461db803386ca5"
+      "bytes": 3128,
+      "sha256": "c856ffd77cdafe92bebb8376afdd0fd73b2180d299254af1ec006270d3d9a029"
     },
     {
       "path": "tools/number_change_stress.rb",
@@ -454,18 +459,23 @@
       "path": "tools/trial_by_fire_gauntlet.rb",
       "bytes": 3325,
       "sha256": "88b629c49a34937edc0e5f97630f8f490f87dc2651ddab4fc07ae0d00a67ed27"
+    },
+    {
+      "path": "tools/input_device_contract.rb",
+      "bytes": 2651,
+      "sha256": "1f308721b928d5919462454d47852eaf17c131eada425a0a56e0f3da9e36c1e5"
     }
   ],
   "sealed_artifacts": [
     {
       "path": "samples/trial_by_fire.bsharp",
       "bytes": 1878,
-      "sha256": "88a31e05b4a2818ca319cdd47b361ddfee7da6f0a927f28a5c3ccee62976467f"
+      "sha256": "2387e2eec75b8dc8e8a9574966cdcc822e755323a563828e94477f442f607383"
     },
     {
       "path": "samples/trial_by_fire.bsir.json",
-      "bytes": 18120,
-      "sha256": "38e3703d35b3043c03255e78042e9d554fd48dbd09f4aa35a0b7a6669cbd1c28"
+      "bytes": 18116,
+      "sha256": "c26ace1c10e5c2f20cfe271632f1420699a267e205af1160516eae11fa8b41b1"
     },
     {
       "path": "samples/trial_by_fire.bsbc",
@@ -479,8 +489,8 @@
     },
     {
       "path": "samples/trial_by_fire.bsave.json",
-      "bytes": 3040,
-      "sha256": "4c0f00082d3f170d9d284fe96f9464ed6e09cd74bf84596fdd0d48fa38cc9c97"
+      "bytes": 2961,
+      "sha256": "d6d24a847835a91fbeb2206c9eae085437a1f87d3bbcc50a73527e75a0f33775"
     },
     {
       "path": "spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_GOLDEN_TRACE_v1.json",
@@ -495,7 +505,7 @@
     {
       "path": "spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_REGRESSION_CAPSULE_INDEX_v1.json",
       "bytes": 225,
-      "sha256": "799732e49e4a5ccab0ae757710dc7ede29c86a012db67faa79f5564fc561e3ac"
+      "sha256": "4469494257826a2e00f460f28e762a4b4ee105755d685e43d72aa2158c6a5a02"
     },
     {
       "path": "tools/trial_by_fire_support.rb",
@@ -511,6 +521,16 @@
       "path": "tools/trial_by_fire_mutation.rb",
       "bytes": 784,
       "sha256": "a094375aa9eb7da8b04fb6e23239c542a95488f90d09233b4fe879738cf5f62c"
+    },
+    {
+      "path": "spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json",
+      "bytes": 2370,
+      "sha256": "b23c9689fc20d0aed94c5c3d94d6a3257b062d165ba5fbc91e715f49d7857bf5"
+    },
+    {
+      "path": "docs/language/BASIC_SHARP_PLAIN_ENGLISH_MOVEMENT_AND_INPUT_v0_1_46.md",
+      "bytes": 1765,
+      "sha256": "fd915e760c4e7ef7aac1e4e42da0fa0e9ce32cd5ce540e3a97d1a1e2c04415fd"
     }
   ],
   "protected_artifacts": {

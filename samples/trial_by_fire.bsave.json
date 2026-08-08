@@ -1,7 +1,7 @@
 {
   "format": "bsharp.save.json",
   "format_version": 7,
-  "created_by_basic_sharp": "0.1.44",
+  "created_by_basic_sharp": "0.1.46",
   "program_fingerprint": {
     "algorithm": "sha256-bsir-meaning-v7",
     "value": "51d6285e56da172c01c767117b0b3ca315ff510a292c5263c146b5e8c6fa7d80"
@@ -13,11 +13,8 @@
         "name": "player",
         "kind": "person",
         "builtin": true,
-        "states": [
-
-        ],
-        "relations": {
-        },
+        "states": [],
+        "relations": {},
         "values": {
           "damage": {
             "type": "whole_number",
@@ -25,23 +22,23 @@
           },
           "health": {
             "type": "whole_number",
-            "value": 11
+            "value": 12
           },
           "motto": {
             "type": "text",
-            "value": "The gate is closed."
+            "value": "Ready for the trial."
           },
           "score": {
             "type": "whole_number",
-            "value": 3
+            "value": 1
           },
           "setbacks": {
             "type": "whole_number",
-            "value": 2
+            "value": 1
           },
           "victories": {
             "type": "whole_number",
-            "value": 1
+            "value": 0
           }
         }
       },
@@ -50,14 +47,13 @@
         "kind": "captain",
         "builtin": false,
         "states": [
-          "angry"
+          "calm"
         ],
-        "relations": {
-        },
+        "relations": {},
         "values": {
           "damage": {
             "type": "whole_number",
-            "value": 4
+            "value": 1
           }
         }
       },
@@ -68,12 +64,11 @@
         "states": [
           "calm"
         ],
-        "relations": {
-        },
+        "relations": {},
         "values": {
           "damage": {
             "type": "whole_number",
-            "value": 3
+            "value": 1
           }
         }
       },
@@ -84,8 +79,7 @@
         "states": [
           "closed"
         ],
-        "relations": {
-        },
+        "relations": {},
         "values": {
           "damage": {
             "type": "whole_number",
@@ -101,11 +95,8 @@
         "name": "brass bell",
         "kind": "device",
         "builtin": false,
-        "states": [
-
-        ],
-        "relations": {
-        },
+        "states": [],
+        "relations": {},
         "values": {
           "damage": {
             "type": "whole_number",
@@ -117,11 +108,9 @@
         "name": "iron key",
         "kind": "key",
         "builtin": false,
-        "states": [
-
-        ],
+        "states": [],
         "relations": {
-          "carried by": "player"
+          "on": "north gate"
         },
         "values": {
           "damage": {

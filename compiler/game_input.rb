@@ -10,6 +10,7 @@ module BasicSharp
     HOLD_THRESHOLD_MS = 200
     PLATFORM_GRAVITY = 30.0
     MAX_FRAME_MS = 250
+    AXIS_THRESHOLD = 0.5
     DIAGONAL = 1.0 / Math.sqrt(2.0)
     DIRECTIONS = {
       'north' => [0.0, -1.0],
@@ -17,11 +18,74 @@ module BasicSharp
       'west' => [-1.0, 0.0],
       'east' => [1.0, 0.0]
     }.freeze
+    KEYBOARD_ACTIONS = {
+      'W' => 'north',
+      'UP' => 'north',
+      'ARROWUP' => 'north',
+      'UP_ARROW' => 'north',
+      'S' => 'south',
+      'DOWN' => 'south',
+      'ARROWDOWN' => 'south',
+      'DOWN_ARROW' => 'south',
+      'A' => 'west',
+      'LEFT' => 'west',
+      'ARROWLEFT' => 'west',
+      'LEFT_ARROW' => 'west',
+      'D' => 'east',
+      'RIGHT' => 'east',
+      'ARROWRIGHT' => 'east',
+      'RIGHT_ARROW' => 'east',
+      'SPACE' => 'jump',
+      'SPACEBAR' => 'jump'
+    }.freeze
+    BUTTON_ACTIONS = {
+      'ps5' => {
+        'DPAD_UP' => 'north',
+        'DPAD_DOWN' => 'south',
+        'DPAD_LEFT' => 'west',
+        'DPAD_RIGHT' => 'east',
+        'LEFT_STICK_UP' => 'north',
+        'LEFT_STICK_DOWN' => 'south',
+        'LEFT_STICK_LEFT' => 'west',
+        'LEFT_STICK_RIGHT' => 'east',
+        'CROSS' => 'jump'
+      },
+      'xbox' => {
+        'DPAD_UP' => 'north',
+        'DPAD_DOWN' => 'south',
+        'DPAD_LEFT' => 'west',
+        'DPAD_RIGHT' => 'east',
+        'LEFT_STICK_UP' => 'north',
+        'LEFT_STICK_DOWN' => 'south',
+        'LEFT_STICK_LEFT' => 'west',
+        'LEFT_STICK_RIGHT' => 'east',
+        'A' => 'jump'
+      },
+      'generic_gamepad' => {
+        'DPAD_UP' => 'north',
+        'DPAD_DOWN' => 'south',
+        'DPAD_LEFT' => 'west',
+        'DPAD_RIGHT' => 'east',
+        'LEFT_STICK_UP' => 'north',
+        'LEFT_STICK_DOWN' => 'south',
+        'LEFT_STICK_LEFT' => 'west',
+        'LEFT_STICK_RIGHT' => 'east',
+        'BUTTON_SOUTH' => 'jump'
+      }
+    }.freeze
+    AXIS_ACTIONS = {
+      'LEFT_X' => { negative: 'west', positive: 'east' },
+      'LX' => { negative: 'west', positive: 'east' },
+      'LEFT_Y' => { negative: 'north', positive: 'south' },
+      'LY' => { negative: 'north', positive: 'south' }
+    }.freeze
 
     def initialize(document, adapter: HostAdapter.new)
       @document = stringify_keys(document.respond_to?(:to_h) ? document.to_h : document)
       @adapter = adapter
       @pressed = Set.new
+      @action_sources = Hash.new { |hash, key| hash[key] = Set.new }
+      @axis_actions = {}
       @pointer = { 'x' => 0.0, 'y' => 0.0, 'distance' => 0.0, 'maximum_distance' => 1.0 }
       @right_down_at = nil
       @right_target = nil
@@ -38,12 +102,22 @@ module BasicSharp
       type = supplied.fetch('type').to_s
       case type
       when 'key_down'
-        key = supplied.fetch('key').to_s.upcase
+        key = normalized_key(supplied.fetch('key'))
         newly_pressed = !@pressed.include?(key)
         @pressed.add(key)
+        add_action_source(KEYBOARD_ACTIONS[key], "keyboard:#{key}", newly_pressed)
         @jump_requested = true if newly_pressed && @platform_jump && key == @platform_jump.fetch('key')
       when 'key_up'
-        @pressed.delete(supplied.fetch('key').to_s.upcase)
+        key = normalized_key(supplied.fetch('key'))
+        @pressed.delete(key)
+        remove_action_source(KEYBOARD_ACTIONS[key], "keyboard:#{key}")
+      when 'button_down'
+        action = button_action(supplied)
+        add_action_source(action, button_source(supplied), true)
+      when 'button_up'
+        remove_action_source(button_action(supplied), button_source(supplied))
+      when 'axis'
+        process_axis(supplied)
       when 'pointer_move'
         %w[x y distance maximum_distance].each do |name|
           @pointer[name] = numeric(supplied[name], name) if supplied.key?(name)
@@ -68,6 +142,84 @@ module BasicSharp
     end
 
     private
+
+    def normalized_key(value)
+      value.to_s.upcase.tr(' -', '_')
+    end
+
+    def normalized_device(value)
+      value.to_s.downcase.tr(' -', '_')
+    end
+
+    def normalized_button(value)
+      value.to_s.upcase.tr(' -', '_')
+    end
+
+    def button_action(event)
+      device = normalized_device(event['device'] || 'generic_gamepad')
+      button = normalized_button(event.fetch('button'))
+      BUTTON_ACTIONS.fetch(device) do
+        raise GameInputError, "Unknown input device '#{device}'."
+      end.fetch(button) do
+        raise GameInputError, "Unknown #{device} button '#{button}'."
+      end
+    end
+
+    def button_source(event)
+      "button:#{normalized_device(event['device'] || 'generic_gamepad')}:#{normalized_button(event.fetch('button'))}"
+    end
+
+    def process_axis(event)
+      device = normalized_device(event['device'] || 'generic_gamepad')
+      axis = normalized_button(event.fetch('axis'))
+      mapping = AXIS_ACTIONS.fetch(axis) do
+        raise GameInputError, "Unknown #{device} axis '#{axis}'."
+      end
+      source = "axis:#{device}:#{axis}"
+      old_action = @axis_actions[source]
+      remove_action_source(old_action, source) if old_action
+
+      value = numeric(event.fetch('value'), axis)
+      new_action = if value <= -AXIS_THRESHOLD
+                     mapping.fetch(:negative)
+                   elsif value >= AXIS_THRESHOLD
+                     mapping.fetch(:positive)
+                   end
+      @axis_actions[source] = new_action
+      add_action_source(new_action, source, old_action != new_action) if new_action
+    end
+
+    def add_action_source(action, source, newly_pressed)
+      return unless action
+
+      previous_empty = @action_sources[action].empty?
+      @action_sources[action].add(source)
+      @jump_requested = true if action == 'jump' && newly_pressed && previous_empty
+    end
+
+    def remove_action_source(action, source)
+      return unless action
+
+      @action_sources[action].delete(source)
+    end
+
+    def action_active?(action)
+      @action_sources[action] && !@action_sources[action].empty?
+    end
+
+    def directional_actions
+      actions = Set.new
+      %w[north south west east].each { |action| actions.add(action) if action_active?(action) }
+      actions
+    end
+
+    def platform_left_active?
+      @pressed.include?(@platform_directions.fetch('left').fetch('key')) || action_active?('west')
+    end
+
+    def platform_right_active?
+      @pressed.include?(@platform_directions.fetch('right').fetch('key')) || action_active?('east')
+    end
 
     def load_controls!
       declarations = Array(@document['controls'])
@@ -140,9 +292,12 @@ module BasicSharp
 
       x = 0.0
       y = 0.0
+      active_directions = directional_actions
       @pressed.each do |key|
         direction = @key_directions[key]
-        next unless direction
+        active_directions.add(direction) if direction
+      end
+      active_directions.each do |direction|
         vector = DIRECTIONS.fetch(direction)
         x += vector[0]
         y += vector[1]
@@ -171,8 +326,8 @@ module BasicSharp
       delta_seconds = delta_ms / 1000.0
       @vertical_velocity += PLATFORM_GRAVITY * delta_seconds unless grounded && @vertical_velocity >= 0.0
 
-      left = @pressed.include?(@platform_directions.fetch('left').fetch('key'))
-      right = @pressed.include?(@platform_directions.fetch('right').fetch('key'))
+      left = platform_left_active?
+      right = platform_right_active?
       horizontal = if left == right
                      0.0
                    elsif left

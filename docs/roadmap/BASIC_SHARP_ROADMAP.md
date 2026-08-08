@@ -11,7 +11,9 @@ BASIC# source
 -> BSharp Bytecode Profiles 1-7 and BSharp VM  [ACCEPTED: v0.1.26-v0.1.39]
 -> Trial by Fire complete repair and BSharp VM hardening  [ACCEPTED: v0.1.42, 1d79a62]
 -> v0.1.43 malformed self-hosting package  [REJECTED: installer NUL-byte bug, no mutation]
--> Self-Hosting Foundation and Rejected Package Repair Record  [CURRENT CANDIDATE: v0.1.44]
+-> Self-Hosting Foundation and Rejected Package Repair Record  [ACCEPTED: v0.1.44]
+-> v0.1.45 movement/input package  [REJECTED: native test timing failure, rollback restored v0.1.44]
+-> Plain-English Movement and Input Contract  [CURRENT CANDIDATE: v0.1.46]
 -> BASIC# tokenizer/reader contract
 -> BASIC# tokenizer/reader implementation under Ruby referee
 -> small compiler subset parser
@@ -26,7 +28,15 @@ BASIC# source
 -> complete BASIC# IDE
 ```
 
-## Current v0.1.44 lane
+## Current v0.1.46 lane
+
+- Define the input-device meaning layer for keyboard, mouse/keyboard, PS5, Xbox, and generic gamepad events.
+- Preserve the existing creator-facing `CONTROLS for PLAYER` language.
+- Add an executable contract and tests proving device events map to existing top-down and platform movement host commands.
+- Repair the rejected v0.1.45 Xbox jump timing assertion without expanding scope.
+- Exclude remapping UI, platform drivers, engine bridge, graphics, haptics, camera controls, Profile 8, and Ruby replacement.
+
+## Accepted v0.1.44 lane
 
 - Preserve v0.1.43 as rejected and do not reuse its number.
 - Add a permanent rejected-package audit and installer NUL-byte package rule.
@@ -38,11 +48,11 @@ BASIC# source
 - Regenerate all current version-bearing runtime fixtures for `0.1.44` together.
 - Add no creator syntax, Profile 8, runtime semantics, engine bridge, document app, or Ruby replacement.
 
-## Continuation after v0.1.44
+## Continuation after v0.1.46
 
-1. Install and complete owner-side native validation from exact accepted commit `1d79a6221a388ffd6e372d6bfe21d9df1cb38c2c` and tag `v0.1.42`.
-2. Commit and tag v0.1.44 immediately after every gate passes, then capture the accepted full-project snapshot.
-3. Next focused build should define the tokenizer/reader contract and fixtures before implementation.
+1. Install and complete owner-side native validation from exact accepted commit `b630b031666a527d8549e6715e59065071a3efd0` and tag `v0.1.44`.
+2. Commit and tag v0.1.46 immediately after every gate passes, then capture the accepted full-project snapshot.
+3. Next focused build may either tighten movement wording further or return to the self-hosting tokenizer/reader contract.
 4. Ruby remains the referee until BASIC# compiler pieces reproduce approved output deterministically.
 5. BSharp native documents remain valuable, but they wait until the self-hosting runway is credible.
 
@@ -61,3 +71,4 @@ Private/proprietary distribution remains under consideration, but licensing and 
 - Every build requires an exact accepted base, approval, validation, changed-files-only package, handshake, commit, and tag.
 - The complete Company Bible is `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md`.
 - The active self-hosting contract is `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json`.
+- The active input-device contract is `spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json`.

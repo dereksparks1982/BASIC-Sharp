@@ -43,6 +43,37 @@ class TestPlatformMovement < Minitest::Test
     assert_equal 6.0, command('type' => 'frame', 'time_ms' => 32, 'grounded' => true).fetch('velocity_x')
   end
 
+  def test_arrow_keys_drive_same_platform_meaning
+    @input.process('type' => 'key_down', 'key' => 'ArrowLeft')
+    assert_equal(-6.0, command('type' => 'frame', 'time_ms' => 0, 'grounded' => true).fetch('velocity_x'))
+    @input.process('type' => 'key_up', 'key' => 'ArrowLeft')
+    @input.process('type' => 'key_down', 'key' => 'RIGHT_ARROW')
+    assert_equal 6.0, command('type' => 'frame', 'time_ms' => 16, 'grounded' => true).fetch('velocity_x')
+  end
+
+  def test_ps5_xbox_and_generic_gamepads_drive_same_platform_meaning
+    @input.process('type' => 'button_down', 'device' => 'ps5', 'button' => 'dpad_left')
+    assert_equal(-6.0, command('type' => 'frame', 'time_ms' => 0, 'grounded' => true).fetch('velocity_x'))
+    @input.process('type' => 'button_up', 'device' => 'ps5', 'button' => 'dpad_left')
+
+    xbox_input = BasicSharp::GameInput.new(@document)
+    xbox_input.process('type' => 'button_down', 'device' => 'xbox', 'button' => 'a')
+    assert_equal(-10.0, xbox_input.process('type' => 'frame', 'time_ms' => 0, 'grounded' => true).fetch(0).fetch('velocity_y'))
+    xbox_input.process('type' => 'button_up', 'device' => 'xbox', 'button' => 'a')
+
+    @input.process('type' => 'button_down', 'device' => 'generic_gamepad', 'button' => 'dpad_right')
+    assert_equal 6.0, command('type' => 'frame', 'time_ms' => 32, 'grounded' => true).fetch('velocity_x')
+  end
+
+  def test_gamepad_axis_thresholds_drive_platform_movement
+    @input.process('type' => 'axis', 'device' => 'xbox', 'axis' => 'left_x', 'value' => -0.75)
+    assert_equal(-6.0, command('type' => 'frame', 'time_ms' => 0, 'grounded' => true).fetch('velocity_x'))
+    @input.process('type' => 'axis', 'device' => 'xbox', 'axis' => 'left_x', 'value' => 0.25)
+    assert_equal 0.0, command('type' => 'frame', 'time_ms' => 16, 'grounded' => true).fetch('velocity_x')
+    @input.process('type' => 'axis', 'device' => 'ps5', 'axis' => 'left_x', 'value' => 0.75)
+    assert_equal 6.0, command('type' => 'frame', 'time_ms' => 32, 'grounded' => true).fetch('velocity_x')
+  end
+
   def test_jump_requires_ground_and_one_new_keypress
     @input.process('type' => 'key_down', 'key' => 'SPACE')
     first = command('type' => 'frame', 'time_ms' => 0, 'grounded' => true)

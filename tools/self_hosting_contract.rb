@@ -23,7 +23,7 @@ end
 assert_contract!(spec.fetch('format') == 'bsharp.self_hosting.subset.json', 'wrong spec identity')
 assert_contract!(spec.fetch('format_version') == 1, 'wrong spec format version')
 assert_contract!(spec.fetch('target_version') == BasicSharp::VERSION, 'spec target does not match BasicSharp::VERSION')
-assert_contract!(spec.fetch('status') == 'foundation_contract_only', 'v0.1.44 must remain a foundation contract')
+assert_contract!(spec.fetch('status') == 'foundation_contract_only', 'a carried self-hosting foundation must remain a foundation contract')
 assert_contract!(spec.fetch('compiler_subset_name') == 'BSharp Compiler Subset 0', 'subset name changed')
 assert_contract!(spec.fetch('compiler_subset_status') == 'planning_contract', 'subset status changed')
 
@@ -36,7 +36,7 @@ forbidden = spec.fetch('compiler_subset_forbids_until_later_approval')
 end
 assert_contract!(forbidden.include?('replacing the Ruby bootstrap compiler'), 'Ruby replacement must stay forbidden')
 assert_contract!(forbidden.include?('claiming BASIC# is self-hosted'), 'self-hosting claim must stay forbidden')
-assert_contract!(forbidden.include?('BSharp native document application work'), 'document app must stay out of v0.1.44')
+assert_contract!(forbidden.include?('BSharp native document application work'), 'document app must stay out of the current build')
 
 rules = spec.fetch('acceptance_rules')
 assert_contract!(rules.any? { |entry| entry.include?('Ruby remains the bootstrap') }, 'Ruby referee rule missing')

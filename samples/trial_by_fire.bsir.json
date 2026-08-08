@@ -1,5 +1,5 @@
 {
-  "version": "0.1.44",
+  "version": "0.1.46",
   "format": "bsir.debug.json",
   "kinds": [
     {
@@ -803,8 +803,6 @@
       ]
     }
   ],
-  "diagnostics": [
-
-  ],
+  "diagnostics": [],
   "meaning_profile": "bsharp.meaning.v7"
 }

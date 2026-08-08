@@ -27,6 +27,25 @@ class TestDemonKillerInput < Minitest::Test
     assert_equal 0.0, command.fetch('y')
   end
 
+  def test_arrow_keys_and_gamepads_drive_same_top_down_meaning
+    @input.process('type' => 'key_down', 'key' => 'ArrowUp')
+    @input.process('type' => 'key_down', 'key' => 'ArrowRight')
+    command = @input.process('type' => 'frame', 'time_ms' => 10).fetch(0)
+    assert_in_delta 0.707106781187, command.fetch('x'), 0.000000000001
+    assert_in_delta(-0.707106781187, command.fetch('y'), 0.000000000001)
+
+    @input.process('type' => 'key_up', 'key' => 'ArrowUp')
+    @input.process('type' => 'key_up', 'key' => 'ArrowRight')
+    @input.process('type' => 'button_down', 'device' => 'ps5', 'button' => 'dpad_left')
+    assert_equal(-1.0, @input.process('type' => 'frame', 'time_ms' => 20).fetch(0).fetch('x'))
+    @input.process('type' => 'button_up', 'device' => 'ps5', 'button' => 'dpad_left')
+
+    @input.process('type' => 'axis', 'device' => 'xbox', 'axis' => 'left_y', 'value' => 0.75)
+    assert_equal 1.0, @input.process('type' => 'frame', 'time_ms' => 30).fetch(0).fetch('y')
+    @input.process('type' => 'axis', 'device' => 'generic_gamepad', 'axis' => 'left_y', 'value' => 0.0)
+    @input.process('type' => 'axis', 'device' => 'xbox', 'axis' => 'left_y', 'value' => 0.0)
+  end
+
   def test_mouse_hold_over_empty_ground_overrides_keys
     @input.process('type' => 'key_down', 'key' => 'W')
     @input.process('type' => 'pointer_move', 'x' => 50, 'y' => 0, 'distance' => 25, 'maximum_distance' => 100)

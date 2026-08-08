@@ -1,0 +1,61 @@
+{
+  "format": "bsharp.input.device_mapping.json",
+  "format_version": 1,
+  "target_version": "0.1.46",
+  "title": "Plain-English Movement and Input Device Mapping Contract",
+  "status": "contract_and_runtime_mapping",
+  "creator_source_rule": "Creator source declares movement meaning once. Keyboard, mouse, PS5, Xbox, and generic gamepad inputs map underneath without requiring different BASIC# scripts.",
+  "supported_inputs": {
+    "keyboard": {
+      "left": ["A", "LEFT", "ARROWLEFT", "LEFT_ARROW"],
+      "right": ["D", "RIGHT", "ARROWRIGHT", "RIGHT_ARROW"],
+      "up": ["W", "UP", "ARROWUP", "UP_ARROW"],
+      "down": ["S", "DOWN", "ARROWDOWN", "DOWN_ARROW"],
+      "jump": ["SPACE", "SPACEBAR"]
+    },
+    "mouse_keyboard": {
+      "pointer": ["pointer_move"],
+      "right_mouse": ["right_mouse_down", "right_mouse_up"],
+      "empty_ground_hold": "holding right mouse moves PLAYER toward mouse pointer",
+      "object_click": "right-click over an object opens context and wins over movement"
+    },
+    "ps5": {
+      "left": ["DPAD_LEFT", "LEFT_STICK_LEFT"],
+      "right": ["DPAD_RIGHT", "LEFT_STICK_RIGHT"],
+      "up": ["DPAD_UP", "LEFT_STICK_UP"],
+      "down": ["DPAD_DOWN", "LEFT_STICK_DOWN"],
+      "jump": ["CROSS"]
+    },
+    "xbox": {
+      "left": ["DPAD_LEFT", "LEFT_STICK_LEFT"],
+      "right": ["DPAD_RIGHT", "LEFT_STICK_RIGHT"],
+      "up": ["DPAD_UP", "LEFT_STICK_UP"],
+      "down": ["DPAD_DOWN", "LEFT_STICK_DOWN"],
+      "jump": ["A"]
+    },
+    "generic_gamepad": {
+      "left": ["DPAD_LEFT", "LEFT_STICK_LEFT"],
+      "right": ["DPAD_RIGHT", "LEFT_STICK_RIGHT"],
+      "up": ["DPAD_UP", "LEFT_STICK_UP"],
+      "down": ["DPAD_DOWN", "LEFT_STICK_DOWN"],
+      "jump": ["BUTTON_SOUTH"]
+    }
+  },
+  "axis_threshold": 0.5,
+  "engine_boundary": {
+    "host_event_types": ["key_down", "key_up", "button_down", "button_up", "axis", "pointer_move", "right_mouse_down", "right_mouse_up", "frame"],
+    "host_commands": ["move", "move_toward_pointer", "move_with_collisions", "face_pointer", "open_context"],
+    "driver_integration": "out_of_scope"
+  },
+  "explicit_exclusions": [
+    "no new BASIC# source syntax",
+    "no controller remapping UI",
+    "no platform-specific driver layer",
+    "no vibration or haptics",
+    "no camera controls",
+    "no engine bridge",
+    "no graphics",
+    "no Profile 8",
+    "no Ruby replacement"
+  ]
+}

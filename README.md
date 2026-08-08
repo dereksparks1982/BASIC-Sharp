@@ -1,14 +1,25 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.44
+# BASIC# Ruby Bootstrap Compiler v0.1.46
 
 > A scripting language made for non-programmers, by non-programmers.
 
-BASIC# v0.1.44 re-carries the self-hosting lane after the rejected v0.1.43 package and starts it by defining **BSharp Compiler Subset 0**. This is a foundation contract, not a compiler rewrite.
+BASIC# v0.1.46 defines the plain-English movement/input layer for keyboard, mouse/keyboard, PS5, Xbox, and generic gamepad input while preserving the creator-facing `CONTROLS for PLAYER` language.
 
 Ruby remains the bootstrap compiler and reference authority. The BSharp VM remains the preferred runtime. Stable Meaning Profiles 1 through 7 and BSharp Bytecode Profiles 1 through 7 remain unchanged.
 
-## Self-hosting foundation
+## Movement/input foundation
 
-The new contract lives here:
+The new input contract lives here:
+
+```text
+docs/language/BASIC_SHARP_PLAIN_ENGLISH_MOVEMENT_AND_INPUT_v0_1_46.md
+spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json
+tools/input_device_contract.rb
+tests/test_input_device_contract.rb
+```
+
+The creator writes movement meaning once. Device-specific host events map underneath to the same engine-neutral commands.
+
+The self-hosting foundation from v0.1.44 remains active and unchanged:
 
 ```text
 docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FOUNDATION_v0_1_44.md
@@ -17,19 +28,19 @@ tools/self_hosting_contract.rb
 tests/test_self_hosting_contract.rb
 ```
 
-v0.1.44 explicitly does not claim BASIC# is self-hosted. It defines what future compiler-writing work may use and what remains forbidden until later approval.
-
 Forbidden in this build:
 
-- replacing the Ruby bootstrap compiler;
-- claiming BASIC# is self-hosted;
-- Profile 8;
 - new creator syntax;
-- new bytecode instructions;
-- loops, functions, collections, or string interpolation;
-- native code generation;
+- Profile 8;
+- controller remapping UI;
+- platform-specific driver code;
 - engine bridge work;
-- BSharp native document app work.
+- graphics, haptics, or camera controls;
+- replacing the Ruby bootstrap compiler.
+
+## Repaired package note
+
+This package is the repaired v0.1.46 installer. It corrects stale version-bearing fixture hashes that caused the earlier v0.1.46 changed-files-only package to reject itself during native stress validation.
 
 ## Current runtime path
 
@@ -45,7 +56,7 @@ Forbidden in this build:
 ruby compiler/basic_sharp.rb samples/text_values.bsharp --run "player sounds brass bell"
 ruby compiler/basic_sharp.rb samples/text_values.bsharp --verify-runtime-parity --run "player sounds brass bell"
 ruby compiler/basic_sharp.rb samples/text_values.bsbc --disassemble-bytecode
-ruby tools/self_hosting_contract.rb
+ruby tools/input_device_contract.rb
 ruby tools/trial_by_fire_gauntlet.rb
 ```
 
@@ -55,9 +66,10 @@ ruby tools/trial_by_fire_gauntlet.rb
 docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
 docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
 docs/roadmap/BASIC_SHARP_ROADMAP.md
-docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FOUNDATION_v0_1_44.md
+docs/language/BASIC_SHARP_PLAIN_ENGLISH_MOVEMENT_AND_INPUT_v0_1_46.md
+spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json
 spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json
-docs/validation/BASIC_SHARP_VALIDATION_v0_1_44.md
+docs/validation/BASIC_SHARP_VALIDATION_v0_1_46.md
 ```
 
 ## Current identity
@@ -75,5 +87,6 @@ Reference oracle: BasicSharp::Runtime
 Meaning profiles: bsharp.meaning.v1 through bsharp.meaning.v7
 Bytecode profiles: bsharp.bytecode.v1 through bsharp.bytecode.v7
 Self-hosting contract: BSharp Compiler Subset 0
-Version: 0.1.44
+Input contract: keyboard, mouse/keyboard, PS5, Xbox, generic gamepad
+Version: 0.1.46
 ```

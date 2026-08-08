@@ -34,4 +34,21 @@ input.process('type' => 'key_down', 'key' => 'D')
   input.process('type' => 'key_up', 'key' => 'SPACE') if (index % 250) == 1
 end
 
+device_inputs = [
+  ['keyboard arrows', { 'type' => 'key_down', 'key' => 'ArrowLeft' }, { 'type' => 'key_up', 'key' => 'ArrowLeft' }, -6.0],
+  ['ps5 d-pad', { 'type' => 'button_down', 'device' => 'ps5', 'button' => 'dpad_right' }, { 'type' => 'button_up', 'device' => 'ps5', 'button' => 'dpad_right' }, 6.0],
+  ['xbox stick', { 'type' => 'axis', 'device' => 'xbox', 'axis' => 'left_x', 'value' => -0.75 }, { 'type' => 'axis', 'device' => 'xbox', 'axis' => 'left_x', 'value' => 0.0 }, -6.0],
+  ['generic gamepad', { 'type' => 'button_down', 'device' => 'generic_gamepad', 'button' => 'dpad_left' }, { 'type' => 'button_up', 'device' => 'generic_gamepad', 'button' => 'dpad_left' }, -6.0]
+]
+
+device_inputs.each_with_index do |(label, down, up, expected_x), index|
+  input = BasicSharp::GameInput.new(document)
+  input.process(down)
+  command = input.process('type' => 'frame', 'time_ms' => index * 16, 'grounded' => true).fetch(0)
+  raise "#{label} did not map to platform movement" unless command.fetch('velocity_x') == expected_x
+  input.process(up)
+  stopped = input.process('type' => 'frame', 'time_ms' => index * 16 + 16, 'grounded' => true).fetch(0)
+  raise "#{label} did not release platform movement" unless stopped.fetch('velocity_x') == 0.0
+end
+
 puts 'BASIC# platform movement stress: PASS (10,000 frames)'
