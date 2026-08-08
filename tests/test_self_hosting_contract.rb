@@ -13,14 +13,14 @@ class TestSelfHostingContract < Minitest::Test
   end
 
   def test_spec_targets_the_live_basic_sharp_version
-    assert_equal '0.1.56', BasicSharp::VERSION
+    assert_equal '0.1.57', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
   end
 
   def test_contract_is_foundation_only
     assert_equal 'foundation_contract_only', spec.fetch('status')
     assert_equal 'BSharp Compiler Subset 0', spec.fetch('compiler_subset_name')
-    assert_equal 'bsbc_golden_parity_under_ruby_referee', spec.fetch('compiler_subset_status')
+    assert_equal 'fixture_corpus_under_ruby_referee', spec.fetch('compiler_subset_status')
   end
 
   def test_future_work_is_explicitly_excluded
@@ -62,6 +62,11 @@ class TestSelfHostingContract < Minitest::Test
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_parity_harness_implementation')))
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_parity_harness_tool')))
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_parity_harness_test')))
+    assert_equal 'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json', documents.fetch('self_hosting_fixture_corpus_spec')
+    assert File.file?(File.join(ROOT, documents.fetch('self_hosting_fixture_corpus_implementation')))
+    assert File.file?(File.join(ROOT, documents.fetch('self_hosting_fixture_corpus_file')))
+    assert File.file?(File.join(ROOT, documents.fetch('self_hosting_fixture_corpus_tool')))
+    assert File.file?(File.join(ROOT, documents.fetch('self_hosting_fixture_corpus_test')))
   end
 
   def test_trial_by_fire_inventory_runs_the_contract_tool
@@ -77,5 +82,6 @@ class TestSelfHostingContract < Minitest::Test
     assert_includes tools, 'tools/small_compiler_subset_symbol_table_contract.rb'
     assert_includes tools, 'tools/small_compiler_subset_bsbc_emitter.rb'
     assert_includes tools, 'tools/small_compiler_subset_bsbc_parity_harness.rb'
+    assert_includes tools, 'tools/self_hosting_fixture_corpus.rb'
   end
 end

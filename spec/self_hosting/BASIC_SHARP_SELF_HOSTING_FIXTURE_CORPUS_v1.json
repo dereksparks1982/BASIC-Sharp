@@ -1,0 +1,127 @@
+{
+  "format": "bsharp.self_hosting.fixture_corpus.json",
+  "format_version": 1,
+  "target_version": "0.1.57",
+  "title": "BASIC# Self-Hosting Fixture Corpus",
+  "status": "self_hosting_fixture_corpus_under_ruby_referee",
+  "purpose": "Seal a repeatable corpus of BASIC# source fixtures for parser, BSharp IR, BSBC bytecode, loader summary, and symbol-table checks while Ruby remains the referee.",
+  "self_hosting_spec": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json",
+  "company_identity": "Elderred Softworks LLC",
+  "workspace_identity": "DKLab",
+  "workspace_meaning": "DKLab is retained as the internal workspace and lab name in homage to Demon Killer.",
+  "minimum_fixture_count": 8,
+  "required_profiles": [
+    "bsharp.bytecode.v1",
+    "bsharp.bytecode.v2",
+    "bsharp.bytecode.v3",
+    "bsharp.bytecode.v4",
+    "bsharp.bytecode.v5",
+    "bsharp.bytecode.v6",
+    "bsharp.bytecode.v7"
+  ],
+  "scope": {
+    "allowed": [
+      "sealed source fixture corpus",
+      "parser to BSharp IR to BSBC to loader summary comparisons",
+      "symbol-table checks for valid corpus fixtures",
+      "DKLab identity decision record"
+    ],
+    "forbidden": [
+      "claiming BASIC# is self-hosted",
+      "replacing Ruby bootstrap compiler",
+      "adding Profile 8",
+      "renaming bytecode or BSBC",
+      "renaming DKLab paths or accepted-build workflow"
+    ]
+  },
+  "fixtures": [
+    {
+      "name": "first_room_core",
+      "category": "scene_blocks_and_world_facts",
+      "source": "KINDS\n[\n    #creature is a #thing\n    #dragon is a #creature\n    #wyrm is a #dragon\n].\n\nDEFINE\n[\n    @ember is a #wyrm\n    @cinder is a #wyrm\n    @north door is a #door\n    @brass key is a #key\n    @oak table is a #table\n    @henry is a #guard\n].\n\nSTART\n[\n    @ember is calm\n    @cinder is calm\n    @north door is locked\n    @brass key is on the #table\n    @henry is calm\n].\n\nWHEN PLAYER takes @brass key\n[\n    |then (carry @brass key\n].\n\nIF @north door is locked\n[\n    |then (unlock @north door\n].\n\nWHEN PLAYER attacks @ember\n[\n    |then (damage @ember\n    |then (change @ember to angry\n].\n\nWHEN PLAYER attacks a #creature\n[\n    |then (damage it\n    |then (change it to angry\n].\n\nWHEN PLAYER attacks a #guard\n[\n    |then (damage it\n    |then (change it to angry\n].\n\nIF @cinder is angry\n[\n    |then (damage PLAYER\n].\n",
+      "expected_profile": "bsharp.bytecode.v1",
+      "expected_binary_sha256": "c09c60886cdb341accc427d07a0ac68350b675b4f4e2d1571e02dac216870ee1",
+      "expected_loader_summary_sha256": "657d9861a1f67b4f33840f350dc680b16128294c45ddc748b8b8d78b3a1bac7d",
+      "expected_bsharp_ir_sha256": "1a7d92f53f327cca6e6ae8c1f039ec7086e6eb673d86ddcc0f581dd3958f5e25",
+      "expected_symbols_sha256": "9d37fe26be25cb8d494c6213cb8cb4b713f72e7fedd84d6a443794a20fc16162",
+      "expected_errors_sha256": "822ce49c8f31f4ab183a0b7a34256a4f6f4ced917ca88f6d3cc144ba2c0300c2"
+    },
+    {
+      "name": "platform_movement_controls",
+      "category": "input_and_platform_movement",
+      "source": "//A complete side-scroller movement declaration with the machinery hidden./.\n\nCONTROLS for PLAYER\n[\n    A moves PLAYER left at 6 speed\n    D moves PLAYER right at 6 speed\n    SPACE makes PLAYER jump at 10 speed\n].\n",
+      "expected_profile": "bsharp.bytecode.v4",
+      "expected_binary_sha256": "41bcab1173735b3664db2d28e2ff0076212039cfeadaabb33021aef78fdfe902",
+      "expected_loader_summary_sha256": "c9e7810cc6bb10d6f2b575034cdffeb05a5d11a37d29c62ff3bbb0db1eec0bbc",
+      "expected_bsharp_ir_sha256": "f8dcdb2bd1383994c5862475c952eddf0b8cc180f2384f5b668bbc867a4558e5",
+      "expected_symbols_sha256": "3c640696565be295b42a4e444ff0d9bd5f41cf662fa6be8fe2f17e2472a5ade3",
+      "expected_errors_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "name": "text_value_gate_titles",
+      "category": "creator_text_values",
+      "source": "KINDS\n[\n    #gate is a #door\n].\n\nDEFINE\n[\n    @north gate is a #gate\n    @south gate is a #gate\n    @brass bell is a #device\n].\n\nSTART\n[\n    @north gate has \"North  Gate!\" title\n    @south gate has \"South Gate.\" title\n].\n\nWHEN PLAYER sounds @brass bell\n[\n    |then (change title of every #gate to \"OPEN — RubyVM!\"\n].\n\nIF @north gate has \"OPEN — RubyVM!\" title\n[\n    |then (damage PLAYER\n].\n",
+      "expected_profile": "bsharp.bytecode.v2",
+      "expected_binary_sha256": "fd0d0315d76aa44c7a143af7c0e6b9a0b61508da1f63f435dab6dfebbbe50403",
+      "expected_loader_summary_sha256": "bd70b382823c750426c6cbd53968085fbc513cc7a648c0411d1bda064e6236d2",
+      "expected_bsharp_ir_sha256": "aeb3cbe571079301a607554b147011d3b2b07d7d15f810556f0aab7bd10dbafe",
+      "expected_symbols_sha256": "fcbf9e0074dd93f6b0eaf17b55b7868c61019eaed8fb709ede2ecc5bb3f7e051",
+      "expected_errors_sha256": "450629c0871e0259da4a8cab80d811916dd364a94584c4194d1aaca93ff8ae8c"
+    },
+    {
+      "name": "number_change_thresholds",
+      "category": "number_changes_and_thresholds",
+      "source": "DEFINE\n[\n    @gold coin is a #thing\n    @spikes is a #thing\n    @bow is a #weapon\n].\n\nSTART\n[\n    PLAYER has 0 score\n    PLAYER has 10 health\n    @bow has 3 ammo\n].\n\nWHEN PLAYER takes @gold coin\n[\n    |then (increase score of PLAYER by 10\n].\n\nWHEN PLAYER attacks @spikes\n[\n    |then (decrease health of PLAYER by 3\n].\n\nWHEN PLAYER attacks @bow\n[\n    |then (decrease ammo of @bow by 1\n].\n\nIF PLAYER has at least 100 score\n[\n    |then (change PLAYER to friendly\n].\n\nIF PLAYER has more than 0 score\n[\n    |then (change PLAYER to alive\n].\n\nIF @bow has at most 0 ammo\n[\n    |then (change @bow to off\n].\n\nIF PLAYER has less than 1 health\n[\n    |then (change PLAYER to dead\n].\n",
+      "expected_profile": "bsharp.bytecode.v5",
+      "expected_binary_sha256": "a4b48636650c6b01767e32a41cf705f8b25f3f47616aee088d5b77bec63fab7b",
+      "expected_loader_summary_sha256": "fae0284c9b6691151792840aff627714b4c8f27e0043c96a76a4c8ae557b687b",
+      "expected_bsharp_ir_sha256": "5c6a9b4252558d4353622b733ea45df00de02e6522008d9b55e7e634a2d0369c",
+      "expected_symbols_sha256": "bb6b15bc9d3cf32454111a092fb76627a5d1abcfa304aa0ae8ec1635ccb3f40c",
+      "expected_errors_sha256": "5dc252d8492143f423a017551f0b1623b7eab341c31929e543eddc6ce68ed9cc"
+    },
+    {
+      "name": "compound_if_conditions",
+      "category": "compound_if_conditions",
+      "source": "DEFINE\n[\n    @boss is a #creature\n    @bridge is a #thing\n    @coin is a #thing\n].\n\nSTART\n[\n    PLAYER has 0 score\n    PLAYER has 10 health\n    PLAYER has 0 victories\n    @boss is alive\n    @bridge is whole\n].\n\nWHEN PLAYER takes @coin\n[\n    |then (increase score of PLAYER by 50\n].\n\nWHEN PLAYER attacks @boss\n[\n    |then (change @boss to dead\n].\n\nWHEN PLAYER speaks @boss\n[\n    |then (change @boss to alive\n].\n\nWHEN PLAYER attacks @bridge\n[\n    |then (change @bridge to broken\n].\n\nWHEN PLAYER speaks @bridge\n[\n    |then (change @bridge to whole\n].\n\nIF PLAYER has at least 100 score and @boss is dead\n[\n    |then (increase victories of PLAYER by 1\n].\n\nIF PLAYER has less than 1 health or @bridge is broken\n[\n    |then (change PLAYER to dead\n].\n",
+      "expected_profile": "bsharp.bytecode.v6",
+      "expected_binary_sha256": "df14c0ce8c003e622ccebf5cd652bf7a9fde8c2b8eaa778e00e49dbde9fccfd5",
+      "expected_loader_summary_sha256": "6dfe175dfd460af12d79f32a96adeaaaa258a41ca1f7e83370c46af1f4dfa835",
+      "expected_bsharp_ir_sha256": "28f5309396d13eb0670443b5b38c1c081cfbf4f31776023356c445860344a5eb",
+      "expected_symbols_sha256": "0ae46ac4085876e5333100f3556f4b5920f2ac13473a3a14c8651f03d46a2c9c",
+      "expected_errors_sha256": "77108552a9756daecc4d8ad8fe3400f707e234931e37599bd8fb51be16178bc8"
+    },
+    {
+      "name": "otherwise_branches",
+      "category": "otherwise_branching",
+      "source": "DEFINE\n[\n    @lamp is a #thing\n    @switch is a #thing\n].\n\nSTART\n[\n    @lamp is off\n    PLAYER has 0 ifruns\n    PLAYER has 0 otherwiseruns\n].\n\nWHEN PLAYER attacks @switch\n[\n    |then (change @lamp to on\n].\n\nWHEN PLAYER speaks @switch\n[\n    |then (change @lamp to off\n].\n\nIF @lamp is on\n[\n    |then (increase ifruns of PLAYER by 1\n].\nOTHERWISE\n[\n    |then (increase otherwiseruns of PLAYER by 1\n].\n",
+      "expected_profile": "bsharp.bytecode.v7",
+      "expected_binary_sha256": "4af08d447c2bf4fc9e70d90c6dbb4098d441d67dbba012b9d245f51dc7b9a613",
+      "expected_loader_summary_sha256": "f9ff6ff7e030fde2f4330cc82a370618b13c942261ff4a0dcfe96c1885f91739",
+      "expected_bsharp_ir_sha256": "e8fb2d38562a0a3f03888a081f1eb7f0d986f2f302831bbc0ad013d80117da6a",
+      "expected_symbols_sha256": "08f1fe0da99a48fb6f342688652bb196a5f2628b8648067cc8c63dc1bb951139",
+      "expected_errors_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "name": "demon_killer_input_bridge",
+      "category": "demon_killer_input_context",
+      "source": "//Demon Killer input and interaction declaration for the engine-neutral BASIC# host bridge./.\n\nKINDS\n[\n    #gate is a #door\n].\n\nDEFINE\n[\n    @north gate is a #gate\n    @iron sword is a #weapon\n].\n\nSTART\n[\n    PLAYER has 3 speed //Normal walking speed./.\n    @north gate is closed\n    @north gate has \"A heavy oak gate.\" description\n].\n\nCONTROLS for PLAYER\n[\n    W moves PLAYER north\n    S moves PLAYER south\n    A moves PLAYER west\n    D moves PLAYER east\n    PLAYER faces mouse pointer\n    holding right mouse moves PLAYER toward mouse pointer\n].\n\nHOVER for #door\n[\n    name\n    kind\n    state\n    description\n].\n\nCONTEXT for #door\n[\n    \"Open\" when it is closed (change it to open\n    \"Close\" when it is open (change it to closed\n    \"Examine\" (cause PLAYER examines it\n].\n\nWHEN PLAYER opens @north gate\n[\n    |then (change it to open\n].\n",
+      "expected_profile": "bsharp.bytecode.v3",
+      "expected_binary_sha256": "d4e696046882060a9498570fa3c7be2c5b05431342a182aa712c837ec7807e9d",
+      "expected_loader_summary_sha256": "4d35ddbb54214dbfe3e8542e246c1199dfcc65e59e5e64d21f119eaf205c039d",
+      "expected_bsharp_ir_sha256": "084e0cf46b4cfdbf1b88cca59f0209e3f27b0ffdb1d4cea2d34f175ed6be8281",
+      "expected_symbols_sha256": "5fd5b65a289430e15cd07f262d59ba4ed7d9b5d9d4a43ee5b4d92f29b8261dcf",
+      "expected_errors_sha256": "451eb8715647a5158e2f3597bf735dc4b14aa1beadde9382adbb000acd17d719"
+    },
+    {
+      "name": "trial_by_fire_cross_profile",
+      "category": "cross_profile_regression",
+      "source": "//BASIC# v0.1.46 whole-language proving ground for accepted Profiles 1 through 7./.\n\nKINDS\n[\n    #sentinel is a #guard\n    #captain is a #sentinel\n].\n\nDEFINE\n[\n    @mara is a #captain\n    @henry is a #sentinel\n    @north gate is a #door\n    @brass bell is a #device\n    @iron key is a #key\n].\n\nSTART\n[\n    PLAYER has 0 score\n    PLAYER has 12 health\n    PLAYER has 0 victories\n    PLAYER has 0 setbacks\n    PLAYER has \"Ready for the trial.\" motto\n    @mara is calm\n    @henry is calm\n    @north gate is closed\n    @north gate has \"A heavy gate built to take a beating.\" description\n    @iron key is on the #door\n].\n\nCONTROLS for PLAYER\n[\n    A moves PLAYER left at 6 speed\n    D moves PLAYER right at 6 speed\n    SPACE makes PLAYER jump at 10 speed\n].\n\nHOVER for #door\n[\n    name\n    kind\n    state\n    description\n].\n\nCONTEXT for #door\n[\n    \"Open\" when it is closed (change it to open\n    \"Close\" when it is open (change it to closed\n    \"Examine\" (cause PLAYER examines it\n].\n\nWHEN PLAYER attacks a #guard\n[\n    |then (damage it by 1\n    |then (change it to angry\n    |then (cause it attacks PLAYER\n].\n\nWHEN a #guard attacks PLAYER\n[\n    |then (decrease health of PLAYER by 1\n].\n\nWHEN PLAYER sounds @brass bell\n[\n    |then (damage every #guard by 1\n    |then (increase score of PLAYER by 1\n].\n\nWHEN PLAYER takes @iron key\n[\n    |then (carry @iron key\n].\n\nWHEN PLAYER opens @north gate\n[\n    |then (change @north gate to open\n    |then (change motto of PLAYER to \"The gate is open.\"\n].\n\nWHEN PLAYER closes @north gate\n[\n    |then (change @north gate to closed\n    |then (change motto of PLAYER to \"The gate is closed.\"\n].\n\nIF PLAYER has at least 2 score and @north gate is open\n[\n    |then (increase victories of PLAYER by 1\n].\nOTHERWISE\n[\n    |then (increase setbacks of PLAYER by 1\n].\n\nIF PLAYER has less than 1 health or @mara is dead\n[\n    |then (change PLAYER to dead\n].\n",
+      "expected_profile": "bsharp.bytecode.v7",
+      "expected_binary_sha256": "31061d2acce3a3f550cfb3b505b3f74d1b8cc83570f8a9577f31d2c2bb2596ab",
+      "expected_loader_summary_sha256": "5d82f6349d8f57f592ef85fe25080f0a3bf2f6c91de1219bcf1c877c10b62e52",
+      "expected_bsharp_ir_sha256": "23845ead7a8fdca2e1b21b5029ac430e0e594c6d99eeddabe00a7cf85b04e4bc",
+      "expected_symbols_sha256": "f98a2de90e3a746a12494191b2ae82749dade459c549de35d5e0645d5eacb03a",
+      "expected_errors_sha256": "b9b488d233b688de5fdf244429c8b894579ce172b7972dad0504cae6b4f6cd31"
+    }
+  ]
+}

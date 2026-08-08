@@ -26,6 +26,8 @@ SMALL_COMPILER_SUBSET_BSBC_EMITTER_SPEC_PATH = File.join(ROOT, 'spec/self_hostin
 SMALL_COMPILER_SUBSET_BSBC_EMITTER_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v0_1_55.md')
 SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json')
 SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_1_56.md')
+SELF_HOSTING_FIXTURE_CORPUS_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json')
+SELF_HOSTING_FIXTURE_CORPUS_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v0_1_57.md')
 REFERENCE_PATHS = [
   'README.md',
   'docs/roadmap/BASIC_SHARP_ROADMAP.md',
@@ -44,7 +46,9 @@ REFERENCE_PATHS = [
   'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json',
   'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v0_1_55.md',
   'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json',
-  'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_1_56.md'
+  'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_1_56.md',
+  'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json',
+  'docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v0_1_57.md'
 ].freeze
 
 spec = JSON.parse(File.read(SPEC_PATH, encoding: 'UTF-8'))
@@ -58,7 +62,7 @@ assert_contract!(spec.fetch('format_version') == 1, 'wrong spec format version')
 assert_contract!(spec.fetch('target_version') == BasicSharp::VERSION, 'spec target does not match BasicSharp::VERSION')
 assert_contract!(spec.fetch('status') == 'foundation_contract_only', 'a carried self-hosting foundation must remain a foundation contract')
 assert_contract!(spec.fetch('compiler_subset_name') == 'BSharp Compiler Subset 0', 'subset name changed')
-assert_contract!(spec.fetch('compiler_subset_status') == 'bsbc_golden_parity_under_ruby_referee', 'subset status changed')
+assert_contract!(spec.fetch('compiler_subset_status') == 'fixture_corpus_under_ruby_referee', 'subset status changed')
 
 profiles = spec.fetch('approved_profiles_available_to_creator_programs')
 assert_contract!(profiles == (1..7).map { |n| "bsharp.meaning.v#{n}" }, 'approved profile list changed')
@@ -92,6 +96,8 @@ assert_contract!(File.file?(SMALL_COMPILER_SUBSET_BSBC_EMITTER_SPEC_PATH), 'smal
 assert_contract!(File.file?(SMALL_COMPILER_SUBSET_BSBC_EMITTER_DOC_PATH), 'small compiler subset BSBC emitter document is missing')
 assert_contract!(File.file?(SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_SPEC_PATH), 'small compiler subset BSBC parity harness spec is missing')
 assert_contract!(File.file?(SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_DOC_PATH), 'small compiler subset BSBC parity harness document is missing')
+assert_contract!(File.file?(SELF_HOSTING_FIXTURE_CORPUS_SPEC_PATH), 'self-hosting fixture corpus spec is missing')
+assert_contract!(File.file?(SELF_HOSTING_FIXTURE_CORPUS_DOC_PATH), 'self-hosting fixture corpus document is missing')
 
 rules = spec.fetch('acceptance_rules')
 assert_contract!(rules.any? { |entry| entry.include?('Ruby remains the bootstrap') }, 'Ruby referee rule missing')
@@ -103,6 +109,7 @@ assert_contract!(rules.any? { |entry| entry.include?('scene/block expansion') },
 assert_contract!(rules.any? { |entry| entry.include?('symbol table contract') }, 'subset symbol table rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('BSBC emitter') }, 'subset BSBC emitter rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('BSBC golden parity') }, 'subset BSBC golden parity rule missing')
+assert_contract!(rules.any? { |entry| entry.include?('fixture corpus') }, 'self-hosting fixture corpus rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('Profiles 1-7 validation') }, 'Profiles 1-7 validation rule missing')
 
 unless File.file?(DOC_PATH)
@@ -127,6 +134,7 @@ scene_block_doc = File.read(SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_DOC_PATH
 symbol_table_doc = File.read(SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_DOC_PATH, encoding: 'UTF-8')
 bsbc_emitter_doc = File.read(SMALL_COMPILER_SUBSET_BSBC_EMITTER_DOC_PATH, encoding: 'UTF-8')
 bsbc_parity_doc = File.read(SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_DOC_PATH, encoding: 'UTF-8')
+fixture_corpus_doc = File.read(SELF_HOSTING_FIXTURE_CORPUS_DOC_PATH, encoding: 'UTF-8')
 assert_contract!(tokenizer_doc.include?('contract only'), 'tokenizer/reader contract history must remain contract only')
 assert_contract!(implementation_doc.include?('Ruby referee'), 'tokenizer/reader implementation must keep Ruby referee')
 assert_contract!(implementation_doc.include?('not the production parser authority'), 'tokenizer/reader implementation must not become parser authority')
@@ -146,6 +154,9 @@ assert_contract!(bsbc_emitter_doc.include?('BSBC bytecode'), 'small compiler sub
 assert_contract!(bsbc_emitter_doc.include?('Not the production compiler path') || bsbc_emitter_doc.include?('not the production compiler path'), 'small compiler subset BSBC emitter must not become compiler path')
 assert_contract!(bsbc_parity_doc.include?('BSBC Golden Parity Harness'), 'small compiler subset BSBC parity document must name BSBC Golden Parity Harness')
 assert_contract!(bsbc_parity_doc.include?('No bytecode or BSBC rename'), 'small compiler subset BSBC parity document must preserve bytecode names')
+assert_contract!(fixture_corpus_doc.include?('Self-Hosting Fixture Corpus'), 'fixture corpus document must name Self-Hosting Fixture Corpus')
+assert_contract!(fixture_corpus_doc.include?('not the production compiler path'), 'fixture corpus must not become compiler path')
+assert_contract!(fixture_corpus_doc.include?('DKLab is retained'), 'DKLab identity decision must be recorded')
 
 puts "BASIC# Self-Hosting Contract v#{BasicSharp::VERSION}"
 puts "Compiler subset: #{spec.fetch('compiler_subset_name')}"
@@ -164,4 +175,5 @@ puts 'Small compiler subset scene/block expansion linked: PASS'
 puts 'Small compiler subset symbol table contract linked: PASS'
 puts 'Small compiler subset BSBC emitter linked: PASS'
 puts 'Small compiler subset BSBC golden parity harness linked: PASS'
+puts 'Self-hosting fixture corpus linked: PASS'
 puts 'SELF-HOSTING CONTRACT: PASS'
