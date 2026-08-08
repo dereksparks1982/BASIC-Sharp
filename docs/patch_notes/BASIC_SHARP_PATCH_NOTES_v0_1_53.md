@@ -1,12 +1,12 @@
-# BASIC# Patch Notes v0.1.61
+# BASIC# Patch Notes v0.1.62
 
 ## Patch summary
 
-v0.1.61 expands the small compiler subset with a scene/block expansion harness. The new lane proves larger valid BASIC# block arrangements and broken expanded block cases under the Ruby referee, the v0.1.51 IR golden parity guard, and the v0.1.52 plain-English error contract.
+v0.1.62 expands the small compiler subset with a scene/block expansion harness. The new lane proves larger valid BASIC# block arrangements and broken expanded block cases under the Ruby referee, the v0.1.51 IR golden parity guard, and the v0.1.52 plain-English error contract.
 
 ## Why this matters
 
-The self-hosting bridge needs to grow carefully. v0.1.61 gives the subset a bigger approved shape without letting it become the production parser or compiler.
+The self-hosting bridge needs to grow carefully. v0.1.62 gives the subset a bigger approved shape without letting it become the production parser or compiler.
 
 ## Guardrails
 

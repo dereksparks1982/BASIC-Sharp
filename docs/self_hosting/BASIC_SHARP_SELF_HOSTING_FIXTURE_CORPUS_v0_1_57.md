@@ -1,4 +1,4 @@
-# BASIC# Self-Hosting Fixture Corpus v0.1.61
+# BASIC# Self-Hosting Fixture Corpus v0.1.62
 
 Status: fixture corpus under Ruby referee.
 
@@ -18,8 +18,8 @@ Forbidden:
 - Replacing the Ruby bootstrap compiler.
 - Claiming BASIC# is self-hosted.
 - Renaming bytecode or BSBC.
-- Renaming DKLab paths or accepted-build workflow.
+- Removing the DKLab compatibility bridge before later accepted validation.
 
-## DKLab identity decision
+## Elderedd identity and DKLab compatibility decision
 
-Elderred Softworks LLC is the official company identity. DKLab is retained as the internal workspace and lab name in homage to Demon Killer. No filesystem or build-path migration is planned in this build.
+Elderedd Softworks LLC is the parent company identity. Elderedd Laboratory is the active laboratory. DKLab is retired as active identity and retained only as compatibility bridge, rollback support, migration history, or archival evidence. The compatibility bridge must not be removed until a later accepted build proves it is safe.

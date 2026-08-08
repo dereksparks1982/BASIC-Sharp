@@ -1,9 +1,9 @@
 {
   "format": "bsharp.self_hosting_milestone_1.json",
   "format_version": 1,
-  "target_version": "0.1.61",
+  "target_version": "0.1.62",
   "status": "self_hosting_milestone_1_under_ruby_referee",
-  "title": "BASIC# v0.1.61 Self-Hosting Milestone 1",
+  "title": "BASIC# v0.1.62 Self-Hosting Milestone 1",
   "definition": "BASIC# can read, parse, validate, emit BSharp IR, emit BSBC, compare golden artifacts, and run selected runtime smoke checks for BSharp Compiler Subset 0 under Ruby referee supervision.",
   "allowed_claims": [
     "BSharp Compiler Subset 0 has a sealed reader, parser, IR emitter, BSBC emitter, fixture corpus, parity harnesses, runtime smoke lane, and bootstrap boundary audit.",

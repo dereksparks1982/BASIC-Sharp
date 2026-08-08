@@ -1,4 +1,4 @@
-# BASIC# Changelog v0.1.61
+# BASIC# Changelog v0.1.62
 
 ## Small Compiler Subset Scene/Block Expansion
 
@@ -12,4 +12,4 @@
 
 ## Explicit exclusions
 
-v0.1.61 does not add Profile 8, new syntax, runtime semantics, bytecode changes, web export, browser work, engine bridge work, or Ruby retirement.
+v0.1.62 does not add Profile 8, new syntax, runtime semantics, bytecode changes, web export, browser work, engine bridge work, or Ruby retirement.

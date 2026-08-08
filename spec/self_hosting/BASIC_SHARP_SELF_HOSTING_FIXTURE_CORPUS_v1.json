@@ -1,14 +1,14 @@
 {
   "format": "bsharp.self_hosting.fixture_corpus.json",
   "format_version": 1,
-  "target_version": "0.1.61",
+  "target_version": "0.1.62",
   "title": "BASIC# Self-Hosting Fixture Corpus",
   "status": "self_hosting_fixture_corpus_under_ruby_referee",
   "purpose": "Seal a repeatable corpus of BASIC# source fixtures for parser, BSharp IR, BSBC bytecode, loader summary, and symbol-table checks while Ruby remains the referee.",
   "self_hosting_spec": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json",
-  "company_identity": "Elderred Softworks LLC",
-  "workspace_identity": "DKLab",
-  "workspace_meaning": "DKLab is retained as the internal workspace and lab name in homage to Demon Killer.",
+  "company_identity": "Elderedd Softworks LLC",
+  "workspace_identity": "Elderedd Laboratory",
+  "workspace_meaning": "Elderedd Laboratory is the active laboratory. DKLab is retired as an active identity and survives only as compatibility bridge, rollback support, migration history, or archival evidence.",
   "minimum_fixture_count": 8,
   "required_profiles": [
     "bsharp.bytecode.v1",
@@ -24,14 +24,14 @@
       "sealed source fixture corpus",
       "parser to BSharp IR to BSBC to loader summary comparisons",
       "symbol-table checks for valid corpus fixtures",
-      "DKLab identity decision record"
+      "Elderedd identity migration with DKLab compatibility record"
     ],
     "forbidden": [
       "claiming BASIC# is self-hosted",
       "replacing Ruby bootstrap compiler",
       "adding Profile 8",
       "renaming bytecode or BSBC",
-      "renaming DKLab paths or accepted-build workflow"
+      "removing the DKLab compatibility bridge before later accepted validation"
     ]
   },
   "fixtures": [
@@ -42,7 +42,7 @@
       "expected_profile": "bsharp.bytecode.v1",
       "expected_binary_sha256": "c09c60886cdb341accc427d07a0ac68350b675b4f4e2d1571e02dac216870ee1",
       "expected_loader_summary_sha256": "657d9861a1f67b4f33840f350dc680b16128294c45ddc748b8b8d78b3a1bac7d",
-      "expected_bsharp_ir_sha256": "5ed631d15690514e2b4644b2a0f53266d0fc2cb49f56ad0fa987720684ed913b",
+      "expected_bsharp_ir_sha256": "91de94ede67d2207187bd74b67a671e109355daed92cf02a5de4328562933f14",
       "expected_symbols_sha256": "9d37fe26be25cb8d494c6213cb8cb4b713f72e7fedd84d6a443794a20fc16162",
       "expected_errors_sha256": "822ce49c8f31f4ab183a0b7a34256a4f6f4ced917ca88f6d3cc144ba2c0300c2"
     },
@@ -53,7 +53,7 @@
       "expected_profile": "bsharp.bytecode.v4",
       "expected_binary_sha256": "41bcab1173735b3664db2d28e2ff0076212039cfeadaabb33021aef78fdfe902",
       "expected_loader_summary_sha256": "c9e7810cc6bb10d6f2b575034cdffeb05a5d11a37d29c62ff3bbb0db1eec0bbc",
-      "expected_bsharp_ir_sha256": "f36e1ca72aa0d806a8dfcf1ec3c0fcd347d2fd2caa48b0a8a02c73869d278e0c",
+      "expected_bsharp_ir_sha256": "5c6e81e8ab0811567b27fb8e3032513e179710e76f92442f363b41422bf6c98c",
       "expected_symbols_sha256": "3c640696565be295b42a4e444ff0d9bd5f41cf662fa6be8fe2f17e2472a5ade3",
       "expected_errors_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
@@ -64,7 +64,7 @@
       "expected_profile": "bsharp.bytecode.v2",
       "expected_binary_sha256": "fd0d0315d76aa44c7a143af7c0e6b9a0b61508da1f63f435dab6dfebbbe50403",
       "expected_loader_summary_sha256": "bd70b382823c750426c6cbd53968085fbc513cc7a648c0411d1bda064e6236d2",
-      "expected_bsharp_ir_sha256": "c77e37d9ac416f0c6d02019a054ddb4d44e7459fbf7fc528bb3301fcd87c5891",
+      "expected_bsharp_ir_sha256": "d17c799763efef2b32da64624add44baf144f6c72599a85bfad587e0819b49a9",
       "expected_symbols_sha256": "fcbf9e0074dd93f6b0eaf17b55b7868c61019eaed8fb709ede2ecc5bb3f7e051",
       "expected_errors_sha256": "450629c0871e0259da4a8cab80d811916dd364a94584c4194d1aaca93ff8ae8c"
     },
@@ -75,7 +75,7 @@
       "expected_profile": "bsharp.bytecode.v5",
       "expected_binary_sha256": "a4b48636650c6b01767e32a41cf705f8b25f3f47616aee088d5b77bec63fab7b",
       "expected_loader_summary_sha256": "fae0284c9b6691151792840aff627714b4c8f27e0043c96a76a4c8ae557b687b",
-      "expected_bsharp_ir_sha256": "c5389ec83d3954336ff1b55f5e30be4a3f30f4911015ecd8cbe766081364f741",
+      "expected_bsharp_ir_sha256": "06bb36795588c4e1f3228ce600e790a0ee3642525dd1783ea9d2fa5f77c372c9",
       "expected_symbols_sha256": "bb6b15bc9d3cf32454111a092fb76627a5d1abcfa304aa0ae8ec1635ccb3f40c",
       "expected_errors_sha256": "5dc252d8492143f423a017551f0b1623b7eab341c31929e543eddc6ce68ed9cc"
     },
@@ -86,7 +86,7 @@
       "expected_profile": "bsharp.bytecode.v6",
       "expected_binary_sha256": "df14c0ce8c003e622ccebf5cd652bf7a9fde8c2b8eaa778e00e49dbde9fccfd5",
       "expected_loader_summary_sha256": "6dfe175dfd460af12d79f32a96adeaaaa258a41ca1f7e83370c46af1f4dfa835",
-      "expected_bsharp_ir_sha256": "8be91c521931f209b06a0f691155bf0b7ac0c672e1a8da7430f8c5f0d0c65e67",
+      "expected_bsharp_ir_sha256": "073f8094593f3a037ae484030abe21fc7a0481ccbadfbf02398f207f080ac9f9",
       "expected_symbols_sha256": "0ae46ac4085876e5333100f3556f4b5920f2ac13473a3a14c8651f03d46a2c9c",
       "expected_errors_sha256": "77108552a9756daecc4d8ad8fe3400f707e234931e37599bd8fb51be16178bc8"
     },
@@ -97,7 +97,7 @@
       "expected_profile": "bsharp.bytecode.v7",
       "expected_binary_sha256": "4af08d447c2bf4fc9e70d90c6dbb4098d441d67dbba012b9d245f51dc7b9a613",
       "expected_loader_summary_sha256": "f9ff6ff7e030fde2f4330cc82a370618b13c942261ff4a0dcfe96c1885f91739",
-      "expected_bsharp_ir_sha256": "26e7619deda7b15d4ea299ec67ad7ee5bfe8cbc0a137c064a68d6412cdb43e72",
+      "expected_bsharp_ir_sha256": "4510ffa2149910d88065c60311ad41101a29717af3aac5358c5d7ceb7e9fe28c",
       "expected_symbols_sha256": "08f1fe0da99a48fb6f342688652bb196a5f2628b8648067cc8c63dc1bb951139",
       "expected_errors_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
@@ -108,7 +108,7 @@
       "expected_profile": "bsharp.bytecode.v3",
       "expected_binary_sha256": "d4e696046882060a9498570fa3c7be2c5b05431342a182aa712c837ec7807e9d",
       "expected_loader_summary_sha256": "4d35ddbb54214dbfe3e8542e246c1199dfcc65e59e5e64d21f119eaf205c039d",
-      "expected_bsharp_ir_sha256": "e7eb4180dc9402bf0639f86c554cd048f6cb123291dfb020966196e39751d9ca",
+      "expected_bsharp_ir_sha256": "92fc05ff96969a6174eadfc5cd53344c7f0a6d4751d02a647f5cafc40b047e46",
       "expected_symbols_sha256": "5fd5b65a289430e15cd07f262d59ba4ed7d9b5d9d4a43ee5b4d92f29b8261dcf",
       "expected_errors_sha256": "451eb8715647a5158e2f3597bf735dc4b14aa1beadde9382adbb000acd17d719"
     },
@@ -119,7 +119,7 @@
       "expected_profile": "bsharp.bytecode.v7",
       "expected_binary_sha256": "31061d2acce3a3f550cfb3b505b3f74d1b8cc83570f8a9577f31d2c2bb2596ab",
       "expected_loader_summary_sha256": "5d82f6349d8f57f592ef85fe25080f0a3bf2f6c91de1219bcf1c877c10b62e52",
-      "expected_bsharp_ir_sha256": "a84d0b5eb776d466023467b7d80197c9b981200fd2c65be887f136d872ff6b9e",
+      "expected_bsharp_ir_sha256": "6f2beccf37b92e2de447efc67c22037b14299dedc12924ab030506e08b968415",
       "expected_symbols_sha256": "f98a2de90e3a746a12494191b2ae82749dade459c549de35d5e0645d5eacb03a",
       "expected_errors_sha256": "b9b488d233b688de5fdf244429c8b894579ce172b7972dad0504cae6b4f6cd31"
     }

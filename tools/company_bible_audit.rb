@@ -155,8 +155,11 @@ MANDATORY_TEXT = [
   'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json',
   'docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v0_1_57.md',
   'compiler/self_hosting_fixture_corpus.rb',
-  'DKLab is retained as the internal workspace and lab name in homage to Demon Killer',
-  'Elderred Softworks LLC',
+  'Elderedd Softworks LLC',
+  'Elderedd Laboratory',
+  'BCS',
+  'Never make the BASIC# GitHub repository public',
+  'GitHub description update',
   'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v1.json',
   'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v0_1_58.md',
   'compiler/small_compiler_subset_runtime_smoke.rb',
@@ -179,7 +182,7 @@ files = Dir.glob(File.join(ROOT, 'docs/company_bible/*'), File::FNM_DOTMATCH).re
   [File.join(ROOT, 'docs/company_bible/.'), File.join(ROOT, 'docs/company_bible/..')].include?(path)
 end
 raise "Expected one Company Bible file, found #{files.length}" unless files == [CANONICAL_FULL_PATH]
-puts 'BASIC# Company Bible Audit v0.1.61'
+puts 'BASIC# Company Bible Audit v0.1.62'
 puts 'Canonical file count: PASS'
 
 text = File.read(CANONICAL_FULL_PATH, encoding: 'UTF-8')

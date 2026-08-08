@@ -1,6 +1,6 @@
 # BASIC# Documentation Map
 
-**Version:** v0.1.61  
+**Version:** v0.1.62  
 **Status:** Canonical navigation guide  
 **Purpose:** Give Derek, future assistants, contributors, and reviewers a front door into the BASIC# documentation stack.
 
@@ -87,7 +87,7 @@ Before proposing or building a BASIC# patch, read in this order:
 
 This map is not a replacement for the Company Bible, roadmap, specifications, validation inventory, or handoff. It is the front door that tells a reader which room to enter first.
 
-## v0.1.61 expansion note
+## v0.1.62 expansion note
 
 The scene/block expansion lane is documented at `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_1_53.md`.
 
@@ -100,33 +100,43 @@ ByteTide decision record: the name was considered as a creator-facing metaphor f
 Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_1_54.md`.
 
 
-### v0.1.61 small compiler subset BSBC emission
+### v0.1.62 small compiler subset BSBC emission
 
-BASIC# v0.1.61 adds the first small compiler subset lane that emits real BSBC bytecode under Ruby referee control. It proves source -> BSharp IR -> BSBC bytes -> bytecode loader for sealed fixtures without replacing Ruby and without claiming BASIC# is self-hosted.
+BASIC# v0.1.62 adds the first small compiler subset lane that emits real BSBC bytecode under Ruby referee control. It proves source -> BSharp IR -> BSBC bytes -> bytecode loader for sealed fixtures without replacing Ruby and without claiming BASIC# is self-hosted.
 
 Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json`.
 Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v0_1_55.md`.
 
 
-### v0.1.61 small compiler subset BSBC golden parity
+### v0.1.62 small compiler subset BSBC golden parity
 
-BASIC# v0.1.61 adds the BSBC Golden Parity Harness under Ruby referee control. It locks approved subset source -> BSharp IR -> BSBC bytes -> bytecode loader summaries against sealed golden expectations without replacing Ruby and without claiming BASIC# is self-hosted.
+BASIC# v0.1.62 adds the BSBC Golden Parity Harness under Ruby referee control. It locks approved subset source -> BSharp IR -> BSBC bytes -> bytecode loader summaries against sealed golden expectations without replacing Ruby and without claiming BASIC# is self-hosted.
 
 Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json`.
 Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_1_56.md`.
 
 
-## v0.1.61 Self-Hosting Fixture Corpus
+## v0.1.62 Self-Hosting Fixture Corpus
 
 - Spec: `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json`
 - Doc: `docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v0_1_57.md`
 - Implementation: `compiler/self_hosting_fixture_corpus.rb`
 - Tool: `tools/self_hosting_fixture_corpus.rb`
 - Test: `tests/test_self_hosting_fixture_corpus.rb`
-- DKLab is retained as the internal workspace and lab name in homage to Demon Killer. Elderred Softworks LLC remains the official company identity.
-- v0.1.61: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v0_1_58.md` documents the compiler subset runtime smoke lane.
+- DKLab is retired as active identity and retained only as compatibility/history. Elderedd Softworks LLC and Elderedd Laboratory are current identity.
+- v0.1.62: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v0_1_58.md` documents the compiler subset runtime smoke lane.
 
 
-- v0.1.61: `docs/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v0_1_59.md` documents the bootstrap boundary audit before v0.1.61.
+- v0.1.62: `docs/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v0_1_59.md` documents the bootstrap boundary audit before v0.1.62.
 
-- v0.1.61: `docs/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v0_1_61.md` documents Self-Hosting Milestone 1. `docs/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v0_1_61.md` documents the README Current Release Truth Gate.
+- v0.1.62: `docs/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v0_1_61.md` documents Self-Hosting Milestone 1. `docs/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v0_1_61.md` documents the README Current Release Truth Gate.
+
+
+## v0.1.62 Elderedd Identity Contract
+
+- Spec: `spec/governance/BASIC_SHARP_ELDEREDD_IDENTITY_CONTRACT_v1.json`
+- Tool: `tools/elderedd_identity_contract.rb`
+- Test: `tests/test_elderedd_identity_contract.rb`
+- Audit: `docs/audit/BASIC_SHARP_v0_1_62_DKLAB_RETIREMENT_AND_ELDEREDD_MIGRATION.md`
+
+Elderedd Softworks LLC is the parent identity. Elderedd Laboratory is the active laboratory. BCS means BSharp Creator Services. DKLab is retired as active identity and may remain only as compatibility bridge, rollback, migration, or archival history.

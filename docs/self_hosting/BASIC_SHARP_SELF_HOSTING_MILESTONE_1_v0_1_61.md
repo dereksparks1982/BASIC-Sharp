@@ -1,6 +1,6 @@
-# BASIC# v0.1.61 Self-Hosting Milestone 1
+# BASIC# v0.1.62 Self-Hosting Milestone 1
 
-v0.1.61 seals Self-Hosting Milestone 1 for BSharp Compiler Subset 0 under Ruby referee control.
+v0.1.62 seals Self-Hosting Milestone 1 for BSharp Compiler Subset 0 under Ruby referee control.
 
 ## Meaning of the milestone
 

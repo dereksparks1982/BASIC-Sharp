@@ -1,0 +1,37 @@
+{
+  "format": "bsharp.elderedd_identity_contract.json",
+  "format_version": 1,
+  "target_version": "0.1.62",
+  "status": "elderedd_identity_migration_with_dklab_compatibility",
+  "parent_company": "Elderedd Softworks LLC",
+  "laboratory": "Elderedd Laboratory",
+  "internal_shorthand": "ELDL",
+  "service_layer": {
+    "name": "BSharp Creator Services",
+    "short_name": "BCS"
+  },
+  "canonical_future_path": "~/Elderedd/Projects/BASIC#",
+  "legacy_compatibility_path": "~/DKLab/Projects/BASIC#",
+  "retired_identity": "DKLab",
+  "approved_dklab_contexts": [
+    "retired history",
+    "compatibility bridge",
+    "rollback support",
+    "archival evidence",
+    "migration audit"
+  ],
+  "closeout_order": [
+    "accepted snapshot",
+    "local Git commit/tag verification",
+    "GitHub push and remote verification",
+    "GitHub description update",
+    "final status summary"
+  ],
+  "private_github_rule": "Never make the BASIC# GitHub repository public unless Derek explicitly commands that exact visibility change.",
+  "forbidden": [
+    "calling DKLab the active laboratory",
+    "removing the DKLab compatibility bridge before later accepted validation",
+    "implementing BCS accounts, payments, hosting, servers, or network features in this build",
+    "changing compiler, runtime, parser, bytecode, or language behavior in this identity build"
+  ]
+}

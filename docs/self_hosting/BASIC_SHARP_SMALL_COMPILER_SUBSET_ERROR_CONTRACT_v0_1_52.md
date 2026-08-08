@@ -1,11 +1,11 @@
-# BASIC# Small Compiler Subset Error Contract v0.1.61
+# BASIC# Small Compiler Subset Error Contract v0.1.62
 
-**Build:** v0.1.61  
+**Build:** v0.1.62  
 **Status:** `plain_english_error_contract_under_ruby_referee`  
 **Spec:** `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json`  
 **Parent self-hosting spec:** `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json`
 
-v0.1.61 adds the plain-English error contract for the small compiler subset. The contract gives invalid subset examples stable error IDs, source line numbers, severity, creator-facing explanations, and the underlying Ruby-referee diagnostic that produced each result.
+v0.1.62 adds the plain-English error contract for the small compiler subset. The contract gives invalid subset examples stable error IDs, source line numbers, severity, creator-facing explanations, and the underlying Ruby-referee diagnostic that produced each result.
 
 ## Implementation
 
@@ -26,15 +26,15 @@ No Profile 8 is added. No creator-facing syntax changes. No valid-program runtim
 
 ## Acceptance
 
-v0.1.61 is accepted only when:
+v0.1.62 is accepted only when:
 
 1. Every invalid fixture matches its locked stable error IDs, line numbers, severities, plain messages, source messages, and digest.
 2. Valid small compiler subset IR golden parity from v0.1.51 still passes.
 3. The new error contract tool passes inside the Trial-by-Fire validation inventory.
 4. Existing Profiles 1 through 7, BSharp Bytecode profiles, runtime transition, movement/input, tokenizer/reader, parser, IR emitter, and IR parity validations remain green.
-5. Derek commits the exact accepted tree and tags `v0.1.61`.
+5. Derek commits the exact accepted tree and tags `v0.1.62`.
 
-After v0.1.61 is accepted, the next likely self-hosting build is controlled subset expansion or the bytecode-emission lane, still under Ruby referee control.
+After v0.1.62 is accepted, the next likely self-hosting build is controlled subset expansion or the bytecode-emission lane, still under Ruby referee control.
 
 
 ## Five Point relationship

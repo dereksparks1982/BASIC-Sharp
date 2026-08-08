@@ -16,9 +16,9 @@ assert_contract!(spec.fetch('format') == 'bsharp.self_hosting.fixture_corpus.jso
 assert_contract!(spec.fetch('format_version') == 1, 'wrong spec format version')
 assert_contract!(spec.fetch('target_version') == BasicSharp::VERSION, 'spec target does not match BasicSharp::VERSION')
 assert_contract!(spec.fetch('status') == 'self_hosting_fixture_corpus_under_ruby_referee', 'wrong corpus status')
-assert_contract!(spec.fetch('company_identity') == 'Elderred Softworks LLC', 'company identity changed')
-assert_contract!(spec.fetch('workspace_identity') == 'DKLab', 'DKLab workspace identity changed')
-assert_contract!(spec.fetch('workspace_meaning').include?('homage to Demon Killer'), 'DKLab homage decision is missing')
+assert_contract!(spec.fetch('company_identity') == 'Elderedd Softworks LLC', 'company identity changed')
+assert_contract!(spec.fetch('workspace_identity') == 'Elderedd Laboratory', 'Elderedd laboratory identity changed')
+assert_contract!(spec.fetch('workspace_meaning').include?('compatibility bridge'), 'DKLab compatibility bridge decision is missing')
 
 fixture_names = spec.fetch('fixtures').map { |entry| entry.fetch('name') }
 assert_contract!(fixture_names.uniq == fixture_names, 'fixture names must be unique')
@@ -32,10 +32,10 @@ spec.fetch('required_profiles').each do |profile|
 end
 assert_contract!(!profiles.include?('bsharp.bytecode.v8'), 'Profile 8 must not appear in the fixture corpus')
 assert_contract!(spec.fetch('scope').fetch('forbidden').include?('claiming BASIC# is self-hosted'), 'self-hosting claim must remain forbidden')
-assert_contract!(spec.fetch('scope').fetch('forbidden').include?('renaming DKLab paths or accepted-build workflow'), 'DKLab path migration must remain forbidden')
+assert_contract!(spec.fetch('scope').fetch('forbidden').include?('removing the DKLab compatibility bridge before later accepted validation'), 'DKLab bridge removal must remain gated')
 
 puts "BASIC# Self-Hosting Fixture Corpus v#{BasicSharp::VERSION}: PASS"
 puts "Fixtures: #{record.fetch(:fixture_count)}"
 puts "Profiles: #{profiles.join(', ')}"
-puts 'DKLab homage identity: PASS'
+puts 'Elderedd identity and DKLab compatibility bridge: PASS'
 puts 'Ruby referee remains: PASS'

@@ -193,7 +193,7 @@ assert_contract!(bsbc_parity_doc.include?('BSBC Golden Parity Harness'), 'small 
 assert_contract!(bsbc_parity_doc.include?('No bytecode or BSBC rename'), 'small compiler subset BSBC parity document must preserve bytecode names')
 assert_contract!(fixture_corpus_doc.include?('Self-Hosting Fixture Corpus'), 'fixture corpus document must name Self-Hosting Fixture Corpus')
 assert_contract!(fixture_corpus_doc.include?('not the production compiler path'), 'fixture corpus must not become compiler path')
-assert_contract!(fixture_corpus_doc.include?('DKLab is retained'), 'DKLab identity decision must be recorded')
+assert_contract!(fixture_corpus_doc.include?('DKLab is retired') || fixture_corpus_doc.include?('compatibility bridge'), 'DKLab retirement compatibility decision must be recorded')
 assert_contract!(runtime_smoke_doc.include?('Small Compiler Subset Runtime Smoke'), 'runtime smoke document must name runtime smoke')
 assert_contract!(runtime_smoke_doc.include?('not the production compiler path'), 'runtime smoke must not become compiler path')
 assert_contract!(runtime_smoke_doc.include?('does not claim BASIC# is self-hosted'), 'runtime smoke must not claim self-hosting')

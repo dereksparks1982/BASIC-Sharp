@@ -23,11 +23,11 @@ class TestSelfHostingFixtureCorpus < Minitest::Test
     assert_equal 'self_hosting_fixture_corpus_under_ruby_referee', spec.fetch('status')
   end
 
-  def test_dklab_is_retained_as_demon_killer_homage
-    assert_equal 'Elderred Softworks LLC', spec.fetch('company_identity')
-    assert_equal 'DKLab', spec.fetch('workspace_identity')
-    assert_includes spec.fetch('workspace_meaning'), 'homage to Demon Killer'
-    assert_includes spec.fetch('scope').fetch('forbidden'), 'renaming DKLab paths or accepted-build workflow'
+  def test_dklab_is_retired_as_compatibility_bridge
+    assert_equal 'Elderedd Softworks LLC', spec.fetch('company_identity')
+    assert_equal 'Elderedd Laboratory', spec.fetch('workspace_identity')
+    assert_includes spec.fetch('workspace_meaning'), 'compatibility bridge'
+    assert_includes spec.fetch('scope').fetch('forbidden'), 'removing the DKLab compatibility bridge before later accepted validation'
   end
 
   def test_fixture_corpus_covers_profiles_one_through_seven_without_profile_eight

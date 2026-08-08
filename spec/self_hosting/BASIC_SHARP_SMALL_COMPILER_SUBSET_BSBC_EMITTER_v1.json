@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.bsbc_emitter.json",
   "format_version": 1,
-  "target_version": "0.1.61",
+  "target_version": "0.1.62",
   "status": "bsbc_emission_under_ruby_referee",
   "purpose": "Lock the first small compiler subset path that emits real BSharp Bytecode while Ruby remains the referee.",
   "self_hosting_spec": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json",
@@ -13,7 +13,7 @@
       "expected_binary_bytes": 1240,
       "expected_binary_sha256": "c09c60886cdb341accc427d07a0ac68350b675b4f4e2d1571e02dac216870ee1",
       "expected_disassembly_sha256": "3034d2b9a76be2b4c67c603642707319f316c243fd110e647604588cd80a20d3",
-      "expected_bsharp_ir_sha256": "5ed631d15690514e2b4644b2a0f53266d0fc2cb49f56ad0fa987720684ed913b",
+      "expected_bsharp_ir_sha256": "91de94ede67d2207187bd74b67a671e109355daed92cf02a5de4328562933f14",
       "expected_loader_summary": {
         "binary_format": "bsharp.bytecode.bin",
         "binary_format_version": 1,
@@ -42,7 +42,7 @@
       "expected_binary_bytes": 696,
       "expected_binary_sha256": "41bcab1173735b3664db2d28e2ff0076212039cfeadaabb33021aef78fdfe902",
       "expected_disassembly_sha256": "2c8763cfb898e311f17fcd1e3464ee1f946dc74f174e61fdad86b17554963be8",
-      "expected_bsharp_ir_sha256": "f36e1ca72aa0d806a8dfcf1ec3c0fcd347d2fd2caa48b0a8a02c73869d278e0c",
+      "expected_bsharp_ir_sha256": "5c6e81e8ab0811567b27fb8e3032513e179710e76f92442f363b41422bf6c98c",
       "expected_loader_summary": {
         "binary_format": "bsharp.bytecode.bin",
         "binary_format_version": 1,
@@ -71,7 +71,7 @@
       "expected_binary_bytes": 732,
       "expected_binary_sha256": "fd0d0315d76aa44c7a143af7c0e6b9a0b61508da1f63f435dab6dfebbbe50403",
       "expected_disassembly_sha256": "0e860ca11f208c906bdcbd83222f8a97c0911f244ce0dc54246e0825bef251d6",
-      "expected_bsharp_ir_sha256": "c77e37d9ac416f0c6d02019a054ddb4d44e7459fbf7fc528bb3301fcd87c5891",
+      "expected_bsharp_ir_sha256": "d17c799763efef2b32da64624add44baf144f6c72599a85bfad587e0819b49a9",
       "expected_loader_summary": {
         "binary_format": "bsharp.bytecode.bin",
         "binary_format_version": 1,

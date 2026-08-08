@@ -1,26 +1,34 @@
 {
   "format": "bsharp.readme_current_release_truth.json",
   "format_version": 1,
-  "target_version": "0.1.61",
+  "target_version": "0.1.62",
   "status": "readme_current_release_truth_gate",
   "title": "README Current Release Truth Gate",
   "current_release": {
-    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.61",
-    "build_title": "BASIC# v0.1.61 Self-Hosting Milestone 1",
-    "summary": "BASIC# v0.1.61 seals Self-Hosting Milestone 1 for BSharp Compiler Subset 0 under Ruby referee control, and adds a README Current Release Truth Gate so GitHub shows the active build instead of stale carried-forward release text.",
+    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.62",
+    "build_title": "BASIC# v0.1.62 establishes the Elderedd identity migration with a DKLab compatibility layer",
+    "summary": "BASIC# v0.1.62 keeps the v0.1.62 Self-Hosting Milestone 1 foundation intact under Ruby referee control while adding governance that retires DKLab as the active identity.",
     "must_mention": [
+      "Elderedd identity migration",
+      "DKLab compatibility layer",
+      "Elderedd Softworks LLC",
+      "Elderedd Laboratory",
+      "BCS",
+      "BSharp Creator Services",
       "Self-Hosting Milestone 1",
-      "BSharp Compiler Subset 0",
-      "Ruby referee control",
       "README Current Release Truth Gate",
       "not full self-hosting",
       "Ruby remains the bootstrap compiler"
     ],
     "forbidden_current_section_phrases": [
       "adds the first small compiler subset IR golden parity harness",
-      "v0.1.61 adds the first",
+      "v0.1.62 adds the first",
       "compiler/small_compiler_subset_ir_parity_harness.rb beside the existing compiler path",
       "production compiler path is replaced",
+      "Ruby is retired",
+      "BASIC# is fully self-hosted",
+      "DKLab is retained as the internal workspace and lab name",
+      "Elderred Softworks LLC",
       "Ruby is retired",
       "BASIC# is fully self-hosted"
     ]
@@ -30,6 +38,7 @@
     "The README current-release section must describe the active build title.",
     "A build must fail when README current-release text is stale or describes an older lane.",
     "Historical records may mention old lanes only outside the current-release section.",
-    "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json remains the canonical self-hosting contract."
+    "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json remains the canonical self-hosting contract.",
+    "Elderedd identity replaces DKLab as active current identity while DKLab remains compatibility/history only."
   ]
 }

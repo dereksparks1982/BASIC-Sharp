@@ -1,25 +1,28 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.61
+# BASIC# Ruby Bootstrap Compiler v0.1.62
 
 > A scripting language made for non-programmers, by non-programmers.
 
-BASIC# v0.1.61 Self-Hosting Milestone 1 seals the first protected self-hosting foothold for BSharp Compiler Subset 0. BASIC# can now read, parse, validate, emit BSharp IR, emit BSBC, compare golden artifacts, and run selected runtime smoke checks for the sealed small compiler subset under Ruby referee control.
+BASIC# v0.1.62 establishes the Elderedd identity migration with a DKLab compatibility layer. Elderedd Softworks LLC is the parent company identity, Elderedd Laboratory is the active research/build laboratory, ELDL is internal shorthand only, and BCS means BSharp Creator Services.
 
-BASIC# v0.1.61 seals Self-Hosting Milestone 1 for BSharp Compiler Subset 0 under Ruby referee control, and adds a README Current Release Truth Gate so GitHub shows the active build instead of stale carried-forward release text.
+BASIC# v0.1.62 keeps the v0.1.62 Self-Hosting Milestone 1 foundation intact under Ruby referee control while adding governance that retires DKLab as the active identity. DKLab may appear only as retired history, compatibility bridge wording, rollback support, or archival evidence while the project works toward removing the bridge in later accepted builds.
 
-This is not full self-hosting. Ruby remains the bootstrap compiler, production parser authority, production resolver authority, runtime authority, and reference referee. v0.1.61 does not retire Ruby, does not add Profile 8, does not change production runtime behaviour, and does not rename bytecode or BSBC.
+The README Current Release Truth Gate remains active so the public-facing README cannot drift away from the current accepted build.
 
-## v0.1.61 active gates
+This is not full self-hosting. Ruby remains the bootstrap compiler, production parser authority, production resolver authority, runtime authority, and reference referee. v0.1.62 does not retire Ruby, does not add Profile 8, does not change production runtime behaviour, and does not rename bytecode or BSBC.
+
+## v0.1.62 active gates
 
 ```text
-spec/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v1.json
-compiler/self_hosting_milestone_1.rb
-tools/self_hosting_milestone_1.rb
-tests/test_self_hosting_milestone_1.rb
+spec/governance/BASIC_SHARP_ELDEREDD_IDENTITY_CONTRACT_v1.json
+tools/elderedd_identity_contract.rb
+tests/test_elderedd_identity_contract.rb
 spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json
 compiler/readme_current_release_truth.rb
 tools/readme_current_release_truth.rb
 tests/test_readme_current_release_truth.rb
 ```
+
+The README Current Release Truth Gate remains active so the public-facing README cannot drift away from the current accepted build.
 
 ## Self-hosting runway records
 
@@ -71,6 +74,7 @@ BASIC# is fully self-hosted or Ruby has been retired.
 ruby compiler/basic_sharp.rb samples/text_values.bsharp --run "player sounds brass bell"
 ruby compiler/basic_sharp.rb samples/text_values.bsharp --verify-runtime-parity --run "player sounds brass bell"
 ruby compiler/basic_sharp.rb samples/text_values.bsbc --disassemble-bytecode
+ruby tools/elderedd_identity_contract.rb
 ruby tools/readme_current_release_truth.rb
 ruby tools/tokenizer_reader_contract.rb
 ruby tools/small_compiler_subset_parser.rb
@@ -102,6 +106,7 @@ Creator clarity before programmer tradition.
 docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
 docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
 docs/roadmap/BASIC_SHARP_ROADMAP.md
+spec/governance/BASIC_SHARP_ELDEREDD_IDENTITY_CONTRACT_v1.json
 spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json
 spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_VALIDATION_INVENTORY_v1.json
 ```
@@ -121,9 +126,13 @@ Reference oracle: BasicSharp::Runtime
 Meaning profiles: bsharp.meaning.v1 through bsharp.meaning.v7
 Bytecode profiles: bsharp.bytecode.v1 through bsharp.bytecode.v7
 Self-hosting contract: BSharp Compiler Subset 0
-Milestone: v0.1.61 Self-Hosting Milestone 1 under Ruby referee control
-Input contract: keyboard, mouse/keyboard, PS5, Xbox, generic gamepad
-Company: Elderred Softworks LLC
-Internal workspace/lab: DKLab, retained as homage to Demon Killer
-Version: 0.1.61
+Milestone: v0.1.62 Self-Hosting Milestone 1 under Ruby referee control
+Parent company: Elderedd Softworks LLC
+Laboratory: Elderedd Laboratory
+Internal shorthand: ELDL
+Service layer: BCS, BSharp Creator Services
+DKLab status: retired active identity; allowed only as compatibility, rollback, migration, or archival history
+Canonical future path: ~/Elderedd/Projects/BASIC#
+Legacy compatibility path: ~/DKLab/Projects/BASIC#
+Version: 0.1.62
 ```

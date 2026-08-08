@@ -1,10 +1,10 @@
-# BASIC# Changelog v0.1.61
+# BASIC# Changelog v0.1.62
 
 ## Added
 
 - Self-hosting fixture corpus specification, implementation, tests, and validation tool.
 - Corpus coverage across existing bytecode Profiles 1 through 7.
-- DKLab identity decision record: Elderred Softworks LLC is official company identity; DKLab remains the internal lab/workspace name in homage to Demon Killer.
+- DKLab identity decision record: Elderedd Softworks LLC is official company identity; DKLab remains the internal lab/workspace name in homage to Demon Killer.
 
 ## Unchanged
 

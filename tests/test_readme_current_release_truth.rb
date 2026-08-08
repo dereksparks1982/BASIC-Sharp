@@ -34,7 +34,7 @@ class TestReadmeCurrentReleaseTruth < Minitest::Test
 
   def test_stale_current_release_text_is_rejected
     stale = File.read(README_PATH, encoding: 'UTF-8').sub(
-      'Self-Hosting Milestone 1',
+      'Elderedd identity migration',
       'adds the first small compiler subset IR golden parity harness'
     )
     record = BasicSharp::ReadmeCurrentReleaseTruth.new(stale, spec).to_h
@@ -43,10 +43,10 @@ class TestReadmeCurrentReleaseTruth < Minitest::Test
   end
 
   def test_missing_required_current_release_phrase_is_rejected
-    broken = File.read(README_PATH, encoding: 'UTF-8').gsub('README Current Release Truth Gate', 'README landing page check')
+    broken = File.read(README_PATH, encoding: 'UTF-8').gsub('BCS', 'Creator Services')
     record = BasicSharp::ReadmeCurrentReleaseTruth.new(broken, spec).to_h
     refute record.fetch(:all_pass)
-    assert_includes record.fetch(:missing_mentions), 'README Current Release Truth Gate'
+    assert_includes record.fetch(:missing_mentions), 'BCS'
   end
 
   def test_trial_by_fire_inventory_runs_readme_truth_gate
