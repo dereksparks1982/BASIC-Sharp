@@ -17,7 +17,7 @@ class TestBytecodeEmitter < Minitest::Test
   SAMPLE_NAMES = %w[ask_demo every_guard first_room follow_up_events values_and_amounts world_save_demo].freeze
 
   def resolve_source(path)
-    parser = BasicSharp::Parser.new(File.read(path))
+    parser = BasicSharp::Parser.new(File.read(path, encoding: 'UTF-8'))
     program = parser.parse
     BasicSharp::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
   end
@@ -27,7 +27,7 @@ class TestBytecodeEmitter < Minitest::Test
   end
 
   def bsir_document(name)
-    JSON.parse(File.read(File.join(ROOT, 'samples', "#{name}.bsir.json")))
+    JSON.parse(File.read(File.join(ROOT, 'samples', "#{name}.bsir.json"), encoding: 'UTF-8'))
   end
 
   def test_all_six_samples_have_source_and_bsir_byte_parity
@@ -49,7 +49,7 @@ class TestBytecodeEmitter < Minitest::Test
   end
 
   def test_blank_lines_and_line_numbers_do_not_change_output
-    original = File.read(File.join(ROOT, 'samples/first_room.bsharp'))
+    original = File.read(File.join(ROOT, 'samples/first_room.bsharp'), encoding: 'UTF-8')
     spaced = original.lines.map { |line| line.strip.empty? ? line : "\n#{line}" }.join
     parser = BasicSharp::Parser.new(spaced)
     program = parser.parse
@@ -163,7 +163,7 @@ class TestBytecodeEmitter < Minitest::Test
       returned = emitter.write(binary_path)
       assert_equal [binary_path, text_path], returned
       assert_equal emitter.binary, File.binread(binary_path)
-      assert_equal emitter.disassembly, File.read(text_path)
+      assert_equal emitter.disassembly, File.read(text_path, encoding: 'UTF-8')
       assert_equal [], Dir.children(dir).grep(/backup|tmp/)
     end
   end
@@ -189,7 +189,7 @@ class TestBytecodeEmitter < Minitest::Test
       assert source_status[2].success?, source_status[1]
       assert bsir_status[2].success?, bsir_status[1]
       assert_equal File.binread(source_out), File.binread(bsir_out)
-      assert_equal File.read("#{source_out}.txt"), File.read("#{bsir_out}.txt")
+      assert_equal File.read("#{source_out}.txt", encoding: 'UTF-8'), File.read("#{bsir_out}.txt", encoding: 'UTF-8')
     end
   end
 
@@ -214,7 +214,7 @@ class TestBytecodeEmitter < Minitest::Test
 
   def test_fixture_manifest_locks_samples_and_meaning_cases
     path = File.join(ROOT, 'spec/bytecode_v1/BASIC_SHARP_BYTECODE_EMITTER_FIXTURES_v1.json')
-    fixture = JSON.parse(File.read(path))
+    fixture = JSON.parse(File.read(path, encoding: 'UTF-8'))
     assert_equal 'bsharp.bytecode.emitter.fixtures.json', fixture.fetch('format')
     assert_equal 1, fixture.fetch('format_version')
     assert_equal '0.1.27', fixture.fetch('created_by_basic_sharp')

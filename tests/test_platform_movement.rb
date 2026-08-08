@@ -15,7 +15,7 @@ class TestPlatformMovement < Minitest::Test
   ROOT = File.expand_path('..', __dir__)
 
   def setup
-    source = File.read(File.join(ROOT, 'samples/platform_movement.bsharp'))
+    source = File.read(File.join(ROOT, 'samples/platform_movement.bsharp'), encoding: 'UTF-8')
     parser = BasicSharp::Parser.new(source)
     @document = BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve
     @input = BasicSharp::GameInput.new(@document)

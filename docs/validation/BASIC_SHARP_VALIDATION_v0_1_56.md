@@ -1,4 +1,4 @@
-# BASIC# Validation v0.1.62
+# BASIC# Validation v0.1.63
 
 Required gates:
 
@@ -21,8 +21,8 @@ Required gates:
 
 Complete test suite: 500 runs, 8486 assertions, 0 failures, 0 errors, 0 skips.
 
-Repair note: the original v0.1.62 candidate passed the complete test suite but failed a later sealed stress gate on fixture hashes. This repaired candidate refreshes the version-sensitive sealed fixture hashes for the v0.1.62 Save documents and expected runtime fixture files.
+Repair note: the original v0.1.63 candidate passed the complete test suite but failed a later sealed stress gate on fixture hashes. This repaired candidate refreshes the version-sensitive sealed fixture hashes for the v0.1.63 Save documents and expected runtime fixture files.
 
 ## Repaired inventory hashes package refresh
 
-A prior v0.1.62 repaired package was rejected because the Trial-by-Fire sealed validation inventory still held an outdated byte count for the v0.1.62 patch-notes artifact. This package refreshes sealed inventory records for the changed artifacts without changing runtime behavior.
+A prior v0.1.63 repaired package was rejected because the Trial-by-Fire sealed validation inventory still held an outdated byte count for the v0.1.63 patch-notes artifact. This package refreshes sealed inventory records for the changed artifacts without changing runtime behavior.

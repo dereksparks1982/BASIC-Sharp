@@ -34,7 +34,7 @@ class TestBytecodeVMIntegration < Minitest::Test
   ].freeze
 
   def resolve_file(path)
-    parser = BasicSharp::Parser.new(File.read(path))
+    parser = BasicSharp::Parser.new(File.read(path, encoding: 'UTF-8'))
     BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve
   end
 

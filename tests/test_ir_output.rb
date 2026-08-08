@@ -8,7 +8,7 @@ require_relative '../compiler/ir_emitter'
 
 class TestIROutput < Minitest::Test
   def setup
-    source = File.read(File.expand_path('../samples/first_room.bsharp', __dir__))
+    source = File.read(File.expand_path('../samples/first_room.bsharp', __dir__), encoding: 'UTF-8')
     parser = BasicSharp::Parser.new(source)
     program = parser.parse
     document = BasicSharp::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
@@ -17,7 +17,7 @@ class TestIROutput < Minitest::Test
   end
 
   def test_emits_versioned_ir
-    assert_equal '0.1.62', @ir.fetch('version')
+    assert_equal '0.1.63', @ir.fetch('version')
     assert_equal 'bsir.debug.json', @ir.fetch('format')
   end
 

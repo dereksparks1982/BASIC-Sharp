@@ -1,0 +1,24 @@
+{
+  "format": "bsharp.elderedd_path_bridge_contract.json",
+  "format_version": 1,
+  "target_version": "0.1.63",
+  "title": "Elderedd Canonical Path and DKLab Compatibility Bridge Contract",
+  "status": "active_retirement_bridge",
+  "canonical_path": "~/Elderedd/Projects/BASIC#",
+  "legacy_path": "~/DKLab/Projects/BASIC#",
+  "bridge_status": "active_retirement_bridge",
+  "removal_status": "forbidden_in_v0.1.63",
+  "purpose": "Prove the active BASIC# documentation and validation gates can name Elderedd as the future canonical path while keeping the DKLab path as a legacy compatibility bridge until a later build proves it is safe to remove.",
+  "required_next_proof": [
+    "future build validates from Elderedd path",
+    "active docs stop using DKLab as current truth",
+    "DKLab references remain only compatibility, rollback, migration, or archive evidence"
+  ],
+  "forbidden": [
+    "removing the DKLab compatibility bridge in v0.1.63",
+    "deleting unrelated DKLab workspace contents",
+    "treating DKLab as the active laboratory identity",
+    "changing GitHub repository visibility",
+    "Project Oracle or Demon Killer workspace migration"
+  ]
+}

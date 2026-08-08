@@ -1,6 +1,6 @@
-# BASIC# v0.1.62 DKLab Retirement and Elderedd Migration Audit
+# BASIC# v0.1.63 DKLab Retirement and Elderedd Migration Audit
 
-DKLab / DK LAB was the former active lab/workspace identity. In v0.1.62 it is retired as active BASIC# identity.
+DKLab / DK LAB was the former active lab/workspace identity. In v0.1.63 it is retired as active BASIC# identity.
 
 Elderedd Softworks LLC is the parent company identity. Elderedd Laboratory is the active research and build laboratory. ELDL is internal shorthand only. BCS means BSharp Creator Services.
 

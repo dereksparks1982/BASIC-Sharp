@@ -14,7 +14,7 @@ require_relative '../compiler/game_input'
 
 ROOT = File.expand_path('..', __dir__)
 FIXTURE_PATH = File.join(ROOT, 'spec/bytecode_v1/BASIC_SHARP_BYTECODE_VM_FIXTURES_v1.json')
-FIXTURE = JSON.parse(File.read(FIXTURE_PATH))
+FIXTURE = JSON.parse(File.read(FIXTURE_PATH, encoding: 'UTF-8'))
 
 module VMConformance
   module_function
@@ -24,7 +24,7 @@ module VMConformance
   end
 
   def resolve(path_or_source, file: true)
-    source = file ? File.read(path_or_source) : path_or_source
+    source = file ? File.read(path_or_source, encoding: 'UTF-8') : path_or_source
     parser = BasicSharp::Parser.new(source)
     BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve
   end

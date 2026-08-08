@@ -15,7 +15,7 @@ PROFILE_1_SAMPLES = %w[ask_demo every_guard first_room follow_up_events values_a
 TEXT_SAMPLE = 'text_values'
 
 def resolve(path)
-  parser = BasicSharp::Parser.new(File.read(path))
+  parser = BasicSharp::Parser.new(File.read(path, encoding: 'UTF-8'))
   program = parser.parse
   BasicSharp::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
 end
@@ -34,7 +34,7 @@ forbidden_data = false
 
 PROFILE_1_SAMPLES.each do |name|
   source = BasicSharp::BytecodeEmitter.new(resolve(File.join(ROOT, 'samples', "#{name}.bsharp")))
-  bsir_document = JSON.parse(File.read(File.join(ROOT, 'samples', "#{name}.bsir.json")))
+  bsir_document = JSON.parse(File.read(File.join(ROOT, 'samples', "#{name}.bsir.json"), encoding: 'UTF-8'))
   bsir = BasicSharp::BytecodeEmitter.new(bsir_document)
   source_bsir_parity &&= source.binary == bsir.binary && source.disassembly == bsir.disassembly
   repeated = BasicSharp::BytecodeEmitter.new(resolve(File.join(ROOT, 'samples', "#{name}.bsharp")))
@@ -46,13 +46,13 @@ PROFILE_1_SAMPLES.each do |name|
 end
 
 text_source = BasicSharp::BytecodeEmitter.new(resolve(File.join(ROOT, 'samples', "#{TEXT_SAMPLE}.bsharp")))
-text_bsir = BasicSharp::BytecodeEmitter.new(JSON.parse(File.read(File.join(ROOT, 'samples', "#{TEXT_SAMPLE}.bsir.json"))))
+text_bsir = BasicSharp::BytecodeEmitter.new(JSON.parse(File.read(File.join(ROOT, 'samples', "#{TEXT_SAMPLE}.bsir.json"), encoding: 'UTF-8')))
 text_profile = text_source.model.fetch(:profile) == 'bsharp.bytecode.v2' &&
                text_source.model.fetch(:meaning_profile) == 'bsharp.meaning.v2' &&
                text_source.binary == text_bsir.binary && text_source.disassembly == text_bsir.disassembly &&
                text_source.model.fetch(:strings).include?('OPEN — RubyVM!')
 
-original = File.read(File.join(ROOT, 'samples/first_room.bsharp'))
+original = File.read(File.join(ROOT, 'samples/first_room.bsharp'), encoding: 'UTF-8')
 spaced = original.lines.map { |line| line.strip.empty? ? line : "\n#{line}" }.join
 Dir.mktmpdir do |dir|
   spaced_path = File.join(dir, 'spaced.bsharp')
@@ -74,7 +74,7 @@ Dir.mktmpdir do |dir|
   path = File.join(dir, 'room.bsbc')
   emitter = BasicSharp::BytecodeEmitter.new(resolve(File.join(ROOT, 'samples/first_room.bsharp')))
   emitter.write(path)
-  atomic_output = File.binread(path) == emitter.binary && File.read("#{path}.txt") == emitter.disassembly && Dir.children(dir).sort == %w[room.bsbc room.bsbc.txt]
+  atomic_output = File.binread(path) == emitter.binary && File.read("#{path}.txt", encoding: 'UTF-8') == emitter.disassembly && Dir.children(dir).sort == %w[room.bsbc room.bsbc.txt]
 end
 
 assert_pass(source_bsir_parity, 'Source and BSIR byte parity')
@@ -90,24 +90,24 @@ assert_pass(text_profile, 'Profile 2 exact text emission')
 game_emitter = BasicSharp::BytecodeEmitter.new(resolve(File.join(ROOT, 'samples/demon_killer_controls.bsharp')))
 assert_pass(game_emitter.profile == 'bsharp.bytecode.v3', 'Profile 3 game emission')
 platform_source = BasicSharp::BytecodeEmitter.new(resolve(File.join(ROOT, 'samples/platform_movement.bsharp')))
-platform_bsir = BasicSharp::BytecodeEmitter.new(JSON.parse(File.read(File.join(ROOT, 'samples/platform_movement.bsir.json'))))
+platform_bsir = BasicSharp::BytecodeEmitter.new(JSON.parse(File.read(File.join(ROOT, 'samples/platform_movement.bsir.json'), encoding: 'UTF-8')))
 assert_pass(platform_source.profile == 'bsharp.bytecode.v4', 'Profile 4 platform emission')
 assert_pass(platform_source.binary == platform_bsir.binary && platform_source.disassembly == platform_bsir.disassembly, 'Profile 4 source and BSIR parity')
 number_source = BasicSharp::BytecodeEmitter.new(resolve(File.join(ROOT, 'samples/number_changes.bsharp')))
-number_bsir = BasicSharp::BytecodeEmitter.new(JSON.parse(File.read(File.join(ROOT, 'samples/number_changes.bsir.json'))))
+number_bsir = BasicSharp::BytecodeEmitter.new(JSON.parse(File.read(File.join(ROOT, 'samples/number_changes.bsir.json'), encoding: 'UTF-8')))
 assert_pass(number_source.profile == 'bsharp.bytecode.v5', 'Profile 5 number-change emission')
 assert_pass(number_source.binary == number_bsir.binary && number_source.disassembly == number_bsir.disassembly, 'Profile 5 source and BSIR parity')
 compound_source = BasicSharp::BytecodeEmitter.new(resolve(File.join(ROOT, 'samples/compound_if_conditions.bsharp')))
-compound_bsir = BasicSharp::BytecodeEmitter.new(JSON.parse(File.read(File.join(ROOT, 'samples/compound_if_conditions.bsir.json'))))
+compound_bsir = BasicSharp::BytecodeEmitter.new(JSON.parse(File.read(File.join(ROOT, 'samples/compound_if_conditions.bsir.json'), encoding: 'UTF-8')))
 assert_pass(compound_source.profile == 'bsharp.bytecode.v6', 'Profile 6 compound IF emission')
 assert_pass(compound_source.binary == compound_bsir.binary && compound_source.disassembly == compound_bsir.disassembly, 'Profile 6 source and BSIR parity')
 otherwise_source = BasicSharp::BytecodeEmitter.new(resolve(File.join(ROOT, 'samples/otherwise_branches.bsharp')))
-otherwise_bsir = BasicSharp::BytecodeEmitter.new(JSON.parse(File.read(File.join(ROOT, 'samples/otherwise_branches.bsir.json'))))
+otherwise_bsir = BasicSharp::BytecodeEmitter.new(JSON.parse(File.read(File.join(ROOT, 'samples/otherwise_branches.bsir.json'), encoding: 'UTF-8')))
 assert_pass(otherwise_source.profile == 'bsharp.bytecode.v7', 'Profile 7 OTHERWISE emission')
 assert_pass(otherwise_source.binary == otherwise_bsir.binary && otherwise_source.disassembly == otherwise_bsir.disassembly, 'Profile 7 source and BSIR parity')
 
 fixture_path = File.join(ROOT, 'spec/bytecode_v1/BASIC_SHARP_BYTECODE_EMITTER_FIXTURES_v1.json')
-fixture = JSON.parse(File.read(fixture_path))
+fixture = JSON.parse(File.read(fixture_path, encoding: 'UTF-8'))
 fixture_hashes = fixture['sample_count'] == 6 && fixture['valid_meaning_case_count'] == 12
 Array(fixture['samples']).each do |entry|
   binary = File.binread(File.join(ROOT, entry.fetch('binary')))

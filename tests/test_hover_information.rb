@@ -10,7 +10,7 @@ class TestHoverInformation < Minitest::Test
   ROOT = File.expand_path('..', __dir__)
 
   def setup
-    parser = BasicSharp::Parser.new(File.read(File.join(ROOT, 'samples/demon_killer_controls.bsharp')))
+    parser = BasicSharp::Parser.new(File.read(File.join(ROOT, 'samples/demon_killer_controls.bsharp'), encoding: 'UTF-8'))
     @document = BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve
     @machine = BasicSharp::Runtime.new(@document)
   end
@@ -22,7 +22,7 @@ class TestHoverInformation < Minitest::Test
   end
 
   def test_missing_hover_information_names_the_object_and_field
-    source = File.read(File.join(ROOT, 'samples/demon_killer_controls.bsharp')).sub(
+    source = File.read(File.join(ROOT, 'samples/demon_killer_controls.bsharp'), encoding: 'UTF-8').sub(
       '@north gate has "A heavy oak gate." description',
       '@north gate has 3 speed'
     )

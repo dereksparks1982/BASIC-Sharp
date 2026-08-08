@@ -6,13 +6,13 @@ require_relative '../compiler/meaning_profile'
 
 root = File.expand_path('..', __dir__)
 manifest_path = File.join(root, 'spec/meaning_v1/BASIC_SHARP_MEANING_PROFILE_v1.json')
-manifest = JSON.parse(File.read(manifest_path))
+manifest = JSON.parse(File.read(manifest_path, encoding: 'UTF-8'))
 BasicSharp::MeaningProfile.validate_manifest!(manifest, root: root)
 
 failures = []
 manifest.fetch('cases').each do |entry|
   expected_path = File.join(root, entry.fetch('expected'))
-  expected = JSON.parse(File.read(expected_path))
+  expected = JSON.parse(File.read(expected_path, encoding: 'UTF-8'))
   actual = BasicSharp::MeaningProfile.observe_case(entry, root: root)
   failures << entry.fetch('id') unless actual == expected
 end

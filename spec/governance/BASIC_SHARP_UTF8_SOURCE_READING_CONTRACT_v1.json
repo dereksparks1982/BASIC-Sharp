@@ -1,0 +1,35 @@
+{
+  "format": "bsharp.utf8_source_reading_contract.json",
+  "format_version": 1,
+  "target_version": "0.1.63",
+  "title": "UTF-8 Source Reading Contract",
+  "status": "active_hardening_gate",
+  "purpose": "BASIC# source, BSharp IR JSON, BSharp Save JSON, and text fixtures must be read as UTF-8 so a minimal or no-locale Ruby environment does not crash when creator text contains non-ASCII characters.",
+  "minimal_locale_environment": {
+    "LC_ALL": "C",
+    "LANG": "",
+    "RUBYOPT": "-W2"
+  },
+  "required_samples": [
+    {
+      "path": "samples/text_values.bsharp",
+      "contains": "OPEN — RubyVM!",
+      "command": ["ruby", "compiler/basic_sharp.rb", "samples/text_values.bsharp", "--run", "player sounds brass bell"],
+      "must_include_stdout": "OPEN — RubyVM!"
+    },
+    {
+      "path": "samples/text_values.bsir.json",
+      "contains": "OPEN — RubyVM!",
+      "command": ["ruby", "compiler/basic_sharp.rb", "samples/text_values.bsir.json", "--run", "player sounds brass bell"],
+      "must_include_stdout": "OPEN — RubyVM!"
+    }
+  ],
+  "forbidden": [
+    "US-ASCII Encoding::CompatibilityError during source parsing",
+    "locale-dependent source meaning",
+    "changing creator-facing syntax",
+    "changing runtime semantics",
+    "changing bytecode format",
+    "retiring Ruby as referee"
+  ]
+}

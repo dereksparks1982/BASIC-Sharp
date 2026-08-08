@@ -14,7 +14,7 @@ class TestIdentityMigration < Minitest::Test
   def test_basic_sharp_is_the_only_active_ruby_namespace
     assert Object.const_defined?(:BasicSharp)
     refute Object.const_defined?(:DKScript)
-    assert_equal '0.1.62', BasicSharp::VERSION
+    assert_equal '0.1.63', BasicSharp::VERSION
   end
 
   def test_new_compiler_paths_exist_and_retired_paths_are_gone
@@ -38,7 +38,7 @@ class TestIdentityMigration < Minitest::Test
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BASIC# Ruby Bootstrap Compiler v0.1.62'
+    assert_includes stdout, 'BASIC# Ruby Bootstrap Compiler v0.1.63'
     refute_includes stdout, 'DKScript Ruby Bootstrap Compiler'
 
     run_stdout, run_stderr, run_status = Open3.capture3(
@@ -50,13 +50,13 @@ class TestIdentityMigration < Minitest::Test
     )
 
     assert run_status.success?, run_stderr
-    assert_includes run_stdout, 'BSharp Virtual Machine v0.1.62'
+    assert_includes run_stdout, 'BSharp Virtual Machine v0.1.63'
     refute_includes run_stdout, 'DKScript Runtime'
   end
 
   def test_v0_1_13_saved_bsir_still_runs
     path = File.join(ROOT, 'tests/fixtures/first_room_v0_1_13.bsir.json')
-    document = JSON.parse(File.read(path))
+    document = JSON.parse(File.read(path, encoding: 'UTF-8'))
     assert_equal '0.1.13', document.fetch('version')
 
     machine = BasicSharp::Runtime.load(path)
@@ -76,7 +76,7 @@ class TestIdentityMigration < Minitest::Test
 
     assert_equal [canonical], files
     assert File.file?(canonical)
-    assert File.read(canonical).include?('one active Company Bible for BASIC#')
+    assert File.read(canonical, encoding: 'UTF-8').include?('one active Company Bible for BASIC#')
   end
 
   def test_no_project_filename_uses_retired_dkscript_identity

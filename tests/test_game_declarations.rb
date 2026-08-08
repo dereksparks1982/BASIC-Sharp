@@ -13,7 +13,7 @@ class TestGameDeclarations < Minitest::Test
   end
 
   def test_canonical_sample_resolves_profile_3_without_diagnostics
-    document = resolve(File.read(File.join(ROOT, 'samples/demon_killer_controls.bsharp')))
+    document = resolve(File.read(File.join(ROOT, 'samples/demon_killer_controls.bsharp'), encoding: 'UTF-8'))
     assert_equal 'bsharp.meaning.v3', document.meaning_profile
     assert_equal 0, document.error_count
     assert_equal 0, document.warning_count
@@ -23,7 +23,7 @@ class TestGameDeclarations < Minitest::Test
   end
 
   def test_visual_markers_resolve_to_stable_internal_names
-    document = resolve(File.read(File.join(ROOT, 'samples/demon_killer_controls.bsharp')))
+    document = resolve(File.read(File.join(ROOT, 'samples/demon_killer_controls.bsharp'), encoding: 'UTF-8'))
     assert_equal ['player', 'north gate', 'iron sword'], document.objects.map { |entry| entry['name'] }
     assert_equal 'door', document.hover_declarations.first.dig('subject', 'kind_name')
     assert_equal 'north gate', document.events.first.dig('when', 'target', 'name')

@@ -68,7 +68,7 @@ module BasicSharp
 
     def self.load(path, world_save_path: nil)
       save_document = world_save_path ? WorldSave.read(world_save_path) : nil
-      new(JSON.parse(File.read(path)), world_save: save_document)
+      new(JSON.parse(File.read(path, encoding: 'UTF-8')), world_save: save_document)
     end
 
     def initialize(document, world_save: nil)

@@ -19,7 +19,7 @@ class BytecodeProfile6Test < Minitest::Test
     assert_equal %w[ALL_CONDITIONS ANY_CONDITIONS], profile.fetch('conditions').last(2).map { |entry| entry.fetch('name') }
 
     emitter = emitter_for('compound_if_conditions')
-    fixture = JSON.parse(File.read(File.join(ROOT, 'spec/bytecode_v6/BASIC_SHARP_BYTECODE_PROFILE_v6_FIXTURES_v1.json')))
+    fixture = JSON.parse(File.read(File.join(ROOT, 'spec/bytecode_v6/BASIC_SHARP_BYTECODE_PROFILE_v6_FIXTURES_v1.json'), encoding: 'UTF-8'))
     assert_equal fixture.fetch('binary_sha256'), Digest::SHA256.hexdigest(emitter.binary)
     assert_equal fixture.fetch('disassembly_sha256'), Digest::SHA256.hexdigest(emitter.disassembly)
     assert_includes emitter.disassembly, 'ALL_CONDITIONS'
@@ -38,7 +38,7 @@ class BytecodeProfile6Test < Minitest::Test
     %w[ask_demo every_guard first_room follow_up_events values_and_amounts world_save_demo text_values demon_killer_controls platform_movement number_changes].each do |name|
       emitter = emitter_for(name)
       assert_equal File.binread(File.join(ROOT, "samples/#{name}.bsbc")), emitter.binary, "#{name}.bsbc changed"
-      assert_equal File.read(File.join(ROOT, "samples/#{name}.bsbc.txt")), emitter.disassembly, "#{name}.bsbc.txt changed"
+      assert_equal File.read(File.join(ROOT, "samples/#{name}.bsbc.txt"), encoding: 'UTF-8'), emitter.disassembly, "#{name}.bsbc.txt changed"
     end
   end
 
@@ -59,7 +59,7 @@ class BytecodeProfile6Test < Minitest::Test
   private
 
   def emitter_for(name)
-    parser = BasicSharp::Parser.new(File.read(File.join(ROOT, "samples/#{name}.bsharp")))
+    parser = BasicSharp::Parser.new(File.read(File.join(ROOT, "samples/#{name}.bsharp"), encoding: 'UTF-8'))
     document = BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve
     BasicSharp::BytecodeEmitter.new(document)
   end

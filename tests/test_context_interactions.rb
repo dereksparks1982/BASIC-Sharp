@@ -13,7 +13,7 @@ class TestContextInteractions < Minitest::Test
   ROOT = File.expand_path('..', __dir__)
 
   def setup
-    parser = BasicSharp::Parser.new(File.read(File.join(ROOT, 'samples/demon_killer_controls.bsharp')))
+    parser = BasicSharp::Parser.new(File.read(File.join(ROOT, 'samples/demon_killer_controls.bsharp'), encoding: 'UTF-8'))
     @document = BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve
   end
 

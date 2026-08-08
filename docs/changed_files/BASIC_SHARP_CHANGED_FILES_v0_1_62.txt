@@ -1,4 +1,4 @@
-BASIC# v0.1.62 changed files
+BASIC# v0.1.63 changed files
 
 Modified paths:
 - BASIC_SHARP_PATCH_MANIFEST.json
@@ -143,14 +143,14 @@ Modified paths:
 - tools/self_hosting_fixture_corpus.rb
 
 Added paths:
-- BUILD_HANDSHAKE_v0_1_62.md
-- docs/audit/BASIC_SHARP_v0_1_62_DKLAB_RETIREMENT_AND_ELDEREDD_MIGRATION.md
-- docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_62.txt
-- docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_62.md
-- docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_62.md
-- docs/runtime_contract_v0_1_62.md
-- docs/session_logs/BASIC_SHARP_v0_1_62_SESSION_LOG.md
-- docs/validation/BASIC_SHARP_VALIDATION_v0_1_62.md
+- BUILD_HANDSHAKE_v0_1_63.md
+- docs/audit/BASIC_SHARP_v0_1_63_DKLAB_RETIREMENT_AND_ELDEREDD_MIGRATION.md
+- docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_63.txt
+- docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_63.md
+- docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_63.md
+- docs/runtime_contract_v0_1_63.md
+- docs/session_logs/BASIC_SHARP_v0_1_63_SESSION_LOG.md
+- docs/validation/BASIC_SHARP_VALIDATION_v0_1_63.md
 - spec/governance/BASIC_SHARP_ELDEREDD_IDENTITY_CONTRACT_v1.json
 - tests/test_elderedd_identity_contract.rb
 - tools/elderedd_identity_contract.rb

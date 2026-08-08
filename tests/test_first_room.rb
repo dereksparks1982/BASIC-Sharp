@@ -5,7 +5,7 @@ require_relative '../compiler/parser'
 
 class TestFirstRoom < Minitest::Test
   def setup
-    @source = File.read(File.expand_path('../samples/first_room.bsharp', __dir__))
+    @source = File.read(File.expand_path('../samples/first_room.bsharp', __dir__), encoding: 'UTF-8')
     @program = BasicSharp::Parser.new(@source).parse
   end
 

@@ -39,7 +39,7 @@ module BasicSharp
 
     def observe_case(case_entry, root:, profile: PROFILE)
       source_path = File.expand_path(case_entry.fetch('source'), root)
-      source = File.read(source_path)
+      source = File.read(source_path, encoding: 'UTF-8')
       _program, document = compile_source(source)
       diagnostics = Array(document.diagnostics)
       errors = diagnostics.select { |entry| entry.severity == 'error' }.map { |entry| diagnostic_entry(entry) }

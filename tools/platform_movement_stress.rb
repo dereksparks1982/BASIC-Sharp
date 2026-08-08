@@ -8,15 +8,15 @@ require_relative '../compiler/resolver'
 require_relative '../compiler/game_input'
 
 root = File.expand_path('..', __dir__)
-parser = BasicSharp::Parser.new(File.read(File.join(root, 'samples/platform_movement.bsharp')))
+parser = BasicSharp::Parser.new(File.read(File.join(root, 'samples/platform_movement.bsharp'), encoding: 'UTF-8'))
 document = BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve
-fixture = JSON.parse(File.read(File.join(root, 'spec/runtime_v4/BASIC_SHARP_PLATFORM_MOVEMENT_RUNTIME_FIXTURES_v1.json')))
+fixture = JSON.parse(File.read(File.join(root, 'spec/runtime_v4/BASIC_SHARP_PLATFORM_MOVEMENT_RUNTIME_FIXTURES_v1.json'), encoding: 'UTF-8'))
 expected_path = File.join(root, fixture.fetch('expected'))
 raise 'platform movement fixture hash changed' unless Digest::SHA256.hexdigest(File.binread(expected_path)) == fixture.fetch('expected_sha256')
 fixture_input = BasicSharp::GameInput.new(document)
-fixture_events = JSON.parse(File.read(File.join(root, fixture.fetch('input'))))
+fixture_events = JSON.parse(File.read(File.join(root, fixture.fetch('input')), encoding: 'UTF-8'))
 actual = { 'commands' => fixture_events.flat_map { |event| fixture_input.process(event) } }
-expected = JSON.parse(File.read(expected_path))
+expected = JSON.parse(File.read(expected_path, encoding: 'UTF-8'))
 raise 'platform movement fixture behavior changed' unless actual == expected
 
 input = BasicSharp::GameInput.new(document)

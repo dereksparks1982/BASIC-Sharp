@@ -8,7 +8,7 @@ class TestDiagnosticsSamples < Minitest::Test
   SAMPLE_DIR = File.expand_path('../samples/errors', __dir__)
 
   def resolve_sample(name)
-    source = File.read(File.join(SAMPLE_DIR, name))
+    source = File.read(File.join(SAMPLE_DIR, name), encoding: 'UTF-8')
     parser = BasicSharp::Parser.new(source)
     program = parser.parse
     BasicSharp::SemanticResolver.new(program, dictionary: parser.dictionary).resolve

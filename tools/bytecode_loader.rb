@@ -200,10 +200,10 @@ end
 ROOT = File.expand_path('..', __dir__)
 SAMPLES = %w[ask_demo every_guard first_room follow_up_events values_and_amounts world_save_demo].freeze
 FIXTURE_PATH = File.join(ROOT, 'spec/bytecode_v1/BASIC_SHARP_BYTECODE_LOADER_FIXTURES_v1.json')
-FIXTURE = JSON.parse(File.read(FIXTURE_PATH))
+FIXTURE = JSON.parse(File.read(FIXTURE_PATH, encoding: 'UTF-8'))
 
 def resolve(path)
-  parser = BasicSharp::Parser.new(File.read(path))
+  parser = BasicSharp::Parser.new(File.read(path, encoding: 'UTF-8'))
   program = parser.parse
   BasicSharp::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
 end
@@ -221,7 +221,7 @@ selector_refs = true
 SAMPLES.each do |name|
   path = File.join(ROOT, 'samples', "#{name}.bsbc")
   loader = BasicSharp::BytecodeLoader.read(path)
-  loaded_disassembly_parity &&= loader.disassembly == File.read("#{path}.txt")
+  loaded_disassembly_parity &&= loader.disassembly == File.read("#{path}.txt", encoding: 'UTF-8')
   summary = loader.summary
   header_directory &&= summary[:binary_format] == 'bsharp.bytecode.bin' && summary[:binary_format_version] == 1
   string_table &&= loader.model[:strings].uniq.length == loader.model[:strings].length
@@ -239,7 +239,7 @@ text_loader = BasicSharp::BytecodeLoader.read(File.join(ROOT, 'samples/text_valu
 text_profile = text_loader.model.fetch(:profile) == 'bsharp.bytecode.v2' &&
                text_loader.model.fetch(:meaning_profile) == 'bsharp.meaning.v2' &&
                text_loader.model.fetch(:strings).include?('OPEN — RubyVM!') &&
-               text_loader.disassembly == File.read(File.join(ROOT, 'samples/text_values.bsbc.txt'))
+               text_loader.disassembly == File.read(File.join(ROOT, 'samples/text_values.bsbc.txt'), encoding: 'UTF-8')
 assert_pass(text_profile, 'Profile 2 role-aware string loading')
 assert_pass(loaded_disassembly_parity, 'Loaded disassembly parity')
 assert_pass(header_directory, 'Header and directory validation')
@@ -261,7 +261,7 @@ meaning_paths.first(12).each do |path|
 end
 
 source_doc = resolve(File.join(ROOT, 'samples/first_room.bsharp'))
-bsir_doc = JSON.parse(File.read(File.join(ROOT, 'samples/first_room.bsir.json')))
+bsir_doc = JSON.parse(File.read(File.join(ROOT, 'samples/first_room.bsir.json'), encoding: 'UTF-8'))
 source_fp = BasicSharp::WorldSave.program_fingerprint(source_doc)
 bsir_fp = BasicSharp::WorldSave.program_fingerprint(bsir_doc)
 assert_pass(source_fp == bsir_fp, 'Source and BSIR fingerprint parity')

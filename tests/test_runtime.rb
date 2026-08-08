@@ -16,7 +16,7 @@ class TestRuntime < Minitest::Test
   end
 
   def resolved_sample
-    source = File.read(File.expand_path('../samples/first_room.bsharp', __dir__))
+    source = File.read(File.expand_path('../samples/first_room.bsharp', __dir__), encoding: 'UTF-8')
     resolve(source)
   end
 

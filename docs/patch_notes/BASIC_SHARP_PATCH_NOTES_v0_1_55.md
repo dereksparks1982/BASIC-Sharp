@@ -1,4 +1,4 @@
-# BASIC# Patch Notes v0.1.62
+# BASIC# Patch Notes v0.1.63
 
 This build adds the first small compiler subset path that emits real BSBC bytecode. The subset still walks under Ruby referee supervision, but it now reaches the existing bytecode emitter and loader instead of stopping at IR.
 

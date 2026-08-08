@@ -1,13 +1,13 @@
 {
   "format": "bsharp.readme_current_release_truth.json",
   "format_version": 1,
-  "target_version": "0.1.62",
+  "target_version": "0.1.63",
   "status": "readme_current_release_truth_gate",
   "title": "README Current Release Truth Gate",
   "current_release": {
-    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.62",
-    "build_title": "BASIC# v0.1.62 establishes the Elderedd identity migration with a DKLab compatibility layer",
-    "summary": "BASIC# v0.1.62 keeps the v0.1.62 Self-Hosting Milestone 1 foundation intact under Ruby referee control while adding governance that retires DKLab as the active identity.",
+    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.63",
+    "build_title": "BASIC# v0.1.63 hardens UTF-8 source reading, proves the Elderedd path direction while keeping the DKLab compatibility bridge alive, consolidates the roadmap, and adds the first small compiler subset BSBC execution parity gate.",
+    "summary": "The new BSBC execution parity lane extends the Self-Hosting Milestone 1 foundation by proving selected small compiler subset programs can travel from source to BSharp IR to BSBC bytes, execute inside the BSharp Virtual Machine, and match the Ruby referee runtime for event results, final snapshots, and BSharp Save documents.",
     "must_mention": [
       "Elderedd identity migration",
       "DKLab compatibility layer",
@@ -18,11 +18,18 @@
       "Self-Hosting Milestone 1",
       "README Current Release Truth Gate",
       "not full self-hosting",
-      "Ruby remains the bootstrap compiler"
+      "Ruby remains the bootstrap compiler",
+      "BSBC execution parity",
+      "BSharp Virtual Machine",
+      "Ruby referee runtime",
+      "Elderedd path direction",
+      "UTF-8 source reading",
+      "minimal/no-locale Ruby",
+      "roadmap"
     ],
     "forbidden_current_section_phrases": [
       "adds the first small compiler subset IR golden parity harness",
-      "v0.1.62 adds the first",
+      "v0.1.63 adds the first",
       "compiler/small_compiler_subset_ir_parity_harness.rb beside the existing compiler path",
       "production compiler path is replaced",
       "Ruby is retired",
@@ -30,7 +37,8 @@
       "DKLab is retained as the internal workspace and lab name",
       "Elderred Softworks LLC",
       "Ruby is retired",
-      "BASIC# is fully self-hosted"
+      "BASIC# is fully self-hosted",
+      "removes the DKLab compatibility bridge"
     ]
   },
   "protected_truths": [

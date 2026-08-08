@@ -9,7 +9,7 @@ class TestMeaningConformance < Minitest::Test
   MANIFEST_PATH = File.join(ROOT, 'spec/meaning_v1/BASIC_SHARP_MEANING_PROFILE_v1.json')
 
   def manifest
-    @manifest ||= JSON.parse(File.read(MANIFEST_PATH))
+    @manifest ||= JSON.parse(File.read(MANIFEST_PATH, encoding: 'UTF-8'))
   end
 
   def test_profile_identity_and_case_count
@@ -26,7 +26,7 @@ class TestMeaningConformance < Minitest::Test
 
   def test_all_profile_cases_match_their_implementation_neutral_expected_results
     manifest.fetch('cases').each do |entry|
-      expected = JSON.parse(File.read(File.join(ROOT, entry.fetch('expected'))))
+      expected = JSON.parse(File.read(File.join(ROOT, entry.fetch('expected')), encoding: 'UTF-8'))
       actual = BasicSharp::MeaningProfile.observe_case(entry, root: ROOT)
       assert_equal expected, actual, entry.fetch('id')
       assert_equal true, actual['source_bsir_parity'], entry.fetch('id') unless actual.dig('compile', 'errors').any?
@@ -36,7 +36,7 @@ class TestMeaningConformance < Minitest::Test
   def test_profile_files_contain_no_ruby_objects_machine_paths_or_timestamps
     paths = [MANIFEST_PATH] + manifest.fetch('cases').map { |entry| File.join(ROOT, entry.fetch('expected')) }
     paths.each do |path|
-      refute BasicSharp::MeaningProfile.forbidden_serialized_data?(File.read(path)), path
+      refute BasicSharp::MeaningProfile.forbidden_serialized_data?(File.read(path, encoding: 'UTF-8')), path
     end
   end
 

@@ -38,7 +38,7 @@ module BasicSharp
     module_function
 
     def read(path)
-      JSON.parse(File.read(path))
+      JSON.parse(File.read(path, encoding: 'UTF-8'))
     rescue JSON::ParserError
       raise WorldSaveError, 'BSharp Save cannot load because the file is not valid JSON.'
     rescue Errno::ENOENT

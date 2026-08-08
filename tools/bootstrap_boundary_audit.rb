@@ -31,6 +31,6 @@ puts "Boundary stages: #{record.fetch(:stage_count)}"
 puts 'Ruby bootstrap referee remains source of truth: PASS'
 puts 'BASIC# subset participation is fenced: PASS'
 puts 'Runtime smoke bridge is evidence only: PASS'
-puts 'v0.1.62 milestone gate remains guarded: PASS'
+puts 'v0.1.63 milestone gate remains guarded: PASS'
 puts 'Golden fixture expected-field fallbacks absent: PASS'
 puts "Boundary digest: #{record.fetch(:boundary_digest_sha256)}"

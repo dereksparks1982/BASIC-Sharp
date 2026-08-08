@@ -7,7 +7,7 @@ require_relative '../compiler/runtime'
 require_relative '../compiler/game_interaction'
 
 root = File.expand_path('..', __dir__)
-source = File.read(File.join(root, 'samples/demon_killer_controls.bsharp'))
+source = File.read(File.join(root, 'samples/demon_killer_controls.bsharp'), encoding: 'UTF-8')
 parser = BasicSharp::Parser.new(source)
 document = BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve
 runtime = BasicSharp::Runtime.new(document)

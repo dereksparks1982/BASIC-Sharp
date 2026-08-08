@@ -191,7 +191,7 @@ class TestKindFamilyHardening < Minitest::Test
       '0.1.18' => File.join(root, 'tests/fixtures/first_room_v0_1_18.bsir.json'),
       '0.1.19' => File.join(root, 'tests/fixtures/first_room_v0_1_19.bsir.json')
     }.each do |version, path|
-      document = JSON.parse(File.read(path))
+      document = JSON.parse(File.read(path, encoding: 'UTF-8'))
       assert_equal version, document.fetch('version')
 
       machine = BasicSharp::Runtime.load(path)

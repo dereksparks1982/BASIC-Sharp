@@ -18,7 +18,7 @@ class BytecodeProfile7Test < Minitest::Test
     assert_equal 'bsharp.bytecode.v7', profile.dig('artifact', 'profile')
 
     emitter = emitter_for('otherwise_branches')
-    fixture = JSON.parse(File.read(File.join(ROOT, 'spec/bytecode_v7/BASIC_SHARP_BYTECODE_PROFILE_v7_FIXTURES_v1.json')))
+    fixture = JSON.parse(File.read(File.join(ROOT, 'spec/bytecode_v7/BASIC_SHARP_BYTECODE_PROFILE_v7_FIXTURES_v1.json'), encoding: 'UTF-8'))
     assert_equal fixture.fetch('binary_sha256'), Digest::SHA256.hexdigest(emitter.binary)
     assert_equal fixture.fetch('disassembly_sha256'), Digest::SHA256.hexdigest(emitter.disassembly)
     assert_includes emitter.disassembly, 'OTHERWISE BLOCK'
@@ -37,7 +37,7 @@ class BytecodeProfile7Test < Minitest::Test
     %w[ask_demo every_guard first_room follow_up_events values_and_amounts world_save_demo text_values demon_killer_controls platform_movement number_changes compound_if_conditions].each do |name|
       emitter = emitter_for(name)
       assert_equal File.binread(File.join(ROOT, "samples/#{name}.bsbc")), emitter.binary, "#{name}.bsbc changed"
-      assert_equal File.read(File.join(ROOT, "samples/#{name}.bsbc.txt")), emitter.disassembly, "#{name}.bsbc.txt changed"
+      assert_equal File.read(File.join(ROOT, "samples/#{name}.bsbc.txt"), encoding: 'UTF-8'), emitter.disassembly, "#{name}.bsbc.txt changed"
     end
   end
 
@@ -58,7 +58,7 @@ class BytecodeProfile7Test < Minitest::Test
   private
 
   def emitter_for(name)
-    parser = BasicSharp::Parser.new(File.read(File.join(ROOT, "samples/#{name}.bsharp")))
+    parser = BasicSharp::Parser.new(File.read(File.join(ROOT, "samples/#{name}.bsharp"), encoding: 'UTF-8'))
     document = BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve
     BasicSharp::BytecodeEmitter.new(document)
   end

@@ -19,7 +19,7 @@ class TestBSIRIdentityMigration < Minitest::Test
   TEXT
 
   def bsir_document
-    source = File.read(File.join(ROOT, 'samples/first_room.bsharp'))
+    source = File.read(File.join(ROOT, 'samples/first_room.bsharp'), encoding: 'UTF-8')
     parser = BasicSharp::Parser.new(source)
     program = parser.parse
     BasicSharp::SemanticResolver.new(program, dictionary: parser.dictionary).resolve.to_h
@@ -28,7 +28,7 @@ class TestBSIRIdentityMigration < Minitest::Test
   def test_new_documents_use_bsharp_ir_identity
     document = bsir_document
 
-    assert_equal '0.1.62', document.fetch(:version)
+    assert_equal '0.1.63', document.fetch(:version)
     assert_equal 'bsir.debug.json', document.fetch(:format)
   end
 

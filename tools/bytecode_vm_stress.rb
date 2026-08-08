@@ -14,14 +14,14 @@ require_relative '../compiler/bytecode_loader'
 require_relative '../compiler/bytecode_virtual_machine'
 
 ROOT = File.expand_path('..', __dir__)
-FIXTURE = JSON.parse(File.read(File.join(ROOT, 'spec/bytecode_v1/BASIC_SHARP_BYTECODE_VM_HARDENING_FIXTURES_v1.json')))
+FIXTURE = JSON.parse(File.read(File.join(ROOT, 'spec/bytecode_v1/BASIC_SHARP_BYTECODE_VM_HARDENING_FIXTURES_v1.json'), encoding: 'UTF-8'))
 EVENTS = Integer(ENV.fetch('BASIC_SHARP_VM_STRESS_EVENTS', FIXTURE.fetch('default_events_per_path').to_s))
 RESTORE_CYCLES = Integer(ENV.fetch('BASIC_SHARP_VM_RESTORE_CYCLES', FIXTURE.fetch('default_restore_cycles').to_s))
 ISOLATED_VMS = Integer(ENV.fetch('BASIC_SHARP_VM_ISOLATED_WORLDS', FIXTURE.fetch('default_isolated_worlds').to_s))
 ASK_QUESTIONS = Integer(ENV.fetch('BASIC_SHARP_VM_ASK_QUESTIONS', FIXTURE.fetch('default_ask_questions').to_s))
 
 def resolve_file(path)
-  parser = BasicSharp::Parser.new(File.read(path))
+  parser = BasicSharp::Parser.new(File.read(path, encoding: 'UTF-8'))
   document = BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve
   errors = document.diagnostics.select { |diagnostic| diagnostic.severity == 'error' }
   raise errors.map(&:message).join("\n") unless errors.empty?

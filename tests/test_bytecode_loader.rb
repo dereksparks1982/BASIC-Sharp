@@ -202,11 +202,11 @@ class TestBytecodeLoader < Minitest::Test
   SAMPLE_NAMES = %w[ask_demo every_guard first_room follow_up_events values_and_amounts world_save_demo].freeze
 
   def fixture
-    @fixture ||= JSON.parse(File.read(FIXTURE_PATH))
+    @fixture ||= JSON.parse(File.read(FIXTURE_PATH, encoding: 'UTF-8'))
   end
 
   def resolve_source(path)
-    parser = BasicSharp::Parser.new(File.read(path))
+    parser = BasicSharp::Parser.new(File.read(path, encoding: 'UTF-8'))
     program = parser.parse
     BasicSharp::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
   end
@@ -216,7 +216,7 @@ class TestBytecodeLoader < Minitest::Test
       binary_path = File.join(ROOT, 'samples', "#{name}.bsbc")
       loader = BasicSharp::BytecodeLoader.read(binary_path)
       assert_equal 'bsharp.bytecode.v1', loader.model.fetch(:profile), name
-      assert_equal File.read("#{binary_path}.txt"), loader.disassembly, name
+      assert_equal File.read("#{binary_path}.txt", encoding: 'UTF-8'), loader.disassembly, name
       assert loader.model.frozen?, name
       assert loader.model.fetch(:strings).all?(&:frozen?), name
     end
@@ -224,7 +224,7 @@ class TestBytecodeLoader < Minitest::Test
 
   def test_source_and_bsir_fingerprint_comparisons_pass
     source = resolve_source(File.join(ROOT, 'samples/first_room.bsharp'))
-    bsir = JSON.parse(File.read(File.join(ROOT, 'samples/first_room.bsir.json')))
+    bsir = JSON.parse(File.read(File.join(ROOT, 'samples/first_room.bsir.json'), encoding: 'UTF-8'))
     source_fingerprint = BasicSharp::WorldSave.program_fingerprint(source)
     bsir_fingerprint = BasicSharp::WorldSave.program_fingerprint(bsir)
     assert_equal source_fingerprint, bsir_fingerprint
@@ -316,7 +316,7 @@ class TestBytecodeLoader < Minitest::Test
 
     stdout, stderr, status = Open3.capture3(RUBY, compiler, bytecode, '--disassemble-bytecode', chdir: ROOT)
     assert status.success?, stderr
-    assert_equal File.read("#{bytecode}.txt"), stdout
+    assert_equal File.read("#{bytecode}.txt", encoding: 'UTF-8'), stdout
 
     [source, bsir].each do |against|
       stdout, stderr, status = Open3.capture3(RUBY, compiler, bytecode, '--against', against, chdir: ROOT)

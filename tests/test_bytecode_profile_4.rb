@@ -13,7 +13,7 @@ class TestBytecodeProfile4 < Minitest::Test
   ROOT = File.expand_path('..', __dir__)
 
   def emitter
-    parser = BasicSharp::Parser.new(File.read(File.join(ROOT, 'samples/platform_movement.bsharp')))
+    parser = BasicSharp::Parser.new(File.read(File.join(ROOT, 'samples/platform_movement.bsharp'), encoding: 'UTF-8'))
     document = BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve
     BasicSharp::BytecodeEmitter.new(document)
   end
@@ -21,7 +21,7 @@ class TestBytecodeProfile4 < Minitest::Test
   def test_profile_contract_and_fixture_hashes
     profile = BasicSharp::BytecodeContract.load_profile(File.join(ROOT, 'spec/bytecode_v4/BASIC_SHARP_BYTECODE_PROFILE_v4.json'))
     assert BasicSharp::BytecodeContract.validate_profile!(profile, root: ROOT)
-    fixture = JSON.parse(File.read(File.join(ROOT, 'spec/bytecode_v4/BASIC_SHARP_BYTECODE_PROFILE_v4_FIXTURES_v1.json')))
+    fixture = JSON.parse(File.read(File.join(ROOT, 'spec/bytecode_v4/BASIC_SHARP_BYTECODE_PROFILE_v4_FIXTURES_v1.json'), encoding: 'UTF-8'))
     assert_equal fixture.fetch('binary_sha256'), Digest::SHA256.hexdigest(emitter.binary)
     assert_equal fixture.fetch('disassembly_sha256'), Digest::SHA256.hexdigest(emitter.disassembly)
     assert_equal fixture.fetch('fingerprint'), emitter.fingerprint
@@ -41,7 +41,7 @@ class TestBytecodeProfile4 < Minitest::Test
 
   def test_profile_1_through_3_committed_artifacts_remain_byte_identical
     %w[ask_demo every_guard first_room follow_up_events values_and_amounts world_save_demo text_values demon_killer_controls].each do |name|
-      parser = BasicSharp::Parser.new(File.read(File.join(ROOT, "samples/#{name}.bsharp")))
+      parser = BasicSharp::Parser.new(File.read(File.join(ROOT, "samples/#{name}.bsharp"), encoding: 'UTF-8'))
       document = BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve
       expected = Digest::SHA256.hexdigest(File.binread(File.join(ROOT, "samples/#{name}.bsbc")))
       assert_equal expected, Digest::SHA256.hexdigest(BasicSharp::BytecodeEmitter.new(document).binary), name

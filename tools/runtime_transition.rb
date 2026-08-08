@@ -13,7 +13,7 @@ require_relative '../compiler/ask'
 require_relative '../compiler/runtime_transition'
 
 ROOT = File.expand_path('..', __dir__)
-FIXTURE = JSON.parse(File.read(File.join(ROOT, 'spec/runtime_v1/BASIC_SHARP_PREFERRED_RUNTIME_FIXTURES_v1.json')))
+FIXTURE = JSON.parse(File.read(File.join(ROOT, 'spec/runtime_v1/BASIC_SHARP_PREFERRED_RUNTIME_FIXTURES_v1.json'), encoding: 'UTF-8'))
 COMPILER = File.join(ROOT, 'compiler/basic_sharp.rb')
 
 module PreferredRuntimeAudit
@@ -24,7 +24,7 @@ module PreferredRuntimeAudit
   end
 
   def resolve(path)
-    parser = BasicSharp::Parser.new(File.read(path))
+    parser = BasicSharp::Parser.new(File.read(path, encoding: 'UTF-8'))
     resolved = BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve
     raise "#{path} has diagnostics" if resolved.error_count.positive? || resolved.warning_count.positive?
 
@@ -36,7 +36,7 @@ module PreferredRuntimeAudit
   end
 
   def bsir_document(entry)
-    JSON.parse(File.read(File.join(ROOT, entry.fetch('bsir'))))
+    JSON.parse(File.read(File.join(ROOT, entry.fetch('bsir')), encoding: 'UTF-8'))
   end
 
   def transition(entry, mode: :preferred, document: nil, world_save: nil)

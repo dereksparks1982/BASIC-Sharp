@@ -13,7 +13,7 @@ class TestBytecodeProfile3 < Minitest::Test
   ROOT = File.expand_path('..', __dir__)
 
   def emitter
-    parser = BasicSharp::Parser.new(File.read(File.join(ROOT, 'samples/demon_killer_controls.bsharp')))
+    parser = BasicSharp::Parser.new(File.read(File.join(ROOT, 'samples/demon_killer_controls.bsharp'), encoding: 'UTF-8'))
     document = BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve
     BasicSharp::BytecodeEmitter.new(document)
   end
@@ -21,7 +21,7 @@ class TestBytecodeProfile3 < Minitest::Test
   def test_profile_contract_and_fixture_hashes
     profile = BasicSharp::BytecodeContract.load_profile(File.join(ROOT, 'spec/bytecode_v3/BASIC_SHARP_BYTECODE_PROFILE_v3.json'))
     assert BasicSharp::BytecodeContract.validate_profile!(profile, root: ROOT)
-    fixture = JSON.parse(File.read(File.join(ROOT, 'spec/bytecode_v3/BASIC_SHARP_BYTECODE_PROFILE_v3_FIXTURES_v1.json')))
+    fixture = JSON.parse(File.read(File.join(ROOT, 'spec/bytecode_v3/BASIC_SHARP_BYTECODE_PROFILE_v3_FIXTURES_v1.json'), encoding: 'UTF-8'))
     assert_equal fixture.fetch('binary_sha256'), Digest::SHA256.hexdigest(emitter.binary)
     assert_equal fixture.fetch('disassembly_sha256'), Digest::SHA256.hexdigest(emitter.disassembly)
   end
@@ -38,7 +38,7 @@ class TestBytecodeProfile3 < Minitest::Test
 
   def test_profile_1_and_profile_2_committed_artifacts_remain_byte_identical
     %w[ask_demo every_guard first_room follow_up_events values_and_amounts world_save_demo text_values].each do |name|
-      parser = BasicSharp::Parser.new(File.read(File.join(ROOT, "samples/#{name}.bsharp")))
+      parser = BasicSharp::Parser.new(File.read(File.join(ROOT, "samples/#{name}.bsharp"), encoding: 'UTF-8'))
       document = BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve
       expected = Digest::SHA256.hexdigest(File.binread(File.join(ROOT, "samples/#{name}.bsbc")))
       actual = Digest::SHA256.hexdigest(BasicSharp::BytecodeEmitter.new(document).binary)

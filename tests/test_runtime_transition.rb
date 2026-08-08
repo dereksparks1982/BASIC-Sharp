@@ -25,11 +25,11 @@ BasicSharp::Runtime.singleton_class.prepend(RuntimeTransitionReferenceSabotage)
 class TestRuntimeTransition < Minitest::Test
   ROOT = File.expand_path('..', __dir__)
   FIXTURE = JSON.parse(
-    File.read(File.join(ROOT, 'spec/runtime_v1/BASIC_SHARP_PREFERRED_RUNTIME_FIXTURES_v1.json'))
+    File.read(File.join(ROOT, 'spec/runtime_v1/BASIC_SHARP_PREFERRED_RUNTIME_FIXTURES_v1.json'), encoding: 'UTF-8')
   ).freeze
 
   def resolve(path)
-    parser = BasicSharp::Parser.new(File.read(path))
+    parser = BasicSharp::Parser.new(File.read(path, encoding: 'UTF-8'))
     BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve
   end
 
@@ -38,7 +38,7 @@ class TestRuntimeTransition < Minitest::Test
   end
 
   def bsir_document(name)
-    JSON.parse(File.read(File.join(ROOT, "samples/#{name}.bsir.json")))
+    JSON.parse(File.read(File.join(ROOT, "samples/#{name}.bsir.json"), encoding: 'UTF-8'))
   end
 
   def transition(name, mode: :preferred, document: nil, world_save: nil)
@@ -59,7 +59,7 @@ class TestRuntimeTransition < Minitest::Test
     assert_instance_of BasicSharp::BytecodeLoader, machine.loader
     assert machine.loader.model.frozen?
     assert result.fetch('matched')
-    assert_includes machine.report(result), 'BSharp Virtual Machine v0.1.62'
+    assert_includes machine.report(result), 'BSharp Virtual Machine v0.1.63'
   end
 
   def test_bsir_defaults_to_preferred_bsharp_vm
@@ -68,7 +68,7 @@ class TestRuntimeTransition < Minitest::Test
 
     assert result.fetch('matched')
     assert_equal 1, machine.snapshot.find { |thing| thing['name'] == 'henry' }.fetch('damage')
-    assert_includes machine.report(result), 'BSharp Virtual Machine v0.1.62'
+    assert_includes machine.report(result), 'BSharp Virtual Machine v0.1.63'
   end
 
   def test_reference_runtime_requires_explicit_mode
@@ -78,11 +78,11 @@ class TestRuntimeTransition < Minitest::Test
     assert machine.reference?
     refute machine.preferred?
     assert_nil machine.loader
-    assert_includes machine.report(result), 'BASIC# Runtime v0.1.62'
+    assert_includes machine.report(result), 'BASIC# Runtime v0.1.63'
   end
 
   def test_standalone_runtime_transition_audit_uses_the_live_version
-    audit_source = File.read(File.join(ROOT, 'tools/runtime_transition.rb'))
+    audit_source = File.read(File.join(ROOT, 'tools/runtime_transition.rb'), encoding: 'UTF-8')
 
     assert_includes audit_source, 'BSharp Virtual Machine v#{BasicSharp::VERSION}'
     assert_includes audit_source, 'BASIC# Runtime v#{BasicSharp::VERSION}'

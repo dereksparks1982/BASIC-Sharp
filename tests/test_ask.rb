@@ -26,7 +26,7 @@ class TestAsk < Minitest::Test
   end
 
   def demo_source
-    File.read(File.join(ROOT, 'samples/ask_demo.bsharp'))
+    File.read(File.join(ROOT, 'samples/ask_demo.bsharp'), encoding: 'UTF-8')
   end
 
   def answer(machine, question)
@@ -258,7 +258,7 @@ class TestAsk < Minitest::Test
   end
 
   def test_game_system_inspection_is_structured_and_read_only
-    parser = BasicSharp::Parser.new(File.read(File.join(ROOT, 'samples/demon_killer_controls.bsharp')))
+    parser = BasicSharp::Parser.new(File.read(File.join(ROOT, 'samples/demon_killer_controls.bsharp'), encoding: 'UTF-8'))
     document = BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve
     machine = BasicSharp::Runtime.new(document)
     before = machine.snapshot
@@ -383,7 +383,7 @@ class TestAsk < Minitest::Test
     assert_empty stderr
     document = JSON.parse(stdout)
     assert_equal 'bsharp.ask.json', document.fetch('format')
-    assert_equal '0.1.62', document.fetch('created_by_basic_sharp')
+    assert_equal '0.1.63', document.fetch('created_by_basic_sharp')
     assert_equal ['what is henry', 'what is the world'], document.fetch('answers').map { |entry| entry.fetch('question') }
   end
 

@@ -1,0 +1,217 @@
+ M BASIC_SHARP_PATCH_MANIFEST.json
+ M BUILD_HANDSHAKE_v0_1_51.md
+ M BUILD_HANDSHAKE_v0_1_52.md
+ M BUILD_HANDSHAKE_v0_1_53.md
+ M BUILD_HANDSHAKE_v0_1_54.md
+ M BUILD_HANDSHAKE_v0_1_55.md
+ M BUILD_HANDSHAKE_v0_1_56.md
+ M BUILD_HANDSHAKE_v0_1_57.md
+ M BUILD_HANDSHAKE_v0_1_58.md
+ M BUILD_HANDSHAKE_v0_1_59.md
+ M BUILD_HANDSHAKE_v0_1_61.md
+ M BUILD_HANDSHAKE_v0_1_62.md
+ M README.md
+ M compiler/ast_nodes.rb
+ M compiler/basic_sharp.rb
+ M compiler/bootstrap_boundary_audit.rb
+ M compiler/meaning_profile.rb
+ M compiler/runtime.rb
+ M compiler/world_save.rb
+ M docs/BASIC_SHARP_DOCUMENTATION_MAP.md
+ M docs/audit/BASIC_SHARP_v0_1_60_REJECTED_BUILD_AUDIT.md
+ M docs/audit/BASIC_SHARP_v0_1_62_DKLAB_RETIREMENT_AND_ELDEREDD_MIGRATION.md
+ M docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_51.txt
+ M docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_52.txt
+ M docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_53.txt
+ M docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_54.txt
+ M docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_55.txt
+ M docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_56.txt
+ M docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_57.txt
+ M docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_58.txt
+ M docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_59.txt
+ M docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_61.txt
+ M docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_62.txt
+ M docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_51.md
+ M docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_52.md
+ M docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_53.md
+ M docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_54.md
+ M docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_55.md
+ M docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_56.md
+ M docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_57.md
+ M docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_58.md
+ M docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_59.md
+ M docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_61.md
+ M docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_62.md
+ M docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
+ M docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
+ M docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_51.md
+ M docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_52.md
+ M docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_53.md
+ M docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_54.md
+ M docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_55.md
+ M docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_56.md
+ M docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_57.md
+ M docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_58.md
+ M docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_59.md
+ M docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_61.md
+ M docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_62.md
+ M docs/roadmap/BASIC_SHARP_ROADMAP.md
+ M docs/runtime_contract_v0_1_51.md
+ M docs/runtime_contract_v0_1_52.md
+ M docs/runtime_contract_v0_1_53.md
+ M docs/runtime_contract_v0_1_54.md
+ M docs/runtime_contract_v0_1_55.md
+ M docs/runtime_contract_v0_1_56.md
+ M docs/runtime_contract_v0_1_57.md
+ M docs/runtime_contract_v0_1_58.md
+ M docs/runtime_contract_v0_1_59.md
+ M docs/runtime_contract_v0_1_61.md
+ M docs/runtime_contract_v0_1_62.md
+ M docs/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v0_1_59.md
+ M docs/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v0_1_61.md
+ M docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v0_1_57.md
+ M docs/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v0_1_61.md
+ M docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v0_1_55.md
+ M docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_1_56.md
+ M docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_1_52.md
+ M docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v0_1_50.md
+ M docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_51.md
+ M docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v0_1_49.md
+ M docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v0_1_58.md
+ M docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_1_53.md
+ M docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_1_54.md
+ M docs/session_logs/BASIC_SHARP_v0_1_51_SESSION_LOG.md
+ M docs/session_logs/BASIC_SHARP_v0_1_52_SESSION_LOG.md
+ M docs/session_logs/BASIC_SHARP_v0_1_53_SESSION_LOG.md
+ M docs/session_logs/BASIC_SHARP_v0_1_54_SESSION_LOG.md
+ M docs/session_logs/BASIC_SHARP_v0_1_55_SESSION_LOG.md
+ M docs/session_logs/BASIC_SHARP_v0_1_56_SESSION_LOG.md
+ M docs/session_logs/BASIC_SHARP_v0_1_57_SESSION_LOG.md
+ M docs/session_logs/BASIC_SHARP_v0_1_58_SESSION_LOG.md
+ M docs/session_logs/BASIC_SHARP_v0_1_59_SESSION_LOG.md
+ M docs/session_logs/BASIC_SHARP_v0_1_61_SESSION_LOG.md
+ M docs/session_logs/BASIC_SHARP_v0_1_62_SESSION_LOG.md
+ M docs/validation/BASIC_SHARP_VALIDATION_v0_1_51.md
+ M docs/validation/BASIC_SHARP_VALIDATION_v0_1_52.md
+ M docs/validation/BASIC_SHARP_VALIDATION_v0_1_53.md
+ M docs/validation/BASIC_SHARP_VALIDATION_v0_1_54.md
+ M docs/validation/BASIC_SHARP_VALIDATION_v0_1_55.md
+ M docs/validation/BASIC_SHARP_VALIDATION_v0_1_56.md
+ M docs/validation/BASIC_SHARP_VALIDATION_v0_1_57.md
+ M docs/validation/BASIC_SHARP_VALIDATION_v0_1_58.md
+ M docs/validation/BASIC_SHARP_VALIDATION_v0_1_59.md
+ M docs/validation/BASIC_SHARP_VALIDATION_v0_1_61.md
+ M docs/validation/BASIC_SHARP_VALIDATION_v0_1_62.md
+ M samples/compound_if_conditions.expected.json
+ M samples/number_changes.expected.json
+ M samples/otherwise_branches.expected.json
+ M samples/trial_by_fire.bsave.json
+ M samples/trial_by_fire.bsir.json
+ M spec/governance/BASIC_SHARP_ELDEREDD_IDENTITY_CONTRACT_v1.json
+ M spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json
+ M spec/runtime_v2/BASIC_SHARP_TEXT_VALUE_RUNTIME_FIXTURES_v1.json
+ M spec/runtime_v5/BASIC_SHARP_NUMBER_CHANGE_RUNTIME_FIXTURES_v1.json
+ M spec/runtime_v6/BASIC_SHARP_COMPOUND_IF_RUNTIME_FIXTURES_v1.json
+ M spec/runtime_v7/BASIC_SHARP_OTHERWISE_RUNTIME_FIXTURES_v1.json
+ M spec/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v1.json
+ M spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json
+ M spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json
+ M spec/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v1.json
+ M spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json
+ M spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json
+ M spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json
+ M spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json
+ M spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json
+ M spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json
+ M spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json
+ M spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v1.json
+ M spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json
+ M spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v1.json
+ M spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json
+ M spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_REGRESSION_CAPSULE_INDEX_v1.json
+ M spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_VALIDATION_INVENTORY_v1.json
+ M tests/test_ask.rb
+ M tests/test_bootstrap_boundary_audit.rb
+ M tests/test_bsir_identity_migration.rb
+ M tests/test_bytecode_contract.rb
+ M tests/test_bytecode_emitter.rb
+ M tests/test_bytecode_loader.rb
+ M tests/test_bytecode_profile_3.rb
+ M tests/test_bytecode_profile_4.rb
+ M tests/test_bytecode_profile_6.rb
+ M tests/test_bytecode_profile_7.rb
+ M tests/test_bytecode_virtual_machine.rb
+ M tests/test_bytecode_vm_integration.rb
+ M tests/test_cli_output.rb
+ M tests/test_context_interactions.rb
+ M tests/test_demon_killer_input.rb
+ M tests/test_diagnostics_samples.rb
+ M tests/test_first_room.rb
+ M tests/test_game_declarations.rb
+ M tests/test_hover_information.rb
+ M tests/test_identity_migration.rb
+ M tests/test_input_device_contract.rb
+ M tests/test_ir_output.rb
+ M tests/test_kind_family_hardening.rb
+ M tests/test_meaning_conformance.rb
+ M tests/test_meaning_profile_3.rb
+ M tests/test_meaning_profile_6.rb
+ M tests/test_meaning_profile_7.rb
+ M tests/test_platform_movement.rb
+ M tests/test_resolver.rb
+ M tests/test_runtime.rb
+ M tests/test_runtime_transition.rb
+ M tests/test_self_hosting_contract.rb
+ M tests/test_small_compiler_subset_bsbc_parity_harness.rb
+ M tests/test_small_compiler_subset_error_contract.rb
+ M tests/test_small_compiler_subset_ir_emitter.rb
+ M tests/test_small_compiler_subset_ir_parity_harness.rb
+ M tests/test_small_compiler_subset_parser.rb
+ M tests/test_small_compiler_subset_scene_block_expansion.rb
+ M tests/test_tokenizer_reader_contract.rb
+ M tests/test_tokenizer_reader_implementation.rb
+ M tests/test_values_and_amounts.rb
+ M tests/test_world_save.rb
+ M tools/bootstrap_boundary_audit.rb
+ M tools/bytecode_emitter.rb
+ M tools/bytecode_loader.rb
+ M tools/bytecode_profile_4.rb
+ M tools/bytecode_profile_5.rb
+ M tools/bytecode_profile_6.rb
+ M tools/bytecode_profile_7.rb
+ M tools/bytecode_virtual_machine.rb
+ M tools/bytecode_vm_stress.rb
+ M tools/company_bible_audit.rb
+ M tools/compound_if_stress.rb
+ M tools/demon_killer_input_stress.rb
+ M tools/game_interaction_stress.rb
+ M tools/meaning_conformance.rb
+ M tools/meaning_profile_6.rb
+ M tools/meaning_profile_7.rb
+ M tools/number_change_stress.rb
+ M tools/otherwise_branch_stress.rb
+ M tools/platform_movement_stress.rb
+ M tools/runtime_transition.rb
+ M tools/text_value_stress.rb
+ M tools/trial_by_fire_support.rb
+ M tools/value_amount_stress.rb
+?? BUILD_HANDSHAKE_v0_1_63.md
+?? compiler/small_compiler_subset_bsbc_execution_parity.rb
+?? docs/audit/BASIC_SHARP_v0_1_63_REJECTED_CANDIDATE_AUDIT.md
+?? docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_63.txt
+?? docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_63.md
+?? docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_63.md
+?? docs/runtime_contract_v0_1_63.md
+?? docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v0_1_63.md
+?? docs/session_logs/BASIC_SHARP_v0_1_63_SESSION_LOG.md
+?? docs/testing/BASIC_SHARP_UTF8_SOURCE_READING_CONTRACT_v0_1_63.md
+?? docs/validation/BASIC_SHARP_VALIDATION_v0_1_63.md
+?? spec/governance/BASIC_SHARP_ELDEREDD_PATH_BRIDGE_CONTRACT_v1.json
+?? spec/governance/BASIC_SHARP_UTF8_SOURCE_READING_CONTRACT_v1.json
+?? spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json
+?? tests/test_elderedd_path_bridge_contract.rb
+?? tests/test_small_compiler_subset_bsbc_execution_parity.rb
+?? tests/test_utf8_source_reading_contract.rb
+?? tools/elderedd_path_bridge_contract.rb
+?? tools/small_compiler_subset_bsbc_execution_parity.rb
+?? tools/utf8_source_reading_contract.rb

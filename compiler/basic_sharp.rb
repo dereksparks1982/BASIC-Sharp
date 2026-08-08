@@ -109,7 +109,7 @@ def comparison_fingerprint(path)
   end
 
   if path.downcase.end_with?('.bsharp')
-    parser = BasicSharp::Parser.new(File.read(path))
+    parser = BasicSharp::Parser.new(File.read(path, encoding: 'UTF-8'))
     program = parser.parse
     resolved = BasicSharp::SemanticResolver.new(program, dictionary: parser.dictionary).resolve
     if resolved.error_count.positive? || resolved.warning_count.positive?
@@ -117,7 +117,7 @@ def comparison_fingerprint(path)
     end
     BasicSharp::WorldSave.program_fingerprint(resolved)
   elsif path.downcase.end_with?('.bsir.json')
-    document = JSON.parse(File.read(path))
+    document = JSON.parse(File.read(path, encoding: 'UTF-8'))
     if BasicSharp::WorldSave.save_file?(document)
       raise BasicSharp::BytecodeLoaderError, 'A BSharp Save cannot be used as a bytecode meaning comparison program.'
     end
@@ -221,7 +221,7 @@ json_input = File.extname(path).downcase == '.json'
 json_document = nil
 if json_input
   begin
-    json_document = JSON.parse(File.read(path))
+    json_document = JSON.parse(File.read(path, encoding: 'UTF-8'))
   rescue JSON::ParserError => error
     warn "BSharp IR cannot run: #{error.message}"
     exit 1
@@ -237,7 +237,7 @@ end
 program = nil
 resolved = nil
 unless json_input
-  source = File.read(path)
+  source = File.read(path, encoding: 'UTF-8')
   parser = BasicSharp::Parser.new(source)
   program = parser.parse
   resolved = BasicSharp::SemanticResolver.new(program, dictionary: parser.dictionary).resolve

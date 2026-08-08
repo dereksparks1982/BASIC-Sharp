@@ -1,16 +1,22 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.62
+# BASIC# Ruby Bootstrap Compiler v0.1.63
 
 > A scripting language made for non-programmers, by non-programmers.
 
-BASIC# v0.1.62 establishes the Elderedd identity migration with a DKLab compatibility layer. Elderedd Softworks LLC is the parent company identity, Elderedd Laboratory is the active research/build laboratory, ELDL is internal shorthand only, and BCS means BSharp Creator Services.
+BASIC# v0.1.63 hardens UTF-8 source reading, proves the Elderedd path direction while keeping the DKLab compatibility bridge alive, consolidates the roadmap, and adds the first small compiler subset BSBC execution parity gate.
 
-BASIC# v0.1.62 keeps the v0.1.62 Self-Hosting Milestone 1 foundation intact under Ruby referee control while adding governance that retires DKLab as the active identity. DKLab may appear only as retired history, compatibility bridge wording, rollback support, or archival evidence while the project works toward removing the bridge in later accepted builds.
+This continues the Elderedd identity migration while preserving the DKLab compatibility layer as a retired bridge for old commands, rollback support, and migration history.
+
+Elderedd Softworks LLC is the parent company identity, Elderedd Laboratory is the active research/build laboratory, ELDL is internal shorthand only, and BCS means BSharp Creator Services. DKLab is retired as active identity and may appear only as retired history, compatibility bridge wording, rollback support, or archival evidence.
+
+The UTF-8 source reading contract proves creator text containing non-ASCII characters survives source and BSharp IR CLI execution even under a minimal/no-locale Ruby environment.
+
+The new BSBC execution parity lane extends the Self-Hosting Milestone 1 foundation by proving selected small compiler subset programs can travel from source to BSharp IR to BSBC bytes, execute inside the BSharp Virtual Machine, and match the Ruby referee runtime for event results, final snapshots, and BSharp Save documents.
 
 The README Current Release Truth Gate remains active so the public-facing README cannot drift away from the current accepted build.
 
-This is not full self-hosting. Ruby remains the bootstrap compiler, production parser authority, production resolver authority, runtime authority, and reference referee. v0.1.62 does not retire Ruby, does not add Profile 8, does not change production runtime behaviour, and does not rename bytecode or BSBC.
+This is not full self-hosting. Ruby remains the bootstrap compiler, production parser authority, production resolver authority, runtime authority, and reference referee. v0.1.63 does not retire Ruby, does not add Profile 8, does not change production runtime behaviour except UTF-8 file-read hardening, does not remove the DKLab compatibility bridge, and does not rename bytecode or BSBC.
 
-## v0.1.62 active gates
+## v0.1.63 active gates
 
 ```text
 spec/governance/BASIC_SHARP_ELDEREDD_IDENTITY_CONTRACT_v1.json
@@ -20,6 +26,17 @@ spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json
 compiler/readme_current_release_truth.rb
 tools/readme_current_release_truth.rb
 tests/test_readme_current_release_truth.rb
+spec/governance/BASIC_SHARP_ELDEREDD_PATH_BRIDGE_CONTRACT_v1.json
+spec/governance/BASIC_SHARP_UTF8_SOURCE_READING_CONTRACT_v1.json
+tools/elderedd_path_bridge_contract.rb
+tests/test_elderedd_path_bridge_contract.rb
+spec/governance/BASIC_SHARP_UTF8_SOURCE_READING_CONTRACT_v1.json
+tools/utf8_source_reading_contract.rb
+tests/test_utf8_source_reading_contract.rb
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json
+compiler/small_compiler_subset_bsbc_execution_parity.rb
+tools/small_compiler_subset_bsbc_execution_parity.rb
+tests/test_small_compiler_subset_bsbc_execution_parity.rb
 ```
 
 The README Current Release Truth Gate remains active so the public-facing README cannot drift away from the current accepted build.
@@ -43,6 +60,7 @@ spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.jso
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json
 spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v1.json
 spec/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v1.json
@@ -75,6 +93,8 @@ ruby compiler/basic_sharp.rb samples/text_values.bsharp --run "player sounds bra
 ruby compiler/basic_sharp.rb samples/text_values.bsharp --verify-runtime-parity --run "player sounds brass bell"
 ruby compiler/basic_sharp.rb samples/text_values.bsbc --disassemble-bytecode
 ruby tools/elderedd_identity_contract.rb
+ruby tools/elderedd_path_bridge_contract.rb
+ruby tools/utf8_source_reading_contract.rb
 ruby tools/readme_current_release_truth.rb
 ruby tools/tokenizer_reader_contract.rb
 ruby tools/small_compiler_subset_parser.rb
@@ -82,6 +102,7 @@ ruby tools/small_compiler_subset_ir_emitter.rb
 ruby tools/small_compiler_subset_ir_parity_harness.rb
 ruby tools/small_compiler_subset_bsbc_emitter.rb
 ruby tools/small_compiler_subset_bsbc_parity_harness.rb
+ruby tools/small_compiler_subset_bsbc_execution_parity.rb
 ruby tools/self_hosting_fixture_corpus.rb
 ruby tools/small_compiler_subset_runtime_smoke.rb
 ruby tools/bootstrap_boundary_audit.rb
@@ -107,6 +128,8 @@ docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
 docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
 docs/roadmap/BASIC_SHARP_ROADMAP.md
 spec/governance/BASIC_SHARP_ELDEREDD_IDENTITY_CONTRACT_v1.json
+spec/governance/BASIC_SHARP_ELDEREDD_PATH_BRIDGE_CONTRACT_v1.json
+spec/governance/BASIC_SHARP_UTF8_SOURCE_READING_CONTRACT_v1.json
 spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json
 spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_VALIDATION_INVENTORY_v1.json
 ```
@@ -126,7 +149,7 @@ Reference oracle: BasicSharp::Runtime
 Meaning profiles: bsharp.meaning.v1 through bsharp.meaning.v7
 Bytecode profiles: bsharp.bytecode.v1 through bsharp.bytecode.v7
 Self-hosting contract: BSharp Compiler Subset 0
-Milestone: v0.1.62 Self-Hosting Milestone 1 under Ruby referee control
+Milestone: v0.1.63 Self-Hosting Milestone 1 under Ruby referee control
 Parent company: Elderedd Softworks LLC
 Laboratory: Elderedd Laboratory
 Internal shorthand: ELDL
@@ -134,5 +157,10 @@ Service layer: BCS, BSharp Creator Services
 DKLab status: retired active identity; allowed only as compatibility, rollback, migration, or archival history
 Canonical future path: ~/Elderedd/Projects/BASIC#
 Legacy compatibility path: ~/DKLab/Projects/BASIC#
-Version: 0.1.62
+UTF-8 source reading: hardened and validated under minimal/no-locale Ruby
+Version: 0.1.63
 ```
+
+## v0.1.63 repaired candidate note
+
+The first v0.1.63 candidate was rejected by `tools/text_value_stress.rb` due to a stale sealed Text Value save fixture hash. The repaired v0.1.63 candidate records that rejection and reseals the deterministic fixture before acceptance.

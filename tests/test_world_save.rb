@@ -34,7 +34,7 @@ class TestWorldSave < Minitest::Test
   end
 
   def demo_source
-    File.read(File.join(ROOT, 'samples/world_save_demo.bsharp'))
+    File.read(File.join(ROOT, 'samples/world_save_demo.bsharp'), encoding: 'UTF-8')
   end
 
   def event_save_document
@@ -50,7 +50,7 @@ class TestWorldSave < Minitest::Test
 
     assert_equal 'bsharp.save.json', document.fetch('format')
     assert_equal 1, document.fetch('format_version')
-    assert_equal '0.1.62', document.fetch('created_by_basic_sharp')
+    assert_equal '0.1.63', document.fetch('created_by_basic_sharp')
     assert_equal true, document.dig('world', 'settled')
     assert_equal %w[player henry mara brass\ bell brass\ key oak\ table], document.dig('world', 'things').map { |entry| entry.fetch('name') }
     assert_equal 10, document.dig('world', 'things', 1, 'values', 'health')
@@ -298,7 +298,7 @@ class TestWorldSave < Minitest::Test
         assert_raises(BasicSharp::WorldSaveError) { machine.write_world_save(path) }
       end
 
-      assert_equal "previous save\n", File.read(path)
+      assert_equal "previous save\n", File.read(path, encoding: 'UTF-8')
       assert_empty Dir[File.join(dir, '.world.bsave.json.*.tmp')]
     end
   end

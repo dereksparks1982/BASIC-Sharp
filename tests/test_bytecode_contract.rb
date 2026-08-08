@@ -11,7 +11,7 @@ class TestBytecodeContract < Minitest::Test
   PROFILE_3_PATH = File.join(ROOT, 'spec/bytecode_v3/BASIC_SHARP_BYTECODE_PROFILE_v3.json')
 
   def profile
-    @profile ||= JSON.parse(File.read(PROFILE_PATH))
+    @profile ||= JSON.parse(File.read(PROFILE_PATH, encoding: 'UTF-8'))
   end
 
   def deep_copy(value)
@@ -20,7 +20,7 @@ class TestBytecodeContract < Minitest::Test
 
   def test_profile_validates
     assert BasicSharp::BytecodeContract.validate_profile!(profile, root: ROOT)
-    profile_3 = JSON.parse(File.read(PROFILE_3_PATH))
+    profile_3 = JSON.parse(File.read(PROFILE_3_PATH, encoding: 'UTF-8'))
     assert BasicSharp::BytecodeContract.validate_profile!(profile_3, root: ROOT)
     assert_equal %w[STRS META KIND THNG STRT EVNT IFRL CTRL HOVR CTXT CODE], profile_3.dig('container', 'section_order')
   end
@@ -81,7 +81,7 @@ class TestBytecodeContract < Minitest::Test
   end
 
   def test_all_thirteen_meaning_cases_have_coverage
-    meaning = JSON.parse(File.read(File.join(ROOT, 'spec/meaning_v1/BASIC_SHARP_MEANING_PROFILE_v1.json')))
+    meaning = JSON.parse(File.read(File.join(ROOT, 'spec/meaning_v1/BASIC_SHARP_MEANING_PROFILE_v1.json'), encoding: 'UTF-8'))
     expected_ids = meaning.fetch('cases').map { |case_entry| case_entry.fetch('id') }
     coverage = profile.fetch('meaning_case_coverage')
     assert_equal 13, coverage.length
@@ -154,7 +154,7 @@ class TestBytecodeContract < Minitest::Test
   end
 
   def test_contract_contains_no_ruby_objects_machine_paths_or_timestamps
-    text = File.read(PROFILE_PATH)
+    text = File.read(PROFILE_PATH, encoding: 'UTF-8')
     refute BasicSharp::BytecodeContract.forbidden_serialized_data?(text)
     refute BasicSharp::BytecodeContract.forbidden_serialized_data?(BasicSharp::BytecodeContract.canonical_json(profile))
   end

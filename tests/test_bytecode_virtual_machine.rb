@@ -38,7 +38,7 @@ class TestBytecodeVirtualMachine < Minitest::Test
   end
 
   def resolve_file(path)
-    resolve(File.read(path))
+    resolve(File.read(path, encoding: 'UTF-8'))
   end
 
   def machine_for_source(source)
@@ -143,7 +143,7 @@ class TestBytecodeVirtualMachine < Minitest::Test
   end
 
   def test_definition_order_every_kind_selection_and_that_binding_match
-    source = File.read(File.join(ROOT, 'samples/every_guard.bsharp'))
+    source = File.read(File.join(ROOT, 'samples/every_guard.bsharp'), encoding: 'UTF-8')
     runtime = BasicSharp::Runtime.new(resolve(source))
     vm = machine_for_source(source)
     expected = runtime.run_event('player attacks mara')

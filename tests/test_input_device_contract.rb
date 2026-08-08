@@ -8,11 +8,11 @@ class TestInputDeviceContract < Minitest::Test
   ROOT = File.expand_path('..', __dir__)
 
   def spec
-    JSON.parse(File.read(File.join(ROOT, 'spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json')))
+    JSON.parse(File.read(File.join(ROOT, 'spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json'), encoding: 'UTF-8'))
   end
 
   def test_contract_tracks_current_version_and_supported_devices
-    assert_equal '0.1.62', BasicSharp::VERSION
+    assert_equal '0.1.63', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
     assert_equal %w[generic_gamepad keyboard mouse_keyboard ps5 xbox], spec.fetch('supported_inputs').keys.sort
   end

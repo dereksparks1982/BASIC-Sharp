@@ -15,4 +15,4 @@ The installer restored exact v0.1.59. Derek verified `main`, tag `v0.1.59`, comm
 
 ## Repair rule
 
-v0.1.62 re-carries Self-Hosting Milestone 1 directly from accepted v0.1.59, adds the missing README contract reference, advances every active version surface to v0.1.62, and is not deliverable until the exact sealed v0.1.62 installer has passed against a disposable clean copy of accepted v0.1.59.
+v0.1.63 re-carries Self-Hosting Milestone 1 directly from accepted v0.1.59, adds the missing README contract reference, advances every active version surface to v0.1.63, and is not deliverable until the exact sealed v0.1.63 installer has passed against a disposable clean copy of accepted v0.1.59.

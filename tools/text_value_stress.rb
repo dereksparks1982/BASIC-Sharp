@@ -14,7 +14,7 @@ require_relative '../compiler/bytecode_loader'
 require_relative '../compiler/bytecode_virtual_machine'
 
 ROOT = File.expand_path('..', __dir__)
-FIXTURE = JSON.parse(File.read(File.join(ROOT, 'spec/runtime_v2/BASIC_SHARP_TEXT_VALUE_RUNTIME_FIXTURES_v1.json')))
+FIXTURE = JSON.parse(File.read(File.join(ROOT, 'spec/runtime_v2/BASIC_SHARP_TEXT_VALUE_RUNTIME_FIXTURES_v1.json'), encoding: 'UTF-8'))
 EVENT_COUNT = Integer(ENV.fetch('TEXT_VALUE_EVENTS', '10000'), 10)
 RESTORE_COUNT = Integer(ENV.fetch('TEXT_VALUE_RESTORES', '100'), 10)
 PARITY_COUNT = Integer(ENV.fetch('TEXT_VALUE_PARITY_EVENTS', '25'), 10)

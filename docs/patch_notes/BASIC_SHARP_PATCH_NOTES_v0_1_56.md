@@ -1,4 +1,4 @@
-# BASIC# Patch Notes v0.1.62
+# BASIC# Patch Notes v0.1.63
 
 This build adds the BSBC Golden Parity Harness. The approved small compiler subset must now emit bytecode that matches locked golden BSBC digests and bytecode-loader summaries.
 

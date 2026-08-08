@@ -6,7 +6,7 @@ require_relative '../compiler/parser'
 require_relative '../compiler/resolver'
 
 root = File.expand_path('..', __dir__)
-parser = BasicSharp::Parser.new(File.read(File.join(root, 'samples/demon_killer_controls.bsharp')))
+parser = BasicSharp::Parser.new(File.read(File.join(root, 'samples/demon_killer_controls.bsharp'), encoding: 'UTF-8'))
 document = BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve
 input = BasicSharp::GameInput.new(document)
 %w[W D].each { |key| input.process('type' => 'key_down', 'key' => key) }

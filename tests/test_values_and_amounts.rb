@@ -347,7 +347,7 @@ class TestValuesAndAmounts < Minitest::Test
   end
 
   def test_old_saved_damage_action_without_amount_still_means_one
-    document = JSON.parse(File.read(File.expand_path('fixtures/first_room_v0_1_17.bsir.json', __dir__)))
+    document = JSON.parse(File.read(File.expand_path('fixtures/first_room_v0_1_17.bsir.json', __dir__), encoding: 'UTF-8'))
     damage = document.fetch('events').find { |rule| rule.dig('when', 'raw') == 'player attacks a guard' }.fetch('then').first
     refute damage.key?('amount')
 

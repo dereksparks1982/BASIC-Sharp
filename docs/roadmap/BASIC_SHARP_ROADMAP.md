@@ -6,247 +6,47 @@
 BASIC# source
 -> Ruby bootstrap parser and resolver
 -> BSharp IR
--> Stable Meaning Profile 1  [ACCEPTED: v0.1.24]
--> one canonical Company Bible  [ACCEPTED: v0.1.25]
--> BSharp Bytecode Profiles 1-7 and BSharp VM  [ACCEPTED: v0.1.26-v0.1.39]
--> Trial by Fire complete repair and BSharp VM hardening  [ACCEPTED: v0.1.42]
--> v0.1.43 malformed self-hosting package  [REJECTED]
--> Self-Hosting Foundation  [ACCEPTED: v0.1.44]
--> v0.1.45 movement/input package  [REJECTED]
--> Plain-English Movement and Input Contract  [ACCEPTED: v0.1.46]
--> Tokenizer/Reader Contract  [ACCEPTED: v0.1.47]
--> tokenizer/reader implementation  [ACCEPTED: v0.1.48]
--> small compiler subset parser  [ACCEPTED: v0.1.49]
--> BSharp IR emitter  [ACCEPTED: v0.1.50]
--> IR golden parity harness  [ACCEPTED: v0.1.51]
--> plain-English error contract  [ACCEPTED: v0.1.52]
--> scene/block expansion  [ACCEPTED: v0.1.53]
--> symbol table contract  [ACCEPTED: v0.1.54]
--> BSBC emitter  [ACCEPTED: v0.1.55]
--> BSBC golden parity harness  [ACCEPTED: v0.1.56]
--> self-hosting fixture corpus  [ACCEPTED: v0.1.57]
--> small compiler subset runtime smoke  [ACCEPTED: v0.1.58]
--> Bootstrap Boundary Audit  [ACCEPTED: v0.1.59]
--> v0.1.60 Self-Hosting Milestone 1 candidate  [REJECTED: README error-contract reference missing; rollback verified]
--> Self-Hosting Milestone 1 Repair  [CURRENT CANDIDATE: v0.1.62]
--> expand the self-hosting subset only through separately approved, proof-backed lanes
--> staged Ruby retirement only after validation earns each boundary
--> BSharp web/app export contracts
--> BSharp native document app
--> game-engine bridge
--> independent BASIC# Semantic Oracle  [FUTURE CONCEPT]
--> staged BASIC# editor: Notepad -> Notepad++ -> Sublime-class
--> complete BASIC# IDE
--> BASIC#/BSharp-native browser only after web export and demand are real
+-> Stable Meaning Profiles 1-7
+-> BSharp Bytecode Profiles 1-7
+-> BSharp VM preferred runtime
+-> Trial by Fire validation and rollback discipline
+-> BSharp Compiler Subset 0 under Ruby referee control
+-> Self-Hosting Milestone 1 accepted in v0.1.61
+-> Elderedd identity migration and DKLab compatibility bridge accepted in v0.1.62
+-> v0.1.63 candidate: UTF-8 source hardening, Elderedd path proof, and BSBC execution parity
 ```
 
-## Current v0.1.62 lane
+Ruby remains the bootstrap compiler, production parser authority, production resolver authority, runtime authority, and reference referee. BASIC# is not fully self-hosted. Ruby is retired only after each boundary is separately proven by accepted validation.
 
-- Re-carry Self-Hosting Milestone 1 directly from accepted v0.1.59.
-- Preserve Ruby as bootstrap compiler and referee.
-- Repair the missing README reference to `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json`.
-- Keep the README Current Release Truth Gate.
-- Preserve permanent evidence that v0.1.60 was rejected and restored to v0.1.59.
-- Advance every active release surface and version-sensitive fixture to v0.1.62.
-- Require the exact sealed installer to pass on a disposable clean v0.1.59 copy before delivery.
-- Exclude full self-hosting claims, Ruby retirement, Profile 8, new syntax, production runtime changes, bytecode/BSBC renames, web/browser/editor work, and engine bridge work.
+Canonical Company Bible: `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md`.
+Self-hosting contract: `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json`.
 
-## v0.1.60 rejected candidate record
-
-The v0.1.60 installer reached the Small Compiler Subset Error Contract after the complete 526-run / 8787-assertion suite and earlier self-hosting gates had passed. It failed because README.md omitted the required error-contract spec reference. The installer restored exact v0.1.59 and Derek verified the clean rollback. See `docs/audit/BASIC_SHARP_v0_1_60_REJECTED_BUILD_AUDIT.md`.
-
-## Accepted v0.1.49 lane
-
-- Add the first small compiler subset parser implementation.
-- Parse accepted Head, Body, result marker, and official action word structure from TokenizerReader records.
-- Compare subset parser records against the existing Ruby Parser referee.
-- Keep the existing parser authority unchanged.
-- Add executable parser tests and Trial-by-Fire inventory coverage.
-
-## Accepted v0.1.48 lane
-
-- Implement `compiler/tokenizer_reader.rb` as the first deterministic tokenizer/reader implementation.
-- Keep the Ruby `Lexer` as referee and compare reader records exactly.
-- Preserve current comment behavior and Head words.
-- Emit deterministic token records for Heads, Body boundaries, result markers, action words, quoted text, and ordinary Body lines.
-- Keep the existing parser authority unchanged.
-
-## Accepted v0.1.47 lane
-
-- Define the tokenizer/reader contract for the self-hosting runway.
-- Freeze deterministic reader records: one-based line number, comment-stripped raw line, and trimmed text.
-- Preserve current comment behavior and current Head words.
-- Define future token-record shape without implementing a replacement tokenizer.
-- Add executable contract, tests, and Trial-by-Fire inventory coverage.
-- Record the BASIC# universal-standard and AI-tooling doctrine.
-
-## Accepted v0.1.46 lane
-
-- Define the input-device meaning layer for keyboard, mouse/keyboard, PS5, Xbox, and generic gamepad events.
-- Preserve the existing creator-facing `CONTROLS for PLAYER` language.
-- Add an executable contract and tests proving device events map to existing top-down and platform movement host commands.
-- Repair the rejected v0.1.45 Xbox jump timing assertion without expanding scope.
-- Exclude remapping UI, platform drivers, engine bridge, graphics, haptics, camera controls, Profile 8, and Ruby replacement.
-
-## Accepted v0.1.44 lane
-
-- Preserve v0.1.43 as rejected and do not reuse its number.
-- Add a permanent rejected-package audit and installer NUL-byte package rule.
-- Define BSharp Compiler Subset 0.
-- Add self-hosting foundation documentation, JSON spec, validator tool, and focused test.
-- Preserve Ruby as bootstrap compiler and reference authority.
-- Preserve all accepted Profiles 1-7 meaning and Trial-by-Fire gates.
-- Regenerate all current version-bearing runtime fixtures together.
-- Add no creator syntax, Profile 8, runtime semantics, engine bridge, document app, or Ruby replacement.
-
-## Future web/app/company lane
-
-BASIC# / BSharp aims to become a universal creator-facing standard for websites, apps, games, tools, automation, and business systems.
-
-The staged web strategy is compatibility first:
+## Accepted self-hosting runway
 
 ```text
-BASIC# source
--> HTML for structure
--> CSS for style
--> JavaScript for browser behavior
--> WebAssembly or native targets later
--> BASIC#/BSharp-native browser only much later, after proven demand
+v0.1.47 Tokenizer/Reader Contract
+v0.1.48 Tokenizer/Reader Implementation
+v0.1.49 Small Compiler Subset Parser
+v0.1.50 Small Compiler Subset BSharp IR Emitter
+v0.1.51 Small Compiler Subset IR Golden Parity Harness
+v0.1.52 Small Compiler Subset Plain-English Error Contract
+v0.1.53 Small Compiler Subset Scene/Block Expansion
+v0.1.54 Small Compiler Subset Symbol Table Contract
+v0.1.55 Small Compiler Subset BSBC Emitter
+v0.1.56 Small Compiler Subset BSBC Golden Parity Harness
+v0.1.57 Self-Hosting Fixture Corpus
+v0.1.58 Small Compiler Subset Runtime Smoke
+v0.1.59 Bootstrap Boundary Audit
+v0.1.60 Self-Hosting Milestone 1 candidate rejected and rolled back
+v0.1.61 Self-Hosting Milestone 1 Repair accepted
+v0.1.62 Elderedd Identity and DKLab Compatibility accepted
 ```
 
-The future sponsorship strategy is proof first. A future sponsor packet may target AI tooling support, API credits, founder attention, or partnership discussion only after the language has a clear demo, validation proof, and roadmap evidence.
-
-## Continuation after v0.1.62
-
-1. Install and complete owner-side native validation from exact accepted commit `936c01340c518af655fce21f11d9b99f1863f3f1` and tag `v0.1.49`.
-2. Commit and tag v0.1.62 immediately after every gate passes, then capture the accepted full-project snapshot.
-3. Next focused build should begin the small compiler subset BSBC bytecode emission lane only after subset-emitted BSharp IR remains stable under Ruby referee.
-4. Ruby remains the referee until BASIC# compiler pieces reproduce approved output deterministically.
-5. Web/app export and BSharp native documents remain valuable, but they wait until the self-hosting runway is credible.
-
-## Shelved commercial lane
-
-Private/proprietary distribution remains under consideration, but licensing and monetization are deferred. Future Creator pricing must include a reasonable monthly option, annual billing may only be an optional discount, and an eligible paid local version must remain usable permanently under the eventual qualifying terms.
-
-## Protected design rules
-
-- BASIC# is made for non-programmers, by non-programmers.
-- BASIC# is the language name; BSharp is used where `#` is unsafe.
-- No new `DK`-prefixed name without Derek's explicit approval.
-- Difficult machinery belongs beneath understandable creator-facing language.
-- Compatibility before conquest; validation before replacement; performance before hype; creator clarity before programmer tradition.
-- The BSharp VM is preferred; Ruby remains temporary bootstrap support and reference verification.
-- Self-hosting is earned through staged contracts and parity, not declared early.
-- Every build requires an exact accepted base, approval, validation, changed-files-only package, handshake, commit, and tag.
-- The complete Company Bible is `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md`.
-- The active self-hosting contract is `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json`.
-- The active tokenizer/reader contract is `spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json`.
-- The active small compiler subset parser contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json`.
-- The active small compiler subset IR emitter contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json`.
-- The active input-device contract is `spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json`.
-
-## v0.1.62 IR emitter lane guardrail
-
-`spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json` governs the small compiler subset BSharp IR emitter. Ruby remains the production parser, resolver, and compiler authority.
-
-
-## v0.1.62 IR golden parity lane guardrail
-
-The v0.1.62 lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_52.md`, and `compiler/small_compiler_subset_ir_parity_harness.rb`. It locks golden BSharp IR digests for sealed small compiler subset fixtures under the Ruby Parser plus SemanticResolver referee. It must not become the production compiler path and must not add Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
-
-## Continuation after v0.1.62
-
-The next likely self-hosting build is the small compiler subset emits BSBC bytecode lane, still under Ruby referee control.
-
-
-## v0.1.62 error contract lane guardrail
-
-The v0.1.62 lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_1_52.md`, and `compiler/small_compiler_subset_error_contract.rb`. It locks stable, plain-English error IDs and messages for invalid small compiler subset examples under the Ruby referee. It must not become the production compiler path and must not add Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
-
-## Continuation after v0.1.62
-
-The next likely self-hosting build is controlled subset expansion or the small compiler subset emits BSBC bytecode lane, still under Ruby referee control.
-
-
-## Five Point Paradigm decision filter
-
-Every future roadmap item should be checked against the BASIC# Five Point Paradigm:
-
-1. Huge Human Problem
-2. Radical Human Bridge
-3. Breakthrough Machine
-4. Proof Under Fire
-5. Creator Ownership
-
-The centre statement is: turn human intent into real software behaviour.
-
-A roadmap item can be deferred when it is exciting but does not yet strengthen the current self-hosting bridge, validation proof, creator clarity, compatibility path, or ownership model.
-
-## Documentation map
-
-The documentation front door is `docs/BASIC_SHARP_DOCUMENTATION_MAP.md`. It gives the reading order for the Company Bible, handoff, roadmap, self-hosting contracts, validation records, build history, and runtime/bytecode contracts.
-
-
-## v0.1.62 scene/block expansion lane guardrail
-
-The v0.1.62 lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_1_53.md`, and `compiler/small_compiler_subset_scene_block_expansion.rb`. It expands the sealed subset to larger ordered scene/block fixtures under Ruby Parser plus SemanticResolver referee.
-
-It must not become the production compiler path and must not add Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
-
-## Continuation after v0.1.62
-
-After v0.1.62 is accepted, the next likely self-hosting bridge build is v0.1.62 Subset Symbol Table Contract, unless validation shows a narrower parser/IR repair is needed first.
-
-
-Symbol table contract spec: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v1.json`.
-
-
-ByteTide decision record: the name was considered as a creator-facing metaphor for bytecode flow, then passed on for now. Official system terms remain bytecode and BSBC.
-
-Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_1_54.md`.
-
-
-### v0.1.62 small compiler subset BSBC emission
-
-BASIC# v0.1.62 adds the first small compiler subset lane that emits real BSBC bytecode under Ruby referee control. It proves source -> BSharp IR -> BSBC bytes -> bytecode loader for sealed fixtures without replacing Ruby and without claiming BASIC# is self-hosted.
-
-Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json`.
-Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v0_1_55.md`.
-
-
-### v0.1.62 small compiler subset BSBC golden parity
-
-BASIC# v0.1.62 adds the BSBC Golden Parity Harness under Ruby referee control. It locks approved subset source -> BSharp IR -> BSBC bytes -> bytecode loader summaries against sealed golden expectations without replacing Ruby and without claiming BASIC# is self-hosted.
-
-Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json`.
-Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_1_56.md`.
-
-
-## v0.1.62 Self-Hosting Fixture Corpus
-
-- Spec: `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json`
-- Doc: `docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v0_1_57.md`
-- Implementation: `compiler/self_hosting_fixture_corpus.rb`
-- Tool: `tools/self_hosting_fixture_corpus.rb`
-- Test: `tests/test_self_hosting_fixture_corpus.rb`
-- DKLab is retired as the active identity. Elderedd Softworks LLC is parent company identity, Elderedd Laboratory is active laboratory, and DKLab survives only as compatibility/history during migration.
-## v0.1.62 Compiler Subset Runtime Smoke
-
-Status: implemented in this build. Selected small compiler subset fixtures now reach the verifying runtime, run smoke events, snapshot, and save under Ruby referee control.
-
-
-## v0.1.62 Bootstrap Boundary Audit
-
-Status: implemented in this build. The audit records Ruby referee authority, BASIC# subset participation, runtime smoke evidence, protected production runtime boundaries, and the guarded path into v0.1.62 Self-Hosting Milestone 1.
-
-## v0.1.62 Self-Hosting Milestone 1
-
-Status: implemented in this build. BSharp Compiler Subset 0 now has sealed reader, parser, IR, BSBC, fixture corpus, parity, runtime smoke, bootstrap boundary, README truth, and milestone gates under Ruby referee control. This is not full self-hosting and does not retire Ruby.
-
+The v0.1.60 rejected candidate remains permanent evidence. It passed the ordinary suite but failed the sealed README/error-contract reference gate, then restored exact v0.1.59. The rejection audit is `docs/audit/BASIC_SHARP_v0_1_60_REJECTED_BUILD_AUDIT.md`.
 
 ## Emergency Roadmap: DKLab Retirement and Elderedd Migration
 
-Priority: Emergency. Status: active beginning in v0.1.62.
+Priority: Emergency. Status: active beginning in v0.1.62 and continuing in v0.1.63.
 
 Goal: retire DKLab / DK LAB as the active BASIC# identity and migrate current work to Elderedd without reckless breakage.
 
@@ -271,4 +71,100 @@ Retirement ladder:
 6. Prove future builds work from the Elderedd path.
 7. Remove the BASIC# DKLab compatibility bridge only after validation confirms nothing active depends on it.
 
-Hard rules: never make the BASIC# GitHub repository public; do not delete unrelated projects while migrating BASIC#; do not remove the DKLab compatibility bridge until a later accepted build proves it is safe; every accepted build includes GitHub description update after push verification.
+Hard rules:
+
+- Never make the BASIC# GitHub repository public unless Derek explicitly commands that exact visibility change.
+- Do not delete unrelated projects while migrating BASIC#.
+- Do not remove the DKLab compatibility bridge until a later accepted build proves it is safe.
+- Every accepted build includes GitHub description update after push verification.
+
+
+Canonical self-hosting spec runway:
+
+```text
+spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json
+spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json
+spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v1.json
+spec/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v1.json
+spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json
+spec/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v1.json
+```
+
+## v0.1.63 Candidate: UTF-8 Source Hardening, Elderedd Path Proof, and BSBC Execution Parity
+
+Status: current candidate.
+
+This build has three focused purposes:
+
+1. Harden UTF-8 source, BSharp IR, BSharp Save, and text fixture reading so minimal/no-locale Ruby environments do not crash on creator text.
+2. Continue the Emergency DKLab Retirement and Elderedd Migration by proving the new Elderedd path direction while preserving the DKLab compatibility bridge.
+3. Add the next self-hosting bridge: small compiler subset BSBC execution parity. Approved subset fixtures travel from BASIC# source to BSharp IR to BSBC bytes, execute inside the BSharp Virtual Machine, and match the Ruby referee runtime for event results, final snapshots, and BSharp Save documents.
+
+Guardrails:
+
+- Ruby remains the bootstrap compiler and reference referee.
+- BASIC# is not fully self-hosted.
+- Profile 8 is not added.
+- Bytecode and BSBC are not renamed.
+- Production meaning is not changed.
+- File reading is hardened to explicit UTF-8 where source/JSON/text artifacts are read.
+- The DKLab compatibility bridge remains active retirement support.
+- BCS is named only; no accounts, servers, networking, payments, or hosting are implemented.
+
+Primary references:
+
+- `spec/governance/BASIC_SHARP_UTF8_SOURCE_READING_CONTRACT_v1.json`
+- `tools/utf8_source_reading_contract.rb`
+- `spec/governance/BASIC_SHARP_ELDEREDD_PATH_BRIDGE_CONTRACT_v1.json`
+- `tools/elderedd_path_bridge_contract.rb`
+- `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json`
+- `tools/small_compiler_subset_bsbc_execution_parity.rb`
+
+## After v0.1.63
+
+If v0.1.63 is accepted, the next likely work is one of the following, chosen after validation evidence rather than momentum:
+
+1. Continue Elderedd path migration by proving the project validates from `~/Elderedd/Projects/BASIC#` while preserving the DKLab bridge.
+2. Expand small compiler subset BSBC execution parity only after the current parity gate remains stable.
+3. Prepare a later bridge-removal build only after no active BASIC# workflow depends on `~/DKLab/Projects/BASIC#`.
+
+Do not remove the DKLab compatibility bridge immediately after v0.1.63. Do not begin BCS implementation, accounts, hosting, pricing, network calls, or server work until separately approved.
+
+## Future web/app/company lane
+
+BASIC# / BSharp aims to become a universal creator-facing standard for websites, apps, games, tools, automation, and business systems.
+
+The staged web strategy is compatibility first:
+
+```text
+BASIC# source
+-> HTML for structure
+-> CSS for style
+-> JavaScript for browser behavior
+-> WebAssembly or native targets later
+-> BASIC#/BSharp-native browser only much later, after proven demand
+```
+
+BCS, BSharp Creator Services, is the future hosted service layer for BASIC#: creator accounts, project sync, updates, documentation, compiler access, publishing tools, future game/world hosting, and eventual Elderedd-controlled server infrastructure. v0.1.63 does not implement BCS.
+
+Private/proprietary distribution remains under consideration, but licensing and monetization are deferred. Future Creator pricing must include a reasonable monthly option, annual billing may only be an optional discount, and an eligible paid local version must remain usable permanently under eventual qualifying terms.
+
+## Long-range future concepts
+
+- BSharp web/app export contracts.
+- BSharp native document app.
+- Game-engine bridge.
+- Independent BASIC# Semantic Oracle.
+- Staged BASIC# editor: Notepad -> Notepad++ -> Sublime-class.
+- Complete BASIC# IDE.
+- BASIC#/BSharp-native browser only after web export and demand are real.

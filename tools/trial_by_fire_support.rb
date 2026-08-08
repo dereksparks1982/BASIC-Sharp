@@ -180,7 +180,7 @@ module BasicSharp
     end
 
     def verify_golden_trace!
-      expected = JSON.parse(File.read(GOLDEN_TRACE))
+      expected = JSON.parse(File.read(GOLDEN_TRACE, encoding: 'UTF-8'))
       actual = campaign_trace
       assert!(actual == expected, 'principal campaign no longer matches the independently locked golden trace')
       actual

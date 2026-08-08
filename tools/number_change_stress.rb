@@ -32,14 +32,14 @@ def thing(snapshot, name)
 end
 
 root = File.expand_path('..', __dir__)
-fixture = JSON.parse(File.read(File.join(root, 'spec/runtime_v5/BASIC_SHARP_NUMBER_CHANGE_RUNTIME_FIXTURES_v1.json')))
+fixture = JSON.parse(File.read(File.join(root, 'spec/runtime_v5/BASIC_SHARP_NUMBER_CHANGE_RUNTIME_FIXTURES_v1.json'), encoding: 'UTF-8'))
 input_path = File.join(root, fixture.fetch('input'))
 expected_path = File.join(root, fixture.fetch('expected'))
 assert_stress(Digest::SHA256.hexdigest(File.binread(input_path)) == fixture.fetch('input_sha256'), 'number-change input fixture hash changed')
 assert_stress(Digest::SHA256.hexdigest(File.binread(expected_path)) == fixture.fetch('expected_sha256'), 'number-change expected fixture hash changed')
-sample_document = compile(File.read(File.join(root, 'samples/number_changes.bsharp')))
+sample_document = compile(File.read(File.join(root, 'samples/number_changes.bsharp'), encoding: 'UTF-8'))
 sample_runtime = BasicSharp::Runtime.new(sample_document)
-sample_results = JSON.parse(File.read(input_path)).map { |event| sample_runtime.run_event(event) }
+sample_results = JSON.parse(File.read(input_path, encoding: 'UTF-8')).map { |event| sample_runtime.run_event(event) }
 sample_actual = {
   'events' => sample_results,
   'ask' => BasicSharp::Ask.new(sample_runtime).answer_many([
@@ -48,7 +48,7 @@ sample_actual = {
   'final_state' => sample_runtime.snapshot,
   'save' => BasicSharp::WorldSave.document_for(sample_runtime)
 }
-assert_stress(sample_actual == JSON.parse(File.read(expected_path)), 'number-change runtime fixture behavior changed')
+assert_stress(sample_actual == JSON.parse(File.read(expected_path, encoding: 'UTF-8')), 'number-change runtime fixture behavior changed')
 
 source = <<~BS
   DEFINE

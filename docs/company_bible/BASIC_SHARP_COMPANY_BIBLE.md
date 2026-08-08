@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.62  
+**Version:** v0.1.63  
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -439,7 +439,7 @@ A future package fails Bible integrity when it creates a second file in this fol
 - The small compiler subset IR golden parity harness lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_51.md`, and `compiler/small_compiler_subset_ir_parity_harness.rb`. It locks deterministic BSharp IR SHA256 digests for sealed small compiler subset fixtures and compares them against the Ruby Parser plus SemanticResolver referee. It is not the production compiler path and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
 
 
-### v0.1.62 Small Compiler Subset Error Contract
+### v0.1.63 Small Compiler Subset Error Contract
 
 - The small compiler subset plain-English error contract lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_1_52.md`, and `compiler/small_compiler_subset_error_contract.rb`. It locks stable error IDs, line numbers, severities, creator-facing explanations, and source diagnostics for invalid small compiler subset examples. It is not the production compiler path and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
 
@@ -477,7 +477,7 @@ The map is the front door to the documentation library. It does not replace the 
 The documentation stack should remain a navigable library, not an unindexed dragon hoard. New major documentation areas must either be listed in the map or intentionally explained elsewhere in the same accepted build.
 
 
-### v0.1.62 Small Compiler Subset Scene/Block Expansion
+### v0.1.63 Small Compiler Subset Scene/Block Expansion
 
 - The small compiler subset scene/block expansion lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_1_53.md`, and `compiler/small_compiler_subset_scene_block_expansion.rb`.
 - It expands the sealed subset to larger ordered scene/block fixtures while Ruby remains the production parser, resolver, compiler path, and referee.
@@ -492,16 +492,16 @@ ByteTide decision record: the name was considered as a creator-facing metaphor f
 Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_1_54.md`.
 
 
-## v0.1.62 Symbol Table Contract and ByteTide Decision
+## v0.1.63 Symbol Table Contract and ByteTide Decision
 
-The v0.1.62 lane adds `compiler/small_compiler_subset_symbol_table_contract.rb`, `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v1.json`, and `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_1_54.md`.
+The v0.1.63 lane adds `compiler/small_compiler_subset_symbol_table_contract.rb`, `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v1.json`, and `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_1_54.md`.
 
 ByteTide decision record: ByteTide was considered as a creator-facing metaphor for bytecode flow, then passed on. BASIC# keeps bytecode and BSBC as official system terms. This is a documentation decision only, not a rename.
 
 
-### v0.1.62 small compiler subset BSBC emission
+### v0.1.63 small compiler subset BSBC emission
 
-BASIC# v0.1.62 adds the first small compiler subset lane that emits real BSBC bytecode under Ruby referee control. It proves source -> BSharp IR -> BSBC bytes -> bytecode loader for sealed fixtures without replacing Ruby and without claiming BASIC# is self-hosted.
+BASIC# v0.1.63 adds the first small compiler subset lane that emits real BSBC bytecode under Ruby referee control. It proves source -> BSharp IR -> BSBC bytes -> bytecode loader for sealed fixtures without replacing Ruby and without claiming BASIC# is self-hosted.
 
 Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json`.
 Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v0_1_55.md`.
@@ -509,9 +509,9 @@ Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v0_
 Reference: `compiler/small_compiler_subset_bsbc_emitter.rb`.
 
 
-### v0.1.62 small compiler subset BSBC golden parity
+### v0.1.63 small compiler subset BSBC golden parity
 
-BASIC# v0.1.62 adds the BSBC Golden Parity Harness under Ruby referee control. It locks approved subset source -> BSharp IR -> BSBC bytes -> bytecode loader summaries against sealed golden expectations without replacing Ruby and without claiming BASIC# is self-hosted.
+BASIC# v0.1.63 adds the BSBC Golden Parity Harness under Ruby referee control. It locks approved subset source -> BSharp IR -> BSBC bytes -> bytecode loader summaries against sealed golden expectations without replacing Ruby and without claiming BASIC# is self-hosted.
 
 Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json`.
 Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_1_56.md`.
@@ -519,7 +519,7 @@ Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARN
 Reference: `compiler/small_compiler_subset_bsbc_parity_harness.rb`.
 
 
-## v0.1.62 Self-Hosting Fixture Corpus
+## v0.1.63 Self-Hosting Fixture Corpus
 
 - Spec: `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json`
 - Doc: `docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v0_1_57.md`
@@ -527,27 +527,27 @@ Reference: `compiler/small_compiler_subset_bsbc_parity_harness.rb`.
 - Tool: `tools/self_hosting_fixture_corpus.rb`
 - Test: `tests/test_self_hosting_fixture_corpus.rb`
 - DKLab is retired as the active identity. Elderedd Softworks LLC is the parent company identity, Elderedd Laboratory is the active laboratory, and DKLab may remain only as compatibility bridge, rollback support, migration history, or archival evidence.
-## v0.1.62 Small Compiler Subset Runtime Smoke Rule
+## v0.1.63 Small Compiler Subset Runtime Smoke Rule
 
 `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v0_1_58.md`, and `compiler/small_compiler_subset_runtime_smoke.rb` are protected self-hosting artifacts. The runtime smoke lane proves selected subset fixtures can enter the verifying runtime, run deterministic smoke events, snapshot, and save under Ruby referee control. It must not claim BASIC# is self-hosted, must not replace Ruby, must not add Profile 8, and must not change production runtime behaviour.
 
 
 
-## v0.1.62 Bootstrap Boundary Audit Rule
+## v0.1.63 Bootstrap Boundary Audit Rule
 
-`spec/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v1.json`, `docs/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v0_1_59.md`, and `compiler/bootstrap_boundary_audit.rb` are protected self-hosting boundary artifacts. The bootstrap boundary audit records where Ruby remains source of truth, where BASIC# subset artifacts may participate, where runtime smoke evidence is allowed, and which v0.1.62 milestone claims remain forbidden. It must not claim BASIC# is self-hosted, must not replace Ruby, must not add Profile 8, must not rename bytecode or BSBC, and must not change production runtime behaviour.
+`spec/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v1.json`, `docs/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v0_1_59.md`, and `compiler/bootstrap_boundary_audit.rb` are protected self-hosting boundary artifacts. The bootstrap boundary audit records where Ruby remains source of truth, where BASIC# subset artifacts may participate, where runtime smoke evidence is allowed, and which v0.1.63 milestone claims remain forbidden. It must not claim BASIC# is self-hosted, must not replace Ruby, must not add Profile 8, must not rename bytecode or BSBC, and must not change production runtime behaviour.
 
 
-## v0.1.62 Self-Hosting Milestone 1 Rule
+## v0.1.63 Self-Hosting Milestone 1 Rule
 
-`spec/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v1.json`, `compiler/self_hosting_milestone_1.rb`, and `tools/self_hosting_milestone_1.rb` define the only accepted v0.1.62 self-hosting claim: BSharp Compiler Subset 0 reached Self-Hosting Milestone 1 under Ruby referee control. This is not full self-hosting. This does not mean full self-hosting, does not retire Ruby, does not add Profile 8, does not change production runtime behaviour, and does not rename bytecode or BSBC. Ruby remains the bootstrap compiler and referee.
+`spec/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v1.json`, `compiler/self_hosting_milestone_1.rb`, and `tools/self_hosting_milestone_1.rb` define the only accepted v0.1.63 self-hosting claim: BSharp Compiler Subset 0 reached Self-Hosting Milestone 1 under Ruby referee control. This is not full self-hosting. This does not mean full self-hosting, does not retire Ruby, does not add Profile 8, does not change production runtime behaviour, and does not rename bytecode or BSBC. Ruby remains the bootstrap compiler and referee.
 
-## v0.1.62 README Current Release Truth Rule
+## v0.1.63 README Current Release Truth Rule
 
 `spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json`, `compiler/readme_current_release_truth.rb`, and `tools/readme_current_release_truth.rb` protect the GitHub-facing root README. This is the README Current Release Truth Gate. The README current-release section must match the active build title and must not carry stale current-release text from older lanes.
 
 
-## v0.1.62 Emergency Elderedd Migration Rule
+## v0.1.63 Emergency Elderedd Migration Rule
 
 Priority: Emergency. DKLab / DK LAB is retired as the active BASIC# parent/lab identity. Elderedd Softworks LLC is the parent company identity. Elderedd Laboratory is the research and build laboratory. ELDL is internal shorthand only. BCS means BSharp Creator Services.
 
@@ -563,4 +563,19 @@ Every accepted BASIC# build must close out in this order:
 4. GitHub description update
 5. Final status summary
 
-BCS, BSharp Creator Services, is the future hosted service layer for BASIC#: creator accounts, project sync, updates, documentation, compiler access, publishing tools, future game/world hosting, and eventual Elderedd-controlled server infrastructure. v0.1.62 names and governs BCS only. It does not implement accounts, payments, hosting, servers, network behaviour, licensing, or pricing.
+BCS, BSharp Creator Services, is the future hosted service layer for BASIC#: creator accounts, project sync, updates, documentation, compiler access, publishing tools, future game/world hosting, and eventual Elderedd-controlled server infrastructure. v0.1.63 names and governs BCS only. It does not implement accounts, payments, hosting, servers, network behaviour, licensing, or pricing.
+
+
+## v0.1.63 conduct and migration clarification
+
+BASIC# v0.1.63 continues the emergency DKLab retirement work without removing the DKLab compatibility bridge. The active identity is Elderedd Softworks LLC and Elderedd Laboratory. DKLab is retired and may appear only as compatibility, rollback, migration, or archival history until a later accepted build proves the bridge can be removed safely.
+
+The v0.1.63 technical lane adds small compiler subset BSBC execution parity under Ruby referee control. This is a proof lane, not full self-hosting. Ruby remains the bootstrap compiler, production parser authority, production resolver authority, runtime authority, and reference referee.
+
+Build conduct remains unchanged: correctness outranks speed, failed candidates are evidence, and no build may be accepted without full validation and Derek-side installation proof.
+
+## v0.1.63 UTF-8 Source Reading Conduct Rule
+
+BASIC# source files, BSharp IR JSON, BSharp Save JSON, and text fixtures must be read explicitly as UTF-8 wherever the project controls file reads. A minimal/no-locale Ruby environment must not crash with `Encoding::CompatibilityError` when creator text contains non-ASCII characters such as an em dash or curly quote diagnostics.
+
+This hardening does not change creator syntax, parser meaning, runtime meaning, bytecode format, or Ruby referee authority. It is a foundation repair so future self-hosting work does not inherit a locale-dependent source-reading trap.

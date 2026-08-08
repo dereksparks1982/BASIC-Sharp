@@ -184,7 +184,7 @@ Dir.mktmpdir do |dir|
   assert_stress(thing(overflow_result.fetch('state'), 'henry').fetch('damage') == MAX - 5, 'overflow partially mutated first target')
   assert_stress(thing(overflow_result.fetch('state'), 'otto').fetch('damage') == 2, 'overflow partially mutated later target')
 
-  old_document = JSON.parse(File.read(File.expand_path('../tests/fixtures/first_room_v0_1_17.bsir.json', __dir__)))
+  old_document = JSON.parse(File.read(File.expand_path('../tests/fixtures/first_room_v0_1_17.bsir.json', __dir__), encoding: 'UTF-8'))
   old_result = BasicSharp::Runtime.new(old_document).run_event('player attacks henry')
   assert_stress(thing(old_result.fetch('state'), 'henry').fetch('damage') == 1, 'old damage action did not default to one')
 
