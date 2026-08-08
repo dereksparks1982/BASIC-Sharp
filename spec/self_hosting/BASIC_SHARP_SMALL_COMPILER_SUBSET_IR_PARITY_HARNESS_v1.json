@@ -1,21 +1,21 @@
 {
-  "format": "bsharp.small_compiler_subset.ir_emitter.contract.json",
+  "format": "bsharp.small_compiler_subset.ir_golden_parity.contract.json",
   "format_version": 1,
   "target_version": "0.1.51",
-  "title": "Small Compiler Subset Emits BSharp IR Under Ruby Referee",
-  "status": "ir_emitter_under_ruby_referee",
-  "purpose": "Emit deterministic BSharp IR from the small compiler subset parser path while the existing Ruby parser and resolver remain the production authority and referee.",
+  "title": "BSharp IR Golden Parity Harness Under Ruby Referee",
+  "status": "ir_golden_parity_under_ruby_referee",
+  "purpose": "Lock golden BSharp IR parity digests for the small compiler subset so future BASIC# compiler work must match approved Ruby Parser plus SemanticResolver output before it carries more weight.",
   "scope": {
     "allowed": [
-      "adding compiler/small_compiler_subset_ir_emitter.rb as a non-production BSharp IR emission experiment",
-      "emitting BSharp IR from SmallCompilerSubsetParser output for sealed subset fixtures",
-      "comparing the subset-emitted BSharp IR against the existing Ruby Parser plus SemanticResolver referee",
-      "recording deterministic IR emitter records for future self-hosting work",
+      "adding compiler/small_compiler_subset_ir_parity_harness.rb as a non-production parity harness",
+      "computing deterministic SHA256 digests from normalized subset-emitted BSharp IR",
+      "comparing subset-emitted BSharp IR digests against Ruby Parser plus SemanticResolver referee digests",
+      "locking golden IR fixture digests for future self-hosting regression checks",
       "preserving existing runtime, BSharp Bytecode, Save, ASK, input devices, web, and browser behavior"
     ],
     "forbidden_until_later_approval": [
       "replacing compiler/parser.rb as the production parser authority",
-      "routing normal BASIC# compilation through compiler/small_compiler_subset_ir_emitter.rb",
+      "routing normal BASIC# compilation through compiler/small_compiler_subset_ir_parity_harness.rb",
       "claiming BASIC# is self-hosted",
       "adding Profile 8",
       "adding new creator-facing syntax",
@@ -24,15 +24,16 @@
   },
   "input_contracts": [
     "spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json",
-    "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json"
+    "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json",
+    "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json"
   ],
   "output_schema": {
-    "format": "bsharp.small_compiler_subset.ir_emitter.record",
+    "format": "bsharp.small_compiler_subset.ir_golden_parity.record",
     "version": "live BasicSharp::VERSION",
-    "status": "ir_emitter_under_ruby_referee",
-    "parser_ruby_referee_matches": "true only when SmallCompilerSubsetParser matches Ruby Parser statement structure",
-    "ruby_referee_matches": "true only when emitted BSharp IR matches Ruby Parser plus SemanticResolver output",
-    "bsharp_ir": "resolved BSharp IR document compatible with bsir.debug.json"
+    "status": "ir_golden_parity_under_ruby_referee",
+    "fixture_count": "number of sealed fixtures checked",
+    "all_pass": "true only when every fixture matches parser, IR, golden digest, referee digest, and count expectations",
+    "fixtures": "per-fixture parity records with normalized BSharp IR SHA256 digests"
   },
   "fixtures": [
     {
@@ -49,7 +50,8 @@
         "context_declarations": 0,
         "diagnostics": 0,
         "meaning_profile": "bsharp.meaning.v1"
-      }
+      },
+      "expected_ir_sha256": "9d7c0246f1f72e2c7c1618e109e0a370e43323dc813ef5c19d134dd4f8ad870c"
     },
     {
       "name": "platform_movement",
@@ -65,11 +67,12 @@
         "context_declarations": 0,
         "diagnostics": 0,
         "meaning_profile": "bsharp.meaning.v4"
-      }
+      },
+      "expected_ir_sha256": "85d8423656d7cec94560647e703a80f6877082fd1187fd7d06b8cfd53d80e6c0"
     },
     {
       "name": "text_values",
-      "source": "KINDS\n[\n    #gate is a #door\n].\n\nDEFINE\n[\n    @north gate is a #gate\n    @south gate is a #gate\n    @brass bell is a #device\n].\n\nSTART\n[\n    @north gate has \"North  Gate!\" title\n    @south gate has \"South Gate.\" title\n].\n\nWHEN PLAYER sounds @brass bell\n[\n    |then (change title of every #gate to \"OPEN — RubyVM!\"\n].\n\nIF @north gate has \"OPEN — RubyVM!\" title\n[\n    |then (damage PLAYER\n].\n",
+      "source": "KINDS\n[\n    #gate is a #door\n].\n\nDEFINE\n[\n    @north gate is a #gate\n    @south gate is a #gate\n    @brass bell is a #device\n].\n\nSTART\n[\n    @north gate has \"North  Gate!\" title\n    @south gate has \"South Gate.\" title\n].\n\nWHEN PLAYER sounds @brass bell\n[\n    |then (change title of every #gate to \"OPEN \u2014 RubyVM!\"\n].\n\nIF @north gate has \"OPEN \u2014 RubyVM!\" title\n[\n    |then (damage PLAYER\n].\n",
       "expected_counts": {
         "kinds": 1,
         "objects": 4,
@@ -81,24 +84,25 @@
         "context_declarations": 0,
         "diagnostics": 0,
         "meaning_profile": "bsharp.meaning.v2"
-      }
+      },
+      "expected_ir_sha256": "61f4146b40874d131865aa2c8bba2cb8174f7220b37ff968afd508984231d3c7"
     }
   ],
   "acceptance_rules": [
-    "The small compiler subset IR emitter tool must pass in the Trial-by-Fire validation inventory.",
-    "compiler/small_compiler_subset_ir_emitter.rb must emit from SmallCompilerSubsetParser records, not replace normal compilation.",
-    "Subset-emitted BSharp IR must match the existing Ruby Parser plus SemanticResolver referee for accepted fixtures.",
-    "The new IR emitter must not become the production compiler path in this build.",
+    "The BSharp IR golden parity harness tool must pass in the Trial-by-Fire validation inventory.",
+    "Every accepted fixture must produce the exact locked normalized BSharp IR SHA256 digest.",
+    "Subset-emitted BSharp IR digests must match Ruby Parser plus SemanticResolver referee digests.",
+    "The new parity harness must not become the production compiler path in this build.",
     "No Profile 8, syntax, runtime, bytecode, web export, browser, engine bridge, or Ruby retirement work is allowed."
   ],
   "documents": {
-    "spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json",
-    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v0_1_50.md",
-    "implementation_file": "compiler/small_compiler_subset_ir_emitter.rb",
-    "tool": "tools/small_compiler_subset_ir_emitter.rb",
-    "test": "tests/test_small_compiler_subset_ir_emitter.rb",
-    "parser_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json",
-    "parser_file": "compiler/small_compiler_subset_parser.rb",
+    "spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json",
+    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_51.md",
+    "implementation_file": "compiler/small_compiler_subset_ir_parity_harness.rb",
+    "tool": "tools/small_compiler_subset_ir_parity_harness.rb",
+    "test": "tests/test_small_compiler_subset_ir_parity_harness.rb",
+    "ir_emitter_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json",
+    "ir_emitter_file": "compiler/small_compiler_subset_ir_emitter.rb",
     "ruby_parser_referee": "compiler/parser.rb",
     "ruby_resolver_referee": "compiler/resolver.rb"
   }

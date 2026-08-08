@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.50  
+**Version:** v0.1.51  
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -432,3 +432,8 @@ A future package fails Bible integrity when it creates a second file in this fol
 
 - The small compiler subset parser lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v0_1_49.md`, and `compiler/small_compiler_subset_parser.rb`. It parses deterministic subset records from TokenizerReader output and compares them against the Ruby Parser referee. It is not the production parser authority and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, web export, browser work, engine bridge, or Ruby retirement.
 - The small compiler subset IR emitter lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v0_1_50.md`, and `compiler/small_compiler_subset_ir_emitter.rb`. It emits BSharp IR from small compiler subset parser records and compares that output against the Ruby Parser plus SemanticResolver referee. It is not the production compiler path and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
+
+
+### v0.1.51 Small Compiler Subset IR Golden Parity Harness
+
+- The small compiler subset IR golden parity harness lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_51.md`, and `compiler/small_compiler_subset_ir_parity_harness.rb`. It locks deterministic BSharp IR SHA256 digests for sealed small compiler subset fixtures and compares them against the Ruby Parser plus SemanticResolver referee. It is not the production compiler path and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.

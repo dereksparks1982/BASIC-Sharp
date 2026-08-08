@@ -128,14 +128,15 @@ MANDATORY_TEXT = [
   'Self-hosting must be earned in stages.',
   'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json',
   'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json',
-  'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json'
+  'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json',
+  'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json'
 ].freeze
 
 files = Dir.glob(File.join(ROOT, 'docs/company_bible/*'), File::FNM_DOTMATCH).reject do |path|
   [File.join(ROOT, 'docs/company_bible/.'), File.join(ROOT, 'docs/company_bible/..')].include?(path)
 end
 raise "Expected one Company Bible file, found #{files.length}" unless files == [CANONICAL_FULL_PATH]
-puts 'BASIC# Company Bible Audit v0.1.50'
+puts 'BASIC# Company Bible Audit v0.1.51'
 puts 'Canonical file count: PASS'
 
 text = File.read(CANONICAL_FULL_PATH, encoding: 'UTF-8')

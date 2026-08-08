@@ -12,7 +12,7 @@ class TestInputDeviceContract < Minitest::Test
   end
 
   def test_contract_tracks_current_version_and_supported_devices
-    assert_equal '0.1.50', BasicSharp::VERSION
+    assert_equal '0.1.51', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
     assert_equal %w[generic_gamepad keyboard mouse_keyboard ps5 xbox], spec.fetch('supported_inputs').keys.sort
   end
