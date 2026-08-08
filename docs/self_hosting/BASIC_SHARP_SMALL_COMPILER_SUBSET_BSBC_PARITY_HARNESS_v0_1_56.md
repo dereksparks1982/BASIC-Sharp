@@ -1,8 +1,8 @@
-# BASIC# Small Compiler Subset BSBC Golden Parity Harness v0.1.58
+# BASIC# Small Compiler Subset BSBC Golden Parity Harness v0.1.59
 
-v0.1.58 adds the BSBC Golden Parity Harness for the approved small compiler subset.
+v0.1.59 adds the BSBC Golden Parity Harness for the approved small compiler subset.
 
-v0.1.55 proved that the subset can emit real BSBC bytecode under Ruby referee supervision. v0.1.58 locks that emission behind golden parity fixtures so future compiler work must keep the bytecode bytes, disassembly digest, meaning fingerprint, and bytecode loader summary stable.
+v0.1.55 proved that the subset can emit real BSBC bytecode under Ruby referee supervision. v0.1.59 locks that emission behind golden parity fixtures so future compiler work must keep the bytecode bytes, disassembly digest, meaning fingerprint, and bytecode loader summary stable.
 
 The harness checks this path:
 

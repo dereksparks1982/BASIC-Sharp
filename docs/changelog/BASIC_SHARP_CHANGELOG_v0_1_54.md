@@ -1,4 +1,4 @@
-# BASIC# Changelog v0.1.58
+# BASIC# Changelog v0.1.59
 
 ## Added
 

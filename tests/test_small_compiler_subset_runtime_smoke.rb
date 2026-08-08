@@ -44,6 +44,36 @@ class TestSmallCompilerSubsetRuntimeSmoke < Minitest::Test
     end
   end
 
+  def test_every_fixture_declares_required_expected_fields
+    required = BasicSharp::SmallCompilerSubsetRuntimeSmoke.required_expected_fields
+    assert_equal 6, required.length
+    spec.fetch('fixtures').each do |fixture|
+      required.each do |field|
+        assert fixture.key?(field), "#{fixture.fetch('name')} missing #{field}"
+      end
+    end
+  end
+
+  def test_missing_expected_binary_digest_fails_loudly
+    broken = Marshal.load(Marshal.dump(spec))
+    broken.fetch('fixtures').first.delete('expected_binary_sha256')
+
+    error = assert_raises(KeyError) do
+      BasicSharp::SmallCompilerSubsetRuntimeSmoke.new(broken).to_h
+    end
+    assert_includes error.message, 'expected_binary_sha256'
+  end
+
+  def test_missing_expected_matched_event_count_fails_loudly
+    broken = Marshal.load(Marshal.dump(spec))
+    broken.fetch('fixtures').first.delete('expected_matched_event_count')
+
+    error = assert_raises(KeyError) do
+      BasicSharp::SmallCompilerSubsetRuntimeSmoke.new(broken).to_h
+    end
+    assert_includes error.message, 'expected_matched_event_count'
+  end
+
   def test_trial_by_fire_inventory_runs_runtime_smoke_tool
     inventory = JSON.parse(File.read(File.join(ROOT, 'spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_VALIDATION_INVENTORY_v1.json'), encoding: 'UTF-8'))
     tools = inventory.fetch('required_tools').map { |entry| entry.fetch('path') }

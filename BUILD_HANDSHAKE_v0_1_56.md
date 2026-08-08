@@ -1,6 +1,6 @@
-# BASIC# Build Handshake v0.1.58
+# BASIC# Build Handshake v0.1.59
 
-Build: v0.1.58 BSBC Golden Parity Harness
+Build: v0.1.59 BSBC Golden Parity Harness
 Base required: v0.1.55 / cdf8872260379007ebf54877fd72f124e06d4fc2
 
 ## Scope

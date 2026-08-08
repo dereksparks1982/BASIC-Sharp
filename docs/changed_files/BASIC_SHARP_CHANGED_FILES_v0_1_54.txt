@@ -1,8 +1,8 @@
-# BASIC# Changed Files v0.1.58
+# BASIC# Changed Files v0.1.59
 
 Package: BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_54_SUBSET_SYMBOL_TABLE_CONTRACT_CHANGED_FILES_ONLY.zip
 Base: v0.1.53 / e23eff5bff3fc17c38965d69b03b2f62ee66a9d5
-Target: v0.1.58
+Target: v0.1.59
 
 ## Changed files
 

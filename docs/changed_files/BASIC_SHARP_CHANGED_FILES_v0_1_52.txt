@@ -1,12 +1,12 @@
-# BASIC# Changed Files v0.1.58
+# BASIC# Changed Files v0.1.59
 
 Package: BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_52_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_CHANGED_FILES_ONLY.zip
 Base: v0.1.51 / 2962fa19b3e452e529ac7166ad3e751bf621cde4
-Target: v0.1.58
+Target: v0.1.59
 
 ## Repair note
 
-The first v0.1.58 candidate failed at `tools/text_value_stress.rb` with `Save fixture hash: FAIL` and restored exact v0.1.51. This repaired package updates the v0.1.58 text-value Save fixture hash and adds the requested Five Point Paradigm plus Documentation Map cleanup.
+The first v0.1.59 candidate failed at `tools/text_value_stress.rb` with `Save fixture hash: FAIL` and restored exact v0.1.51. This repaired package updates the v0.1.59 text-value Save fixture hash and adds the requested Five Point Paradigm plus Documentation Map cleanup.
 
 ## Changed files
 

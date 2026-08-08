@@ -13,14 +13,14 @@ class TestSelfHostingContract < Minitest::Test
   end
 
   def test_spec_targets_the_live_basic_sharp_version
-    assert_equal '0.1.58', BasicSharp::VERSION
+    assert_equal '0.1.59', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
   end
 
   def test_contract_is_foundation_only
     assert_equal 'foundation_contract_only', spec.fetch('status')
     assert_equal 'BSharp Compiler Subset 0', spec.fetch('compiler_subset_name')
-    assert_equal 'runtime_smoke_under_ruby_referee', spec.fetch('compiler_subset_status')
+    assert_equal 'bootstrap_boundary_audit_under_ruby_referee', spec.fetch('compiler_subset_status')
   end
 
   def test_future_work_is_explicitly_excluded
@@ -72,6 +72,11 @@ class TestSelfHostingContract < Minitest::Test
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_runtime_smoke_file')))
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_runtime_smoke_tool')))
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_runtime_smoke_test')))
+    assert_equal 'spec/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v1.json', documents.fetch('bootstrap_boundary_audit_spec')
+    assert File.file?(File.join(ROOT, documents.fetch('bootstrap_boundary_audit_implementation')))
+    assert File.file?(File.join(ROOT, documents.fetch('bootstrap_boundary_audit_file')))
+    assert File.file?(File.join(ROOT, documents.fetch('bootstrap_boundary_audit_tool')))
+    assert File.file?(File.join(ROOT, documents.fetch('bootstrap_boundary_audit_test')))
   end
 
   def test_trial_by_fire_inventory_runs_the_contract_tool
@@ -89,5 +94,6 @@ class TestSelfHostingContract < Minitest::Test
     assert_includes tools, 'tools/small_compiler_subset_bsbc_parity_harness.rb'
     assert_includes tools, 'tools/self_hosting_fixture_corpus.rb'
     assert_includes tools, 'tools/small_compiler_subset_runtime_smoke.rb'
+    assert_includes tools, 'tools/bootstrap_boundary_audit.rb'
   end
 end

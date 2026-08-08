@@ -1,8 +1,8 @@
-# BASIC# Build Handshake v0.1.58
+# BASIC# Build Handshake v0.1.59
 
 ## Identity
 
-- Build: v0.1.58 Subset Scene/Block Expansion Under Ruby Referee
+- Build: v0.1.59 Subset Scene/Block Expansion Under Ruby Referee
 - Required base: v0.1.52
 - Required commit: `ce42744a9021ed955b076ee42030054aa1423b92`
 - Required tag: `v0.1.52`
@@ -19,4 +19,4 @@ No Profile 8, new syntax, runtime change, BSharp Bytecode change, Save format ch
 
 ## Acceptance
 
-Accept only after full native validation passes. Then commit the exact tree and tag `v0.1.58`.
+Accept only after full native validation passes. Then commit the exact tree and tag `v0.1.59`.

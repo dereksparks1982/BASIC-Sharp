@@ -1,0 +1,144 @@
+{
+  "format": "bsharp.bootstrap_boundary_audit.json",
+  "format_version": 1,
+  "target_version": "0.1.59",
+  "title": "BASIC# Bootstrap Boundary Audit",
+  "status": "bootstrap_boundary_audit_under_ruby_referee",
+  "next_milestone": "v0.1.60 Self-Hosting Milestone 1",
+  "purpose": "Audit exactly where Ruby remains bootstrap referee, where BASIC# subset artifacts now participate, and which boundaries must remain sealed before v0.1.60. References spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json as the canonical self-hosting subset contract.",
+  "forbidden_until_after_milestone": [
+    "claiming BASIC# is self-hosted",
+    "replacing the Ruby bootstrap compiler",
+    "adding Profile 8",
+    "changing production runtime behaviour",
+    "renaming bytecode or BSBC",
+    "web export or browser work",
+    "BSharp native document application work"
+  ],
+  "stages": [
+    {
+      "name": "ruby_bootstrap_referee",
+      "owner": "Ruby bootstrap",
+      "authority": "source_of_truth",
+      "boundary": "Ruby Parser, SemanticResolver, emitter, loader, runtime, and VM remain referee authority until a later accepted milestone proves otherwise.",
+      "paths": [
+        "compiler/parser.rb",
+        "compiler/resolver.rb",
+        "compiler/ir_emitter.rb",
+        "compiler/bytecode_emitter.rb",
+        "compiler/bytecode_loader.rb",
+        "compiler/runtime_transition.rb",
+        "compiler/bytecode_virtual_machine.rb"
+      ]
+    },
+    {
+      "name": "basic_sharp_subset_inputs",
+      "owner": "BASIC# subset source fixtures",
+      "authority": "sealed_input_corpus",
+      "boundary": "Subset source examples are controlled inputs only; they do not make the full language self-hosted.",
+      "paths": [
+        "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json",
+        "compiler/self_hosting_fixture_corpus.rb",
+        "tools/self_hosting_fixture_corpus.rb"
+      ]
+    },
+    {
+      "name": "basic_sharp_subset_reader_parser",
+      "owner": "BSharp Compiler Subset 0",
+      "authority": "referee_checked_parser_records",
+      "boundary": "Tokenizer/reader and small parser records must match the Ruby referee and remain a subset lane.",
+      "paths": [
+        "compiler/tokenizer_reader.rb",
+        "compiler/small_compiler_subset_parser.rb",
+        "tools/tokenizer_reader_contract.rb",
+        "tools/small_compiler_subset_parser.rb"
+      ]
+    },
+    {
+      "name": "basic_sharp_subset_outputs",
+      "owner": "BSharp Compiler Subset 0",
+      "authority": "golden_parity_outputs",
+      "boundary": "Subset output artifacts may emit BSharp IR and BSBC only while golden parity keeps Ruby as referee.",
+      "paths": [
+        "compiler/small_compiler_subset_ir_emitter.rb",
+        "compiler/small_compiler_subset_ir_parity_harness.rb",
+        "compiler/small_compiler_subset_bsbc_emitter.rb",
+        "compiler/small_compiler_subset_bsbc_parity_harness.rb"
+      ]
+    },
+    {
+      "name": "runtime_smoke_bridge",
+      "owner": "Verifying runtime smoke lane",
+      "authority": "deterministic_smoke_evidence",
+      "boundary": "Runtime smoke proves selected subset outputs can touch runtime verification; it is not the production compiler path.",
+      "paths": [
+        "compiler/small_compiler_subset_runtime_smoke.rb",
+        "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v1.json",
+        "tools/small_compiler_subset_runtime_smoke.rb"
+      ]
+    },
+    {
+      "name": "production_runtime_boundary",
+      "owner": "Protected production runtime and profiles",
+      "authority": "existing_profiles_1_through_7",
+      "boundary": "Production runtime behaviour, bytecode profile behaviour, Save, ASK, and input contracts are protected by existing validation.",
+      "paths": [
+        "compiler/runtime.rb",
+        "compiler/ask.rb",
+        "compiler/world_save.rb",
+        "compiler/game_input.rb",
+        "spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_VALIDATION_INVENTORY_v1.json"
+      ]
+    },
+    {
+      "name": "documentation_and_governance_boundary",
+      "owner": "Company Bible and validation inventory",
+      "authority": "canonical_process_law",
+      "boundary": "The Company Bible, roadmap, handoff, and validation inventory must continue to forbid self-hosting claims before proof.",
+      "paths": [
+        "docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md",
+        "docs/roadmap/BASIC_SHARP_ROADMAP.md",
+        "docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md",
+        "tools/company_bible_audit.rb",
+        "tools/self_hosting_contract.rb"
+      ]
+    }
+  ],
+  "expected_authority_ladder": [
+    [
+      "ruby_bootstrap_referee",
+      "Ruby bootstrap",
+      "source_of_truth"
+    ],
+    [
+      "basic_sharp_subset_inputs",
+      "BASIC# subset source fixtures",
+      "sealed_input_corpus"
+    ],
+    [
+      "basic_sharp_subset_reader_parser",
+      "BSharp Compiler Subset 0",
+      "referee_checked_parser_records"
+    ],
+    [
+      "basic_sharp_subset_outputs",
+      "BSharp Compiler Subset 0",
+      "golden_parity_outputs"
+    ],
+    [
+      "runtime_smoke_bridge",
+      "Verifying runtime smoke lane",
+      "deterministic_smoke_evidence"
+    ],
+    [
+      "production_runtime_boundary",
+      "Protected production runtime and profiles",
+      "existing_profiles_1_through_7"
+    ],
+    [
+      "documentation_and_governance_boundary",
+      "Company Bible and validation inventory",
+      "canonical_process_law"
+    ]
+  ]
+}

@@ -11,6 +11,14 @@ module BasicSharp
   class SmallCompilerSubsetRuntimeSmoke
     FORMAT = 'bsharp.small_compiler_subset.runtime_smoke.record'
     STATUS = 'runtime_smoke_under_ruby_referee'
+    REQUIRED_EXPECTED_FIELDS = [
+      'expected_binary_sha256',
+      'expected_loader_summary_sha256',
+      'expected_event_results_sha256',
+      'expected_snapshot_sha256',
+      'expected_save_document_sha256',
+      'expected_matched_event_count'
+    ].freeze
 
     attr_reader :spec
 
@@ -24,6 +32,10 @@ module BasicSharp
 
     def records
       @records ||= fixtures.map { |fixture| fixture_record(fixture) }
+    end
+
+    def self.required_expected_fields
+      REQUIRED_EXPECTED_FIELDS
     end
 
     def all_pass?
@@ -59,6 +71,7 @@ module BasicSharp
     private
 
     def fixture_record(fixture)
+      self.class.required_expected_fields.each { |field| fixture.fetch(field) }
       source = fixture.fetch('source')
       events = fixture.fetch('events')
       ir_emitter = SmallCompilerSubsetIREmitter.new(source)
@@ -78,12 +91,12 @@ module BasicSharp
       checks = {
         parser_ruby_referee_matches: ir_emitter.parser_matches_ruby_referee?,
         ir_ruby_referee_matches: ir_emitter.ir_matches_ruby_referee?,
-        bsbc_binary_matches: bsbc.fetch(:binary_sha256) == fixture.fetch('expected_binary_sha256', bsbc.fetch(:binary_sha256)),
-        loader_summary_matches: bsbc.fetch(:loader_summary_sha256) == fixture.fetch('expected_loader_summary_sha256', bsbc.fetch(:loader_summary_sha256)),
-        event_results_match: runtime.fetch(:event_results_sha256) == fixture.fetch('expected_event_results_sha256', runtime.fetch(:event_results_sha256)),
-        snapshot_matches: runtime.fetch(:snapshot_sha256) == fixture.fetch('expected_snapshot_sha256', runtime.fetch(:snapshot_sha256)),
-        save_document_matches: runtime.fetch(:save_document_sha256) == fixture.fetch('expected_save_document_sha256', runtime.fetch(:save_document_sha256)),
-        matched_event_count_matches: matched_count == fixture.fetch('expected_matched_event_count', matched_count)
+        bsbc_binary_matches: bsbc.fetch(:binary_sha256) == fixture.fetch('expected_binary_sha256'),
+        loader_summary_matches: bsbc.fetch(:loader_summary_sha256) == fixture.fetch('expected_loader_summary_sha256'),
+        event_results_match: runtime.fetch(:event_results_sha256) == fixture.fetch('expected_event_results_sha256'),
+        snapshot_matches: runtime.fetch(:snapshot_sha256) == fixture.fetch('expected_snapshot_sha256'),
+        save_document_matches: runtime.fetch(:save_document_sha256) == fixture.fetch('expected_save_document_sha256'),
+        matched_event_count_matches: matched_count == fixture.fetch('expected_matched_event_count')
       }
       {
         name: fixture.fetch('name'),
@@ -91,13 +104,13 @@ module BasicSharp
         events: events,
         profile: bsbc.fetch(:profile),
         binary_sha256: bsbc.fetch(:binary_sha256),
-        expected_binary_sha256: fixture.fetch('expected_binary_sha256', bsbc.fetch(:binary_sha256)),
+        expected_binary_sha256: fixture.fetch('expected_binary_sha256'),
         loader_summary_sha256: bsbc.fetch(:loader_summary_sha256),
-        expected_loader_summary_sha256: fixture.fetch('expected_loader_summary_sha256', bsbc.fetch(:loader_summary_sha256)),
+        expected_loader_summary_sha256: fixture.fetch('expected_loader_summary_sha256'),
         runtime: runtime,
-        expected_event_results_sha256: fixture.fetch('expected_event_results_sha256', runtime.fetch(:event_results_sha256)),
-        expected_snapshot_sha256: fixture.fetch('expected_snapshot_sha256', runtime.fetch(:snapshot_sha256)),
-        expected_save_document_sha256: fixture.fetch('expected_save_document_sha256', runtime.fetch(:save_document_sha256)),
+        expected_event_results_sha256: fixture.fetch('expected_event_results_sha256'),
+        expected_snapshot_sha256: fixture.fetch('expected_snapshot_sha256'),
+        expected_save_document_sha256: fixture.fetch('expected_save_document_sha256'),
         checks: checks,
         passes: checks.values.all?
       }
