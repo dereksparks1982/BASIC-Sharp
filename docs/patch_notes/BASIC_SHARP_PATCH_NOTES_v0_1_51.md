@@ -1,6 +1,6 @@
-# BASIC# Patch Notes v0.1.51
+# BASIC# Patch Notes v0.1.52
 
-v0.1.51 adds a golden BSharp IR parity harness for the small compiler subset while Ruby remains the referee.
+v0.1.52 adds a golden BSharp IR parity harness for the small compiler subset while Ruby remains the referee.
 
 ## Included
 
@@ -8,8 +8,8 @@ v0.1.51 adds a golden BSharp IR parity harness for the small compiler subset whi
 - `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json`
 - `tools/small_compiler_subset_ir_parity_harness.rb`
 - `tests/test_small_compiler_subset_ir_parity_harness.rb`
-- `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_51.md`
-- v0.1.51 build handshake, validation, changelog, session log, runtime contract, and changed-files record
+- `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_52.md`
+- v0.1.52 build handshake, validation, changelog, session log, runtime contract, and changed-files record
 
 ## Not included
 

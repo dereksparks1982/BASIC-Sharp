@@ -18,7 +18,8 @@ BASIC# source
 -> BASIC# tokenizer/reader implementation under Ruby referee  [ACCEPTED: v0.1.48]
 -> small compiler subset parser under Ruby referee  [ACCEPTED: v0.1.49]
 -> BASIC# compiler subset emits BSharp IR under Ruby referee  [ACCEPTED: v0.1.50]
--> BSharp IR golden parity harness under Ruby referee  [CURRENT CANDIDATE: v0.1.51]
+-> BSharp IR golden parity harness under Ruby referee  [ACCEPTED: v0.1.51]
+-> Small compiler subset error contract under Ruby referee  [CURRENT CANDIDATE: v0.1.52]
 -> BASIC# compiler subset emits BSBC
 -> byte-for-byte parity against approved Ruby bootstrap outputs
 -> staged Ruby retirement only after validation earns it
@@ -31,7 +32,7 @@ BASIC# source
 -> BASIC#/BSharp-native browser only after web export and demand are real
 ```
 
-## Current v0.1.51 lane
+## Current v0.1.52 lane
 
 - Add `compiler/small_compiler_subset_ir_emitter.rb` as a non-production self-hosting runway piece.
 - Consume deterministic records from `compiler/small_compiler_subset_parser.rb`.
@@ -102,10 +103,10 @@ BASIC# source
 
 The future sponsorship strategy is proof first. A future sponsor packet may target AI tooling support, API credits, founder attention, or partnership discussion only after the language has a clear demo, validation proof, and roadmap evidence.
 
-## Continuation after v0.1.51
+## Continuation after v0.1.52
 
 1. Install and complete owner-side native validation from exact accepted commit `936c01340c518af655fce21f11d9b99f1863f3f1` and tag `v0.1.49`.
-2. Commit and tag v0.1.51 immediately after every gate passes, then capture the accepted full-project snapshot.
+2. Commit and tag v0.1.52 immediately after every gate passes, then capture the accepted full-project snapshot.
 3. Next focused build should begin the small compiler subset BSBC bytecode emission lane only after subset-emitted BSharp IR remains stable under Ruby referee.
 4. Ruby remains the referee until BASIC# compiler pieces reproduce approved output deterministically.
 5. Web/app export and BSharp native documents remain valuable, but they wait until the self-hosting runway is credible.
@@ -131,15 +132,43 @@ Private/proprietary distribution remains under consideration, but licensing and 
 - The active small compiler subset IR emitter contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json`.
 - The active input-device contract is `spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json`.
 
-## v0.1.51 IR emitter lane guardrail
+## v0.1.52 IR emitter lane guardrail
 
 `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json` governs the small compiler subset BSharp IR emitter. Ruby remains the production parser, resolver, and compiler authority.
 
 
-## v0.1.51 IR golden parity lane guardrail
+## v0.1.52 IR golden parity lane guardrail
 
-The v0.1.51 lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_51.md`, and `compiler/small_compiler_subset_ir_parity_harness.rb`. It locks golden BSharp IR digests for sealed small compiler subset fixtures under the Ruby Parser plus SemanticResolver referee. It must not become the production compiler path and must not add Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
+The v0.1.52 lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_52.md`, and `compiler/small_compiler_subset_ir_parity_harness.rb`. It locks golden BSharp IR digests for sealed small compiler subset fixtures under the Ruby Parser plus SemanticResolver referee. It must not become the production compiler path and must not add Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
 
-## Continuation after v0.1.51
+## Continuation after v0.1.52
 
 The next likely self-hosting build is the small compiler subset emits BSBC bytecode lane, still under Ruby referee control.
+
+
+## v0.1.52 error contract lane guardrail
+
+The v0.1.52 lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_1_52.md`, and `compiler/small_compiler_subset_error_contract.rb`. It locks stable, plain-English error IDs and messages for invalid small compiler subset examples under the Ruby referee. It must not become the production compiler path and must not add Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
+
+## Continuation after v0.1.52
+
+The next likely self-hosting build is controlled subset expansion or the small compiler subset emits BSBC bytecode lane, still under Ruby referee control.
+
+
+## Five Point Paradigm decision filter
+
+Every future roadmap item should be checked against the BASIC# Five Point Paradigm:
+
+1. Huge Human Problem
+2. Radical Human Bridge
+3. Breakthrough Machine
+4. Proof Under Fire
+5. Creator Ownership
+
+The centre statement is: turn human intent into real software behaviour.
+
+A roadmap item can be deferred when it is exciting but does not yet strengthen the current self-hosting bridge, validation proof, creator clarity, compatibility path, or ownership model.
+
+## Documentation map
+
+The documentation front door is `docs/BASIC_SHARP_DOCUMENTATION_MAP.md`. It gives the reading order for the Company Bible, handoff, roadmap, self-hosting contracts, validation records, build history, and runtime/bytecode contracts.

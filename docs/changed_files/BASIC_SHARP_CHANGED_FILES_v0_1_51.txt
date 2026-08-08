@@ -1,15 +1,15 @@
-BASIC# v0.1.51 changed files
+BASIC# v0.1.52 changed files
 
 Added paths:
-BUILD_HANDSHAKE_v0_1_51.md
+BUILD_HANDSHAKE_v0_1_52.md
 compiler/small_compiler_subset_ir_parity_harness.rb
-docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_51.txt
-docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_51.md
-docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_51.md
-docs/runtime_contract_v0_1_51.md
-docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_51.md
-docs/session_logs/BASIC_SHARP_v0_1_51_SESSION_LOG.md
-docs/validation/BASIC_SHARP_VALIDATION_v0_1_51.md
+docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_52.txt
+docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_52.md
+docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_52.md
+docs/runtime_contract_v0_1_52.md
+docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_52.md
+docs/session_logs/BASIC_SHARP_v0_1_52_SESSION_LOG.md
+docs/validation/BASIC_SHARP_VALIDATION_v0_1_52.md
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json
 tests/test_small_compiler_subset_ir_parity_harness.rb
 tools/small_compiler_subset_ir_parity_harness.rb

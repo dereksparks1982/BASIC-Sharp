@@ -1,10 +1,10 @@
-# BASIC# Validation v0.1.51
+# BASIC# Validation v0.1.52
 
 ## Package validation target
 
-- Version: v0.1.51
+- Version: v0.1.52
 - Base: v0.1.50 / `8506fcec102c9ab0c7f8577a03414abb721d7a5a`
-- Package: `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_51_IR_GOLDEN_PARITY_HARNESS_CHANGED_FILES_ONLY.zip`
+- Package: `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_52_IR_GOLDEN_PARITY_HARNESS_CHANGED_FILES_ONLY.zip`
 
 ## Required native validation
 

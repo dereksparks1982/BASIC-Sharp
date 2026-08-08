@@ -1,0 +1,141 @@
+{
+  "format": "bsharp.small_compiler_subset.error_contract.json",
+  "format_version": 1,
+  "target_version": "0.1.52",
+  "title": "Small Compiler Subset Plain-English Error Contract",
+  "status": "plain_english_error_contract_under_ruby_referee",
+  "purpose": "Lock stable, plain-English, creator-facing error records for invalid small compiler subset examples before the self-hosting bridge carries more compiler weight.",
+  "scope": {
+    "allowed": [
+      "adding a non-production small compiler subset error contract",
+      "canonicalizing existing parser and emitter diagnostics into stable error IDs",
+      "locking plain-English messages for invalid small compiler subset examples",
+      "preserving valid small compiler subset IR golden parity from v0.1.51"
+    ],
+    "forbidden_until_later_approval": [
+      "adding Profile 8",
+      "adding new creator-facing syntax",
+      "changing valid-program runtime meaning",
+      "changing BSharp Bytecode output",
+      "routing normal BASIC# compilation through the small compiler subset",
+      "claiming BASIC# is self-hosted",
+      "retiring Ruby as production compiler or referee"
+    ]
+  },
+  "error_record_schema": {
+    "id": "stable BSE error identifier",
+    "line_number": "1-based source line number where BASIC# can point the creator",
+    "severity": "error or warning",
+    "plain_message": "creator-facing explanation without Ruby internals",
+    "source_message": "current underlying parser or emitter diagnostic used as the Ruby-referee source"
+  },
+  "fixtures": [
+    {
+      "name": "missing_body_close",
+      "source": "START\n[\n    @lamp is unlit\n",
+      "expected_errors": [
+        {
+          "id": "BSE1002",
+          "line_number": 1,
+          "severity": "error",
+          "plain_message": "This Body is missing its closing ]. line.",
+          "source_message": "START Body is missing its End ]."
+        }
+      ],
+      "expected_errors_sha256": "5cfeaff9d759f4efa6e4e75d6b5e280f3cf361634edf48de2d986f035fe8b05e"
+    },
+    {
+      "name": "bare_body_close",
+      "source": "START\n[\n    @lamp is unlit\n]\n",
+      "expected_errors": [
+        {
+          "id": "BSE1003",
+          "line_number": 4,
+          "severity": "error",
+          "plain_message": "This Body closes with ], but BASIC# needs ]. to finish the Body.",
+          "source_message": "A Body must close with ]."
+        }
+      ],
+      "expected_errors_sha256": "5a6ab4bdd415528a3c343418d531dce9c6dd086c52a14830c39c8577f6711c95"
+    },
+    {
+      "name": "when_missing_then_marker",
+      "source": "WHEN the player opens the door\n[\n    (change @door to open\n].\n",
+      "expected_errors": [
+        {
+          "id": "BSE2001",
+          "line_number": 3,
+          "severity": "error",
+          "plain_message": "Every WHEN instruction inside the Body must begin with |then.",
+          "source_message": "Every WHEN Body instruction must begin with |then"
+        },
+        {
+          "id": "BSE2004",
+          "line_number": 1,
+          "severity": "error",
+          "plain_message": "This Body needs at least one |then instruction followed by an official word.",
+          "source_message": "WHEN needs at least one |then followed by an official word"
+        }
+      ],
+      "expected_errors_sha256": "88bfe6e4c5a63356308447b761d7bbc817873b2a81080965c1107a4bf5bf8dc6"
+    },
+    {
+      "name": "if_missing_official_word",
+      "source": "IF the player enters the room\n[\n    |then change @door to locked\n].\n",
+      "expected_errors": [
+        {
+          "id": "BSE2003",
+          "line_number": 3,
+          "severity": "error",
+          "plain_message": "After |then, use an official word that starts with (, such as (damage.",
+          "source_message": "Result must be followed by an official word such as (damage"
+        }
+      ],
+      "expected_errors_sha256": "da8593b217cf1cee24252b110b2717a5ba1474cd9158d90cd5f2bc1492a37ae1"
+    },
+    {
+      "name": "otherwise_without_if",
+      "source": "OTHERWISE\n[\n    |then (change @door to closed\n].\n",
+      "expected_errors": [
+        {
+          "id": "BSE3001",
+          "line_number": 1,
+          "severity": "error",
+          "plain_message": "OTHERWISE must come immediately after the IF Body it belongs to.",
+          "source_message": "OTHERWISE must directly follow the IF Body it belongs to."
+        }
+      ],
+      "expected_errors_sha256": "5b5e4089c3581b7dec8d163287fbe467f24ad58f58bf1d34ada158302a8353cf"
+    },
+    {
+      "name": "kind_missing_parent_marker",
+      "source": "KINDS\n[\n    #dragon is a creature\n].\n",
+      "expected_errors": [
+        {
+          "id": "BSE4001",
+          "line_number": 3,
+          "severity": "error",
+          "plain_message": "A Kind line must look like #dragon is a #creature.",
+          "source_message": "Kind must look like '#dragon is a #creature'"
+        }
+      ],
+      "expected_errors_sha256": "befe2c9c989c41e3a48bac67b91f5febdd0969145f61c7a20f7549b69d8aeeca"
+    }
+  ],
+  "acceptance_rules": [
+    "Every fixture must match its locked error IDs, line numbers, severities, plain messages, source messages, and digest.",
+    "The error contract must not change valid subset IR output or golden IR parity.",
+    "The error contract tool must pass inside the Trial-by-Fire validation inventory.",
+    "No Profile 8, new syntax, runtime change, bytecode change, web export, browser work, engine bridge, or Ruby retirement is allowed."
+  ],
+  "documents": {
+    "spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json",
+    "implementation": "compiler/small_compiler_subset_error_contract.rb",
+    "tool": "tools/small_compiler_subset_error_contract.rb",
+    "test": "tests/test_small_compiler_subset_error_contract.rb",
+    "documentation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_1_52.md",
+    "parser": "compiler/small_compiler_subset_parser.rb",
+    "ir_emitter": "compiler/small_compiler_subset_ir_emitter.rb",
+    "ir_parity_harness": "compiler/small_compiler_subset_ir_parity_harness.rb"
+  }
+}

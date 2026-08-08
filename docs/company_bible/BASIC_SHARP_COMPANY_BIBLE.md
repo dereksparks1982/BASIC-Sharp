@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.51  
+**Version:** v0.1.52  
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -437,3 +437,41 @@ A future package fails Bible integrity when it creates a second file in this fol
 ### v0.1.51 Small Compiler Subset IR Golden Parity Harness
 
 - The small compiler subset IR golden parity harness lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_51.md`, and `compiler/small_compiler_subset_ir_parity_harness.rb`. It locks deterministic BSharp IR SHA256 digests for sealed small compiler subset fixtures and compares them against the Ruby Parser plus SemanticResolver referee. It is not the production compiler path and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
+
+
+### v0.1.52 Small Compiler Subset Error Contract
+
+- The small compiler subset plain-English error contract lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_1_52.md`, and `compiler/small_compiler_subset_error_contract.rb`. It locks stable error IDs, line numbers, severities, creator-facing explanations, and source diagnostics for invalid small compiler subset examples. It is not the production compiler path and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
+
+
+## 20. Five Point Paradigm
+
+The BASIC# Five Point Paradigm is the five-point decision system for deciding whether work is still on mission.
+
+At the centre:
+
+```text
+Turn human intent into real software behaviour.
+```
+
+A BASIC# direction is healthy only when it serves all five points:
+
+1. **Huge Human Problem** - most people can imagine software they cannot build because programming is still locked behind syntax, tooling rituals, and machine-facing errors.
+2. **Radical Human Bridge** - BASIC# lets creators describe what should happen in protected plain-English structure, then lets the compiler and runtime translate that intent into software behaviour.
+3. **Breakthrough Machine** - the project must contain real machinery under the words: reader, tokenizer, parser, BSharp IR, bytecode, runtime, virtual machine, Save, ASK, contracts, and validation.
+4. **Proof Under Fire** - every accepted build must be proven by tests, contracts, fixture hashes, golden parity, rollback installers, Trial by Fire, clean Git state, and warnings-as-failures validation.
+5. **Creator Ownership** - BASIC# must protect creators from lock-in, hostile pricing, and Adobe-style loss of local tool access. Compatibility before conquest and creator ownership remain product law.
+
+Moonshot language says to aim high. The Five Point Paradigm says to aim high, prove every step, and keep the creator from being sacrificed to the machine.
+
+## 21. Documentation Map
+
+The canonical BASIC# documentation map is:
+
+```text
+docs/BASIC_SHARP_DOCUMENTATION_MAP.md
+```
+
+The map is the front door to the documentation library. It does not replace the Company Bible, roadmap, handoff, specifications, validation inventory, changelogs, patch notes, or session logs. It tells future readers where those records live and what order to read them in.
+
+The documentation stack should remain a navigable library, not an unindexed dragon hoard. New major documentation areas must either be listed in the map or intentionally explained elsewhere in the same accepted build.

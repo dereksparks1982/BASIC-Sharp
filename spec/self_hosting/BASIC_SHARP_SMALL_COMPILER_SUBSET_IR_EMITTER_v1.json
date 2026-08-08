@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.ir_emitter.contract.json",
   "format_version": 1,
-  "target_version": "0.1.51",
+  "target_version": "0.1.52",
   "title": "Small Compiler Subset Emits BSharp IR Under Ruby Referee",
   "status": "ir_emitter_under_ruby_referee",
   "purpose": "Emit deterministic BSharp IR from the small compiler subset parser path while the existing Ruby parser and resolver remain the production authority and referee.",
@@ -69,7 +69,7 @@
     },
     {
       "name": "text_values",
-      "source": "KINDS\n[\n    #gate is a #door\n].\n\nDEFINE\n[\n    @north gate is a #gate\n    @south gate is a #gate\n    @brass bell is a #device\n].\n\nSTART\n[\n    @north gate has \"North  Gate!\" title\n    @south gate has \"South Gate.\" title\n].\n\nWHEN PLAYER sounds @brass bell\n[\n    |then (change title of every #gate to \"OPEN — RubyVM!\"\n].\n\nIF @north gate has \"OPEN — RubyVM!\" title\n[\n    |then (damage PLAYER\n].\n",
+      "source": "KINDS\n[\n    #gate is a #door\n].\n\nDEFINE\n[\n    @north gate is a #gate\n    @south gate is a #gate\n    @brass bell is a #device\n].\n\nSTART\n[\n    @north gate has \"North  Gate!\" title\n    @south gate has \"South Gate.\" title\n].\n\nWHEN PLAYER sounds @brass bell\n[\n    |then (change title of every #gate to \"OPEN \u2014 RubyVM!\"\n].\n\nIF @north gate has \"OPEN \u2014 RubyVM!\" title\n[\n    |then (damage PLAYER\n].\n",
       "expected_counts": {
         "kinds": 1,
         "objects": 4,

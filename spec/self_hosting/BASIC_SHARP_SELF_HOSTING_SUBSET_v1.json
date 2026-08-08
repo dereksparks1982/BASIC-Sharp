@@ -1,7 +1,7 @@
 {
   "format": "bsharp.self_hosting.subset.json",
   "format_version": 1,
-  "target_version": "0.1.51",
+  "target_version": "0.1.52",
   "title": "Self-Hosting Foundation and Compiler Subset Contract",
   "status": "foundation_contract_only",
   "purpose": "Define the first BASIC# subset allowed for future compiler-writing work while Ruby remains the bootstrap compiler and reference authority.",
@@ -15,7 +15,7 @@
     "bsharp.meaning.v7"
   ],
   "compiler_subset_name": "BSharp Compiler Subset 0",
-  "compiler_subset_status": "ir_golden_parity_under_ruby_referee",
+  "compiler_subset_status": "plain_english_error_contract_under_ruby_referee",
   "compiler_subset_allows": [
     "file-shaped source text handled by the existing Ruby bootstrap during this build",
     "deterministic token records for future reader work",
@@ -58,7 +58,7 @@
       "goal": "Parse a small approved compiler subset into deterministic records under Ruby Parser referee."
     },
     {
-      "version_lane": "v0.1.51",
+      "version_lane": "v0.1.52",
       "goal": "Emit BSharp IR from small compiler subset records under Ruby Parser plus SemanticResolver referee."
     },
     {
@@ -72,12 +72,13 @@
   ],
   "acceptance_rules": [
     "All existing Profiles 1-7 validation remains mandatory.",
-    "Ruby remains the bootstrap and reference oracle in v0.1.51.",
+    "Ruby remains the bootstrap and reference oracle in v0.1.52.",
     "The self-hosting contract tool must pass before package acceptance.",
     "No future build may call BASIC# self-hosted until the BASIC# compiler reproduces approved outputs under locked validation.",
     "The small compiler subset parser tool must pass before package acceptance.",
     "The small compiler subset IR emitter tool must pass before package acceptance.",
-    "The small compiler subset IR golden parity harness must pass before any future bytecode-emission self-hosting lane can claim progress."
+    "The small compiler subset IR golden parity harness must pass before any future bytecode-emission self-hosting lane can claim progress.",
+    "The small compiler subset plain-English error contract must pass before invalid subset errors can be considered stable."
   ],
   "documents": {
     "contract": "docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FOUNDATION_v0_1_44.md",
@@ -98,6 +99,15 @@
     "small_compiler_subset_ir_emitter_tool": "tools/small_compiler_subset_ir_emitter.rb",
     "small_compiler_subset_ir_emitter_test": "tests/test_small_compiler_subset_ir_emitter.rb",
     "small_compiler_subset_ir_parity_harness_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json",
-    "small_compiler_subset_ir_parity_harness_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_51.md"
-  }
+    "small_compiler_subset_ir_parity_harness_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_51.md",
+    "small_compiler_subset_error_contract_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json",
+    "small_compiler_subset_error_contract_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_1_52.md"
+  },
+  "milestones": [
+    {
+      "version_lane": "v0.1.52",
+      "name": "Small compiler subset plain-English error contract",
+      "status": "plain_english_error_contract_under_ruby_referee"
+    }
+  ]
 }

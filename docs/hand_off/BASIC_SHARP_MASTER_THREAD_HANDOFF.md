@@ -2,36 +2,49 @@
 
 ## Current state
 
-- **Accepted base:** v0.1.50 / `8506fcec102c9ab0c7f8577a03414abb721d7a5a`
-- **Candidate:** v0.1.51 Small Compiler Subset IR Golden Parity Harness
-- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_51_IR_GOLDEN_PARITY_HARNESS_CHANGED_FILES_ONLY.zip`
+- **Accepted base:** v0.1.51 / `2962fa19b3e452e529ac7166ad3e751bf621cde4`
+- **Candidate:** v0.1.52 Small Compiler Subset Error Contract
+- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_52_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_CHANGED_FILES_ONLY.zip`
 - **Canonical Company Bible:** `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md`
 
-## v0.1.51 candidate work
+## v0.1.52 candidate work
 
-- Adds `compiler/small_compiler_subset_ir_parity_harness.rb`.
-- Adds `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json`.
-- Adds `tools/small_compiler_subset_ir_parity_harness.rb`.
-- Adds `tests/test_small_compiler_subset_ir_parity_harness.rb`.
-- Adds `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_51.md`.
-- Advances live version truth to `0.1.51`.
+- Adds `compiler/small_compiler_subset_error_contract.rb`.
+- Adds `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json`.
+- Adds `tools/small_compiler_subset_error_contract.rb`.
+- Adds `tests/test_small_compiler_subset_error_contract.rb`.
+- Adds `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_1_52.md`.
+- Advances live version truth to `0.1.52`.
+
+## Required carried references
+
+- `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json`
+- `spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json`
+- `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json`
+- `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json`
+- `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json`
+- `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json`
 
 ## Guardrails
 
-Ruby remains the production compiler, production parser, production resolver, and referee. The new parity harness is not the production compiler path. No Profile 8, syntax change, runtime change, bytecode change, web export, browser work, engine bridge, or Ruby retirement is included.
+Ruby remains the production compiler, production parser, production resolver, and referee. The new error contract is not the production compiler path. No Profile 8, syntax change, runtime change, bytecode change, web export, browser work, engine bridge, or Ruby retirement is included.
 
 ## Installer expectation
 
-The installer requires exact accepted v0.1.50 commit `8506fcec102c9ab0c7f8577a03414abb721d7a5a`, tag `v0.1.50`, branch `main`, clean tree, base hashes, payload hashes, and exact manifest scope. Any post-mutation failure restores every replaced v0.1.50 file and removes every v0.1.51 path.
+The installer requires exact accepted v0.1.51 commit `2962fa19b3e452e529ac7166ad3e751bf621cde4`, tag `v0.1.51`, branch `main`, clean tree, base hashes, payload hashes, and exact manifest scope. Any post-mutation failure restores every replaced v0.1.51 file and removes every v0.1.52 path.
 
-After the installer prints native PASS, commit all manifest-listed changes and tag `v0.1.51`.
+After the installer prints native PASS, commit all manifest-listed changes and tag `v0.1.52`.
 
 
-Self-hosting umbrella spec: `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json`.
+## v0.1.52 repair scope
 
-Prior IR emitter spec: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json`.
+The first v0.1.52 candidate failed during `tools/text_value_stress.rb` with a Save fixture hash mismatch and restored exact v0.1.51. The repaired candidate carries the corrected v0.1.52 text-value Save fixture hash, keeps the small compiler subset error contract, and adds documentation cleanup requested by Derek.
 
-## Required self-hosting specs carried forward
+Documentation cleanup included:
 
-- `spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json`
-- `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json`
+- Five Point Paradigm documentation in `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md`.
+- Documentation front door at `docs/BASIC_SHARP_DOCUMENTATION_MAP.md`.
+- README and roadmap references to the documentation map.
+- Corrected v0.1.51 naming for the IR golden parity harness lane.
+
+The v0.1.52 repair remains under the same exclusions: no Profile 8, no new syntax, no runtime semantics change, no bytecode change, no web export, no browser work, no engine bridge, and no Ruby retirement.
