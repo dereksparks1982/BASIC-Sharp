@@ -1,6 +1,6 @@
-# BASIC# Patch Notes v0.1.54
+# BASIC# Patch Notes v0.1.55
 
-v0.1.54 adds a plain-English error contract for invalid small compiler subset examples while Ruby remains the referee.
+v0.1.55 adds a plain-English error contract for invalid small compiler subset examples while Ruby remains the referee.
 
 ## Included
 
@@ -9,7 +9,7 @@ v0.1.54 adds a plain-English error contract for invalid small compiler subset ex
 - `tools/small_compiler_subset_error_contract.rb`
 - `tests/test_small_compiler_subset_error_contract.rb`
 - `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_1_52.md`
-- v0.1.54 build handshake, validation, changelog, session log, runtime contract, and changed-files record
+- v0.1.55 build handshake, validation, changelog, session log, runtime contract, and changed-files record
 
 ## Not included
 
@@ -17,4 +17,4 @@ No production parser replacement, no self-hosting claim, no Profile 8, no syntax
 
 ## Repair note
 
-The first v0.1.54 candidate failed at `tools/text_value_stress.rb` because the versioned text-value Save fixture hash was stale. This repaired package carries the corrected fixture hash and adds the requested Five Point Paradigm plus Documentation Map cleanup.
+The first v0.1.55 candidate failed at `tools/text_value_stress.rb` because the versioned text-value Save fixture hash was stale. This repaired package carries the corrected fixture hash and adds the requested Five Point Paradigm plus Documentation Map cleanup.

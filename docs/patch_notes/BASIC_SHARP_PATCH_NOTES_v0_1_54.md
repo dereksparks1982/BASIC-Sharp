@@ -1,4 +1,4 @@
-# BASIC# Patch Notes v0.1.54
+# BASIC# Patch Notes v0.1.55
 
 This build adds the Subset Symbol Table Contract. The small compiler subset now has a sealed, deterministic name-tracking lane before future bytecode-emission work grows larger.
 

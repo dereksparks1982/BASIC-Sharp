@@ -1,6 +1,6 @@
-# BASIC# Build Handshake v0.1.54
+# BASIC# Build Handshake v0.1.55
 
-Build: v0.1.54 Subset Symbol Table Contract
+Build: v0.1.55 Subset Symbol Table Contract
 Base required: v0.1.53 / e23eff5bff3fc17c38965d69b03b2f62ee66a9d5
 
 ## Scope

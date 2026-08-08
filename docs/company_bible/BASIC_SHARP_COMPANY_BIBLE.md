@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.54  
+**Version:** v0.1.55  
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -439,7 +439,7 @@ A future package fails Bible integrity when it creates a second file in this fol
 - The small compiler subset IR golden parity harness lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_51.md`, and `compiler/small_compiler_subset_ir_parity_harness.rb`. It locks deterministic BSharp IR SHA256 digests for sealed small compiler subset fixtures and compares them against the Ruby Parser plus SemanticResolver referee. It is not the production compiler path and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
 
 
-### v0.1.54 Small Compiler Subset Error Contract
+### v0.1.55 Small Compiler Subset Error Contract
 
 - The small compiler subset plain-English error contract lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_1_52.md`, and `compiler/small_compiler_subset_error_contract.rb`. It locks stable error IDs, line numbers, severities, creator-facing explanations, and source diagnostics for invalid small compiler subset examples. It is not the production compiler path and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
 
@@ -477,7 +477,7 @@ The map is the front door to the documentation library. It does not replace the 
 The documentation stack should remain a navigable library, not an unindexed dragon hoard. New major documentation areas must either be listed in the map or intentionally explained elsewhere in the same accepted build.
 
 
-### v0.1.54 Small Compiler Subset Scene/Block Expansion
+### v0.1.55 Small Compiler Subset Scene/Block Expansion
 
 - The small compiler subset scene/block expansion lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_1_53.md`, and `compiler/small_compiler_subset_scene_block_expansion.rb`.
 - It expands the sealed subset to larger ordered scene/block fixtures while Ruby remains the production parser, resolver, compiler path, and referee.
@@ -492,8 +492,18 @@ ByteTide decision record: the name was considered as a creator-facing metaphor f
 Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_1_54.md`.
 
 
-## v0.1.54 Symbol Table Contract and ByteTide Decision
+## v0.1.55 Symbol Table Contract and ByteTide Decision
 
-The v0.1.54 lane adds `compiler/small_compiler_subset_symbol_table_contract.rb`, `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v1.json`, and `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_1_54.md`.
+The v0.1.55 lane adds `compiler/small_compiler_subset_symbol_table_contract.rb`, `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v1.json`, and `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_1_54.md`.
 
 ByteTide decision record: ByteTide was considered as a creator-facing metaphor for bytecode flow, then passed on. BASIC# keeps bytecode and BSBC as official system terms. This is a documentation decision only, not a rename.
+
+
+### v0.1.55 small compiler subset BSBC emission
+
+BASIC# v0.1.55 adds the first small compiler subset lane that emits real BSBC bytecode under Ruby referee control. It proves source -> BSharp IR -> BSBC bytes -> bytecode loader for sealed fixtures without replacing Ruby and without claiming BASIC# is self-hosted.
+
+Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json`.
+Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v0_1_55.md`.
+
+Reference: `compiler/small_compiler_subset_bsbc_emitter.rb`.

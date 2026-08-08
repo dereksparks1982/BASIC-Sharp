@@ -13,7 +13,7 @@ class TestSmallCompilerSubsetIREmitter < Minitest::Test
   end
 
   def test_spec_targets_the_live_basic_sharp_version
-    assert_equal '0.1.54', BasicSharp::VERSION
+    assert_equal '0.1.55', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
     assert_equal 'ir_emitter_under_ruby_referee', spec.fetch('status')
   end
@@ -46,7 +46,7 @@ class TestSmallCompilerSubsetIREmitter < Minitest::Test
     record = emitter.to_h
 
     assert_equal 'bsharp.small_compiler_subset.ir_emitter.record', record.fetch(:format)
-    assert_equal '0.1.54', record.fetch(:version)
+    assert_equal '0.1.55', record.fetch(:version)
     assert_equal 'ir_emitter_under_ruby_referee', record.fetch(:status)
     assert_equal true, record.fetch(:parser_ruby_referee_matches)
     assert_equal true, record.fetch(:ruby_referee_matches)

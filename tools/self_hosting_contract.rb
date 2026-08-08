@@ -22,6 +22,8 @@ SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_SPEC_PATH = File.join(ROOT, 'spec/se
 SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_1_53.md')
 SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v1.json')
 SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_1_54.md')
+SMALL_COMPILER_SUBSET_BSBC_EMITTER_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json')
+SMALL_COMPILER_SUBSET_BSBC_EMITTER_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v0_1_55.md')
 REFERENCE_PATHS = [
   'README.md',
   'docs/roadmap/BASIC_SHARP_ROADMAP.md',
@@ -36,7 +38,9 @@ REFERENCE_PATHS = [
   'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json',
   'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_1_53.md',
   'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v1.json',
-  'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_1_54.md'
+  'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_1_54.md',
+  'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json',
+  'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v0_1_55.md'
 ].freeze
 
 spec = JSON.parse(File.read(SPEC_PATH, encoding: 'UTF-8'))
@@ -50,7 +54,7 @@ assert_contract!(spec.fetch('format_version') == 1, 'wrong spec format version')
 assert_contract!(spec.fetch('target_version') == BasicSharp::VERSION, 'spec target does not match BasicSharp::VERSION')
 assert_contract!(spec.fetch('status') == 'foundation_contract_only', 'a carried self-hosting foundation must remain a foundation contract')
 assert_contract!(spec.fetch('compiler_subset_name') == 'BSharp Compiler Subset 0', 'subset name changed')
-assert_contract!(spec.fetch('compiler_subset_status') == 'symbol_table_contract_under_ruby_referee', 'subset status changed')
+assert_contract!(spec.fetch('compiler_subset_status') == 'bsbc_emission_under_ruby_referee', 'subset status changed')
 
 profiles = spec.fetch('approved_profiles_available_to_creator_programs')
 assert_contract!(profiles == (1..7).map { |n| "bsharp.meaning.v#{n}" }, 'approved profile list changed')
@@ -80,6 +84,8 @@ assert_contract!(File.file?(SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_SPEC_PAT
 assert_contract!(File.file?(SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_DOC_PATH), 'small compiler subset scene/block expansion document is missing')
 assert_contract!(File.file?(SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_SPEC_PATH), 'small compiler subset symbol table contract spec is missing')
 assert_contract!(File.file?(SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_DOC_PATH), 'small compiler subset symbol table contract document is missing')
+assert_contract!(File.file?(SMALL_COMPILER_SUBSET_BSBC_EMITTER_SPEC_PATH), 'small compiler subset BSBC emitter spec is missing')
+assert_contract!(File.file?(SMALL_COMPILER_SUBSET_BSBC_EMITTER_DOC_PATH), 'small compiler subset BSBC emitter document is missing')
 
 rules = spec.fetch('acceptance_rules')
 assert_contract!(rules.any? { |entry| entry.include?('Ruby remains the bootstrap') }, 'Ruby referee rule missing')
@@ -89,6 +95,7 @@ assert_contract!(rules.any? { |entry| entry.include?('IR golden parity harness')
 assert_contract!(rules.any? { |entry| entry.include?('plain-English error contract') }, 'subset error contract rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('scene/block expansion') }, 'subset scene/block expansion rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('symbol table contract') }, 'subset symbol table rule missing')
+assert_contract!(rules.any? { |entry| entry.include?('BSBC emitter') }, 'subset BSBC emitter rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('Profiles 1-7 validation') }, 'Profiles 1-7 validation rule missing')
 
 unless File.file?(DOC_PATH)
@@ -111,6 +118,7 @@ ir_parity_doc = File.read(SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_DOC_PATH, enco
 error_contract_doc = File.read(SMALL_COMPILER_SUBSET_ERROR_CONTRACT_DOC_PATH, encoding: 'UTF-8')
 scene_block_doc = File.read(SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_DOC_PATH, encoding: 'UTF-8')
 symbol_table_doc = File.read(SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_DOC_PATH, encoding: 'UTF-8')
+bsbc_emitter_doc = File.read(SMALL_COMPILER_SUBSET_BSBC_EMITTER_DOC_PATH, encoding: 'UTF-8')
 assert_contract!(tokenizer_doc.include?('contract only'), 'tokenizer/reader contract history must remain contract only')
 assert_contract!(implementation_doc.include?('Ruby referee'), 'tokenizer/reader implementation must keep Ruby referee')
 assert_contract!(implementation_doc.include?('not the production parser authority'), 'tokenizer/reader implementation must not become parser authority')
@@ -126,6 +134,8 @@ assert_contract!(scene_block_doc.include?('scene/block expansion'), 'small compi
 assert_contract!(scene_block_doc.include?('not the production compiler path'), 'small compiler subset scene/block expansion must not become compiler path')
 assert_contract!(symbol_table_doc.include?('symbol-table contract'), 'small compiler subset symbol table document must name symbol-table contract')
 assert_contract!(symbol_table_doc.include?('do not rename the system'), 'ByteTide decision record must preserve system names')
+assert_contract!(bsbc_emitter_doc.include?('BSBC bytecode'), 'small compiler subset BSBC emitter must name BSBC bytecode')
+assert_contract!(bsbc_emitter_doc.include?('Not the production compiler path') || bsbc_emitter_doc.include?('not the production compiler path'), 'small compiler subset BSBC emitter must not become compiler path')
 
 puts "BASIC# Self-Hosting Contract v#{BasicSharp::VERSION}"
 puts "Compiler subset: #{spec.fetch('compiler_subset_name')}"
@@ -141,4 +151,6 @@ puts 'Small compiler subset IR emitter linked: PASS'
 puts 'Small compiler subset IR parity harness linked: PASS'
 puts 'Small compiler subset error contract linked: PASS'
 puts 'Small compiler subset scene/block expansion linked: PASS'
+puts 'Small compiler subset symbol table contract linked: PASS'
+puts 'Small compiler subset BSBC emitter linked: PASS'
 puts 'SELF-HOSTING CONTRACT: PASS'

@@ -1,10 +1,10 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.54
+# BASIC# Ruby Bootstrap Compiler v0.1.55
 
 > A scripting language made for non-programmers, by non-programmers.
 
-BASIC# v0.1.54 adds the first **small compiler subset IR golden parity harness** while preserving all accepted Profiles 1 through 7, BSharp Bytecode Profiles 1 through 7, the BSharp VM preferred runtime, the movement/input layer, the tokenizer/reader path, the small compiler subset parser, and the small compiler subset IR emitter.
+BASIC# v0.1.55 adds the first **small compiler subset IR golden parity harness** while preserving all accepted Profiles 1 through 7, BSharp Bytecode Profiles 1 through 7, the BSharp VM preferred runtime, the movement/input layer, the tokenizer/reader path, the small compiler subset parser, and the small compiler subset IR emitter.
 
-Ruby remains the bootstrap compiler, production parser authority, production resolver authority, and reference referee. v0.1.54 adds `compiler/small_compiler_subset_ir_parity_harness.rb` beside the existing compiler path and proves locked golden BSharp IR digests against the Ruby Parser plus SemanticResolver referee before any future bytecode-emission migration.
+Ruby remains the bootstrap compiler, production parser authority, production resolver authority, and reference referee. v0.1.55 adds `compiler/small_compiler_subset_ir_parity_harness.rb` beside the existing compiler path and proves locked golden BSharp IR digests against the Ruby Parser plus SemanticResolver referee before any future bytecode-emission migration.
 
 ## Self-hosting runway records
 
@@ -28,7 +28,7 @@ tests/test_small_compiler_subset_parser.rb
 tests/test_small_compiler_subset_ir_emitter.rb
 ```
 
-The v0.1.54 emitter exposes deterministic records:
+The v0.1.55 emitter exposes deterministic records:
 
 ```text
 format: bsharp.small_compiler_subset.ir_emitter.record
@@ -151,28 +151,28 @@ Tokenizer/reader implementation: implementation under Ruby referee
 Small compiler subset parser: parser under Ruby referee
 Small compiler subset IR emitter: IR emitter under Ruby referee
 Input contract: keyboard, mouse/keyboard, PS5, Xbox, generic gamepad
-Version: 0.1.54
+Version: 0.1.55
 ```
 
 Small compiler subset IR emitter spec: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json`
 
-### v0.1.54 self-hosting bridge
+### v0.1.55 self-hosting bridge
 
 - `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json`
 - `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_52.md`
 - `compiler/small_compiler_subset_ir_parity_harness.rb`
 - `tools/small_compiler_subset_ir_parity_harness.rb`
 
-v0.1.54 locks golden BSharp IR parity digests for the small compiler subset. It is not the production compiler path and does not claim BASIC# is self-hosted.
+v0.1.55 locks golden BSharp IR parity digests for the small compiler subset. It is not the production compiler path and does not claim BASIC# is self-hosted.
 
-### v0.1.54 self-hosting bridge
+### v0.1.55 self-hosting bridge
 
 - `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json`
 - `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_1_52.md`
 - `compiler/small_compiler_subset_error_contract.rb`
 - `tools/small_compiler_subset_error_contract.rb`
 
-v0.1.54 locks stable, plain-English, creator-facing errors for invalid small compiler subset examples. It is not the production compiler path and does not claim BASIC# is self-hosted.
+v0.1.55 locks stable, plain-English, creator-facing errors for invalid small compiler subset examples. It is not the production compiler path and does not claim BASIC# is self-hosted.
 
 
 ## Documentation front door
@@ -188,7 +188,7 @@ Start with:
 The Company Bible now preserves the BASIC# Five Point Paradigm: Huge Human Problem, Radical Human Bridge, Breakthrough Machine, Proof Under Fire, and Creator Ownership. The centre statement is: turn human intent into real software behaviour.
 
 
-### v0.1.54 scene/block expansion
+### v0.1.55 scene/block expansion
 
 - `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json`
 - `compiler/small_compiler_subset_scene_block_expansion.rb`
@@ -196,7 +196,7 @@ The Company Bible now preserves the BASIC# Five Point Paradigm: Huge Human Probl
 - `tests/test_small_compiler_subset_scene_block_expansion.rb`
 - `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_1_53.md`
 
-v0.1.54 expands the sealed small compiler subset to larger ordered scene/block fixtures while preserving Ruby as production parser, resolver, compiler path, and referee.
+v0.1.55 expands the sealed small compiler subset to larger ordered scene/block fixtures while preserving Ruby as production parser, resolver, compiler path, and referee.
 
 
 Symbol table contract spec: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v1.json`.
@@ -205,3 +205,11 @@ Symbol table contract spec: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET
 ByteTide decision record: the name was considered as a creator-facing metaphor for bytecode flow, then passed on for now. Official system terms remain bytecode and BSBC.
 
 Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_1_54.md`.
+
+
+### v0.1.55 small compiler subset BSBC emission
+
+BASIC# v0.1.55 adds the first small compiler subset lane that emits real BSBC bytecode under Ruby referee control. It proves source -> BSharp IR -> BSBC bytes -> bytecode loader for sealed fixtures without replacing Ruby and without claiming BASIC# is self-hosted.
+
+Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json`.
+Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v0_1_55.md`.

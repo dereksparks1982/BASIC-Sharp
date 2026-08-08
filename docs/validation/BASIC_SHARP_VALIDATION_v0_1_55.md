@@ -15,6 +15,7 @@ Required validation:
 - Small compiler subset error contract.
 - Small compiler subset scene/block expansion.
 - Small compiler subset symbol table contract.
+- Small compiler subset BSBC emitter.
 - Trial by Fire full native counts.
 
-Complete test suite: 493 runs, 8360 assertions, 0 failures, 0 errors, 0 skips.
+Complete test suite: 496 runs, 8411 assertions, 0 failures, 0 errors, 0 skips.
