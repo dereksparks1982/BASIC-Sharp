@@ -1,0 +1,59 @@
+{
+  "format": "bsharp.self_hosting_milestone_1.json",
+  "format_version": 1,
+  "target_version": "0.1.61",
+  "status": "self_hosting_milestone_1_under_ruby_referee",
+  "title": "BASIC# v0.1.61 Self-Hosting Milestone 1",
+  "definition": "BASIC# can read, parse, validate, emit BSharp IR, emit BSBC, compare golden artifacts, and run selected runtime smoke checks for BSharp Compiler Subset 0 under Ruby referee supervision.",
+  "allowed_claims": [
+    "BSharp Compiler Subset 0 has a sealed reader, parser, IR emitter, BSBC emitter, fixture corpus, parity harnesses, runtime smoke lane, and bootstrap boundary audit.",
+    "The small subset has reached Self-Hosting Milestone 1 under Ruby referee control.",
+    "The milestone is a scaffolded self-hosting foothold, not full self-hosting."
+  ],
+  "forbidden_claims": [
+    "BASIC# is fully self-hosted",
+    "Ruby is retired",
+    "Ruby is no longer the production compiler authority",
+    "the full BASIC# language can compile itself",
+    "Profile 8 exists",
+    "production runtime behaviour changed"
+  ],
+  "required_lanes": [
+    "tokenizer_reader_contract",
+    "small_compiler_subset_parser",
+    "small_compiler_subset_ir_emitter",
+    "small_compiler_subset_ir_parity_harness",
+    "small_compiler_subset_error_contract",
+    "small_compiler_subset_scene_block_expansion",
+    "small_compiler_subset_symbol_table_contract",
+    "small_compiler_subset_bsbc_emitter",
+    "small_compiler_subset_bsbc_parity_harness",
+    "self_hosting_fixture_corpus",
+    "small_compiler_subset_runtime_smoke",
+    "bootstrap_boundary_audit",
+    "readme_current_release_truth_gate"
+  ],
+  "required_tools": [
+    "tools/tokenizer_reader_contract.rb",
+    "tools/small_compiler_subset_parser.rb",
+    "tools/small_compiler_subset_ir_emitter.rb",
+    "tools/small_compiler_subset_ir_parity_harness.rb",
+    "tools/small_compiler_subset_error_contract.rb",
+    "tools/small_compiler_subset_scene_block_expansion.rb",
+    "tools/small_compiler_subset_symbol_table_contract.rb",
+    "tools/small_compiler_subset_bsbc_emitter.rb",
+    "tools/small_compiler_subset_bsbc_parity_harness.rb",
+    "tools/self_hosting_fixture_corpus.rb",
+    "tools/small_compiler_subset_runtime_smoke.rb",
+    "tools/bootstrap_boundary_audit.rb",
+    "tools/readme_current_release_truth.rb",
+    "tools/self_hosting_milestone_1.rb"
+  ],
+  "evidence_specs": [
+    "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json",
+    "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json",
+    "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v1.json",
+    "spec/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v1.json",
+    "spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json"
+  ]
+}

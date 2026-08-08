@@ -32,6 +32,10 @@ SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_SPEC_PATH = File.join(ROOT, 'spec/self_hosti
 SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v0_1_58.md')
 BOOTSTRAP_BOUNDARY_AUDIT_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v1.json')
 BOOTSTRAP_BOUNDARY_AUDIT_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v0_1_59.md')
+README_CURRENT_RELEASE_TRUTH_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json')
+README_CURRENT_RELEASE_TRUTH_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v0_1_61.md')
+SELF_HOSTING_MILESTONE_1_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v1.json')
+SELF_HOSTING_MILESTONE_1_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v0_1_61.md')
 REFERENCE_PATHS = [
   'README.md',
   'docs/roadmap/BASIC_SHARP_ROADMAP.md',
@@ -56,7 +60,11 @@ REFERENCE_PATHS = [
   'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v1.json',
   'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v0_1_58.md',
   'spec/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v1.json',
-  'docs/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v0_1_59.md'
+  'docs/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v0_1_59.md',
+  'spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json',
+  'docs/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v0_1_61.md',
+  'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v1.json',
+  'docs/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v0_1_61.md'
 ].freeze
 
 spec = JSON.parse(File.read(SPEC_PATH, encoding: 'UTF-8'))
@@ -70,7 +78,7 @@ assert_contract!(spec.fetch('format_version') == 1, 'wrong spec format version')
 assert_contract!(spec.fetch('target_version') == BasicSharp::VERSION, 'spec target does not match BasicSharp::VERSION')
 assert_contract!(spec.fetch('status') == 'foundation_contract_only', 'a carried self-hosting foundation must remain a foundation contract')
 assert_contract!(spec.fetch('compiler_subset_name') == 'BSharp Compiler Subset 0', 'subset name changed')
-assert_contract!(spec.fetch('compiler_subset_status') == 'bootstrap_boundary_audit_under_ruby_referee', 'subset status changed')
+assert_contract!(spec.fetch('compiler_subset_status') == 'self_hosting_milestone_1_under_ruby_referee', 'subset status changed')
 
 profiles = spec.fetch('approved_profiles_available_to_creator_programs')
 assert_contract!(profiles == (1..7).map { |n| "bsharp.meaning.v#{n}" }, 'approved profile list changed')
@@ -114,6 +122,14 @@ assert_contract!(File.file?(BOOTSTRAP_BOUNDARY_AUDIT_DOC_PATH), 'bootstrap bound
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('bootstrap_boundary_audit_file'))), 'bootstrap boundary audit implementation is missing')
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('bootstrap_boundary_audit_tool'))), 'bootstrap boundary audit tool is missing')
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('bootstrap_boundary_audit_test'))), 'bootstrap boundary audit test is missing')
+assert_contract!(documents.fetch('readme_current_release_truth_spec') == 'spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json', 'README truth spec path missing')
+assert_contract!(File.file?(README_CURRENT_RELEASE_TRUTH_SPEC_PATH), 'README current release truth spec is missing')
+assert_contract!(File.file?(README_CURRENT_RELEASE_TRUTH_DOC_PATH), 'README current release truth document is missing')
+assert_contract!(File.file?(File.join(ROOT, documents.fetch('readme_current_release_truth_tool'))), 'README current release truth tool is missing')
+assert_contract!(documents.fetch('self_hosting_milestone_1_spec') == 'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v1.json', 'Self-Hosting Milestone 1 spec path missing')
+assert_contract!(File.file?(SELF_HOSTING_MILESTONE_1_SPEC_PATH), 'Self-Hosting Milestone 1 spec is missing')
+assert_contract!(File.file?(SELF_HOSTING_MILESTONE_1_DOC_PATH), 'Self-Hosting Milestone 1 document is missing')
+assert_contract!(File.file?(File.join(ROOT, documents.fetch('self_hosting_milestone_1_tool'))), 'Self-Hosting Milestone 1 tool is missing')
 
 rules = spec.fetch('acceptance_rules')
 assert_contract!(rules.any? { |entry| entry.include?('Ruby remains the bootstrap') }, 'Ruby referee rule missing')
@@ -154,6 +170,8 @@ bsbc_parity_doc = File.read(SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_DOC_PATH, 
 fixture_corpus_doc = File.read(SELF_HOSTING_FIXTURE_CORPUS_DOC_PATH, encoding: 'UTF-8')
 runtime_smoke_doc = File.read(SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_DOC_PATH, encoding: 'UTF-8')
 bootstrap_boundary_doc = File.read(BOOTSTRAP_BOUNDARY_AUDIT_DOC_PATH, encoding: 'UTF-8')
+readme_truth_doc = File.read(README_CURRENT_RELEASE_TRUTH_DOC_PATH, encoding: 'UTF-8')
+milestone_doc = File.read(SELF_HOSTING_MILESTONE_1_DOC_PATH, encoding: 'UTF-8')
 assert_contract!(tokenizer_doc.include?('contract only'), 'tokenizer/reader contract history must remain contract only')
 assert_contract!(implementation_doc.include?('Ruby referee'), 'tokenizer/reader implementation must keep Ruby referee')
 assert_contract!(implementation_doc.include?('not the production parser authority'), 'tokenizer/reader implementation must not become parser authority')
@@ -182,6 +200,9 @@ assert_contract!(runtime_smoke_doc.include?('does not claim BASIC# is self-hoste
 assert_contract!(bootstrap_boundary_doc.include?('Bootstrap Boundary Audit'), 'bootstrap boundary audit document must name the audit')
 assert_contract!(bootstrap_boundary_doc.include?('Ruby remains the bootstrap compiler and referee'), 'bootstrap boundary audit must preserve Ruby authority')
 assert_contract!(bootstrap_boundary_doc.include?('Claiming BASIC# is self-hosted'), 'bootstrap boundary audit must forbid self-hosting claim')
+assert_contract!(readme_truth_doc.include?('README Current Release Truth Gate'), 'README truth document must name the gate')
+assert_contract!(milestone_doc.include?('Self-Hosting Milestone 1'), 'milestone document must name the milestone')
+assert_contract!(milestone_doc.include?('Ruby remains the bootstrap compiler and referee'), 'milestone document must preserve Ruby authority')
 
 puts "BASIC# Self-Hosting Contract v#{BasicSharp::VERSION}"
 puts "Compiler subset: #{spec.fetch('compiler_subset_name')}"
@@ -203,4 +224,6 @@ puts 'Small compiler subset BSBC golden parity harness linked: PASS'
 puts 'Self-hosting fixture corpus linked: PASS'
 puts 'Small compiler subset runtime smoke linked: PASS'
 puts 'Bootstrap boundary audit linked: PASS'
+puts 'README current release truth gate linked: PASS'
+puts 'Self-Hosting Milestone 1 linked: PASS'
 puts 'SELF-HOSTING CONTRACT: PASS'

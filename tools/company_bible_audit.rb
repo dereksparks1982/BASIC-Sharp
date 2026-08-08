@@ -164,14 +164,22 @@ MANDATORY_TEXT = [
   'spec/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v1.json',
   'docs/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v0_1_59.md',
   'compiler/bootstrap_boundary_audit.rb',
-  'Bootstrap Boundary Audit'
+  'Bootstrap Boundary Audit',
+  'spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json',
+  'compiler/readme_current_release_truth.rb',
+  'README Current Release Truth Gate',
+  'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v1.json',
+  'compiler/self_hosting_milestone_1.rb',
+  'Self-Hosting Milestone 1',
+  'not full self-hosting',
+  'Ruby remains the bootstrap compiler'
 ].freeze
 
 files = Dir.glob(File.join(ROOT, 'docs/company_bible/*'), File::FNM_DOTMATCH).reject do |path|
   [File.join(ROOT, 'docs/company_bible/.'), File.join(ROOT, 'docs/company_bible/..')].include?(path)
 end
 raise "Expected one Company Bible file, found #{files.length}" unless files == [CANONICAL_FULL_PATH]
-puts 'BASIC# Company Bible Audit v0.1.59'
+puts 'BASIC# Company Bible Audit v0.1.61'
 puts 'Canonical file count: PASS'
 
 text = File.read(CANONICAL_FULL_PATH, encoding: 'UTF-8')

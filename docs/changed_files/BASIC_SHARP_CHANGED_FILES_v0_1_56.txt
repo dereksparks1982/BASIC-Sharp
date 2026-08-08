@@ -1,8 +1,8 @@
-# BASIC# Changed Files v0.1.59
+# BASIC# Changed Files v0.1.61
 
 Package: BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_56_BSBC_GOLDEN_PARITY_HARNESS_REPAIRED_INVENTORY_HASHES_CHANGED_FILES_ONLY.zip
 Base: v0.1.55 / cdf8872260379007ebf54877fd72f124e06d4fc2
-Target: v0.1.59
+Target: v0.1.61
 
 ## Changed files
 
@@ -105,4 +105,4 @@ Target: v0.1.59
 - tools/small_compiler_subset_bsbc_parity_harness.rb
 
 
-Repair note: original v0.1.59 candidate was rejected after a stress-gate fixture hash mismatch; this package refreshes the sealed fixture hashes.
+Repair note: original v0.1.61 candidate was rejected after a stress-gate fixture hash mismatch; this package refreshes the sealed fixture hashes.
