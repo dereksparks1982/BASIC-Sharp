@@ -1,7 +1,7 @@
 {
   "format": "bsharp.self_hosting.subset.json",
   "format_version": 1,
-  "target_version": "0.1.53",
+  "target_version": "0.1.54",
   "title": "Self-Hosting Foundation and Compiler Subset Contract",
   "status": "foundation_contract_only",
   "purpose": "Define the first BASIC# subset allowed for future compiler-writing work while Ruby remains the bootstrap compiler and reference authority.",
@@ -15,7 +15,7 @@
     "bsharp.meaning.v7"
   ],
   "compiler_subset_name": "BSharp Compiler Subset 0",
-  "compiler_subset_status": "scene_block_expansion_under_ruby_referee",
+  "compiler_subset_status": "symbol_table_contract_under_ruby_referee",
   "compiler_subset_allows": [
     "file-shaped source text handled by the existing Ruby bootstrap during this build",
     "deterministic token records for future reader work",
@@ -23,7 +23,8 @@
     "existing KINDS, DEFINE, START, WHEN, IF, OTHERWISE, CONTROLS, HOVER, and CONTEXT meaning as preserved creator surface",
     "future compiler examples only when they are marked non-executable sketches until the subset can run them",
     "small compiler subset parser records under Ruby Parser referee",
-    "small compiler subset emits BSharp IR under Ruby Parser plus SemanticResolver referee"
+    "small compiler subset emits BSharp IR under Ruby Parser plus SemanticResolver referee",
+    "small compiler subset symbol table contract under Ruby referee"
   ],
   "compiler_subset_forbids_until_later_approval": [
     "replacing the Ruby bootstrap compiler",
@@ -70,7 +71,7 @@
       "goal": "Lock plain-English error records for invalid small compiler subset examples."
     },
     {
-      "version_lane": "v0.1.53",
+      "version_lane": "v0.1.54",
       "goal": "Expand the small compiler subset across larger scene/block fixtures under Ruby referee."
     },
     {
@@ -80,14 +81,15 @@
   ],
   "acceptance_rules": [
     "All existing Profiles 1-7 validation remains mandatory.",
-    "Ruby remains the bootstrap and reference oracle in v0.1.53.",
+    "Ruby remains the bootstrap and reference oracle in v0.1.54.",
     "The self-hosting contract tool must pass before package acceptance.",
     "No future build may call BASIC# self-hosted until the BASIC# compiler reproduces approved outputs under locked validation.",
     "The small compiler subset parser tool must pass before package acceptance.",
     "The small compiler subset IR emitter tool must pass before package acceptance.",
     "The small compiler subset IR golden parity harness must pass before any future bytecode-emission self-hosting lane can claim progress.",
     "The small compiler subset plain-English error contract must pass before invalid subset errors can be considered stable.",
-    "The small compiler subset scene/block expansion harness must pass before wider self-hosting subset claims can advance."
+    "The small compiler subset scene/block expansion harness must pass before wider self-hosting subset claims can advance.",
+    "The small compiler subset symbol table contract must pass before wider self-hosting subset claims can advance."
   ],
   "documents": {
     "contract": "docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FOUNDATION_v0_1_44.md",
@@ -112,7 +114,11 @@
     "small_compiler_subset_error_contract_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json",
     "small_compiler_subset_error_contract_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_1_52.md",
     "small_compiler_subset_scene_block_expansion_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json",
-    "small_compiler_subset_scene_block_expansion_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_1_53.md"
+    "small_compiler_subset_scene_block_expansion_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_1_53.md",
+    "small_compiler_subset_symbol_table_contract_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v1.json",
+    "small_compiler_subset_symbol_table_contract_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_1_54.md",
+    "small_compiler_subset_symbol_table_contract_tool": "tools/small_compiler_subset_symbol_table_contract.rb",
+    "small_compiler_subset_symbol_table_contract_test": "tests/test_small_compiler_subset_symbol_table_contract.rb"
   },
   "milestones": [
     {
@@ -121,7 +127,7 @@
       "status": "plain_english_error_contract_under_ruby_referee"
     },
     {
-      "version_lane": "v0.1.53",
+      "version_lane": "v0.1.54",
       "name": "Small Compiler Subset Scene/Block Expansion",
       "status": "scene_block_expansion_under_ruby_referee",
       "contract": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json"

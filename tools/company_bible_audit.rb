@@ -141,14 +141,18 @@ MANDATORY_TEXT = [
   'docs/BASIC_SHARP_DOCUMENTATION_MAP.md',
   'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json',
   'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_1_53.md',
-  'compiler/small_compiler_subset_scene_block_expansion.rb'
+  'compiler/small_compiler_subset_scene_block_expansion.rb',
+  'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v1.json',
+  'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_1_54.md',
+  'compiler/small_compiler_subset_symbol_table_contract.rb',
+  'ByteTide decision record'
 ].freeze
 
 files = Dir.glob(File.join(ROOT, 'docs/company_bible/*'), File::FNM_DOTMATCH).reject do |path|
   [File.join(ROOT, 'docs/company_bible/.'), File.join(ROOT, 'docs/company_bible/..')].include?(path)
 end
 raise "Expected one Company Bible file, found #{files.length}" unless files == [CANONICAL_FULL_PATH]
-puts 'BASIC# Company Bible Audit v0.1.53'
+puts 'BASIC# Company Bible Audit v0.1.54'
 puts 'Canonical file count: PASS'
 
 text = File.read(CANONICAL_FULL_PATH, encoding: 'UTF-8')

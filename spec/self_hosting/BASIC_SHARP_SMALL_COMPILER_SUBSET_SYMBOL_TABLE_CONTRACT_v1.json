@@ -1,0 +1,196 @@
+{
+  "format": "bsharp.small_compiler_subset.symbol_table_contract.json",
+  "format_version": 1,
+  "target_version": "0.1.54",
+  "status": "symbol_table_contract_under_ruby_referee",
+  "purpose": "Lock deterministic name tracking for the small compiler subset while Ruby remains the referee.",
+  "valid_fixtures": [
+    {
+      "name": "doors_and_switches_symbols",
+      "source": "KINDS\n[\n#thing\n#door is a #thing\n#switch is a #thing\n].\nDEFINE\n[\n@north door is a #door\n@light switch is a #switch\n].\nSTART\n[\n@north door is closed\nPLAYER has 3 speed\n].\nWHEN PLAYER touches @light switch\n[\n|then (change @north door to open\n].\nIF @north door is closed\n[\n|then (change @light switch to glowing\n].\nOTHERWISE\n[\n|then (change @light switch to dark\n].\n",
+      "expected_symbols": {
+        "kinds": [
+          {
+            "name": "door",
+            "line_number": 4
+          },
+          {
+            "name": "switch",
+            "line_number": 5
+          }
+        ],
+        "objects": [
+          {
+            "name": "light switch",
+            "kind": "switch",
+            "line_number": 10
+          },
+          {
+            "name": "north door",
+            "kind": "door",
+            "line_number": 9
+          }
+        ],
+        "actions": [
+          {
+            "name": "change",
+            "line_number": 19
+          }
+        ],
+        "values": [
+          {
+            "name": "speed",
+            "line_number": 15
+          }
+        ],
+        "scene_heads": [
+          {
+            "starter": "WHEN",
+            "head": "PLAYER touches @light switch",
+            "line_number": 17
+          },
+          {
+            "starter": "IF",
+            "head": "@north door is closed",
+            "line_number": 21
+          }
+        ]
+      },
+      "expected_symbols_sha256": "49cfae38749d950bf8a29e46170f8aa982221d5a6735a3d446cc7dec8f09ecd2",
+      "expected_errors": [],
+      "expected_errors_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "name": "context_hover_symbols",
+      "source": "KINDS\n[\n#thing\n#door is a #thing\n].\nDEFINE\n[\n@north door is a #door\n].\nHOVER for @north door\n[\nname\nkind\nstate\n].\nCONTEXT for @north door\n[\n\"Open\" when @north door is closed (change @north door to open\n].\n",
+      "expected_symbols": {
+        "kinds": [
+          {
+            "name": "door",
+            "line_number": 4
+          }
+        ],
+        "objects": [
+          {
+            "name": "north door",
+            "kind": "door",
+            "line_number": 8
+          }
+        ],
+        "actions": [],
+        "values": [],
+        "scene_heads": []
+      },
+      "expected_symbols_sha256": "44a424ce282de143d521f1521b39acdc6739bf939fd06dbc0d463ed10d14a715",
+      "expected_errors": [],
+      "expected_errors_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  ],
+  "invalid_fixtures": [
+    {
+      "name": "duplicate_kind_and_thing",
+      "source": "KINDS\n[\n#thing\n#door is a #thing\n#door is a #thing\n].\nDEFINE\n[\n@north door is a #door\n@north door is a #door\n].\n",
+      "expected_symbols": {
+        "kinds": [
+          {
+            "name": "door",
+            "line_number": 4
+          }
+        ],
+        "objects": [
+          {
+            "name": "north door",
+            "kind": "door",
+            "line_number": 9
+          }
+        ],
+        "actions": [],
+        "values": [],
+        "scene_heads": []
+      },
+      "expected_symbols_sha256": "c7628c3b85478cf2ed779dca909d819e03d774b6b56e2ef709c2f18011dbbad3",
+      "expected_errors": [
+        {
+          "id": "BSS1001",
+          "line_number": 5,
+          "severity": "error",
+          "plain_message": "Kind 'door' is already defined.",
+          "source_message": "Duplicate Kind 'door'"
+        },
+        {
+          "id": "BSS1002",
+          "line_number": 10,
+          "severity": "error",
+          "plain_message": "Thing '@north door' is already defined.",
+          "source_message": "Duplicate Thing '@north door'"
+        }
+      ],
+      "expected_errors_sha256": "a63997b425d0aa527e6ca841dee755efdcb68af8e4114a04f695d267597d84d1"
+    },
+    {
+      "name": "unknown_kind_and_thing_reference",
+      "source": "KINDS\n[\n#thing\n#door is a #thing\n].\nDEFINE\n[\n@north door is a #door\n@ghost is a #spirit\n].\nWHEN PLAYER opens @south door\n[\n|then (change @ghost to visible\n].\n",
+      "expected_symbols": {
+        "kinds": [
+          {
+            "name": "door",
+            "line_number": 4
+          }
+        ],
+        "objects": [
+          {
+            "name": "ghost",
+            "kind": "spirit",
+            "line_number": 9
+          },
+          {
+            "name": "north door",
+            "kind": "door",
+            "line_number": 8
+          }
+        ],
+        "actions": [
+          {
+            "name": "change",
+            "line_number": 13
+          }
+        ],
+        "values": [],
+        "scene_heads": [
+          {
+            "starter": "WHEN",
+            "head": "PLAYER opens @south door",
+            "line_number": 11
+          }
+        ]
+      },
+      "expected_symbols_sha256": "9326f028bd0f61ca233116641c733fe69d148f28ceedf4eeb88cb862ee7af7e2",
+      "expected_errors": [
+        {
+          "id": "BSS2002",
+          "line_number": 9,
+          "severity": "error",
+          "plain_message": "Thing '@ghost' uses unknown Kind 'spirit'.",
+          "source_message": "Unknown Kind 'spirit'"
+        },
+        {
+          "id": "BSS2003",
+          "line_number": 11,
+          "severity": "error",
+          "plain_message": "Thing '@south door' is used before it is defined.",
+          "source_message": "Unknown Thing '@south door'"
+        }
+      ],
+      "expected_errors_sha256": "c5a3fa06b73b4d4ba49fdc507e37b88422a82219651b24d471a7af290ac443de"
+    }
+  ],
+  "requirements": [
+    "tracks kinds, objects, actions, values, and scene heads",
+    "reports duplicate Kind names in plain English",
+    "reports duplicate Thing names in plain English",
+    "reports unknown Kind references in plain English",
+    "reports unknown Thing references in plain English",
+    "does not replace Ruby as parser, resolver, compiler, or runtime authority"
+  ],
+  "self_hosting_spec": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json"
+}

@@ -1,12 +1,12 @@
-# BASIC# Small Compiler Subset IR Emitter v0.1.53
+# BASIC# Small Compiler Subset IR Emitter v0.1.54
 
-**Build:** v0.1.53  
+**Build:** v0.1.54  
 **Lane:** Small Compiler Subset Emits BSharp IR Under Ruby Referee  
 **Status:** Non-production self-hosting runway work
 
 ## Purpose
 
-v0.1.53 adds the first small compiler subset BSharp IR emitter. It takes output from `compiler/small_compiler_subset_parser.rb`, builds a controlled compiler-subset program, emits resolved BSharp IR, and compares that IR against the existing Ruby Parser plus SemanticResolver referee.
+v0.1.54 adds the first small compiler subset BSharp IR emitter. It takes output from `compiler/small_compiler_subset_parser.rb`, builds a controlled compiler-subset program, emits resolved BSharp IR, and compares that IR against the existing Ruby Parser plus SemanticResolver referee.
 
 This is a self-hosting bridge step, not the production compiler path, and not a production compiler replacement.
 
@@ -29,7 +29,7 @@ bsharp_ir: resolved BSharp IR document
 
 ## Ruby referee rule
 
-Ruby remains the production parser, production resolver, production compiler path, and referee in v0.1.53.
+Ruby remains the production parser, production resolver, production compiler path, and referee in v0.1.54.
 
 The new emitter must prove that its subset-emitted BSharp IR matches the existing Ruby Parser plus SemanticResolver output for approved fixtures before later self-hosting work may trust it.
 
@@ -54,19 +54,19 @@ spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json
 
 ## Validation
 
-v0.1.53 is accepted only when:
+v0.1.54 is accepted only when:
 
 1. `tests/test_small_compiler_subset_ir_emitter.rb` passes.
 2. `tools/small_compiler_subset_ir_emitter.rb` passes.
 3. The Trial-by-Fire validation inventory includes and seals the new test, tool, spec, and document.
 4. The full native validation suite passes on Derek's machine.
-5. Derek commits the exact accepted tree and tags `v0.1.53`.
+5. Derek commits the exact accepted tree and tags `v0.1.54`.
 
 ## Next runway step
 
-After v0.1.53 is accepted, the next likely self-hosting build is the small compiler subset emits BSBC bytecode lane, still under Ruby referee control.
+After v0.1.54 is accepted, the next likely self-hosting build is the small compiler subset emits BSBC bytecode lane, still under Ruby referee control.
 
 
-## v0.1.53 continuation
+## v0.1.54 continuation
 
-The IR emitter lane is the required input for the next self-hosting bridge record: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json`. The v0.1.53 parity harness may compute locked golden BSharp IR digests from emitter records, but the emitter remains non-production and Ruby remains the referee.
+The IR emitter lane is the required input for the next self-hosting bridge record: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json`. The v0.1.54 parity harness may compute locked golden BSharp IR digests from emitter records, but the emitter remains non-production and Ruby remains the referee.
