@@ -1,0 +1,105 @@
+{
+  "format": "bsharp.small_compiler_subset.ir_emitter.contract.json",
+  "format_version": 1,
+  "target_version": "0.1.50",
+  "title": "Small Compiler Subset Emits BSharp IR Under Ruby Referee",
+  "status": "ir_emitter_under_ruby_referee",
+  "purpose": "Emit deterministic BSharp IR from the small compiler subset parser path while the existing Ruby parser and resolver remain the production authority and referee.",
+  "scope": {
+    "allowed": [
+      "adding compiler/small_compiler_subset_ir_emitter.rb as a non-production BSharp IR emission experiment",
+      "emitting BSharp IR from SmallCompilerSubsetParser output for sealed subset fixtures",
+      "comparing the subset-emitted BSharp IR against the existing Ruby Parser plus SemanticResolver referee",
+      "recording deterministic IR emitter records for future self-hosting work",
+      "preserving existing runtime, BSharp Bytecode, Save, ASK, input devices, web, and browser behavior"
+    ],
+    "forbidden_until_later_approval": [
+      "replacing compiler/parser.rb as the production parser authority",
+      "routing normal BASIC# compilation through compiler/small_compiler_subset_ir_emitter.rb",
+      "claiming BASIC# is self-hosted",
+      "adding Profile 8",
+      "adding new creator-facing syntax",
+      "changing runtime meaning, BSharp Bytecode, Save format, ASK output, input devices, graphics, engine bridge, browser work, web export, or Ruby retirement"
+    ]
+  },
+  "input_contracts": [
+    "spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json",
+    "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json"
+  ],
+  "output_schema": {
+    "format": "bsharp.small_compiler_subset.ir_emitter.record",
+    "version": "live BasicSharp::VERSION",
+    "status": "ir_emitter_under_ruby_referee",
+    "parser_ruby_referee_matches": "true only when SmallCompilerSubsetParser matches Ruby Parser statement structure",
+    "ruby_referee_matches": "true only when emitted BSharp IR matches Ruby Parser plus SemanticResolver output",
+    "bsharp_ir": "resolved BSharp IR document compatible with bsir.debug.json"
+  },
+  "fixtures": [
+    {
+      "name": "first_room",
+      "source": "KINDS\n[\n    #creature is a #thing\n    #dragon is a #creature\n    #wyrm is a #dragon\n].\n\nDEFINE\n[\n    @ember is a #wyrm\n    @cinder is a #wyrm\n    @north door is a #door\n    @brass key is a #key\n    @oak table is a #table\n    @henry is a #guard\n].\n\nSTART\n[\n    @ember is calm\n    @cinder is calm\n    @north door is locked\n    @brass key is on the #table\n    @henry is calm\n].\n\nWHEN PLAYER takes @brass key\n[\n    |then (carry @brass key\n].\n\nIF @north door is locked\n[\n    |then (unlock @north door\n].\n\nWHEN PLAYER attacks @ember\n[\n    |then (damage @ember\n    |then (change @ember to angry\n].\n\nWHEN PLAYER attacks a #creature\n[\n    |then (damage it\n    |then (change it to angry\n].\n\nWHEN PLAYER attacks a #guard\n[\n    |then (damage it\n    |then (change it to angry\n].\n\nIF @cinder is angry\n[\n    |then (damage PLAYER\n].\n",
+      "expected_counts": {
+        "kinds": 3,
+        "objects": 7,
+        "facts": 5,
+        "events": 4,
+        "if_rules": 2,
+        "controls": 0,
+        "hover_declarations": 0,
+        "context_declarations": 0,
+        "diagnostics": 0,
+        "meaning_profile": "bsharp.meaning.v1"
+      }
+    },
+    {
+      "name": "platform_movement",
+      "source": "//A complete side-scroller movement declaration with the machinery hidden./.\n\nCONTROLS for PLAYER\n[\n    A moves PLAYER left at 6 speed\n    D moves PLAYER right at 6 speed\n    SPACE makes PLAYER jump at 10 speed\n].\n",
+      "expected_counts": {
+        "kinds": 0,
+        "objects": 1,
+        "facts": 0,
+        "events": 0,
+        "if_rules": 0,
+        "controls": 1,
+        "hover_declarations": 0,
+        "context_declarations": 0,
+        "diagnostics": 0,
+        "meaning_profile": "bsharp.meaning.v4"
+      }
+    },
+    {
+      "name": "text_values",
+      "source": "KINDS\n[\n    #gate is a #door\n].\n\nDEFINE\n[\n    @north gate is a #gate\n    @south gate is a #gate\n    @brass bell is a #device\n].\n\nSTART\n[\n    @north gate has \"North  Gate!\" title\n    @south gate has \"South Gate.\" title\n].\n\nWHEN PLAYER sounds @brass bell\n[\n    |then (change title of every #gate to \"OPEN — RubyVM!\"\n].\n\nIF @north gate has \"OPEN — RubyVM!\" title\n[\n    |then (damage PLAYER\n].\n",
+      "expected_counts": {
+        "kinds": 1,
+        "objects": 4,
+        "facts": 2,
+        "events": 1,
+        "if_rules": 1,
+        "controls": 0,
+        "hover_declarations": 0,
+        "context_declarations": 0,
+        "diagnostics": 0,
+        "meaning_profile": "bsharp.meaning.v2"
+      }
+    }
+  ],
+  "acceptance_rules": [
+    "The small compiler subset IR emitter tool must pass in the Trial-by-Fire validation inventory.",
+    "compiler/small_compiler_subset_ir_emitter.rb must emit from SmallCompilerSubsetParser records, not replace normal compilation.",
+    "Subset-emitted BSharp IR must match the existing Ruby Parser plus SemanticResolver referee for accepted fixtures.",
+    "The new IR emitter must not become the production compiler path in this build.",
+    "No Profile 8, syntax, runtime, bytecode, web export, browser, engine bridge, or Ruby retirement work is allowed."
+  ],
+  "documents": {
+    "spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json",
+    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v0_1_50.md",
+    "implementation_file": "compiler/small_compiler_subset_ir_emitter.rb",
+    "tool": "tools/small_compiler_subset_ir_emitter.rb",
+    "test": "tests/test_small_compiler_subset_ir_emitter.rb",
+    "parser_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json",
+    "parser_file": "compiler/small_compiler_subset_parser.rb",
+    "ruby_parser_referee": "compiler/parser.rb",
+    "ruby_resolver_referee": "compiler/resolver.rb"
+  }
+}

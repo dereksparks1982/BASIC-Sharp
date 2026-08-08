@@ -15,9 +15,9 @@ BASIC# source
 -> v0.1.45 movement/input package  [REJECTED: native test timing failure, rollback restored v0.1.44]
 -> Plain-English Movement and Input Contract  [ACCEPTED: v0.1.46]
 -> BASIC# Tokenizer/Reader Contract  [ACCEPTED: v0.1.47]
--> BASIC# tokenizer/reader implementation under Ruby referee  [ACCEPTED: v0.1.49]
--> small compiler subset parser under Ruby referee  [CURRENT CANDIDATE: v0.1.49]
--> BASIC# compiler subset emits BSharp IR
+-> BASIC# tokenizer/reader implementation under Ruby referee  [ACCEPTED: v0.1.48]
+-> small compiler subset parser under Ruby referee  [ACCEPTED: v0.1.49]
+-> BASIC# compiler subset emits BSharp IR under Ruby referee  [CURRENT CANDIDATE: v0.1.50]
 -> BASIC# compiler subset emits BSBC
 -> byte-for-byte parity against approved Ruby bootstrap outputs
 -> staged Ruby retirement only after validation earns it
@@ -30,16 +30,31 @@ BASIC# source
 -> BASIC#/BSharp-native browser only after web export and demand are real
 ```
 
-## Current v0.1.49 lane
+## Current v0.1.50 lane
+
+- Add `compiler/small_compiler_subset_ir_emitter.rb` as a non-production self-hosting runway piece.
+- Consume deterministic records from `compiler/small_compiler_subset_parser.rb`.
+- Emit resolved BSharp IR for sealed subset fixtures.
+- Compare subset-emitted BSharp IR against the existing Ruby Parser plus SemanticResolver referee.
+- Keep `compiler/parser.rb` and `compiler/resolver.rb` as the production compiler authority.
+- Add executable implementation tests and Trial-by-Fire inventory coverage.
+- Exclude Ruby replacement, production parser migration, self-hosting claims, Profile 8, new syntax, runtime behavior changes, BSharp Bytecode changes, Save/ASK changes, input-device changes, web export, browser work, engine bridge, licensing work, funding claims, and OpenAI outreach.
+
+## Accepted v0.1.49 lane
+
+- Add the first small compiler subset parser implementation.
+- Parse accepted Head, Body, result marker, and official action word structure from TokenizerReader records.
+- Compare subset parser records against the existing Ruby Parser referee.
+- Keep the existing parser authority unchanged.
+- Add executable parser tests and Trial-by-Fire inventory coverage.
+
+## Accepted v0.1.48 lane
 
 - Implement `compiler/tokenizer_reader.rb` as the first deterministic tokenizer/reader implementation.
 - Keep the Ruby `Lexer` as referee and compare reader records exactly.
-- Preserve current comment behavior for `//` and `/.`, including quoted text, preserved newlines, nested-comment diagnostics, unmatched-close diagnostics, and unclosed-comment diagnostics.
-- Preserve the current Head words: `KINDS`, `DEFINE`, `START`, `WHEN`, `IF`, `OTHERWISE`, `CONTROLS`, `HOVER`, and `CONTEXT`.
-- Emit first deterministic token records for Heads, Body boundaries, result markers, action words, quoted text, and ordinary Body lines.
+- Preserve current comment behavior and Head words.
+- Emit deterministic token records for Heads, Body boundaries, result markers, action words, quoted text, and ordinary Body lines.
 - Keep the existing parser authority unchanged.
-- Add executable implementation tests and Trial-by-Fire inventory coverage.
-- Exclude Ruby replacement, parser migration, self-hosting claims, Profile 8, new syntax, runtime behavior changes, BSharp IR changes, BSharp Bytecode changes, Save/ASK changes, web export, browser work, engine bridge, licensing work, funding claims, and OpenAI outreach.
 
 ## Accepted v0.1.47 lane
 
@@ -86,11 +101,11 @@ BASIC# source
 
 The future sponsorship strategy is proof first. A future sponsor packet may target AI tooling support, API credits, founder attention, or partnership discussion only after the language has a clear demo, validation proof, and roadmap evidence.
 
-## Continuation after v0.1.49
+## Continuation after v0.1.50
 
-1. Install and complete owner-side native validation from exact accepted commit `3e0832f052b91507cfd0615be44e65960f38740f` and tag `v0.1.47`.
-2. Commit and tag v0.1.49 immediately after every gate passes, then capture the accepted full-project snapshot.
-3. Next focused build should begin the small compiler subset parser only after tokenizer/reader implementation records remain stable under Ruby referee.
+1. Install and complete owner-side native validation from exact accepted commit `936c01340c518af655fce21f11d9b99f1863f3f1` and tag `v0.1.49`.
+2. Commit and tag v0.1.50 immediately after every gate passes, then capture the accepted full-project snapshot.
+3. Next focused build should begin the small compiler subset BSBC bytecode emission lane only after subset-emitted BSharp IR remains stable under Ruby referee.
 4. Ruby remains the referee until BASIC# compiler pieces reproduce approved output deterministically.
 5. Web/app export and BSharp native documents remain valuable, but they wait until the self-hosting runway is credible.
 
@@ -111,9 +126,10 @@ Private/proprietary distribution remains under consideration, but licensing and 
 - The complete Company Bible is `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md`.
 - The active self-hosting contract is `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json`.
 - The active tokenizer/reader contract is `spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json`.
+- The active small compiler subset parser contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json`.
+- The active small compiler subset IR emitter contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json`.
 - The active input-device contract is `spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json`.
 
+## v0.1.50 IR emitter lane guardrail
 
-## v0.1.49 parser lane guardrail
-
-`spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json` governs the small compiler subset parser. Ruby remains the production parser authority.
+`spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json` governs the small compiler subset BSharp IR emitter. Ruby remains the production parser, resolver, and compiler authority.

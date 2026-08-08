@@ -13,14 +13,14 @@ class TestSelfHostingContract < Minitest::Test
   end
 
   def test_spec_targets_the_live_basic_sharp_version
-    assert_equal '0.1.49', BasicSharp::VERSION
+    assert_equal '0.1.50', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
   end
 
   def test_contract_is_foundation_only
     assert_equal 'foundation_contract_only', spec.fetch('status')
     assert_equal 'BSharp Compiler Subset 0', spec.fetch('compiler_subset_name')
-    assert_equal 'parser_under_ruby_referee', spec.fetch('compiler_subset_status')
+    assert_equal 'ir_emitter_under_ruby_referee', spec.fetch('compiler_subset_status')
   end
 
   def test_future_work_is_explicitly_excluded
@@ -43,6 +43,9 @@ class TestSelfHostingContract < Minitest::Test
     assert_equal 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json', documents.fetch('small_compiler_subset_parser_spec')
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_parser_tool')))
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_parser_test')))
+    assert_equal 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json', documents.fetch('small_compiler_subset_ir_emitter_spec')
+    assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_ir_emitter_tool')))
+    assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_ir_emitter_test')))
   end
 
   def test_trial_by_fire_inventory_runs_the_contract_tool
@@ -51,5 +54,6 @@ class TestSelfHostingContract < Minitest::Test
 
     assert_includes tools, 'tools/self_hosting_contract.rb'
     assert_includes tools, 'tools/small_compiler_subset_parser.rb'
+    assert_includes tools, 'tools/small_compiler_subset_ir_emitter.rb'
   end
 end
