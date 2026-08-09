@@ -21,7 +21,7 @@ assert_contract!(spec.fetch('target_version') == BasicSharp::VERSION, 'target ve
 assert_contract!(spec.fetch('status') == 'contract_and_runtime_mapping', 'status changed')
 
 supported = spec.fetch('supported_inputs')
-%w[keyboard mouse_keyboard ps5 xbox generic_gamepad].each do |device|
+%w[keyboard mouse_keyboard movement_contexts ps5 xbox generic_gamepad].each do |device|
   assert_contract!(supported.key?(device), "#{device} mapping is missing")
 end
 
@@ -39,13 +39,12 @@ boundary = spec.fetch('engine_boundary')
 %w[key_down key_up button_down button_up axis pointer_move right_mouse_down right_mouse_up frame].each do |event_type|
   assert_contract!(boundary.fetch('host_event_types').include?(event_type), "#{event_type} event is missing")
 end
-%w[move move_toward_pointer move_with_collisions face_pointer open_context].each do |command|
+%w[move move_3d move_toward_pointer move_with_collisions face_pointer open_context].each do |command|
   assert_contract!(boundary.fetch('host_commands').include?(command), "#{command} host command is missing")
 end
 
 exclusions = spec.fetch('explicit_exclusions')
 [
-  'no new BASIC# source syntax',
   'no controller remapping UI',
   'no platform-specific driver layer',
   'no engine bridge',

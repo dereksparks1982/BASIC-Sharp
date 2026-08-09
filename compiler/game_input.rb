@@ -134,7 +134,13 @@ module BasicSharp
         @right_target = nil
       when 'frame'
         time_ms = integer_time(supplied['time_ms'])
-        @platform_mode ? emit_platform_movement(time_ms, supplied) : emit_movement(time_ms)
+        if @world_mode
+          emit_world_movement(time_ms)
+        elsif @platform_mode
+          emit_platform_movement(time_ms, supplied)
+        else
+          emit_movement(time_ms)
+        end
       else
         raise GameInputError, "Unknown input event '#{type}'."
       end
@@ -229,6 +235,7 @@ module BasicSharp
       @right_mouse_move = false
       @platform_directions = {}
       @platform_jump = nil
+      @world_directions = {}
       declarations.each do |declaration|
         Array(declaration['instructions']).each do |instruction|
           case instruction['type']
@@ -237,9 +244,13 @@ module BasicSharp
           when 'right_mouse_move' then @right_mouse_move = true
           when 'platform_move' then @platform_directions[instruction.fetch('direction')] = instruction
           when 'platform_jump' then @platform_jump = instruction
+          when 'world_move' then @world_directions[instruction.fetch('direction')] = instruction
           end
         end
       end
+      @world_mode = !@world_directions.empty?
+      return validate_world_controls! if @world_mode
+
       @platform_mode = !@platform_directions.empty? || !@platform_jump.nil?
       return validate_platform_controls! if @platform_mode
 
@@ -263,6 +274,17 @@ module BasicSharp
       end
       raise GameInputError, 'Platform CONTROLS must declare PLAYER jump movement.' unless @platform_jump
       validate_positive_speed!(@platform_jump['speed'], 'PLAYER jump speed')
+    end
+
+    def validate_world_controls!
+      unless @key_directions.empty? && !@face_pointer && !@right_mouse_move && @platform_jump.nil? && @platform_directions.empty?
+        raise GameInputError, '3D CONTROLS cannot be mixed with top-down or platform CONTROLS.'
+      end
+      %w[forward backward left right].each do |direction|
+        instruction = @world_directions[direction]
+        raise GameInputError, "3D CONTROLS must declare PLAYER #{direction} movement." unless instruction
+        validate_positive_speed!(instruction['speed'], "PLAYER #{direction} speed")
+      end
     end
 
     def validate_positive_speed!(value, label)
@@ -307,6 +329,40 @@ module BasicSharp
         y *= DIAGONAL
       end
       @adapter.emit('move', 'subject' => 'player', 'maximum_speed' => @speed, 'x' => rounded(x), 'y' => rounded(y), 'speed_scale' => 1.0)
+    end
+
+    def emit_world_movement(time_ms)
+      x = 0.0
+      z = 0.0
+      x -= numeric(@world_directions.fetch('left').fetch('speed'), 'PLAYER left speed') if world_direction_active?('left')
+      x += numeric(@world_directions.fetch('right').fetch('speed'), 'PLAYER right speed') if world_direction_active?('right')
+      z += numeric(@world_directions.fetch('forward').fetch('speed'), 'PLAYER forward speed') if world_direction_active?('forward')
+      z -= numeric(@world_directions.fetch('backward').fetch('speed'), 'PLAYER backward speed') if world_direction_active?('backward')
+      if x != 0.0 && z != 0.0
+        x *= DIAGONAL
+        z *= DIAGONAL
+      end
+      @adapter.emit(
+        'move_3d',
+        'subject' => 'player',
+        'velocity_x' => rounded(x),
+        'velocity_z' => rounded(z),
+        'x' => rounded(x.zero? ? 0.0 : x / [x.abs, z.abs].max),
+        'z' => rounded(z.zero? ? 0.0 : z / [x.abs, z.abs].max)
+      )
+    end
+
+    def world_direction_active?(direction)
+      instruction = @world_directions.fetch(direction)
+      return true if @pressed.include?(instruction.fetch('key'))
+
+      aliases = {
+        'forward' => %w[north],
+        'backward' => %w[south],
+        'left' => %w[west],
+        'right' => %w[east]
+      }.fetch(direction)
+      aliases.any? { |action| action_active?(action) }
     end
 
     def emit_platform_movement(time_ms, frame)

@@ -1,7 +1,7 @@
 {
   "format": "bsharp.deterministic_fixture_hash_sweep.json",
   "format_version": 1,
-  "target_version": "0.1.66",
+  "target_version": "0.1.67",
   "status": "active_release_gate",
   "title": "BASIC# Deterministic Fixture Hash Sweep",
   "purpose": "Run the complete deterministic fixture family together so stale version-sensitive hashes are found before packaging.",

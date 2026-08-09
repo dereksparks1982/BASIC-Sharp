@@ -238,43 +238,81 @@ module BasicSharp
 
     def resolve_controls(declaration)
       directions = {}
+      world_directions = {}
       keys = {}
       instruction_types = declaration.instructions.map { |entry| entry['type'] }
-      platform_used = instruction_types.any? { |type| type.start_with?('platform_') }
+      world_used = instruction_types.include?('world_move')
+      platform_jump_used = instruction_types.include?('platform_jump')
+      platform_move_used = instruction_types.include?('platform_move')
+      platform_used = platform_jump_used || (platform_move_used && !world_used)
       top_down_used = instruction_types.any? { |type| %w[key_move face_pointer right_mouse_move].include?(type) }
+
       if platform_used && top_down_used
         diagnostics.error(declaration.line_number, 'CONTROLS cannot mix platform movement with top-down movement in one declaration.')
+      end
+      if world_used && top_down_used
+        diagnostics.error(declaration.line_number, '3D CONTROLS cannot mix forward movement with top-down movement in one declaration.')
+      end
+      if world_used && platform_jump_used
+        diagnostics.error(declaration.line_number, '3D CONTROLS cannot declare platform jump movement.')
       end
 
       instructions = declaration.instructions.map do |instruction|
         resolved = instruction.dup
-        next resolved unless instruction['type'].start_with?('platform_')
+        resolved['type'] = 'world_move' if world_used && instruction['type'] == 'platform_move'
+        type = resolved['type']
+        next resolved unless %w[platform_move platform_jump world_move].include?(type)
 
-        key = instruction['key']
+        key = resolved['key']
         if keys[key]
-          diagnostics.error(instruction['line_number'], "#{key} already has a platform movement job in CONTROLS.")
+          message = type == 'world_move' ? "#{key} already has a 3D movement job in CONTROLS." : "#{key} already has a platform movement job in CONTROLS."
+          diagnostics.error(resolved['line_number'], message)
         else
           keys[key] = true
         end
-        if instruction['type'] == 'platform_move'
-          direction = instruction['direction']
+
+        case type
+        when 'world_move'
+          direction = resolved['direction']
+          unless %w[forward backward left right].include?(direction)
+            diagnostics.error(resolved['line_number'], "3D movement cannot use #{direction}; use forward, backward, left, or right.")
+          end
+          if world_directions[direction]
+            diagnostics.error(resolved['line_number'], "PLAYER already has a #{direction} 3D movement control.")
+          else
+            world_directions[direction] = true
+          end
+          resolved['speed'] = resolve_whole_number(
+            resolved['speed'], resolved['line_number'], minimum: 1, purpose: 'movement speed'
+          )
+        when 'platform_move'
+          direction = resolved['direction']
           if directions[direction]
-            diagnostics.error(instruction['line_number'], "PLAYER already has a #{direction} movement control.")
+            diagnostics.error(resolved['line_number'], "PLAYER already has a #{direction} movement control.")
           else
             directions[direction] = true
           end
-        elsif directions['jump']
-          diagnostics.error(instruction['line_number'], 'PLAYER already has a jump control.')
-        else
-          directions['jump'] = true
+          resolved['speed'] = resolve_whole_number(
+            resolved['speed'], resolved['line_number'], minimum: 1, purpose: 'movement speed'
+          )
+        when 'platform_jump'
+          if directions['jump']
+            diagnostics.error(resolved['line_number'], 'PLAYER already has a jump control.')
+          else
+            directions['jump'] = true
+          end
+          resolved['speed'] = resolve_whole_number(
+            resolved['speed'], resolved['line_number'], minimum: 1, purpose: 'movement speed'
+          )
         end
-        resolved['speed'] = resolve_whole_number(
-          instruction['speed'], instruction['line_number'], minimum: 1, purpose: 'movement speed'
-        )
         resolved
       end
 
-      if platform_used
+      if world_used
+        %w[forward backward left right].each do |job|
+          diagnostics.error(declaration.line_number, "3D CONTROLS must declare PLAYER #{job} movement.") unless world_directions[job]
+        end
+      elsif platform_used
         %w[left right jump].each do |job|
           diagnostics.error(declaration.line_number, "Platform CONTROLS must declare PLAYER #{job} movement.") unless directions[job]
         end
@@ -736,10 +774,12 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
       end
       return 'bsharp.meaning.v5' if number_changes_used
 
-      platform_used = controls.any? do |declaration|
-        declaration.fetch('instructions', []).any? { |instruction| instruction['type'].to_s.start_with?('platform_') }
+      movement_used = controls.any? do |declaration|
+        declaration.fetch('instructions', []).any? do |instruction|
+          instruction['type'].to_s.start_with?('platform_') || instruction['type'].to_s == 'world_move'
+        end
       end
-      return 'bsharp.meaning.v4' if platform_used
+      return 'bsharp.meaning.v4' if movement_used
 
       game_used = !controls.empty? || !hover_declarations.empty? || !context_declarations.empty?
       return 'bsharp.meaning.v3' if game_used

@@ -17,7 +17,7 @@ class TestIROutput < Minitest::Test
   end
 
   def test_emits_versioned_ir
-    assert_equal '0.1.66', @ir.fetch('version')
+    assert_equal '0.1.67', @ir.fetch('version')
     assert_equal 'bsir.debug.json', @ir.fetch('format')
   end
 

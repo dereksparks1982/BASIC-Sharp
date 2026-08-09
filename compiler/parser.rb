@@ -387,6 +387,8 @@ module BasicSharp
         text = child.body
         if (match = text.match(/\A([WASD])\s+moves\s+PLAYER\s+(north|south|west|east)\z/))
           { 'type' => 'key_move', 'key' => match[1], 'direction' => match[2], 'line_number' => child.line_number }
+        elsif (match = text.match(/\A([A-Z][A-Z0-9]*)\s+moves\s+PLAYER\s+(forward|backward)\s+at\s+(.+?)\s+speed\z/))
+          { 'type' => 'world_move', 'key' => match[1], 'direction' => match[2], 'speed' => match[3].strip, 'line_number' => child.line_number }
         elsif (match = text.match(/\A([A-Z][A-Z0-9]*)\s+moves\s+PLAYER\s+(left|right)\s+at\s+(.+?)\s+speed\z/))
           {
             'type' => 'platform_move', 'key' => match[1], 'direction' => match[2],

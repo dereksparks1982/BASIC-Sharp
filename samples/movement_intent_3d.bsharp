@@ -1,0 +1,9 @@
+//A 3D movement declaration: W means forward, not screen-up./.
+
+CONTROLS for PLAYER
+[
+    W moves PLAYER forward at 6 speed
+    S moves PLAYER backward at 6 speed
+    A moves PLAYER left at 6 speed
+    D moves PLAYER right at 6 speed
+].

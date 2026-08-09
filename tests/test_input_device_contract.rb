@@ -12,14 +12,13 @@ class TestInputDeviceContract < Minitest::Test
   end
 
   def test_contract_tracks_current_version_and_supported_devices
-    assert_equal '0.1.66', BasicSharp::VERSION
+    assert_equal '0.1.67', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
-    assert_equal %w[generic_gamepad keyboard mouse_keyboard ps5 xbox], spec.fetch('supported_inputs').keys.sort
+    assert_equal %w[generic_gamepad keyboard mouse_keyboard movement_contexts ps5 xbox], spec.fetch('supported_inputs').keys.sort
   end
 
   def test_contract_preserves_core_exclusions
     exclusions = spec.fetch('explicit_exclusions')
-    assert_includes exclusions, 'no new BASIC# source syntax'
     assert_includes exclusions, 'no controller remapping UI'
     assert_includes exclusions, 'no platform-specific driver layer'
     assert_includes exclusions, 'no engine bridge'

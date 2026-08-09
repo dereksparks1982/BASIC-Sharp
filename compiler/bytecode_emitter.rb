@@ -142,11 +142,13 @@ module BasicSharp
       if profile == BytecodeContract::MEANING_PROFILE_3 && !game_used
         raise BytecodeEmitterError, 'bsharp.meaning.v3 requires game input or interaction meaning.'
       end
-      platform_used = Array(@document['controls']).any? do |declaration|
-        Array(declaration['instructions']).any? { |instruction| instruction['type'].to_s.start_with?('platform_') }
+      movement_used = Array(@document['controls']).any? do |declaration|
+        Array(declaration['instructions']).any? do |instruction|
+          instruction['type'].to_s.start_with?('platform_') || instruction['type'].to_s == 'world_move'
+        end
       end
-      if profile == BytecodeContract::MEANING_PROFILE_4 && !platform_used
-        raise BytecodeEmitterError, 'bsharp.meaning.v4 requires platform movement meaning.'
+      if profile == BytecodeContract::MEANING_PROFILE_4 && !movement_used
+        raise BytecodeEmitterError, 'bsharp.meaning.v4 requires movement meaning.'
       end
       number_features = document_uses_number_changes_or_comparisons?
       if profile == BytecodeContract::MEANING_PROFILE_5 && !number_features

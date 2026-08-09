@@ -743,11 +743,13 @@ module BasicSharp
       if profile == WorldSave::MEANING_PROFILE_3 && !game_used
         raise ArgumentError, 'bsharp.meaning.v3 requires game input or interaction meaning'
       end
-      platform_used = Array(@ir['controls']).any? do |declaration|
-        Array(declaration['instructions']).any? { |instruction| instruction['type'].to_s.start_with?('platform_') }
+      movement_used = Array(@ir['controls']).any? do |declaration|
+        Array(declaration['instructions']).any? do |instruction|
+          instruction['type'].to_s.start_with?('platform_') || instruction['type'].to_s == 'world_move'
+        end
       end
-      if profile == WorldSave::MEANING_PROFILE_4 && !platform_used
-        raise ArgumentError, 'bsharp.meaning.v4 requires platform movement meaning'
+      if profile == WorldSave::MEANING_PROFILE_4 && !movement_used
+        raise ArgumentError, 'bsharp.meaning.v4 requires movement meaning'
       end
       if profile == WorldSave::MEANING_PROFILE_5 && !ir_uses_number_changes_or_comparisons?
         raise ArgumentError, 'bsharp.meaning.v5 requires number-change or threshold-comparison meaning'

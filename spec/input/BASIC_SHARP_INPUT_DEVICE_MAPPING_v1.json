@@ -1,7 +1,7 @@
 {
   "format": "bsharp.input.device_mapping.json",
   "format_version": 1,
-  "target_version": "0.1.66",
+  "target_version": "0.1.67",
   "title": "Plain-English Movement and Input Device Mapping Contract",
   "status": "contract_and_runtime_mapping",
   "creator_source_rule": "Creator source declares movement meaning once. Keyboard, mouse, PS5, Xbox, and generic gamepad inputs map underneath without requiring different BASIC# scripts.",
@@ -109,6 +109,20 @@
       "jump": [
         "BUTTON_SOUTH"
       ]
+    },
+    "movement_contexts": {
+      "2d_or_top_down": {
+        "W": "up or north",
+        "S": "down or south",
+        "A": "left or west",
+        "D": "right or east"
+      },
+      "3d": {
+        "W": "forward",
+        "S": "backward",
+        "A": "left strafe",
+        "D": "right strafe"
+      }
     }
   },
   "axis_threshold": 0.5,
@@ -129,12 +143,12 @@
       "move_toward_pointer",
       "move_with_collisions",
       "face_pointer",
-      "open_context"
+      "open_context",
+      "move_3d"
     ],
     "driver_integration": "out_of_scope"
   },
   "explicit_exclusions": [
-    "no new BASIC# source syntax",
     "no controller remapping UI",
     "no platform-specific driver layer",
     "no vibration or haptics",
