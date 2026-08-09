@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.runtime_smoke.json",
   "format_version": 1,
-  "target_version": "0.1.63",
+  "target_version": "0.1.64",
   "title": "BASIC# Small Compiler Subset Runtime Smoke",
   "status": "runtime_smoke_under_ruby_referee",
   "purpose": "Prove selected small compiler subset fixture outputs can enter the verifying runtime, run smoke events, save, and remain deterministic while Ruby remains the referee.",
@@ -36,7 +36,7 @@
       "expected_loader_summary_sha256": "657d9861a1f67b4f33840f350dc680b16128294c45ddc748b8b8d78b3a1bac7d",
       "expected_event_results_sha256": "51b752279ca51be386506fd8de587ada3ed5cfecec3434799fcbf48979505c42",
       "expected_snapshot_sha256": "d164cffb0d62d517508aecd66544a1f0daf2ccf91458dbe0c9884338b6fdedb1",
-      "expected_save_document_sha256": "46322bf2fcc3ec96329f61a5d4ea30f9f39038c72b3ca34aedc211b3314a1b9c",
+      "expected_save_document_sha256": "0f16574f840ff05791a87183451f086a27c87d557a11cf2bd1508b58e513ef85",
       "expected_matched_event_count": 3
     },
     {
@@ -50,7 +50,7 @@
       "expected_loader_summary_sha256": "bd70b382823c750426c6cbd53968085fbc513cc7a648c0411d1bda064e6236d2",
       "expected_event_results_sha256": "9302c290d6d4d33551fa04ad0d93871c5a8aa3f67a5911e8ca35aca117d5ea7b",
       "expected_snapshot_sha256": "521e7fbcfb719333f9a24c3defad96705fed113fcc72afe477658ecba56c36ab",
-      "expected_save_document_sha256": "aa701736e6d05c5e62fb07afa1b4faf7f3fd7d73a50ea0bd649b870420209a78",
+      "expected_save_document_sha256": "179b06d1fd6c2f800078762d8e8d3be52d9333896e8d18eed7fdccb25a771c2e",
       "expected_matched_event_count": 1
     },
     {
@@ -65,7 +65,7 @@
       "expected_loader_summary_sha256": "fae0284c9b6691151792840aff627714b4c8f27e0043c96a76a4c8ae557b687b",
       "expected_event_results_sha256": "86f5c6f3dc3133e2df07fad6b906f3ff6646eef63e2bec09e901bffca173f58d",
       "expected_snapshot_sha256": "a6b8bd6e838ec76e38c7f17f7a0c4c3a179714cf1351b93212ff4899cbff2067",
-      "expected_save_document_sha256": "48f91f0668a4130add98a03ec19cb4e7a32c79d40579e754461b2a4b6bc2a0d2",
+      "expected_save_document_sha256": "71dc8c20f33f300c34e0fab2edf7a93e1d79d87824d3e080abd5fe53baa98d39",
       "expected_matched_event_count": 2
     },
     {
@@ -80,7 +80,7 @@
       "expected_loader_summary_sha256": "6dfe175dfd460af12d79f32a96adeaaaa258a41ca1f7e83370c46af1f4dfa835",
       "expected_event_results_sha256": "2fdcc3dd795197ce573a75cdfc49808ba39252beab005f24c68b48f472a85e4d",
       "expected_snapshot_sha256": "d44f01293e5998f0eb89c8a07f9a0c06804786e24571dadb9d6fe79090342c0e",
-      "expected_save_document_sha256": "3f79c80c6c0ed2319ba4b64bd3ef8ec0afbf352b201df2cf14810c4321749afa",
+      "expected_save_document_sha256": "fdf446e9a3d76f8ce240013bf5e3662fbc6f909923f94f589894e221be6c62a2",
       "expected_matched_event_count": 2
     },
     {
@@ -95,7 +95,7 @@
       "expected_loader_summary_sha256": "f9ff6ff7e030fde2f4330cc82a370618b13c942261ff4a0dcfe96c1885f91739",
       "expected_event_results_sha256": "07c040fbc53615de6857590f41197235432aa93fd5c2b9b18c64d2e6ca30ea2c",
       "expected_snapshot_sha256": "fc3110ee7dc7ae84973dcffa3c3c45c65f466cf33b267b99a25cb4e50158cbca",
-      "expected_save_document_sha256": "14209dff5695fa425cf5bfe2f6017a2a52c5348a464fee26902a8313ebdfa7f0",
+      "expected_save_document_sha256": "0938c17b86f309a2f23fa9abd3433ae325b3e7618a87a08a4743edad6c12996b",
       "expected_matched_event_count": 2
     },
     {
@@ -109,7 +109,7 @@
       "expected_loader_summary_sha256": "4d35ddbb54214dbfe3e8542e246c1199dfcc65e59e5e64d21f119eaf205c039d",
       "expected_event_results_sha256": "4c6ee022310bab924f4227e519bd430bb39bd283bd60cf3e4ce5b619b4544f9c",
       "expected_snapshot_sha256": "a4739207ed4e1f7748b5235bb800e36183703b7e30d98ba7d09a53c539887629",
-      "expected_save_document_sha256": "06958a205dd78c923ebbcbfb3d735363b65e476b9d98be023922075c6d89d95e",
+      "expected_save_document_sha256": "49fc3b74ca6b1387ef655de82f2a92721439b9689f5e678f44e1d98b5cc64ee6",
       "expected_matched_event_count": 1
     },
     {
@@ -127,7 +127,7 @@
       "expected_loader_summary_sha256": "5d82f6349d8f57f592ef85fe25080f0a3bf2f6c91de1219bcf1c877c10b62e52",
       "expected_event_results_sha256": "98b497cf5deea72224ff23a9fa27336079dd1f44c0e85565048c727022f6dcd9",
       "expected_snapshot_sha256": "8fe0806a4722d01d2495a0bcc31e5395af2d18f902162ff46358b1526b1dc675",
-      "expected_save_document_sha256": "3a969e586ecef36d0f5467cd26038db26511d98af2f90f454211d9366cf452cb",
+      "expected_save_document_sha256": "142fe659f8cec8edfc8cff02d0931d7224a08d34637a9d17c19f7f270931fc3b",
       "expected_matched_event_count": 5
     }
   ]

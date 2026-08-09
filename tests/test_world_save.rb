@@ -50,7 +50,7 @@ class TestWorldSave < Minitest::Test
 
     assert_equal 'bsharp.save.json', document.fetch('format')
     assert_equal 1, document.fetch('format_version')
-    assert_equal '0.1.63', document.fetch('created_by_basic_sharp')
+    assert_equal '0.1.64', document.fetch('created_by_basic_sharp')
     assert_equal true, document.dig('world', 'settled')
     assert_equal %w[player henry mara brass\ bell brass\ key oak\ table], document.dig('world', 'things').map { |entry| entry.fetch('name') }
     assert_equal 10, document.dig('world', 'things', 1, 'values', 'health')

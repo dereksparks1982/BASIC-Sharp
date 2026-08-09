@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.symbol_table_contract.json",
   "format_version": 1,
-  "target_version": "0.1.63",
+  "target_version": "0.1.64",
   "status": "symbol_table_contract_under_ruby_referee",
   "purpose": "Lock deterministic name tracking for the small compiler subset while Ruby remains the referee.",
   "valid_fixtures": [
@@ -57,9 +57,7 @@
         ]
       },
       "expected_symbols_sha256": "49cfae38749d950bf8a29e46170f8aa982221d5a6735a3d446cc7dec8f09ecd2",
-      "expected_errors": [
-
-      ],
+      "expected_errors": [],
       "expected_errors_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     {
@@ -79,20 +77,12 @@
             "line_number": 8
           }
         ],
-        "actions": [
-
-        ],
-        "values": [
-
-        ],
-        "scene_heads": [
-
-        ]
+        "actions": [],
+        "values": [],
+        "scene_heads": []
       },
       "expected_symbols_sha256": "44a424ce282de143d521f1521b39acdc6739bf939fd06dbc0d463ed10d14a715",
-      "expected_errors": [
-
-      ],
+      "expected_errors": [],
       "expected_errors_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     }
   ],
@@ -114,15 +104,9 @@
             "line_number": 9
           }
         ],
-        "actions": [
-
-        ],
-        "values": [
-
-        ],
-        "scene_heads": [
-
-        ]
+        "actions": [],
+        "values": [],
+        "scene_heads": []
       },
       "expected_symbols_sha256": "c7628c3b85478cf2ed779dca909d819e03d774b6b56e2ef709c2f18011dbbad3",
       "expected_errors": [
@@ -171,9 +155,7 @@
             "line_number": 13
           }
         ],
-        "values": [
-
-        ],
+        "values": [],
         "scene_heads": [
           {
             "starter": "WHEN",

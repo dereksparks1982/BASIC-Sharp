@@ -17,6 +17,9 @@ require_relative 'host_adapter'
 require_relative 'game_input'
 require_relative 'game_interaction'
 
+STDOUT.set_encoding(Encoding::UTF_8) if STDOUT.respond_to?(:set_encoding)
+STDERR.set_encoding(Encoding::UTF_8) if STDERR.respond_to?(:set_encoding)
+
 if ARGV.empty?
   warn 'Usage: ruby compiler/basic_sharp.rb source.bsharp [--json|--emit-ast|--emit-ir|--emit-bytecode] [--out path] [--run "event"]'
   warn '       [--load-world path.bsave.json] [--ask "question"]... [--ask-json] [--save-world path.bsave.json]'

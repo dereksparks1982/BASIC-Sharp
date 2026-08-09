@@ -1,85 +1,87 @@
-# BASIC# Bootstrap Roadmap
+# BASIC# Roadmap
 
-## Current position
-
-```text
-BASIC# source
--> Ruby bootstrap parser and resolver
--> BSharp IR
--> Stable Meaning Profiles 1-7
--> BSharp Bytecode Profiles 1-7
--> BSharp VM preferred runtime
--> Trial by Fire validation and rollback discipline
--> BSharp Compiler Subset 0 under Ruby referee control
--> Self-Hosting Milestone 1 accepted in v0.1.61
--> Elderedd identity migration and DKLab compatibility bridge accepted in v0.1.62
--> v0.1.63 candidate: UTF-8 source hardening, Elderedd path proof, and BSBC execution parity
-```
-
-Ruby remains the bootstrap compiler, production parser authority, production resolver authority, runtime authority, and reference referee. BASIC# is not fully self-hosted. Ruby is retired only after each boundary is separately proven by accepted validation.
-
-Canonical Company Bible: `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md`.
-Self-hosting contract: `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json`.
-
-## Accepted self-hosting runway
+## Current accepted base
 
 ```text
-v0.1.47 Tokenizer/Reader Contract
-v0.1.48 Tokenizer/Reader Implementation
-v0.1.49 Small Compiler Subset Parser
-v0.1.50 Small Compiler Subset BSharp IR Emitter
-v0.1.51 Small Compiler Subset IR Golden Parity Harness
-v0.1.52 Small Compiler Subset Plain-English Error Contract
-v0.1.53 Small Compiler Subset Scene/Block Expansion
-v0.1.54 Small Compiler Subset Symbol Table Contract
-v0.1.55 Small Compiler Subset BSBC Emitter
-v0.1.56 Small Compiler Subset BSBC Golden Parity Harness
-v0.1.57 Self-Hosting Fixture Corpus
-v0.1.58 Small Compiler Subset Runtime Smoke
-v0.1.59 Bootstrap Boundary Audit
-v0.1.60 Self-Hosting Milestone 1 candidate rejected and rolled back
-v0.1.61 Self-Hosting Milestone 1 Repair accepted
-v0.1.62 Elderedd Identity and DKLab Compatibility accepted
+v0.1.63: UTF-8 hardening, Elderedd path proof, and BSBC execution parity
 ```
 
-The v0.1.60 rejected candidate remains permanent evidence. It passed the ordinary suite but failed the sealed README/error-contract reference gate, then restored exact v0.1.59. The rejection audit is `docs/audit/BASIC_SHARP_v0_1_60_REJECTED_BUILD_AUDIT.md`.
+## Current candidate
 
-## Emergency Roadmap: DKLab Retirement and Elderedd Migration
+```text
+v0.1.64: Self-Hosting Execution Expansion and Release Gate Hardening
+```
 
-Priority: Emergency. Status: active beginning in v0.1.62 and continuing in v0.1.63.
-
-Goal: retire DKLab / DK LAB as the active BASIC# identity and migrate current work to Elderedd without reckless breakage.
-
-Current identity direction:
-
-- Elderedd Softworks LLC: parent company / umbrella identity.
-- Elderedd Laboratory: research and build laboratory.
-- ELDL: internal shorthand only.
-- BCS: BSharp Creator Services.
-- BASIC#: language name.
-- BSharp: tool-safe technical name.
-
-DKLab retirement rule: DKLab is retired as active identity. DKLab may remain only in approved historical, migration, compatibility bridge, rollback, or archival contexts.
-
-Retirement ladder:
-
-1. Establish Elderedd as canonical identity.
-2. Mark DKLab as retired history and compatibility-only.
-3. Update active docs, tools, contracts, and validation gates.
-4. Move current instructions toward `~/Elderedd/Projects/BASIC#`.
-5. Archive or quarantine old DKLab references where history requires them.
-6. Prove future builds work from the Elderedd path.
-7. Remove the BASIC# DKLab compatibility bridge only after validation confirms nothing active depends on it.
-
-Hard rules:
-
-- Never make the BASIC# GitHub repository public unless Derek explicitly commands that exact visibility change.
-- Do not delete unrelated projects while migrating BASIC#.
-- Do not remove the DKLab compatibility bridge until a later accepted build proves it is safe.
-- Every accepted build includes GitHub description update after push verification.
+v0.1.64 expands the small compiler subset BSBC execution parity lane and adds release-hardening gates so deterministic fixture hashes, sealed inventory byte counts, package payload hashes, and changed-file scope are audited together before handoff.
 
 
-Canonical self-hosting spec runway:
+## Canonical Company Bible
+
+```text
+docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
+```
+
+This is the single canonical Company Bible reference for current BASIC# conduct, release, validation, rollback, packaging, Git, and Elderedd migration rules.
+
+## Emergency DKLab Retirement and Elderedd Migration
+
+Priority: Emergency. Status: active beginning in v0.1.62 and continuing through v0.1.64.
+
+Rules:
+
+- Elderedd Softworks LLC is the parent company identity.
+- Elderedd Laboratory is the active lab identity.
+- ELDL is internal shorthand only.
+- BCS means BSharp Creator Services and remains future service-layer naming only.
+- DKLab is retired as active BASIC# identity.
+- DKLab may remain as compatibility, rollback, migration, and archival history.
+- Canonical future path: `~/Elderedd/Projects/BASIC#`.
+- Legacy compatibility path: `~/DKLab/Projects/BASIC#`.
+- Do not remove the DKLab compatibility bridge until a later accepted build proves no active BASIC# workflow depends on it.
+
+## Self-hosting runway
+
+Current truthful claim:
+
+```text
+BSharp Compiler Subset 0 has staged self-hosting proof under Ruby referee control.
+Ruby remains the bootstrap compiler and reference referee.
+BASIC# is not fully self-hosted.
+```
+
+v0.1.64 expands the BSBC execution parity gate from the first execution proof into a broader sealed fixture lane. It adds repeated threshold crossing and IF/OTHERWISE rearming fixtures while preserving exact Ruby referee parity.
+
+## Release-hardening runway
+
+v0.1.64 adds two protective gates:
+
+```text
+tools/deterministic_fixture_hash_sweep.rb
+tools/release_package_preflight.rb
+```
+
+These gates prevent the v0.1.63 rejected-candidate pattern:
+
+```text
+fix one stale fixture hash
+miss another stale fixture hash
+miss final sealed artifact byte drift
+hand Derek a ZIP too early
+```
+
+Future packages should be proven by final extracted payload audit, not by piecemeal confidence.
+
+## After v0.1.64
+
+If v0.1.64 is accepted, the next likely work is one of the following:
+
+1. Continue expanding small compiler subset BSBC execution parity carefully.
+2. Prove the project can validate from `~/Elderedd/Projects/BASIC#` while preserving the DKLab bridge.
+3. Prepare a later DKLab bridge-removal proposal only after no active BASIC# workflow depends on `~/DKLab/Projects/BASIC#`.
+
+Do not begin BCS implementation, accounts, hosting, pricing, network calls, server work, Project Oracle, or Demon Killer in this lane.
+
+## Canonical self-hosting specification runway
 
 ```text
 spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json
@@ -99,72 +101,3 @@ spec/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v1.json
 spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json
 spec/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v1.json
 ```
-
-## v0.1.63 Candidate: UTF-8 Source Hardening, Elderedd Path Proof, and BSBC Execution Parity
-
-Status: current candidate.
-
-This build has three focused purposes:
-
-1. Harden UTF-8 source, BSharp IR, BSharp Save, and text fixture reading so minimal/no-locale Ruby environments do not crash on creator text.
-2. Continue the Emergency DKLab Retirement and Elderedd Migration by proving the new Elderedd path direction while preserving the DKLab compatibility bridge.
-3. Add the next self-hosting bridge: small compiler subset BSBC execution parity. Approved subset fixtures travel from BASIC# source to BSharp IR to BSBC bytes, execute inside the BSharp Virtual Machine, and match the Ruby referee runtime for event results, final snapshots, and BSharp Save documents.
-
-Guardrails:
-
-- Ruby remains the bootstrap compiler and reference referee.
-- BASIC# is not fully self-hosted.
-- Profile 8 is not added.
-- Bytecode and BSBC are not renamed.
-- Production meaning is not changed.
-- File reading is hardened to explicit UTF-8 where source/JSON/text artifacts are read.
-- The DKLab compatibility bridge remains active retirement support.
-- BCS is named only; no accounts, servers, networking, payments, or hosting are implemented.
-
-Primary references:
-
-- `spec/governance/BASIC_SHARP_UTF8_SOURCE_READING_CONTRACT_v1.json`
-- `tools/utf8_source_reading_contract.rb`
-- `spec/governance/BASIC_SHARP_ELDEREDD_PATH_BRIDGE_CONTRACT_v1.json`
-- `tools/elderedd_path_bridge_contract.rb`
-- `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json`
-- `tools/small_compiler_subset_bsbc_execution_parity.rb`
-
-## After v0.1.63
-
-If v0.1.63 is accepted, the next likely work is one of the following, chosen after validation evidence rather than momentum:
-
-1. Continue Elderedd path migration by proving the project validates from `~/Elderedd/Projects/BASIC#` while preserving the DKLab bridge.
-2. Expand small compiler subset BSBC execution parity only after the current parity gate remains stable.
-3. Prepare a later bridge-removal build only after no active BASIC# workflow depends on `~/DKLab/Projects/BASIC#`.
-
-Do not remove the DKLab compatibility bridge immediately after v0.1.63. Do not begin BCS implementation, accounts, hosting, pricing, network calls, or server work until separately approved.
-
-## Future web/app/company lane
-
-BASIC# / BSharp aims to become a universal creator-facing standard for websites, apps, games, tools, automation, and business systems.
-
-The staged web strategy is compatibility first:
-
-```text
-BASIC# source
--> HTML for structure
--> CSS for style
--> JavaScript for browser behavior
--> WebAssembly or native targets later
--> BASIC#/BSharp-native browser only much later, after proven demand
-```
-
-BCS, BSharp Creator Services, is the future hosted service layer for BASIC#: creator accounts, project sync, updates, documentation, compiler access, publishing tools, future game/world hosting, and eventual Elderedd-controlled server infrastructure. v0.1.63 does not implement BCS.
-
-Private/proprietary distribution remains under consideration, but licensing and monetization are deferred. Future Creator pricing must include a reasonable monthly option, annual billing may only be an optional discount, and an eligible paid local version must remain usable permanently under eventual qualifying terms.
-
-## Long-range future concepts
-
-- BSharp web/app export contracts.
-- BSharp native document app.
-- Game-engine bridge.
-- Independent BASIC# Semantic Oracle.
-- Staged BASIC# editor: Notepad -> Notepad++ -> Sublime-class.
-- Complete BASIC# IDE.
-- BASIC#/BSharp-native browser only after web export and demand are real.

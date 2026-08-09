@@ -1,13 +1,13 @@
 {
   "format": "bsharp.readme_current_release_truth.json",
   "format_version": 1,
-  "target_version": "0.1.63",
+  "target_version": "0.1.64",
   "status": "readme_current_release_truth_gate",
   "title": "README Current Release Truth Gate",
   "current_release": {
-    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.63",
-    "build_title": "BASIC# v0.1.63 hardens UTF-8 source reading, proves the Elderedd path direction while keeping the DKLab compatibility bridge alive, consolidates the roadmap, and adds the first small compiler subset BSBC execution parity gate.",
-    "summary": "The new BSBC execution parity lane extends the Self-Hosting Milestone 1 foundation by proving selected small compiler subset programs can travel from source to BSharp IR to BSBC bytes, execute inside the BSharp Virtual Machine, and match the Ruby referee runtime for event results, final snapshots, and BSharp Save documents.",
+    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.64",
+    "build_title": "BASIC# v0.1.64 expands small compiler subset BSBC execution parity and hardens the release gates so deterministic fixture hashes, sealed inventory byte counts, package payload hashes, and changed-file scope are checked together before the release package enters acceptance testing.",
+    "summary": "The expanded BSBC execution parity lane extends the Self-Hosting Milestone 1 foundation by proving more small compiler subset programs can travel from source to BSharp IR to BSBC bytes, execute inside the BSharp Virtual Machine, and match the Ruby referee runtime for event results, final snapshots, and BSharp Save documents.",
     "must_mention": [
       "Elderedd identity migration",
       "DKLab compatibility layer",
@@ -25,7 +25,12 @@
       "Elderedd path direction",
       "UTF-8 source reading",
       "minimal/no-locale Ruby",
-      "roadmap"
+      "roadmap",
+      "release package preflight",
+      "deterministic fixture hash sweep",
+      "single-goblin repairs",
+      "payload SHA-256",
+      "changed-file scope"
     ],
     "forbidden_current_section_phrases": [
       "adds the first small compiler subset IR golden parity harness",
@@ -36,9 +41,9 @@
       "BASIC# is fully self-hosted",
       "DKLab is retained as the internal workspace and lab name",
       "Elderred Softworks LLC",
-      "Ruby is retired",
-      "BASIC# is fully self-hosted",
-      "removes the DKLab compatibility bridge"
+      "removes the DKLab compatibility bridge",
+      "v0.1.63 hardens UTF-8 source reading",
+      "first small compiler subset BSBC execution parity gate"
     ]
   },
   "protected_truths": [

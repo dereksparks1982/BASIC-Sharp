@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.63  
+**Version:** v0.1.64  
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -579,3 +579,11 @@ Build conduct remains unchanged: correctness outranks speed, failed candidates a
 BASIC# source files, BSharp IR JSON, BSharp Save JSON, and text fixtures must be read explicitly as UTF-8 wherever the project controls file reads. A minimal/no-locale Ruby environment must not crash with `Encoding::CompatibilityError` when creator text contains non-ASCII characters such as an em dash or curly quote diagnostics.
 
 This hardening does not change creator syntax, parser meaning, runtime meaning, bytecode format, or Ruby referee authority. It is a foundation repair so future self-hosting work does not inherit a locale-dependent source-reading trap.
+
+## v0.1.64 Release Gate Hardening Rule
+
+BASIC# v0.1.64 adds the release package preflight and deterministic fixture hash sweep gates.
+
+Before a changed-files package enters acceptance testing, the final package payload must be audited against its manifest records, changed-file scope, validation inventory, sealed artifact bytes, deterministic fixture hashes, and package identity. A repair must sweep the full version-sensitive fixture family together rather than repairing only the first failed gate.
+
+This rule does not remove the DKLab compatibility bridge, does not claim BASIC# is fully self-hosted, and does not weaken any existing validator.

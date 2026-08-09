@@ -1,0 +1,29 @@
+{
+  "format": "bsharp.deterministic_fixture_hash_sweep.json",
+  "format_version": 1,
+  "target_version": "0.1.64",
+  "status": "active_release_gate",
+  "title": "BASIC# Deterministic Fixture Hash Sweep",
+  "purpose": "Run the complete deterministic fixture family together so stale version-sensitive hashes are found before packaging.",
+  "required_tools": [
+    "tools/text_value_stress.rb",
+    "tools/number_change_stress.rb",
+    "tools/compound_if_stress.rb",
+    "tools/otherwise_branch_stress.rb",
+    "tools/small_compiler_subset_bsbc_execution_parity.rb"
+  ],
+  "required_fixture_specs": [
+    "spec/runtime_v2/BASIC_SHARP_TEXT_VALUE_RUNTIME_FIXTURES_v1.json",
+    "spec/runtime_v5/BASIC_SHARP_NUMBER_CHANGE_RUNTIME_FIXTURES_v1.json",
+    "spec/runtime_v6/BASIC_SHARP_COMPOUND_IF_RUNTIME_FIXTURES_v1.json",
+    "spec/runtime_v7/BASIC_SHARP_OTHERWISE_RUNTIME_FIXTURES_v1.json",
+    "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json"
+  ],
+  "forbidden": [
+    "single-goblin repair",
+    "stale expected_sha256 records",
+    "stale save document hashes",
+    "stale sealed artifact byte counts",
+    "weakening validators to accept old fixture data"
+  ]
+}

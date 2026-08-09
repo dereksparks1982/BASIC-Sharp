@@ -1,10 +1,10 @@
 {
   "format": "bsharp.small_compiler_subset.bsbc_execution_parity.json",
   "format_version": 1,
-  "target_version": "0.1.63",
-  "title": "BASIC# Small Compiler Subset BSBC Execution Parity",
+  "target_version": "0.1.64",
+  "title": "BASIC# Small Compiler Subset BSBC Execution Parity Expansion",
   "status": "bsbc_execution_parity_under_ruby_referee",
-  "purpose": "Prove approved small compiler subset source can travel through BSharp IR into real BSBC bytes, execute in the BSharp Virtual Machine, and match the Ruby referee runtime for sealed event fixtures while Elderedd becomes the canonical path direction and DKLab remains compatibility/history only.",
+  "purpose": "Prove a wider approved small compiler subset can travel through BSharp IR into real BSBC bytes, execute in the BSharp Virtual Machine, and match the Ruby referee runtime for sealed event fixtures while release gates prevent stale deterministic hashes from reaching Derek.",
   "self_hosting_spec": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json",
   "source_corpus": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json",
   "scope": {
@@ -69,7 +69,7 @@
       "expected_vm_event_results_sha256": "51b752279ca51be386506fd8de587ada3ed5cfecec3434799fcbf48979505c42",
       "expected_referee_event_results_sha256": "51b752279ca51be386506fd8de587ada3ed5cfecec3434799fcbf48979505c42",
       "expected_final_snapshot_sha256": "d164cffb0d62d517508aecd66544a1f0daf2ccf91458dbe0c9884338b6fdedb1",
-      "expected_save_document_sha256": "46322bf2fcc3ec96329f61a5d4ea30f9f39038c72b3ca34aedc211b3314a1b9c",
+      "expected_save_document_sha256": "0f16574f840ff05791a87183451f086a27c87d557a11cf2bd1508b58e513ef85",
       "expected_matched_event_count": 3
     },
     {
@@ -84,7 +84,7 @@
       "expected_vm_event_results_sha256": "9302c290d6d4d33551fa04ad0d93871c5a8aa3f67a5911e8ca35aca117d5ea7b",
       "expected_referee_event_results_sha256": "9302c290d6d4d33551fa04ad0d93871c5a8aa3f67a5911e8ca35aca117d5ea7b",
       "expected_final_snapshot_sha256": "521e7fbcfb719333f9a24c3defad96705fed113fcc72afe477658ecba56c36ab",
-      "expected_save_document_sha256": "aa701736e6d05c5e62fb07afa1b4faf7f3fd7d73a50ea0bd649b870420209a78",
+      "expected_save_document_sha256": "179b06d1fd6c2f800078762d8e8d3be52d9333896e8d18eed7fdccb25a771c2e",
       "expected_matched_event_count": 1
     },
     {
@@ -100,7 +100,7 @@
       "expected_vm_event_results_sha256": "86f5c6f3dc3133e2df07fad6b906f3ff6646eef63e2bec09e901bffca173f58d",
       "expected_referee_event_results_sha256": "86f5c6f3dc3133e2df07fad6b906f3ff6646eef63e2bec09e901bffca173f58d",
       "expected_final_snapshot_sha256": "a6b8bd6e838ec76e38c7f17f7a0c4c3a179714cf1351b93212ff4899cbff2067",
-      "expected_save_document_sha256": "48f91f0668a4130add98a03ec19cb4e7a32c79d40579e754461b2a4b6bc2a0d2",
+      "expected_save_document_sha256": "71dc8c20f33f300c34e0fab2edf7a93e1d79d87824d3e080abd5fe53baa98d39",
       "expected_matched_event_count": 2
     },
     {
@@ -116,7 +116,7 @@
       "expected_vm_event_results_sha256": "2fdcc3dd795197ce573a75cdfc49808ba39252beab005f24c68b48f472a85e4d",
       "expected_referee_event_results_sha256": "2fdcc3dd795197ce573a75cdfc49808ba39252beab005f24c68b48f472a85e4d",
       "expected_final_snapshot_sha256": "d44f01293e5998f0eb89c8a07f9a0c06804786e24571dadb9d6fe79090342c0e",
-      "expected_save_document_sha256": "3f79c80c6c0ed2319ba4b64bd3ef8ec0afbf352b201df2cf14810c4321749afa",
+      "expected_save_document_sha256": "fdf446e9a3d76f8ce240013bf5e3662fbc6f909923f94f589894e221be6c62a2",
       "expected_matched_event_count": 2
     },
     {
@@ -132,7 +132,7 @@
       "expected_vm_event_results_sha256": "07c040fbc53615de6857590f41197235432aa93fd5c2b9b18c64d2e6ca30ea2c",
       "expected_referee_event_results_sha256": "07c040fbc53615de6857590f41197235432aa93fd5c2b9b18c64d2e6ca30ea2c",
       "expected_final_snapshot_sha256": "fc3110ee7dc7ae84973dcffa3c3c45c65f466cf33b267b99a25cb4e50158cbca",
-      "expected_save_document_sha256": "14209dff5695fa425cf5bfe2f6017a2a52c5348a464fee26902a8313ebdfa7f0",
+      "expected_save_document_sha256": "0938c17b86f309a2f23fa9abd3433ae325b3e7618a87a08a4743edad6c12996b",
       "expected_matched_event_count": 2
     },
     {
@@ -147,7 +147,7 @@
       "expected_vm_event_results_sha256": "4c6ee022310bab924f4227e519bd430bb39bd283bd60cf3e4ce5b619b4544f9c",
       "expected_referee_event_results_sha256": "4c6ee022310bab924f4227e519bd430bb39bd283bd60cf3e4ce5b619b4544f9c",
       "expected_final_snapshot_sha256": "a4739207ed4e1f7748b5235bb800e36183703b7e30d98ba7d09a53c539887629",
-      "expected_save_document_sha256": "06958a205dd78c923ebbcbfb3d735363b65e476b9d98be023922075c6d89d95e",
+      "expected_save_document_sha256": "49fc3b74ca6b1387ef655de82f2a92721439b9689f5e678f44e1d98b5cc64ee6",
       "expected_matched_event_count": 1
     },
     {
@@ -166,8 +166,49 @@
       "expected_vm_event_results_sha256": "98b497cf5deea72224ff23a9fa27336079dd1f44c0e85565048c727022f6dcd9",
       "expected_referee_event_results_sha256": "98b497cf5deea72224ff23a9fa27336079dd1f44c0e85565048c727022f6dcd9",
       "expected_final_snapshot_sha256": "8fe0806a4722d01d2495a0bcc31e5395af2d18f902162ff46358b1526b1dc675",
-      "expected_save_document_sha256": "3a969e586ecef36d0f5467cd26038db26511d98af2f90f454211d9366cf452cb",
+      "expected_save_document_sha256": "142fe659f8cec8edfc8cff02d0931d7224a08d34637a9d17c19f7f270931fc3b",
       "expected_matched_event_count": 5
+    },
+    {
+      "name": "number_change_reaches_threshold_after_repeated_events",
+      "category": "expanded_number_execution",
+      "source": "DEFINE\n[\n    @gold coin is a #thing\n    @spikes is a #thing\n    @bow is a #weapon\n].\n\nSTART\n[\n    PLAYER has 0 score\n    PLAYER has 10 health\n    @bow has 3 ammo\n].\n\nWHEN PLAYER takes @gold coin\n[\n    |then (increase score of PLAYER by 10\n].\n\nWHEN PLAYER attacks @spikes\n[\n    |then (decrease health of PLAYER by 3\n].\n\nWHEN PLAYER attacks @bow\n[\n    |then (decrease ammo of @bow by 1\n].\n\nIF PLAYER has at least 100 score\n[\n    |then (change PLAYER to friendly\n].\n\nIF PLAYER has more than 0 score\n[\n    |then (change PLAYER to alive\n].\n\nIF @bow has at most 0 ammo\n[\n    |then (change @bow to off\n].\n\nIF PLAYER has less than 1 health\n[\n    |then (change PLAYER to dead\n].\n",
+      "events": [
+        "player takes gold coin",
+        "player takes gold coin",
+        "player takes gold coin",
+        "player takes gold coin",
+        "player takes gold coin",
+        "player takes gold coin",
+        "player takes gold coin",
+        "player takes gold coin",
+        "player takes gold coin",
+        "player takes gold coin"
+      ],
+      "expected_binary_sha256": "a4b48636650c6b01767e32a41cf705f8b25f3f47616aee088d5b77bec63fab7b",
+      "expected_loader_summary_sha256": "fae0284c9b6691151792840aff627714b4c8f27e0043c96a76a4c8ae557b687b",
+      "expected_vm_event_results_sha256": "9b51a54fb6cf6c0e20436d487670a7a39d2d2c76f419f6cdc5f480b65b3a5dfa",
+      "expected_referee_event_results_sha256": "9b51a54fb6cf6c0e20436d487670a7a39d2d2c76f419f6cdc5f480b65b3a5dfa",
+      "expected_final_snapshot_sha256": "34677555593dc6f8c5f6e36bd1a33047971e6c4be207c7e50ef47463dba6d88c",
+      "expected_save_document_sha256": "271dbb0a693497519e5e0925b063862092a545d7ecbc240b6ec3465a3b3a86bb",
+      "expected_matched_event_count": 10
+    },
+    {
+      "name": "otherwise_rearms_after_state_toggle",
+      "category": "expanded_otherwise_execution",
+      "source": "DEFINE\n[\n    @lamp is a #thing\n    @switch is a #thing\n].\n\nSTART\n[\n    @lamp is off\n    PLAYER has 0 ifruns\n    PLAYER has 0 otherwiseruns\n].\n\nWHEN PLAYER attacks @switch\n[\n    |then (change @lamp to on\n].\n\nWHEN PLAYER speaks @switch\n[\n    |then (change @lamp to off\n].\n\nIF @lamp is on\n[\n    |then (increase ifruns of PLAYER by 1\n].\nOTHERWISE\n[\n    |then (increase otherwiseruns of PLAYER by 1\n].\n",
+      "events": [
+        "player attacks switch",
+        "player speaks switch",
+        "player attacks switch"
+      ],
+      "expected_binary_sha256": "4af08d447c2bf4fc9e70d90c6dbb4098d441d67dbba012b9d245f51dc7b9a613",
+      "expected_loader_summary_sha256": "f9ff6ff7e030fde2f4330cc82a370618b13c942261ff4a0dcfe96c1885f91739",
+      "expected_vm_event_results_sha256": "1bdff54e39a2b0dbae254f10063633da417c0165ef4de5df49e804babb2d576d",
+      "expected_referee_event_results_sha256": "1bdff54e39a2b0dbae254f10063633da417c0165ef4de5df49e804babb2d576d",
+      "expected_final_snapshot_sha256": "e6650d228d12938393dc2e98c6cd6c8ce744fe098d7488016d772fb52640b03b",
+      "expected_save_document_sha256": "6c6138cfeff05d33d8de1c68236cefce5f58e5e4a7461aeb62f32a70edc69538",
+      "expected_matched_event_count": 3
     }
   ]
 }

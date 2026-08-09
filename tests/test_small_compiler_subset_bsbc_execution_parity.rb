@@ -35,7 +35,7 @@ class TestSmallCompilerSubsetBSBCExecutionParity < Minitest::Test
 
   def test_every_fixture_executes_bsbc_in_the_vm_and_matches_ruby_referee
     assert parity.fetch(:all_pass)
-    assert_operator parity.fetch(:fixture_count), :>=, 7
+    assert_operator parity.fetch(:fixture_count), :>=, 9
     parity.fetch(:fixtures).each do |fixture|
       assert fixture.fetch(:passes), fixture.fetch(:name)
       assert_equal fixture.fetch(:events).length, fixture.fetch(:runtime).fetch(:matched_event_count), fixture.fetch(:name)
