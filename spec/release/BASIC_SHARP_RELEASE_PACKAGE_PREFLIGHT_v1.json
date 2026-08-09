@@ -1,14 +1,14 @@
 {
   "format": "bsharp.release_package_preflight.json",
   "format_version": 1,
-  "target_version": "0.1.65",
+  "target_version": "0.1.66",
   "status": "active_release_gate",
   "title": "BASIC# Release Package Preflight",
-  "purpose": "Verify the active changed-files manifest, installed tree bytes, release identity, validation inventory inclusion, and package handoff records before a candidate ZIP is entered into acceptance validation.",
+  "purpose": "Verify the active changed-files manifest, installed tree bytes, release identity, validation inventory inclusion, and package acceptance records before a candidate release package enters acceptance testing.",
   "required_manifest": "BASIC_SHARP_PATCH_MANIFEST.json",
-  "required_installer": "APPLY_BASIC_SHARP_v0_1_65.sh",
-  "required_base_version": "v0.1.64",
-  "required_target_version": "v0.1.65",
+  "required_installer": "APPLY_BASIC_SHARP_v0_1_66.sh",
+  "required_base_version": "v0.1.65",
+  "required_target_version": "v0.1.66",
   "required_package_suffix": "_CHANGED_FILES_ONLY.zip",
   "required_tools": [
     "tools/deterministic_fixture_hash_sweep.rb",
@@ -16,10 +16,10 @@
     "tools/small_compiler_subset_execution_corpus.rb"
   ],
   "forbidden": [
-    "handing Derek a ZIP whose final extracted payload has not been audited",
+    "accepting a release package whose final extracted payload has not been audited",
     "changing sealed validation inventory after package records are generated",
     "repairing only the first failed deterministic fixture hash",
-    "removing the DKLab compatibility bridge in v0.1.65",
+    "removing the DKLab compatibility bridge in v0.1.66",
     "claiming BASIC# is fully self-hosted"
   ]
 }

@@ -1,8 +1,8 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.65
+# BASIC# Ruby Bootstrap Compiler v0.1.66
 
 > A scripting language made for non-programmers, by non-programmers.
 
-BASIC# v0.1.65 expands small compiler subset BSBC execution parity and hardens the release gates so deterministic fixture hashes, sealed inventory byte counts, package payload hashes, and changed-file scope are checked together before the release package enters acceptance testing.
+BASIC# v0.1.66 expands small compiler subset BSBC execution parity and runtime behaviour proof while release gates check deterministic fixture hashes, sealed inventory byte counts, package payload hashes, and changed-file scope before acceptance testing.
 
 This continues the Elderedd identity migration while preserving the DKLab compatibility layer as a retired bridge for old commands, rollback support, and migration history.
 
@@ -12,17 +12,17 @@ The release package preflight gate verifies the manifest, package identity, inst
 
 The deterministic fixture hash sweep gate runs the full version-sensitive fixture family together, including text values, number changes, compound IF, OTHERWISE, and BSBC execution parity. This blocks single-goblin repairs where one stale hash is fixed while another is left behind.
 
-The expanded BSBC execution parity lane extends the Self-Hosting Milestone 1 foundation into a larger sealed execution corpus by proving more small compiler subset programs can travel from source to BSharp IR to BSBC bytes, execute inside the BSharp Virtual Machine, and match the Ruby referee runtime for event results, final snapshots, and BSharp Save documents.
+The expanded BSBC execution parity lane extends the Self-Hosting Milestone 1 foundation into a larger sealed execution corpus with stronger runtime behaviour proof by showing more small compiler subset programs can travel from source to BSharp IR to BSBC bytes, execute inside the BSharp Virtual Machine, and match the Ruby referee runtime for event results, final snapshots, and BSharp Save documents.
 
-v0.1.65 seals that lane as a larger execution corpus with 17 fixtures across 17 categories and 55 event executions.
+v0.1.66 seals that lane as a larger execution corpus with 17 fixtures across 17 categories and 55 event executions.
 
 The README Current Release Truth Gate remains active so the public-facing README cannot drift away from the current accepted build.
 
 The Elderedd path direction, UTF-8 source reading, minimal/no-locale Ruby validation, and roadmap discipline remain active carry-forward gates from v0.1.63.
 
-This is not full self-hosting. Ruby remains the bootstrap compiler, production parser authority, production resolver authority, runtime authority, and reference referee. v0.1.65 does not retire Ruby, does not add Profile 8, does not change production runtime behaviour, does not remove the DKLab compatibility bridge, and does not rename bytecode or BSBC.
+This is not full self-hosting. Ruby remains the bootstrap compiler, production parser authority, production resolver authority, runtime authority, and reference referee. v0.1.66 does not retire Ruby, does not add Profile 8, does not change production runtime behaviour, does not remove the DKLab compatibility bridge, and does not rename bytecode or BSBC.
 
-## v0.1.65 active gates
+## v0.1.66 active gates
 
 ```text
 spec/release/BASIC_SHARP_RELEASE_PACKAGE_PREFLIGHT_v1.json
@@ -166,7 +166,7 @@ Reference oracle: BasicSharp::Runtime
 Meaning profiles: bsharp.meaning.v1 through bsharp.meaning.v7
 Bytecode profiles: bsharp.bytecode.v1 through bsharp.bytecode.v7
 Self-hosting contract: BSharp Compiler Subset 0
-Milestone: v0.1.65 Self-Hosting Milestone 1 under Ruby referee control
+Milestone: v0.1.66 Self-Hosting Milestone 1 under Ruby referee control
 Parent company: Elderedd Softworks LLC
 Laboratory: Elderedd Laboratory
 Internal shorthand: ELDL
@@ -176,9 +176,9 @@ Canonical future path: ~/Elderedd/Projects/BASIC#
 Legacy compatibility path: ~/DKLab/Projects/BASIC#
 UTF-8 source reading: hardened and validated under minimal/no-locale Ruby
 Release hardening: package preflight and deterministic fixture sweep active
-Version: 0.1.65
+Version: 0.1.66
 ```
 
-## v0.1.65 release hardening note
+## v0.1.66 release hardening note
 
-v0.1.65 records the v0.1.63 rejected-candidate lesson: where one stale deterministic hash exists, more may exist. The package must sweep the whole family and audit final payload bytes before handoff.
+v0.1.66 records the v0.1.63 rejected-candidate lesson: where one stale deterministic hash exists, more may exist. The package must sweep the whole family and audit final payload bytes before acceptance testing.
