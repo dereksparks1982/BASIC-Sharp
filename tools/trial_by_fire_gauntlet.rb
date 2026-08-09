@@ -5,16 +5,17 @@ require_relative 'trial_by_fire_support'
 
 include BasicSharp
 
-EVENTS = TrialByFire.env_count('BASIC_SHARP_TRIAL_EVENTS_PER_PATH', 100_000)
-FRAMES = TrialByFire.env_count('BASIC_SHARP_TRIAL_PLATFORM_FRAMES', 100_000)
-QUESTIONS = TrialByFire.env_count('BASIC_SHARP_TRIAL_ASK_QUESTIONS', 25_000)
-CHECKPOINTS = TrialByFire.env_count('BASIC_SHARP_TRIAL_SAVE_CHECKPOINTS', 1_000)
-WORLDS = TrialByFire.env_count('BASIC_SHARP_TRIAL_ISOLATED_WORLDS', 256)
-PROGRAMS = TrialByFire.env_count('BASIC_SHARP_TRIAL_PROGRAMS', 256)
-MUTATIONS = TrialByFire.env_count('BASIC_SHARP_TRIAL_MUTATIONS_PER_BOUNDARY', 2_048)
+EVENTS = TrialByFire.env_count('BASIC_SHARP_TRIAL_EVENTS_PER_PATH', 128_000)
+FRAMES = TrialByFire.env_count('BASIC_SHARP_TRIAL_PLATFORM_FRAMES', 128_000)
+QUESTIONS = TrialByFire.env_count('BASIC_SHARP_TRIAL_ASK_QUESTIONS', 32_000)
+CHECKPOINTS = TrialByFire.env_count('BASIC_SHARP_TRIAL_SAVE_CHECKPOINTS', 1_250)
+WORLDS = TrialByFire.env_count('BASIC_SHARP_TRIAL_ISOLATED_WORLDS', 320)
+PROGRAMS = TrialByFire.env_count('BASIC_SHARP_TRIAL_PROGRAMS', 384)
+MUTATIONS = TrialByFire.env_count('BASIC_SHARP_TRIAL_MUTATIONS_PER_BOUNDARY', 3_072)
+INPUT_FRAMES = TrialByFire.env_count('BASIC_SHARP_TRIAL_INPUT_MOVEMENT_FRAMES', 64_000)
 SEED = Integer(ENV.fetch('BASIC_SHARP_TRIAL_SEED', TrialByFire::DEFAULT_SEED.to_s), 10)
 
-raise ArgumentError, 'BASIC_SHARP_TRIAL_PROGRAMS cannot exceed 256' if PROGRAMS > 256
+raise ArgumentError, 'BASIC_SHARP_TRIAL_PROGRAMS cannot exceed 512' if PROGRAMS > 512
 
 results = {}
 run_phase = lambda do |name, maximum_seconds: nil, &block|
@@ -25,7 +26,7 @@ run_phase = lambda do |name, maximum_seconds: nil, &block|
 end
 
 puts "BASIC# v#{BasicSharp::VERSION} TRIAL BY FIRE — WHOLE-LANGUAGE GAUNTLET"
-puts "Counts: events=#{EVENTS}/path frames=#{FRAMES} ASK=#{QUESTIONS} saves=#{CHECKPOINTS} worlds=#{WORLDS} programs=#{PROGRAMS} mutations=#{MUTATIONS}/boundary"
+puts "Counts: events=#{EVENTS}/path frames=#{FRAMES} ASK=#{QUESTIONS} saves=#{CHECKPOINTS} worlds=#{WORLDS} programs=#{PROGRAMS} mutations=#{MUTATIONS}/boundary input_movement_frames=#{INPUT_FRAMES}"
 
 run_phase.call('independent golden trace') { TrialByFire.verify_golden_trace! }
 run_phase.call('protected Profile 1–7 artifacts') do
@@ -35,6 +36,7 @@ end
 run_phase.call('event execution paths') { TrialByFire.verify_event_paths!(EVENTS) }
 run_phase.call('platform movement') { TrialByFire.verify_platform_frames!(FRAMES) }
 run_phase.call('read-only ASK') { TrialByFire.verify_ask_questions!(QUESTIONS) }
+run_phase.call('combined movement and input actions') { TrialByFire.verify_combined_input_movement!(INPUT_FRAMES) }
 run_phase.call('Save and restore') { TrialByFire.verify_save_checkpoints!(CHECKPOINTS) }
 run_phase.call('simultaneous isolated worlds') { TrialByFire.verify_isolated_worlds!(WORLDS) }
 run_phase.call('follow-up boundaries 1023/1024/1025') { TrialByFire.verify_follow_up_boundaries! }
@@ -63,7 +65,8 @@ summary = {
     'save_checkpoints' => CHECKPOINTS,
     'isolated_worlds' => WORLDS,
     'generated_programs' => PROGRAMS,
-    'mutations_per_boundary' => MUTATIONS
+    'mutations_per_boundary' => MUTATIONS,
+    'input_movement_frames' => INPUT_FRAMES
   },
   'results_sha256' => TrialByFire.semantic_sha256(results)
 }

@@ -59,7 +59,7 @@ class TestRuntimeTransition < Minitest::Test
     assert_instance_of BasicSharp::BytecodeLoader, machine.loader
     assert machine.loader.model.frozen?
     assert result.fetch('matched')
-    assert_includes machine.report(result), 'BSharp Virtual Machine v0.1.69'
+    assert_includes machine.report(result), 'BSharp Virtual Machine v0.1.70'
   end
 
   def test_bsir_defaults_to_preferred_bsharp_vm
@@ -68,7 +68,7 @@ class TestRuntimeTransition < Minitest::Test
 
     assert result.fetch('matched')
     assert_equal 1, machine.snapshot.find { |thing| thing['name'] == 'henry' }.fetch('damage')
-    assert_includes machine.report(result), 'BSharp Virtual Machine v0.1.69'
+    assert_includes machine.report(result), 'BSharp Virtual Machine v0.1.70'
   end
 
   def test_reference_runtime_requires_explicit_mode
@@ -78,7 +78,7 @@ class TestRuntimeTransition < Minitest::Test
     assert machine.reference?
     refute machine.preferred?
     assert_nil machine.loader
-    assert_includes machine.report(result), 'BASIC# Runtime v0.1.69'
+    assert_includes machine.report(result), 'BASIC# Runtime v0.1.70'
   end
 
   def test_standalone_runtime_transition_audit_uses_the_live_version

@@ -1,0 +1,37 @@
+{
+  "format": "bsharp.whole_language_gauntlet_expansion.json",
+  "format_version": 1,
+  "target_version": "0.1.70",
+  "required_target_version": "v0.1.70",
+  "status": "active_trial_by_fire_gate",
+  "default_counts": {
+    "events_per_path": 128000,
+    "platform_frames": 128000,
+    "input_movement_frames": 64000,
+    "ask_questions": 32000,
+    "save_checkpoints": 1250,
+    "isolated_worlds": 320,
+    "generated_programs": 384,
+    "mutations_per_boundary": 3072,
+    "hostile_artifacts": 12288,
+    "follow_up_boundaries": [1023, 1024, 1025]
+  },
+  "required_phases": [
+    "independent golden trace",
+    "protected Profile 1-7 artifacts",
+    "event execution paths",
+    "platform movement",
+    "read-only ASK",
+    "combined movement and input actions",
+    "Save and restore",
+    "simultaneous isolated worlds",
+    "follow-up boundaries 1023/1024/1025",
+    "deterministic cross-profile programs",
+    "hostile artifact campaign"
+  ],
+  "forbidden": [
+    "shrinking the v0.1.70 default counts without a new approved build",
+    "removing release forensic overlay from installer-order validation",
+    "returning to object interaction before the v0.1.70 gauntlet is accepted"
+  ]
+}

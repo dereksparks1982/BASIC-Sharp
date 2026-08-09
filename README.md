@@ -1,30 +1,20 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.69
+# BASIC# Ruby Bootstrap Compiler v0.1.70
 
-> A scripting language made for non-programmers, by non-programmers.
+BASIC# v0.1.70 expands the whole-language test gauntlet.
 
-BASIC# v0.1.69 adds release forensics for changed-files packages. It introduces a pre-mutation forensic overlay gate that checks the package payload over a temporary accepted-base tree before active project files are changed.
+v0.1.70 raises Trial by Fire default counts and adds a combined movement plus input-action phase while preserving release forensic overlay proof before acceptance validation mutates the active project.
 
-This continues the Elderedd identity migration while preserving the DKLab compatibility layer as a retired bridge for old commands, rollback support, and migration history.
+Current release truth: Elderedd identity migration is active under Elderedd Softworks LLC and Elderedd Laboratory. DKLab compatibility layer remains for compatibility and history only. BCS means BSharp Creator Services and remains a future service layer, not part of this build.
 
-Elderedd Softworks LLC is the parent company identity, Elderedd Laboratory is the active research/build laboratory, ELDL is internal shorthand only, and BCS means BSharp Creator Services. DKLab is retired as active identity and may appear only as retired history, compatibility bridge wording, rollback support, or archival evidence.
+This is not full self-hosting. Ruby remains the bootstrap compiler and Ruby referee runtime. Self-Hosting Milestone 1 stays under Ruby control with the README Current Release Truth Gate, BSBC execution parity, BSharp Virtual Machine checks, execution corpus proof, 17 fixtures, and 55 event executions preserved.
 
-The release package preflight gate verifies the manifest, package identity, installer identity, changed-file scope, payload byte counts, payload SHA-256 values, and validation-inventory inclusion for the release-hardening tools.
+The current release preserves Elderedd path direction, UTF-8 source reading, minimal/no-locale Ruby validation, roadmap truth, release package preflight, deterministic fixture hash sweep, payload SHA-256 checks, changed-file scope checks, and the rule against single-goblin repairs.
 
-The release forensic overlay gate copies the accepted project state to a temporary candidate tree, overlays the changed-files package payload, and checks every sealed Trial by Fire inventory record against that candidate tree before acceptance validation mutates the active project. It reports all mismatches together instead of revealing one stale record per failed package.
+runtime behaviour proof remains sealed across event results, final snapshots, and BSharp Save documents. v0.1.70 preserves 2D and 3D movement intent, move_3d, forward in 3D contexts, plain-English input action mapping, input_action, jump, attack, interact, and pause.
 
-The deterministic fixture hash sweep gate runs the full version-sensitive fixture family together, including text values, number changes, compound IF, OTHERWISE, and BSBC execution parity. This blocks single-goblin repairs where one stale hash is fixed while another is left behind.
+The v0.1.69 release forensic overlay and pre-mutation forensic overlay remain active. The sealed validation inventory must report all mismatches together. v0.1.70 expands the whole-language test gauntlet with 128,000 event paths, 128,000 platform frames, 384 generated programs, 3,072 mutations, and the combined movement plus input-action phase.
 
-v0.1.69 preserves v0.1.68 plain-English input action mapping and v0.1.67 2D and 3D movement intent. No creator-facing syntax is added in this build.
-
-Carry-forward proof remains visible: Self-Hosting Milestone 1 still uses the BSharp Virtual Machine under the Ruby referee runtime; the execution corpus remains sealed at 17 fixtures and 55 event executions; runtime behaviour proof still covers event results, final snapshots, and BSharp Save documents. Movement and input proof remain preserved through `move_3d`, forward in 3D contexts, `input_action`, jump, attack, interact, and pause. The sealed validation inventory is now checked through the forensic overlay gate before mutation.
-
-The README Current Release Truth Gate remains active so the public-facing README cannot drift away from the current accepted build.
-
-The Elderedd path direction, UTF-8 source reading, minimal/no-locale Ruby validation, and roadmap discipline remain active carry-forward gates from v0.1.63.
-
-This is not full self-hosting. Ruby remains the bootstrap compiler, production parser authority, production resolver authority, runtime authority, and reference referee. v0.1.69 does not retire Ruby, does not add Profile 8, does not change production runtime behaviour, does not remove the DKLab compatibility bridge, and does not rename bytecode or BSBC.
-
-## v0.1.69 active gates
+## v0.1.70 active gates
 
 ```text
 spec/release/BASIC_SHARP_RELEASE_FORENSIC_OVERLAY_v1.json
@@ -173,7 +163,7 @@ Reference oracle: BasicSharp::Runtime
 Meaning profiles: bsharp.meaning.v1 through bsharp.meaning.v7
 Bytecode profiles: bsharp.bytecode.v1 through bsharp.bytecode.v7
 Self-hosting contract: BSharp Compiler Subset 0
-Milestone: v0.1.69 Self-Hosting Milestone 1 under Ruby referee control
+Milestone: v0.1.70 Self-Hosting Milestone 1 under Ruby referee control
 Parent company: Elderedd Softworks LLC
 Laboratory: Elderedd Laboratory
 Internal shorthand: ELDL
@@ -183,9 +173,9 @@ Canonical future path: ~/Elderedd/Projects/BASIC#
 Legacy compatibility path: ~/DKLab/Projects/BASIC#
 UTF-8 source reading: hardened and validated under minimal/no-locale Ruby
 Release hardening: forensic overlay, package preflight, and deterministic fixture sweep active
-Version: 0.1.69
+Version: 0.1.70
 ```
 
-## v0.1.69 release hardening note
+## v0.1.70 release hardening note
 
-v0.1.69 records the v0.1.68 rejected-candidate lesson: a package must prove the entire overlaid candidate tree before active project mutation. The package must sweep fixture hashes, audit final payload bytes, and report all sealed inventory mismatches together before acceptance testing.
+v0.1.70 records the v0.1.68 rejected-candidate lesson: a package must prove the entire overlaid candidate tree before active project mutation. The package must sweep fixture hashes, audit final payload bytes, and report all sealed inventory mismatches together before acceptance testing.

@@ -1,7 +1,7 @@
 {
   "format": "bsharp.tokenizer_reader.contract.json",
   "format_version": 1,
-  "target_version": "0.1.69",
+  "target_version": "0.1.70",
   "title": "BASIC# Tokenizer and Reader Implementation Under Ruby Referee",
   "status": "implementation_under_ruby_referee",
   "purpose": "Begin the first BASIC# tokenizer/reader implementation while keeping the Ruby bootstrap lexer as the reference referee.",

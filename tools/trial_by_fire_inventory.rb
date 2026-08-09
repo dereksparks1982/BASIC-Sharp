@@ -31,14 +31,15 @@ TrialByFire.verify_profile_artifacts!(inventory.fetch('protected_artifacts'))
 
 counts = inventory.fetch('gauntlet_defaults')
 TrialByFire.assert!(counts == {
-  'events_per_path' => 100_000,
-  'platform_frames' => 100_000,
-  'ask_questions' => 25_000,
-  'save_checkpoints' => 1_000,
-  'isolated_worlds' => 256,
-  'generated_programs' => 256,
-  'mutations_per_boundary' => 2_048,
-  'hostile_artifacts' => 8_192,
+  'events_per_path' => 128_000,
+  'platform_frames' => 128_000,
+  'input_movement_frames' => 64_000,
+  'ask_questions' => 32_000,
+  'save_checkpoints' => 1_250,
+  'isolated_worlds' => 320,
+  'generated_programs' => 384,
+  'mutations_per_boundary' => 3_072,
+  'hostile_artifacts' => 12_288,
   'follow_up_boundaries' => [1_023, 1_024, 1_025]
 }, 'gauntlet default counts changed')
 

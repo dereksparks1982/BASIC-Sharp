@@ -192,7 +192,7 @@ module BasicSharp
 
     def generated_parameters(index, seed: DEFAULT_SEED)
       number = Integer(index)
-      raise ArgumentError, 'program index must be from 0 through 255' unless number.between?(0, 255)
+      raise ArgumentError, 'program index must be from 0 through 511' unless number.between?(0, 511)
       salt = ((Integer(seed) ^ (number * 1_103_515_245)) + 12_345) & 0x7fff_ffff
       {
         number: number,
@@ -672,6 +672,47 @@ module BasicSharp
         input.process('type' => 'key_up', 'key' => 'SPACE') if (index % 250) == 1
       end
       { 'frames' => Integer(count), 'commands_sha256' => digest.hexdigest }
+    end
+
+
+    def verify_combined_input_movement!(count)
+      source_path = File.join(ROOT, 'samples/plain_english_input_mapping.bsharp')
+      resolved = resolve_source(File.read(source_path, encoding: Encoding::UTF_8))
+      loader = BytecodeLoader.new(BytecodeEmitter.new(resolved).binary)
+      source_input = GameInput.new(resolved)
+      bytecode_input = GameInput.new(loader.model)
+      digest = Digest::SHA256.new
+      total = Integer(count)
+
+      total.times do |index|
+        events = []
+        case index % 64
+        when 0 then events << { 'type' => 'key_down', 'key' => 'W' }
+        when 8 then events << { 'type' => 'key_up', 'key' => 'W' }
+        when 9 then events << { 'type' => 'key_down', 'key' => 'D' }
+        when 16 then events << { 'type' => 'key_up', 'key' => 'D' }
+        when 17 then events << { 'type' => 'button_down', 'device' => 'ps5', 'button' => 'cross' }
+        when 18 then events << { 'type' => 'button_up', 'device' => 'ps5', 'button' => 'cross' }
+        when 19 then events << { 'type' => 'mouse_down', 'button' => 'left' }
+        when 20 then events << { 'type' => 'button_down', 'device' => 'xbox', 'button' => 'y' }
+        when 21 then events << { 'type' => 'button_up', 'device' => 'xbox', 'button' => 'y' }
+        when 22 then events << { 'type' => 'button_down', 'device' => 'generic_gamepad', 'button' => 'start' }
+        when 23 then events << { 'type' => 'button_up', 'device' => 'generic_gamepad', 'button' => 'start' }
+        when 24 then events << { 'type' => 'axis', 'device' => 'generic_gamepad', 'axis' => 'left_x', 'value' => 1.0 }
+        when 31 then events << { 'type' => 'axis', 'device' => 'generic_gamepad', 'axis' => 'left_x', 'value' => 0.0 }
+        end
+        events << { 'type' => 'frame', 'time_ms' => index * 16 }
+
+        source_commands = events.flat_map { |event| source_input.process(event) }
+        bytecode_commands = events.flat_map { |event| bytecode_input.process(event) }
+        assert!(source_commands == bytecode_commands, "combined input/movement frame #{index} source/BSBC command stream changed")
+        source_commands.each do |command|
+          assert!(%w[input_action move_3d].include?(command.fetch('command')), "combined input/movement frame #{index} emitted unexpected command #{command.fetch('command')}")
+        end
+        digest << JSON.generate(source_commands)
+      end
+
+      { 'frames' => total, 'commands_sha256' => digest.hexdigest }
     end
 
     def verify_ask_questions!(count)

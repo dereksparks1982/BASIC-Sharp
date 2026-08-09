@@ -17,7 +17,7 @@ def assert_movement!(condition, message)
   raise "Plain-English movement intent failed: #{message}" unless condition
 end
 
-assert_movement!(BasicSharp::VERSION == '0.1.69', 'version mismatch')
+assert_movement!(BasicSharp::VERSION == '0.1.70', 'version mismatch')
 assert_movement!(document.error_count == 0, '3D sample must compile without errors')
 assert_movement!(document.warning_count == 0, '3D sample must compile without warnings')
 assert_movement!(document.meaning_profile == 'bsharp.meaning.v4', '3D movement must remain Profile 4 movement meaning')

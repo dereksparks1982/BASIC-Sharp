@@ -1,13 +1,13 @@
 {
   "format": "bsharp.readme_current_release_truth.json",
   "format_version": 1,
-  "target_version": "0.1.69",
+  "target_version": "0.1.70",
   "status": "readme_current_release_truth_gate",
   "title": "README Current Release Truth Gate",
   "current_release": {
-    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.69",
-    "build_title": "BASIC# v0.1.69 adds release forensics for changed-files packages.",
-    "summary": "The release forensic overlay gate copies the accepted project state to a temporary candidate tree, overlays the changed-files package payload, and checks every sealed Trial by Fire inventory record against that candidate tree before acceptance validation mutates the active project.",
+    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.70",
+    "build_title": "BASIC# v0.1.70 expands the whole-language test gauntlet.",
+    "summary": "v0.1.70 raises Trial by Fire default counts and adds a combined movement plus input-action phase while preserving release forensic overlay proof before acceptance validation mutates the active project.",
     "must_mention": [
       "Elderedd identity migration",
       "DKLab compatibility layer",
@@ -50,7 +50,12 @@
       "release forensic overlay",
       "pre-mutation forensic overlay",
       "sealed validation inventory",
-      "all mismatches together"
+      "all mismatches together",
+      "whole-language test gauntlet",
+      "combined movement plus input-action phase",
+      "128,000",
+      "384 generated programs",
+      "3,072 mutations"
     ],
     "forbidden_current_section_phrases": [
       "adds the first small compiler subset IR golden parity harness",
