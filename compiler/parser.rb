@@ -399,6 +399,8 @@ module BasicSharp
             'type' => 'platform_jump', 'key' => match[1],
             'speed' => match[2].strip, 'line_number' => child.line_number
           }
+        elsif (match = text.match(/\APLAYER\s+can\s+(jump|attack|interact|pause)\z/))
+          { 'type' => 'input_action', 'action' => match[1], 'line_number' => child.line_number }
         elsif text == 'PLAYER faces mouse pointer'
           { 'type' => 'face_pointer', 'line_number' => child.line_number }
         elsif text == 'holding right mouse moves PLAYER toward mouse pointer'

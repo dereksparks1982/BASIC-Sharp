@@ -1,26 +1,28 @@
 {
   "format": "bsharp.release_package_preflight.json",
   "format_version": 1,
-  "target_version": "0.1.67",
+  "target_version": "0.1.68",
   "status": "active_release_gate",
   "title": "BASIC# Release Package Preflight",
   "purpose": "Verify the active changed-files manifest, installed tree bytes, release identity, validation inventory inclusion, and package acceptance records before a candidate release package enters acceptance testing.",
   "required_manifest": "BASIC_SHARP_PATCH_MANIFEST.json",
-  "required_installer": "APPLY_BASIC_SHARP_v0_1_67.sh",
-  "required_base_version": "v0.1.66",
-  "required_target_version": "v0.1.67",
+  "required_installer": "APPLY_BASIC_SHARP_v0_1_68.sh",
+  "required_base_version": "v0.1.67",
+  "required_target_version": "v0.1.68",
   "required_package_suffix": "_CHANGED_FILES_ONLY.zip",
   "required_tools": [
     "tools/deterministic_fixture_hash_sweep.rb",
     "tools/release_package_preflight.rb",
     "tools/small_compiler_subset_execution_corpus.rb",
-    "tools/plain_english_movement_intent.rb"
+    "tools/plain_english_movement_intent.rb",
+    "tools/plain_english_input_mapping.rb",
+    "tools/input_device_contract.rb"
   ],
   "forbidden": [
     "accepting a release package whose final extracted payload has not been audited",
     "changing sealed validation inventory after package records are generated",
     "repairing only the first failed deterministic fixture hash",
-    "removing the DKLab compatibility bridge in v0.1.67",
+    "removing the DKLab compatibility bridge in v0.1.68",
     "claiming BASIC# is fully self-hosted"
   ]
 }

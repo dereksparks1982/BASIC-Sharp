@@ -36,7 +36,24 @@ module BasicSharp
       'ARROWRIGHT' => 'east',
       'RIGHT_ARROW' => 'east',
       'SPACE' => 'jump',
-      'SPACEBAR' => 'jump'
+      'SPACEBAR' => 'jump',
+      'E' => 'interact',
+      'ENTER' => 'interact',
+      'RETURN' => 'interact',
+      'J' => 'attack',
+      'F' => 'attack',
+      'CTRL' => 'attack',
+      'CONTROL' => 'attack',
+      'LEFT_CTRL' => 'attack',
+      'ESC' => 'pause',
+      'ESCAPE' => 'pause',
+      'P' => 'pause'
+    }.freeze
+    LOGICAL_ACTIONS = %w[jump attack interact pause].freeze
+    MOUSE_ACTIONS = {
+      'LEFT' => 'attack',
+      'LEFT_BUTTON' => 'attack',
+      'LEFT_MOUSE' => 'attack'
     }.freeze
     BUTTON_ACTIONS = {
       'ps5' => {
@@ -48,7 +65,13 @@ module BasicSharp
         'LEFT_STICK_DOWN' => 'south',
         'LEFT_STICK_LEFT' => 'west',
         'LEFT_STICK_RIGHT' => 'east',
-        'CROSS' => 'jump'
+        'CROSS' => 'jump',
+        'SQUARE' => 'attack',
+        'R2' => 'attack',
+        'RIGHT_TRIGGER' => 'attack',
+        'TRIANGLE' => 'interact',
+        'OPTIONS' => 'pause',
+        'START' => 'pause'
       },
       'xbox' => {
         'DPAD_UP' => 'north',
@@ -59,7 +82,13 @@ module BasicSharp
         'LEFT_STICK_DOWN' => 'south',
         'LEFT_STICK_LEFT' => 'west',
         'LEFT_STICK_RIGHT' => 'east',
-        'A' => 'jump'
+        'A' => 'jump',
+        'X' => 'attack',
+        'RT' => 'attack',
+        'RIGHT_TRIGGER' => 'attack',
+        'Y' => 'interact',
+        'MENU' => 'pause',
+        'START' => 'pause'
       },
       'generic_gamepad' => {
         'DPAD_UP' => 'north',
@@ -70,7 +99,11 @@ module BasicSharp
         'LEFT_STICK_DOWN' => 'south',
         'LEFT_STICK_LEFT' => 'west',
         'LEFT_STICK_RIGHT' => 'east',
-        'BUTTON_SOUTH' => 'jump'
+        'BUTTON_SOUTH' => 'jump',
+        'BUTTON_WEST' => 'attack',
+        'RIGHT_TRIGGER' => 'attack',
+        'BUTTON_NORTH' => 'interact',
+        'START' => 'pause'
       }
     }.freeze
     AXIS_ACTIONS = {
@@ -105,7 +138,9 @@ module BasicSharp
         key = normalized_key(supplied.fetch('key'))
         newly_pressed = !@pressed.include?(key)
         @pressed.add(key)
-        add_action_source(KEYBOARD_ACTIONS[key], "keyboard:#{key}", newly_pressed)
+        action = KEYBOARD_ACTIONS[key]
+        add_action_source(action, "keyboard:#{key}", newly_pressed)
+        emit_logical_action(action, "keyboard:#{key}") if newly_pressed
         @jump_requested = true if newly_pressed && @platform_jump && key == @platform_jump.fetch('key')
       when 'key_up'
         key = normalized_key(supplied.fetch('key'))
@@ -113,7 +148,9 @@ module BasicSharp
         remove_action_source(KEYBOARD_ACTIONS[key], "keyboard:#{key}")
       when 'button_down'
         action = button_action(supplied)
-        add_action_source(action, button_source(supplied), true)
+        source = button_source(supplied)
+        add_action_source(action, source, true)
+        emit_logical_action(action, source)
       when 'button_up'
         remove_action_source(button_action(supplied), button_source(supplied))
       when 'axis'
@@ -123,6 +160,11 @@ module BasicSharp
           @pointer[name] = numeric(supplied[name], name) if supplied.key?(name)
         end
         emit_facing if @face_pointer
+      when 'mouse_down'
+        button = normalized_button(supplied.fetch('button'))
+        emit_logical_action(MOUSE_ACTIONS[button], "mouse:#{button}")
+      when 'mouse_up'
+        # Reserved for host symmetry. Logical actions are edge-triggered on mouse_down.
       when 'right_mouse_down'
         @right_down_at = integer_time(supplied['time_ms'])
         @right_target = supplied['object']&.to_s
@@ -213,6 +255,12 @@ module BasicSharp
       @action_sources[action] && !@action_sources[action].empty?
     end
 
+    def emit_logical_action(action, source)
+      return unless action && LOGICAL_ACTIONS.include?(action) && @enabled_actions.include?(action)
+
+      @adapter.emit('input_action', 'subject' => 'player', 'action' => action, 'source' => source)
+    end
+
     def directional_actions
       actions = Set.new
       %w[north south west east].each { |action| actions.add(action) if action_active?(action) }
@@ -236,6 +284,7 @@ module BasicSharp
       @platform_directions = {}
       @platform_jump = nil
       @world_directions = {}
+      @enabled_actions = Set.new
       declarations.each do |declaration|
         Array(declaration['instructions']).each do |instruction|
           case instruction['type']
@@ -245,6 +294,7 @@ module BasicSharp
           when 'platform_move' then @platform_directions[instruction.fetch('direction')] = instruction
           when 'platform_jump' then @platform_jump = instruction
           when 'world_move' then @world_directions[instruction.fetch('direction')] = instruction
+          when 'input_action' then @enabled_actions.add(instruction.fetch('action'))
           end
         end
       end

@@ -1,12 +1,12 @@
 {
   "format": "bsharp.readme_current_release_truth.json",
   "format_version": 1,
-  "target_version": "0.1.67",
+  "target_version": "0.1.68",
   "status": "readme_current_release_truth_gate",
   "title": "README Current Release Truth Gate",
   "current_release": {
-    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.67",
-    "build_title": "BASIC# v0.1.67 adds plain-English 2D and 3D movement intent while preserving BSBC execution and runtime behaviour proof while release gates check deterministic fixture hashes, sealed inventory byte counts, package payload hashes, and changed-file scope before acceptance testing.",
+    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.68",
+    "build_title": "BASIC# v0.1.68 adds plain-English input action mapping while preserving 2D and 3D movement intent, BSBC execution, and runtime behaviour proof while release gates check deterministic fixture hashes, sealed inventory byte counts, package payload hashes, and changed-file scope before acceptance testing.",
     "summary": "The expanded BSBC execution parity lane extends the Self-Hosting Milestone 1 foundation into a larger sealed execution corpus with stronger runtime behaviour proof by showing more small compiler subset programs can travel from source to BSharp IR to BSBC bytes, execute inside the BSharp Virtual Machine, and match the Ruby referee runtime for event results, final snapshots, and BSharp Save documents.",
     "must_mention": [
       "Elderedd identity migration",
@@ -40,7 +40,13 @@
       "BSharp Save documents",
       "2D and 3D movement intent",
       "move_3d",
-      "forward in 3D contexts"
+      "forward in 3D contexts",
+      "plain-English input action mapping",
+      "input_action",
+      "jump",
+      "attack",
+      "interact",
+      "pause"
     ],
     "forbidden_current_section_phrases": [
       "adds the first small compiler subset IR golden parity harness",

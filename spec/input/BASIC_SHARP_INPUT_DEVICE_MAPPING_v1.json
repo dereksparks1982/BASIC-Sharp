@@ -1,10 +1,10 @@
 {
   "format": "bsharp.input.device_mapping.json",
   "format_version": 1,
-  "target_version": "0.1.67",
-  "title": "Plain-English Movement and Input Device Mapping Contract",
+  "target_version": "0.1.68",
+  "title": "Plain-English Input Action Mapping Contract",
   "status": "contract_and_runtime_mapping",
-  "creator_source_rule": "Creator source declares movement meaning once. Keyboard, mouse, PS5, Xbox, and generic gamepad inputs map underneath without requiring different BASIC# scripts.",
+  "creator_source_rule": "Creator source declares game actions once. Keyboard, mouse, PS5, Xbox, and generic gamepad inputs map underneath without requiring different BASIC# scripts.",
   "supported_inputs": {
     "keyboard": {
       "left": [
@@ -34,6 +34,23 @@
       "jump": [
         "SPACE",
         "SPACEBAR"
+      ],
+      "attack": [
+        "J",
+        "F",
+        "CTRL",
+        "CONTROL",
+        "LEFT_CTRL"
+      ],
+      "interact": [
+        "E",
+        "ENTER",
+        "RETURN"
+      ],
+      "pause": [
+        "ESC",
+        "ESCAPE",
+        "P"
       ]
     },
     "mouse_keyboard": {
@@ -45,7 +62,12 @@
         "right_mouse_up"
       ],
       "empty_ground_hold": "holding right mouse moves PLAYER toward mouse pointer",
-      "object_click": "right-click over an object opens context and wins over movement"
+      "object_click": "right-click over an object opens context and wins over movement",
+      "attack": [
+        "mouse_down LEFT",
+        "mouse_down LEFT_BUTTON",
+        "mouse_down LEFT_MOUSE"
+      ]
     },
     "ps5": {
       "left": [
@@ -66,6 +88,18 @@
       ],
       "jump": [
         "CROSS"
+      ],
+      "attack": [
+        "SQUARE",
+        "R2",
+        "RIGHT_TRIGGER"
+      ],
+      "interact": [
+        "TRIANGLE"
+      ],
+      "pause": [
+        "OPTIONS",
+        "START"
       ]
     },
     "xbox": {
@@ -87,6 +121,18 @@
       ],
       "jump": [
         "A"
+      ],
+      "attack": [
+        "X",
+        "RT",
+        "RIGHT_TRIGGER"
+      ],
+      "interact": [
+        "Y"
+      ],
+      "pause": [
+        "MENU",
+        "START"
       ]
     },
     "generic_gamepad": {
@@ -108,6 +154,16 @@
       ],
       "jump": [
         "BUTTON_SOUTH"
+      ],
+      "attack": [
+        "BUTTON_WEST",
+        "RIGHT_TRIGGER"
+      ],
+      "interact": [
+        "BUTTON_NORTH"
+      ],
+      "pause": [
+        "START"
       ]
     },
     "movement_contexts": {
@@ -123,6 +179,12 @@
         "A": "left strafe",
         "D": "right strafe"
       }
+    },
+    "declared_player_actions": {
+      "jump": "SPACE, PS5 Cross, Xbox A, and generic south button emit the same action when PLAYER can jump is declared",
+      "attack": "keyboard, mouse, PS5, Xbox, and generic attack inputs emit the same action when PLAYER can attack is declared",
+      "interact": "keyboard, PS5, Xbox, and generic interact inputs emit the same action when PLAYER can interact is declared",
+      "pause": "keyboard, PS5, Xbox, and generic pause inputs emit the same action when PLAYER can pause is declared"
     }
   },
   "axis_threshold": 0.5,
@@ -136,6 +198,8 @@
       "pointer_move",
       "right_mouse_down",
       "right_mouse_up",
+      "mouse_down",
+      "mouse_up",
       "frame"
     ],
     "host_commands": [
@@ -144,12 +208,14 @@
       "move_with_collisions",
       "face_pointer",
       "open_context",
-      "move_3d"
+      "move_3d",
+      "input_action"
     ],
     "driver_integration": "out_of_scope"
   },
   "explicit_exclusions": [
     "no controller remapping UI",
+    "no per-player custom remapping syntax",
     "no platform-specific driver layer",
     "no vibration or haptics",
     "no camera controls",

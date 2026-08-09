@@ -27,9 +27,9 @@ assert_contract!(spec.fetch('target_version') == BasicSharp::VERSION, 'target ve
 assert_contract!(spec.fetch('canonical_path') == '~/Elderedd/Projects/BASIC#', 'canonical path mismatch')
 assert_contract!(spec.fetch('legacy_path') == '~/DKLab/Projects/BASIC#', 'legacy path mismatch')
 assert_contract!(spec.fetch('bridge_status') == 'active_retirement_bridge', 'bridge status mismatch')
-assert_contract!(spec.fetch('removal_status') == 'forbidden_in_v0.1.67', 'bridge removal status mismatch')
+assert_contract!(spec.fetch('removal_status') == 'forbidden_in_v0.1.68', 'bridge removal status mismatch')
 assert_contract!(spec.fetch('required_next_proof').include?('future build validates from Elderedd path'), 'future Elderedd proof missing')
-assert_contract!(spec.fetch('forbidden').include?('removing the DKLab compatibility bridge in v0.1.67'), 'bridge removal must be forbidden')
+assert_contract!(spec.fetch('forbidden').include?('removing the DKLab compatibility bridge in v0.1.68'), 'bridge removal must be forbidden')
 assert_contract!(spec.fetch('forbidden').include?('deleting unrelated DKLab workspace contents'), 'unrelated workspace deletion must be forbidden')
 
 ['~/Elderedd/Projects/BASIC#', '~/DKLab/Projects/BASIC#', 'compatibility bridge', 'DKLab is retired'].each do |phrase|

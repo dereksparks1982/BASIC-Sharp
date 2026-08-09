@@ -1,0 +1,13 @@
+// Plain-English input action mapping: one action meaning, many devices./.
+
+CONTROLS for PLAYER
+[
+    W moves PLAYER forward at 6 speed
+    S moves PLAYER backward at 6 speed
+    A moves PLAYER left at 6 speed
+    D moves PLAYER right at 6 speed
+    PLAYER can jump
+    PLAYER can attack
+    PLAYER can interact
+    PLAYER can pause
+].

@@ -239,6 +239,7 @@ module BasicSharp
     def resolve_controls(declaration)
       directions = {}
       world_directions = {}
+      input_actions = {}
       keys = {}
       instruction_types = declaration.instructions.map { |entry| entry['type'] }
       world_used = instruction_types.include?('world_move')
@@ -261,6 +262,19 @@ module BasicSharp
         resolved = instruction.dup
         resolved['type'] = 'world_move' if world_used && instruction['type'] == 'platform_move'
         type = resolved['type']
+        if type == 'input_action'
+          action = resolved['action']
+          unless %w[jump attack interact pause].include?(action)
+            diagnostics.error(resolved['line_number'], "Input action cannot use #{action}; use jump, attack, interact, or pause.")
+          end
+          if input_actions[action]
+            diagnostics.error(resolved['line_number'], "PLAYER already has #{action} input action.")
+          else
+            input_actions[action] = true
+          end
+          next resolved
+        end
+
         next resolved unless %w[platform_move platform_jump world_move].include?(type)
 
         key = resolved['key']
