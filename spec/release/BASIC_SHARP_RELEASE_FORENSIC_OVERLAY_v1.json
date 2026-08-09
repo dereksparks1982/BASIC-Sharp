@@ -1,0 +1,29 @@
+{
+  "format": "bsharp.release_forensic_overlay.json",
+  "format_version": 1,
+  "target_version": "0.1.69",
+  "status": "active_release_gate",
+  "title": "BASIC# Release Forensic Overlay",
+  "purpose": "Verify a candidate changed-files payload over an accepted-base tree before project mutation, reporting every sealed validation inventory mismatch in one run.",
+  "required_manifest": "BASIC_SHARP_PATCH_MANIFEST.json",
+  "required_inventory": "spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_VALIDATION_INVENTORY_v1.json",
+  "required_preflight_spec": "spec/release/BASIC_SHARP_RELEASE_PACKAGE_PREFLIGHT_v1.json",
+  "required_base_version": "v0.1.68",
+  "required_target_version": "v0.1.69",
+  "required_installer_phase": "pre-mutation forensic overlay",
+  "required_checks": [
+    "manifest target version matches BASIC# version",
+    "validation inventory target version matches BASIC# version",
+    "test-file inventory bytes and hashes match the overlaid candidate tree",
+    "required-tool inventory bytes and hashes match the overlaid candidate tree",
+    "sealed-artifact inventory bytes and hashes match the overlaid candidate tree",
+    "protected BSBC artifacts match the overlaid candidate tree",
+    "all mismatches are reported together"
+  ],
+  "forbidden": [
+    "mutating the active project before overlay inventory verification",
+    "stopping after the first sealed inventory mismatch",
+    "accepting a package whose inventory names files not present in the overlaid candidate tree",
+    "claiming BASIC# is fully self-hosted"
+  ]
+}

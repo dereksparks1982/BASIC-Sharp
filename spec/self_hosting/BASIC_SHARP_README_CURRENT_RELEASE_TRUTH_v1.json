@@ -1,13 +1,13 @@
 {
   "format": "bsharp.readme_current_release_truth.json",
   "format_version": 1,
-  "target_version": "0.1.68",
+  "target_version": "0.1.69",
   "status": "readme_current_release_truth_gate",
   "title": "README Current Release Truth Gate",
   "current_release": {
-    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.68",
-    "build_title": "BASIC# v0.1.68 adds plain-English input action mapping while preserving 2D and 3D movement intent, BSBC execution, and runtime behaviour proof while release gates check deterministic fixture hashes, sealed inventory byte counts, package payload hashes, and changed-file scope before acceptance testing.",
-    "summary": "The expanded BSBC execution parity lane extends the Self-Hosting Milestone 1 foundation into a larger sealed execution corpus with stronger runtime behaviour proof by showing more small compiler subset programs can travel from source to BSharp IR to BSBC bytes, execute inside the BSharp Virtual Machine, and match the Ruby referee runtime for event results, final snapshots, and BSharp Save documents.",
+    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.69",
+    "build_title": "BASIC# v0.1.69 adds release forensics for changed-files packages.",
+    "summary": "The release forensic overlay gate copies the accepted project state to a temporary candidate tree, overlays the changed-files package payload, and checks every sealed Trial by Fire inventory record against that candidate tree before acceptance validation mutates the active project.",
     "must_mention": [
       "Elderedd identity migration",
       "DKLab compatibility layer",
@@ -46,7 +46,11 @@
       "jump",
       "attack",
       "interact",
-      "pause"
+      "pause",
+      "release forensic overlay",
+      "pre-mutation forensic overlay",
+      "sealed validation inventory",
+      "all mismatches together"
     ],
     "forbidden_current_section_phrases": [
       "adds the first small compiler subset IR golden parity harness",
