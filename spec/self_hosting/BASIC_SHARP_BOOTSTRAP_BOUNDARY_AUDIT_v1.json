@@ -1,10 +1,10 @@
 {
   "format": "bsharp.bootstrap_boundary_audit.json",
   "format_version": 1,
-  "target_version": "0.1.64",
+  "target_version": "0.1.65",
   "title": "BASIC# Bootstrap Boundary Audit",
   "status": "bootstrap_boundary_audit_under_ruby_referee",
-  "next_milestone": "v0.1.64 Self-Hosting Milestone 1",
+  "next_milestone": "v0.1.65 Self-Hosting Milestone 1",
   "purpose": "Audit exactly where Ruby remains bootstrap referee, where BASIC# subset artifacts now participate, and which boundaries must remain sealed before v0.1.63. References spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json as the canonical self-hosting subset contract.",
   "forbidden_until_after_milestone": [
     "claiming BASIC# is self-hosted",

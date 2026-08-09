@@ -9,10 +9,10 @@ v0.1.63: UTF-8 hardening, Elderedd path proof, and BSBC execution parity
 ## Current candidate
 
 ```text
-v0.1.64: Self-Hosting Execution Expansion and Release Gate Hardening
+v0.1.65: Self-Hosting Execution Expansion and Release Gate Hardening
 ```
 
-v0.1.64 expands the small compiler subset BSBC execution parity lane and adds release-hardening gates so deterministic fixture hashes, sealed inventory byte counts, package payload hashes, and changed-file scope are audited together before handoff.
+v0.1.65 expands the small compiler subset BSBC execution parity lane and adds release-hardening gates so deterministic fixture hashes, sealed inventory byte counts, package payload hashes, and changed-file scope are audited together before handoff.
 
 
 ## Canonical Company Bible
@@ -25,7 +25,7 @@ This is the single canonical Company Bible reference for current BASIC# conduct,
 
 ## Emergency DKLab Retirement and Elderedd Migration
 
-Priority: Emergency. Status: active beginning in v0.1.62 and continuing through v0.1.64.
+Priority: Emergency. Status: active beginning in v0.1.62 and continuing through v0.1.65.
 
 Rules:
 
@@ -49,11 +49,11 @@ Ruby remains the bootstrap compiler and reference referee.
 BASIC# is not fully self-hosted.
 ```
 
-v0.1.64 expands the BSBC execution parity gate from the first execution proof into a broader sealed fixture lane. It adds repeated threshold crossing and IF/OTHERWISE rearming fixtures while preserving exact Ruby referee parity.
+v0.1.65 expands the BSBC execution parity gate from the first execution proof into a broader sealed fixture lane. It adds repeated threshold crossing and IF/OTHERWISE rearming fixtures while preserving exact Ruby referee parity.
 
 ## Release-hardening runway
 
-v0.1.64 adds two protective gates:
+v0.1.65 adds two protective gates:
 
 ```text
 tools/deterministic_fixture_hash_sweep.rb
@@ -71,9 +71,29 @@ hand Derek a ZIP too early
 
 Future packages should be proven by final extracted payload audit, not by piecemeal confidence.
 
-## After v0.1.64
 
-If v0.1.64 is accepted, the next likely work is one of the following:
+## Future BASIC# Graphics Format runway
+
+This idea is recorded for later work only. It is not part of v0.1.65 implementation scope.
+
+```text
+BSG = BASIC# Graphics system
+BGF = BASIC# Graphics Format
+Extension = .bgf
+```
+
+Roadmap intent:
+
+- Keep BGF as the native BASIC# graphics asset format idea so it is not lost.
+- Treat BSG as the future graphics system/layer name, not the immediate compiler lane.
+- Start later with a spec-only BGF build before any renderer or image engine work.
+- Likely first BGF scope: raw RGBA images, palette images, metadata, checksum, and reader/writer validation contracts.
+- Later BGF scopes may include sprites, tiles, heightmaps, animation frames, and BASIC# runtime loading/drawing words.
+- Do not mix BGF implementation into the active self-hosting execution corpus lane.
+
+## After v0.1.65
+
+If v0.1.65 is accepted, the next likely work is one of the following:
 
 1. Continue expanding small compiler subset BSBC execution parity carefully.
 2. Prove the project can validate from `~/Elderedd/Projects/BASIC#` while preserving the DKLab bridge.

@@ -24,8 +24,8 @@
     "event_result_sha256": "6bf65c917a53ab3c96546911c26aa408df1305446243c6fbb573424c95df3d7a",
     "final_snapshot_sha256": "d6cec44d81b271b501d3ca9a6d14983d54e28061dd7a999a9e978d6e5234d5e0",
     "ask_answers_sha256": "2555c0ce34f69720e45b7ec8a1e7e783d2f9fea742eda63481b716b1bf9b30c2",
-    "save_document_sha256": "5bd8cddbf3a274f2ecca3b98a33c64c810d8d601c1af04dcb32a0f6138f7ef4f",
+    "save_document_sha256": "c9eed3c21a7f8f5d08600bd932a7b309a613800c27a6f00664d1d5060c16d873",
     "restored_snapshot_sha256": "d6cec44d81b271b501d3ca9a6d14983d54e28061dd7a999a9e978d6e5234d5e0"
   },
-  "target_version": "0.1.64"
+  "target_version": "0.1.65"
 }

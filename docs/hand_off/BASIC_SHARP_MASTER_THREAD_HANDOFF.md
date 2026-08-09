@@ -2,15 +2,15 @@
 
 ## Current state
 
-- **Accepted base for v0.1.64 candidate:** v0.1.63 / `a1ca9501f49f51b937bb6c736824dd96568a5f0b`
+- **Accepted base for v0.1.65 candidate:** v0.1.63 / `a1ca9501f49f51b937bb6c736824dd96568a5f0b`
 - **Accepted tag:** `v0.1.63`
 - **Branch:** `main`
-- **Candidate:** v0.1.64 Self-Hosting Execution Expansion and Release Gate Hardening
+- **Candidate:** v0.1.65 Self-Hosting Execution Expansion and Release Gate Hardening
 - **Canonical Company Bible:** `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md`
 
-## v0.1.64 purpose
+## v0.1.65 purpose
 
-v0.1.64 does two jobs without removing the bridge too early:
+v0.1.65 does two jobs without removing the bridge too early:
 
 1. Expand small compiler subset BSBC execution parity from 7 sealed fixtures to 9 sealed fixtures, including repeated number-threshold execution and IF/OTHERWISE rearming over a longer event path.
 2. Add release-hardening gates so stale deterministic hashes, sealed artifact byte counts, payload hashes, and changed-file scope are checked together before Derek receives a ZIP.
@@ -30,14 +30,14 @@ DKLab status: retired active identity. It may appear only as migration history, 
 
 - Canonical future path: `~/Elderedd/Projects/BASIC#`.
 - Legacy compatibility path: `~/DKLab/Projects/BASIC#`.
-- v0.1.64 does not remove the compatibility bridge.
-- v0.1.64 must not delete unrelated DKLab workspace contents.
+- v0.1.65 does not remove the compatibility bridge.
+- v0.1.65 must not delete unrelated DKLab workspace contents.
 
 ## Release hardening truth
 
 - `tools/deterministic_fixture_hash_sweep.rb` runs the complete deterministic fixture family together.
 - `tools/release_package_preflight.rb` verifies manifest identity, package identity, installer identity, payload hashes, active Git scope, and validation inventory inclusion.
-- A release package must not enter acceptance testing unless the final extracted payload is audited against the sealed records.
+- A release package acceptance requires the final extracted payload is audited against the sealed records.
 
 ## Guardrails
 
@@ -59,7 +59,7 @@ Never make the BASIC# GitHub repository public unless Derek explicitly commands 
 
 ## Next action
 
-Run the exact v0.1.64 changed-files-only package on Derek's clean v0.1.63 repository. If final PASS appears, create the accepted snapshot, then verify local Git commit/tag, push to GitHub, update the GitHub description, and provide the final status summary.
+Run the exact v0.1.65 changed-files-only package on Derek's clean v0.1.63 repository. If final PASS appears, create the accepted snapshot, then verify local Git commit/tag, push to GitHub, update the GitHub description, and provide the final status summary.
 
 ## Canonical self-hosting specification runway
 

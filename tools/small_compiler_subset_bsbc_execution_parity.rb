@@ -27,7 +27,7 @@ assert_contract!(record.fetch(:format) == 'bsharp.small_compiler_subset.bsbc_exe
 assert_contract!(record.fetch(:version) == BasicSharp::VERSION, 'record version mismatch')
 assert_contract!(record.fetch(:status) == 'bsbc_execution_parity_under_ruby_referee', 'wrong record status')
 assert_contract!(record.fetch(:all_pass), 'at least one BSBC execution parity fixture drifted')
-assert_contract!(record.fetch(:fixture_count) >= 9, 'not enough execution parity fixtures')
+assert_contract!(record.fetch(:fixture_count) >= 17, 'not enough expanded execution parity fixtures')
 
 record.fetch(:fixtures).each do |fixture|
   assert_contract!(fixture.fetch(:passes), "#{fixture.fetch(:name)} did not pass")

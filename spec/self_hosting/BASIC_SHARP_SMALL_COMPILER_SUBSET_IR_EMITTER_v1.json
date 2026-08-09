@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.ir_emitter.contract.json",
   "format_version": 1,
-  "target_version": "0.1.64",
+  "target_version": "0.1.65",
   "title": "Small Compiler Subset Emits BSharp IR Under Ruby Referee",
   "status": "ir_emitter_under_ruby_referee",
   "purpose": "Emit deterministic BSharp IR from the small compiler subset parser path while the existing Ruby parser and resolver remain the production authority and referee.",

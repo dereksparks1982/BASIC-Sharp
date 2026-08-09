@@ -1,0 +1,29 @@
+{
+  "format": "bsharp.small_compiler_subset.execution_corpus.json",
+  "format_version": 1,
+  "target_version": "0.1.65",
+  "title": "BASIC# Small Compiler Subset Execution Corpus",
+  "status": "execution_corpus_expanded_under_ruby_referee",
+  "purpose": "Treat the BSBC execution parity fixtures as a growing corpus, require broader coverage than a single smoke path, and prove every fixture still runs through source to BSIR to BSBC to BSharp VM execution while matching the Ruby referee runtime.",
+  "parity_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json",
+  "minimums": {
+    "fixtures": 17,
+    "categories": 12,
+    "events": 50
+  },
+  "guardrails": [
+    "Ruby remains the referee",
+    "not full self-hosting",
+    "BSharp VM execution must match Ruby referee runtime",
+    "release package preflight remains required",
+    "deterministic fixture hash sweep remains required"
+  ],
+  "forbidden": [
+    "claiming BASIC# is self-hosted",
+    "replacing Ruby bootstrap compiler",
+    "adding Profile 8",
+    "removing the DKLab compatibility bridge",
+    "skipping release package preflight",
+    "single-goblin repair"
+  ]
+}

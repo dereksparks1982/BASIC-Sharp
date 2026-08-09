@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.64  
+**Version:** v0.1.65  
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -580,10 +580,10 @@ BASIC# source files, BSharp IR JSON, BSharp Save JSON, and text fixtures must be
 
 This hardening does not change creator syntax, parser meaning, runtime meaning, bytecode format, or Ruby referee authority. It is a foundation repair so future self-hosting work does not inherit a locale-dependent source-reading trap.
 
-## v0.1.64 Release Gate Hardening Rule
+## v0.1.65 Release Gate Hardening Rule
 
-BASIC# v0.1.64 adds the release package preflight and deterministic fixture hash sweep gates.
+BASIC# v0.1.65 adds the release package preflight and deterministic fixture hash sweep gates.
 
-Before a changed-files package enters acceptance testing, the final package payload must be audited against its manifest records, changed-file scope, validation inventory, sealed artifact bytes, deterministic fixture hashes, and package identity. A repair must sweep the full version-sensitive fixture family together rather than repairing only the first failed gate.
+Before a changed-files package is entered into acceptance validation, the final package payload must be audited against its manifest records, changed-file scope, validation inventory, sealed artifact bytes, deterministic fixture hashes, and package identity. A repair must sweep the full version-sensitive fixture family together rather than repairing only the first failed gate.
 
 This rule does not remove the DKLab compatibility bridge, does not claim BASIC# is fully self-hosted, and does not weaken any existing validator.

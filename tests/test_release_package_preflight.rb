@@ -21,21 +21,22 @@ class TestReleasePackagePreflight < Minitest::Test
 
   def test_manifest_requirements_are_current_versioned
     assert_equal 'BASIC_SHARP_PATCH_MANIFEST.json', spec.fetch('required_manifest')
-    assert_equal 'APPLY_BASIC_SHARP_v0_1_64.sh', spec.fetch('required_installer')
-    assert_equal 'v0.1.63', spec.fetch('required_base_version')
-    assert_equal 'v0.1.64', spec.fetch('required_target_version')
+    assert_equal 'APPLY_BASIC_SHARP_v0_1_65.sh', spec.fetch('required_installer')
+    assert_equal 'v0.1.64', spec.fetch('required_base_version')
+    assert_equal 'v0.1.65', spec.fetch('required_target_version')
   end
 
   def test_forbids_unproven_package_handoff
     forbidden = spec.fetch('forbidden')
     assert_includes forbidden, 'handing Derek a ZIP whose final extracted payload has not been audited'
     assert_includes forbidden, 'repairing only the first failed deterministic fixture hash'
-    assert_includes forbidden, 'removing the DKLab compatibility bridge in v0.1.64'
+    assert_includes forbidden, 'removing the DKLab compatibility bridge in v0.1.65'
   end
 
   def test_trial_by_fire_inventory_runs_preflight
     inventory = JSON.parse(File.read(File.join(ROOT, 'spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_VALIDATION_INVENTORY_v1.json'), encoding: 'UTF-8'))
     tools = inventory.fetch('required_tools').map { |entry| entry.fetch('path') }
     assert_includes tools, 'tools/release_package_preflight.rb'
+    assert_includes tools, 'tools/small_compiler_subset_execution_corpus.rb'
   end
 end

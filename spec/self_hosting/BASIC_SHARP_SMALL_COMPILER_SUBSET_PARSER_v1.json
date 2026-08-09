@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.parser.contract.json",
   "format_version": 1,
-  "target_version": "0.1.64",
+  "target_version": "0.1.65",
   "title": "Small Compiler Subset Parser Under Ruby Referee",
   "status": "implementation_under_ruby_referee",
   "purpose": "Parse a tiny approved BASIC# compiler subset from tokenizer/reader records while the existing Ruby Parser remains the production authority and referee.",
