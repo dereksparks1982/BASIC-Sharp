@@ -3,6 +3,7 @@
 require 'json'
 require 'minitest/autorun'
 require 'open3'
+require_relative 'support/cli_capture'
 require 'tmpdir'
 require_relative '../compiler/parser'
 require_relative '../compiler/resolver'
@@ -167,13 +168,13 @@ class TestBytecodeVMIntegration < Minitest::Test
         'ruby', File.join(ROOT, 'compiler/basic_sharp.rb'), File.join(ROOT, 'samples/ask_demo.bsbc'),
         '--run', 'player attacks henry', '--ask', 'what is the world', '--save-world', save
       ]
-      out, err, status = Open3.capture3(*command)
+      out, err, status = capture_cli(*command)
       assert status.success?, err
       assert_includes out, 'BSharp Virtual Machine'
       assert_includes out, 'saved world:'
       assert File.file?(save)
 
-      out, err, status = Open3.capture3(
+      out, err, status = capture_cli(
         'ruby', File.join(ROOT, 'compiler/basic_sharp.rb'), File.join(ROOT, 'samples/ask_demo.bsbc'),
         '--load-world', save, '--ask', 'what is the save'
       )
@@ -188,8 +189,8 @@ class TestBytecodeVMIntegration < Minitest::Test
       'ruby', File.join(ROOT, 'compiler/basic_sharp.rb'), File.join(ROOT, 'samples/ask_demo.bsbc'),
       '--ask', 'what is henry', '--ask', 'what is the world', '--ask-json'
     ]
-    first, first_err, first_status = Open3.capture3(*command)
-    second, second_err, second_status = Open3.capture3(*command)
+    first, first_err, first_status = capture_cli(*command)
+    second, second_err, second_status = capture_cli(*command)
     assert first_status.success?, first_err
     assert second_status.success?, second_err
     assert_equal first, second

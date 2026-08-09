@@ -3,6 +3,7 @@
 require 'json'
 require 'minitest/autorun'
 require 'open3'
+require_relative 'support/cli_capture'
 require 'rbconfig'
 require 'tmpdir'
 require_relative '../compiler/parser'
@@ -369,7 +370,7 @@ class TestAsk < Minitest::Test
   end
 
   def test_cli_repeated_ask_and_json_output
-    stdout, stderr, status = Open3.capture3(
+    stdout, stderr, status = capture_cli(
       RUBY,
       File.join(ROOT, 'compiler/basic_sharp.rb'),
       File.join(ROOT, 'samples/ask_demo.bsharp'),
@@ -383,12 +384,12 @@ class TestAsk < Minitest::Test
     assert_empty stderr
     document = JSON.parse(stdout)
     assert_equal 'bsharp.ask.json', document.fetch('format')
-    assert_equal '0.1.70', document.fetch('created_by_basic_sharp')
+    assert_equal '0.1.71', document.fetch('created_by_basic_sharp')
     assert_equal ['what is henry', 'what is the world'], document.fetch('answers').map { |entry| entry.fetch('question') }
   end
 
   def test_cli_ask_json_requires_a_question
-    _stdout, stderr, status = Open3.capture3(
+    _stdout, stderr, status = capture_cli(
       RUBY,
       File.join(ROOT, 'compiler/basic_sharp.rb'),
       File.join(ROOT, 'samples/ask_demo.bsharp'),
@@ -404,7 +405,7 @@ class TestAsk < Minitest::Test
   def test_failed_ask_does_not_write_save
     Dir.mktmpdir do |dir|
       save_path = File.join(dir, 'should_not_exist.bsave.json')
-      _stdout, stderr, status = Open3.capture3(
+      _stdout, stderr, status = capture_cli(
         RUBY,
         File.join(ROOT, 'compiler/basic_sharp.rb'),
         File.join(ROOT, 'samples/ask_demo.bsharp'),
@@ -422,7 +423,7 @@ class TestAsk < Minitest::Test
   def test_unmatched_run_does_not_answer_or_write_save
     Dir.mktmpdir do |dir|
       save_path = File.join(dir, 'should_not_exist.bsave.json')
-      stdout, stderr, status = Open3.capture3(
+      stdout, stderr, status = capture_cli(
         RUBY,
         File.join(ROOT, 'compiler/basic_sharp.rb'),
         File.join(ROOT, 'samples/ask_demo.bsharp'),

@@ -3,6 +3,7 @@
 require 'json'
 require 'minitest/autorun'
 require 'open3'
+require_relative 'support/cli_capture'
 require 'rbconfig'
 require_relative '../compiler/parser'
 require_relative '../compiler/resolver'
@@ -308,18 +309,18 @@ class TestBytecodeLoader < Minitest::Test
     source = File.join(ROOT, 'samples/first_room.bsharp')
     bsir = File.join(ROOT, 'samples/first_room.bsir.json')
 
-    stdout, stderr, status = Open3.capture3(RUBY, compiler, bytecode, chdir: ROOT)
+    stdout, stderr, status = capture_cli(RUBY, compiler, bytecode, chdir: ROOT)
     assert status.success?, stderr
     assert_includes stdout, 'BSharp Bytecode: valid'
     assert_includes stdout, 'profile: bsharp.bytecode.v1'
     assert_includes stdout, 'instructions: 9'
 
-    stdout, stderr, status = Open3.capture3(RUBY, compiler, bytecode, '--disassemble-bytecode', chdir: ROOT)
+    stdout, stderr, status = capture_cli(RUBY, compiler, bytecode, '--disassemble-bytecode', chdir: ROOT)
     assert status.success?, stderr
     assert_equal File.read("#{bytecode}.txt", encoding: 'UTF-8'), stdout
 
     [source, bsir].each do |against|
-      stdout, stderr, status = Open3.capture3(RUBY, compiler, bytecode, '--against', against, chdir: ROOT)
+      stdout, stderr, status = capture_cli(RUBY, compiler, bytecode, '--against', against, chdir: ROOT)
       assert status.success?, stderr
       assert_includes stdout, 'meaning comparison: PASS'
     end
@@ -328,12 +329,12 @@ class TestBytecodeLoader < Minitest::Test
   def test_cli_executes_validated_bytecode_and_rejects_wrong_comparison_program
     compiler = File.join(ROOT, 'compiler/basic_sharp.rb')
     bytecode = File.join(ROOT, 'samples/first_room.bsbc')
-    stdout, stderr, status = Open3.capture3(RUBY, compiler, bytecode, '--run', 'player attacks ember', chdir: ROOT)
+    stdout, stderr, status = capture_cli(RUBY, compiler, bytecode, '--run', 'player attacks ember', chdir: ROOT)
     assert status.success?, stderr
     assert_includes stdout, "BSharp Virtual Machine v#{BasicSharp::VERSION}"
     assert_includes stdout, 'ember damage is now 1'
 
-    _stdout, stderr, status = Open3.capture3(
+    _stdout, stderr, status = capture_cli(
       RUBY, compiler, bytecode, '--against', File.join(ROOT, 'samples/ask_demo.bsharp'), chdir: ROOT
     )
     refute status.success?

@@ -3,6 +3,7 @@
 require 'json'
 require 'minitest/autorun'
 require 'open3'
+require_relative 'support/cli_capture'
 require_relative '../compiler/parser'
 require_relative '../compiler/resolver'
 require_relative '../compiler/runtime'
@@ -282,18 +283,18 @@ class TestBytecodeVirtualMachine < Minitest::Test
 
   def test_cli_runs_validated_bsbc_and_rejects_unmatched_event
     command = ['ruby', File.join(ROOT, 'compiler/basic_sharp.rb'), File.join(ROOT, 'samples/first_room.bsbc'), '--run', 'player attacks cinder']
-    out, err, status = Open3.capture3(*command)
+    out, err, status = capture_cli(*command)
     assert status.success?, err
     assert_includes out, 'BSharp Virtual Machine'
     assert_includes out, 'cinder damage is now 1'
 
-    _out, err, status = Open3.capture3('ruby', File.join(ROOT, 'compiler/basic_sharp.rb'), File.join(ROOT, 'samples/first_room.bsbc'), '--run', 'player sings cinder')
+    _out, err, status = capture_cli('ruby', File.join(ROOT, 'compiler/basic_sharp.rb'), File.join(ROOT, 'samples/first_room.bsbc'), '--run', 'player sings cinder')
     refute status.success?
     assert_empty err
   end
 
   def test_cli_rejects_disassembly_combined_with_vm_execution
-    _out, err, status = Open3.capture3(
+    _out, err, status = capture_cli(
       'ruby', File.join(ROOT, 'compiler/basic_sharp.rb'), File.join(ROOT, 'samples/first_room.bsbc'),
       '--run', 'player attacks cinder', '--disassemble-bytecode'
     )

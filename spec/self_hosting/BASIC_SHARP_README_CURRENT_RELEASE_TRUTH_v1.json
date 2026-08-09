@@ -1,13 +1,13 @@
 {
   "format": "bsharp.readme_current_release_truth.json",
   "format_version": 1,
-  "target_version": "0.1.70",
+  "target_version": "0.1.71",
   "status": "readme_current_release_truth_gate",
   "title": "README Current Release Truth Gate",
   "current_release": {
-    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.70",
-    "build_title": "BASIC# v0.1.70 expands the whole-language test gauntlet.",
-    "summary": "v0.1.70 raises Trial by Fire default counts and adds a combined movement plus input-action phase while preserving release forensic overlay proof before acceptance validation mutates the active project.",
+    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.71",
+    "build_title": "BASIC# v0.1.71 fixes no-locale CLI capture encoding.",
+    "summary": "v0.1.71 repairs the confirmed Open3 capture encoding gap so CLI validation remains truthful under minimal/no-locale Ruby while preserving the v0.1.70 whole-language test gauntlet, release forensic overlay proof, and pre-mutation forensic overlay before acceptance validation mutates the active project.",
     "must_mention": [
       "Elderedd identity migration",
       "DKLab compatibility layer",
@@ -55,7 +55,11 @@
       "combined movement plus input-action phase",
       "128,000",
       "384 generated programs",
-      "3,072 mutations"
+      "3,072 mutations",
+      "Open3 capture encoding gap",
+      "CLI validation remains truthful",
+      "v0.1.72",
+      "Self-Hosting Milestone 2 Proposal"
     ],
     "forbidden_current_section_phrases": [
       "adds the first small compiler subset IR golden parity harness",

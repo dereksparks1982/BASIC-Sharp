@@ -3,6 +3,7 @@
 require 'json'
 require 'minitest/autorun'
 require 'open3'
+require_relative 'support/cli_capture'
 require 'rbconfig'
 require 'tmpdir'
 require_relative '../compiler/parser'
@@ -50,7 +51,7 @@ class TestWorldSave < Minitest::Test
 
     assert_equal 'bsharp.save.json', document.fetch('format')
     assert_equal 1, document.fetch('format_version')
-    assert_equal '0.1.70', document.fetch('created_by_basic_sharp')
+    assert_equal '0.1.71', document.fetch('created_by_basic_sharp')
     assert_equal true, document.dig('world', 'settled')
     assert_equal %w[player henry mara brass\ bell brass\ key oak\ table], document.dig('world', 'things').map { |entry| entry.fetch('name') }
     assert_equal 10, document.dig('world', 'things', 1, 'values', 'health')
@@ -309,7 +310,7 @@ class TestWorldSave < Minitest::Test
       machine = runtime(demo_source)
       machine.write_world_save(path)
 
-      stdout, stderr, status = Open3.capture3(RUBY, File.join(ROOT, 'compiler/basic_sharp.rb'), path, chdir: ROOT)
+      stdout, stderr, status = capture_cli(RUBY, File.join(ROOT, 'compiler/basic_sharp.rb'), path, chdir: ROOT)
 
       refute status.success?
       assert_empty stdout
@@ -323,20 +324,20 @@ class TestWorldSave < Minitest::Test
       bsir_path = File.join(dir, 'world.bsir.json')
       source_path = File.join(ROOT, 'samples/world_save_demo.bsharp')
 
-      _stdout, stderr, status = Open3.capture3(
+      _stdout, stderr, status = capture_cli(
         RUBY, File.join(ROOT, 'compiler/basic_sharp.rb'), source_path,
         '--emit-ir', '--out', bsir_path, chdir: ROOT
       )
       assert status.success?, stderr
 
-      stdout, stderr, status = Open3.capture3(
+      stdout, stderr, status = capture_cli(
         RUBY, File.join(ROOT, 'compiler/basic_sharp.rb'), source_path,
         '--run', 'player attacks henry', '--save-world', save_path, chdir: ROOT
       )
       assert status.success?, stderr
       assert_includes stdout, "saved world: #{save_path}"
 
-      stdout, stderr, status = Open3.capture3(
+      stdout, stderr, status = capture_cli(
         RUBY, File.join(ROOT, 'compiler/basic_sharp.rb'), bsir_path,
         '--load-world', save_path, '--run', 'henry attacks player', chdir: ROOT
       )

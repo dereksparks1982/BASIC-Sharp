@@ -3,6 +3,7 @@
 require 'json'
 require 'minitest/autorun'
 require 'open3'
+require_relative 'support/cli_capture'
 require_relative '../compiler/parser'
 require_relative '../compiler/resolver'
 require_relative '../compiler/ir_emitter'
@@ -14,7 +15,7 @@ class TestIdentityMigration < Minitest::Test
   def test_basic_sharp_is_the_only_active_ruby_namespace
     assert Object.const_defined?(:BasicSharp)
     refute Object.const_defined?(:DKScript)
-    assert_equal '0.1.70', BasicSharp::VERSION
+    assert_equal '0.1.71', BasicSharp::VERSION
   end
 
   def test_new_compiler_paths_exist_and_retired_paths_are_gone
@@ -31,17 +32,17 @@ class TestIdentityMigration < Minitest::Test
   end
 
   def test_compiler_and_runtime_banners_use_basic_sharp_identity
-    stdout, stderr, status = Open3.capture3(
+    stdout, stderr, status = capture_cli(
       RbConfig.ruby,
       File.join(ROOT, 'compiler/basic_sharp.rb'),
       File.join(ROOT, 'samples/first_room.bsharp')
     )
 
     assert status.success?, stderr
-    assert_includes stdout, 'BASIC# Ruby Bootstrap Compiler v0.1.70'
+    assert_includes stdout, 'BASIC# Ruby Bootstrap Compiler v0.1.71'
     refute_includes stdout, 'DKScript Ruby Bootstrap Compiler'
 
-    run_stdout, run_stderr, run_status = Open3.capture3(
+    run_stdout, run_stderr, run_status = capture_cli(
       RbConfig.ruby,
       File.join(ROOT, 'compiler/basic_sharp.rb'),
       File.join(ROOT, 'samples/first_room.bsharp'),
@@ -50,7 +51,7 @@ class TestIdentityMigration < Minitest::Test
     )
 
     assert run_status.success?, run_stderr
-    assert_includes run_stdout, 'BSharp Virtual Machine v0.1.70'
+    assert_includes run_stdout, 'BSharp Virtual Machine v0.1.71'
     refute_includes run_stdout, 'DKScript Runtime'
   end
 

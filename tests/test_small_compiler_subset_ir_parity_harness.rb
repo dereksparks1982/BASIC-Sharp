@@ -13,7 +13,7 @@ class TestSmallCompilerSubsetIRParityHarness < Minitest::Test
   end
 
   def test_spec_targets_the_live_basic_sharp_version
-    assert_equal '0.1.70', BasicSharp::VERSION
+    assert_equal '0.1.71', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
     assert_equal 'ir_golden_parity_under_ruby_referee', spec.fetch('status')
   end
@@ -23,7 +23,7 @@ class TestSmallCompilerSubsetIRParityHarness < Minitest::Test
     record = harness.to_h
 
     assert_equal 'bsharp.small_compiler_subset.ir_golden_parity.record', record.fetch(:format)
-    assert_equal '0.1.70', record.fetch(:version)
+    assert_equal '0.1.71', record.fetch(:version)
     assert_equal 'ir_golden_parity_under_ruby_referee', record.fetch(:status)
     assert_equal spec.fetch('fixtures').length, record.fetch(:fixture_count)
     assert_equal true, record.fetch(:all_pass)

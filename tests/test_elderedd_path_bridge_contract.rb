@@ -22,12 +22,12 @@ class TestEldereddPathBridgeContract < Minitest::Test
     assert_equal '~/Elderedd/Projects/BASIC#', spec.fetch('canonical_path')
     assert_equal '~/DKLab/Projects/BASIC#', spec.fetch('legacy_path')
     assert_equal 'active_retirement_bridge', spec.fetch('bridge_status')
-    assert_equal 'forbidden_in_v0.1.70', spec.fetch('removal_status')
+    assert_equal 'forbidden_in_v0.1.71', spec.fetch('removal_status')
   end
 
   def test_bridge_removal_and_workspace_deletion_are_forbidden
     forbidden = spec.fetch('forbidden')
-    assert_includes forbidden, 'removing the DKLab compatibility bridge in v0.1.70'
+    assert_includes forbidden, 'removing the DKLab compatibility bridge in v0.1.71'
     assert_includes forbidden, 'deleting unrelated DKLab workspace contents'
     assert_includes forbidden, 'treating DKLab as the active laboratory identity'
   end

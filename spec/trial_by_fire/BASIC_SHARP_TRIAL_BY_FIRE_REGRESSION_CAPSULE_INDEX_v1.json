@@ -1,7 +1,7 @@
 {
   "format": "bsharp.trial_by_fire.regression_capsules.json",
   "format_version": 1,
-  "target_version": "0.1.70",
+  "target_version": "0.1.71",
   "capsules": [],
   "result": "No accepted Profiles 1-7 semantic defect was discovered during this build."
 }

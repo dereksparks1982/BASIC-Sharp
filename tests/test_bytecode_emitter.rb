@@ -4,6 +4,7 @@ require 'digest'
 require 'json'
 require 'minitest/autorun'
 require 'open3'
+require_relative 'support/cli_capture'
 require 'rbconfig'
 require 'tmpdir'
 require_relative '../compiler/parser'
@@ -172,7 +173,7 @@ class TestBytecodeEmitter < Minitest::Test
     Dir.mktmpdir do |dir|
       source = File.join(dir, 'room.bsharp')
       FileUtils.cp(File.join(ROOT, 'samples/first_room.bsharp'), source)
-      stdout, stderr, status = Open3.capture3(RUBY, File.join(ROOT, 'compiler/basic_sharp.rb'), source, '--emit-bytecode', chdir: ROOT)
+      stdout, stderr, status = capture_cli(RUBY, File.join(ROOT, 'compiler/basic_sharp.rb'), source, '--emit-bytecode', chdir: ROOT)
       assert status.success?, stderr
       assert File.file?(File.join(dir, 'room.bsbc'))
       assert File.file?(File.join(dir, 'room.bsbc.txt'))
@@ -184,8 +185,8 @@ class TestBytecodeEmitter < Minitest::Test
     Dir.mktmpdir do |dir|
       source_out = File.join(dir, 'source.bsbc')
       bsir_out = File.join(dir, 'bsir.bsbc')
-      source_status = Open3.capture3(RUBY, File.join(ROOT, 'compiler/basic_sharp.rb'), File.join(ROOT, 'samples/first_room.bsharp'), '--emit-bytecode', '--out', source_out, chdir: ROOT)
-      bsir_status = Open3.capture3(RUBY, File.join(ROOT, 'compiler/basic_sharp.rb'), File.join(ROOT, 'samples/first_room.bsir.json'), '--emit-bytecode', '--out', bsir_out, chdir: ROOT)
+      source_status = capture_cli(RUBY, File.join(ROOT, 'compiler/basic_sharp.rb'), File.join(ROOT, 'samples/first_room.bsharp'), '--emit-bytecode', '--out', source_out, chdir: ROOT)
+      bsir_status = capture_cli(RUBY, File.join(ROOT, 'compiler/basic_sharp.rb'), File.join(ROOT, 'samples/first_room.bsir.json'), '--emit-bytecode', '--out', bsir_out, chdir: ROOT)
       assert source_status[2].success?, source_status[1]
       assert bsir_status[2].success?, bsir_status[1]
       assert_equal File.binread(source_out), File.binread(bsir_out)
@@ -194,19 +195,19 @@ class TestBytecodeEmitter < Minitest::Test
   end
 
   def test_cli_rejects_incompatible_runtime_mode_and_bad_extension
-    _stdout, stderr, status = Open3.capture3(RUBY, File.join(ROOT, 'compiler/basic_sharp.rb'), File.join(ROOT, 'samples/first_room.bsharp'), '--emit-bytecode', '--run', 'player attacks ember', chdir: ROOT)
+    _stdout, stderr, status = capture_cli(RUBY, File.join(ROOT, 'compiler/basic_sharp.rb'), File.join(ROOT, 'samples/first_room.bsharp'), '--emit-bytecode', '--run', 'player attacks ember', chdir: ROOT)
     refute status.success?
     assert_equal 64, status.exitstatus
     assert_includes stderr, 'cannot be combined'
 
-    _stdout, stderr, status = Open3.capture3(RUBY, File.join(ROOT, 'compiler/basic_sharp.rb'), File.join(ROOT, 'samples/first_room.bsharp'), '--emit-bytecode', '--out', '/tmp/not-bytecode.bin', chdir: ROOT)
+    _stdout, stderr, status = capture_cli(RUBY, File.join(ROOT, 'compiler/basic_sharp.rb'), File.join(ROOT, 'samples/first_room.bsharp'), '--emit-bytecode', '--out', '/tmp/not-bytecode.bin', chdir: ROOT)
     refute status.success?
     assert_equal 64, status.exitstatus
     assert_includes stderr, 'must end with .bsbc'
   end
 
   def test_cli_rejects_bsharp_save_as_program_input
-    _stdout, stderr, status = Open3.capture3(RUBY, File.join(ROOT, 'compiler/basic_sharp.rb'), File.join(ROOT, 'samples/ask_demo.bsave.json'), '--emit-bytecode', chdir: ROOT)
+    _stdout, stderr, status = capture_cli(RUBY, File.join(ROOT, 'compiler/basic_sharp.rb'), File.join(ROOT, 'samples/ask_demo.bsave.json'), '--emit-bytecode', chdir: ROOT)
     refute status.success?
     assert_includes stderr, 'contains world state, not program rules'
   end

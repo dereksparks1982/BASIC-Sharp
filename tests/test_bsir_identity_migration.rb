@@ -3,6 +3,7 @@
 require 'json'
 require 'minitest/autorun'
 require 'open3'
+require_relative 'support/cli_capture'
 require 'rbconfig'
 require 'tmpdir'
 require_relative '../compiler/parser'
@@ -28,7 +29,7 @@ class TestBSIRIdentityMigration < Minitest::Test
   def test_new_documents_use_bsharp_ir_identity
     document = bsir_document
 
-    assert_equal '0.1.70', document.fetch(:version)
+    assert_equal '0.1.71', document.fetch(:version)
     assert_equal 'bsir.debug.json', document.fetch(:format)
   end
 
@@ -50,7 +51,7 @@ class TestBSIRIdentityMigration < Minitest::Test
       document[:format] = 'dkir.debug.json'
       File.write(path, JSON.pretty_generate(document))
 
-      stdout, stderr, status = Open3.capture3(
+      stdout, stderr, status = capture_cli(
         RUBY,
         File.join(ROOT, 'compiler/basic_sharp.rb'),
         path,

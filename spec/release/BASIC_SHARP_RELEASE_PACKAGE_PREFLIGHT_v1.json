@@ -1,14 +1,14 @@
 {
   "format": "bsharp.release_package_preflight.json",
   "format_version": 1,
-  "target_version": "0.1.70",
+  "target_version": "0.1.71",
   "status": "active_release_gate",
   "title": "BASIC# Release Package Preflight",
-  "purpose": "Verify the active changed-files manifest, installed tree bytes, release identity, validation inventory inclusion, and forensic overlay gate before a candidate release package enters acceptance testing.",
+  "purpose": "Verify the active changed-files manifest, installed tree bytes, release identity, validation inventory inclusion, and no-locale CLI capture repair before a candidate release package enters acceptance testing.",
   "required_manifest": "BASIC_SHARP_PATCH_MANIFEST.json",
-  "required_installer": "APPLY_BASIC_SHARP_v0_1_70.sh",
-  "required_base_version": "v0.1.69",
-  "required_target_version": "v0.1.70",
+  "required_installer": "APPLY_BASIC_SHARP_v0_1_71.sh",
+  "required_base_version": "v0.1.70",
+  "required_target_version": "v0.1.71",
   "required_package_suffix": "_CHANGED_FILES_ONLY.zip",
   "required_tools": [
     "tools/deterministic_fixture_hash_sweep.rb",
@@ -17,7 +17,8 @@
     "tools/plain_english_movement_intent.rb",
     "tools/release_forensic_overlay.rb",
     "tools/release_package_preflight.rb",
-    "tools/small_compiler_subset_execution_corpus.rb"
+    "tools/small_compiler_subset_execution_corpus.rb",
+    "tools/utf8_source_reading_contract.rb"
   ],
   "forbidden": [
     "accepting a release package whose final extracted payload has not been audited",

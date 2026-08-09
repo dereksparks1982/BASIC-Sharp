@@ -3,6 +3,7 @@
 require 'json'
 require 'minitest/autorun'
 require 'open3'
+require_relative 'support/cli_capture'
 require 'rbconfig'
 require_relative '../compiler/ast_nodes'
 
@@ -24,7 +25,7 @@ class TestUTF8SourceReadingContract < Minitest::Test
   def test_cli_reads_utf8_source_under_minimal_locale
     sample = spec.fetch('required_samples').find { |entry| entry.fetch('path') == 'samples/text_values.bsharp' }
     env = spec.fetch('minimal_locale_environment')
-    stdout, stderr, status = Open3.capture3(
+    stdout, stderr, status = capture_cli(
       { 'LC_ALL' => env.fetch('LC_ALL'), 'LANG' => env.fetch('LANG'), 'RUBYOPT' => env.fetch('RUBYOPT') },
       RbConfig.ruby, 'compiler/basic_sharp.rb', 'samples/text_values.bsharp', '--run', 'player sounds brass bell',
       chdir: ROOT
@@ -40,7 +41,7 @@ class TestUTF8SourceReadingContract < Minitest::Test
   def test_cli_reads_utf8_bsir_under_minimal_locale
     sample = spec.fetch('required_samples').find { |entry| entry.fetch('path') == 'samples/text_values.bsir.json' }
     env = spec.fetch('minimal_locale_environment')
-    stdout, stderr, status = Open3.capture3(
+    stdout, stderr, status = capture_cli(
       { 'LC_ALL' => env.fetch('LC_ALL'), 'LANG' => env.fetch('LANG'), 'RUBYOPT' => env.fetch('RUBYOPT') },
       RbConfig.ruby, 'compiler/basic_sharp.rb', 'samples/text_values.bsir.json', '--run', 'player sounds brass bell',
       chdir: ROOT
