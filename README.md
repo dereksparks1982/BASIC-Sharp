@@ -1,20 +1,20 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.71
+# BASIC# Ruby Bootstrap Compiler v0.1.72
 
-BASIC# v0.1.71 fixes no-locale CLI capture encoding.
+BASIC# v0.1.72 records the Self-Hosting Milestone 2 Proposal and repairs the active roadmap truth.
 
-v0.1.71 repairs the confirmed Open3 capture encoding gap so CLI validation remains truthful under minimal/no-locale Ruby while preserving the v0.1.70 whole-language test gauntlet, release forensic overlay proof, and pre-mutation forensic overlay before acceptance validation mutates the active project.
+v0.1.72 does not add creator syntax, runtime behaviour, object interaction, Profile 8, BCS services, networking, accounts, or Ruby retirement. It corrects the stale roadmap and master handoff, records the next self-hosting direction, preserves the v0.1.71 no-locale CLI capture repair, and writes Derek's release closeout rules into the canonical Company Bible.
 
-Current release truth: Elderedd identity migration is active under Elderedd Softworks LLC and Elderedd Laboratory. DKLab compatibility layer remains for compatibility and history only. BCS means BSharp Creator Services and remains a future service layer, not part of this build.
+Current release truth: Elderedd identity migration remains active under Elderedd Softworks LLC and Elderedd Laboratory. DKLab compatibility remains for compatibility, rollback, migration, and historical path support only. BCS means BSharp Creator Services and remains a future service layer, not part of this build.
 
-This is not full self-hosting. Ruby remains the bootstrap compiler and Ruby referee runtime. Self-Hosting Milestone 1 stays under Ruby control with the README Current Release Truth Gate, BSBC execution parity, BSharp Virtual Machine checks, execution corpus proof, 17 fixtures, and 55 event executions preserved while v0.1.72 is reserved for the Self-Hosting Milestone 2 Proposal.
+This is not full self-hosting. Ruby remains the bootstrap compiler and Ruby referee runtime. Self-Hosting Milestone 1 remains the accepted technical milestone. The README Current Release Truth Gate, BSBC execution parity, BSharp Virtual Machine checks, execution corpus proof, 17 fixtures, and 55 event executions remain preserved. v0.1.72 is a proposal and roadmap-truth build that defines the Milestone 2 direction before implementation.
 
-The current release preserves Elderedd path direction, UTF-8 source reading, minimal/no-locale Ruby validation, roadmap truth, release package preflight, deterministic fixture hash sweep, payload SHA-256 checks, changed-file scope checks, and the rule against single-goblin repairs.
+The current release preserves Elderedd path direction, DKLab compatibility layer protections, UTF-8 source reading, minimal/no-locale Ruby validation, release package preflight, deterministic fixture hash sweep, payload SHA-256 checks, changed-file scope checks, release forensic overlay, pre-mutation forensic overlay, and the rule against single-goblin repairs. The v0.1.71 Open3 capture encoding gap remains repaired so CLI validation remains truthful under minimal/no-locale Ruby.
 
-runtime behaviour proof remains sealed across event results, final snapshots, and BSharp Save documents. v0.1.71 preserves 2D and 3D movement intent, move_3d, forward in 3D contexts, plain-English input action mapping, input_action, jump, attack, interact, and pause.
+runtime behaviour proof remains sealed across event results, final snapshots, and BSharp Save documents. v0.1.72 preserves 2D and 3D movement intent, move_3d, forward in 3D contexts, plain-English input action mapping, input_action, jump, attack, interact, and pause exactly as inherited from v0.1.71.
 
-The v0.1.69 release forensic overlay and pre-mutation forensic overlay remain active. The sealed validation inventory must report all mismatches together. v0.1.71 preserves the whole-language test gauntlet with 128,000 event paths, 128,000 platform frames, 384 generated programs, 3,072 mutations, and the combined movement plus input-action phase.
+The v0.1.69 release forensic overlay and pre-mutation forensic overlay remain active. The sealed validation inventory must report all mismatches together. v0.1.72 preserves the whole-language test gauntlet with 128,000 event paths, 128,000 platform frames, 384 generated programs, 3,072 mutations, and the combined movement plus input-action phase.
 
-## v0.1.71 active gates
+## v0.1.72 active gates
 
 ```text
 spec/release/BASIC_SHARP_RELEASE_FORENSIC_OVERLAY_v1.json
@@ -74,6 +74,7 @@ spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v1.json
 spec/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v1.json
 spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json
 spec/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v1.json
+docs/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_2_PROPOSAL_v0_1_72.md
 ```
 
 ## What Milestone 1 means
@@ -86,6 +87,18 @@ and milestone gate under Ruby referee control.
 
 Forbidden claim:
 BASIC# is fully self-hosted or Ruby has been retired.
+```
+
+## What the Milestone 2 proposal means
+
+```text
+Allowed claim:
+v0.1.72 proposes the next self-hosting expansion direction and identifies the
+records that must be repaired before implementation.
+
+Forbidden claim:
+v0.1.72 does not implement Self-Hosting Milestone 2, does not make BASIC#
+self-hosted, and does not retire Ruby.
 ```
 
 ## Current runtime path
@@ -138,6 +151,7 @@ Creator clarity before programmer tradition.
 docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
 docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
 docs/roadmap/BASIC_SHARP_ROADMAP.md
+docs/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_2_PROPOSAL_v0_1_72.md
 spec/release/BASIC_SHARP_RELEASE_FORENSIC_OVERLAY_v1.json
 spec/release/BASIC_SHARP_RELEASE_PACKAGE_PREFLIGHT_v1.json
 spec/release/BASIC_SHARP_DETERMINISTIC_FIXTURE_HASH_SWEEP_v1.json
@@ -163,7 +177,8 @@ Reference oracle: BasicSharp::Runtime
 Meaning profiles: bsharp.meaning.v1 through bsharp.meaning.v7
 Bytecode profiles: bsharp.bytecode.v1 through bsharp.bytecode.v7
 Self-hosting contract: BSharp Compiler Subset 0
-Milestone: v0.1.71 Self-Hosting Milestone 1 under Ruby referee control
+Accepted milestone: v0.1.71 Self-Hosting Milestone 1 under Ruby referee control
+Current build: v0.1.72 Self-Hosting Milestone 2 Proposal and Roadmap Truth Repair
 Parent company: Elderedd Softworks LLC
 Laboratory: Elderedd Laboratory
 Internal shorthand: ELDL
@@ -173,9 +188,9 @@ Canonical future path: ~/Elderedd/Projects/BASIC#
 Legacy compatibility path: ~/DKLab/Projects/BASIC#
 UTF-8 source reading: hardened and validated under minimal/no-locale Ruby
 Release hardening: forensic overlay, package preflight, and deterministic fixture sweep active
-Version: 0.1.71
+Version: 0.1.72
 ```
 
-## v0.1.71 release hardening note
+## v0.1.72 release hardening note
 
-v0.1.71 records the v0.1.68 rejected-candidate lesson: a package must prove the entire overlaid candidate tree before active project mutation. The package must sweep fixture hashes, audit final payload bytes, and report all sealed inventory mismatches together before acceptance testing.
+v0.1.72 records Derek's release closeout rule: the installer and full native validation must prove the build before acceptance; the accepted snapshot comes before local Git commit/tag; GitHub closeout comes after local acceptance; and future assistants must follow the proven project transcript instead of guessing at SSH keys, HTTPS password prompts, or giant token blocks.

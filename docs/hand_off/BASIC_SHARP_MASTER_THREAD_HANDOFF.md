@@ -2,18 +2,21 @@
 
 ## Current state
 
-- **Accepted base for v0.1.66 candidate:** v0.1.63 / `a1ca9501f49f51b937bb6c736824dd96568a5f0b`
-- **Accepted tag:** `v0.1.63`
+- **Accepted base for v0.1.72 candidate:** v0.1.71 / `c727fff42aad4fb53e753e85f011ad72c393de18`
+- **Accepted tag:** `v0.1.71`
 - **Branch:** `main`
-- **Candidate:** v0.1.66 Self-Hosting Execution Expansion and Release Gate Hardening
+- **Candidate:** v0.1.72 Self-Hosting Milestone 2 Proposal and Roadmap Truth Repair
 - **Canonical Company Bible:** `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md`
+- **Canonical roadmap:** `docs/roadmap/BASIC_SHARP_ROADMAP.md`
 
-## v0.1.66 purpose
+## v0.1.72 purpose
 
-v0.1.66 does two jobs without removing the bridge too early:
+v0.1.72 does four jobs without changing runtime behaviour:
 
-1. Expand small compiler subset BSBC execution parity from 7 sealed fixtures to 9 sealed fixtures, including repeated number-threshold execution and IF/OTHERWISE rearming over a longer event path.
-2. Add release-hardening gates so stale deterministic hashes, sealed artifact byte counts, payload hashes, and changed-file scope are checked together before Derek receives a ZIP.
+1. Repair the stale active roadmap and master handoff so they no longer describe v0.1.63/v0.1.66 as the current lane.
+2. Record the Self-Hosting Milestone 2 proposal as the next self-hosting planning gate, while making clear that Milestone 2 is not implemented yet.
+3. Record Derek's release closeout workflow in the canonical Company Bible: apply ZIP, full native validation, accepted snapshot, local Git commit/tag, GitHub closeout, then next build.
+4. Preserve the v0.1.71 no-locale CLI capture repair and the v0.1.70 whole-language gauntlet proof.
 
 Active identity:
 
@@ -30,36 +33,32 @@ DKLab status: retired active identity. It may appear only as migration history, 
 
 - Canonical future path: `~/Elderedd/Projects/BASIC#`.
 - Legacy compatibility path: `~/DKLab/Projects/BASIC#`.
-- v0.1.66 does not remove the compatibility bridge.
-- v0.1.66 must not delete unrelated DKLab workspace contents.
+- v0.1.72 does not remove the compatibility bridge.
+- v0.1.72 must not delete unrelated DKLab workspace contents.
 
-## Release hardening truth
-
-- `tools/deterministic_fixture_hash_sweep.rb` runs the complete deterministic fixture family together.
-- `tools/release_package_preflight.rb` verifies manifest identity, package identity, installer identity, payload hashes, active Git scope, and validation inventory inclusion.
-- Release package acceptance requires the final extracted payload is audited against the sealed records.
-
-## Guardrails
-
-This build does not change parser meaning, runtime meaning, bytecode format, BSBC naming, language syntax, Profile 8 status, movement/input behaviour, BCS implementation, servers, accounts, pricing, payments, licensing, network calls, Project Oracle, or Demon Killer.
-
-Ruby remains the bootstrap compiler, production parser authority, production resolver authority, runtime authority, and reference referee. BASIC# is not fully self-hosted.
-
-## Build closeout order
+## Release closeout truth
 
 Every accepted build closes in this order:
 
-1. Accepted snapshot
-2. Local Git commit/tag verification
-3. GitHub push and remote verification
-4. GitHub description update
-5. Final status summary
+1. Apply the changed-files ZIP with the exact terminal command supplied with the download.
+2. Run full installer/native validation, including the complete test suite and Trial by Fire lane required by the build. Preserve the terminal progress format: `PHASE START`, visible Minitest dot progress during full suites, run/assertion counts, `PHASE PASS`, and one unmistakable `FINAL PASS`.
+3. Create the accepted snapshot after final PASS.
+4. Perform local Git commit/tag verification only after the accepted snapshot.
+5. Perform GitHub remote closeout only after local acceptance.
+6. Update GitHub description only after the pushed commit/tag are verified.
+7. Move to the next build only after the current build is fully closed.
 
-Never make the BASIC# GitHub repository public unless Derek explicitly commands that exact visibility change.
+Do not guess at GitHub SSH keys, prompt Derek through HTTPS username/password pushes, or provide giant token blocks that destabilize the terminal. Follow the proven project transcript and use small, evidence-based commands.
 
-## Next action
+## Guardrails
 
-Run the exact v0.1.66 changed-files-only package on Derek's clean v0.1.63 repository. If final PASS appears, create the accepted snapshot, then verify local Git commit/tag, push to GitHub, update the GitHub description, and provide the final status summary.
+This build does not change parser meaning, runtime meaning, bytecode format, BSBC naming, language syntax, Profile 8 status, movement/input behaviour, object interaction, BCS implementation, servers, accounts, pricing, payments, licensing, network calls, Project Oracle, or Demon Killer.
+
+Ruby remains the bootstrap compiler, production parser authority, production resolver authority, runtime authority, and reference referee. BASIC# is not fully self-hosted.
+
+## Next action after v0.1.72 acceptance
+
+If final PASS appears, create the accepted snapshot first, then local Git commit/tag, then GitHub closeout. After v0.1.72 is fully closed, Derek decides whether v0.1.73 implements a bounded Self-Hosting Milestone 2 slice or pivots to object interaction.
 
 ## Canonical self-hosting specification runway
 
@@ -80,4 +79,5 @@ spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v1.json
 spec/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v1.json
 spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json
 spec/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v1.json
+docs/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_2_PROPOSAL_v0_1_72.md
 ```

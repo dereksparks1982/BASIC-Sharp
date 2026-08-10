@@ -27,7 +27,7 @@ check.call(inventory.fetch('required_tools').map { |entry| entry.fetch('path') }
 check.call(gauntlet.include?("TrialByFire.env_count('BASIC_SHARP_TRIAL_INPUT_MOVEMENT_FRAMES', 64_000)"), 'combined input/movement default is missing from gauntlet')
 check.call(gauntlet.include?("verify_combined_input_movement!(INPUT_FRAMES)"), 'combined input/movement phase is not executed')
 check.call(gauntlet.include?("BASIC_SHARP_TRIAL_PROGRAMS cannot exceed 512"), 'generated-program ceiling was not expanded')
-check.call(spec.fetch('forbidden').include?('returning to object interaction before the v0.1.71 gauntlet is accepted'), 'object-interaction pause rule missing')
+check.call(spec.fetch('forbidden').include?('returning to object interaction before the v0.1.72 gauntlet is accepted'), 'object-interaction pause rule missing')
 
 unless failures.empty?
   warn 'BASIC# Whole-Language Gauntlet Contract: FAIL'

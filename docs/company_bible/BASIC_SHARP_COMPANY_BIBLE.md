@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.66  
+**Version:** v0.1.72  
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -86,7 +86,7 @@ Every build, patch, hotfix, documentation release, or package uses the **next un
 - Every active version surface must agree, including compiler/runtime identity, generated artifacts, package name, manifest, README, tests, changelog, patch notes, session log, validation record, handshake, roadmap, and master handoff where applicable.
 - A documentation-only build still advances the version when it changes the active project.
 
-After Derek accepts a build, review `git status`, stage the accepted changes, commit with the accepted build name, tag the version, and confirm the tree is clean before the next build.
+After Derek accepts a build, first create the accepted snapshot required by the release workflow, then review `git status`, stage the accepted changes, commit with the accepted build name, tag the version, and confirm the tree is clean before the next build.
 
 ## 7. Packaging rules
 
@@ -557,11 +557,15 @@ Never make the BASIC# GitHub repository public unless Derek explicitly commands 
 
 Every accepted BASIC# build must close out in this order:
 
-1. Accepted snapshot
-2. Local Git commit/tag verification
-3. GitHub push and remote verification
-4. GitHub description update
-5. Final status summary
+1. Apply the changed-files ZIP with the exact terminal command supplied beside the download.
+2. Run full installer/native validation, including the complete test suite and the Trial by Fire lane required by that build. Installer output must keep the visible `PHASE START` / `PHASE PASS` format and show full test-suite dot progress so Derek can see the machine working instead of guessing whether it froze.
+3. Create the accepted snapshot after final PASS and before local Git closeout.
+4. Local Git commit/tag verification.
+5. GitHub push and remote verification.
+6. GitHub description update after the pushed commit/tag are verified.
+7. Final status summary.
+
+Do not substitute SSH-key guessing, GitHub username/password prompts, giant token credential blocks, focused-only validation lanes, or new archive/image steps unless Derek explicitly commands that exact change. Before giving GitHub commands, check the current project record and use the proven BASIC# closeout path in small commands.
 
 BCS, BSharp Creator Services, is the future hosted service layer for BASIC#: creator accounts, project sync, updates, documentation, compiler access, publishing tools, future game/world hosting, and eventual Elderedd-controlled server infrastructure. v0.1.63 names and governs BCS only. It does not implement accounts, payments, hosting, servers, network behaviour, licensing, or pricing.
 
@@ -587,3 +591,10 @@ BASIC# v0.1.66 adds the release package preflight and deterministic fixture hash
 Before release package acceptance the final package payload must be audited against its manifest records, changed-file scope, validation inventory, sealed artifact bytes, deterministic fixture hashes, and package identity. A repair must sweep the full version-sensitive fixture family together rather than repairing only the first failed gate.
 
 This rule does not remove the DKLab compatibility bridge, does not claim BASIC# is fully self-hosted, and does not weaken any existing validator.
+
+
+## v0.1.72 Self-Hosting Milestone 2 Proposal and Roadmap Truth Rule
+
+BASIC# v0.1.72 repairs the active roadmap and master handoff so current project records identify v0.1.71 as the accepted base and v0.1.72 as the current proposal build. This build records the Self-Hosting Milestone 2 proposal only. It does not implement Milestone 2, does not claim full self-hosting, does not retire Ruby, does not add Profile 8, and does not change production runtime behaviour.
+
+After v0.1.72, future work must either move self-hosting or game-making forward, or fix a proven validation/release defect. New governance exists only when it repairs a demonstrated failure.

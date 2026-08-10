@@ -6,7 +6,7 @@ require_relative '../compiler/ast_nodes'
 
 ROOT = File.expand_path('..', __dir__)
 SPEC_PATH = File.join(ROOT, 'spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json')
-DOC_PATH = File.join(ROOT, 'docs/language/BASIC_SHARP_PLAIN_ENGLISH_INPUT_MAPPING_v0_1_71.md')
+DOC_PATH = File.join(ROOT, 'docs/language/BASIC_SHARP_PLAIN_ENGLISH_INPUT_MAPPING_v0_1_72.md')
 
 def assert_contract!(condition, message)
   raise "INPUT DEVICE CONTRACT FAILED: #{message}" unless condition
