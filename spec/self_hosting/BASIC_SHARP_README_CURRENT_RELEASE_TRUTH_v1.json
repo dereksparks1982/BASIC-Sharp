@@ -1,13 +1,13 @@
 {
   "format": "bsharp.readme_current_release_truth.json",
   "format_version": 1,
-  "target_version": "0.1.72",
+  "target_version": "0.1.73",
   "status": "readme_current_release_truth_gate",
   "title": "README Current Release Truth Gate",
   "current_release": {
-    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.72",
-    "build_title": "BASIC# v0.1.72 records the Self-Hosting Milestone 2 Proposal and repairs the active roadmap truth.",
-    "summary": "v0.1.72 does not add creator syntax, runtime behaviour, object interaction, Profile 8, BCS services, networking, accounts, or Ruby retirement. It corrects the stale roadmap and master handoff, records the next self-hosting direction, preserves the v0.1.71 no-locale CLI capture repair, and writes Derek's release closeout rules into the canonical Company Bible.",
+    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.73",
+    "build_title": "BASIC# v0.1.73 adds Plain-English Object Interaction Actions.",
+    "summary": "v0.1.73 makes the already-recognized creator words `(open`, `(close`, `(lock`, and `(take` executable end to end. The resolver canonicalizes them onto the proven state-change and carry primitives, so source, BSharp IR, BSharp Bytecode, the BSharp Virtual Machine, the Ruby referee runtime, and CONTEXT interactions agree without adding Profile 8 or changing the bytecode format.",
     "must_mention": [
       "Elderedd identity migration",
       "DKLab compatibility layer",
@@ -58,8 +58,14 @@
       "3,072 mutations",
       "Open3 capture encoding gap",
       "CLI validation remains truthful",
-      "v0.1.72",
-      "Self-Hosting Milestone 2 Proposal"
+      "v0.1.73",
+      "Self-Hosting Milestone 2 Proposal",
+      "Plain-English Object Interaction Actions",
+      "(open",
+      "(close",
+      "(lock",
+      "(take",
+      "object interaction"
     ],
     "forbidden_current_section_phrases": [
       "adds the first small compiler subset IR golden parity harness",

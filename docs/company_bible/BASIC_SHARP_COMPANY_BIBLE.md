@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.72  
+**Version:** v0.1.73  
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -598,3 +598,12 @@ This rule does not remove the DKLab compatibility bridge, does not claim BASIC# 
 BASIC# v0.1.72 repairs the active roadmap and master handoff so current project records identify v0.1.71 as the accepted base and v0.1.72 as the current proposal build. This build records the Self-Hosting Milestone 2 proposal only. It does not implement Milestone 2, does not claim full self-hosting, does not retire Ruby, does not add Profile 8, and does not change production runtime behaviour.
 
 After v0.1.72, future work must either move self-hosting or game-making forward, or fix a proven validation/release defect. New governance exists only when it repairs a demonstrated failure.
+
+
+## v0.1.73 Plain-English Object Interaction Rule
+
+BASIC# v0.1.73 moves game-making forward by making the already-recognized official words `(open`, `(close`, `(lock`, and `(take` executable through the accepted production resolver and preferred runtime pipeline. They canonicalize onto the existing state-change and carry primitives so the feature does not require Profile 8 or a new bytecode format.
+
+The accepted selector rules remain authoritative. Exact `@object`, established `it`, and `every #Kind` selectors may be used where the current language already permits them. Retired selector forms remain retired. Future object-action expansion requires a separately approved build and end-to-end validation.
+
+This build preserves the v0.1.72 Self-Hosting Milestone 2 Proposal as the next self-hosting planning record. It does not claim full self-hosting and does not retire Ruby.

@@ -1,7 +1,7 @@
 {
   "format": "bsharp.bootstrap_boundary_audit.json",
   "format_version": 1,
-  "target_version": "0.1.72",
+  "target_version": "0.1.73",
   "title": "BASIC# Bootstrap Boundary Audit",
   "status": "bootstrap_boundary_audit_under_ruby_referee",
   "next_milestone": "v0.1.72 Self-Hosting Milestone 2 Proposal",

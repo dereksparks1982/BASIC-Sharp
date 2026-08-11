@@ -1,20 +1,20 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.72
+# BASIC# Ruby Bootstrap Compiler v0.1.73
 
-BASIC# v0.1.72 records the Self-Hosting Milestone 2 Proposal and repairs the active roadmap truth.
+BASIC# v0.1.73 adds Plain-English Object Interaction Actions.
 
-v0.1.72 does not add creator syntax, runtime behaviour, object interaction, Profile 8, BCS services, networking, accounts, or Ruby retirement. It corrects the stale roadmap and master handoff, records the next self-hosting direction, preserves the v0.1.71 no-locale CLI capture repair, and writes Derek's release closeout rules into the canonical Company Bible.
+v0.1.73 makes the already-recognized creator words `(open`, `(close`, `(lock`, and `(take` executable end to end. The resolver canonicalizes them onto the proven state-change and carry primitives, so source, BSharp IR, BSharp Bytecode, the BSharp Virtual Machine, the Ruby referee runtime, and CONTEXT interactions agree without adding Profile 8 or changing the bytecode format.
 
-Current release truth: Elderedd identity migration remains active under Elderedd Softworks LLC and Elderedd Laboratory. DKLab compatibility remains for compatibility, rollback, migration, and historical path support only. BCS means BSharp Creator Services and remains a future service layer, not part of this build.
+Current release truth: Elderedd identity migration remains active under Elderedd Softworks LLC and Elderedd Laboratory. The DKLab compatibility layer remains for compatibility, rollback, migration, and historical path support only. BCS means BSharp Creator Services and remains a future service layer, not part of this build.
 
-This is not full self-hosting. Ruby remains the bootstrap compiler and Ruby referee runtime. Self-Hosting Milestone 1 remains the accepted technical milestone. The README Current Release Truth Gate, BSBC execution parity, BSharp Virtual Machine checks, execution corpus proof, 17 fixtures, and 55 event executions remain preserved. v0.1.72 is a proposal and roadmap-truth build that defines the Milestone 2 direction before implementation.
+This is not full self-hosting. Ruby remains the bootstrap compiler and Ruby referee runtime. Self-Hosting Milestone 1 remains the accepted technical milestone, while the v0.1.72 Self-Hosting Milestone 2 Proposal remains the recorded next self-hosting direction. The README Current Release Truth Gate, BSBC execution parity, BSharp Virtual Machine checks, execution corpus proof, 17 fixtures, and 55 event executions remain preserved. The roadmap now moves game-making forward through object interaction while keeping the self-hosting proposal intact.
 
-The current release preserves Elderedd path direction, DKLab compatibility layer protections, UTF-8 source reading, minimal/no-locale Ruby validation, release package preflight, deterministic fixture hash sweep, payload SHA-256 checks, changed-file scope checks, release forensic overlay, pre-mutation forensic overlay, and the rule against single-goblin repairs. The v0.1.71 Open3 capture encoding gap remains repaired so CLI validation remains truthful under minimal/no-locale Ruby.
+The current release preserves Elderedd path direction, UTF-8 source reading, minimal/no-locale Ruby validation, release package preflight, deterministic fixture hash sweep, payload SHA-256 checks, changed-file scope checks, release forensic overlay, pre-mutation forensic overlay, sealed validation inventory reporting all mismatches together, and the rule against single-goblin repairs. The v0.1.71 Open3 capture encoding gap remains repaired so CLI validation remains truthful under minimal/no-locale Ruby.
 
-runtime behaviour proof remains sealed across event results, final snapshots, and BSharp Save documents. v0.1.72 preserves 2D and 3D movement intent, move_3d, forward in 3D contexts, plain-English input action mapping, input_action, jump, attack, interact, and pause exactly as inherited from v0.1.71.
+runtime behaviour proof remains sealed across event results, final snapshots, and BSharp Save documents. v0.1.73 preserves 2D and 3D movement intent, move_3d, forward in 3D contexts, plain-English input action mapping, input_action, jump, attack, interact, and pause while adding creator-facing object interaction through open, close, lock, and take.
 
-The v0.1.69 release forensic overlay and pre-mutation forensic overlay remain active. The sealed validation inventory must report all mismatches together. v0.1.72 preserves the whole-language test gauntlet with 128,000 event paths, 128,000 platform frames, 384 generated programs, 3,072 mutations, and the combined movement plus input-action phase.
+The v0.1.69 release forensic overlay and pre-mutation forensic overlay remain active. The whole-language test gauntlet still covers 128,000 event paths, 128,000 platform frames, 384 generated programs, 3,072 mutations, and the combined movement plus input-action phase.
 
-## v0.1.72 active gates
+## v0.1.73 active gates
 
 ```text
 spec/release/BASIC_SHARP_RELEASE_FORENSIC_OVERLAY_v1.json

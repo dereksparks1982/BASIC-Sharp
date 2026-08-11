@@ -431,6 +431,13 @@ module BasicSharp
         established_objects: established_objects,
         context_it_allowed: context_it_allowed
       ) if verb == 'cause'
+      return resolve_object_interaction_action(
+        action,
+        verb,
+        bound_kinds: bound_kinds,
+        established_objects: established_objects,
+        context_it_allowed: context_it_allowed
+      ) if %w[open close lock take].include?(verb)
 
       resolved = {
         'line_number' => action.line_number,
@@ -455,6 +462,42 @@ module BasicSharp
       end
 
       resolved
+    end
+
+    def resolve_object_interaction_action(action, verb, bound_kinds:, established_objects:, context_it_allowed:)
+      target_text = action.target.to_s.strip
+      if target_text.empty?
+        diagnostics.error(action.line_number, "(#{verb} must name what to #{verb}.")
+      end
+      unless action.tail.to_s.empty?
+        diagnostics.error(action.line_number, "(#{verb} takes one target and no extra words in this build.")
+      end
+
+      target = target_text.empty? ? nil : resolve_reference(
+        target_text,
+        action.line_number,
+        usage: :action_target,
+        bound_kinds: bound_kinds,
+        established_objects: established_objects,
+        context_it_allowed: context_it_allowed
+      )
+
+      case verb
+      when 'take'
+        {
+          'line_number' => action.line_number,
+          'action' => 'carry',
+          'target' => target
+        }
+      when 'open', 'close', 'lock'
+        state = { 'open' => 'open', 'close' => 'closed', 'lock' => 'locked' }.fetch(verb)
+        {
+          'line_number' => action.line_number,
+          'action' => 'change',
+          'target' => target,
+          'to' => resolve_state_or_phrase(state, action.line_number)
+        }
+      end
     end
 
     def resolve_cause_action(action, bound_kinds:, established_objects: [], context_it_allowed: false)

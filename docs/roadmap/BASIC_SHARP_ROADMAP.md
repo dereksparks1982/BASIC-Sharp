@@ -3,18 +3,31 @@
 ## Current accepted base
 
 ```text
-v0.1.71: No-Locale CLI Capture Encoding Repair
+v0.1.72: Self-Hosting Milestone 2 Proposal and Roadmap Truth Repair
+commit db1776050d74bf3f6110986fe0a52a78e103bb43
+tag v0.1.72
 ```
 
-v0.1.71 repaired the confirmed Ruby `Open3.capture3` test-harness encoding gap so CLI output captured under minimal/no-locale environments is force-tagged as UTF-8 before assertions compare it with UTF-8 creator text.
+v0.1.72 repaired the active roadmap/master handoff, recorded the Self-Hosting Milestone 2 proposal, preserved the full native validation lane, and locked the release closeout process into the canonical Company Bible.
 
 ## Current candidate
 
 ```text
-v0.1.72: Self-Hosting Milestone 2 Proposal and Roadmap Truth Repair
+v0.1.73: Plain-English Object Interaction Actions
 ```
 
-v0.1.72 repairs the active roadmap and master handoff so they no longer describe v0.1.63/v0.1.66 as the current lane. It records the Self-Hosting Milestone 2 proposal without implementing the milestone, without adding object interaction, and without claiming Ruby retirement.
+v0.1.73 returns BASIC# to creator-facing game-making progress. The already-recognized official words `(open`, `(close`, `(lock`, and `(take` become executable end to end through the production resolver, BSIR, BSBC, preferred BSharp VM, Ruby referee runtime, and CONTEXT interaction path.
+
+The new words reuse existing proven primitives instead of adding a new bytecode profile:
+
+```text
+(open  -> change target to open
+(close -> change target to closed
+(lock  -> change target to locked
+(take  -> carry target
+```
+
+Existing selector rules remain authoritative. Exact `@objects`, established `it`, and `every #Kind` work where the current language already permits them. Retired selector forms remain retired.
 
 ## Canonical Company Bible
 
@@ -29,19 +42,16 @@ This is the single canonical Company Bible reference for current BASIC# conduct,
 Every BASIC# build must follow the proven release path:
 
 1. Apply the changed-files ZIP with the exact terminal command supplied with the download.
-2. Run installer validation including the complete test suite and full native validation lane required by the build.
-3. Create the accepted snapshot after final installer PASS and before local Git closeout.
-4. Commit and tag locally only after acceptance proof.
-5. Complete GitHub remote closeout only after local acceptance.
-6. Start the next build only after the current build is closed.
-
-Do not substitute SSH-key guessing, GitHub password prompts, giant token credential blocks, focused-only validation lanes, or extra archive/image steps unless Derek explicitly commands that exact change.
+2. Run installer validation including the complete normal test suite, complete no-locale suite when relevant, all required stress/tool gates, and full Trial by Fire native counts required by the build.
+3. Installer output preserves `PHASE START` / `PHASE PASS`, visible Minitest dot progress, run/assertion counts, and one unmistakable `FINAL PASS`.
+4. Create the accepted snapshot after final PASS and before local Git closeout.
+5. Commit and tag locally only after acceptance proof.
+6. Complete GitHub remote closeout only after local acceptance, using the proven project authentication path and never a username/password prompt.
+7. Start the next build only after the current build is closed.
 
 ## Emergency DKLab Retirement and Elderedd Migration
 
-Priority: active. Status: continuing through v0.1.72.
-
-Rules:
+Priority: active. Status: continuing through v0.1.73.
 
 - Elderedd Softworks LLC is the parent company identity.
 - Elderedd Laboratory is the active lab identity.
@@ -63,30 +73,23 @@ Ruby remains the bootstrap compiler and reference referee.
 BASIC# is not fully self-hosted.
 ```
 
-v0.1.72 proposes Self-Hosting Milestone 2 as a planning gate. It should define which BASIC# subset pieces move next toward compiling more of BASIC# with BASIC# machinery while preserving Ruby as the referee until parity proves otherwise.
-
-## Self-Hosting Milestone 2 proposal targets
-
-The Milestone 2 proposal should prepare the next implementation build to do useful self-hosting work, not more ceremony. Candidate implementation targets after v0.1.72:
-
-1. Expand the small compiler subset execution corpus with a meaningful new compiler feature under Ruby referee parity.
-2. Add BASIC#-authored fixture programs that exercise the subset more like real compiler input.
-3. Preserve BSIR and BSBC golden parity while adding only one clearly bounded compiler capability.
-4. Keep Ruby as the authority until BASIC# reproduces accepted outputs exactly.
+The accepted v0.1.72 Self-Hosting Milestone 2 proposal remains the planning record for the next bounded self-hosting implementation slice. v0.1.73 does not claim Milestone 2 implementation or Ruby retirement.
 
 ## Game-making runway
 
-After the next self-hosting planning gate, BASIC# should return to creator-facing power. The next major language/game behaviour lane remains object interaction.
+v0.1.73 begins the object-interaction lane with four direct creator actions. Future object-interaction work may expand other already-recognized words only through explicit approved builds and end-to-end execution proof.
 
-```text
-v0.1.73 candidate direction: Object Interaction, if v0.1.72 is accepted.
-```
+Candidate directions after v0.1.73:
 
-Possible object-interaction targets include creator-facing words that are already recognized but not fully executable end-to-end in the preferred runtime path.
+1. First bounded Self-Hosting Milestone 2 implementation slice under Ruby referee parity.
+2. Next meaningful object-interaction expansion if Derek chooses game-making forward motion again.
+3. Repair any proven validation/release defect before new functionality if one is found.
+
+No new governance/audit system is planned unless a demonstrated failure requires it.
 
 ## Public proof-application ladder
 
-These are future proof programs, not current v0.1.72 implementation work:
+These are future proof programs, not permission to interrupt the active compiler/runtime lane:
 
 1. Calculator
 2. Text Adventure / choose-your-own-adventure
@@ -96,7 +99,7 @@ These are future proof programs, not current v0.1.72 implementation work:
 6. Larger 2D Game
 7. Media Player
 
-Solitaire should become a public BASIC# showcase when the language can support it properly. The source/game may be free for noncommercial study and use, while Derek's Demon Killer custom card/deck artwork remains separately protected and excluded from the free-use grant.
+Solitaire is a future public BASIC# showcase. The game/source is intended for free noncommercial study and use, while Derek's Demon Killer custom card/deck artwork remains separately protected and excluded from that free-use grant.
 
 ## Release-hardening runway
 
@@ -114,7 +117,7 @@ They prevent stale fixture hashes, sealed artifact byte drift, manifest/payload 
 
 ## Future BASIC# Graphics Format runway
 
-This idea is recorded for later work only. It is not part of v0.1.72 implementation scope.
+Recorded for later only:
 
 ```text
 BSG = BASIC# Graphics system
@@ -122,24 +125,7 @@ BGF = BASIC# Graphics Format
 Extension = .bgf
 ```
 
-Roadmap intent:
-
-- Keep BGF as the native BASIC# graphics asset format idea so it is not lost.
-- Treat BSG as the future graphics system/layer name, not the immediate compiler lane.
-- Start later with a spec-only BGF build before any renderer or image engine work.
-- Likely first BGF scope: raw RGBA images, palette images, metadata, checksum, and reader/writer validation contracts.
-- Later BGF scopes may include sprites, tiles, heightmaps, animation frames, and BASIC# runtime loading/drawing words.
-- Do not mix BGF implementation into the active self-hosting execution corpus lane.
-
-## After v0.1.72
-
-If v0.1.72 is accepted, the next likely work is one of the following:
-
-1. Implement the first bounded Self-Hosting Milestone 2 slice.
-2. Begin object interaction if Derek decides game-making forward motion outranks another self-hosting implementation step.
-3. Repair any validation truth gap found during v0.1.72 acceptance.
-
-Do not begin BCS implementation, accounts, hosting, pricing, network calls, server work, Project Oracle, or Demon Killer in this lane.
+Compatibility and functional language progress remain ahead of BGF implementation.
 
 ## Canonical self-hosting specification runway
 

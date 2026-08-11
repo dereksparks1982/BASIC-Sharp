@@ -1,0 +1,29 @@
+DEFINE
+[
+    @north gate is a #door
+    @brass key is a #key
+].
+
+START
+[
+    @north gate is closed
+].
+
+CONTEXT for @north gate
+[
+    "Open" when it is closed (open it
+    "Close" when it is open (close it
+].
+
+CONTEXT for @brass key
+[
+    "Take" (take it
+].
+
+WHEN PLAYER examines @north gate
+[
+    |then (open @north gate
+    |then (close @north gate
+    |then (lock @north gate
+    |then (take @brass key
+].

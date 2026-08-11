@@ -1,8 +1,8 @@
 {
   "format": "bsharp.whole_language_gauntlet_expansion.json",
   "format_version": 1,
-  "target_version": "0.1.72",
-  "required_target_version": "v0.1.72",
+  "target_version": "0.1.73",
+  "required_target_version": "v0.1.73",
   "status": "active_trial_by_fire_gate",
   "default_counts": {
     "events_per_path": 128000,
@@ -30,8 +30,8 @@
     "hostile artifact campaign"
   ],
   "forbidden": [
-    "shrinking the v0.1.72 default counts without a new approved build",
+    "shrinking the v0.1.73 default counts without a new approved build",
     "removing release forensic overlay from installer-order validation",
-    "returning to object interaction before the v0.1.72 gauntlet is accepted"
+    "returning to object interaction before the v0.1.73 gauntlet is accepted"
   ]
 }
