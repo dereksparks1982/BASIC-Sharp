@@ -35,7 +35,7 @@ class TestSmallCompilerSubsetBSBCExecutionParity < Minitest::Test
 
   def test_every_fixture_executes_bsbc_in_the_vm_and_matches_ruby_referee
     assert parity.fetch(:all_pass)
-    assert_operator parity.fetch(:fixture_count), :>=, 17
+    assert_operator parity.fetch(:fixture_count), :>=, 18
     parity.fetch(:fixtures).each do |fixture|
       assert fixture.fetch(:passes), fixture.fetch(:name)
       assert_equal fixture.fetch(:events).length, fixture.fetch(:runtime).fetch(:matched_event_count), fixture.fetch(:name)
@@ -47,6 +47,15 @@ class TestSmallCompilerSubsetBSBCExecutionParity < Minitest::Test
       assert fixture.fetch(:checks).fetch(:vm_referee_snapshot_matches), fixture.fetch(:name)
       assert fixture.fetch(:checks).fetch(:vm_referee_save_document_matches), fixture.fetch(:name)
     end
+  end
+
+
+  def test_v074_object_interaction_fixture_crosses_independent_resolver_and_vm
+    fixture = parity.fetch(:fixtures).find { |entry| entry.fetch(:name) == 'v074_object_interaction_semantic_resolver' }
+    refute_nil fixture
+    assert fixture.fetch(:passes)
+    assert_equal 'v074_object_interaction_semantic_resolver', fixture.fetch(:category)
+    assert_equal 1, fixture.fetch(:runtime).fetch(:matched_event_count)
   end
 
   def test_every_fixture_declares_required_expected_fields

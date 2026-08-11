@@ -1,15 +1,15 @@
 {
   "format": "bsharp.small_compiler_subset.execution_corpus.json",
   "format_version": 1,
-  "target_version": "0.1.73",
+  "target_version": "0.1.74",
   "title": "BASIC# Small Compiler Subset Execution Corpus",
   "status": "execution_corpus_expanded_under_ruby_referee",
   "purpose": "Treat the BSBC execution parity fixtures as a growing corpus, require broader coverage than a single smoke path, and prove every fixture still runs through source to BSIR to BSBC to BSharp VM execution while matching the Ruby referee runtime.",
   "parity_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json",
   "minimums": {
-    "fixtures": 17,
-    "categories": 12,
-    "events": 50
+    "fixtures": 18,
+    "categories": 13,
+    "events": 56
   },
   "guardrails": [
     "Ruby remains the referee",
@@ -25,5 +25,10 @@
     "removing the DKLab compatibility bridge",
     "skipping release package preflight",
     "single-goblin repair"
-  ]
+  ],
+  "v0_1_74_semantic_resolver_expansion": {
+    "fixture": "v074_object_interaction_semantic_resolver",
+    "category": "v074_object_interaction_semantic_resolver",
+    "purpose": "Prove v0.1.73 open close lock and take actions survive the independent subset semantic resolver through BSBC and BSharp VM execution parity."
+  }
 }

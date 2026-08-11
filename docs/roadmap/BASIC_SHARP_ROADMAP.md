@@ -3,31 +3,39 @@
 ## Current accepted base
 
 ```text
-v0.1.72: Self-Hosting Milestone 2 Proposal and Roadmap Truth Repair
-commit db1776050d74bf3f6110986fe0a52a78e103bb43
-tag v0.1.72
+v0.1.73: Plain-English Object Interaction Actions
+commit f41d70a59f26def52ebb253ea1ad8f20c6e8bc0b
+tag v0.1.73
 ```
 
-v0.1.72 repaired the active roadmap/master handoff, recorded the Self-Hosting Milestone 2 proposal, preserved the full native validation lane, and locked the release closeout process into the canonical Company Bible.
+v0.1.73 is the accepted rollback point. It made `(open`, `(close`, `(lock`, and `(take` executable end to end and passed the full native validation lane before snapshot, local Git closeout, and GitHub verification.
 
 ## Current candidate
 
 ```text
-v0.1.73: Plain-English Object Interaction Actions
+v0.1.74: Self-Hosting Milestone 2 Slice 1 - Semantic Resolver Independence
 ```
 
-v0.1.73 returns BASIC# to creator-facing game-making progress. The already-recognized official words `(open`, `(close`, `(lock`, and `(take` become executable end to end through the production resolver, BSIR, BSBC, preferred BSharp VM, Ruby referee runtime, and CONTEXT interaction path.
+v0.1.74 gives BSharp Compiler Subset 0 an independent `SmallCompilerSubsetSemanticResolver`. The subset IR emitter must use that resolver for its primary BSharp IR document. The production Ruby `SemanticResolver` remains a separate referee only.
 
-The new words reuse existing proven primitives instead of adding a new bytecode profile:
+The accepted subset lane for this build is:
 
 ```text
-(open  -> change target to open
-(close -> change target to closed
-(lock  -> change target to locked
-(take  -> carry target
+TokenizerReader
+-> SmallCompilerSubsetParser
+-> SmallCompilerSubsetSemanticResolver
+-> BSharp IR
+-> subset BSBC
+-> BSharp VM
 ```
 
-Existing selector rules remain authoritative. Exact `@objects`, established `it`, and `every #Kind` work where the current language already permits them. Retired selector forms remain retired.
+The execution corpus expands to 18 fixtures and 56 events. One new fixture carries the accepted v0.1.73 open, close, lock, and take interactions through the independent resolver, BSBC emission, loader, VM, and Ruby-referee parity path.
+
+Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v1.json`.
+Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v0_1_74.md`.
+Reference: `compiler/small_compiler_subset_semantic_resolver.rb`.
+
+Ruby remains the bootstrap compiler. v0.1.74 is not full self-hosting and does not change normal production compiler routing, Profile 1-7 meaning, bytecode format, runtime meaning, Save, ASK, or input behaviour.
 
 ## Canonical Company Bible
 
@@ -42,16 +50,16 @@ This is the single canonical Company Bible reference for current BASIC# conduct,
 Every BASIC# build must follow the proven release path:
 
 1. Apply the changed-files ZIP with the exact terminal command supplied with the download.
-2. Run installer validation including the complete normal test suite, complete no-locale suite when relevant, all required stress/tool gates, and full Trial by Fire native counts required by the build.
+2. Run installer validation including the complete normal test suite, complete no-locale suite, all required stress/tool gates, and full Trial by Fire native counts required by the build.
 3. Installer output preserves `PHASE START` / `PHASE PASS`, visible Minitest dot progress, run/assertion counts, and one unmistakable `FINAL PASS`.
 4. Create the accepted snapshot after final PASS and before local Git closeout.
 5. Commit and tag locally only after acceptance proof.
-6. Complete GitHub remote closeout only after local acceptance, using the proven project authentication path and never a username/password prompt.
+6. Complete GitHub remote closeout only after local acceptance, using the proven no-password project authentication path.
 7. Start the next build only after the current build is closed.
 
 ## Emergency DKLab Retirement and Elderedd Migration
 
-Priority: active. Status: continuing through v0.1.73.
+Priority: active. Status: continuing through v0.1.74.
 
 - Elderedd Softworks LLC is the parent company identity.
 - Elderedd Laboratory is the active lab identity.
@@ -68,21 +76,22 @@ Priority: active. Status: continuing through v0.1.73.
 Current truthful claim:
 
 ```text
-BSharp Compiler Subset 0 has Self-Hosting Milestone 1 proof under Ruby referee control.
-Ruby remains the bootstrap compiler and reference referee.
+BSharp Compiler Subset 0 has Self-Hosting Milestone 2 Slice 1 under Ruby referee control.
+The subset path owns reader, parser, and semantic resolver stages for its bounded lane.
+Ruby remains the bootstrap compiler and production referee.
 BASIC# is not fully self-hosted.
 ```
 
-The accepted v0.1.72 Self-Hosting Milestone 2 proposal remains the planning record for the next bounded self-hosting implementation slice. v0.1.73 does not claim Milestone 2 implementation or Ruby retirement.
+The v0.1.72 proposal is now partially implemented by v0.1.74 semantic resolver independence. Future Milestone 2 slices should continue removing bounded subset dependence on production compiler stages while exact parity remains mandatory.
 
 ## Game-making runway
 
-v0.1.73 begins the object-interaction lane with four direct creator actions. Future object-interaction work may expand other already-recognized words only through explicit approved builds and end-to-end execution proof.
+v0.1.73 established four direct creator actions: open, close, lock, and take. v0.1.74 carries them into the self-hosting execution corpus so game-making progress and compiler-independence progress remain connected.
 
-Candidate directions after v0.1.73:
+## Next direction after v0.1.74
 
-1. First bounded Self-Hosting Milestone 2 implementation slice under Ruby referee parity.
-2. Next meaningful object-interaction expansion if Derek chooses game-making forward motion again.
+1. Another bounded Self-Hosting Milestone 2 compiler-stage independence slice under Ruby referee parity.
+2. A meaningful creator/game-making capability expansion if Derek chooses that lane.
 3. Repair any proven validation/release defect before new functionality if one is found.
 
 No new governance/audit system is planned unless a demonstrated failure requires it.

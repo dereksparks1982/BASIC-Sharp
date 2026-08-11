@@ -1,0 +1,73 @@
+{
+  "format": "bsharp.small_compiler_subset.semantic_resolver.contract.json",
+  "format_version": 1,
+  "target_version": "0.1.74",
+  "title": "Small Compiler Subset Semantic Resolver Independence",
+  "status": "semantic_resolver_independent_under_ruby_referee",
+  "purpose": "Give the BSharp Compiler Subset 0 path its own semantic resolver implementation while preserving the production Ruby SemanticResolver only as a separate referee for deterministic parity.",
+  "scope": {
+    "allowed": [
+      "adding compiler/small_compiler_subset_semantic_resolver.rb as the independent subset semantic resolver",
+      "routing SmallCompilerSubsetIREmitter document generation through SmallCompilerSubsetSemanticResolver",
+      "using compiler/resolver.rb only on the separate Ruby referee path",
+      "requiring exact BSharp IR parity against the production Ruby SemanticResolver",
+      "proving v0.1.73 open close lock and take object interaction through the independent subset semantic resolver",
+      "preserving Profiles 1 through 7, existing bytecode formats, runtime meaning, Save, ASK, input devices, and production compiler routing"
+    ],
+    "forbidden_until_later_approval": [
+      "calling BasicSharp::SemanticResolver from compiler/small_compiler_subset_semantic_resolver.rb",
+      "requiring compiler/resolver.rb from compiler/small_compiler_subset_semantic_resolver.rb",
+      "routing normal BASIC# production compilation through the subset semantic resolver",
+      "claiming BASIC# is fully self-hosted",
+      "retiring the Ruby bootstrap compiler",
+      "adding Profile 8",
+      "adding new creator-facing syntax or changing runtime meaning"
+    ]
+  },
+  "input_contracts": [
+    "spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json",
+    "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json",
+    "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json"
+  ],
+  "output_contracts": [
+    "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json",
+    "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json",
+    "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json"
+  ],
+  "fixtures": [
+    {
+      "name": "first_room",
+      "source_from": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json"
+    },
+    {
+      "name": "platform_movement",
+      "source_from": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json"
+    },
+    {
+      "name": "text_values",
+      "source_from": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json"
+    },
+    {
+      "name": "v074_object_interaction_independence",
+      "source_path": "samples/object_interaction_actions.bsharp"
+    }
+  ],
+  "acceptance_rules": [
+    "SmallCompilerSubsetIREmitter must create its primary BSharp IR document with SmallCompilerSubsetSemanticResolver.",
+    "The independent resolver must not call or require the production SemanticResolver implementation.",
+    "Each accepted fixture must match production Ruby Parser plus SemanticResolver BSharp IR exactly.",
+    "The production SemanticResolver may remain loaded for referee comparison but cannot be required by the independent resolver file.",
+    "Object interaction open close lock and take must canonicalize identically through the independent resolver and Ruby referee.",
+    "The semantic resolver independence tool must be present in the sealed Trial-by-Fire validation inventory.",
+    "No full self-hosting or Ruby retirement claim is permitted in v0.1.74."
+  ],
+  "documents": {
+    "spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v1.json",
+    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v0_1_74.md",
+    "implementation_file": "compiler/small_compiler_subset_semantic_resolver.rb",
+    "ir_emitter_file": "compiler/small_compiler_subset_ir_emitter.rb",
+    "ruby_resolver_referee": "compiler/resolver.rb",
+    "tool": "tools/small_compiler_subset_semantic_resolver.rb",
+    "test": "tests/test_small_compiler_subset_semantic_resolver.rb"
+  }
+}

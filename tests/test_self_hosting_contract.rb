@@ -13,7 +13,7 @@ class TestSelfHostingContract < Minitest::Test
   end
 
   def test_spec_targets_the_live_basic_sharp_version
-    assert_equal '0.1.73', BasicSharp::VERSION
+    assert_equal '0.1.74', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
   end
 
@@ -44,6 +44,11 @@ class TestSelfHostingContract < Minitest::Test
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_parser_tool')))
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_parser_test')))
     assert_equal 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json', documents.fetch('small_compiler_subset_ir_emitter_spec')
+    assert_equal 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v1.json', documents.fetch('small_compiler_subset_semantic_resolver_spec')
+    assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_semantic_resolver_implementation')))
+    assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_semantic_resolver_file')))
+    assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_semantic_resolver_tool')))
+    assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_semantic_resolver_test')))
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_ir_emitter_tool')))
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_ir_emitter_test')))
     assert_equal 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json', documents.fetch('small_compiler_subset_ir_parity_harness_spec')
@@ -90,6 +95,7 @@ class TestSelfHostingContract < Minitest::Test
     assert_includes tools, 'tools/self_hosting_contract.rb'
     assert_includes tools, 'tools/small_compiler_subset_parser.rb'
     assert_includes tools, 'tools/small_compiler_subset_ir_emitter.rb'
+    assert_includes tools, 'tools/small_compiler_subset_semantic_resolver.rb'
     assert_includes tools, 'tools/small_compiler_subset_ir_parity_harness.rb'
     assert_includes tools, 'tools/small_compiler_subset_error_contract.rb'
     assert_includes tools, 'tools/small_compiler_subset_scene_block_expansion.rb'

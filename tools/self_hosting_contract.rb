@@ -14,6 +14,8 @@ SMALL_COMPILER_SUBSET_PARSER_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASI
 SMALL_COMPILER_SUBSET_PARSER_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v0_1_49.md')
 SMALL_COMPILER_SUBSET_IR_EMITTER_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json')
 SMALL_COMPILER_SUBSET_IR_EMITTER_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v0_1_50.md')
+SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v1.json')
+SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v0_1_74.md')
 SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json')
 SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_51.md')
 SMALL_COMPILER_SUBSET_ERROR_CONTRACT_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json')
@@ -100,6 +102,11 @@ assert_contract!(File.file?(SMALL_COMPILER_SUBSET_PARSER_SPEC_PATH), 'small comp
 assert_contract!(File.file?(SMALL_COMPILER_SUBSET_PARSER_DOC_PATH), 'small compiler subset parser document is missing')
 assert_contract!(File.file?(SMALL_COMPILER_SUBSET_IR_EMITTER_SPEC_PATH), 'small compiler subset IR emitter spec is missing')
 assert_contract!(File.file?(SMALL_COMPILER_SUBSET_IR_EMITTER_DOC_PATH), 'small compiler subset IR emitter document is missing')
+assert_contract!(File.file?(SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_SPEC_PATH), 'small compiler subset semantic resolver spec is missing')
+assert_contract!(File.file?(SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_DOC_PATH), 'small compiler subset semantic resolver document is missing')
+assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_semantic_resolver_file'))), 'small compiler subset semantic resolver implementation is missing')
+assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_semantic_resolver_tool'))), 'small compiler subset semantic resolver tool is missing')
+assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_semantic_resolver_test'))), 'small compiler subset semantic resolver test is missing')
 assert_contract!(File.file?(SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_SPEC_PATH), 'small compiler subset IR parity harness spec is missing')
 assert_contract!(File.file?(SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_DOC_PATH), 'small compiler subset IR parity harness document is missing')
 assert_contract!(File.file?(SMALL_COMPILER_SUBSET_ERROR_CONTRACT_SPEC_PATH), 'small compiler subset error contract spec is missing')
@@ -135,6 +142,7 @@ rules = spec.fetch('acceptance_rules')
 assert_contract!(rules.any? { |entry| entry.include?('Ruby remains the bootstrap') }, 'Ruby referee rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('small compiler subset parser') }, 'subset parser rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('small compiler subset IR emitter') }, 'subset IR emitter rule missing')
+assert_contract!(rules.any? { |entry| entry.include?('semantic resolver independence') }, 'subset semantic resolver rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('IR golden parity harness') }, 'subset IR parity harness rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('plain-English error contract') }, 'subset error contract rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('scene/block expansion') }, 'subset scene/block expansion rule missing')
@@ -161,6 +169,7 @@ tokenizer_doc = File.read(TOKENIZER_READER_DOC_PATH, encoding: 'UTF-8')
 implementation_doc = File.read(TOKENIZER_READER_IMPLEMENTATION_DOC_PATH, encoding: 'UTF-8')
 parser_doc = File.read(SMALL_COMPILER_SUBSET_PARSER_DOC_PATH, encoding: 'UTF-8')
 ir_emitter_doc = File.read(SMALL_COMPILER_SUBSET_IR_EMITTER_DOC_PATH, encoding: 'UTF-8')
+semantic_resolver_doc = File.read(SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_DOC_PATH, encoding: 'UTF-8')
 ir_parity_doc = File.read(SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_DOC_PATH, encoding: 'UTF-8')
 error_contract_doc = File.read(SMALL_COMPILER_SUBSET_ERROR_CONTRACT_DOC_PATH, encoding: 'UTF-8')
 scene_block_doc = File.read(SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_DOC_PATH, encoding: 'UTF-8')
@@ -179,6 +188,9 @@ assert_contract!(parser_doc.include?('Ruby Parser referee'), 'small compiler sub
 assert_contract!(parser_doc.include?('not the production parser authority'), 'small compiler subset parser must not become parser authority')
 assert_contract!(ir_emitter_doc.include?('Ruby Parser plus SemanticResolver referee'), 'small compiler subset IR emitter must keep Ruby referee')
 assert_contract!(ir_emitter_doc.include?('not the production compiler path'), 'small compiler subset IR emitter must not become compiler path')
+assert_contract!(semantic_resolver_doc.include?('SmallCompilerSubsetSemanticResolver'), 'small compiler subset semantic resolver must name the independent resolver')
+assert_contract!(semantic_resolver_doc.include?('not full self-hosting'), 'small compiler subset semantic resolver must not claim full self-hosting')
+assert_contract!(semantic_resolver_doc.include?('Ruby remains the bootstrap compiler'), 'small compiler subset semantic resolver must preserve Ruby authority')
 assert_contract!(ir_parity_doc.include?('golden BSharp IR parity'), 'small compiler subset IR parity harness must name golden parity')
 assert_contract!(ir_parity_doc.include?('not the production compiler path'), 'small compiler subset IR parity harness must not become compiler path')
 assert_contract!(error_contract_doc.include?('plain-English error contract'), 'small compiler subset error contract must name plain-English contract')
@@ -215,6 +227,7 @@ puts 'Tokenizer/reader contract linked: PASS'
 puts 'Tokenizer/reader implementation linked: PASS'
 puts 'Small compiler subset parser linked: PASS'
 puts 'Small compiler subset IR emitter linked: PASS'
+puts 'Small compiler subset semantic resolver linked: PASS'
 puts 'Small compiler subset IR parity harness linked: PASS'
 puts 'Small compiler subset error contract linked: PASS'
 puts 'Small compiler subset scene/block expansion linked: PASS'

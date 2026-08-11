@@ -30,9 +30,9 @@ class TestSmallCompilerSubsetExecutionCorpus < Minitest::Test
 
   def test_execution_corpus_floor_is_larger_than_v064
     assert record.fetch(:all_pass)
-    assert_operator record.fetch(:fixture_count), :>=, 17
-    assert_operator record.fetch(:category_count), :>=, 12
-    assert_operator record.fetch(:event_count), :>=, 50
+    assert_operator record.fetch(:fixture_count), :>=, 18
+    assert_operator record.fetch(:category_count), :>=, 13
+    assert_operator record.fetch(:event_count), :>=, 56
   end
 
   def test_v065_new_fixture_categories_are_present
@@ -40,6 +40,12 @@ class TestSmallCompilerSubsetExecutionCorpus < Minitest::Test
     assert_includes categories, 'v065_multi_scene_execution'
     assert_includes categories, 'v065_follow_up_execution'
     assert_includes categories, 'v065_save_restore_execution'
+  end
+
+
+  def test_v074_semantic_resolver_object_interaction_fixture_is_present
+    categories = record.fetch(:category_counts).keys
+    assert_includes categories, 'v074_object_interaction_semantic_resolver'
   end
 
   def test_guardrails_forbid_overclaiming_self_hosting

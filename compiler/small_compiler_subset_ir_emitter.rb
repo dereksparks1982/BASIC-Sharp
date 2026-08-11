@@ -4,6 +4,7 @@ require_relative 'diagnostics'
 require_relative 'dictionary'
 require_relative 'parser'
 require_relative 'resolver'
+require_relative 'small_compiler_subset_semantic_resolver'
 require_relative 'small_compiler_subset_parser'
 require_relative 'text_literal'
 
@@ -30,7 +31,7 @@ module BasicSharp
     end
 
     def document
-      @document ||= SemanticResolver.new(program, dictionary: dictionary).resolve
+      @document ||= SmallCompilerSubsetSemanticResolver.new(program, dictionary: dictionary).resolve
     end
 
     def bsharp_ir

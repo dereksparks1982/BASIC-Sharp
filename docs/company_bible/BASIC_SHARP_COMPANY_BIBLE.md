@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.73  
+**Version:** v0.1.74  
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -607,3 +607,13 @@ BASIC# v0.1.73 moves game-making forward by making the already-recognized offici
 The accepted selector rules remain authoritative. Exact `@object`, established `it`, and `every #Kind` selectors may be used where the current language already permits them. Retired selector forms remain retired. Future object-action expansion requires a separately approved build and end-to-end validation.
 
 This build preserves the v0.1.72 Self-Hosting Milestone 2 Proposal as the next self-hosting planning record. It does not claim full self-hosting and does not retire Ruby.
+
+## v0.1.74 Self-Hosting Milestone 2 Slice 1 Semantic Resolver Independence Rule
+
+BASIC# v0.1.74 advances BSharp Compiler Subset 0 by giving the subset path its own `SmallCompilerSubsetSemanticResolver`. The primary subset IR path must use `compiler/small_compiler_subset_semantic_resolver.rb`; the production `SemanticResolver` remains separate and referee-only for exact parity comparison.
+
+The independent resolver file must not call `SemanticResolver.new` and must not require `compiler/resolver.rb`. Normal production BASIC# compilation remains on the accepted production compiler path. Ruby remains the bootstrap compiler and referee authority. This is Self-Hosting Milestone 2 Slice 1, not full self-hosting and not Ruby retirement.
+
+The machine-checked contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v1.json`. The v0.1.74 execution corpus must include the accepted v0.1.73 open, close, lock, and take object interactions through the independent resolver, BSBC, loader, BSharp VM, and referee parity path.
+
+The accepted release closeout order remains full validation -> accepted snapshot -> local Git commit/tag -> GitHub push/remote verification.

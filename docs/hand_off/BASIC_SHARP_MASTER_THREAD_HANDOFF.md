@@ -1,120 +1,73 @@
 # BASIC# Master Thread Handoff
 
-## Current state
+## Current build truth
 
-- **Accepted base for v0.1.73 candidate:** v0.1.72 / `db1776050d74bf3f6110986fe0a52a78e103bb43`
-- **Accepted tag:** `v0.1.72`
-- **Branch:** `main`
-- **Candidate:** v0.1.73 Plain-English Object Interaction Actions
-- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_73_PLAIN_ENGLISH_OBJECT_INTERACTION_ACTIONS_HANDOFF_CONTRACT_REFERENCE_REPAIR_CHANGED_FILES_ONLY.zip`
-- **Canonical Company Bible:** `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md`
-- **Canonical roadmap:** `docs/roadmap/BASIC_SHARP_ROADMAP.md`
-- **Rollback:** hard reset to accepted tag `v0.1.72` and remove untracked candidate files if installation/validation fails.
+- **Accepted base:** v0.1.73 / `f41d70a59f26def52ebb253ea1ad8f20c6e8bc0b`
+- **Accepted base tag:** `v0.1.73`
+- **Candidate:** v0.1.74 Self-Hosting Milestone 2 Slice 1: Semantic Resolver Independence
+- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_74_SELF_HOSTING_MILESTONE_2_SEMANTIC_RESOLVER_INDEPENDENCE_CHANGED_FILES_ONLY.zip`
+- **Rollback:** reset to tag `v0.1.73` and remove only v0.1.74 added paths before applying a repaired candidate.
 
-## v0.1.73 purpose
+## v0.1.74 purpose
 
-v0.1.73 moves game-making forward by making four already-recognized official words executable end to end:
+BSharp Compiler Subset 0 now owns an independent semantic resolution stage. `compiler/small_compiler_subset_ir_emitter.rb` builds its primary document with `SmallCompilerSubsetSemanticResolver`. The production Ruby `SemanticResolver` remains a separate referee and must not be called or required by `compiler/small_compiler_subset_semantic_resolver.rb`.
 
-```text
-(open
-(close
-(lock
-(take
-```
-
-The production SemanticResolver canonicalizes them onto existing proven runtime/bytecode operations:
+The candidate pipeline is:
 
 ```text
-(open  -> change state to open
-(close -> change state to closed
-(lock  -> change state to locked
-(take  -> carry
+TokenizerReader
+-> SmallCompilerSubsetParser
+-> SmallCompilerSubsetSemanticResolver
+-> BSharp IR
+-> SmallCompilerSubsetBSBCEmitter
+-> BSharp VM
 ```
 
-This avoids a new bytecode profile and keeps BSharp VM / Ruby referee parity intact. The words work in event action bodies and CONTEXT entries. Existing exact-object, established `it`, and `every #Kind` selectors keep their current meaning.
+The new semantic resolver is required to match the production Ruby Parser plus SemanticResolver output exactly. This is Self-Hosting Milestone 2 Slice 1 under Ruby referee control, not full self-hosting and not Ruby retirement.
 
-## v0.1.73 implementation
+## v0.1.73 capability carried forward
 
-Primary implementation:
+The accepted creator words `(open`, `(close`, `(lock`, and `(take` remain executable. The v0.1.74 execution corpus includes a dedicated object-interaction fixture that proves those actions travel through the independent semantic resolver, BSBC, loader, BSharp VM, and Ruby referee path without semantic drift.
 
-```text
-compiler/resolver.rb
-samples/object_interaction_actions.bsharp
-tests/test_object_interaction_actions.rb
-docs/language/BASIC_SHARP_OBJECT_INTERACTION_ACTIONS_v0_1_73.md
-```
+## Self-hosting contract reference ledger
 
-The object-interaction test lane proves:
-
-- resolver canonicalization;
-- reference runtime execution;
-- BSharp VM parity;
-- CONTEXT direct `Open`, `Close`, and `Take` execution;
-- exact `@object`, established `it`, and `every #Kind` selection;
-- plain failures for missing targets and unsupported extra tails.
-
-No new bytecode opcode, no Profile 8, and no Ruby retirement claim are introduced.
-
-## Release closeout truth
-
-Every accepted build closes in this order:
-
-1. Apply the changed-files ZIP with the exact terminal command supplied with the download.
-2. Run full installer/native validation, including the complete normal test suite, complete no-locale suite when relevant, all required stress/tool gates, and Trial by Fire full native counts. Preserve `PHASE START`, visible Minitest dots, counts, `PHASE PASS`, and `FINAL PASS`.
-3. Create the accepted snapshot after final PASS and before local Git closeout.
-4. Perform local Git commit/tag verification only after the accepted snapshot.
-5. Perform GitHub remote closeout only after local acceptance. Do not allow Git username/password prompts.
-6. Update GitHub description only after commit/tag verification if that step is part of the current closeout.
-7. Move to the next build only after the current build is fully closed.
-
-Do not guess at GitHub SSH keys or replace the proven project auth path with new experiments.
-
-## Current validation floor
-
-Candidate pre-package full suite:
-
-```text
-583 runs
-9320 assertions
-0 failures
-0 errors
-0 skips
-```
-
-The installer must independently rerun the complete suite and the full native validation inventory on Derek's machine before acceptance.
-
-## Active identity
-
-- Elderedd Softworks LLC: parent company / umbrella identity.
-- Elderedd Laboratory: research and build laboratory.
-- ELDL: internal shorthand only.
-- BCS: BSharp Creator Services.
-- BASIC#: language name.
-- BSharp: tool-safe technical name.
-- DKLab: retired active identity, retained only as compatibility/migration/rollback/history bridge.
-
-## Self-hosting truth
-
-BSharp Compiler Subset 0 retains Self-Hosting Milestone 1 under Ruby referee control. The v0.1.72 Self-Hosting Milestone 2 Proposal remains the planning record. v0.1.73 is a game-making/runtime-language build, not Milestone 2 implementation.
-
-Ruby remains bootstrap compiler and reference referee. BASIC# is not fully self-hosted.
-
-### Self-hosting contract reference ledger
-
-The master handoff preserves the exact machine-checked paths required by the existing self-hosting contract validators:
+The active machine-checked self-hosting references are:
 
 ```text
 spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json
 spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_EXECUTION_CORPUS_v1.json
+spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v1.json
+spec/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v1.json
+spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json
+spec/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v1.json
 ```
 
-These references document the still-active Ruby-refereed self-hosting boundary. They do not promote any subset component to the production compiler path and do not claim BASIC# is fully self-hosted.
+## Canonical Company Bible
 
-## Next action after v0.1.73 acceptance
+The single canonical Company Bible remains `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md`. Current build, release, validation, rollback, and approval rules must remain synchronized there.
 
-After FINAL PASS: accepted snapshot, local Git commit/tag `v0.1.73`, GitHub push/remote verification, then Derek chooses the next build direction. Candidate next lanes are the first bounded Self-Hosting Milestone 2 implementation slice or another meaningful creator-facing object-interaction expansion.
+## Validation floor
+
+v0.1.74 must run the semantic resolver regression lane, complete normal suite, complete no-locale suite, the entire sealed tool inventory, deterministic fixture sweep, release package preflight, release forensic overlay, whole-language gauntlet contract, and full Trial by Fire.
+
+The v0.1.73 floor of 583 runs / 9,320 assertions may not shrink. The new semantic resolver tests increase the suite.
+
+## Release closeout
+
+After unmistakable `FINAL PASS`, create the accepted snapshot first. Then local Git commit/tag. Then GitHub push and peeled-tag verification. Do not reorder these stages.
+
+## Current continuation point
+
+Apply and validate the v0.1.74 candidate. If any gate fails, preserve the failure as evidence, return to the accepted v0.1.73 rollback point, repair the same version, and rerun the complete validation lane.

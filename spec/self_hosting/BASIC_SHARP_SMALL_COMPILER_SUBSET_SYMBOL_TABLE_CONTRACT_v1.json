@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.symbol_table_contract.json",
   "format_version": 1,
-  "target_version": "0.1.73",
+  "target_version": "0.1.74",
   "status": "symbol_table_contract_under_ruby_referee",
   "purpose": "Lock deterministic name tracking for the small compiler subset while Ruby remains the referee.",
   "valid_fixtures": [
