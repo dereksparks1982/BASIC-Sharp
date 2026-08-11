@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.74  
+**Version:** v0.1.75  
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -617,3 +617,15 @@ The independent resolver file must not call `SemanticResolver.new` and must not 
 The machine-checked contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v1.json`. The v0.1.74 execution corpus must include the accepted v0.1.73 open, close, lock, and take object interactions through the independent resolver, BSBC, loader, BSharp VM, and referee parity path.
 
 The accepted release closeout order remains full validation -> accepted snapshot -> local Git commit/tag -> GitHub push/remote verification.
+
+## v0.1.75 Self-Hosting Milestone 2 Slice 2 BSBC Emitter Independence Rule
+
+BASIC# v0.1.75 advances BSharp Compiler Subset 0 by giving the subset path its own `SmallCompilerSubsetBSBCEncoder`. Primary subset BSBC bytes must come from `compiler/small_compiler_subset_bsbc_encoder.rb`. The independent encoder must not require `compiler/bytecode_emitter.rb` and must not call `BytecodeEmitter.new`.
+
+The production Ruby `BytecodeEmitter` remains available only as a separate byte-for-byte referee. Independently emitted bytes must match the referee exactly, load through the existing `BytecodeLoader`, and execute through the BSharp Virtual Machine with Ruby referee runtime parity. Profiles 1 through 7 and the existing BSBC binary format remain authoritative. Profile 8 is not introduced.
+
+The machine-checked contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json`. The implementation record is `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v0_1_75.md`. The dedicated v0.1.75 fixture combines open, close, lock, take, whole-number increase, IF, and OTHERWISE through independently emitted Profile 7 BSBC.
+
+This is Self-Hosting Milestone 2 Slice 2, not full self-hosting and not Ruby retirement. Normal production BASIC# compilation remains unchanged.
+
+The accepted release closeout order remains full validation -> accepted snapshot -> local Git commit/tag -> GitHub push/peeled-tag remote verification.

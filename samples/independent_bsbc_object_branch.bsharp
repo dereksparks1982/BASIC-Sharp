@@ -1,0 +1,27 @@
+DEFINE
+[
+    @north gate is a #door
+    @brass key is a #key
+].
+
+START
+[
+    @north gate is closed
+    PLAYER has 0 turns
+].
+
+WHEN PLAYER examines @north gate
+[
+    |then (open @north gate
+    |then (take @brass key
+    |then (increase turns of PLAYER by 1
+].
+
+IF @north gate is open
+[
+    |then (close @north gate
+].
+OTHERWISE
+[
+    |then (lock @north gate
+].

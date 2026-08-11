@@ -16,7 +16,7 @@ class TestSmallCompilerSubsetBSBCEmitter < Minitest::Test
     assert_equal 'bsharp.small_compiler_subset.bsbc_emitter.json', spec.fetch('format')
     assert_equal 1, spec.fetch('format_version')
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
-    assert_equal 'bsbc_emission_under_ruby_referee', spec.fetch('status')
+    assert_equal 'bsbc_emission_independent_under_ruby_referee', spec.fetch('status')
   end
 
   def test_fixtures_emit_stable_real_bsbc_and_load_back
@@ -25,6 +25,10 @@ class TestSmallCompilerSubsetBSBCEmitter < Minitest::Test
 
       assert record.fetch(:parser_ruby_referee_matches), fixture.fetch('name')
       assert record.fetch(:ir_ruby_referee_matches), fixture.fetch('name')
+      assert record.fetch(:bsbc_ruby_referee_matches), fixture.fetch('name')
+      assert record.fetch(:disassembly_ruby_referee_matches), fixture.fetch('name')
+      assert record.fetch(:fingerprint_ruby_referee_matches), fixture.fetch('name')
+      assert_equal record.fetch(:binary_sha256), record.fetch(:ruby_referee_binary_sha256), fixture.fetch('name')
       assert_equal 'bsharp.bytecode.bin', record.fetch(:binary_format), fixture.fetch('name')
       assert_equal fixture.fetch('expected_profile'), record.fetch(:profile), fixture.fetch('name')
       assert_equal fixture.fetch('expected_binary_bytes'), record.fetch(:binary_bytes), fixture.fetch('name')
@@ -42,6 +46,7 @@ class TestSmallCompilerSubsetBSBCEmitter < Minitest::Test
     assert_includes profiles, 'bsharp.bytecode.v1'
     assert_includes profiles, 'bsharp.bytecode.v2'
     assert_includes profiles, 'bsharp.bytecode.v4'
+    assert_includes profiles, 'bsharp.bytecode.v7'
     refute_includes profiles, 'bsharp.bytecode.v8'
   end
 end

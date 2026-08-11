@@ -105,6 +105,7 @@ module BasicSharp
       checks = {
         parser_ruby_referee_matches: ir_emitter.parser_matches_ruby_referee?,
         ir_ruby_referee_matches: ir_emitter.ir_matches_ruby_referee?,
+        bsbc_ruby_referee_matches: bsbc.fetch(:bsbc_ruby_referee_matches),
         bsbc_binary_matches: bsbc.fetch(:binary_sha256) == fixture.fetch('expected_binary_sha256'),
         loader_summary_matches: bsbc.fetch(:loader_summary_sha256) == fixture.fetch('expected_loader_summary_sha256'),
         vm_referee_event_results_match: self.class.normalize(vm_event_results) == self.class.normalize(referee_event_results),

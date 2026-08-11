@@ -53,6 +53,9 @@ module BasicSharp
       checks = {
         parser_ruby_referee_matches: record.fetch(:parser_ruby_referee_matches),
         ir_ruby_referee_matches: record.fetch(:ir_ruby_referee_matches),
+        bsbc_ruby_referee_matches: record.fetch(:bsbc_ruby_referee_matches),
+        disassembly_ruby_referee_matches: record.fetch(:disassembly_ruby_referee_matches),
+        fingerprint_ruby_referee_matches: record.fetch(:fingerprint_ruby_referee_matches),
         profile_matches: record.fetch(:profile) == fixture.fetch('expected_profile'),
         binary_bytes_match: record.fetch(:binary_bytes) == fixture.fetch('expected_binary_bytes'),
         binary_sha256_matches: record.fetch(:binary_sha256) == fixture.fetch('expected_binary_sha256'),

@@ -1,13 +1,13 @@
 {
   "format": "bsharp.readme_current_release_truth.json",
   "format_version": 1,
-  "target_version": "0.1.74",
+  "target_version": "0.1.75",
   "status": "readme_current_release_truth_gate",
   "title": "README Current Release Truth Gate",
   "current_release": {
-    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.74",
-    "build_title": "BASIC# v0.1.74 adds Self-Hosting Milestone 2 Slice 1: Semantic Resolver Independence.",
-    "summary": "v0.1.74 gives BSharp Compiler Subset 0 its own SmallCompilerSubsetSemanticResolver for the primary subset IR path while the production Ruby SemanticResolver remains a separate referee. Exact BSharp IR, BSBC, and BSharp VM parity remain required, including the v0.1.73 open, close, lock, and take object-interaction actions.",
+    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.75",
+    "build_title": "BASIC# v0.1.75 adds Self-Hosting Milestone 2 Slice 2: BSBC Emitter Independence.",
+    "summary": "v0.1.75 gives BSharp Compiler Subset 0 its own `SmallCompilerSubsetBSBCEncoder` for primary BSBC byte generation while the production Ruby `BytecodeEmitter` remains a separate referee. Exact byte-for-byte BSBC parity, loader acceptance, BSharp Virtual Machine execution parity, and Ruby referee runtime parity remain mandatory across Profiles 1 through 7.",
     "must_mention": [
       "Elderedd identity migration",
       "DKLab compatibility layer",
@@ -16,24 +16,26 @@
       "BCS",
       "BSharp Creator Services",
       "Self-Hosting Milestone 1",
-      "Self-Hosting Milestone 2 Slice 1",
-      "Semantic Resolver Independence",
-      "SmallCompilerSubsetSemanticResolver",
-      "production Ruby SemanticResolver",
+      "Self-Hosting Milestone 2 Slice 2",
+      "BSBC Emitter Independence",
+      "SmallCompilerSubsetBSBCEncoder",
+      "production Ruby `BytecodeEmitter`",
       "referee",
       "not full self-hosting",
       "Ruby remains the bootstrap compiler",
       "README Current Release Truth Gate",
-      "BSBC execution parity",
+      "byte-for-byte BSBC parity",
       "BSharp Virtual Machine",
       "Ruby referee runtime",
-      "18 fixtures",
-      "56 event executions",
+      "19 fixtures",
+      "57 event executions",
       "open",
       "close",
       "lock",
       "take",
-      "object interaction",
+      "IF",
+      "OTHERWISE",
+      "Profile 7",
       "Elderedd path direction",
       "UTF-8 source reading",
       "minimal/no-locale Ruby",
@@ -51,7 +53,7 @@
       "3,072 mutations",
       "Open3 capture encoding gap",
       "CLI validation remains truthful",
-      "v0.1.74"
+      "v0.1.75"
     ],
     "forbidden_current_section_phrases": [
       "adds the first small compiler subset IR golden parity harness",
@@ -65,7 +67,9 @@
       "removes the DKLab compatibility bridge",
       "v0.1.63 hardens UTF-8 source reading",
       "first small compiler subset BSBC execution parity gate",
-      "BASIC# v0.1.73 adds Plain-English Object Interaction Actions."
+      "BASIC# v0.1.73 adds Plain-English Object Interaction Actions.",
+      "BASIC# v0.1.74 adds Self-Hosting Milestone 2 Slice 1: Semantic Resolver Independence.",
+      "v0.1.75 gives BSharp Compiler Subset 0 its own SmallCompilerSubsetSemanticResolver"
     ]
   },
   "protected_truths": [

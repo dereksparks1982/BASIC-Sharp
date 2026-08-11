@@ -3,20 +3,20 @@
 ## Current accepted base
 
 ```text
-v0.1.73: Plain-English Object Interaction Actions
-commit f41d70a59f26def52ebb253ea1ad8f20c6e8bc0b
-tag v0.1.73
+v0.1.74: Self-Hosting Milestone 2 Slice 1 - Semantic Resolver Independence
+commit 6ef4cae79c4e353b54a2bd6376f43200636748f2
+tag v0.1.74
 ```
 
-v0.1.73 is the accepted rollback point. It made `(open`, `(close`, `(lock`, and `(take` executable end to end and passed the full native validation lane before snapshot, local Git closeout, and GitHub verification.
+v0.1.74 is the accepted rollback point. It gave BSharp Compiler Subset 0 an independent semantic resolver while the production Ruby SemanticResolver remained referee-only, then passed the full native validation lane before snapshot, local Git closeout, and GitHub verification.
 
 ## Current candidate
 
 ```text
-v0.1.74: Self-Hosting Milestone 2 Slice 1 - Semantic Resolver Independence
+v0.1.75: Self-Hosting Milestone 2 Slice 2 - BSBC Emitter Independence
 ```
 
-v0.1.74 gives BSharp Compiler Subset 0 an independent `SmallCompilerSubsetSemanticResolver`. The subset IR emitter must use that resolver for its primary BSharp IR document. The production Ruby `SemanticResolver` remains a separate referee only.
+v0.1.75 gives BSharp Compiler Subset 0 an independent `SmallCompilerSubsetBSBCEncoder`. The primary subset bytecode path must emit BSBC through that encoder. The production Ruby `BytecodeEmitter` remains a separate byte-for-byte referee only.
 
 The accepted subset lane for this build is:
 
@@ -25,17 +25,19 @@ TokenizerReader
 -> SmallCompilerSubsetParser
 -> SmallCompilerSubsetSemanticResolver
 -> BSharp IR
--> subset BSBC
+-> SmallCompilerSubsetBSBCEncoder
+-> BSharp Bytecode
+-> BytecodeLoader
 -> BSharp VM
 ```
 
-The execution corpus expands to 18 fixtures and 56 events. One new fixture carries the accepted v0.1.73 open, close, lock, and take interactions through the independent resolver, BSBC emission, loader, VM, and Ruby-referee parity path.
+The execution corpus expands to 19 fixtures and 57 events. The v0.1.75 mixed fixture carries open, close, lock, take, a whole-number increase, IF, and OTHERWISE through independent semantic resolution, independent Profile 7 BSBC encoding, the existing loader, BSharp VM execution, and Ruby-referee parity.
 
-Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v1.json`.
-Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v0_1_74.md`.
-Reference: `compiler/small_compiler_subset_semantic_resolver.rb`.
+Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json`.
+Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v0_1_75.md`.
+Reference: `compiler/small_compiler_subset_bsbc_encoder.rb`.
 
-Ruby remains the bootstrap compiler. v0.1.74 is not full self-hosting and does not change normal production compiler routing, Profile 1-7 meaning, bytecode format, runtime meaning, Save, ASK, or input behaviour.
+Ruby remains the bootstrap compiler. v0.1.75 is not full self-hosting and does not change normal production compiler routing, Profile 1-7 meaning, the BSBC binary format, runtime meaning, Save, ASK, or input behaviour.
 
 ## Canonical Company Bible
 
@@ -59,7 +61,7 @@ Every BASIC# build must follow the proven release path:
 
 ## Emergency DKLab Retirement and Elderedd Migration
 
-Priority: active. Status: continuing through v0.1.74.
+Priority: active. Status: continuing through v0.1.75.
 
 - Elderedd Softworks LLC is the parent company identity.
 - Elderedd Laboratory is the active lab identity.
@@ -76,21 +78,21 @@ Priority: active. Status: continuing through v0.1.74.
 Current truthful claim:
 
 ```text
-BSharp Compiler Subset 0 has Self-Hosting Milestone 2 Slice 1 under Ruby referee control.
-The subset path owns reader, parser, and semantic resolver stages for its bounded lane.
+BSharp Compiler Subset 0 has Self-Hosting Milestone 2 Slice 2 under Ruby referee control.
+The subset path owns reader, parser, semantic resolver, and BSBC encoding stages for its bounded lane.
 Ruby remains the bootstrap compiler and production referee.
 BASIC# is not fully self-hosted.
 ```
 
-The v0.1.72 proposal is now partially implemented by v0.1.74 semantic resolver independence. Future Milestone 2 slices should continue removing bounded subset dependence on production compiler stages while exact parity remains mandatory.
+The v0.1.72 proposal is now further implemented by v0.1.74 semantic resolver independence and v0.1.75 BSBC emitter independence. Future Milestone 2 slices should continue removing bounded subset dependence on production compiler stages while exact parity remains mandatory.
 
 ## Game-making runway
 
-v0.1.73 established four direct creator actions: open, close, lock, and take. v0.1.74 carries them into the self-hosting execution corpus so game-making progress and compiler-independence progress remain connected.
+v0.1.73 established four direct creator actions: open, close, lock, and take. v0.1.75 carries them with numeric and IF/OTHERWISE meaning through independently emitted Profile 7 BSBC so game-making progress and compiler-independence progress remain connected.
 
-## Next direction after v0.1.74
+## Next direction after v0.1.75
 
-1. Another bounded Self-Hosting Milestone 2 compiler-stage independence slice under Ruby referee parity.
+1. Continue Self-Hosting Milestone 2 with the next bounded production-compiler dependency removal under Ruby referee parity.
 2. A meaningful creator/game-making capability expansion if Derek chooses that lane.
 3. Repair any proven validation/release defect before new functionality if one is found.
 
@@ -143,6 +145,7 @@ spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json
 spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json

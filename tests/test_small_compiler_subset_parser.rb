@@ -14,7 +14,7 @@ class TestSmallCompilerSubsetParser < Minitest::Test
   end
 
   def test_spec_targets_the_live_basic_sharp_version
-    assert_equal '0.1.74', BasicSharp::VERSION
+    assert_equal '0.1.75', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
     assert_equal 'implementation_under_ruby_referee', spec.fetch('status')
   end
@@ -45,7 +45,7 @@ class TestSmallCompilerSubsetParser < Minitest::Test
     document = parser.to_h
 
     assert_equal 'bsharp.small_compiler_subset.parser.record', document.fetch(:format)
-    assert_equal '0.1.74', document.fetch(:version)
+    assert_equal '0.1.75', document.fetch(:version)
     assert_equal 'implementation_under_ruby_referee', document.fetch(:status)
     assert_equal true, document.fetch(:ruby_referee_matches)
   end

@@ -13,7 +13,7 @@ class TestSmallCompilerSubsetSceneBlockExpansion < Minitest::Test
   end
 
   def test_spec_targets_the_live_basic_sharp_version
-    assert_equal '0.1.74', BasicSharp::VERSION
+    assert_equal '0.1.75', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
     assert_equal 'scene_block_expansion_under_ruby_referee', spec.fetch('status')
   end
@@ -22,7 +22,7 @@ class TestSmallCompilerSubsetSceneBlockExpansion < Minitest::Test
     record = BasicSharp::SmallCompilerSubsetSceneBlockExpansion.new(spec).to_h
 
     assert_equal 'bsharp.small_compiler_subset.scene_block_expansion.record', record.fetch(:format)
-    assert_equal '0.1.74', record.fetch(:version)
+    assert_equal '0.1.75', record.fetch(:version)
     assert_equal 'scene_block_expansion_under_ruby_referee', record.fetch(:status)
     assert_equal true, record.fetch(:all_pass)
     assert_equal spec.fetch('valid_fixtures').length, record.fetch(:valid_fixture_count)

@@ -1,9 +1,9 @@
 {
   "format": "bsharp.small_compiler_subset.bsbc_emitter.json",
   "format_version": 1,
-  "target_version": "0.1.74",
-  "status": "bsbc_emission_under_ruby_referee",
-  "purpose": "Lock the first small compiler subset path that emits real BSharp Bytecode while Ruby remains the referee.",
+  "target_version": "0.1.75",
+  "status": "bsbc_emission_independent_under_ruby_referee",
+  "purpose": "Lock the small compiler subset path that emits real BSharp Bytecode through the independent Subset 0 encoder while the production Ruby BytecodeEmitter remains a separate referee.",
   "self_hosting_spec": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json",
   "valid_fixtures": [
     {
@@ -13,7 +13,7 @@
       "expected_binary_bytes": 1240,
       "expected_binary_sha256": "c09c60886cdb341accc427d07a0ac68350b675b4f4e2d1571e02dac216870ee1",
       "expected_disassembly_sha256": "3034d2b9a76be2b4c67c603642707319f316c243fd110e647604588cd80a20d3",
-      "expected_bsharp_ir_sha256": "4354e582a618414737fde75d547b9de2c811ed2e5192807ac3927b7508417597",
+      "expected_bsharp_ir_sha256": "7641455fa4404249e53b348021f5f734811684322e65f8abe59125c7590997a6",
       "expected_loader_summary": {
         "binary_format": "bsharp.bytecode.bin",
         "binary_format_version": 1,
@@ -42,7 +42,7 @@
       "expected_binary_bytes": 696,
       "expected_binary_sha256": "41bcab1173735b3664db2d28e2ff0076212039cfeadaabb33021aef78fdfe902",
       "expected_disassembly_sha256": "2c8763cfb898e311f17fcd1e3464ee1f946dc74f174e61fdad86b17554963be8",
-      "expected_bsharp_ir_sha256": "13b548144fdc1410144938abefab51b6df7653ba5f97395a5810ee9b2c67cc95",
+      "expected_bsharp_ir_sha256": "6851a73391d0fcef7489f14d5a58f983e400da687578473ed293a2a55733061f",
       "expected_loader_summary": {
         "binary_format": "bsharp.bytecode.bin",
         "binary_format_version": 1,
@@ -71,7 +71,7 @@
       "expected_binary_bytes": 732,
       "expected_binary_sha256": "fd0d0315d76aa44c7a143af7c0e6b9a0b61508da1f63f435dab6dfebbbe50403",
       "expected_disassembly_sha256": "0e860ca11f208c906bdcbd83222f8a97c0911f244ce0dc54246e0825bef251d6",
-      "expected_bsharp_ir_sha256": "8e325f2f214a26856c4dbc1889ac7f90875183d0537ca86532a5837731beab1d",
+      "expected_bsharp_ir_sha256": "93eab3c671f24b8aa7abae4127783023927f797b2b3198acff786e67701ed5f7",
       "expected_loader_summary": {
         "binary_format": "bsharp.bytecode.bin",
         "binary_format_version": 1,
@@ -92,15 +92,47 @@
       },
       "expected_loader_summary_sha256": "bd70b382823c750426c6cbd53968085fbc513cc7a648c0411d1bda064e6236d2",
       "expected_fingerprint": "8510a13d4cebb0edbd9ab12625faa2c513a086c96d7a7da3f5426ad6a8dbe3fd"
+    },
+    {
+      "name": "v075_independent_bsbc_object_branch",
+      "source": "DEFINE\n[\n    @north gate is a #door\n    @brass key is a #key\n].\n\nSTART\n[\n    @north gate is closed\n    PLAYER has 0 turns\n].\n\nWHEN PLAYER examines @north gate\n[\n    |then (open @north gate\n    |then (take @brass key\n    |then (increase turns of PLAYER by 1\n].\n\nIF @north gate is open\n[\n    |then (close @north gate\n].\nOTHERWISE\n[\n    |then (lock @north gate\n].\n",
+      "expected_profile": "bsharp.bytecode.v7",
+      "expected_binary_bytes": 804,
+      "expected_binary_sha256": "80f01cca55e4ae23e93378ac30ca6d4c8bb408be1166055e9dc36d88b5346bee",
+      "expected_disassembly_sha256": "2a1ab7ce04d7e096bea36db73ce568e3bb7d610a68a2a0c6f9390ba6d42d1b49",
+      "expected_bsharp_ir_sha256": "c5d4fb615fe59112825ae2648108bcb415acc6d943a2f670b03bd3f5306403ea",
+      "expected_loader_summary": {
+        "binary_format": "bsharp.bytecode.bin",
+        "binary_format_version": 1,
+        "profile": "bsharp.bytecode.v7",
+        "meaning_profile": "bsharp.meaning.v7",
+        "fingerprint": "75a44228a96e1f4d90924831bbc612e7da59b438e63a010f20465e49a913a961",
+        "strings": 15,
+        "kinds": 3,
+        "things": 3,
+        "start_records": 2,
+        "events": 1,
+        "if_rules": 1,
+        "code_blocks": 3,
+        "instructions": 5,
+        "controls": 0,
+        "hover_declarations": 0,
+        "context_declarations": 0
+      },
+      "expected_loader_summary_sha256": "85daacfa5289bb725339d5b765c2579f28b04ff78598ff007ccc7b6a29fb3284",
+      "expected_fingerprint": "75a44228a96e1f4d90924831bbc612e7da59b438e63a010f20465e49a913a961"
     }
   ],
   "requirements": [
     "uses SmallCompilerSubsetIREmitter for the approved small compiler subset source",
-    "emits real BSBC bytes through the existing BSharp Bytecode emitter",
-    "loads emitted bytes through the existing BSharp Bytecode loader",
+    "emits real BSBC bytes through SmallCompilerSubsetBSBCEncoder without calling the production BytecodeEmitter for primary output",
+    "uses the production BytecodeEmitter only as a separate exact-byte referee",
+    "loads independently emitted bytes through the existing BSharp Bytecode loader",
     "keeps parser, IR, bytecode, and loader checks under Ruby referee control",
+    "references spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json",
     "does not introduce Profile 8",
     "does not replace the production Ruby compiler path",
     "does not claim BASIC# is self-hosted"
-  ]
+  ],
+  "independence_contract": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json"
 }

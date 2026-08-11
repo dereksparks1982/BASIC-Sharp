@@ -1,7 +1,7 @@
 {
   "format": "bsharp.elderedd_identity_contract.json",
   "format_version": 1,
-  "target_version": "0.1.74",
+  "target_version": "0.1.75",
   "status": "elderedd_identity_migration_with_dklab_compatibility",
   "parent_company": "Elderedd Softworks LLC",
   "laboratory": "Elderedd Laboratory",

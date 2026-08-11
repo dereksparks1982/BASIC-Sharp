@@ -1,37 +1,34 @@
 # BASIC# Master Thread Handoff
 
-## Current build truth
+## Current state
 
-- **Accepted base:** v0.1.73 / `f41d70a59f26def52ebb253ea1ad8f20c6e8bc0b`
-- **Accepted base tag:** `v0.1.73`
-- **Candidate:** v0.1.74 Self-Hosting Milestone 2 Slice 1: Semantic Resolver Independence
-- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_74_SELF_HOSTING_MILESTONE_2_SEMANTIC_RESOLVER_INDEPENDENCE_CHANGED_FILES_ONLY.zip`
-- **Rollback:** reset to tag `v0.1.73` and remove only v0.1.74 added paths before applying a repaired candidate.
+- **Accepted base:** v0.1.74 at commit `6ef4cae79c4e353b54a2bd6376f43200636748f2`, tag `v0.1.74`.
+- **Candidate:** v0.1.75 Self-Hosting Milestone 2 Slice 2: BSBC Emitter Independence.
+- **Rollback:** reset to tag `v0.1.74` and remove only v0.1.75 added paths before applying a repaired candidate.
+- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_75_SELF_HOSTING_MILESTONE_2_BSBC_EMITTER_INDEPENDENCE_CHANGED_FILES_ONLY.zip`.
 
-## v0.1.74 purpose
+## v0.1.75 purpose
 
-BSharp Compiler Subset 0 now owns an independent semantic resolution stage. `compiler/small_compiler_subset_ir_emitter.rb` builds its primary document with `SmallCompilerSubsetSemanticResolver`. The production Ruby `SemanticResolver` remains a separate referee and must not be called or required by `compiler/small_compiler_subset_semantic_resolver.rb`.
+BSharp Compiler Subset 0 gains `SmallCompilerSubsetBSBCEncoder` as the primary producer of BSBC bytes. The production Ruby `BytecodeEmitter` remains loaded only as a separate referee for exact byte-for-byte comparison.
 
-The candidate pipeline is:
+The bounded path is:
 
 ```text
 TokenizerReader
 -> SmallCompilerSubsetParser
 -> SmallCompilerSubsetSemanticResolver
 -> BSharp IR
--> SmallCompilerSubsetBSBCEmitter
--> BSharp VM
+-> SmallCompilerSubsetBSBCEncoder
+-> BSharp Bytecode
+-> BytecodeLoader
+-> BSharp Virtual Machine
 ```
 
-The new semantic resolver is required to match the production Ruby Parser plus SemanticResolver output exactly. This is Self-Hosting Milestone 2 Slice 1 under Ruby referee control, not full self-hosting and not Ruby retirement.
+The independent encoder must not require `compiler/bytecode_emitter.rb` and must not call `BytecodeEmitter.new`. The orchestrator may construct the production emitter only on the explicit referee side.
 
-## v0.1.73 capability carried forward
-
-The accepted creator words `(open`, `(close`, `(lock`, and `(take` remain executable. The v0.1.74 execution corpus includes a dedicated object-interaction fixture that proves those actions travel through the independent semantic resolver, BSBC, loader, BSharp VM, and Ruby referee path without semantic drift.
+The dedicated v0.1.75 fixture combines `(open`, `(close`, `(lock`, `(take`, whole-number increase, IF, and OTHERWISE. It must emit Profile 7 BSBC independently, match the production emitter byte for byte, load successfully, execute in the BSharp VM, and match the Ruby referee runtime.
 
 ## Self-hosting contract reference ledger
-
-The active machine-checked self-hosting references are:
 
 ```text
 spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json
@@ -44,6 +41,7 @@ spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_EXECUTION_CORPUS_v1.json
@@ -56,13 +54,13 @@ spec/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v1.json
 
 ## Canonical Company Bible
 
-The single canonical Company Bible remains `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md`. Current build, release, validation, rollback, and approval rules must remain synchronized there.
+The single canonical Company Bible remains `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md`. Current build, release, validation, rollback, approval, and no-password GitHub closeout rules must remain synchronized there.
 
 ## Validation floor
 
-v0.1.74 must run the semantic resolver regression lane, complete normal suite, complete no-locale suite, the entire sealed tool inventory, deterministic fixture sweep, release package preflight, release forensic overlay, whole-language gauntlet contract, and full Trial by Fire.
+v0.1.75 must run the BSBC emitter independence regression lane, complete normal suite, complete no-locale suite, the entire sealed tool inventory, deterministic fixture sweep, release package preflight, release forensic overlay, whole-language gauntlet contract, and full Trial by Fire.
 
-The v0.1.73 floor of 583 runs / 9,320 assertions may not shrink. The new semantic resolver tests increase the suite.
+The accepted v0.1.74 floor of 592 runs / 9,382 assertions may not shrink. The new BSBC independence tests increase the suite.
 
 ## Release closeout
 
@@ -70,4 +68,4 @@ After unmistakable `FINAL PASS`, create the accepted snapshot first. Then local 
 
 ## Current continuation point
 
-Apply and validate the v0.1.74 candidate. If any gate fails, preserve the failure as evidence, return to the accepted v0.1.73 rollback point, repair the same version, and rerun the complete validation lane.
+Apply and validate the v0.1.75 candidate. If any gate fails, preserve the failure as evidence, return to the accepted v0.1.74 rollback point, repair the same version, and rerun the complete validation lane.

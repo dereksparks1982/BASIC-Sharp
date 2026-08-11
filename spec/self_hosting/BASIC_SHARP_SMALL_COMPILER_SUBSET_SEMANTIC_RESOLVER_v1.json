@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.semantic_resolver.contract.json",
   "format_version": 1,
-  "target_version": "0.1.74",
+  "target_version": "0.1.75",
   "title": "Small Compiler Subset Semantic Resolver Independence",
   "status": "semantic_resolver_independent_under_ruby_referee",
   "purpose": "Give the BSharp Compiler Subset 0 path its own semantic resolver implementation while preserving the production Ruby SemanticResolver only as a separate referee for deterministic parity.",
@@ -59,7 +59,7 @@
     "The production SemanticResolver may remain loaded for referee comparison but cannot be required by the independent resolver file.",
     "Object interaction open close lock and take must canonicalize identically through the independent resolver and Ruby referee.",
     "The semantic resolver independence tool must be present in the sealed Trial-by-Fire validation inventory.",
-    "No full self-hosting or Ruby retirement claim is permitted in v0.1.74."
+    "No full self-hosting or Ruby retirement claim is permitted in v0.1.75."
   ],
   "documents": {
     "spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v1.json",

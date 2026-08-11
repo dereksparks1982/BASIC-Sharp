@@ -1,0 +1,72 @@
+{
+  "format": "bsharp.small_compiler_subset.bsbc_emitter_independence.contract.json",
+  "format_version": 1,
+  "target_version": "0.1.75",
+  "title": "Small Compiler Subset BSBC Emitter Independence",
+  "status": "bsbc_emitter_independent_under_ruby_referee",
+  "purpose": "Give BSharp Compiler Subset 0 its own BSBC byte encoder while preserving the production Ruby BytecodeEmitter only as a separate referee for exact binary parity.",
+  "scope": {
+    "allowed": [
+      "adding compiler/small_compiler_subset_bsbc_encoder.rb as the independent Subset 0 byte encoder",
+      "routing SmallCompilerSubsetBSBCEmitter primary bytes through SmallCompilerSubsetBSBCEncoder",
+      "using compiler/bytecode_emitter.rb only on a separate referee path",
+      "requiring exact byte-for-byte BSBC parity against the production Ruby BytecodeEmitter",
+      "loading independently emitted bytes through the existing production BytecodeLoader",
+      "executing independently emitted bytes through the existing BSharp Virtual Machine",
+      "proving Profile 1 through Profile 7 compatibility without changing bytecode layout"
+    ],
+    "forbidden_until_later_approval": [
+      "requiring compiler/bytecode_emitter.rb from compiler/small_compiler_subset_bsbc_encoder.rb",
+      "calling BasicSharp::BytecodeEmitter from compiler/small_compiler_subset_bsbc_encoder.rb",
+      "routing normal BASIC# production compilation through the subset BSBC encoder",
+      "changing the BSBC binary format",
+      "adding Profile 8",
+      "claiming BASIC# is fully self-hosted",
+      "retiring the Ruby bootstrap compiler"
+    ]
+  },
+  "fixture": {
+    "name": "v075_independent_bsbc_object_branch",
+    "source_path": "samples/independent_bsbc_object_branch.bsharp",
+    "expected_profile": "bsharp.bytecode.v7",
+    "expected_binary_bytes": 804,
+    "expected_binary_sha256": "80f01cca55e4ae23e93378ac30ca6d4c8bb408be1166055e9dc36d88b5346bee",
+    "expected_disassembly_sha256": "2a1ab7ce04d7e096bea36db73ce568e3bb7d610a68a2a0c6f9390ba6d42d1b49",
+    "expected_bsharp_ir_sha256": "c5d4fb615fe59112825ae2648108bcb415acc6d943a2f670b03bd3f5306403ea",
+    "expected_fingerprint": "75a44228a96e1f4d90924831bbc612e7da59b438e63a010f20465e49a913a961",
+    "expected_loader_summary_sha256": "85daacfa5289bb725339d5b765c2579f28b04ff78598ff007ccc7b6a29fb3284",
+    "required_creator_actions": [
+      "open",
+      "close",
+      "lock",
+      "take"
+    ],
+    "required_features": [
+      "object interaction",
+      "whole-number increase",
+      "IF",
+      "OTHERWISE"
+    ]
+  },
+  "acceptance_rules": [
+    "SmallCompilerSubsetBSBCEncoder must not require or call the production BytecodeEmitter.",
+    "SmallCompilerSubsetBSBCEmitter must produce its primary bytes through SmallCompilerSubsetBSBCEncoder.",
+    "The production BytecodeEmitter may remain loaded only for a separate referee comparison.",
+    "Independent bytes must match production referee bytes exactly for all sealed subset BSBC fixtures.",
+    "The existing BytecodeLoader must accept the independently emitted bytes.",
+    "The BSharp Virtual Machine must execute the independently emitted bytes with Ruby referee parity.",
+    "The v0.1.75 dedicated fixture must combine object interaction with numeric and IF/OTHERWISE meaning.",
+    "No Profile 8, binary-format change, full self-hosting claim, or Ruby retirement is allowed."
+  ],
+  "documents": {
+    "spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json",
+    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v0_1_75.md",
+    "encoder": "compiler/small_compiler_subset_bsbc_encoder.rb",
+    "orchestrator": "compiler/small_compiler_subset_bsbc_emitter.rb",
+    "ruby_referee": "compiler/bytecode_emitter.rb",
+    "loader": "compiler/bytecode_loader.rb",
+    "tool": "tools/small_compiler_subset_bsbc_emitter_independence.rb",
+    "test": "tests/test_small_compiler_subset_bsbc_emitter_independence.rb",
+    "self_hosting_subset_spec": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json"
+  }
+}
