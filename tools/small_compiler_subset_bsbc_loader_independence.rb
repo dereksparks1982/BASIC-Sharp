@@ -199,7 +199,7 @@ end
 
 parity_source = File.read(File.join(ROOT, 'compiler/small_compiler_subset_bsbc_execution_parity.rb'), encoding: 'UTF-8')
 assert_contract!(parity_source.include?('SmallCompilerSubsetBSBCLoader.new'), 'execution parity does not load through independent loader')
-assert_contract!(parity_source.include?('SmallCompilerSubsetLoadedVirtualMachine.new(subset_loader)'), 'BSharp VM execution lane is not fed by subset-loaded model')
+assert_contract!(parity_source.include?('SmallCompilerSubsetBSBCVirtualMachine.new(subset_loader)'), 'BSharp VM execution lane is not fed by subset-loaded model')
 
 references = [
   'README.md',

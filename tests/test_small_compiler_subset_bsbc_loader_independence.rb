@@ -41,7 +41,7 @@ class TestSmallCompilerSubsetBSBCLoaderIndependence < Minitest::Test
   def test_contract_identity_and_live_version
     assert_equal 'bsharp.small_compiler_subset.bsbc_loader_independence.contract.json', spec.fetch('format')
     assert_equal 1, spec.fetch('format_version')
-    assert_equal '0.1.76', BasicSharp::VERSION
+    assert_equal '0.1.77', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
     assert_equal 'bsbc_loader_independent_under_ruby_referee', spec.fetch('status')
   end
@@ -103,7 +103,7 @@ class TestSmallCompilerSubsetBSBCLoaderIndependence < Minitest::Test
   def test_execution_parity_routes_subset_loaded_model_into_vm_engine
     text = File.read(File.join(ROOT, 'compiler/small_compiler_subset_bsbc_execution_parity.rb'), encoding: 'UTF-8')
     assert_includes text, 'SmallCompilerSubsetBSBCLoader.new'
-    assert_includes text, 'SmallCompilerSubsetLoadedVirtualMachine.new(subset_loader)'
+    assert_includes text, 'SmallCompilerSubsetBSBCVirtualMachine.new(subset_loader)'
   end
 
   def test_trial_by_fire_inventory_runs_loader_independence_gate

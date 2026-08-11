@@ -6,5 +6,5 @@
   "input": "samples/compound_if_conditions.input.json",
   "input_sha256": "29d0ab80f061b9add4a21219ae64fd5a50f2c9fb516595bbc2ebad06a052fe0b",
   "expected": "samples/compound_if_conditions.expected.json",
-  "expected_sha256": "173426d0711eb700c09bde6ad173663dc912854c4a58589fd4995216ecc7f465"
+  "expected_sha256": "c7f465522b87b8e2d9a43c9b9c030ee311c33c056803aafe2768af7ca6c6549c"
 }

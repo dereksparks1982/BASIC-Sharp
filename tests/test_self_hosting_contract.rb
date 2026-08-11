@@ -13,7 +13,7 @@ class TestSelfHostingContract < Minitest::Test
   end
 
   def test_spec_targets_the_live_basic_sharp_version
-    assert_equal '0.1.76', BasicSharp::VERSION
+    assert_equal '0.1.77', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
   end
 
@@ -68,6 +68,16 @@ class TestSelfHostingContract < Minitest::Test
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_encoder_file')))
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_emitter_independence_tool')))
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_emitter_independence_test')))
+    assert_equal 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v1.json', documents.fetch('small_compiler_subset_bsbc_loader_independence_spec')
+    assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_loader_independence_implementation')))
+    assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_loader_file')))
+    assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_loader_independence_tool')))
+    assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_loader_independence_test')))
+    assert_equal 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v1.json', documents.fetch('small_compiler_subset_bsbc_vm_independence_spec')
+    assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_vm_independence_implementation')))
+    assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_virtual_machine_file')))
+    assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_vm_independence_tool')))
+    assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_vm_independence_test')))
     assert_equal 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json', documents.fetch('small_compiler_subset_bsbc_parity_harness_spec')
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_parity_harness_implementation')))
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_parity_harness_tool')))
@@ -107,6 +117,8 @@ class TestSelfHostingContract < Minitest::Test
     assert_includes tools, 'tools/small_compiler_subset_symbol_table_contract.rb'
     assert_includes tools, 'tools/small_compiler_subset_bsbc_emitter.rb'
     assert_includes tools, 'tools/small_compiler_subset_bsbc_emitter_independence.rb'
+    assert_includes tools, 'tools/small_compiler_subset_bsbc_loader_independence.rb'
+    assert_includes tools, 'tools/small_compiler_subset_bsbc_vm_independence.rb'
     assert_includes tools, 'tools/small_compiler_subset_bsbc_parity_harness.rb'
     assert_includes tools, 'tools/self_hosting_fixture_corpus.rb'
     assert_includes tools, 'tools/small_compiler_subset_runtime_smoke.rb'

@@ -1,13 +1,13 @@
 {
   "format": "bsharp.readme_current_release_truth.json",
   "format_version": 1,
-  "target_version": "0.1.76",
+  "target_version": "0.1.77",
   "status": "readme_current_release_truth_gate",
   "title": "README Current Release Truth Gate",
   "current_release": {
-    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.76",
-    "build_title": "BASIC# v0.1.76 adds Self-Hosting Milestone 2 Slice 3: BSBC Loader Independence.",
-    "summary": "v0.1.76 gives BSharp Compiler Subset 0 its own `SmallCompilerSubsetBSBCLoader` trust boundary while the production Ruby `BytecodeLoader` remains a separate referee. Exact trusted-model, loader-summary, fingerprint, disassembly, malformed-artifact rejection, BSharp Virtual Machine execution, and Ruby referee runtime parity remain mandatory across Profiles 1 through 7.",
+    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.77",
+    "build_title": "BASIC# v0.1.77 adds Self-Hosting Milestone 2 Slice 4: BSharp VM Execution Independence.",
+    "summary": "v0.1.77 gives BSharp Compiler Subset 0 its own `SmallCompilerSubsetBSBCVirtualMachine` execution engine while the production Ruby `BytecodeVirtualMachine` and `BasicSharp::Runtime` remain separate referees. Exact event-result, final-world, BSharp Save, follow-up-event, loop-protection, and deterministic replay parity remain mandatory across Profiles 1 through 7.",
     "must_mention": [
       "Elderedd identity migration",
       "DKLab compatibility layer",
@@ -16,23 +16,20 @@
       "BCS",
       "BSharp Creator Services",
       "Self-Hosting Milestone 1",
-      "Self-Hosting Milestone 2 Slice 3",
-      "BSBC Loader Independence",
-      "SmallCompilerSubsetBSBCLoader",
-      "production Ruby `BytecodeLoader`",
+      "Self-Hosting Milestone 2 Slice 4",
+      "BSharp VM Execution Independence",
+      "SmallCompilerSubsetBSBCVirtualMachine",
+      "production Ruby `BytecodeVirtualMachine`",
+      "BasicSharp::Runtime",
       "referee",
       "not full self-hosting",
-      "Ruby remains the bootstrap compiler",
       "README Current Release Truth Gate",
-      "malformed-BSBC",
-      "BSharp VM",
-      "Ruby referee",
-      "20 fixtures",
-      "58 event executions",
-      "open",
-      "close",
-      "lock",
-      "take",
+      "README Current Release Truth Gate",
+      "21 fixtures",
+      "60 event executions",
+      "1,024",
+      "follow-up-event",
+      "open/close/lock/take",
       "IF/OTHERWISE",
       "Profile 7",
       "Elderedd path direction",
@@ -52,7 +49,7 @@
       "3,072 mutations",
       "Open3 capture encoding gap",
       "CLI validation remains truthful",
-      "v0.1.76"
+      "v0.1.77"
     ],
     "forbidden_current_section_phrases": [
       "adds the first small compiler subset IR golden parity harness",
@@ -68,13 +65,16 @@
       "first small compiler subset BSBC execution parity gate",
       "BASIC# v0.1.73 adds Plain-English Object Interaction Actions.",
       "BASIC# v0.1.74 adds Self-Hosting Milestone 2 Slice 1: Semantic Resolver Independence.",
-      "v0.1.76 gives BSharp Compiler Subset 0 its own SmallCompilerSubsetSemanticResolver",
+      "v0.1.77 gives BSharp Compiler Subset 0 its own SmallCompilerSubsetSemanticResolver",
       "BASIC# v0.1.75 adds Self-Hosting Milestone 2 Slice 2: BSBC Emitter Independence.",
-      "v0.1.76 gives BSharp Compiler Subset 0 its own `SmallCompilerSubsetBSBCEncoder` for primary BSBC byte generation"
+      "v0.1.77 gives BSharp Compiler Subset 0 its own `SmallCompilerSubsetBSBCEncoder` for primary BSBC byte generation",
+      "BASIC# v0.1.76 adds Self-Hosting Milestone 2 Slice 3: BSBC Loader Independence.",
+      "BASIC# v0.1.77 adds Self-Hosting Milestone 2 Slice 3: BSBC Loader Independence.",
+      "v0.1.77 gives BSharp Compiler Subset 0 its own `SmallCompilerSubsetBSBCLoader` trust boundary while the production Ruby `BytecodeLoader` remains a separate referee."
     ],
     "canonical_current_lines": {
-      "self_hosting_milestone": "Current self-hosting milestone: v0.1.76 Self-Hosting Milestone 2 Slice 3 under Ruby referee control",
-      "current_build": "Current build: v0.1.76 Self-Hosting Milestone 2 Slice 3 BSBC Loader Independence"
+      "self_hosting_milestone": "Current self-hosting milestone: v0.1.77 Self-Hosting Milestone 2 Slice 4 under Ruby referee control",
+      "current_build": "Current build: v0.1.77 Self-Hosting Milestone 2 Slice 4 BSharp VM Execution Independence"
     }
   },
   "protected_truths": [

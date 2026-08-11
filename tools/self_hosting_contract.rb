@@ -30,6 +30,8 @@ SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_SPEC_PATH = File.join(ROOT, 'spe
 SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v0_1_75.md')
 SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v1.json')
 SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v0_1_76.md')
+SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v1.json')
+SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v0_1_77.md')
 SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json')
 SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_1_56.md')
 SELF_HOSTING_FIXTURE_CORPUS_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json')
@@ -63,6 +65,8 @@ REFERENCE_PATHS = [
   'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v0_1_75.md',
   'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v1.json',
   'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v0_1_76.md',
+  'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v1.json',
+  'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v0_1_77.md',
   'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json',
   'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_1_56.md',
   'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json',
@@ -132,6 +136,11 @@ assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subs
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_emitter_independence_test'))), 'small compiler subset BSBC emitter independence test is missing')
 assert_contract!(File.file?(SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_SPEC_PATH), 'small compiler subset BSBC loader independence spec is missing')
 assert_contract!(File.file?(SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_DOC_PATH), 'small compiler subset BSBC loader independence document is missing')
+assert_contract!(File.file?(SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_SPEC_PATH), 'small compiler subset BSharp VM independence spec is missing')
+assert_contract!(File.file?(SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_DOC_PATH), 'small compiler subset BSharp VM independence document is missing')
+assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_virtual_machine_file'))), 'small compiler subset BSharp VM implementation is missing')
+assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_vm_independence_tool'))), 'small compiler subset BSharp VM independence tool is missing')
+assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_vm_independence_test'))), 'small compiler subset BSharp VM independence test is missing')
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_loader_file'))), 'small compiler subset BSBC loader implementation is missing')
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_loader_independence_tool'))), 'small compiler subset BSBC loader independence tool is missing')
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_loader_independence_test'))), 'small compiler subset BSBC loader independence test is missing')
@@ -168,6 +177,7 @@ assert_contract!(rules.any? { |entry| entry.include?('symbol table contract') },
 assert_contract!(rules.any? { |entry| entry.include?('BSBC emitter') }, 'subset BSBC emitter rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('SmallCompilerSubsetBSBCEncoder') }, 'subset BSBC emitter independence rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('SmallCompilerSubsetBSBCLoader') }, 'subset BSBC loader independence rule missing')
+assert_contract!(rules.any? { |entry| entry.include?('SmallCompilerSubsetBSBCVirtualMachine') }, 'subset BSharp VM independence rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('BSBC golden parity') }, 'subset BSBC golden parity rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('fixture corpus') }, 'self-hosting fixture corpus rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('runtime smoke') }, 'small compiler subset runtime smoke rule missing')
@@ -197,6 +207,7 @@ symbol_table_doc = File.read(SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_DOC_PAT
 bsbc_emitter_doc = File.read(SMALL_COMPILER_SUBSET_BSBC_EMITTER_DOC_PATH, encoding: 'UTF-8')
 bsbc_emitter_independence_doc = File.read(SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_DOC_PATH, encoding: 'UTF-8')
 bsbc_loader_independence_doc = File.read(SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_DOC_PATH, encoding: 'UTF-8')
+bsbc_vm_independence_doc = File.read(SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_DOC_PATH, encoding: 'UTF-8')
 bsbc_parity_doc = File.read(SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_DOC_PATH, encoding: 'UTF-8')
 fixture_corpus_doc = File.read(SELF_HOSTING_FIXTURE_CORPUS_DOC_PATH, encoding: 'UTF-8')
 runtime_smoke_doc = File.read(SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_DOC_PATH, encoding: 'UTF-8')
@@ -229,6 +240,9 @@ assert_contract!(bsbc_emitter_independence_doc.include?('not full self-hosting')
 assert_contract!(bsbc_loader_independence_doc.include?('SmallCompilerSubsetBSBCLoader'), 'BSBC loader independence document must name the independent loader')
 assert_contract!(bsbc_loader_independence_doc.include?('malformed-artifact'), 'BSBC loader independence document must require malformed-artifact parity')
 assert_contract!(bsbc_loader_independence_doc.include?('not full self-hosting'), 'BSBC loader independence document must not claim full self-hosting')
+assert_contract!(bsbc_vm_independence_doc.include?('SmallCompilerSubsetBSBCVirtualMachine'), 'BSharp VM independence document must name the independent VM')
+assert_contract!(bsbc_vm_independence_doc.include?('production `BytecodeVirtualMachine`') || bsbc_vm_independence_doc.include?('production BytecodeVirtualMachine'), 'BSharp VM independence document must preserve production VM referee role')
+assert_contract!(bsbc_vm_independence_doc.include?('not full self-hosting'), 'BSharp VM independence document must not claim full self-hosting')
 assert_contract!(bsbc_parity_doc.include?('BSBC Golden Parity Harness'), 'small compiler subset BSBC parity document must name BSBC Golden Parity Harness')
 assert_contract!(bsbc_parity_doc.include?('No bytecode or BSBC rename'), 'small compiler subset BSBC parity document must preserve bytecode names')
 assert_contract!(fixture_corpus_doc.include?('Self-Hosting Fixture Corpus'), 'fixture corpus document must name Self-Hosting Fixture Corpus')
@@ -263,6 +277,7 @@ puts 'Small compiler subset symbol table contract linked: PASS'
 puts 'Small compiler subset BSBC emitter linked: PASS'
 puts 'Small compiler subset BSBC emitter independence linked: PASS'
 puts 'Small compiler subset BSBC loader independence linked: PASS'
+puts 'Small compiler subset BSharp VM independence linked: PASS'
 puts 'Small compiler subset BSBC golden parity harness linked: PASS'
 puts 'Self-hosting fixture corpus linked: PASS'
 puts 'Small compiler subset runtime smoke linked: PASS'

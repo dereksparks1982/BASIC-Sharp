@@ -1,15 +1,15 @@
 {
   "format": "bsharp.small_compiler_subset.execution_corpus.json",
   "format_version": 1,
-  "target_version": "0.1.76",
+  "target_version": "0.1.77",
   "title": "BASIC# Small Compiler Subset Execution Corpus",
   "status": "execution_corpus_expanded_under_ruby_referee",
-  "purpose": "Treat the BSBC execution parity fixtures as a growing corpus, require broader coverage than a single smoke path, and prove every fixture still runs through source to BSIR to BSBC to BSharp VM execution while matching the Ruby referee runtime.",
+  "purpose": "Treat the BSBC execution parity fixtures as a growing corpus, require broader coverage than a single smoke path, and prove every fixture still runs through the bounded independent source-to-VM lane while matching the production VM and Ruby referee runtime.",
   "parity_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json",
   "minimums": {
-    "fixtures": 20,
-    "categories": 14,
-    "events": 58
+    "fixtures": 21,
+    "categories": 15,
+    "events": 60
   },
   "guardrails": [
     "Ruby remains the referee",
@@ -18,7 +18,8 @@
     "release package preflight remains required",
     "deterministic fixture hash sweep remains required",
     "independent subset BSBC bytes must match the production BytecodeEmitter referee",
-    "independent subset BSBC loading must match the production BytecodeLoader referee"
+    "independent subset BSBC loading must match the production BytecodeLoader referee",
+    "independent subset BSharp VM execution must match the production BytecodeVirtualMachine and Ruby Runtime referees"
   ],
   "forbidden": [
     "claiming BASIC# is self-hosted",
@@ -42,5 +43,10 @@
     "fixture": "v076_independent_bsbc_loader_mixed",
     "category": "v076_independent_bsbc_loader",
     "purpose": "Prove the full bounded compiler lane reaches BSharp VM execution through independently validated Profile 7 BSBC while matching the production BytecodeLoader and Ruby runtime referees."
+  },
+  "v0_1_77_bsbc_vm_execution_independence": {
+    "fixture": "v077_independent_bsbc_vm_execution",
+    "category": "v077_independent_bsbc_vm",
+    "purpose": "Prove the bounded path independently executes Profile 7 BSBC through SmallCompilerSubsetBSBCVirtualMachine while matching the production VM and Ruby runtime referees."
   }
 }

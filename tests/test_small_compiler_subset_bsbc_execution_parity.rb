@@ -35,7 +35,7 @@ class TestSmallCompilerSubsetBSBCExecutionParity < Minitest::Test
 
   def test_every_fixture_executes_bsbc_in_the_vm_and_matches_ruby_referee
     assert parity.fetch(:all_pass)
-    assert_operator parity.fetch(:fixture_count), :>=, 18
+    assert_operator parity.fetch(:fixture_count), :>=, 21
     parity.fetch(:fixtures).each do |fixture|
       assert fixture.fetch(:passes), fixture.fetch(:name)
       assert_equal fixture.fetch(:events).length, fixture.fetch(:runtime).fetch(:matched_event_count), fixture.fetch(:name)
@@ -43,9 +43,12 @@ class TestSmallCompilerSubsetBSBCExecutionParity < Minitest::Test
       assert_equal fixture.fetch(:expected_referee_event_results_sha256), fixture.fetch(:runtime).fetch(:referee_event_results_sha256), fixture.fetch(:name)
       assert_equal fixture.fetch(:expected_final_snapshot_sha256), fixture.fetch(:runtime).fetch(:final_snapshot_sha256), fixture.fetch(:name)
       assert_equal fixture.fetch(:expected_save_document_sha256), fixture.fetch(:runtime).fetch(:save_document_sha256), fixture.fetch(:name)
-      assert fixture.fetch(:checks).fetch(:vm_referee_event_results_match), fixture.fetch(:name)
-      assert fixture.fetch(:checks).fetch(:vm_referee_snapshot_matches), fixture.fetch(:name)
-      assert fixture.fetch(:checks).fetch(:vm_referee_save_document_matches), fixture.fetch(:name)
+      assert fixture.fetch(:checks).fetch(:independent_vm_production_vm_event_results_match), fixture.fetch(:name)
+      assert fixture.fetch(:checks).fetch(:independent_vm_ruby_referee_event_results_match), fixture.fetch(:name)
+      assert fixture.fetch(:checks).fetch(:independent_vm_production_vm_snapshot_matches), fixture.fetch(:name)
+      assert fixture.fetch(:checks).fetch(:independent_vm_ruby_referee_snapshot_matches), fixture.fetch(:name)
+      assert fixture.fetch(:checks).fetch(:independent_vm_production_vm_save_document_matches), fixture.fetch(:name)
+      assert fixture.fetch(:checks).fetch(:independent_vm_ruby_referee_save_document_matches), fixture.fetch(:name)
     end
   end
 
@@ -58,9 +61,20 @@ class TestSmallCompilerSubsetBSBCExecutionParity < Minitest::Test
     assert_equal 1, fixture.fetch(:runtime).fetch(:matched_event_count)
   end
 
+
+  def test_v077_vm_independence_fixture_crosses_full_independent_chain
+    fixture = parity.fetch(:fixtures).find { |entry| entry.fetch(:name) == 'v077_independent_bsbc_vm_execution' }
+    refute_nil fixture
+    assert fixture.fetch(:passes)
+    assert_equal 'v077_independent_bsbc_vm', fixture.fetch(:category)
+    assert_equal 2, fixture.fetch(:runtime).fetch(:matched_event_count)
+    assert fixture.fetch(:checks).fetch(:independent_vm_production_vm_event_results_match)
+    assert fixture.fetch(:checks).fetch(:independent_vm_ruby_referee_event_results_match)
+  end
+
   def test_every_fixture_declares_required_expected_fields
     required = BasicSharp::SmallCompilerSubsetBSBCExecutionParity.required_expected_fields
-    assert_equal 7, required.length
+    assert_equal 8, required.length
     spec.fetch('fixtures').each do |fixture|
       required.each do |field|
         assert fixture.key?(field), "#{fixture.fetch('name')} missing #{field}"

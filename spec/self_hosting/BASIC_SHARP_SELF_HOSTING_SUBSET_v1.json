@@ -1,7 +1,7 @@
 {
   "format": "bsharp.self_hosting.subset.json",
   "format_version": 1,
-  "target_version": "0.1.76",
+  "target_version": "0.1.77",
   "title": "Self-Hosting Foundation and Compiler Subset Contract",
   "status": "foundation_contract_only",
   "purpose": "Define the first BASIC# subset allowed for future compiler-writing work while Ruby remains the bootstrap compiler and reference authority.",
@@ -32,7 +32,8 @@
     "bootstrap boundary audit under Ruby referee",
     "Self-Hosting Milestone 1 under Ruby referee control for BSharp Compiler Subset 0",
     "independent Subset 0 BSBC byte encoding through SmallCompilerSubsetBSBCEncoder under production BytecodeEmitter referee parity",
-    "independent Subset 0 BSBC validation through SmallCompilerSubsetBSBCLoader under production BytecodeLoader referee parity"
+    "independent Subset 0 BSBC validation through SmallCompilerSubsetBSBCLoader under production BytecodeLoader referee parity",
+    "independent Subset 0 BSBC execution through SmallCompilerSubsetBSBCVirtualMachine under production BytecodeVirtualMachine and Ruby Runtime referee parity"
   ],
   "compiler_subset_forbids_until_later_approval": [
     "replacing the Ruby bootstrap compiler",
@@ -99,6 +100,10 @@
     {
       "version_lane": "v0.1.76",
       "goal": "Give BSharp Compiler Subset 0 its own BSBC loader trust boundary and require exact valid-model plus malformed-artifact rejection parity against the production Ruby BytecodeLoader referee."
+    },
+    {
+      "version_lane": "v0.1.77",
+      "goal": "Give BSharp Compiler Subset 0 its own BSBC execution engine and require exact production-VM and Ruby-runtime parity across Profiles 1 through 7."
     }
   ],
   "acceptance_rules": [
@@ -123,7 +128,9 @@
     "The small compiler subset semantic resolver independence tool must pass before v0.1.74 may claim Self-Hosting Milestone 2 Slice 1 progress.",
     "v0.1.75 BSBC bytes for the bounded subset must come from SmallCompilerSubsetBSBCEncoder while production BytecodeEmitter remains referee-only",
     "The small compiler subset BSBC loader independence tool must pass before v0.1.76 may claim Self-Hosting Milestone 2 Slice 3 progress.",
-    "v0.1.76 bounded subset BSBC validation must come from SmallCompilerSubsetBSBCLoader while production BytecodeLoader remains referee-only."
+    "v0.1.76 bounded subset BSBC validation must come from SmallCompilerSubsetBSBCLoader while production BytecodeLoader remains referee-only.",
+    "The small compiler subset BSharp VM independence tool must pass before v0.1.77 may claim Self-Hosting Milestone 2 Slice 4 progress.",
+    "v0.1.77 bounded subset execution must come from SmallCompilerSubsetBSBCVirtualMachine while production BytecodeVirtualMachine and Ruby Runtime remain referee-only."
   ],
   "documents": {
     "contract": "docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FOUNDATION_v0_1_44.md",
@@ -199,7 +206,12 @@
     "small_compiler_subset_bsbc_loader_independence_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v0_1_76.md",
     "small_compiler_subset_bsbc_loader_file": "compiler/small_compiler_subset_bsbc_loader.rb",
     "small_compiler_subset_bsbc_loader_independence_tool": "tools/small_compiler_subset_bsbc_loader_independence.rb",
-    "small_compiler_subset_bsbc_loader_independence_test": "tests/test_small_compiler_subset_bsbc_loader_independence.rb"
+    "small_compiler_subset_bsbc_loader_independence_test": "tests/test_small_compiler_subset_bsbc_loader_independence.rb",
+    "small_compiler_subset_bsbc_vm_independence_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v1.json",
+    "small_compiler_subset_bsbc_vm_independence_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v0_1_77.md",
+    "small_compiler_subset_bsbc_virtual_machine_file": "compiler/small_compiler_subset_bsbc_virtual_machine.rb",
+    "small_compiler_subset_bsbc_vm_independence_tool": "tools/small_compiler_subset_bsbc_vm_independence.rb",
+    "small_compiler_subset_bsbc_vm_independence_test": "tests/test_small_compiler_subset_bsbc_vm_independence.rb"
   },
   "milestones": [
     {
@@ -220,11 +232,23 @@
       "contract": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v1.json"
     },
     {
-      "version_lane": "v0.1.76",
+      "version_lane": "v0.1.75",
       "name": "Self-Hosting Milestone 2 Slice 2: BSBC Emitter Independence",
       "status": "bsbc_emitter_independent_under_ruby_referee",
       "contract": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json"
+    },
+    {
+      "version_lane": "v0.1.76",
+      "name": "Self-Hosting Milestone 2 Slice 3: BSBC Loader Independence",
+      "status": "bsbc_loader_independent_under_ruby_referee",
+      "contract": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v1.json"
+    },
+    {
+      "version_lane": "v0.1.77",
+      "name": "Self-Hosting Milestone 2 Slice 4: BSharp VM Execution Independence",
+      "status": "bsbc_vm_execution_independent_under_ruby_referee",
+      "contract": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v1.json"
     }
   ],
-  "current_milestone_status": "self_hosting_milestone_2_slice_2_under_ruby_referee"
+  "current_milestone_status": "self_hosting_milestone_2_slice_4_under_ruby_referee"
 }
