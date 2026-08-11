@@ -6,6 +6,10 @@ module BasicSharp
   class ReadmeCurrentReleaseTruth
     FORMAT = 'bsharp.readme_current_release_truth.record'
     STATUS = 'readme_current_release_truth_gate'
+    CURRENT_LINE_PREFIXES = [
+      'Current self-hosting milestone:',
+      'Current build:'
+    ].freeze
 
     attr_reader :readme_text, :spec
 
@@ -24,6 +28,20 @@ module BasicSharp
         first_h2 = lines.find_index { |line| line.start_with?('## ') }
         first_h2 ? lines[0...first_h2].join : readme_text
       end
+    end
+
+    def canonical_current_lines
+      current_release.fetch('canonical_current_lines').values
+    end
+
+    def actual_current_lines
+      @actual_current_lines ||= readme_text.lines.map(&:strip).select do |line|
+        CURRENT_LINE_PREFIXES.any? { |prefix| line.start_with?(prefix) }
+      end
+    end
+
+    def canonical_current_lines_match?
+      actual_current_lines == canonical_current_lines
     end
 
     def forbidden_phrases
@@ -49,6 +67,7 @@ module BasicSharp
         summary_present: current_section.include?(current_release.fetch('summary')),
         required_mentions_present: missing_mentions.empty?,
         forbidden_current_section_phrases_absent: forbidden_hits.empty?,
+        canonical_current_lines_match: canonical_current_lines_match?,
         old_false_current_claim_absent: !current_section.include?('small compiler subset IR golden parity harness'),
         ruby_authority_preserved: current_section.include?('Ruby remains the bootstrap compiler'),
         not_full_self_hosting_declared: current_section.include?('not full self-hosting')
@@ -68,6 +87,8 @@ module BasicSharp
         checks: checks,
         missing_mentions: missing_mentions,
         forbidden_hits: forbidden_hits,
+        expected_current_lines: canonical_current_lines,
+        actual_current_lines: actual_current_lines,
         current_section_bytes: current_section.bytesize
       }
     end

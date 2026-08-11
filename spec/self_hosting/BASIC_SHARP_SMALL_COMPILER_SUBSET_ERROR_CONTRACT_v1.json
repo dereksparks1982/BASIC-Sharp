@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.error_contract.json",
   "format_version": 1,
-  "target_version": "0.1.75",
+  "target_version": "0.1.76",
   "title": "Small Compiler Subset Plain-English Error Contract",
   "status": "plain_english_error_contract_under_ruby_referee",
   "purpose": "Lock stable, plain-English, creator-facing error records for invalid small compiler subset examples before the self-hosting bridge carries more compiler weight.",

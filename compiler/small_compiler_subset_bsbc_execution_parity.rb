@@ -4,12 +4,59 @@ require 'digest'
 require 'json'
 require_relative 'small_compiler_subset_ir_emitter'
 require_relative 'small_compiler_subset_bsbc_emitter'
+require_relative 'small_compiler_subset_bsbc_loader'
 require_relative 'bytecode_loader'
 require_relative 'bytecode_virtual_machine'
 require_relative 'runtime_transition'
 require_relative 'world_save'
 
 module BasicSharp
+
+  # Uses the production BSharp VM execution engine with a model validated by the
+  # independent Subset 0 loader. The inherited execution implementation remains
+  # unchanged; only the trusted-loader gate is specialized for bootstrap proof.
+  class SmallCompilerSubsetLoadedVirtualMachine < BytecodeVirtualMachine
+    def initialize(loader, world_save: nil)
+      unless loader.is_a?(SmallCompilerSubsetBSBCLoader)
+        raise BytecodeVirtualMachineError,
+              'The subset BSharp Virtual Machine accepts only a successfully validated SmallCompilerSubsetBSBCLoader.'
+      end
+
+      @loader = loader
+      @program = loader.model
+      validate_profile!
+      build_indexes
+      create_world
+      execute_start_records
+      @if_active = Array.new(@program.fetch(:if_rules).length, false)
+      @if_branches = Array.new(@program.fetch(:if_rules).length)
+      @startup_ran = []
+      @startup_if_rules = []
+      @startup_if_error = nil
+      @startup_follow_up_events = []
+      @world_origin = world_save ? 'BSharp Save' : 'START'
+      @loaded_world_save = world_save ? stringify_keys(world_save) : nil
+
+      if world_save
+        restore_world_save!(world_save)
+      else
+        settlement = settle_if_rules(cause: 'START')
+        @startup_if_rules = settlement.fetch('rules')
+        @startup_if_error = settlement['error']
+        @startup_ran = @startup_if_rules.flat_map do |entry|
+          entry.fetch('steps').map { |step| step.fetch('word') }
+        end
+
+        if @startup_if_error.nil? && !settlement.fetch('follow_ups').empty?
+          chain = drain_follow_up_events(settlement.fetch('follow_ups'))
+          @startup_follow_up_events = chain.fetch('events')
+          @startup_if_error = chain['error']
+        end
+        @save_ready = @startup_if_error.nil?
+      end
+    end
+  end
+
   class SmallCompilerSubsetBSBCExecutionParity
     FORMAT = 'bsharp.small_compiler_subset.bsbc_execution_parity.record'
     STATUS = 'bsbc_execution_parity_under_ruby_referee'
@@ -81,8 +128,9 @@ module BasicSharp
       ir_emitter = SmallCompilerSubsetIREmitter.new(source)
       bsbc_emitter = SmallCompilerSubsetBSBCEmitter.new(source)
       bsbc = bsbc_emitter.to_h
-      loader = BytecodeLoader.new(bsbc_emitter.binary, expected_fingerprint: bsbc_emitter.bytecode_emitter.fingerprint)
-      vm = BytecodeVirtualMachine.new(loader)
+      subset_loader = SmallCompilerSubsetBSBCLoader.new(bsbc_emitter.binary, expected_fingerprint: bsbc_emitter.bytecode_emitter.fingerprint)
+      referee_loader = BytecodeLoader.new(bsbc_emitter.binary, expected_fingerprint: bsbc_emitter.bytecode_emitter.fingerprint)
+      vm = SmallCompilerSubsetLoadedVirtualMachine.new(subset_loader)
       referee = RuntimeTransition.new(ir_emitter.bsharp_ir, mode: :verify)
 
       vm_event_results = events.map { |event| vm.run_event(event) }
@@ -107,6 +155,8 @@ module BasicSharp
         ir_ruby_referee_matches: ir_emitter.ir_matches_ruby_referee?,
         bsbc_ruby_referee_matches: bsbc.fetch(:bsbc_ruby_referee_matches),
         bsbc_binary_matches: bsbc.fetch(:binary_sha256) == fixture.fetch('expected_binary_sha256'),
+        subset_loader_model_matches_referee: self.class.normalize(subset_loader.model) == self.class.normalize(referee_loader.model),
+        subset_loader_summary_matches_referee: self.class.normalize(subset_loader.summary) == self.class.normalize(referee_loader.summary),
         loader_summary_matches: bsbc.fetch(:loader_summary_sha256) == fixture.fetch('expected_loader_summary_sha256'),
         vm_referee_event_results_match: self.class.normalize(vm_event_results) == self.class.normalize(referee_event_results),
         vm_referee_snapshot_matches: self.class.normalize(vm_snapshot) == self.class.normalize(referee_snapshot),

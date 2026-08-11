@@ -1,0 +1,87 @@
+{
+  "format": "bsharp.small_compiler_subset.bsbc_loader_independence.contract.json",
+  "format_version": 1,
+  "target_version": "0.1.76",
+  "title": "Small Compiler Subset BSBC Loader Independence",
+  "status": "bsbc_loader_independent_under_ruby_referee",
+  "purpose": "Give BSharp Compiler Subset 0 its own BSBC trust-boundary loader while preserving the production Ruby BytecodeLoader only as a separate referee for exact valid-model and malformed-artifact parity.",
+  "scope": {
+    "allowed": [
+      "adding compiler/small_compiler_subset_bsbc_loader.rb as the independent Subset 0 BSBC loader",
+      "loading bytes produced by SmallCompilerSubsetBSBCEncoder without calling the production BytecodeLoader",
+      "using compiler/bytecode_loader.rb only on a separate referee path",
+      "requiring exact trusted-model, summary, fingerprint, and disassembly parity",
+      "requiring malformed-artifact rejection-message parity across a sealed mutation campaign",
+      "executing a model validated by SmallCompilerSubsetBSBCLoader through the BSharp VM execution engine",
+      "proving Profile 1 through Profile 7 compatibility without changing bytecode layout"
+    ],
+    "forbidden_until_later_approval": [
+      "requiring compiler/bytecode_loader.rb from compiler/small_compiler_subset_bsbc_loader.rb",
+      "calling or instantiating BasicSharp::BytecodeLoader from compiler/small_compiler_subset_bsbc_loader.rb",
+      "inheriting SmallCompilerSubsetBSBCLoader from the production BytecodeLoader",
+      "routing normal BASIC# production loading through the subset loader",
+      "changing the BSBC binary format",
+      "adding Profile 8",
+      "claiming BASIC# is fully self-hosted",
+      "retiring the Ruby bootstrap compiler"
+    ]
+  },
+  "fixture": {
+    "name": "v076_independent_bsbc_loader_mixed",
+    "source_path": "samples/independent_bsbc_loader_mixed.bsharp",
+    "expected_profile": "bsharp.bytecode.v7",
+    "expected_binary_bytes": 892,
+    "expected_binary_sha256": "56bbc8fc2caa2f6dc65bb669fd428f99645da0a72106c05b3f7a429b093a5479",
+    "expected_disassembly_sha256": "29e7ee678c2bab30a6132ea4c2147cf3d6a97cc0796c87772c95f7fde46474d4",
+    "expected_bsharp_ir_sha256": "21e5031f72b8144d5d19dea28ea5af208345972ab84b97874a5b1a9cb56d2f47",
+    "expected_fingerprint": "2d0851f7fa8856fa1d181461626d0d41314b3df683dd57745447818bc032d9e6",
+    "expected_loader_summary_sha256": "0e8d33ea69b57f8ae67a585c7aadb32cf1e6d91d1d6ab833129006ce934db6a5",
+    "expected_loader_model_sha256": "38a8718d56bb3841beaa890f4437008a1277a8f773cb929ad650b60ac9c7046e",
+    "required_features": [
+      "Kind inheritance",
+      "text value",
+      "whole-number value",
+      "open close lock take object interaction",
+      "IF and OTHERWISE",
+      "exact and Kind selectors"
+    ]
+  },
+  "malformed_campaign": [
+    "bad_magic",
+    "unsupported_profile",
+    "bad_section_offset",
+    "overlapping_sections",
+    "truncated_string_record",
+    "invalid_string_index",
+    "invalid_kind_index",
+    "invalid_thing_index",
+    "invalid_opcode",
+    "invalid_selector",
+    "invalid_condition",
+    "invalid_operand_width",
+    "bad_instruction_target",
+    "incorrect_record_count",
+    "truncated_artifact",
+    "trailing_invalid_data"
+  ],
+  "acceptance_rules": [
+    "SmallCompilerSubsetBSBCLoader must not require, instantiate, inherit from, or call the production BytecodeLoader.",
+    "The production BytecodeLoader may remain loaded only for a separate referee comparison.",
+    "Valid independent-loader models, summaries, fingerprints, and disassembly must match the production referee exactly.",
+    "Every sealed malformed mutation must be rejected by both loaders with the same creator-facing error message.",
+    "A BSharp VM execution lane must run from a model validated by the independent subset loader.",
+    "The v0.1.76 dedicated fixture must mix inheritance, text, numbers, object interaction, IF/OTHERWISE, and selector families.",
+    "No Profile 8, binary-format change, full self-hosting claim, or Ruby retirement is allowed."
+  ],
+  "documents": {
+    "spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v1.json",
+    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v0_1_76.md",
+    "loader": "compiler/small_compiler_subset_bsbc_loader.rb",
+    "encoder": "compiler/small_compiler_subset_bsbc_encoder.rb",
+    "ruby_referee": "compiler/bytecode_loader.rb",
+    "execution_parity": "compiler/small_compiler_subset_bsbc_execution_parity.rb",
+    "tool": "tools/small_compiler_subset_bsbc_loader_independence.rb",
+    "test": "tests/test_small_compiler_subset_bsbc_loader_independence.rb",
+    "self_hosting_subset_spec": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json"
+  }
+}

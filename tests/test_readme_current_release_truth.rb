@@ -13,8 +13,12 @@ class TestReadmeCurrentReleaseTruth < Minitest::Test
     @spec ||= JSON.parse(File.read(SPEC_PATH, encoding: 'UTF-8'))
   end
 
+  def readme
+    File.read(README_PATH, encoding: 'UTF-8')
+  end
+
   def truth
-    @truth ||= BasicSharp::ReadmeCurrentReleaseTruth.new(File.read(README_PATH, encoding: 'UTF-8'), spec).to_h
+    @truth ||= BasicSharp::ReadmeCurrentReleaseTruth.new(readme, spec).to_h
   end
 
   def test_contract_identity
@@ -30,10 +34,44 @@ class TestReadmeCurrentReleaseTruth < Minitest::Test
     assert truth.fetch(:checks).fetch(:build_title_present)
     assert truth.fetch(:checks).fetch(:summary_present)
     assert truth.fetch(:checks).fetch(:required_mentions_present)
+    assert truth.fetch(:checks).fetch(:canonical_current_lines_match)
+  end
+
+  def test_canonical_current_lines_match_active_slice_across_full_readme
+    expected = spec.fetch('current_release').fetch('canonical_current_lines').values
+    assert_equal expected, truth.fetch(:actual_current_lines)
+    assert_equal expected, truth.fetch(:expected_current_lines)
+  end
+
+  def test_stale_current_build_line_outside_intro_section_is_rejected
+    stale = readme.sub(
+      'Current build: v0.1.76 Self-Hosting Milestone 2 Slice 3 BSBC Loader Independence',
+      'Current build: v0.1.76 Self-Hosting Milestone 2 Slice 2 BSBC Emitter Independence'
+    )
+    record = BasicSharp::ReadmeCurrentReleaseTruth.new(stale, spec).to_h
+    refute record.fetch(:all_pass)
+    refute record.fetch(:checks).fetch(:canonical_current_lines_match)
+  end
+
+  def test_stale_current_milestone_line_outside_intro_section_is_rejected
+    stale = readme.sub(
+      'Current self-hosting milestone: v0.1.76 Self-Hosting Milestone 2 Slice 3 under Ruby referee control',
+      'Current self-hosting milestone: v0.1.76 Self-Hosting Milestone 2 Slice 2 under Ruby referee control'
+    )
+    record = BasicSharp::ReadmeCurrentReleaseTruth.new(stale, spec).to_h
+    refute record.fetch(:all_pass)
+    refute record.fetch(:checks).fetch(:canonical_current_lines_match)
+  end
+
+  def test_duplicate_current_truth_line_is_rejected
+    duplicate = readme + "\n" + spec.fetch('current_release').fetch('canonical_current_lines').fetch('current_build') + "\n"
+    record = BasicSharp::ReadmeCurrentReleaseTruth.new(duplicate, spec).to_h
+    refute record.fetch(:all_pass)
+    refute record.fetch(:checks).fetch(:canonical_current_lines_match)
   end
 
   def test_stale_current_release_text_is_rejected
-    stale = File.read(README_PATH, encoding: 'UTF-8').sub(
+    stale = readme.sub(
       'Elderedd identity migration',
       'adds the first small compiler subset IR golden parity harness'
     )
@@ -43,7 +81,7 @@ class TestReadmeCurrentReleaseTruth < Minitest::Test
   end
 
   def test_missing_required_current_release_phrase_is_rejected
-    broken = File.read(README_PATH, encoding: 'UTF-8').gsub('BCS', 'Creator Services')
+    broken = readme.gsub('BCS', 'Creator Services')
     record = BasicSharp::ReadmeCurrentReleaseTruth.new(broken, spec).to_h
     refute record.fetch(:all_pass)
     assert_includes record.fetch(:missing_mentions), 'BCS'

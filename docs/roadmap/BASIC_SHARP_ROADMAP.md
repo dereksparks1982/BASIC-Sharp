@@ -3,22 +3,22 @@
 ## Current accepted base
 
 ```text
-v0.1.74: Self-Hosting Milestone 2 Slice 1 - Semantic Resolver Independence
-commit 6ef4cae79c4e353b54a2bd6376f43200636748f2
-tag v0.1.74
+v0.1.75: Self-Hosting Milestone 2 Slice 2 - BSBC Emitter Independence
+commit e711ee4e7d4b8c0bbd2f845c1e955423bbc739f3
+tag v0.1.75
 ```
 
-v0.1.74 is the accepted rollback point. It gave BSharp Compiler Subset 0 an independent semantic resolver while the production Ruby SemanticResolver remained referee-only, then passed the full native validation lane before snapshot, local Git closeout, and GitHub verification.
+v0.1.75 is the accepted rollback point. It gave BSharp Compiler Subset 0 an independent BSBC encoder while the production Ruby BytecodeEmitter remained referee-only, then passed the full native validation lane before snapshot, local Git closeout, and GitHub verification.
 
 ## Current candidate
 
 ```text
-v0.1.75: Self-Hosting Milestone 2 Slice 2 - BSBC Emitter Independence
+v0.1.76: Self-Hosting Milestone 2 Slice 3 - BSBC Loader Independence
 ```
 
-v0.1.75 gives BSharp Compiler Subset 0 an independent `SmallCompilerSubsetBSBCEncoder`. The primary subset bytecode path must emit BSBC through that encoder. The production Ruby `BytecodeEmitter` remains a separate byte-for-byte referee only.
+v0.1.76 gives BSharp Compiler Subset 0 an independent `SmallCompilerSubsetBSBCLoader`. The subset trust boundary must decode and validate BSBC without requiring, instantiating, or inheriting from the production Ruby `BytecodeLoader`. The production loader remains a separate exact-parity referee only.
 
-The accepted subset lane for this build is:
+The bounded subset proof lane for this build is:
 
 ```text
 TokenizerReader
@@ -27,17 +27,20 @@ TokenizerReader
 -> BSharp IR
 -> SmallCompilerSubsetBSBCEncoder
 -> BSharp Bytecode
--> BytecodeLoader
--> BSharp VM
+-> SmallCompilerSubsetBSBCLoader
+-> BSharp VM execution engine
 ```
 
-The execution corpus expands to 19 fixtures and 57 events. The v0.1.75 mixed fixture carries open, close, lock, take, a whole-number increase, IF, and OTHERWISE through independent semantic resolution, independent Profile 7 BSBC encoding, the existing loader, BSharp VM execution, and Ruby-referee parity.
+The execution corpus expands to 20 fixtures and 58 events. The v0.1.76 fixture carries Kind inheritance, creator text, whole-number state, open/close/lock/take object interaction, IF/OTHERWISE, and exact/Kind selector meaning through independent semantic resolution, independent Profile 7 BSBC encoding, independent BSBC loading, BSharp VM execution, and Ruby-referee parity.
 
-Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json`.
-Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v0_1_75.md`.
-Reference: `compiler/small_compiler_subset_bsbc_encoder.rb`.
+The loader trust boundary also runs a 16-mutation malformed-artifact parity campaign. Bad magic, unsupported profiles, section geometry, truncation, invalid indexes, invalid opcodes/selectors/conditions, operand-width corruption, record-count corruption, bad code targets, and trailing data must be rejected with the same deterministic message as the production loader referee.
 
-Ruby remains the bootstrap compiler. v0.1.75 is not full self-hosting and does not change normal production compiler routing, Profile 1-7 meaning, the BSBC binary format, runtime meaning, Save, ASK, or input behaviour.
+Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json` remains the accepted Slice 2 encoder-independence contract.
+Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v1.json`.
+Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v0_1_76.md`.
+Reference: `compiler/small_compiler_subset_bsbc_loader.rb`.
+
+Ruby remains the bootstrap compiler. v0.1.76 is not full self-hosting and does not change normal production compiler routing, Profile 1-7 meaning, the BSBC binary format, runtime meaning, Save, ASK, or input behaviour.
 
 ## Canonical Company Bible
 
@@ -61,7 +64,7 @@ Every BASIC# build must follow the proven release path:
 
 ## Emergency DKLab Retirement and Elderedd Migration
 
-Priority: active. Status: continuing through v0.1.75.
+Priority: active. Status: continuing through v0.1.76.
 
 - Elderedd Softworks LLC is the parent company identity.
 - Elderedd Laboratory is the active lab identity.
@@ -78,19 +81,19 @@ Priority: active. Status: continuing through v0.1.75.
 Current truthful claim:
 
 ```text
-BSharp Compiler Subset 0 has Self-Hosting Milestone 2 Slice 2 under Ruby referee control.
-The subset path owns reader, parser, semantic resolver, and BSBC encoding stages for its bounded lane.
+BSharp Compiler Subset 0 has Self-Hosting Milestone 2 Slice 3 under Ruby referee control.
+The subset path owns reader, parser, semantic resolver, BSBC encoding, and BSBC loading stages for its bounded lane.
 Ruby remains the bootstrap compiler and production referee.
 BASIC# is not fully self-hosted.
 ```
 
-The v0.1.72 proposal is now further implemented by v0.1.74 semantic resolver independence and v0.1.75 BSBC emitter independence. Future Milestone 2 slices should continue removing bounded subset dependence on production compiler stages while exact parity remains mandatory.
+The v0.1.72 proposal is now further implemented by v0.1.74 semantic resolver independence, v0.1.75 BSBC emitter independence, and v0.1.76 BSBC loader independence. Future Milestone 2 slices should continue removing bounded subset dependence on production compiler stages while exact parity remains mandatory.
 
 ## Game-making runway
 
-v0.1.73 established four direct creator actions: open, close, lock, and take. v0.1.75 carries them with numeric and IF/OTHERWISE meaning through independently emitted Profile 7 BSBC so game-making progress and compiler-independence progress remain connected.
+v0.1.73 established four direct creator actions: open, close, lock, and take. v0.1.76 carries them with text, numeric, inheritance, and IF/OTHERWISE meaning through independently emitted and independently loaded Profile 7 BSBC so game-making progress and compiler-independence progress remain connected.
 
-## Next direction after v0.1.75
+## Next direction after v0.1.76
 
 1. Continue Self-Hosting Milestone 2 with the next bounded production-compiler dependency removal under Ruby referee parity.
 2. A meaningful creator/game-making capability expansion if Derek chooses that lane.

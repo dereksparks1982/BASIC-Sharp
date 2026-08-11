@@ -2,16 +2,16 @@
 
 ## Current state
 
-- **Accepted base:** v0.1.74 at commit `6ef4cae79c4e353b54a2bd6376f43200636748f2`, tag `v0.1.74`.
-- **Candidate:** v0.1.75 Self-Hosting Milestone 2 Slice 2: BSBC Emitter Independence.
-- **Rollback:** reset to tag `v0.1.74` and remove only v0.1.75 added paths before applying a repaired candidate.
-- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_75_SELF_HOSTING_MILESTONE_2_BSBC_EMITTER_INDEPENDENCE_CHANGED_FILES_ONLY.zip`.
+- **Accepted base:** v0.1.75 at commit `e711ee4e7d4b8c0bbd2f845c1e955423bbc739f3`, tag `v0.1.75`.
+- **Candidate:** v0.1.76 Self-Hosting Milestone 2 Slice 3: BSBC Loader Independence.
+- **Rollback:** reset to tag `v0.1.75` and remove only v0.1.76 added paths before applying a repaired candidate.
+- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_76_README_TRUTH_GATE_REPAIR_SELF_HOSTING_MILESTONE_2_BSBC_LOADER_INDEPENDENCE_CHANGED_FILES_ONLY.zip`.
 
-## v0.1.75 purpose
+## v0.1.76 purpose
 
-BSharp Compiler Subset 0 gains `SmallCompilerSubsetBSBCEncoder` as the primary producer of BSBC bytes. The production Ruby `BytecodeEmitter` remains loaded only as a separate referee for exact byte-for-byte comparison.
+BSharp Compiler Subset 0 gains `SmallCompilerSubsetBSBCLoader` as an independent BSBC trust boundary. The production Ruby `BytecodeLoader` remains loaded only as a separate referee for exact model, summary, fingerprint, disassembly, and malformed-artifact rejection comparison.
 
-The bounded path is:
+The bounded proof path is:
 
 ```text
 TokenizerReader
@@ -20,13 +20,15 @@ TokenizerReader
 -> BSharp IR
 -> SmallCompilerSubsetBSBCEncoder
 -> BSharp Bytecode
--> BytecodeLoader
--> BSharp Virtual Machine
+-> SmallCompilerSubsetBSBCLoader
+-> BSharp Virtual Machine execution engine
 ```
 
-The independent encoder must not require `compiler/bytecode_emitter.rb` and must not call `BytecodeEmitter.new`. The orchestrator may construct the production emitter only on the explicit referee side.
+The independent loader must not require `compiler/bytecode_loader.rb`, call or instantiate `BytecodeLoader.new`, or inherit from `BytecodeLoader`. A bootstrap-only VM adapter in the execution-parity lane feeds the subset-validated trusted model into the unchanged BSharp VM execution implementation.
 
-The dedicated v0.1.75 fixture combines `(open`, `(close`, `(lock`, `(take`, whole-number increase, IF, and OTHERWISE. It must emit Profile 7 BSBC independently, match the production emitter byte for byte, load successfully, execute in the BSharp VM, and match the Ruby referee runtime.
+The dedicated v0.1.76 fixture combines Kind inheritance, creator text, whole-number values, `(open`, `(close`, `(lock`, `(take`, IF/OTHERWISE, and exact/Kind selectors. It must emit and load Profile 7 BSBC independently, match the production loader trusted model exactly, execute through the BSharp VM engine, and match the Ruby referee runtime.
+
+The malformed campaign contains 16 sealed mutations and requires deterministic rejection-message parity with the production loader.
 
 ## Self-hosting contract reference ledger
 
@@ -42,6 +44,7 @@ spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.jso
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_EXECUTION_CORPUS_v1.json
@@ -58,9 +61,9 @@ The single canonical Company Bible remains `docs/company_bible/BASIC_SHARP_COMPA
 
 ## Validation floor
 
-v0.1.75 must run the BSBC emitter independence regression lane, complete normal suite, complete no-locale suite, the entire sealed tool inventory, deterministic fixture sweep, release package preflight, release forensic overlay, whole-language gauntlet contract, and full Trial by Fire.
+v0.1.76 must run the BSBC loader independence regression lane, complete normal suite, complete no-locale suite, the entire sealed tool inventory, deterministic fixture sweep, release package preflight, release forensic overlay, whole-language gauntlet contract, and full Trial by Fire.
 
-The accepted v0.1.74 floor of 592 runs / 9,382 assertions may not shrink. The new BSBC independence tests increase the suite.
+The accepted v0.1.75 floor of 599 runs / 9,503 assertions may not shrink. The new BSBC loader independence tests increase the suite.
 
 ## Release closeout
 
@@ -68,4 +71,4 @@ After unmistakable `FINAL PASS`, create the accepted snapshot first. Then local 
 
 ## Current continuation point
 
-Apply and validate the v0.1.75 candidate. If any gate fails, preserve the failure as evidence, return to the accepted v0.1.74 rollback point, repair the same version, and rerun the complete validation lane.
+Apply and validate the v0.1.76 candidate. If any gate fails, preserve the failure as evidence, return to the accepted v0.1.75 rollback point, repair the same version, and rerun the complete validation lane.

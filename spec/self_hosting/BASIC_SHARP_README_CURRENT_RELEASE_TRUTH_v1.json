@@ -1,13 +1,13 @@
 {
   "format": "bsharp.readme_current_release_truth.json",
   "format_version": 1,
-  "target_version": "0.1.75",
+  "target_version": "0.1.76",
   "status": "readme_current_release_truth_gate",
   "title": "README Current Release Truth Gate",
   "current_release": {
-    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.75",
-    "build_title": "BASIC# v0.1.75 adds Self-Hosting Milestone 2 Slice 2: BSBC Emitter Independence.",
-    "summary": "v0.1.75 gives BSharp Compiler Subset 0 its own `SmallCompilerSubsetBSBCEncoder` for primary BSBC byte generation while the production Ruby `BytecodeEmitter` remains a separate referee. Exact byte-for-byte BSBC parity, loader acceptance, BSharp Virtual Machine execution parity, and Ruby referee runtime parity remain mandatory across Profiles 1 through 7.",
+    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.76",
+    "build_title": "BASIC# v0.1.76 adds Self-Hosting Milestone 2 Slice 3: BSBC Loader Independence.",
+    "summary": "v0.1.76 gives BSharp Compiler Subset 0 its own `SmallCompilerSubsetBSBCLoader` trust boundary while the production Ruby `BytecodeLoader` remains a separate referee. Exact trusted-model, loader-summary, fingerprint, disassembly, malformed-artifact rejection, BSharp Virtual Machine execution, and Ruby referee runtime parity remain mandatory across Profiles 1 through 7.",
     "must_mention": [
       "Elderedd identity migration",
       "DKLab compatibility layer",
@@ -16,25 +16,24 @@
       "BCS",
       "BSharp Creator Services",
       "Self-Hosting Milestone 1",
-      "Self-Hosting Milestone 2 Slice 2",
-      "BSBC Emitter Independence",
-      "SmallCompilerSubsetBSBCEncoder",
-      "production Ruby `BytecodeEmitter`",
+      "Self-Hosting Milestone 2 Slice 3",
+      "BSBC Loader Independence",
+      "SmallCompilerSubsetBSBCLoader",
+      "production Ruby `BytecodeLoader`",
       "referee",
       "not full self-hosting",
       "Ruby remains the bootstrap compiler",
       "README Current Release Truth Gate",
-      "byte-for-byte BSBC parity",
-      "BSharp Virtual Machine",
-      "Ruby referee runtime",
-      "19 fixtures",
-      "57 event executions",
+      "malformed-BSBC",
+      "BSharp VM",
+      "Ruby referee",
+      "20 fixtures",
+      "58 event executions",
       "open",
       "close",
       "lock",
       "take",
-      "IF",
-      "OTHERWISE",
+      "IF/OTHERWISE",
       "Profile 7",
       "Elderedd path direction",
       "UTF-8 source reading",
@@ -53,7 +52,7 @@
       "3,072 mutations",
       "Open3 capture encoding gap",
       "CLI validation remains truthful",
-      "v0.1.75"
+      "v0.1.76"
     ],
     "forbidden_current_section_phrases": [
       "adds the first small compiler subset IR golden parity harness",
@@ -69,8 +68,14 @@
       "first small compiler subset BSBC execution parity gate",
       "BASIC# v0.1.73 adds Plain-English Object Interaction Actions.",
       "BASIC# v0.1.74 adds Self-Hosting Milestone 2 Slice 1: Semantic Resolver Independence.",
-      "v0.1.75 gives BSharp Compiler Subset 0 its own SmallCompilerSubsetSemanticResolver"
-    ]
+      "v0.1.76 gives BSharp Compiler Subset 0 its own SmallCompilerSubsetSemanticResolver",
+      "BASIC# v0.1.75 adds Self-Hosting Milestone 2 Slice 2: BSBC Emitter Independence.",
+      "v0.1.76 gives BSharp Compiler Subset 0 its own `SmallCompilerSubsetBSBCEncoder` for primary BSBC byte generation"
+    ],
+    "canonical_current_lines": {
+      "self_hosting_milestone": "Current self-hosting milestone: v0.1.76 Self-Hosting Milestone 2 Slice 3 under Ruby referee control",
+      "current_build": "Current build: v0.1.76 Self-Hosting Milestone 2 Slice 3 BSBC Loader Independence"
+    }
   },
   "protected_truths": [
     "The root README is the public GitHub landing page.",
@@ -78,6 +83,7 @@
     "A build must fail when README current-release text is stale or describes an older lane.",
     "Historical records may mention old lanes only outside the current-release section.",
     "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json remains the canonical self-hosting contract.",
-    "Elderedd identity replaces DKLab as active current identity while DKLab remains compatibility/history only."
+    "Elderedd identity replaces DKLab as active current identity while DKLab remains compatibility/history only.",
+    "The canonical Current self-hosting milestone and Current build lines must match the active release exactly across the full README, not only the introductory current-release section."
   ]
 }

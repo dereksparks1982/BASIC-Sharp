@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.75  
+**Version:** v0.1.76  
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -618,14 +618,15 @@ The machine-checked contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SU
 
 The accepted release closeout order remains full validation -> accepted snapshot -> local Git commit/tag -> GitHub push/remote verification.
 
-## v0.1.75 Self-Hosting Milestone 2 Slice 2 BSBC Emitter Independence Rule
+## v0.1.76 Self-Hosting Milestone 2 Slice 3 BSBC Loader Independence Rule
 
-BASIC# v0.1.75 advances BSharp Compiler Subset 0 by giving the subset path its own `SmallCompilerSubsetBSBCEncoder`. Primary subset BSBC bytes must come from `compiler/small_compiler_subset_bsbc_encoder.rb`. The independent encoder must not require `compiler/bytecode_emitter.rb` and must not call `BytecodeEmitter.new`.
+The accepted Slice 2 encoder-independence contract remains `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json` and remains mandatory beneath this loader-independence slice.
 
-The production Ruby `BytecodeEmitter` remains available only as a separate byte-for-byte referee. Independently emitted bytes must match the referee exactly, load through the existing `BytecodeLoader`, and execute through the BSharp Virtual Machine with Ruby referee runtime parity. Profiles 1 through 7 and the existing BSBC binary format remain authoritative. Profile 8 is not introduced.
 
-The machine-checked contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json`. The implementation record is `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v0_1_75.md`. The dedicated v0.1.75 fixture combines open, close, lock, take, whole-number increase, IF, and OTHERWISE through independently emitted Profile 7 BSBC.
+BASIC# v0.1.76 advances BSharp Compiler Subset 0 by giving the bounded subset path its own `SmallCompilerSubsetBSBCLoader`. Primary subset BSBC validation in the self-hosting proof lane must come from `compiler/small_compiler_subset_bsbc_loader.rb`. The independent loader must not require `compiler/bytecode_loader.rb`, instantiate or call `BytecodeLoader.new`, or inherit from `BytecodeLoader`.
 
-This is Self-Hosting Milestone 2 Slice 2, not full self-hosting and not Ruby retirement. Normal production BASIC# compilation remains unchanged.
+The production Ruby `BytecodeLoader` remains a separate referee. Valid artifacts must produce exact trusted-model, summary, fingerprint, and disassembly parity. Malformed artifacts in the sealed mutation campaign must be rejected by both loaders with the same deterministic message. The BSharp VM execution lane must prove that a model validated by the subset loader can execute with Ruby-runtime parity.
 
-The accepted release closeout order remains full validation -> accepted snapshot -> local Git commit/tag -> GitHub push/peeled-tag remote verification.
+The machine-checked contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v1.json`. The implementation record is `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v0_1_76.md`. The dedicated v0.1.76 fixture combines Kind inheritance, creator text, whole-number values, open, close, lock, take, IF/OTHERWISE, and exact/Kind selectors through independently emitted and independently loaded Profile 7 BSBC.
+
+This is Self-Hosting Milestone 2 Slice 3, not full self-hosting and not Ruby retirement. Normal production BASIC# compilation and production bytecode loading remain unchanged.

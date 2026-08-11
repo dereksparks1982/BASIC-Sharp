@@ -1,0 +1,33 @@
+KINDS
+[
+    #gate is a #door
+].
+
+DEFINE
+[
+    @north gate is a #gate
+    @brass key is a #key
+].
+
+START
+[
+    @north gate is closed
+    @north gate has "North Gate" title
+    PLAYER has 0 turns
+].
+
+WHEN PLAYER examines a #gate
+[
+    |then (open it
+    |then (take @brass key
+    |then (increase turns of PLAYER by 1
+].
+
+IF @north gate is open and PLAYER has at least 1 turns
+[
+    |then (close @north gate
+].
+OTHERWISE
+[
+    |then (lock @north gate
+].
