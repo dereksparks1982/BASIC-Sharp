@@ -1,15 +1,15 @@
 {
   "format": "bsharp.release_package_preflight.json",
   "format_version": 1,
-  "target_version": "0.1.77",
+  "target_version": "0.1.78",
   "status": "active_release_gate",
   "title": "BASIC# Release Package Preflight",
   "purpose": "Verify the active changed-files manifest, installed tree bytes, release identity, validation inventory inclusion, and no-locale CLI capture repair before a candidate release package enters acceptance testing.",
   "required_manifest": "BASIC_SHARP_PATCH_MANIFEST.json",
-  "required_installer": "APPLY_BASIC_SHARP_v0_1_77.sh",
-  "required_base_version": "v0.1.76",
-  "required_target_version": "v0.1.77",
-  "required_package_suffix": "SELF_HOSTING_MILESTONE_2_BSHARP_VM_EXECUTION_INDEPENDENCE_CHANGED_FILES_ONLY.zip",
+  "required_installer": "APPLY_BASIC_SHARP_v0_1_78.sh",
+  "required_base_version": "v0.1.77",
+  "required_target_version": "v0.1.78",
+  "required_package_suffix": "SELF_HOSTING_MILESTONE_2_INTEGRATED_INDEPENDENT_COMPILER_PIPELINE_CHANGED_FILES_ONLY.zip",
   "required_tools": [
     "tools/deterministic_fixture_hash_sweep.rb",
     "tools/input_device_contract.rb",
@@ -23,13 +23,14 @@
     "tools/small_compiler_subset_bsbc_execution_parity.rb",
     "tools/small_compiler_subset_bsbc_emitter_independence.rb",
     "tools/small_compiler_subset_bsbc_loader_independence.rb",
-    "tools/small_compiler_subset_bsbc_vm_independence.rb"
+    "tools/small_compiler_subset_bsbc_vm_independence.rb",
+    "tools/small_compiler_subset_pipeline_independence.rb"
   ],
   "forbidden": [
     "accepting a release package whose final extracted payload has not been audited",
     "changing sealed validation inventory after package records are generated",
     "claiming BASIC# is fully self-hosted",
-    "removing the DKLab compatibility bridge in v0.1.77",
+    "removing the DKLab compatibility bridge in v0.1.78",
     "repairing only the first failed deterministic fixture hash",
     "skipping the pre-mutation forensic overlay"
   ]

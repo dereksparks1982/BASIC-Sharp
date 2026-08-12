@@ -1,7 +1,7 @@
 {
   "format": "bsharp.tokenizer_reader.contract.json",
   "format_version": 1,
-  "target_version": "0.1.77",
+  "target_version": "0.1.78",
   "title": "BASIC# Tokenizer and Reader Implementation Under Ruby Referee",
   "status": "implementation_under_ruby_referee",
   "purpose": "Begin the first BASIC# tokenizer/reader implementation while keeping the Ruby bootstrap lexer as the reference referee.",
@@ -11,7 +11,8 @@
       "comparing BASIC# tokenizer/reader reader records against the existing Ruby Lexer referee",
       "locking line numbers, raw line text, trimmed text, comment handling, block body boundaries, and current Head detection",
       "adding executable implementation fixtures for head, Body, result marker, action word, and quoted text token records",
-      "preserving current Ruby parser, runtime, BSharp IR, BSharp Bytecode, Save, ASK, and input-device behavior"
+      "preserving current Ruby parser, runtime, BSharp IR, BSharp Bytecode, Save, ASK, and input-device behavior",
+      "producing primary reader records without invoking the production Lexer while retaining exact Lexer referee comparison"
     ],
     "forbidden_until_later_approval": [
       "replacing compiler/lexer.rb or compiler/parser.rb as the authority",
@@ -176,7 +177,8 @@
     "compiler/tokenizer_reader.rb must produce reader records equal to the Ruby Lexer referee for every contract fixture.",
     "The implementation must not be used as the production parser authority until a later approved build.",
     "The contract must not change Profiles 1 through 7, BSharp Bytecode Profiles 1 through 7, Save format, runtime behavior, ASK behavior, or input meaning.",
-    "Ruby remains the bootstrap compiler and reference referee until BASIC# compiler pieces reproduce approved output deterministically."
+    "Ruby remains the bootstrap compiler and reference referee until BASIC# compiler pieces reproduce approved output deterministically.",
+    "compiler/tokenizer_reader.rb primary reader records must remain available when the Ruby Lexer constructor is disabled; Lexer comparison remains a separate referee path."
   ],
   "documents": {
     "contract": "docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md",

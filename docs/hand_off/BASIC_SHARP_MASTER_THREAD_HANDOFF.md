@@ -2,33 +2,18 @@
 
 ## Current state
 
-- **Accepted base:** v0.1.76 at commit `9b0069e175a62d4250b3801a0ed864a7e4cf08e2`, tag `v0.1.76`.
-- **Candidate:** v0.1.77 Self-Hosting Milestone 2 Slice 4: BSharp VM Execution Independence.
-- **Rollback:** reset to tag `v0.1.76` and remove only v0.1.77 added paths before applying a repaired candidate.
-- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_77_SELF_HOSTING_MILESTONE_2_BSHARP_VM_EXECUTION_INDEPENDENCE_CHANGED_FILES_ONLY.zip`.
+- **Accepted base:** v0.1.77 at commit `5e7d15512322d7aef4237e4cd5d9d605b6966f3d`, tag `v0.1.77`.
+- **Candidate:** v0.1.78 Self-Hosting Milestone 2 Slice 5: Integrated Independent Compiler Pipeline.
+- **Rollback:** reset to tag `v0.1.77` and remove only v0.1.78 added paths before applying a repaired candidate.
+- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_78_SELF_HOSTING_MILESTONE_2_INTEGRATED_INDEPENDENT_COMPILER_PIPELINE_CHANGED_FILES_ONLY.zip`.
 
-## v0.1.77 purpose
+## v0.1.78 purpose
 
-BSharp Compiler Subset 0 gains `SmallCompilerSubsetBSBCVirtualMachine` as an independent execution engine. The production Ruby `BytecodeVirtualMachine` and `BasicSharp::Runtime` remain separate referees for event-result, world-state, Save, follow-up-event, loop-protection, and deterministic replay parity.
+BSharp Compiler Subset 0 gains `SmallCompilerSubsetPipeline` as one bounded source-to-world orchestration path. It connects `TokenizerReader`, `SmallCompilerSubsetParser`, `SmallCompilerSubsetSemanticResolver`, BSharp IR, `SmallCompilerSubsetBSBCEncoder`, `SmallCompilerSubsetBSBCLoader`, and `SmallCompilerSubsetBSBCVirtualMachine` without using production compiler constructors on the primary path.
 
-The bounded proof path is:
+`TokenizerReader` now owns its primary line/comment record generation. The production `Lexer` remains available only as a separate exact-parity referee. Production `Parser`, `SemanticResolver`, `BytecodeEmitter`, `BytecodeLoader`, `BytecodeVirtualMachine`, and `Runtime` likewise remain separate referees.
 
-```text
-TokenizerReader
--> SmallCompilerSubsetParser
--> SmallCompilerSubsetSemanticResolver
--> BSharp IR
--> SmallCompilerSubsetBSBCEncoder
--> BSharp Bytecode
--> SmallCompilerSubsetBSBCLoader
--> SmallCompilerSubsetBSBCVirtualMachine
-```
-
-The independent VM must not require `compiler/bytecode_virtual_machine.rb`, call or instantiate `BytecodeVirtualMachine.new`, or inherit from `BytecodeVirtualMachine`. Normal production execution routing remains unchanged.
-
-The dedicated v0.1.77 fixture combines Kind inheritance, creator text, whole-number values, `(open`, `(close`, `(lock`, `(take`, IF/OTHERWISE, multiple selection, exact/Kind selectors, and follow-up events. It must execute through the full bounded independent path and match the production VM and Ruby runtime referees.
-
-The execution-independence gate also requires 1,024-event high-volume deterministic parity and exact 1,024 follow-up-event loop-protection parity.
+The dedicated Profile 7 pipeline fixture exercises Kind inheritance, creator text, whole-number values, `(open`, `(close`, `(lock`, `(take`, IF/OTHERWISE, multiple selection, exact/Kind selectors, and follow-up events. No new creator-facing syntax is introduced.
 
 ## Self-hosting contract reference ledger
 
@@ -46,6 +31,7 @@ spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_EXECUTION_CORPUS_v1.json
@@ -62,9 +48,9 @@ The single canonical Company Bible remains `docs/company_bible/BASIC_SHARP_COMPA
 
 ## Validation floor
 
-v0.1.77 must run the BSharp VM independence regression lane, README truth regression, loader independence regression, emitter independence regression, complete normal suite, complete no-locale suite, the entire sealed tool inventory, deterministic fixture sweep, release package preflight, release forensic overlay, whole-language gauntlet contract, and full Trial by Fire.
+v0.1.78 must run the integrated pipeline independence regression, tokenizer/reader regression, README truth regression, VM independence regression, loader independence regression, emitter independence regression, complete normal suite, complete no-locale suite, the entire sealed tool inventory, deterministic fixture sweep, release package preflight, release forensic overlay, whole-language gauntlet contract, and full Trial by Fire.
 
-The accepted v0.1.76 floor of 611 runs / 9,558 assertions may not shrink. The new BSharp VM independence tests increase the suite.
+The accepted v0.1.77 floor of 622 runs / 9,717 assertions may not shrink. The new pipeline-independence tests increase the suite.
 
 ## Release closeout
 
@@ -72,4 +58,4 @@ After unmistakable `FINAL PASS`, create the accepted snapshot first. Then local 
 
 ## Current continuation point
 
-Apply and validate the v0.1.77 candidate. If any gate fails, preserve the failure as evidence, return to the accepted v0.1.76 rollback point, repair the same version, and rerun the complete validation lane.
+Apply and validate the v0.1.78 candidate. If any gate fails, preserve the failure as evidence, return to the accepted v0.1.77 rollback point, repair the same version, and rerun the complete validation lane.

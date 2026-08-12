@@ -45,8 +45,8 @@ class TestReadmeCurrentReleaseTruth < Minitest::Test
 
   def test_stale_current_build_line_outside_intro_section_is_rejected
     stale = readme.sub(
-      'Current build: v0.1.77 Self-Hosting Milestone 2 Slice 4 BSharp VM Execution Independence',
-      'Current build: v0.1.77 Self-Hosting Milestone 2 Slice 3 BSBC Loader Independence'
+      'Current build: v0.1.78 Self-Hosting Milestone 2 Slice 5 Integrated Independent Compiler Pipeline',
+      'Current build: v0.1.77 Self-Hosting Milestone 2 Slice 4 BSharp VM Execution Independence'
     )
     record = BasicSharp::ReadmeCurrentReleaseTruth.new(stale, spec).to_h
     refute record.fetch(:all_pass)
@@ -55,8 +55,8 @@ class TestReadmeCurrentReleaseTruth < Minitest::Test
 
   def test_stale_current_milestone_line_outside_intro_section_is_rejected
     stale = readme.sub(
-      'Current self-hosting milestone: v0.1.77 Self-Hosting Milestone 2 Slice 4 under Ruby referee control',
-      'Current self-hosting milestone: v0.1.77 Self-Hosting Milestone 2 Slice 3 under Ruby referee control'
+      'Current self-hosting milestone: v0.1.78 Self-Hosting Milestone 2 Slice 5 under Ruby referee control',
+      'Current self-hosting milestone: v0.1.77 Self-Hosting Milestone 2 Slice 4 under Ruby referee control'
     )
     record = BasicSharp::ReadmeCurrentReleaseTruth.new(stale, spec).to_h
     refute record.fetch(:all_pass)

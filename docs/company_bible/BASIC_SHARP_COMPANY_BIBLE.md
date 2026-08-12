@@ -641,3 +641,16 @@ Acceptance requires exact production-VM parity for event results, final world st
 The machine-checked contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v1.json`. The implementation record is `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v0_1_77.md`. The dedicated v0.1.77 fixture combines Kind inheritance, creator text, whole-number values, open, close, lock, take, IF/OTHERWISE, multiple selection, exact/Kind selectors, and follow-up events through independently emitted, independently loaded, and independently executed Profile 7 BSBC.
 
 This is Self-Hosting Milestone 2 Slice 4, not full self-hosting and not Ruby retirement. Normal production BASIC# compilation, loading, and runtime routing remain unchanged.
+
+## v0.1.78 Self-Hosting Milestone 2 Slice 5 Integrated Independent Compiler Pipeline Rule
+
+BASIC# v0.1.78 advances BSharp Compiler Subset 0 by connecting the bounded reader, parser, semantic resolver, BSharp IR, independent BSBC encoder, independent BSBC loader, and independent BSharp VM behind one `SmallCompilerSubsetPipeline` primary source-to-world path.
+
+The primary integrated path must not invoke production `Lexer`, `Parser`, `SemanticResolver`, `BytecodeEmitter`, `BytecodeLoader`, `BytecodeVirtualMachine`, or `Runtime` constructors. Those production Ruby components remain separate referee paths only. `TokenizerReader` must produce its primary line/comment records independently while preserving exact Lexer referee parity.
+
+The machine-checked contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json`. The implementation record is `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v0_1_78.md`.
+
+This build introduces no new creator-facing syntax. Existing BASIC# statement boundaries, official action-word visual guides such as `(open`, `(close`, `(lock`, and `(take`, and written action order remain unchanged. Compiler-internal complexity must not be pushed onto creators merely to imitate conventional programming-language syntax.
+
+This is Self-Hosting Milestone 2 Slice 5, not full self-hosting and not Ruby retirement. Normal production BASIC# compilation and runtime routing remain unchanged. The accepted release closeout order remains full validation -> accepted snapshot -> local Git commit/tag -> GitHub push/peeled-tag verification.
+

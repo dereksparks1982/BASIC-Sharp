@@ -1,7 +1,7 @@
 {
   "format": "bsharp.self_hosting.subset.json",
   "format_version": 1,
-  "target_version": "0.1.77",
+  "target_version": "0.1.78",
   "title": "Self-Hosting Foundation and Compiler Subset Contract",
   "status": "foundation_contract_only",
   "purpose": "Define the first BASIC# subset allowed for future compiler-writing work while Ruby remains the bootstrap compiler and reference authority.",
@@ -33,7 +33,8 @@
     "Self-Hosting Milestone 1 under Ruby referee control for BSharp Compiler Subset 0",
     "independent Subset 0 BSBC byte encoding through SmallCompilerSubsetBSBCEncoder under production BytecodeEmitter referee parity",
     "independent Subset 0 BSBC validation through SmallCompilerSubsetBSBCLoader under production BytecodeLoader referee parity",
-    "independent Subset 0 BSBC execution through SmallCompilerSubsetBSBCVirtualMachine under production BytecodeVirtualMachine and Ruby Runtime referee parity"
+    "independent Subset 0 BSBC execution through SmallCompilerSubsetBSBCVirtualMachine under production BytecodeVirtualMachine and Ruby Runtime referee parity",
+    "integrated Subset 0 source-to-world orchestration through SmallCompilerSubsetPipeline while production compiler components and Ruby Runtime remain separate referees"
   ],
   "compiler_subset_forbids_until_later_approval": [
     "replacing the Ruby bootstrap compiler",
@@ -104,6 +105,10 @@
     {
       "version_lane": "v0.1.77",
       "goal": "Give BSharp Compiler Subset 0 its own BSBC execution engine and require exact production-VM and Ruby-runtime parity across Profiles 1 through 7."
+    },
+    {
+      "version_lane": "v0.1.78",
+      "goal": "Connect the bounded reader, parser, semantic resolver, BSharp IR, independent BSBC encoder, independent BSBC loader, and independent BSharp VM into one integrated source-to-world compiler pipeline under separate Ruby referee parity."
     }
   ],
   "acceptance_rules": [
@@ -130,7 +135,10 @@
     "The small compiler subset BSBC loader independence tool must pass before v0.1.76 may claim Self-Hosting Milestone 2 Slice 3 progress.",
     "v0.1.76 bounded subset BSBC validation must come from SmallCompilerSubsetBSBCLoader while production BytecodeLoader remains referee-only.",
     "The small compiler subset BSharp VM independence tool must pass before v0.1.77 may claim Self-Hosting Milestone 2 Slice 4 progress.",
-    "v0.1.77 bounded subset execution must come from SmallCompilerSubsetBSBCVirtualMachine while production BytecodeVirtualMachine and Ruby Runtime remain referee-only."
+    "v0.1.77 bounded subset execution must come from SmallCompilerSubsetBSBCVirtualMachine while production BytecodeVirtualMachine and Ruby Runtime remain referee-only.",
+    "The small compiler subset integrated pipeline independence tool must pass before v0.1.78 may claim Self-Hosting Milestone 2 Slice 5 progress.",
+    "v0.1.78 primary bounded source-to-world execution must route through SmallCompilerSubsetPipeline and its independent stages while production compiler components and Ruby Runtime remain referee-only.",
+    "v0.1.78 adds no new creator-facing syntax; accepted BASIC# statement and action ordering rules remain unchanged."
   ],
   "documents": {
     "contract": "docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FOUNDATION_v0_1_44.md",
@@ -211,7 +219,12 @@
     "small_compiler_subset_bsbc_vm_independence_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v0_1_77.md",
     "small_compiler_subset_bsbc_virtual_machine_file": "compiler/small_compiler_subset_bsbc_virtual_machine.rb",
     "small_compiler_subset_bsbc_vm_independence_tool": "tools/small_compiler_subset_bsbc_vm_independence.rb",
-    "small_compiler_subset_bsbc_vm_independence_test": "tests/test_small_compiler_subset_bsbc_vm_independence.rb"
+    "small_compiler_subset_bsbc_vm_independence_test": "tests/test_small_compiler_subset_bsbc_vm_independence.rb",
+    "small_compiler_subset_pipeline_independence_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json",
+    "small_compiler_subset_pipeline_independence_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v0_1_78.md",
+    "small_compiler_subset_pipeline_file": "compiler/small_compiler_subset_pipeline.rb",
+    "small_compiler_subset_pipeline_independence_tool": "tools/small_compiler_subset_pipeline_independence.rb",
+    "small_compiler_subset_pipeline_independence_test": "tests/test_small_compiler_subset_pipeline_independence.rb"
   },
   "milestones": [
     {

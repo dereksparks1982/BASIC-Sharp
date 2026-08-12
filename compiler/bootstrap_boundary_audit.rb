@@ -34,7 +34,7 @@ module BasicSharp
         subset_output_declared: stage_named?('basic_sharp_subset_outputs'),
         runtime_smoke_declared: stage_named?('runtime_smoke_bridge'),
         production_boundary_declared: stage_named?('production_runtime_boundary'),
-        milestone_guard_declared: spec.fetch('next_milestone') == 'v0.1.77 Self-Hosting Milestone 2 Slice 4: BSharp VM Execution Independence',
+        milestone_guard_declared: spec.fetch('next_milestone') == 'v0.1.78 Self-Hosting Milestone 2 Slice 5: Integrated Independent Compiler Pipeline',
         no_self_hosting_claim: forbidden.include?('claiming BASIC# is self-hosted'),
         ruby_replacement_forbidden: forbidden.include?('replacing the Ruby bootstrap compiler'),
         profile_8_forbidden: forbidden.include?('adding Profile 8'),

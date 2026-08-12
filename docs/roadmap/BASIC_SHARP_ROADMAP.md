@@ -3,22 +3,24 @@
 ## Current accepted base
 
 ```text
-v0.1.76: Self-Hosting Milestone 2 Slice 3 - BSBC Loader Independence
-commit 9b0069e175a62d4250b3801a0ed864a7e4cf08e2
-tag v0.1.76
+v0.1.77: Self-Hosting Milestone 2 Slice 4 - BSharp VM Execution Independence
+commit 5e7d15512322d7aef4237e4cd5d9d605b6966f3d
+tag v0.1.77
 ```
 
-v0.1.76 is the accepted rollback point. It gave BSharp Compiler Subset 0 an independent BSBC loader trust boundary while the production Ruby BytecodeLoader remained referee-only, repaired the README Current Release Truth Gate, and passed the full native validation lane before snapshot, local Git closeout, and GitHub verification.
+v0.1.77 is the accepted rollback point. It gave BSharp Compiler Subset 0 its own bounded BSharp VM execution engine and passed full native validation, accepted snapshot, local Git closeout, and GitHub peeled-tag verification.
 
 ## Current candidate
 
 ```text
-v0.1.77: Self-Hosting Milestone 2 Slice 4 - BSharp VM Execution Independence
+v0.1.78: Self-Hosting Milestone 2 Slice 5 - Integrated Independent Compiler Pipeline
 ```
 
-v0.1.77 gives BSharp Compiler Subset 0 an independent `SmallCompilerSubsetBSBCVirtualMachine`. The subset execution engine must run trusted models from `SmallCompilerSubsetBSBCLoader` without requiring, instantiating, inheriting from, or calling the production Ruby `BytecodeVirtualMachine`. The production VM and Ruby `BasicSharp::Runtime` remain separate referees only.
+v0.1.78 connects the bounded Subset 0 reader, parser, semantic resolver, BSharp IR, independent BSBC encoder, independent BSBC loader, and independent BSharp VM behind one `SmallCompilerSubsetPipeline` source-to-world path.
 
-The bounded subset proof lane for this build is:
+The primary `TokenizerReader` line/comment path is strengthened so it does not invoke the production `Lexer`; exact Lexer comparison remains a separate referee. The integrated pipeline must compile and execute its dedicated Profile 7 fixture even when production `Lexer`, `Parser`, `SemanticResolver`, `BytecodeEmitter`, `BytecodeLoader`, `BytecodeVirtualMachine`, and `Runtime` constructors are disabled.
+
+The bounded proof lane is:
 
 ```text
 TokenizerReader
@@ -31,17 +33,19 @@ TokenizerReader
 -> SmallCompilerSubsetBSBCVirtualMachine
 ```
 
-The execution corpus expands to 21 fixtures and 60 events. The v0.1.77 fixture carries Kind inheritance, creator text, whole-number state, open/close/lock/take object interaction, IF/OTHERWISE, multiple selection, exact/Kind selectors, and follow-up-event meaning through independent semantic resolution, independent Profile 7 BSBC encoding, independent BSBC loading, and independent BSharp VM execution.
+`SmallCompilerSubsetPipeline` orchestrates that entire lane and must preserve exact BSharp IR, BSBC, event-result, final-world, Save, and deterministic replay parity against separate production and Ruby referees.
 
-The execution-independence gate additionally runs 1,024 high-volume events, deterministic replay, and the 1,024 follow-up-event loop-protection boundary against both the production VM and Ruby runtime referees.
+Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json`.
+Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v0_1_78.md`.
+Reference: `compiler/small_compiler_subset_pipeline.rb`.
 
-Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json` remains the accepted Slice 2 encoder-independence contract.
-Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v1.json` remains the accepted Slice 3 loader-independence contract.
-Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v1.json`.
-Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v0_1_77.md`.
-Reference: `compiler/small_compiler_subset_bsbc_virtual_machine.rb`.
+Accepted prior-lane contracts remain active:
 
-Ruby remains the bootstrap compiler. v0.1.77 is not full self-hosting and does not change normal production compiler routing, Profile 1-7 meaning, the BSBC binary format, Save, ASK, input behaviour, or normal production runtime routing.
+- `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json`
+- `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v1.json`
+- `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v1.json`
+
+Ruby remains the bootstrap compiler and referee authority. v0.1.78 is not full self-hosting, does not add Profile 8, does not add creator-facing syntax, and does not change normal production compiler/runtime routing.
 
 ## Canonical Company Bible
 

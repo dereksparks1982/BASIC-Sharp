@@ -15,9 +15,9 @@ class TestWholeLanguageGauntletContract < Minitest::Test
   def test_spec_identity_and_version
     assert_equal 'bsharp.whole_language_gauntlet_expansion.json', @spec.fetch('format')
     assert_equal 1, @spec.fetch('format_version')
-    assert_equal '0.1.77', @spec.fetch('target_version')
+    assert_equal '0.1.78', @spec.fetch('target_version')
     assert_equal BasicSharp::VERSION, @spec.fetch('target_version')
-    assert_equal 'v0.1.77', @spec.fetch('required_target_version')
+    assert_equal 'v0.1.78', @spec.fetch('required_target_version')
   end
 
   def test_expanded_counts_are_sealed_in_inventory

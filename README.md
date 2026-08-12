@@ -1,24 +1,26 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.77
+# BASIC# Ruby Bootstrap Compiler v0.1.78
 
-BASIC# v0.1.77 adds Self-Hosting Milestone 2 Slice 4: BSharp VM Execution Independence.
+BASIC# v0.1.78 adds Self-Hosting Milestone 2 Slice 5: Integrated Independent Compiler Pipeline.
 
-v0.1.77 gives BSharp Compiler Subset 0 its own `SmallCompilerSubsetBSBCVirtualMachine` execution engine while the production Ruby `BytecodeVirtualMachine` and `BasicSharp::Runtime` remain separate referees. Exact event-result, final-world, BSharp Save, follow-up-event, loop-protection, and deterministic replay parity remain mandatory across Profiles 1 through 7.
+v0.1.78 connects the bounded Subset 0 reader, parser, semantic resolver, BSharp IR emitter, independent BSBC encoder, independent BSBC loader, and independent BSharp VM behind one `SmallCompilerSubsetPipeline` source-to-world path. The pipeline accepts BASIC# source and produces the same BSharp IR, BSBC bytes, event results, final world, and BSharp Save document as the separate production and Ruby referee paths.
 
-The independent execution engine accepts only trusted models from `SmallCompilerSubsetBSBCLoader`. It does not require, instantiate, inherit from, or call the production `BytecodeVirtualMachine`.
+`TokenizerReader` now produces its primary line/comment records without invoking the production `Lexer`; exact Lexer comparison remains available only as a referee check. The integrated primary pipeline is required to keep working when production `Lexer`, `Parser`, `SemanticResolver`, `BytecodeEmitter`, `BytecodeLoader`, `BytecodeVirtualMachine`, and `Runtime` constructors are disabled.
 
-This is Self-Hosting Milestone 2 Slice 4, not full self-hosting. Self-Hosting Milestone 1 remains preserved. v0.1.74 Semantic Resolver Independence, v0.1.75 BSBC Emitter Independence, and v0.1.76 BSBC Loader Independence remain preserved. Ruby remains the bootstrap compiler and referee authority; normal BASIC# production compilation and execution routing are unchanged.
+The bounded proof path is now `TokenizerReader -> SmallCompilerSubsetParser -> SmallCompilerSubsetSemanticResolver -> BSharp IR -> SmallCompilerSubsetBSBCEncoder -> BSharp Bytecode -> SmallCompilerSubsetBSBCLoader -> SmallCompilerSubsetBSBCVirtualMachine`, orchestrated by `SmallCompilerSubsetPipeline`.
 
-The bounded subset proof path is now `TokenizerReader -> SmallCompilerSubsetParser -> SmallCompilerSubsetSemanticResolver -> BSharp IR -> SmallCompilerSubsetBSBCEncoder -> BSharp Bytecode -> SmallCompilerSubsetBSBCLoader -> SmallCompilerSubsetBSBCVirtualMachine`. The execution corpus grows to 21 fixtures and 60 event executions. The v0.1.77 fixture combines Kind inheritance, creator text, whole-number values, open/close/lock/take object interaction, IF/OTHERWISE, multiple selection, exact/Kind selectors, and follow-up events through the fully independent bounded Profile 7 path.
+This is Self-Hosting Milestone 2 Slice 5, not full self-hosting. Ruby remains the bootstrap compiler and referee authority. Normal BASIC# production compilation and runtime routing remain unchanged.
 
-The BSharp VM independence gate also performs 1,024-event high-volume deterministic parity and proves the 1,024 follow-up-event loop-protection boundary against both the production VM referee and Ruby runtime referee.
+No new creator-facing syntax is introduced in v0.1.78. Existing BASIC# statement boundaries, action words such as `(open`, `(close`, `(lock`, `(take`, and written action order remain unchanged. Compiler complexity stays inside the compiler rather than being pushed onto the creator.
+
+The dedicated integrated-pipeline fixture remains Profile 7 and exercises Kind inheritance, creator text, whole-number values, multiple selection, exact and Kind selectors, object interaction, IF/OTHERWISE, follow-up events, and deterministic replay. Profiles 1 through 7 remain unchanged.
 
 Current release truth: Elderedd identity migration remains active under Elderedd Softworks LLC and Elderedd Laboratory. The DKLab compatibility layer remains for compatibility, rollback, migration, and historical path support only. BCS means BSharp Creator Services and remains a future service layer, not part of this build. The README Current Release Truth Gate remains active.
 
-Release hardening remains unchanged: Elderedd path direction, UTF-8 source reading, minimal/no-locale Ruby validation, release package preflight, deterministic fixture hash sweep, payload SHA-256 checks, changed-file scope checks, release forensic overlay, pre-mutation forensic overlay, and the sealed validation inventory must report all mismatches together. The Open3 capture encoding gap remains repaired so CLI validation remains truthful.
+Release hardening remains active: Elderedd path direction, UTF-8 source reading, minimal/no-locale Ruby validation, release package preflight, deterministic fixture hash sweep, payload SHA-256 checks, changed-file scope checks, release forensic overlay, pre-mutation forensic overlay, and the sealed validation inventory must report all mismatches together.
 
-The whole-language test gauntlet remains at 128,000 event paths, 128,000 platform frames, 384 generated programs, and 3,072 mutations. v0.1.77 changes bounded subset execution ownership only and preserves creator-facing language meaning, the BSBC binary format, Save, ASK, input behaviour, and normal production runtime behaviour.
+The whole-language test gauntlet remains at 128,000 event paths, 128,000 platform frames, 384 generated programs, and 3,072 mutations. v0.1.78 changes bounded compiler orchestration only and preserves creator-facing language meaning, the BSBC binary format, Save, ASK, input behaviour, and normal production runtime behaviour.
 
-## v0.1.77 active gates
+## v0.1.78 active gates
 
 ```text
 spec/release/BASIC_SHARP_RELEASE_FORENSIC_OVERLAY_v1.json
@@ -72,6 +74,11 @@ docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v0_1_77
 compiler/small_compiler_subset_bsbc_virtual_machine.rb
 tools/small_compiler_subset_bsbc_vm_independence.rb
 tests/test_small_compiler_subset_bsbc_vm_independence.rb
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json
+docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v0_1_78.md
+compiler/small_compiler_subset_pipeline.rb
+tools/small_compiler_subset_pipeline_independence.rb
+tests/test_small_compiler_subset_pipeline_independence.rb
 ```
 
 ## Self-hosting runway records
@@ -101,6 +108,7 @@ docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v0
 compiler/small_compiler_subset_bsbc_encoder.rb
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json
 spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v1.json
 spec/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v1.json
@@ -212,8 +220,8 @@ Reference oracle: BasicSharp::Runtime
 Meaning profiles: bsharp.meaning.v1 through bsharp.meaning.v7
 Bytecode profiles: bsharp.bytecode.v1 through bsharp.bytecode.v7
 Self-hosting contract: BSharp Compiler Subset 0
-Current self-hosting milestone: v0.1.77 Self-Hosting Milestone 2 Slice 4 under Ruby referee control
-Current build: v0.1.77 Self-Hosting Milestone 2 Slice 4 BSharp VM Execution Independence
+Current self-hosting milestone: v0.1.78 Self-Hosting Milestone 2 Slice 5 under Ruby referee control
+Current build: v0.1.78 Self-Hosting Milestone 2 Slice 5 Integrated Independent Compiler Pipeline
 Parent company: Elderedd Softworks LLC
 Laboratory: Elderedd Laboratory
 Internal shorthand: ELDL
