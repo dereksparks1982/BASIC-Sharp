@@ -1,0 +1,63 @@
+{
+  "format": "bsharp.native_symbol_resolution_integration.contract.json",
+  "format_version": 1,
+  "target_version": "0.1.83",
+  "status": "self_hosting_milestone_2_slice_10_native_symbol_resolution_integration_under_ruby_referee",
+  "purpose": "Require bounded BASIC#-authored BSBC symbol decisions inside the independent compiler while neutral Ruby lookup observations remain fenced bootstrap inputs and production compiler/runtime components remain referees only.",
+  "native_component": {
+    "source_path": "compiler/native/first_bsharp_symbol_resolver.bsharp",
+    "artifact_path": "compiler/native/first_bsharp_symbol_resolver.bsbc",
+    "disassembly_path": "compiler/native/first_bsharp_symbol_resolver.bsbc.txt",
+    "expected_binary_sha256": "287492771a8dc985b889f4765006eeda83a8a00eab5466450eeda1d4780deab8",
+    "expected_disassembly_sha256": "8e22069e60e8c2d1dc26ca0e9f984e76c2899b4d3640cac0c6c2dd57419a1812",
+    "expected_decisions": {
+      "known_kind": "resolve-known-kind",
+      "unknown_kind": "reject-unknown-kind",
+      "unique_kind": "accept-unique-kind",
+      "duplicate_kind": "reject-duplicate-kind",
+      "valid_kind_link": "accept-kind-link",
+      "invalid_kind_link": "reject-kind-link",
+      "known_thing": "resolve-known-thing",
+      "unknown_thing": "reject-unknown-thing",
+      "unique_thing": "accept-unique-thing",
+      "duplicate_thing": "reject-duplicate-thing",
+      "builtin_player": "resolve-builtin-player",
+      "known_action": "resolve-known-action",
+      "unknown_action": "reject-unknown-action",
+      "valid_value": "resolve-value",
+      "invalid_value": "reject-invalid-value"
+    }
+  },
+  "neutral_observation_boundary": [
+    "CoreDictionary may expose whether a Kind, Thing, action, or value-shaped name is presently known to the bounded compiler.",
+    "Local seen-name sets may expose whether a Kind or Thing definition is duplicate.",
+    "The native BASIC# component must participate in the final bounded symbol decision and any observation/decision contradiction fails closed.",
+    "No caller may replace a missing, wrong, or unmatched native decision with a Ruby fallback answer."
+  ],
+  "required_primary_path_proofs": [
+    "v0.1.81 native parser dispatch remains active",
+    "v0.1.82 native semantic routing remains active",
+    "native symbol decisions are observed during independent source to BSIR and BSBC compilation",
+    "production Parser is unavailable on the primary proof path",
+    "production SemanticResolver is unavailable on the primary proof path",
+    "production BytecodeEmitter, BytecodeLoader, BytecodeVirtualMachine, and Runtime constructors are unavailable on the primary proof path",
+    "independent BSBC executes through the independent BSharp VM",
+    "production semantic and Ruby runtime referees remain exact after the primary proof"
+  ],
+  "sabotage_requirements": [
+    "known Kind reported as unknown fails visibly",
+    "unknown Thing reported as known fails visibly",
+    "duplicate Thing reported as unique fails visibly",
+    "invalid Kind link reported as valid fails visibly",
+    "unrecognized native symbol probe fails visibly"
+  ],
+  "bootstrap_fixed_point": {
+    "generation_1": "accepted v0.1.82 independent compiler plus target v0.1.83 version bytes compiles the BASIC# symbol component",
+    "generation_2": "v0.1.83 independent compiler using generation #1 symbol artifact recompiles the same BASIC# source",
+    "requirement": "generation #1 and generation #2 BSBC plus readable disassembly are byte-identical and match the checked-in artifacts"
+  },
+  "creator_surface": "unchanged",
+  "profiles": [1, 2, 3, 4, 5, 6, 7],
+  "full_self_hosting_claim": false,
+  "ruby_retired": false
+}

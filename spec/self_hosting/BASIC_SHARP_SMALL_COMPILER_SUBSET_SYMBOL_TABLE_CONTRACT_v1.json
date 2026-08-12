@@ -1,9 +1,9 @@
 {
   "format": "bsharp.small_compiler_subset.symbol_table_contract.json",
   "format_version": 1,
-  "target_version": "0.1.82",
-  "status": "symbol_table_contract_under_ruby_referee",
-  "purpose": "Lock deterministic name tracking for the small compiler subset while Ruby remains the referee.",
+  "target_version": "0.1.83",
+  "status": "native_symbol_resolution_integration_under_ruby_referee",
+  "purpose": "Lock deterministic name tracking for the small compiler subset while bounded symbol decisions require the BASIC#-authored native symbol component and Ruby remains the referee.",
   "valid_fixtures": [
     {
       "name": "doors_and_switches_symbols",
@@ -190,7 +190,10 @@
     "reports duplicate Thing names in plain English",
     "reports unknown Kind references in plain English",
     "reports unknown Thing references in plain English",
-    "does not replace Ruby as parser, resolver, compiler, or runtime authority"
+    "does not replace Ruby as parser, resolver, compiler, or runtime authority",
+    "requires BASIC# native decisions for known and unknown Kind/Thing observations",
+    "requires BASIC# native decisions for duplicate Kind/Thing observations and Kind links",
+    "fails closed when native symbol decisions contradict neutral lookup observations"
   ],
   "self_hosting_spec": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json"
 }

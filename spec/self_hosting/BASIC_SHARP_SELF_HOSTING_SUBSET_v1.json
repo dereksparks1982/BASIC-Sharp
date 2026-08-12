@@ -1,7 +1,7 @@
 {
   "format": "bsharp.self_hosting.subset.json",
   "format_version": 1,
-  "target_version": "0.1.82",
+  "target_version": "0.1.83",
   "title": "Self-Hosting Foundation and Compiler Subset Contract",
   "status": "foundation_contract_only",
   "purpose": "Define the first BASIC# subset allowed for future compiler-writing work while Ruby remains the bootstrap compiler and reference authority.",
@@ -15,7 +15,7 @@
     "bsharp.meaning.v7"
   ],
   "compiler_subset_name": "BSharp Compiler Subset 0",
-  "compiler_subset_status": "self_hosting_milestone_2_slice_9_native_semantic_routing_integration_under_ruby_referee",
+  "compiler_subset_status": "self_hosting_milestone_2_slice_10_native_symbol_resolution_integration_under_ruby_referee",
   "compiler_subset_allows": [
     "file-shaped source text handled by the existing Ruby bootstrap during this build",
     "deterministic token records for future reader work",
@@ -37,7 +37,8 @@
     "integrated Subset 0 source-to-world orchestration through SmallCompilerSubsetPipeline while production compiler components and Ruby Runtime remain separate referees",
     "first BASIC#-authored compiler-domain decision component compiled to real BSBC and executed by the independent BSharp VM under separate production and Ruby referees",
     "bounded SmallCompilerSubsetParser block-Head routing through the BASIC#-authored BSBC native dispatch component with fail-closed sabotage and fixed-point bootstrap proof",
-    "bounded SmallCompilerSubsetSemanticResolver semantic-family routing through a BASIC#-authored BSBC semantic component with fail-closed sabotage, observable invocation counts, preserved native parser dispatch, and fixed-point bootstrap proof"
+    "bounded SmallCompilerSubsetSemanticResolver semantic-family routing through a BASIC#-authored BSBC semantic component with fail-closed sabotage, observable invocation counts, preserved native parser dispatch, and fixed-point bootstrap proof",
+    "bounded symbol-resolution decisions through a BASIC#-authored BSBC symbol component using neutral lookup observations, fail-closed contradiction sabotage, preserved native parser and semantic stages, observable invocation counts, and fixed-point bootstrap proof"
   ],
   "compiler_subset_forbids_until_later_approval": [
     "replacing the Ruby bootstrap compiler",
@@ -128,6 +129,10 @@
     {
       "version_lane": "v0.1.82",
       "goal": "Route bounded semantic-family decisions through a BASIC#-authored BSBC semantic component, preserve v0.1.81 native parser dispatch upstream, require wrong-route fail-closed sabotage, observable invocation counts, and a byte-identical two-generation bootstrap fixed point."
+    },
+    {
+      "version_lane": "v0.1.83",
+      "goal": "Route bounded Kind, Thing, PLAYER, action, value, duplicate, unknown, and Kind-link symbol decisions through a BASIC#-authored BSBC symbol component, preserve v0.1.81 parser dispatch and v0.1.82 semantic routing upstream, require fail-closed sabotage, observable invocation counts, exact referee parity, and a byte-identical two-generation fixed point."
     }
   ],
   "acceptance_rules": [
@@ -172,7 +177,10 @@
     "v0.1.81 bounded parser block-Head routing must come from the BASIC#-authored BSBC component; invalid or sabotaged dispatch must fail visibly without a Ruby fallback table.",
     "The native semantic routing integration tool must pass before v0.1.82 may claim Self-Hosting Milestone 2 Slice 9 progress.",
     "v0.1.82 bounded semantic-family routing must come from compiler/native/first_bsharp_semantic_router.bsbc; wrong, unknown, or unmatched semantic routing must fail visibly without a Ruby fallback table.",
-    "v0.1.82 must preserve v0.1.81 native parser dispatch upstream and exact production SemanticResolver plus Ruby referee parity downstream."
+    "v0.1.82 must preserve v0.1.81 native parser dispatch upstream and exact production SemanticResolver plus Ruby referee parity downstream.",
+    "The native symbol resolution integration tool must pass before v0.1.83 may claim Self-Hosting Milestone 2 Slice 10 progress.",
+    "v0.1.83 bounded symbol decisions must come from compiler/native/first_bsharp_symbol_resolver.bsbc after neutral lookup observation; contradictory known/unknown, duplicate, Kind-link, action, value, or PLAYER decisions must fail visibly without a Ruby decision fallback.",
+    "v0.1.83 must preserve v0.1.81 native parser dispatch and v0.1.82 native semantic routing upstream plus exact BSharp IR, BSBC, production-referee, and Ruby-referee parity downstream."
   ],
   "documents": {
     "contract": "docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FOUNDATION_v0_1_44.md",
@@ -282,7 +290,15 @@
     "native_semantic_routing_spec": "spec/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v1.json",
     "native_semantic_routing_implementation": "docs/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v0_1_82.md",
     "native_semantic_routing_tool": "tools/native_semantic_routing_integration.rb",
-    "native_semantic_routing_test": "tests/test_native_semantic_routing_integration.rb"
+    "native_semantic_routing_test": "tests/test_native_semantic_routing_integration.rb",
+    "native_symbol_resolution_spec": "spec/self_hosting/BASIC_SHARP_NATIVE_SYMBOL_RESOLUTION_INTEGRATION_v1.json",
+    "native_symbol_resolution_source": "compiler/native/first_bsharp_symbol_resolver.bsharp",
+    "native_symbol_resolution_artifact": "compiler/native/first_bsharp_symbol_resolver.bsbc",
+    "native_symbol_resolution_disassembly": "compiler/native/first_bsharp_symbol_resolver.bsbc.txt",
+    "native_symbol_resolution_file": "compiler/small_compiler_subset_native_symbol_resolution.rb",
+    "native_symbol_resolution_implementation": "docs/self_hosting/BASIC_SHARP_NATIVE_SYMBOL_RESOLUTION_INTEGRATION_v0_1_83.md",
+    "native_symbol_resolution_tool": "tools/native_symbol_resolution_integration.rb",
+    "native_symbol_resolution_test": "tests/test_native_symbol_resolution_integration.rb"
   },
   "milestones": [
     {
@@ -343,7 +359,19 @@
       "name": "Self-Hosting Milestone 2 Slice 8: BASIC# Native Parser Dispatch Integration",
       "status": "native_parser_dispatch_integration_under_ruby_referee",
       "contract": "spec/self_hosting/BASIC_SHARP_NATIVE_PARSER_DISPATCH_INTEGRATION_v1.json"
+    },
+    {
+      "version_lane": "v0.1.82",
+      "name": "Self-Hosting Milestone 2 Slice 9: BASIC# Native Semantic Routing Integration",
+      "status": "native_semantic_routing_integration_under_ruby_referee",
+      "contract": "spec/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v1.json"
+    },
+    {
+      "version_lane": "v0.1.83",
+      "name": "Self-Hosting Milestone 2 Slice 10: BASIC# Native Symbol Resolution Integration",
+      "status": "native_symbol_resolution_integration_under_ruby_referee",
+      "contract": "spec/self_hosting/BASIC_SHARP_NATIVE_SYMBOL_RESOLUTION_INTEGRATION_v1.json"
     }
   ],
-  "current_milestone_status": "self_hosting_milestone_2_slice_9_native_semantic_routing_integration_under_ruby_referee"
+  "current_milestone_status": "self_hosting_milestone_2_slice_10_native_symbol_resolution_integration_under_ruby_referee"
 }

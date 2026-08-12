@@ -13,14 +13,14 @@ class TestSelfHostingContract < Minitest::Test
   end
 
   def test_spec_targets_the_live_basic_sharp_version
-    assert_equal '0.1.82', BasicSharp::VERSION
+    assert_equal '0.1.83', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
   end
 
   def test_contract_is_foundation_only
     assert_equal 'foundation_contract_only', spec.fetch('status')
     assert_equal 'BSharp Compiler Subset 0', spec.fetch('compiler_subset_name')
-    assert_equal 'self_hosting_milestone_2_slice_9_native_semantic_routing_integration_under_ruby_referee', spec.fetch('compiler_subset_status')
+    assert_equal 'self_hosting_milestone_2_slice_10_native_symbol_resolution_integration_under_ruby_referee', spec.fetch('compiler_subset_status')
   end
 
   def test_future_work_is_explicitly_excluded
@@ -100,6 +100,12 @@ class TestSelfHostingContract < Minitest::Test
     assert File.file?(File.join(ROOT, documents.fetch('first_native_compiler_component_implementation')))
     assert File.file?(File.join(ROOT, documents.fetch('first_native_compiler_component_tool')))
     assert File.file?(File.join(ROOT, documents.fetch('first_native_compiler_component_test')))
+    assert_equal 'spec/self_hosting/BASIC_SHARP_NATIVE_SYMBOL_RESOLUTION_INTEGRATION_v1.json', documents.fetch('native_symbol_resolution_spec')
+    assert_equal 'compiler/native/first_bsharp_symbol_resolver.bsharp', documents.fetch('native_symbol_resolution_source')
+    assert_equal 'compiler/native/first_bsharp_symbol_resolver.bsbc', documents.fetch('native_symbol_resolution_artifact')
+    %w[native_symbol_resolution_source native_symbol_resolution_artifact native_symbol_resolution_disassembly native_symbol_resolution_file native_symbol_resolution_implementation native_symbol_resolution_tool native_symbol_resolution_test].each do |key|
+      assert File.file?(File.join(ROOT, documents.fetch(key))), key
+    end
     assert_equal 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json', documents.fetch('small_compiler_subset_bsbc_parity_harness_spec')
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_parity_harness_implementation')))
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_parity_harness_tool')))
@@ -145,6 +151,7 @@ class TestSelfHostingContract < Minitest::Test
     assert_includes tools, 'tools/small_compiler_subset_driver_independence.rb'
     assert_includes tools, 'tools/small_compiler_subset_artifact_round_trip.rb'
     assert_includes tools, 'tools/first_native_compiler_component.rb'
+    assert_includes tools, 'tools/native_symbol_resolution_integration.rb'
     assert_includes tools, 'tools/small_compiler_subset_bsbc_parity_harness.rb'
     assert_includes tools, 'tools/self_hosting_fixture_corpus.rb'
     assert_includes tools, 'tools/small_compiler_subset_runtime_smoke.rb'

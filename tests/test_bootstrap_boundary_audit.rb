@@ -21,7 +21,7 @@ class TestBootstrapBoundaryAudit < Minitest::Test
     assert_equal 1, spec.fetch('format_version')
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
     assert_equal 'bootstrap_boundary_audit_under_ruby_referee', spec.fetch('status')
-    assert_equal 'v0.1.82 Self-Hosting Milestone 2 Slice 9: BASIC# Native Semantic Routing Integration', spec.fetch('next_milestone')
+    assert_equal 'v0.1.83 Self-Hosting Milestone 2 Slice 10: BASIC# Native Symbol Resolution Integration', spec.fetch('next_milestone')
   end
 
   def test_boundaries_pass_and_every_path_exists
@@ -30,6 +30,7 @@ class TestBootstrapBoundaryAudit < Minitest::Test
     assert audit.fetch(:checks).fetch(:native_component_declared)
     assert audit.fetch(:checks).fetch(:native_dispatch_integration_declared)
     assert audit.fetch(:checks).fetch(:native_semantic_routing_declared)
+    assert audit.fetch(:checks).fetch(:native_symbol_resolution_declared)
     audit.fetch(:stages).each do |stage|
       assert_empty stage.fetch(:missing_paths), stage.fetch(:name)
       assert_operator stage.fetch(:existing_path_count), :>, 0, stage.fetch(:name)

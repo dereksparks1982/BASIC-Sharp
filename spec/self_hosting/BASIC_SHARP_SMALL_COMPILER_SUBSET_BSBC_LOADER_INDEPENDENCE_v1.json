@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.bsbc_loader_independence.contract.json",
   "format_version": 1,
-  "target_version": "0.1.82",
+  "target_version": "0.1.83",
   "title": "Small Compiler Subset BSBC Loader Independence",
   "status": "bsbc_loader_independent_under_ruby_referee",
   "purpose": "Give BSharp Compiler Subset 0 its own BSBC trust-boundary loader while preserving the production Ruby BytecodeLoader only as a separate referee for exact valid-model and malformed-artifact parity.",
@@ -33,7 +33,7 @@
     "expected_binary_bytes": 892,
     "expected_binary_sha256": "56bbc8fc2caa2f6dc65bb669fd428f99645da0a72106c05b3f7a429b093a5479",
     "expected_disassembly_sha256": "29e7ee678c2bab30a6132ea4c2147cf3d6a97cc0796c87772c95f7fde46474d4",
-    "expected_bsharp_ir_sha256": "b2052e544f3341cb5bcfc07a363c8760b7fc237425e0cd5e92227f754bee13d3",
+    "expected_bsharp_ir_sha256": "c733803a563c81382737f1a29d99b28d57afdafbc99965ac5e49d9150cc5f236",
     "expected_fingerprint": "2d0851f7fa8856fa1d181461626d0d41314b3df683dd57745447818bc032d9e6",
     "expected_loader_summary_sha256": "0e8d33ea69b57f8ae67a585c7aadb32cf1e6d91d1d6ab833129006ce934db6a5",
     "expected_loader_model_sha256": "38a8718d56bb3841beaa890f4437008a1277a8f773cb929ad650b60ac9c7046e",

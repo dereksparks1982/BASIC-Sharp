@@ -1,24 +1,34 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.82
+# BASIC# Ruby Bootstrap Compiler v0.1.83
 
-BASIC# v0.1.82 adds Self-Hosting Milestone 2 Slice 9: Native Semantic Routing Integration.
+BASIC# v0.1.83 adds Self-Hosting Milestone 2 Slice 10: Native Symbol Resolution Integration.
 
-v0.1.82 moves BASIC#-authored compiler authority one layer deeper by making the bounded independent semantic resolver request every accepted semantic-family route from checked-in BASIC# BSBC while v0.1.81 native parser dispatch remains active upstream. That upstream gate remains the accepted Self-Hosting Milestone 2 Slice 8 Native Parser Dispatch Integration.
+v0.1.83 moves BASIC#-authored compiler authority into bounded symbol resolution by requiring checked-in BASIC# BSBC decisions for Kind, Thing, PLAYER, action, value, duplicate, unknown, and Kind-link observations while v0.1.81 native parser dispatch and v0.1.82 native semantic routing remain active upstream. Self-Hosting Milestone 2 Slice 8 remains the accepted Native Parser Dispatch Integration, and Self-Hosting Milestone 2 Slice 9 remains the accepted Native Semantic Routing Integration.
 
-The active independent path now keeps `compiler/small_compiler_subset_native_dispatch.rb` and `compiler/native/first_bsharp_compiler_component.bsharp` in front of the parser while adding `compiler/small_compiler_subset_native_semantic_routing.rb` and `compiler/native/first_bsharp_semantic_router.bsharp` after parsing. The first component still classifies the nine accepted compiler block heads. The new semantic router classifies the eight accepted semantic families: Kind definitions, Thing definitions, starting facts, WHEN event rules, IF/OTHERWISE rules, CONTROLS declarations, HOVER declarations, and CONTEXT declarations. Both canonical BASIC# sources remain checked in beside deterministic `.bsharp`, `.bsbc`, and readable disassembly evidence.
+The current symbol decisions explicitly cover Kind identity, Thing identity, action identities, and value identities.
 
-`SmallCompilerSubsetDriver` and `SmallCompilerSubsetPipeline` expose native dispatch and native semantic activity while `SmallCompilerSubsetBSBCLoader` and `SmallCompilerSubsetBSBCVirtualMachine` remain the independent execution machinery. The production `Lexer`, production `Parser`, production `BytecodeEmitter`, production compiler constructors, production semantic resolver, and Ruby Runtime remain unavailable on the primary integration proof path. Ruby remains the bootstrap compiler and separate referee authority. This is active bounded self-hosting progress, not full self-hosting, and Ruby is not retired.
+The active path keeps `compiler/small_compiler_subset_native_dispatch.rb`, `compiler/native/first_bsharp_compiler_component.bsharp`, `compiler/small_compiler_subset_native_semantic_routing.rb`, and `compiler/native/first_bsharp_semantic_router.bsharp`, then adds `compiler/small_compiler_subset_native_symbol_resolution.rb` backed by `compiler/native/first_bsharp_symbol_resolver.bsharp`. The BASIC# symbol component uses fifteen bounded probe decisions and is checked in as `.bsharp`, `.bsbc`, and readable disassembly evidence. The existing nine accepted compiler block heads and eight accepted semantic families remain protected upstream.
 
-The semantic integration is fail-closed. Validation observes the native semantic invocation count across all eight accepted semantic families, rejects an unknown semantic route, and requires wrong-route sabotage to fail visibly instead of falling back to a hidden Ruby routing answer. The upstream v0.1.81 native dispatch invocation count and fail-closed parser behavior remain independently tested. A controlled bootstrap fence compiles the v0.1.82 semantic router as generation #1, recompiles it through the new machinery as generation #2, and requires the two outputs to be byte-identical.
+`SmallCompilerSubsetDriver`, `SmallCompilerSubsetPipeline`, `SmallCompilerSubsetSymbolTableContract`, and `SmallCompilerSubsetSemanticResolver` expose native activity while `SmallCompilerSubsetBSBCLoader` and `SmallCompilerSubsetBSBCVirtualMachine` remain independent execution machinery. The native symbol boundary accepts neutral lookup observations such as whether a dictionary contains a Kind or Thing from Ruby bootstrap plumbing, but the bounded accept/reject symbol decision comes from BASIC# bytecode. There is no hidden Ruby decision fallback. The production `Lexer`, production `Parser`, production `SemanticResolver`, production `BytecodeEmitter`, production compiler constructors, and Ruby Runtime remain unavailable on the primary integration proof path and remain separate referee authority. Ruby remains the bootstrap compiler. This is active bounded self-hosting progress, not full self-hosting.
 
-No new creator-facing syntax is introduced. Profiles 1 through 7 remain sealed, there is no Profile 8, and the creator still sees the same plain-language BASIC# surface. The self-hosting machinery is changing under the floorboards, not being pushed onto the person making a game.
+The symbol integration is fail-closed. The prior wrong-route sabotage for semantic routing remains independently protected. Validation observes the native symbol invocation count and requires wrong-known-symbol sabotage, wrong-unknown-symbol sabotage, duplicate-symbol sabotage, and wrong-Kind-link sabotage to fail visibly. It also verifies builtin PLAYER, action, and value decisions. The v0.1.81 native dispatch invocation count and v0.1.82 native semantic invocation count remain independently tested. A controlled bootstrap fence compiles the v0.1.83 symbol component as generation #1 from the accepted v0.1.82 machinery, recompiles it through the v0.1.83 machinery as generation #2, and requires byte-identical output.
+
+No new creator-facing syntax is introduced. Profiles 1 through 7 remain sealed, there is no Profile 8, and creator-facing BASIC# meaning is unchanged.
 
 Current release truth remains under Elderedd Softworks LLC and Elderedd Laboratory. The Elderedd identity migration remains active, with the DKLab compatibility layer retained only for compatibility, rollback, migration, and historical path support. BCS means BSharp Creator Services and remains future service work rather than part of this build. The Company Bible header version remains machine-checked against `BasicSharp::VERSION`.
 
 Release hardening remains active: Elderedd path direction, UTF-8 source reading, minimal/no-locale Ruby validation, release package preflight, deterministic fixture hash sweep, payload SHA-256 checks, changed-file scope checks, release forensic overlay, pre-mutation forensic overlay, and the sealed validation inventory must report all mismatches together. The whole-language test gauntlet remains at 128,000 event paths, 128,000 platform frames, 384 generated programs, and 3,072 mutations.
 
-## v0.1.82 active gates
+## v0.1.83 active gates
 
 ```text
+spec/self_hosting/BASIC_SHARP_NATIVE_SYMBOL_RESOLUTION_INTEGRATION_v1.json
+compiler/small_compiler_subset_native_symbol_resolution.rb
+compiler/native/first_bsharp_symbol_resolver.bsharp
+compiler/native/first_bsharp_symbol_resolver.bsbc
+compiler/native/first_bsharp_symbol_resolver.bsbc.txt
+docs/self_hosting/BASIC_SHARP_NATIVE_SYMBOL_RESOLUTION_INTEGRATION_v0_1_83.md
+tools/native_symbol_resolution_integration.rb
+tests/test_native_symbol_resolution_integration.rb
 spec/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v1.json
 compiler/small_compiler_subset_native_semantic_routing.rb
 compiler/native/first_bsharp_semantic_router.bsharp
@@ -249,8 +259,8 @@ Reference oracle: BasicSharp::Runtime
 Meaning profiles: bsharp.meaning.v1 through bsharp.meaning.v7
 Bytecode profiles: bsharp.bytecode.v1 through bsharp.bytecode.v7
 Self-hosting contract: BSharp Compiler Subset 0
-Current self-hosting milestone: v0.1.82 Self-Hosting Milestone 2 Slice 9 under Ruby referee control
-Current build: v0.1.82 Self-Hosting Milestone 2 Slice 9 Native Semantic Routing Integration
+Current self-hosting milestone: v0.1.83 Self-Hosting Milestone 2 Slice 10 under Ruby referee control
+Current build: v0.1.83 Self-Hosting Milestone 2 Slice 10 Native Symbol Resolution Integration
 Parent company: Elderedd Softworks LLC
 Laboratory: Elderedd Laboratory
 Internal shorthand: ELDL

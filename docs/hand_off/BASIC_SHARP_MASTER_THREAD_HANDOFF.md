@@ -2,16 +2,14 @@
 
 ## Current state
 
-- **Accepted base:** v0.1.81 at commit `1805102260cff3d42bd1a7a1229c06b4a9300bb9`, annotated tag `v0.1.81`, main synchronized to private GitHub by SSH.
-- **Candidate:** v0.1.82 Self-Hosting Milestone 2 Slice 9: Native Semantic Routing Integration.
-- **Rollback:** restore exact v0.1.81 and remove only v0.1.82 added paths before applying a repaired v0.1.82 candidate.
-- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_82_SELF_HOSTING_MILESTONE_2_NATIVE_SEMANTIC_ROUTING_INTEGRATION_CHANGED_FILES_ONLY.zip`.
+- **Accepted base:** v0.1.82 at commit `e5181842eba869da1d561359b84ff7e6b34ddddd`, annotated tag `v0.1.82`, main synchronized to private GitHub by SSH.
+- **Candidate:** v0.1.83 Self-Hosting Milestone 2 Slice 10: Native Symbol Resolution Integration.
+- **Rollback:** restore exact v0.1.82 and remove only v0.1.83 added paths before applying a repaired v0.1.83 candidate.
+- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_83_SELF_HOSTING_MILESTONE_2_NATIVE_SYMBOL_RESOLUTION_INTEGRATION_CHANGED_FILES_ONLY.zip`.
 
-## v0.1.82 purpose
+## v0.1.83 purpose
 
-v0.1.81 put BASIC# bytecode into active parser dispatch. v0.1.82 keeps that gate and adds a second active BASIC# authority boundary inside the bounded independent semantic resolver. `compiler/small_compiler_subset_native_semantic_routing.rb` executes `compiler/native/first_bsharp_semantic_router.bsbc` and returns the route used by `SmallCompilerSubsetSemanticResolver`.
-
-The eight accepted semantic families are Kind definitions, Thing definitions, starting facts, WHEN event rules, IF/OTHERWISE rules, CONTROLS declarations, HOVER declarations, and CONTEXT declarations.
+v0.1.81 put BASIC# bytecode into active parser dispatch. v0.1.82 added active BASIC# semantic-family routing. v0.1.83 preserves both and adds a third authority boundary: `compiler/small_compiler_subset_native_symbol_resolution.rb` executes `compiler/native/first_bsharp_symbol_resolver.bsbc`, while the symbol table and semantic resolver provide only neutral lookup observations and must obey the BASIC# decision or fail visibly.
 
 Primary bounded path:
 
@@ -21,6 +19,7 @@ BASIC# source
 -> v0.1.81 BASIC# native parser dispatch
 -> SmallCompilerSubsetParser
 -> v0.1.82 BASIC# native semantic routing
+-> v0.1.83 BASIC# native symbol resolution
 -> SmallCompilerSubsetSemanticResolver
 -> BSharp IR
 -> independent BSBC encoder
@@ -30,7 +29,7 @@ BASIC# source
 
 ## Critical acceptance evidence
 
-The v0.1.82 gate must prove native semantic artifact loading, all eight exact routes, observed invocation counts, unknown-route rejection, wrong-route sabotage without Ruby fallback, preserved v0.1.81 native parser dispatch, production Parser/SemanticResolver/compiler constructors and Ruby Runtime unavailable on the primary path, independent source-to-BSIR/BSBC/execution, production and Ruby referee parity, and a byte-identical generation #1 / generation #2 fixed point bootstrapped from accepted v0.1.81.
+The v0.1.83 gate must prove native symbol artifact loading, Kind/Thing/Thing-to-Kind/PLAYER/action/value decisions, duplicate and unknown observations, observed invocation counts, wrong-known/wrong-unknown/duplicate/bad-Kind-link sabotage without Ruby fallback, preserved v0.1.81 parser dispatch and v0.1.82 semantic routing, production Parser/SemanticResolver/compiler constructors and Ruby Runtime unavailable on the primary path, independent source-to-BSIR/BSBC/execution, production and Ruby referee parity, and a byte-identical generation #1 / generation #2 fixed point bootstrapped from accepted v0.1.82.
 
 ## Canonical Company Bible
 
@@ -42,21 +41,21 @@ No new creator-facing syntax and no Profile 8. Profiles 1 through 7, BSBC binary
 
 ## Current validation floor
 
-Accepted v0.1.81 floor:
+Accepted v0.1.82 floor:
 
 ```text
-84 test files
-670 runs
-10,052 assertions
+86 test files
+687 runs
+10,134 assertions
 0 failures
 0 errors
 0 skips
-72 required tools
-338 sealed artifacts
+74 required tools
+370 sealed artifacts
 14 protected artifacts
 ```
 
-Current v0.1.82 build-side candidate:
+Current v0.1.83 build-side candidate:
 
 ```text
 85 test files
@@ -74,11 +73,11 @@ Complete normal and no-locale suites have passed build-side. Native semantic sab
 
 ## Release workflow
 
-1. Build a direct-root changed-files-only package against exact accepted v0.1.81.
+1. Build a direct-root changed-files-only package against exact accepted v0.1.82.
 2. Verify exact v0.1.81 HEAD/tag/branch/clean tree and all base-file hashes before mutation.
 3. Run pre-mutation forensic overlay over the candidate payload.
 4. Capture rollback bytes, install only declared paths, and validate syntax/JSON/whitespace/package scope.
-5. Run native parser dispatch and native semantic routing proofs, complete normal/no-locale suites, every sealed required tool, stress lanes, deterministic sweep, package preflight, forensic overlay, whole-language gauntlet, and full-count Trial by Fire.
+5. Run native parser dispatch, native semantic routing, and native symbol resolution proofs, complete normal/no-locale suites, every sealed required tool, stress lanes, deterministic sweep, package preflight, forensic overlay, whole-language gauntlet, and full-count Trial by Fire.
 6. Require one unmistakable `FINAL PASS`.
 7. After Derek sees FINAL PASS: accepted snapshot first, then local commit/annotated tag, then private GitHub SSH push and peeled annotated-tag verification.
 

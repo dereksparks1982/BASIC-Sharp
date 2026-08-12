@@ -1,0 +1,104 @@
+BSharp Bytecode bsharp.bytecode.v2
+Meaning Profile: bsharp.meaning.v2
+Fingerprint: ef625a317ba11152c3dd92988d4d6b505609e0846c853127f9fce14ceca8512f
+
+KIND 0 person PARENT NONE
+KIND 1 device PARENT NONE
+
+THING 0 player KIND[person]
+THING 1 symbol decision KIND[device]
+THING 2 known kind symbol KIND[device]
+THING 3 unknown kind symbol KIND[device]
+THING 4 unique kind symbol KIND[device]
+THING 5 duplicate kind symbol KIND[device]
+THING 6 valid kind link symbol KIND[device]
+THING 7 invalid kind link symbol KIND[device]
+THING 8 known thing symbol KIND[device]
+THING 9 unknown thing symbol KIND[device]
+THING 10 unique thing symbol KIND[device]
+THING 11 duplicate thing symbol KIND[device]
+THING 12 builtin player symbol KIND[device]
+THING 13 known action symbol KIND[device]
+THING 14 unknown action symbol KIND[device]
+THING 15 valid value symbol KIND[device]
+THING 16 invalid value symbol KIND[device]
+
+START
+    START_TEXT_VALUE THING[symbol decision] classification "unclassified"
+END
+
+WHEN actor=THING[player] action=examine target=THING[known kind symbol] BLOCK 0
+WHEN actor=THING[player] action=examine target=THING[unknown kind symbol] BLOCK 1
+WHEN actor=THING[player] action=examine target=THING[unique kind symbol] BLOCK 2
+WHEN actor=THING[player] action=examine target=THING[duplicate kind symbol] BLOCK 3
+WHEN actor=THING[player] action=examine target=THING[valid kind link symbol] BLOCK 4
+WHEN actor=THING[player] action=examine target=THING[invalid kind link symbol] BLOCK 5
+WHEN actor=THING[player] action=examine target=THING[known thing symbol] BLOCK 6
+WHEN actor=THING[player] action=examine target=THING[unknown thing symbol] BLOCK 7
+WHEN actor=THING[player] action=examine target=THING[unique thing symbol] BLOCK 8
+WHEN actor=THING[player] action=examine target=THING[duplicate thing symbol] BLOCK 9
+WHEN actor=THING[player] action=examine target=THING[builtin player symbol] BLOCK 10
+WHEN actor=THING[player] action=examine target=THING[known action symbol] BLOCK 11
+WHEN actor=THING[player] action=examine target=THING[unknown action symbol] BLOCK 12
+WHEN actor=THING[player] action=examine target=THING[valid value symbol] BLOCK 13
+WHEN actor=THING[player] action=examine target=THING[invalid value symbol] BLOCK 14
+
+BLOCK 0
+    CHANGE_TEXT_VALUE THING[symbol decision] classification "resolve-known-kind"
+END
+
+BLOCK 1
+    CHANGE_TEXT_VALUE THING[symbol decision] classification "reject-unknown-kind"
+END
+
+BLOCK 2
+    CHANGE_TEXT_VALUE THING[symbol decision] classification "accept-unique-kind"
+END
+
+BLOCK 3
+    CHANGE_TEXT_VALUE THING[symbol decision] classification "reject-duplicate-kind"
+END
+
+BLOCK 4
+    CHANGE_TEXT_VALUE THING[symbol decision] classification "accept-kind-link"
+END
+
+BLOCK 5
+    CHANGE_TEXT_VALUE THING[symbol decision] classification "reject-kind-link"
+END
+
+BLOCK 6
+    CHANGE_TEXT_VALUE THING[symbol decision] classification "resolve-known-thing"
+END
+
+BLOCK 7
+    CHANGE_TEXT_VALUE THING[symbol decision] classification "reject-unknown-thing"
+END
+
+BLOCK 8
+    CHANGE_TEXT_VALUE THING[symbol decision] classification "accept-unique-thing"
+END
+
+BLOCK 9
+    CHANGE_TEXT_VALUE THING[symbol decision] classification "reject-duplicate-thing"
+END
+
+BLOCK 10
+    CHANGE_TEXT_VALUE THING[symbol decision] classification "resolve-builtin-player"
+END
+
+BLOCK 11
+    CHANGE_TEXT_VALUE THING[symbol decision] classification "resolve-known-action"
+END
+
+BLOCK 12
+    CHANGE_TEXT_VALUE THING[symbol decision] classification "reject-unknown-action"
+END
+
+BLOCK 13
+    CHANGE_TEXT_VALUE THING[symbol decision] classification "resolve-value"
+END
+
+BLOCK 14
+    CHANGE_TEXT_VALUE THING[symbol decision] classification "reject-invalid-value"
+END

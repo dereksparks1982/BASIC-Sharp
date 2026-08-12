@@ -6,6 +6,7 @@ require_relative 'dictionary'
 require_relative 'basic_sharp_ir'
 require_relative 'text_literal'
 require_relative 'small_compiler_subset_native_semantic_routing'
+require_relative 'small_compiler_subset_native_symbol_resolution'
 
 module BasicSharp
   class SmallCompilerSubsetSemanticResolver
@@ -13,15 +14,16 @@ module BasicSharp
     MAX_WHOLE_NUMBER = 2_147_483_647
     VALUE_NAME_PATTERN = /\A[a-z][a-z0-9]*\z/
 
-    attr_reader :program, :dictionary, :diagnostics, :native_semantic_router
+    attr_reader :program, :dictionary, :diagnostics, :native_semantic_router, :native_symbol_resolver
 
-    def initialize(program, dictionary:, native_semantic_router: nil)
+    def initialize(program, dictionary:, native_semantic_router: nil, native_symbol_resolver: nil)
       @program = program
       @dictionary = dictionary
       @diagnostics = DiagnosticBag.new
       @starting_value_assignments = Set.new
       @value_types = { 'damage' => 'whole_number' }
       @native_semantic_router = native_semantic_router || SmallCompilerSubsetNativeSemanticRouting.new
+      @native_symbol_resolver = native_symbol_resolver || SmallCompilerSubsetNativeSymbolResolution.new
       @seen_objects = { 'player' => true }
     end
 
@@ -135,12 +137,14 @@ module BasicSharp
 
     def resolve_thing_definition(definition)
       normalized_name = normalize_name(definition.name)
-      if @seen_objects[normalized_name]
+      unless native_symbol_resolver.unique_thing?(@seen_objects.key?(normalized_name))
         diagnostics.error(definition.line_number, "duplicate object '#{normalized_name}'")
         return nil
       end
 
-      diagnostics.error(definition.line_number, "unknown kind '#{definition.kind}'") unless dictionary.known_kind?(definition.kind)
+      kind_known = native_symbol_resolver.known_kind?(dictionary.known_kind?(definition.kind))
+      native_symbol_resolver.valid_kind_link?(kind_known)
+      diagnostics.error(definition.line_number, "unknown kind '#{definition.kind}'") unless kind_known
       @seen_objects[normalized_name] = true
       {
         'name' => normalized_name,
@@ -419,12 +423,14 @@ module BasicSharp
       raw = text.to_s.strip
       if raw.start_with?('#')
         kind = normalize_name(raw[1..])
-        diagnostics.error(line_number, "#{label} uses unknown Kind '##{kind}'") unless dictionary.known_kind?(kind)
+        kind_known = native_symbol_resolver.known_kind?(dictionary.known_kind?(kind))
+        diagnostics.error(line_number, "#{label} uses unknown Kind '##{kind}'") unless kind_known
         return reference('kind_declaration', raw, 'kind_name' => kind)
       end
       if raw.start_with?('@')
         name = normalize_name(raw[1..])
-        diagnostics.error(line_number, "#{label} uses unknown object '@#{name}'") unless dictionary.known_object?(name)
+        thing_known = native_symbol_resolver.known_thing?(dictionary.known_object?(name))
+        diagnostics.error(line_number, "#{label} uses unknown object '@#{name}'") unless thing_known
         return reference('object', raw, 'name' => name, 'object_kind' => dictionary.object_kind(name))
       end
       diagnostics.error(line_number, "#{label} must target a #Kind or @particular object")
@@ -474,7 +480,8 @@ module BasicSharp
 
     def resolve_action(action, bound_kinds:, established_objects: [], context_it_allowed: false)
       verb = normalize_verb(action.verb)
-      diagnostics.error(action.line_number, "unknown official word '(#{action.verb}'") unless dictionary.known_action?(action.verb)
+      action_known = native_symbol_resolver.known_action?(dictionary.known_action?(action.verb))
+      diagnostics.error(action.line_number, "unknown official word '(#{action.verb}'") unless action_known
 
       return resolve_damage_action(action, verb, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed) if verb == 'damage'
       return resolve_change_action(action, verb, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed) if verb == 'change'
@@ -843,7 +850,8 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
 
     def resolve_value_name(text, line_number)
       normalized = normalize_name(text)
-      unless VALUE_NAME_PATTERN.match?(normalized)
+      valid = VALUE_NAME_PATTERN.match?(normalized)
+      unless native_symbol_resolver.valid_value?(valid)
         diagnostics.error(line_number, "Value name '#{normalized}' must be one plain word")
         return normalized
       end
@@ -948,6 +956,7 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
       return reference('empty', original) if original.empty?
 
       if shown == 'PLAYER'
+        native_symbol_resolver.builtin_player!
         return reference('object', 'player', 'name' => 'player', 'object_kind' => 'person')
       elsif original == 'player'
         diagnostics.error(line_number, 'The built-in human-controlled character must be written as PLAYER')
@@ -982,14 +991,16 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
 
       if (match = shown.match(/\Aevery\s+#(.+)\z/i))
         kind = normalize_name(match[1])
-        diagnostics.error(line_number, "unknown Kind '##{kind}'") unless dictionary.known_kind?(kind)
+        kind_known = native_symbol_resolver.known_kind?(dictionary.known_kind?(kind))
+        diagnostics.error(line_number, "unknown Kind '##{kind}'") unless kind_known
         diagnose_kind_set_usage("every #{kind}", line_number, usage)
         return reference('kind_set', "every #{kind}", 'selector' => 'every', 'kind_name' => kind, 'candidates' => dictionary.objects_by_kind(kind))
       end
 
       if (match = shown.match(/\Aa[n]?\s+#(.+)\z/i))
         kind = normalize_name(match[1])
-        diagnostics.error(line_number, "unknown Kind '##{kind}'") unless dictionary.known_kind?(kind)
+        kind_known = native_symbol_resolver.known_kind?(dictionary.known_kind?(kind))
+        diagnostics.error(line_number, "unknown Kind '##{kind}'") unless kind_known
         diagnose_unbound_single_action(kind, line_number) if usage == :action_target
         return reference('kind_one', "a #{kind}", 'selector' => 'a', 'kind_name' => kind, 'candidates' => dictionary.objects_by_kind(kind))
       end
@@ -1001,7 +1012,7 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
 
       if shown.start_with?('@')
         name = normalize_name(shown[1..])
-        unless dictionary.known_object?(name)
+        unless native_symbol_resolver.known_thing?(dictionary.known_object?(name))
           diagnostics.error(line_number, "unknown object '@#{name}'")
           return reference('unknown', name)
         end
@@ -1010,16 +1021,17 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
 
       if shown.start_with?('#')
         kind = normalize_name(shown[1..])
-        diagnostics.error(line_number, "unknown Kind '##{kind}'") unless dictionary.known_kind?(kind)
+        kind_known = native_symbol_resolver.known_kind?(dictionary.known_kind?(kind))
+        diagnostics.error(line_number, "unknown Kind '##{kind}'") unless kind_known
         diagnose_unbound_single_action(kind, line_number) if usage == :action_target
         return reference('kind', kind, 'kind_name' => kind, 'candidates' => dictionary.objects_by_kind(kind))
       end
 
-      if dictionary.known_object?(original)
+      if native_symbol_resolver.known_thing?(dictionary.known_object?(original))
         diagnostics.error(line_number, "Particular object '#{original}' must be written as @#{original}")
         return reference('object', original, 'name' => original, 'object_kind' => dictionary.object_kind(original))
       end
-      if dictionary.known_kind?(original) || original.match?(/\A(?:a|an|the|every)\s+/)
+      if native_symbol_resolver.known_kind?(dictionary.known_kind?(original)) || original.match?(/\A(?:a|an|the|every)\s+/)
         diagnostics.error(line_number, "Kind reference '#{original}' must mark the Kind with #")
         stripped = original.sub(/\A(?:a|an|the|every)\s+/, '')
         return reference('kind', original, 'kind_name' => stripped, 'candidates' => dictionary.objects_by_kind(stripped))
@@ -1058,9 +1070,9 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
     end
 
     def resolve_definite_reference(original, stripped, line_number)
-      return reference('object', original, 'name' => stripped, 'object_kind' => dictionary.object_kind(stripped)) if dictionary.known_object?(stripped)
+      return reference('object', original, 'name' => stripped, 'object_kind' => dictionary.object_kind(stripped)) if native_symbol_resolver.known_thing?(dictionary.known_object?(stripped))
 
-      if dictionary.known_kind?(stripped)
+      if native_symbol_resolver.known_kind?(dictionary.known_kind?(stripped))
         candidates = dictionary.objects_by_kind(stripped)
         if candidates.length == 1
           return reference('object', original, 'name' => candidates.first, 'object_kind' => stripped, 'matched_by_kind' => true)
@@ -1111,10 +1123,10 @@ Name the #{kind}, or use 'that #{kind}' after WHEN selected one."
 
     def normalize_verb(value)
       raw = normalize_name(value).sub(/\A\(/, '')
-      return raw if dictionary.known_action?(raw)
+      return raw if native_symbol_resolver.known_action?(dictionary.known_action?(raw))
 
       singular = raw.sub(/s\z/, '')
-      dictionary.known_action?(singular) ? singular : raw
+      native_symbol_resolver.known_action?(dictionary.known_action?(singular)) ? singular : raw
     end
   end
 end

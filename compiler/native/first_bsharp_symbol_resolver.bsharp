@@ -1,0 +1,102 @@
+//BASIC# v0.1.83 first BASIC#-authored symbol resolution component./.
+//This bounded component turns neutral compiler symbol observations into resolution decisions./.
+
+DEFINE
+[
+    @symbol decision is a #device
+    @known kind symbol is a #device
+    @unknown kind symbol is a #device
+    @unique kind symbol is a #device
+    @duplicate kind symbol is a #device
+    @valid kind link symbol is a #device
+    @invalid kind link symbol is a #device
+    @known thing symbol is a #device
+    @unknown thing symbol is a #device
+    @unique thing symbol is a #device
+    @duplicate thing symbol is a #device
+    @builtin player symbol is a #device
+    @known action symbol is a #device
+    @unknown action symbol is a #device
+    @valid value symbol is a #device
+    @invalid value symbol is a #device
+].
+
+START
+[
+    @symbol decision has "unclassified" classification
+].
+
+WHEN PLAYER examines @known kind symbol
+[
+    |then (change classification of @symbol decision to "resolve-known-kind"
+].
+
+WHEN PLAYER examines @unknown kind symbol
+[
+    |then (change classification of @symbol decision to "reject-unknown-kind"
+].
+
+WHEN PLAYER examines @unique kind symbol
+[
+    |then (change classification of @symbol decision to "accept-unique-kind"
+].
+
+WHEN PLAYER examines @duplicate kind symbol
+[
+    |then (change classification of @symbol decision to "reject-duplicate-kind"
+].
+
+WHEN PLAYER examines @valid kind link symbol
+[
+    |then (change classification of @symbol decision to "accept-kind-link"
+].
+
+WHEN PLAYER examines @invalid kind link symbol
+[
+    |then (change classification of @symbol decision to "reject-kind-link"
+].
+
+WHEN PLAYER examines @known thing symbol
+[
+    |then (change classification of @symbol decision to "resolve-known-thing"
+].
+
+WHEN PLAYER examines @unknown thing symbol
+[
+    |then (change classification of @symbol decision to "reject-unknown-thing"
+].
+
+WHEN PLAYER examines @unique thing symbol
+[
+    |then (change classification of @symbol decision to "accept-unique-thing"
+].
+
+WHEN PLAYER examines @duplicate thing symbol
+[
+    |then (change classification of @symbol decision to "reject-duplicate-thing"
+].
+
+WHEN PLAYER examines @builtin player symbol
+[
+    |then (change classification of @symbol decision to "resolve-builtin-player"
+].
+
+WHEN PLAYER examines @known action symbol
+[
+    |then (change classification of @symbol decision to "resolve-known-action"
+].
+
+WHEN PLAYER examines @unknown action symbol
+[
+    |then (change classification of @symbol decision to "reject-unknown-action"
+].
+
+WHEN PLAYER examines @valid value symbol
+[
+    |then (change classification of @symbol decision to "resolve-value"
+].
+
+WHEN PLAYER examines @invalid value symbol
+[
+    |then (change classification of @symbol decision to "reject-invalid-value"
+].

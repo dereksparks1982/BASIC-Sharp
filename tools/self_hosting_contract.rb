@@ -112,7 +112,7 @@ assert_contract!(spec.fetch('format_version') == 1, 'wrong spec format version')
 assert_contract!(spec.fetch('target_version') == BasicSharp::VERSION, 'spec target does not match BasicSharp::VERSION')
 assert_contract!(spec.fetch('status') == 'foundation_contract_only', 'a carried self-hosting foundation must remain a foundation contract')
 assert_contract!(spec.fetch('compiler_subset_name') == 'BSharp Compiler Subset 0', 'subset name changed')
-assert_contract!(spec.fetch('compiler_subset_status') == 'self_hosting_milestone_2_slice_9_native_semantic_routing_integration_under_ruby_referee', 'subset status changed')
+assert_contract!(spec.fetch('compiler_subset_status') == 'self_hosting_milestone_2_slice_10_native_symbol_resolution_integration_under_ruby_referee', 'subset status changed')
 
 profiles = spec.fetch('approved_profiles_available_to_creator_programs')
 assert_contract!(profiles == (1..7).map { |n| "bsharp.meaning.v#{n}" }, 'approved profile list changed')
@@ -177,6 +177,10 @@ assert_contract!(File.file?(NATIVE_SEMANTIC_ROUTING_INTEGRATION_SPEC_PATH), 'nat
 assert_contract!(File.file?(NATIVE_SEMANTIC_ROUTING_INTEGRATION_DOC_PATH), 'native semantic routing integration document is missing')
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('native_semantic_routing_tool'))), 'native semantic routing integration tool is missing')
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('native_semantic_routing_test'))), 'native semantic routing integration test is missing')
+assert_contract!(documents.fetch('native_symbol_resolution_spec') == 'spec/self_hosting/BASIC_SHARP_NATIVE_SYMBOL_RESOLUTION_INTEGRATION_v1.json', 'native symbol resolution spec path is wrong')
+%w[native_symbol_resolution_source native_symbol_resolution_artifact native_symbol_resolution_disassembly native_symbol_resolution_file native_symbol_resolution_implementation native_symbol_resolution_tool native_symbol_resolution_test].each do |key|
+  assert_contract!(File.file?(File.join(ROOT, documents.fetch(key))), "#{key} is missing")
+end
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('native_parser_dispatch_file'))), 'native parser dispatch implementation is missing')
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('native_parser_dispatch_integration_tool'))), 'native parser dispatch integration tool is missing')
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('native_parser_dispatch_integration_test'))), 'native parser dispatch integration test is missing')
@@ -358,6 +362,7 @@ puts 'Small compiler subset BSBC artifact round trip linked: PASS'
 puts 'First BASIC#-authored compiler component linked: PASS'
 puts 'Native parser dispatch integration linked: PASS'
 puts 'Native semantic routing integration linked: PASS'
+puts 'Native symbol resolution integration linked: PASS'
 puts 'Small compiler subset BSBC golden parity harness linked: PASS'
 puts 'Self-hosting fixture corpus linked: PASS'
 puts 'Small compiler subset runtime smoke linked: PASS'

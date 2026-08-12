@@ -5,6 +5,7 @@ require_relative 'dictionary'
 require_relative 'parser'
 require_relative 'resolver'
 require_relative 'small_compiler_subset_semantic_resolver'
+require_relative 'small_compiler_subset_native_symbol_resolution'
 require_relative 'small_compiler_subset_parser'
 require_relative 'text_literal'
 
@@ -14,7 +15,7 @@ module BasicSharp
     STATUS = 'ir_emitter_under_ruby_referee'
     HOVER_FIELDS = Parser::HOVER_FIELDS
 
-    attr_reader :subset_parser, :dictionary, :diagnostics, :semantic_resolver
+    attr_reader :subset_parser, :dictionary, :diagnostics, :semantic_resolver, :native_symbol_resolver
 
     def initialize(source)
       @source = source
@@ -25,6 +26,7 @@ module BasicSharp
       @document = nil
       @ruby_referee_document = nil
       @semantic_resolver = nil
+      @native_symbol_resolver = SmallCompilerSubsetNativeSymbolResolution.new
     end
 
     def program
@@ -34,7 +36,7 @@ module BasicSharp
     def document
       return @document if @document
 
-      @semantic_resolver = SmallCompilerSubsetSemanticResolver.new(program, dictionary: dictionary)
+      @semantic_resolver = SmallCompilerSubsetSemanticResolver.new(program, dictionary: dictionary, native_symbol_resolver: native_symbol_resolver)
       @document = semantic_resolver.resolve
     end
 
@@ -186,15 +188,19 @@ module BasicSharp
 
         name = normalized_name(match[1])
         parent = normalized_name(match[2])
-        unless dictionary.known_kind?(parent)
+        parent_known = native_symbol_resolver.known_kind?(dictionary.known_kind?(parent))
+        unless parent_known
+          native_symbol_resolver.valid_kind_link?(false)
           diagnostics.error(child.line_number, "unknown parent Kind '#{parent}'; mark every Kind with #")
           next
         end
-        if (existing_parent = dictionary.kind_parent(name))
+        existing_parent = dictionary.kind_parent(name)
+        unless native_symbol_resolver.unique_kind?(!existing_parent.nil?)
           diagnostics.error(child.line_number, "kind '#{name}' already has parent '#{existing_parent}'")
           next
         end
-        if (cycle = dictionary.kind_cycle_with(name, parent))
+        cycle = dictionary.kind_cycle_with(name, parent)
+        unless native_symbol_resolver.valid_kind_link?(cycle.nil?)
           diagnostics.error(child.line_number, "Kind family has a loop: #{cycle.join(' -> ')}")
           next
         end

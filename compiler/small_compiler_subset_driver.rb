@@ -90,6 +90,14 @@ module BasicSharp
       pipeline.native_semantic_invocation_count
     end
 
+    def native_symbol_resolver
+      pipeline.native_symbol_resolver
+    end
+
+    def native_symbol_invocation_count
+      pipeline.native_symbol_invocation_count
+    end
+
     def artifact_loader
       ensure_compiled!
       SmallCompilerSubsetBSBCLoader.read(

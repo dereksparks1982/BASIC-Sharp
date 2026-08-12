@@ -16,7 +16,7 @@ class TestSmallCompilerSubsetSymbolTableContract < Minitest::Test
     assert_equal 'bsharp.small_compiler_subset.symbol_table_contract.json', spec.fetch('format')
     assert_equal 1, spec.fetch('format_version')
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
-    assert_equal 'symbol_table_contract_under_ruby_referee', spec.fetch('status')
+    assert_equal 'native_symbol_resolution_integration_under_ruby_referee', spec.fetch('status')
   end
 
   def test_valid_fixtures_have_stable_symbol_tables_without_errors
@@ -28,6 +28,7 @@ class TestSmallCompilerSubsetSymbolTableContract < Minitest::Test
       assert_equal fixture.fetch('expected_symbols_sha256'), record.fetch(:symbols_sha256), fixture.fetch('name')
       assert_empty record.fetch(:errors), fixture.fetch('name')
       assert_equal fixture.fetch('expected_errors_sha256'), record.fetch(:errors_sha256), fixture.fetch('name')
+      assert_operator record.fetch(:native_symbol_invocation_count), :>, 0, fixture.fetch('name')
     end
   end
 
@@ -39,6 +40,7 @@ class TestSmallCompilerSubsetSymbolTableContract < Minitest::Test
       assert_equal fixture.fetch('expected_symbols_sha256'), record.fetch(:symbols_sha256), fixture.fetch('name')
       assert_equal BasicSharp::SmallCompilerSubsetSymbolTableContract.normalize(fixture.fetch('expected_errors')), BasicSharp::SmallCompilerSubsetSymbolTableContract.normalize(record.fetch(:errors)), fixture.fetch('name')
       assert_equal fixture.fetch('expected_errors_sha256'), record.fetch(:errors_sha256), fixture.fetch('name')
+      assert_operator record.fetch(:native_symbol_invocation_count), :>, 0, fixture.fetch('name')
     end
   end
 end

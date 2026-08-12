@@ -3,11 +3,12 @@
 require 'digest'
 require 'json'
 require_relative 'small_compiler_subset_parser'
+require_relative 'small_compiler_subset_native_symbol_resolution'
 
 module BasicSharp
   class SmallCompilerSubsetSymbolTableContract
     FORMAT = 'bsharp.small_compiler_subset.symbol_table_contract.record'
-    STATUS = 'symbol_table_contract_under_ruby_referee'
+    STATUS = 'native_symbol_resolution_integration_under_ruby_referee'
 
     ErrorRecord = Struct.new(:id, :line_number, :severity, :plain_message, :source_message, keyword_init: true) do
       def to_h
@@ -21,11 +22,12 @@ module BasicSharp
       end
     end
 
-    attr_reader :source, :subset_parser
+    attr_reader :source, :subset_parser, :native_symbol_resolver
 
     def initialize(source)
       @source = source
       @subset_parser = SmallCompilerSubsetParser.new(source)
+      @native_symbol_resolver = SmallCompilerSubsetNativeSymbolResolution.new
       @symbols = nil
       @errors = nil
     end
@@ -49,7 +51,8 @@ module BasicSharp
         symbols: symbols,
         errors: errors.map(&:to_h),
         symbols_sha256: self.class.digest_for(symbols),
-        errors_sha256: self.class.digest_for(errors.map(&:to_h))
+        errors_sha256: self.class.digest_for(errors.map(&:to_h)),
+        native_symbol_invocation_count: native_symbol_resolver.invocation_count
       }
     end
 
@@ -128,13 +131,16 @@ module BasicSharp
 
       name = normalize_name(match[1])
       parent = normalize_name(match[2])
-      if known_kinds.key?(name)
-        @errors << error('BSS1001', child.line_number, "Kind '#{name}' is already defined.", "Duplicate Kind '#{name}'")
-      else
+      duplicate = known_kinds.key?(name)
+      if native_symbol_resolver.unique_kind?(duplicate)
         known_kinds[name] = child.line_number
         kind_lines[name] = child.line_number
+      else
+        @errors << error('BSS1001', child.line_number, "Kind '#{name}' is already defined.", "Duplicate Kind '#{name}'")
       end
-      unless known_kinds.key?(parent)
+      parent_known = native_symbol_resolver.known_kind?(known_kinds.key?(parent))
+      native_symbol_resolver.valid_kind_link?(parent_known)
+      unless parent_known
         @errors << error('BSS2001', child.line_number, "Kind '#{name}' names unknown parent Kind '#{parent}'.", "Unknown parent Kind '#{parent}'")
       end
     end
@@ -145,13 +151,16 @@ module BasicSharp
 
       name = normalize_name(match[1])
       kind = normalize_name(match[2])
-      if known_objects.key?(name)
-        @errors << error('BSS1002', child.line_number, "Thing '@#{name}' is already defined.", "Duplicate Thing '@#{name}'")
-      else
+      duplicate = known_objects.key?(name)
+      if native_symbol_resolver.unique_thing?(duplicate)
         known_objects[name] = { 'kind' => kind, 'line_number' => child.line_number }
         object_lines[name] = child.line_number
+      else
+        @errors << error('BSS1002', child.line_number, "Thing '@#{name}' is already defined.", "Duplicate Thing '@#{name}'")
       end
-      unless known_kinds.key?(kind)
+      kind_known = native_symbol_resolver.known_kind?(known_kinds.key?(kind))
+      native_symbol_resolver.valid_kind_link?(kind_known)
+      unless kind_known
         @errors << error('BSS2002', child.line_number, "Thing '@#{name}' uses unknown Kind '#{kind}'.", "Unknown Kind '#{kind}'")
       end
     end
@@ -181,7 +190,7 @@ module BasicSharp
       match = text.to_s.match(/\A@(.+)\z/)
       return unless match
       name = normalize_name(match[1])
-      unless known_objects.key?(name)
+      unless native_symbol_resolver.known_thing?(known_objects.key?(name))
         @errors << error('BSS2003', line_number, "Thing '@#{name}' is used before it is defined.", "Unknown Thing '@#{name}'")
       end
     end

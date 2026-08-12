@@ -50,6 +50,14 @@ module BasicSharp
       native_semantic_router.invocation_count
     end
 
+    def native_symbol_resolver
+      ir_emitter.native_symbol_resolver
+    end
+
+    def native_symbol_invocation_count
+      native_symbol_resolver.invocation_count
+    end
+
     def semantic_document
       ir_emitter.document
     end

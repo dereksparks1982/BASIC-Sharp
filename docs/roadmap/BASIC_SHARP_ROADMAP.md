@@ -3,32 +3,30 @@
 ## Current accepted base
 
 ```text
-v0.1.81: Self-Hosting Milestone 2 Slice 8 - Native Parser Dispatch Integration
-commit 1805102260cff3d42bd1a7a1229c06b4a9300bb9
-tag v0.1.81
+v0.1.82: Self-Hosting Milestone 2 Slice 9 - Native Semantic Routing Integration
+commit e5181842eba869da1d561359b84ff7e6b34ddddd
+tag v0.1.82
 ```
 
-v0.1.81 is the accepted rollback point. It put the first BASIC#-authored compiler component into the active bounded parser path, proved all nine accepted heads are dispatched by BASIC# bytecode, failed closed under wrong-dispatch sabotage, preserved independent compilation/execution and referee parity, and passed the full native Trial by Fire before snapshot, commit, annotated tag, SSH push, and peeled-tag verification.
+v0.1.82 is the accepted rollback point. It preserved v0.1.81 BASIC#-authored parser dispatch, added active BASIC#-authored semantic routing for all eight accepted semantic families, failed closed under semantic sabotage, proved a two-generation fixed point, and completed native Trial by Fire, snapshot, annotated tag, SSH push, and peeled-tag verification.
 
 ## Current candidate
 
 ```text
-v0.1.82: Self-Hosting Milestone 2 Slice 9 - Native Semantic Routing Integration
+v0.1.83: Self-Hosting Milestone 2 Slice 10 - Native Symbol Resolution Integration
 ```
 
-v0.1.82 keeps the accepted v0.1.81 native parser dispatcher active upstream and makes `SmallCompilerSubsetSemanticResolver` request each accepted semantic-family route from `SmallCompilerSubsetNativeSemanticRouting`, which executes `compiler/native/first_bsharp_semantic_router.bsbc` through the independent loader and BSharp VM.
+v0.1.83 preserves the accepted native parser and semantic stages, then makes the bounded symbol-table and semantic path request final known/unknown, unique/duplicate, Kind-link, PLAYER, action, and value decisions from `compiler/native/first_bsharp_symbol_resolver.bsbc` through `compiler/small_compiler_subset_native_symbol_resolution.rb`.
 
 The candidate path is:
 
 ```text
 BASIC# source
 -> TokenizerReader
--> SmallCompilerSubsetParser
 -> BASIC# native parser dispatch [v0.1.81]
--> parsed structures
--> SmallCompilerSubsetNativeSemanticRouting [v0.1.82]
--> BASIC#-authored first_bsharp_semantic_router.bsbc
--> native semantic-family decision
+-> SmallCompilerSubsetParser
+-> BASIC# native semantic routing [v0.1.82]
+-> BASIC# native symbol resolution [v0.1.83]
 -> SmallCompilerSubsetSemanticResolver
 -> BSharp IR
 -> independent BSBC encoder
@@ -36,7 +34,7 @@ BASIC# source
 -> independent BSharp VM
 ```
 
-Acceptance requires all eight accepted semantic families to route through BASIC# bytecode, observable native invocation counts, unknown-route rejection, deliberate wrong-route sabotage with no Ruby fallback, preserved v0.1.81 native parser dispatch, disabled production Parser/SemanticResolver/compiler constructors/Ruby Runtime on the primary proof path, independent source-to-BSIR/BSBC/execution, production and Ruby referee parity, and a v0.1.81-to-v0.1.82 two-generation byte-identical fixed point.
+Ruby bootstrap plumbing may expose neutral lookup observations, but the final bounded symbol decision must come from BASIC# BSBC and contradictory native decisions fail closed. Acceptance requires false-known, false-unknown, duplicate, and bad Kind-link sabotage rejection, observable symbol invocation counts, preserved upstream native stages, disabled production constructors on the primary proof path, exact BSharp IR/BSBC/runtime referee parity, and a v0.1.82-to-v0.1.83 two-generation byte-identical fixed point.
 
 ## Canonical Company Bible
 
@@ -78,7 +76,9 @@ Current truthful claim:
 
 ```text
 v0.1.80 proved the first bounded compiler-domain component authored in BASIC#.
-v0.1.81 makes that BASIC# BSBC component control bounded native parser dispatch.
+v0.1.81 made BASIC# BSBC control bounded native parser dispatch.
+v0.1.82 made BASIC# BSBC control bounded semantic routing.
+v0.1.83 adds bounded BASIC#-authored symbol-resolution decisions.
 Ruby remains the bootstrap compiler and separate referee authority.
 BASIC# is not fully self-hosted.
 ```
@@ -89,7 +89,7 @@ The v0.1.72 Milestone 2 proposal is now implemented through semantic resolver in
 
 v0.1.73 established direct creator actions including open, close, lock, and take. v0.1.81 preserves those game-making semantics unchanged while the compiler machinery underneath them becomes more self-directed.
 
-## Next direction after v0.1.82
+## Next direction after v0.1.83
 
 1. Expand BASIC#-authored compiler ownership only where accepted BASIC# can express real compiler work without contaminating creator-facing syntax.
 2. Keep Ruby as referee until BASIC#-authored components reproduce locked outputs strongly enough to earn further replacement.
@@ -115,6 +115,7 @@ These are future proof programs, not permission to interrupt the active compiler
 ```text
 tools/native_parser_dispatch_integration.rb
 tools/native_semantic_routing_integration.rb
+tools/native_symbol_resolution_integration.rb
 tools/deterministic_fixture_hash_sweep.rb
 tools/release_package_preflight.rb
 tools/release_forensic_overlay.rb

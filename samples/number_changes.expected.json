@@ -1697,7 +1697,7 @@
   "save": {
     "format": "bsharp.save.json",
     "format_version": 5,
-    "created_by_basic_sharp": "0.1.82",
+    "created_by_basic_sharp": "0.1.83",
     "program_fingerprint": {
       "algorithm": "sha256-bsir-meaning-v5",
       "value": "6bb19a8e6b6a4f3b6d75e69df454a068dc407131898dbb806d81359e0aa0fe0a"

@@ -53,7 +53,7 @@ class TestSmallCompilerSubsetDriverIndependence < Minitest::Test
   def test_contract_identity_and_live_version
     assert_equal 'bsharp.small_compiler_subset.driver_independence.contract.json', spec.fetch('format')
     assert_equal 1, spec.fetch('format_version')
-    assert_equal '0.1.82', BasicSharp::VERSION
+    assert_equal '0.1.83', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
     assert_equal BasicSharp::SmallCompilerSubsetDriver::STATUS, spec.fetch('status')
   end

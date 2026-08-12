@@ -1,11 +1,11 @@
 {
   "format": "bsharp.bootstrap_boundary_audit.json",
   "format_version": 1,
-  "target_version": "0.1.82",
+  "target_version": "0.1.83",
   "title": "BASIC# Bootstrap Boundary Audit",
   "status": "bootstrap_boundary_audit_under_ruby_referee",
-  "next_milestone": "v0.1.82 Self-Hosting Milestone 2 Slice 9: BASIC# Native Semantic Routing Integration",
-  "purpose": "Audit exactly where Ruby remains bootstrap referee while Self-Hosting Milestone 2 Slice 9 keeps v0.1.81 native parser dispatch active and routes bounded semantic-family decisions through a BASIC#-authored BSBC semantic component with fail-closed sabotage and fixed-point proof.",
+  "next_milestone": "v0.1.83 Self-Hosting Milestone 2 Slice 10: BASIC# Native Symbol Resolution Integration",
+  "purpose": "Audit exactly where Ruby remains bootstrap referee while Self-Hosting Milestone 2 Slice 10 preserves v0.1.81 native parser dispatch and v0.1.82 native semantic routing, then requires bounded symbol-resolution decisions to pass through a BASIC#-authored BSBC symbol component with fail-closed sabotage and fixed-point proof.",
   "forbidden_until_after_milestone": [
     "claiming BASIC# is self-hosted",
     "replacing the Ruby bootstrap compiler",
@@ -20,7 +20,7 @@
       "name": "ruby_bootstrap_referee",
       "owner": "Ruby bootstrap",
       "authority": "source_of_truth",
-      "boundary": "Ruby Parser, SemanticResolver, BytecodeEmitter, BytecodeLoader, Runtime, and BytecodeVirtualMachine remain production referee authority. In v0.1.82 they are forbidden from the bounded native parser-dispatch and native semantic-routing primary proof paths and may be invoked only on separate parity-referee paths.",
+      "boundary": "Ruby Parser, SemanticResolver, BytecodeEmitter, BytecodeLoader, Runtime, and BytecodeVirtualMachine remain production referee authority. In v0.1.83 they are forbidden from the bounded native parser-dispatch, semantic-routing, and symbol-resolution primary proof paths and may be invoked only on separate parity-referee paths.",
       "paths": [
         "compiler/parser.rb",
         "compiler/resolver.rb",
@@ -59,7 +59,7 @@
       "name": "basic_sharp_subset_outputs",
       "owner": "BSharp Compiler Subset 0",
       "authority": "golden_parity_outputs",
-      "boundary": "Subset semantic resolution now requests accepted semantic-family routes from BASIC#-authored BSBC before producing BSharp IR; independent BSBC encoding, loading, VM execution, and the integrated source-to-world pipeline remain under exact separate Ruby referee parity.",
+      "boundary": "Subset semantic resolution now requests accepted semantic-family routes and bounded symbol decisions from BASIC#-authored BSBC before producing BSharp IR; independent BSBC encoding, loading, VM execution, and the integrated source-to-world pipeline remain under exact separate Ruby referee parity.",
       "paths": [
         "tools/small_compiler_subset_semantic_resolver.rb",
         "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v1.json",
@@ -82,7 +82,11 @@
         "tools/small_compiler_subset_pipeline_independence.rb",
         "compiler/small_compiler_subset_native_semantic_routing.rb",
         "spec/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v1.json",
-        "tools/native_semantic_routing_integration.rb"
+        "tools/native_semantic_routing_integration.rb",
+        "compiler/small_compiler_subset_native_symbol_resolution.rb",
+        "compiler/small_compiler_subset_symbol_table_contract.rb",
+        "spec/self_hosting/BASIC_SHARP_NATIVE_SYMBOL_RESOLUTION_INTEGRATION_v1.json",
+        "tools/native_symbol_resolution_integration.rb"
       ]
     },
     {
@@ -149,6 +153,27 @@
         "docs/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v0_1_82.md",
         "tools/native_semantic_routing_integration.rb",
         "tests/test_native_semantic_routing_integration.rb"
+      ]
+    },
+    {
+      "name": "basic_sharp_native_symbol_resolution",
+      "owner": "BASIC#-authored symbol resolution",
+      "authority": "active_bounded_symbol_resolution_evidence",
+      "boundary": "SmallCompilerSubsetSymbolTableContract and SmallCompilerSubsetSemanticResolver may expose neutral lookup observations, but bounded known/unknown, unique/duplicate, Kind-link, PLAYER, action, and value decisions must come from the persisted BASIC# BSBC symbol component. Contradictory or sabotaged native decisions must fail visibly without a Ruby decision fallback, v0.1.81 parser dispatch and v0.1.82 semantic routing remain active upstream, and the v0.1.82 -> v0.1.83 -> v0.1.83 fixed-point proof must hold.",
+      "paths": [
+        "compiler/native/first_bsharp_symbol_resolver.bsharp",
+        "compiler/native/first_bsharp_symbol_resolver.bsbc",
+        "compiler/native/first_bsharp_symbol_resolver.bsbc.txt",
+        "compiler/small_compiler_subset_native_symbol_resolution.rb",
+        "compiler/small_compiler_subset_symbol_table_contract.rb",
+        "compiler/small_compiler_subset_semantic_resolver.rb",
+        "compiler/small_compiler_subset_ir_emitter.rb",
+        "compiler/small_compiler_subset_pipeline.rb",
+        "compiler/small_compiler_subset_driver.rb",
+        "spec/self_hosting/BASIC_SHARP_NATIVE_SYMBOL_RESOLUTION_INTEGRATION_v1.json",
+        "docs/self_hosting/BASIC_SHARP_NATIVE_SYMBOL_RESOLUTION_INTEGRATION_v0_1_83.md",
+        "tools/native_symbol_resolution_integration.rb",
+        "tests/test_native_symbol_resolution_integration.rb"
       ]
     },
     {
@@ -229,6 +254,11 @@
       "basic_sharp_native_semantic_routing",
       "BASIC#-authored semantic routing",
       "active_bounded_semantic_routing_evidence"
+    ],
+    [
+      "basic_sharp_native_symbol_resolution",
+      "BASIC#-authored symbol resolution",
+      "active_bounded_symbol_resolution_evidence"
     ],
     [
       "runtime_smoke_bridge",

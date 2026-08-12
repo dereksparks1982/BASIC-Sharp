@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.82
+**Version:** v0.1.83
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -694,4 +694,14 @@ BASIC# v0.1.82 moves BASIC#-authored compiler authority one layer deeper by requ
 The semantic route is fail-closed. A wrong or unknown BASIC# semantic decision must fail visibly and must never be repaired by a hidden Ruby answer table. Validation must observe native semantic invocation counts, preserve the v0.1.81 native parser dispatch upstream, disable production Parser, production SemanticResolver, production compiler constructors, and Ruby Runtime on the primary proof path, preserve production and Ruby referee parity, and require a byte-identical generation #1 / generation #2 bootstrap fixed point.
 
 Canonical evidence: `spec/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v1.json`, `docs/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v0_1_82.md`, `tools/native_semantic_routing_integration.rb`, and `tests/test_native_semantic_routing_integration.rb`. Ruby remains bootstrap compiler and referee authority. This is bounded self-hosting progress, not full self-hosting. No Profile 8 or new creator-facing syntax is introduced.
+
+## v0.1.83 Self-Hosting Milestone 2 Slice 10 Native Symbol Resolution Integration Rule
+
+- The bounded independent compiler must route approved symbol-resolution decisions through the checked-in BASIC#-authored `compiler/native/first_bsharp_symbol_resolver.bsbc` artifact.
+- Ruby bootstrap plumbing may supply neutral lookup observations such as dictionary membership, duplicate observation, or structural Kind-link facts, but it may not supply a hidden final known/unknown, unique/duplicate, Kind-link, PLAYER, action, or value decision when the native symbol component is under proof.
+- Contradictory or sabotaged native symbol decisions must fail visibly. No Ruby fallback decision table is permitted.
+- v0.1.81 native parser dispatch and v0.1.82 native semantic routing must remain active and independently validated upstream.
+- The checked-in symbol artifact must satisfy the controlled v0.1.82 -> v0.1.83 generation #1 -> v0.1.83 generation #2 byte-identical fixed-point proof.
+- Production Parser, SemanticResolver, compiler constructors, and Ruby Runtime remain separate referee authority and unavailable on the bounded primary proof path.
+- This slice adds no new creator-facing syntax, no Profile 8, and no full-self-hosting claim.
 
