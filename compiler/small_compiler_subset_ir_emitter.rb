@@ -14,7 +14,7 @@ module BasicSharp
     STATUS = 'ir_emitter_under_ruby_referee'
     HOVER_FIELDS = Parser::HOVER_FIELDS
 
-    attr_reader :subset_parser, :dictionary, :diagnostics
+    attr_reader :subset_parser, :dictionary, :diagnostics, :semantic_resolver
 
     def initialize(source)
       @source = source
@@ -24,6 +24,7 @@ module BasicSharp
       @program = nil
       @document = nil
       @ruby_referee_document = nil
+      @semantic_resolver = nil
     end
 
     def program
@@ -31,7 +32,19 @@ module BasicSharp
     end
 
     def document
-      @document ||= SmallCompilerSubsetSemanticResolver.new(program, dictionary: dictionary).resolve
+      return @document if @document
+
+      @semantic_resolver = SmallCompilerSubsetSemanticResolver.new(program, dictionary: dictionary)
+      @document = semantic_resolver.resolve
+    end
+
+    def native_semantic_router
+      document
+      semantic_resolver.native_semantic_router
+    end
+
+    def native_semantic_invocation_count
+      native_semantic_router.invocation_count
     end
 
     def bsharp_ir

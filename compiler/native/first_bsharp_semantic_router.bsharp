@@ -1,0 +1,60 @@
+//BASIC# v0.1.82 first BASIC#-authored semantic routing component./.
+//This bounded classifier turns accepted compiler semantic inputs into resolver decisions./.
+
+DEFINE
+[
+    @semantic decision is a #device
+    @kind definition semantic is a #device
+    @definition semantic is a #device
+    @fact semantic is a #device
+    @event rule semantic is a #device
+    @if rule semantic is a #device
+    @control declaration semantic is a #device
+    @hover declaration semantic is a #device
+    @context declaration semantic is a #device
+].
+
+START
+[
+    @semantic decision has "unclassified" classification
+].
+
+WHEN PLAYER examines @kind definition semantic
+[
+    |then (change classification of @semantic decision to "resolve-kind-definition"
+].
+
+WHEN PLAYER examines @definition semantic
+[
+    |then (change classification of @semantic decision to "resolve-thing-definition"
+].
+
+WHEN PLAYER examines @fact semantic
+[
+    |then (change classification of @semantic decision to "resolve-starting-fact"
+].
+
+WHEN PLAYER examines @event rule semantic
+[
+    |then (change classification of @semantic decision to "resolve-event-rule"
+].
+
+WHEN PLAYER examines @if rule semantic
+[
+    |then (change classification of @semantic decision to "resolve-condition-rule"
+].
+
+WHEN PLAYER examines @control declaration semantic
+[
+    |then (change classification of @semantic decision to "resolve-controls-declaration"
+].
+
+WHEN PLAYER examines @hover declaration semantic
+[
+    |then (change classification of @semantic decision to "resolve-hover-declaration"
+].
+
+WHEN PLAYER examines @context declaration semantic
+[
+    |then (change classification of @semantic decision to "resolve-context-declaration"
+].

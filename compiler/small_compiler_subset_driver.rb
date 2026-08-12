@@ -82,6 +82,14 @@ module BasicSharp
       pipeline.native_dispatch_invocation_count
     end
 
+    def native_semantic_router
+      pipeline.native_semantic_router
+    end
+
+    def native_semantic_invocation_count
+      pipeline.native_semantic_invocation_count
+    end
+
     def artifact_loader
       ensure_compiled!
       SmallCompilerSubsetBSBCLoader.read(

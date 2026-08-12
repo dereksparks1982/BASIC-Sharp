@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.bsbc_golden_parity.contract.json",
   "format_version": 1,
-  "target_version": "0.1.81",
+  "target_version": "0.1.82",
   "title": "BSharp Bytecode Golden Parity Harness Under Ruby Referee",
   "status": "bsbc_golden_parity_under_ruby_referee",
   "purpose": "Lock golden BSBC bytecode parity for the independent Subset 0 encoder so independently emitted bytes remain byte-for-byte compatible with the production Ruby BytecodeEmitter referee.",
@@ -45,7 +45,7 @@
       "expected_binary_bytes": 1240,
       "expected_binary_sha256": "c09c60886cdb341accc427d07a0ac68350b675b4f4e2d1571e02dac216870ee1",
       "expected_disassembly_sha256": "3034d2b9a76be2b4c67c603642707319f316c243fd110e647604588cd80a20d3",
-      "expected_bsharp_ir_sha256": "57aff08556a6c22d84401782fcdbcacc3a4a345ee4d33ae80c783844fbaecfc3",
+      "expected_bsharp_ir_sha256": "95bcfad738ab81a32e590d5acd1f54f04e6dac7fba146f65c38ab617ce34f30d",
       "expected_loader_summary": {
         "binary_format": "bsharp.bytecode.bin",
         "binary_format_version": 1,
@@ -74,7 +74,7 @@
       "expected_binary_bytes": 696,
       "expected_binary_sha256": "41bcab1173735b3664db2d28e2ff0076212039cfeadaabb33021aef78fdfe902",
       "expected_disassembly_sha256": "2c8763cfb898e311f17fcd1e3464ee1f946dc74f174e61fdad86b17554963be8",
-      "expected_bsharp_ir_sha256": "e22afda0b7e77c64c20a40ddc2cb1bdf2c6d7858a63e1aadf5f3832d4e519482",
+      "expected_bsharp_ir_sha256": "2633bac6bbb2d0ee82d67ac03e0c49cc66c5311497fb33e63de2ef97f11bb1e6",
       "expected_loader_summary": {
         "binary_format": "bsharp.bytecode.bin",
         "binary_format_version": 1,
@@ -103,7 +103,7 @@
       "expected_binary_bytes": 732,
       "expected_binary_sha256": "fd0d0315d76aa44c7a143af7c0e6b9a0b61508da1f63f435dab6dfebbbe50403",
       "expected_disassembly_sha256": "0e860ca11f208c906bdcbd83222f8a97c0911f244ce0dc54246e0825bef251d6",
-      "expected_bsharp_ir_sha256": "12f66b005ad730777d6bd3fe67af864083170274c591bd53dcecfae1dd44e7cc",
+      "expected_bsharp_ir_sha256": "7a6a89f5b7f69f71bfb43e27f01968cd504880d526a75a731f346720ef9f2efc",
       "expected_loader_summary": {
         "binary_format": "bsharp.bytecode.bin",
         "binary_format_version": 1,
@@ -132,7 +132,7 @@
       "expected_binary_bytes": 804,
       "expected_binary_sha256": "80f01cca55e4ae23e93378ac30ca6d4c8bb408be1166055e9dc36d88b5346bee",
       "expected_disassembly_sha256": "2a1ab7ce04d7e096bea36db73ce568e3bb7d610a68a2a0c6f9390ba6d42d1b49",
-      "expected_bsharp_ir_sha256": "2c5fe49b2e6c545b9b6cbf853cd1a84cdc970a1cc945c77d03df60951db7fe38",
+      "expected_bsharp_ir_sha256": "1c25e3b4b5e85411b1d09b2c9fd6c040ec7461acb3e467ed8219ed78d7c87ed0",
       "expected_loader_summary": {
         "binary_format": "bsharp.bytecode.bin",
         "binary_format_version": 1,

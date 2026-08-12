@@ -40,7 +40,7 @@ implementation = File.read(IMPLEMENTATION_PATH, encoding: 'UTF-8')
 emitter_source = File.read(EMITTER_PATH, encoding: 'UTF-8')
 assert_contract!(!implementation.match?(/\bSemanticResolver\.new\b/), 'independent resolver calls production SemanticResolver')
 assert_contract!(!implementation.include?("require_relative 'resolver'"), 'independent resolver requires production resolver.rb')
-assert_contract!(emitter_source.include?('SmallCompilerSubsetSemanticResolver.new(program, dictionary: dictionary).resolve'), 'subset IR emitter does not use the independent resolver')
+assert_contract!(emitter_source.include?('SmallCompilerSubsetSemanticResolver.new(program, dictionary: dictionary)'), 'subset IR emitter does not use the independent resolver')
 assert_contract!(emitter_source.include?('SemanticResolver.new(ruby_program, dictionary: parser.dictionary).resolve'), 'separate Ruby referee resolver path is missing')
 
 spec.fetch('fixtures').each do |entry|

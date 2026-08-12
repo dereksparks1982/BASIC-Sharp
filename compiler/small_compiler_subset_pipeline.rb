@@ -42,6 +42,14 @@ module BasicSharp
       native_dispatcher.invocation_count
     end
 
+    def native_semantic_router
+      ir_emitter.native_semantic_router
+    end
+
+    def native_semantic_invocation_count
+      native_semantic_router.invocation_count
+    end
+
     def semantic_document
       ir_emitter.document
     end

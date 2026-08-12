@@ -1,4 +1,4 @@
-//BASIC# v0.1.81 first BASIC#-authored compiler component./.
+//BASIC# v0.1.82 first BASIC#-authored compiler component./.
 //This bounded classifier turns accepted compiler-head inputs into parser decisions./.
 
 DEFINE

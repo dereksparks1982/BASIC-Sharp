@@ -35,7 +35,7 @@ class TestFirstNativeCompilerComponent < Minitest::Test
   def test_contract_identity_and_live_version
     assert_equal 'bsharp.first_native_compiler_component.contract.json', spec.fetch('format')
     assert_equal 1, spec.fetch('format_version')
-    assert_equal '0.1.81', BasicSharp::VERSION
+    assert_equal '0.1.82', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
     assert_equal 'first_bsharp_authored_compiler_component_under_ruby_referee', spec.fetch('status')
   end

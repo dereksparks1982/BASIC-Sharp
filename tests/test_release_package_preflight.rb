@@ -21,16 +21,16 @@ class TestReleasePackagePreflight < Minitest::Test
 
   def test_manifest_requirements_are_current_versioned
     assert_equal 'BASIC_SHARP_PATCH_MANIFEST.json', spec.fetch('required_manifest')
-    assert_equal 'APPLY_BASIC_SHARP_v0_1_81.sh', spec.fetch('required_installer')
-    assert_equal 'v0.1.80', spec.fetch('required_base_version')
-    assert_equal 'v0.1.81', spec.fetch('required_target_version')
+    assert_equal 'APPLY_BASIC_SHARP_v0_1_82.sh', spec.fetch('required_installer')
+    assert_equal 'v0.1.81', spec.fetch('required_base_version')
+    assert_equal 'v0.1.82', spec.fetch('required_target_version')
   end
 
   def test_forbids_unproven_package_handoff
     forbidden = spec.fetch('forbidden')
     assert_includes forbidden, 'accepting a release package whose final extracted payload has not been audited'
     assert_includes forbidden, 'repairing only the first failed deterministic fixture hash'
-    assert_includes forbidden, 'removing the DKLab compatibility bridge in v0.1.81'
+    assert_includes forbidden, 'removing the DKLab compatibility bridge in v0.1.82'
     assert_includes forbidden, 'skipping the pre-mutation forensic overlay'
   end
 
@@ -46,5 +46,6 @@ class TestReleasePackagePreflight < Minitest::Test
     assert_includes tools, 'tools/small_compiler_subset_bsbc_vm_independence.rb'
     assert_includes tools, 'tools/first_native_compiler_component.rb'
     assert_includes tools, 'tools/native_parser_dispatch_integration.rb'
+    assert_includes tools, 'tools/native_semantic_routing_integration.rb'
   end
 end

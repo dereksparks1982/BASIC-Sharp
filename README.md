@@ -1,12 +1,14 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.81
+# BASIC# Ruby Bootstrap Compiler v0.1.82
 
-BASIC# v0.1.81 adds Self-Hosting Milestone 2 Slice 8: Native Parser Dispatch Integration.
+BASIC# v0.1.82 adds Self-Hosting Milestone 2 Slice 9: Native Semantic Routing Integration.
 
-v0.1.81 moves the first BASIC#-authored compiler component from a sealed proof beside the compiler into the bounded independent compilation path itself. `compiler/small_compiler_subset_parser.rb` now asks `compiler/small_compiler_subset_native_dispatch.rb` for each top-level parser route, and that dispatcher loads and executes `compiler/native/first_bsharp_compiler_component.bsbc` through the independent BSharp loader and VM. The nine accepted compiler block heads, `KINDS`, `DEFINE`, `START`, `WHEN`, `IF`, `OTHERWISE`, `CONTROLS`, `HOVER`, and `CONTEXT`, are therefore classified by BASIC# bytecode before the parser continues the selected parse.
+v0.1.82 moves BASIC#-authored compiler authority one layer deeper by making the bounded independent semantic resolver request every accepted semantic-family route from checked-in BASIC# BSBC while v0.1.81 native parser dispatch remains active upstream. That upstream gate remains the accepted Self-Hosting Milestone 2 Slice 8 Native Parser Dispatch Integration.
 
-The canonical BASIC# source remains `compiler/native/first_bsharp_compiler_component.bsharp`, with checked-in `.bsharp`, `.bsbc`, and disassembly evidence. `SmallCompilerSubsetDriver` and `SmallCompilerSubsetPipeline` expose native dispatch activity while `SmallCompilerSubsetBSBCLoader` and `SmallCompilerSubsetBSBCVirtualMachine` remain the independent execution machinery. The production `Lexer`, production `Parser`, production `BytecodeEmitter`, production compiler constructors, and Ruby Runtime remain unavailable on the primary integration proof path. Ruby remains the bootstrap compiler and separate referee authority. This is active bounded self-hosting progress, not full self-hosting, and Ruby is not retired.
+The active independent path now keeps `compiler/small_compiler_subset_native_dispatch.rb` and `compiler/native/first_bsharp_compiler_component.bsharp` in front of the parser while adding `compiler/small_compiler_subset_native_semantic_routing.rb` and `compiler/native/first_bsharp_semantic_router.bsharp` after parsing. The first component still classifies the nine accepted compiler block heads. The new semantic router classifies the eight accepted semantic families: Kind definitions, Thing definitions, starting facts, WHEN event rules, IF/OTHERWISE rules, CONTROLS declarations, HOVER declarations, and CONTEXT declarations. Both canonical BASIC# sources remain checked in beside deterministic `.bsharp`, `.bsbc`, and readable disassembly evidence.
 
-The integration is fail-closed. A deliberately wrong native dispatcher must make parsing fail visibly rather than silently falling back to a Ruby head table. Validation also observes the native dispatch invocation count, rejects an invalid or unmatched head, and requires all nine accepted heads to return their locked parser decisions. A controlled bootstrap fence compiles the v0.1.81 native source first with the accepted v0.1.80 artifact, then recompiles with the generated v0.1.81 artifact and requires generation #1 and generation #2 to be byte-identical.
+`SmallCompilerSubsetDriver` and `SmallCompilerSubsetPipeline` expose native dispatch and native semantic activity while `SmallCompilerSubsetBSBCLoader` and `SmallCompilerSubsetBSBCVirtualMachine` remain the independent execution machinery. The production `Lexer`, production `Parser`, production `BytecodeEmitter`, production compiler constructors, production semantic resolver, and Ruby Runtime remain unavailable on the primary integration proof path. Ruby remains the bootstrap compiler and separate referee authority. This is active bounded self-hosting progress, not full self-hosting, and Ruby is not retired.
+
+The semantic integration is fail-closed. Validation observes the native semantic invocation count across all eight accepted semantic families, rejects an unknown semantic route, and requires wrong-route sabotage to fail visibly instead of falling back to a hidden Ruby routing answer. The upstream v0.1.81 native dispatch invocation count and fail-closed parser behavior remain independently tested. A controlled bootstrap fence compiles the v0.1.82 semantic router as generation #1, recompiles it through the new machinery as generation #2, and requires the two outputs to be byte-identical.
 
 No new creator-facing syntax is introduced. Profiles 1 through 7 remain sealed, there is no Profile 8, and the creator still sees the same plain-language BASIC# surface. The self-hosting machinery is changing under the floorboards, not being pushed onto the person making a game.
 
@@ -14,9 +16,17 @@ Current release truth remains under Elderedd Softworks LLC and Elderedd Laborato
 
 Release hardening remains active: Elderedd path direction, UTF-8 source reading, minimal/no-locale Ruby validation, release package preflight, deterministic fixture hash sweep, payload SHA-256 checks, changed-file scope checks, release forensic overlay, pre-mutation forensic overlay, and the sealed validation inventory must report all mismatches together. The whole-language test gauntlet remains at 128,000 event paths, 128,000 platform frames, 384 generated programs, and 3,072 mutations.
 
-## v0.1.81 active gates
+## v0.1.82 active gates
 
 ```text
+spec/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v1.json
+compiler/small_compiler_subset_native_semantic_routing.rb
+compiler/native/first_bsharp_semantic_router.bsharp
+compiler/native/first_bsharp_semantic_router.bsbc
+compiler/native/first_bsharp_semantic_router.bsbc.txt
+docs/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v0_1_82.md
+tools/native_semantic_routing_integration.rb
+tests/test_native_semantic_routing_integration.rb
 spec/self_hosting/BASIC_SHARP_NATIVE_PARSER_DISPATCH_INTEGRATION_v1.json
 compiler/small_compiler_subset_native_dispatch.rb
 docs/self_hosting/BASIC_SHARP_NATIVE_PARSER_DISPATCH_INTEGRATION_v0_1_81.md
@@ -239,8 +249,8 @@ Reference oracle: BasicSharp::Runtime
 Meaning profiles: bsharp.meaning.v1 through bsharp.meaning.v7
 Bytecode profiles: bsharp.bytecode.v1 through bsharp.bytecode.v7
 Self-hosting contract: BSharp Compiler Subset 0
-Current self-hosting milestone: v0.1.81 Self-Hosting Milestone 2 Slice 8 under Ruby referee control
-Current build: v0.1.81 Self-Hosting Milestone 2 Slice 8 Native Parser Dispatch Integration
+Current self-hosting milestone: v0.1.82 Self-Hosting Milestone 2 Slice 9 under Ruby referee control
+Current build: v0.1.82 Self-Hosting Milestone 2 Slice 9 Native Semantic Routing Integration
 Parent company: Elderedd Softworks LLC
 Laboratory: Elderedd Laboratory
 Internal shorthand: ELDL

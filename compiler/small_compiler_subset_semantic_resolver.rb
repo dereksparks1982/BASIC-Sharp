@@ -5,6 +5,7 @@ require_relative 'diagnostics'
 require_relative 'dictionary'
 require_relative 'basic_sharp_ir'
 require_relative 'text_literal'
+require_relative 'small_compiler_subset_native_semantic_routing'
 
 module BasicSharp
   class SmallCompilerSubsetSemanticResolver
@@ -12,25 +13,27 @@ module BasicSharp
     MAX_WHOLE_NUMBER = 2_147_483_647
     VALUE_NAME_PATTERN = /\A[a-z][a-z0-9]*\z/
 
-    attr_reader :program, :dictionary, :diagnostics
+    attr_reader :program, :dictionary, :diagnostics, :native_semantic_router
 
-    def initialize(program, dictionary:)
+    def initialize(program, dictionary:, native_semantic_router: nil)
       @program = program
       @dictionary = dictionary
       @diagnostics = DiagnosticBag.new
       @starting_value_assignments = Set.new
       @value_types = { 'damage' => 'whole_number' }
+      @native_semantic_router = native_semantic_router || SmallCompilerSubsetNativeSemanticRouting.new
+      @seen_objects = { 'player' => true }
     end
 
     def resolve
       kinds = resolve_kinds
       objects = resolve_objects
-      facts = program.facts.map { |fact| resolve_fact(fact) }
-      events = program.event_rules.map { |rule| resolve_event_rule(rule) }
-      if_rules = program.if_rules.map { |rule| resolve_if_rule(rule) }
-      controls = program.controls.map { |entry| resolve_controls(entry) }
-      hover_declarations = program.hover_declarations.map { |entry| resolve_hover(entry) }
-      context_declarations = program.context_declarations.map { |entry| resolve_context(entry) }
+      facts = program.facts.map { |fact| resolve_semantic_entry(fact) }
+      events = program.event_rules.map { |rule| resolve_semantic_entry(rule) }
+      if_rules = program.if_rules.map { |rule| resolve_semantic_entry(rule) }
+      controls = program.controls.map { |entry| resolve_semantic_entry(entry) }
+      hover_declarations = program.hover_declarations.map { |entry| resolve_semantic_entry(entry) }
+      context_declarations = program.context_declarations.map { |entry| resolve_semantic_entry(entry) }
 
       IR::Document.new(
         version: VERSION,
@@ -63,37 +66,88 @@ module BasicSharp
     end
 
     def resolve_kinds
-      program.kind_definitions.map do |kind|
-        {
-          'name' => normalize_name(kind.name),
-          'parent' => normalize_name(kind.parent),
-          'line_number' => kind.line_number
-        }
-      end
+      program.kind_definitions.map { |kind| resolve_semantic_entry(kind) }
     end
 
     def resolve_objects
       objects = [{ 'name' => 'player', 'kind' => 'person', 'builtin' => true, 'line_number' => nil }]
-      seen = { 'player' => true }
-
       program.definitions.each do |definition|
-        normalized_name = normalize_name(definition.name)
-        if seen[normalized_name]
-          diagnostics.error(definition.line_number, "duplicate object '#{normalized_name}'")
-          next
-        end
+        resolved = resolve_semantic_entry(definition)
+        objects << resolved if resolved
+      end
+      objects
+    end
 
-        diagnostics.error(definition.line_number, "unknown kind '#{definition.kind}'") unless dictionary.known_kind?(definition.kind)
-        seen[normalized_name] = true
-        objects << {
-          'name' => normalized_name,
-          'kind' => normalize_name(definition.kind),
-          'builtin' => false,
-          'line_number' => definition.line_number
-        }
+    def resolve_semantic_entry(entry)
+      route = native_semantic_router.route(entry)
+      unless route
+        raise SmallCompilerSubsetNativeSemanticRoutingError,
+              "BASIC# native semantic routing did not recognize #{entry.class.name.split('::').last}."
       end
 
-      objects
+      case route.decision
+      when 'resolve-kind-definition'
+        require_semantic_type!(entry, KindDefinition, route.decision)
+        resolve_kind_definition(entry)
+      when 'resolve-thing-definition'
+        require_semantic_type!(entry, Definition, route.decision)
+        resolve_thing_definition(entry)
+      when 'resolve-starting-fact'
+        require_semantic_type!(entry, Fact, route.decision)
+        resolve_fact(entry)
+      when 'resolve-event-rule'
+        require_semantic_type!(entry, EventRule, route.decision)
+        resolve_event_rule(entry)
+      when 'resolve-condition-rule'
+        require_semantic_type!(entry, IfRule, route.decision)
+        resolve_if_rule(entry)
+      when 'resolve-controls-declaration'
+        require_semantic_type!(entry, ControlDeclaration, route.decision)
+        resolve_controls(entry)
+      when 'resolve-hover-declaration'
+        require_semantic_type!(entry, HoverDeclaration, route.decision)
+        resolve_hover(entry)
+      when 'resolve-context-declaration'
+        require_semantic_type!(entry, ContextDeclaration, route.decision)
+        resolve_context(entry)
+      else
+        raise SmallCompilerSubsetNativeSemanticRoutingError,
+              "BASIC# native semantic routing returned unknown decision '#{route.decision}'."
+      end
+    end
+
+    def require_semantic_type!(entry, expected_class, decision)
+      return if entry.is_a?(expected_class)
+
+      actual = entry.class.name.split('::').last
+      expected = expected_class.name.split('::').last
+      raise SmallCompilerSubsetNativeSemanticRoutingError,
+            "BASIC# native semantic routing returned #{decision} for #{actual}; that route requires #{expected}."
+    end
+
+    def resolve_kind_definition(kind)
+      {
+        'name' => normalize_name(kind.name),
+        'parent' => normalize_name(kind.parent),
+        'line_number' => kind.line_number
+      }
+    end
+
+    def resolve_thing_definition(definition)
+      normalized_name = normalize_name(definition.name)
+      if @seen_objects[normalized_name]
+        diagnostics.error(definition.line_number, "duplicate object '#{normalized_name}'")
+        return nil
+      end
+
+      diagnostics.error(definition.line_number, "unknown kind '#{definition.kind}'") unless dictionary.known_kind?(definition.kind)
+      @seen_objects[normalized_name] = true
+      {
+        'name' => normalized_name,
+        'kind' => normalize_name(definition.kind),
+        'builtin' => false,
+        'line_number' => definition.line_number
+      }
     end
 
     def resolve_fact(fact)

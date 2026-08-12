@@ -1,0 +1,62 @@
+BSharp Bytecode bsharp.bytecode.v2
+Meaning Profile: bsharp.meaning.v2
+Fingerprint: b60d0387b6962646ca128b33dce3791fa1008387bcbfe4fcb872e5679a50cd5e
+
+KIND 0 person PARENT NONE
+KIND 1 device PARENT NONE
+
+THING 0 player KIND[person]
+THING 1 semantic decision KIND[device]
+THING 2 kind definition semantic KIND[device]
+THING 3 definition semantic KIND[device]
+THING 4 fact semantic KIND[device]
+THING 5 event rule semantic KIND[device]
+THING 6 if rule semantic KIND[device]
+THING 7 control declaration semantic KIND[device]
+THING 8 hover declaration semantic KIND[device]
+THING 9 context declaration semantic KIND[device]
+
+START
+    START_TEXT_VALUE THING[semantic decision] classification "unclassified"
+END
+
+WHEN actor=THING[player] action=examine target=THING[kind definition semantic] BLOCK 0
+WHEN actor=THING[player] action=examine target=THING[definition semantic] BLOCK 1
+WHEN actor=THING[player] action=examine target=THING[fact semantic] BLOCK 2
+WHEN actor=THING[player] action=examine target=THING[event rule semantic] BLOCK 3
+WHEN actor=THING[player] action=examine target=THING[if rule semantic] BLOCK 4
+WHEN actor=THING[player] action=examine target=THING[control declaration semantic] BLOCK 5
+WHEN actor=THING[player] action=examine target=THING[hover declaration semantic] BLOCK 6
+WHEN actor=THING[player] action=examine target=THING[context declaration semantic] BLOCK 7
+
+BLOCK 0
+    CHANGE_TEXT_VALUE THING[semantic decision] classification "resolve-kind-definition"
+END
+
+BLOCK 1
+    CHANGE_TEXT_VALUE THING[semantic decision] classification "resolve-thing-definition"
+END
+
+BLOCK 2
+    CHANGE_TEXT_VALUE THING[semantic decision] classification "resolve-starting-fact"
+END
+
+BLOCK 3
+    CHANGE_TEXT_VALUE THING[semantic decision] classification "resolve-event-rule"
+END
+
+BLOCK 4
+    CHANGE_TEXT_VALUE THING[semantic decision] classification "resolve-condition-rule"
+END
+
+BLOCK 5
+    CHANGE_TEXT_VALUE THING[semantic decision] classification "resolve-controls-declaration"
+END
+
+BLOCK 6
+    CHANGE_TEXT_VALUE THING[semantic decision] classification "resolve-hover-declaration"
+END
+
+BLOCK 7
+    CHANGE_TEXT_VALUE THING[semantic decision] classification "resolve-context-declaration"
+END

@@ -1,0 +1,68 @@
+{
+  "format": "bsharp.native_semantic_routing_integration.contract.json",
+  "format_version": 1,
+  "target_version": "0.1.82",
+  "title": "BASIC# Native Semantic Routing Integration",
+  "status": "native_semantic_routing_integration_under_ruby_referee",
+  "purpose": "Make the bounded independent semantic resolver consult checked-in BASIC#-authored BSBC for every accepted semantic-family routing decision, with no silent Ruby fallback, while Ruby remains bootstrap and referee authority.",
+  "accepted_base": {
+    "version": "0.1.81",
+    "commit": "1805102260cff3d42bd1a7a1229c06b4a9300bb9",
+    "tag": "v0.1.81"
+  },
+  "native_component": {
+    "source_path": "compiler/native/first_bsharp_semantic_router.bsharp",
+    "artifact_path": "compiler/native/first_bsharp_semantic_router.bsbc",
+    "disassembly_path": "compiler/native/first_bsharp_semantic_router.bsbc.txt",
+    "router_path": "compiler/small_compiler_subset_native_semantic_routing.rb",
+    "decision_object": "semantic decision",
+    "decision_value": "classification",
+    "expected_semantic_names": [
+      "kind definition",
+      "definition",
+      "fact",
+      "event rule",
+      "if rule",
+      "control declaration",
+      "hover declaration",
+      "context declaration"
+    ],
+    "expected_decisions": {
+      "kind definition": "resolve-kind-definition",
+      "definition": "resolve-thing-definition",
+      "fact": "resolve-starting-fact",
+      "event rule": "resolve-event-rule",
+      "if rule": "resolve-condition-rule",
+      "control declaration": "resolve-controls-declaration",
+      "hover declaration": "resolve-hover-declaration",
+      "context declaration": "resolve-context-declaration"
+    },
+    "expected_binary_sha256": "37abfc70d0c9db631e1701d6d6569cbdc3187a7c35ed7181050d397b9856f602",
+    "expected_disassembly_sha256": "458d6b34e8308b285017a853393368bf174702cd9c3a164c55ab21a2c2e5e48c"
+  },
+  "resolver_integration": {
+    "resolver_path": "compiler/small_compiler_subset_semantic_resolver.rb",
+    "ir_emitter_path": "compiler/small_compiler_subset_ir_emitter.rb",
+    "pipeline_path": "compiler/small_compiler_subset_pipeline.rb",
+    "driver_path": "compiler/small_compiler_subset_driver.rb",
+    "representative_family_invocations": 8,
+    "no_silent_fallback": true,
+    "wrong_route_must_fail_visible": true,
+    "unknown_route_must_be_rejected": true
+  },
+  "bootstrap_fixed_point": {
+    "bootstrap_base_version": "0.1.81",
+    "generation_count": 2,
+    "generation_1_binary_sha256": "37abfc70d0c9db631e1701d6d6569cbdc3187a7c35ed7181050d397b9856f602",
+    "generation_1_disassembly_sha256": "458d6b34e8308b285017a853393368bf174702cd9c3a164c55ab21a2c2e5e48c",
+    "require_byte_identical_generation_1_and_2": true,
+    "require_disassembly_identical_generation_1_and_2": true,
+    "require_checked_in_artifact_matches_fixed_point": true
+  },
+  "documents": {
+    "implementation": "docs/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v0_1_82.md",
+    "tool": "tools/native_semantic_routing_integration.rb",
+    "test": "tests/test_native_semantic_routing_integration.rb"
+  },
+  "canonical_self_hosting_contract": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json"
+}

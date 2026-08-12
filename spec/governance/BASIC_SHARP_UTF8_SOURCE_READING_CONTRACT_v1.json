@@ -1,7 +1,7 @@
 {
   "format": "bsharp.utf8_source_reading_contract.json",
   "format_version": 1,
-  "target_version": "0.1.81",
+  "target_version": "0.1.82",
   "title": "UTF-8 Source Reading Contract",
   "status": "active_hardening_gate",
   "purpose": "BASIC# source, BSharp IR JSON, BSharp Save JSON, and text fixtures must be read as UTF-8 so a minimal or no-locale Ruby environment does not crash when creator text contains non-ASCII characters.",

@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.81
+**Version:** v0.1.82
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -686,4 +686,12 @@ The bounded parser must not preserve a second hard-coded Ruby table that silentl
 The v0.1.81 bootstrap is controlled: the accepted v0.1.80 native BSBC artifact may bootstrap generation #1 of the v0.1.81 native artifact; generation #1 must then bootstrap generation #2; the two generations and readable disassemblies must be byte-identical, and generation #2 must match the checked-in artifact.
 
 Ruby remains the bootstrap compiler and referee authority. Production Parser, SemanticResolver, BytecodeEmitter, BytecodeLoader, BytecodeVirtualMachine, and Runtime remain separate referees and must not become hidden fallbacks on the bounded primary path. This is Self-Hosting Milestone 2 Slice 8, not full self-hosting and not Ruby retirement. Profiles 1 through 7 and creator-facing syntax remain unchanged.
+
+## v0.1.82 Self-Hosting Milestone 2 Slice 9 Native Semantic Routing Integration Rule
+
+BASIC# v0.1.82 moves BASIC#-authored compiler authority one layer deeper by requiring `SmallCompilerSubsetSemanticResolver` to request accepted semantic-family routing decisions from the persisted BASIC# component `compiler/native/first_bsharp_semantic_router.bsbc` through `compiler/small_compiler_subset_native_semantic_routing.rb`. The accepted semantic families are Kind definitions, Thing definitions, starting facts, WHEN event rules, IF/OTHERWISE rules, CONTROLS declarations, HOVER declarations, and CONTEXT declarations.
+
+The semantic route is fail-closed. A wrong or unknown BASIC# semantic decision must fail visibly and must never be repaired by a hidden Ruby answer table. Validation must observe native semantic invocation counts, preserve the v0.1.81 native parser dispatch upstream, disable production Parser, production SemanticResolver, production compiler constructors, and Ruby Runtime on the primary proof path, preserve production and Ruby referee parity, and require a byte-identical generation #1 / generation #2 bootstrap fixed point.
+
+Canonical evidence: `spec/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v1.json`, `docs/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v0_1_82.md`, `tools/native_semantic_routing_integration.rb`, and `tests/test_native_semantic_routing_integration.rb`. Ruby remains bootstrap compiler and referee authority. This is bounded self-hosting progress, not full self-hosting. No Profile 8 or new creator-facing syntax is introduced.
 

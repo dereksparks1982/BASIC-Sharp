@@ -3,20 +3,20 @@
 ## Current accepted base
 
 ```text
-v0.1.80: Self-Hosting Milestone 2 Slice 7 - First BASIC#-Authored Compiler Component
-commit 62b8a3ffc2eb80d785f80e5b6ba61fa210c5a336
-tag v0.1.80
+v0.1.81: Self-Hosting Milestone 2 Slice 8 - Native Parser Dispatch Integration
+commit 1805102260cff3d42bd1a7a1229c06b4a9300bb9
+tag v0.1.81
 ```
 
-v0.1.80 is the accepted rollback point. It proved that a real compiler-domain decision component can be authored in BASIC#, compiled by the bounded independent compiler path into persisted BSBC, reloaded through the independent loader, executed through the independent BSharp VM, and compared against production and Ruby referees.
+v0.1.81 is the accepted rollback point. It put the first BASIC#-authored compiler component into the active bounded parser path, proved all nine accepted heads are dispatched by BASIC# bytecode, failed closed under wrong-dispatch sabotage, preserved independent compilation/execution and referee parity, and passed the full native Trial by Fire before snapshot, commit, annotated tag, SSH push, and peeled-tag verification.
 
 ## Current candidate
 
 ```text
-v0.1.81: Self-Hosting Milestone 2 Slice 8 - Native Parser Dispatch Integration
+v0.1.82: Self-Hosting Milestone 2 Slice 9 - Native Semantic Routing Integration
 ```
 
-v0.1.81 makes the accepted BASIC#-authored compiler component participate in the bounded independent compiler path. `SmallCompilerSubsetParser` no longer owns a Ruby table of the nine accepted top-level heads. It asks `SmallCompilerSubsetNativeDispatch`, which executes `compiler/native/first_bsharp_compiler_component.bsbc` and returns the parser decision.
+v0.1.82 keeps the accepted v0.1.81 native parser dispatcher active upstream and makes `SmallCompilerSubsetSemanticResolver` request each accepted semantic-family route from `SmallCompilerSubsetNativeSemanticRouting`, which executes `compiler/native/first_bsharp_semantic_router.bsbc` through the independent loader and BSharp VM.
 
 The candidate path is:
 
@@ -24,42 +24,19 @@ The candidate path is:
 BASIC# source
 -> TokenizerReader
 -> SmallCompilerSubsetParser
--> SmallCompilerSubsetNativeDispatch
--> BASIC#-authored first_bsharp_compiler_component.bsbc
--> SmallCompilerSubsetBSBCLoader
--> SmallCompilerSubsetBSBCVirtualMachine
--> parser decision
--> bounded parser continuation
+-> BASIC# native parser dispatch [v0.1.81]
+-> parsed structures
+-> SmallCompilerSubsetNativeSemanticRouting [v0.1.82]
+-> BASIC#-authored first_bsharp_semantic_router.bsbc
+-> native semantic-family decision
 -> SmallCompilerSubsetSemanticResolver
 -> BSharp IR
--> BSBC
+-> independent BSBC encoder
+-> independent BSBC loader
 -> independent BSharp VM
 ```
 
-The nine accepted heads remain `KINDS`, `DEFINE`, `START`, `WHEN`, `IF`, `OTHERWISE`, `CONTROLS`, `HOVER`, and `CONTEXT`.
-
-Acceptance requires all of the following:
-
-- native artifact load through independent machinery;
-- exact dispatch decisions for all nine accepted heads;
-- observable native dispatch invocation counts;
-- no silent Ruby head-table fallback;
-- invalid/unmatched head rejection;
-- deliberate wrong-dispatch sabotage must fail visibly;
-- production Parser and production compiler constructors unavailable on the primary integration proof path;
-- Ruby Runtime unavailable on the primary integration proof path;
-- independent source-to-BSBC compilation and independent BSBC execution;
-- production and Ruby referee parity;
-- controlled v0.1.80 bootstrap artifact fencing;
-- generation #1 and generation #2 byte-identical fixed point.
-
-Reference: `spec/self_hosting/BASIC_SHARP_NATIVE_PARSER_DISPATCH_INTEGRATION_v1.json`.
-Reference: `docs/self_hosting/BASIC_SHARP_NATIVE_PARSER_DISPATCH_INTEGRATION_v0_1_81.md`.
-Reference: `compiler/small_compiler_subset_native_dispatch.rb`.
-Reference: `tools/native_parser_dispatch_integration.rb`.
-Reference: `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json`.
-
-Ruby remains the bootstrap compiler and separate referee authority. v0.1.81 is not full self-hosting and does not retire Ruby. Profiles 1 through 7 and creator-facing syntax remain unchanged.
+Acceptance requires all eight accepted semantic families to route through BASIC# bytecode, observable native invocation counts, unknown-route rejection, deliberate wrong-route sabotage with no Ruby fallback, preserved v0.1.81 native parser dispatch, disabled production Parser/SemanticResolver/compiler constructors/Ruby Runtime on the primary proof path, independent source-to-BSIR/BSBC/execution, production and Ruby referee parity, and a v0.1.81-to-v0.1.82 two-generation byte-identical fixed point.
 
 ## Canonical Company Bible
 
@@ -112,7 +89,7 @@ The v0.1.72 Milestone 2 proposal is now implemented through semantic resolver in
 
 v0.1.73 established direct creator actions including open, close, lock, and take. v0.1.81 preserves those game-making semantics unchanged while the compiler machinery underneath them becomes more self-directed.
 
-## Next direction after v0.1.81
+## Next direction after v0.1.82
 
 1. Expand BASIC#-authored compiler ownership only where accepted BASIC# can express real compiler work without contaminating creator-facing syntax.
 2. Keep Ruby as referee until BASIC#-authored components reproduce locked outputs strongly enough to earn further replacement.
@@ -137,6 +114,7 @@ These are future proof programs, not permission to interrupt the active compiler
 
 ```text
 tools/native_parser_dispatch_integration.rb
+tools/native_semantic_routing_integration.rb
 tools/deterministic_fixture_hash_sweep.rb
 tools/release_package_preflight.rb
 tools/release_forensic_overlay.rb
@@ -177,6 +155,7 @@ spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_v1.json
 spec/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v1.json
 spec/self_hosting/BASIC_SHARP_NATIVE_PARSER_DISPATCH_INTEGRATION_v1.json
+spec/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json
 spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json
