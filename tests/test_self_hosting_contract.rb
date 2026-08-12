@@ -13,14 +13,14 @@ class TestSelfHostingContract < Minitest::Test
   end
 
   def test_spec_targets_the_live_basic_sharp_version
-    assert_equal '0.1.80', BasicSharp::VERSION
+    assert_equal '0.1.81', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
   end
 
   def test_contract_is_foundation_only
     assert_equal 'foundation_contract_only', spec.fetch('status')
     assert_equal 'BSharp Compiler Subset 0', spec.fetch('compiler_subset_name')
-    assert_equal 'self_hosting_milestone_2_slice_7_first_native_component_under_ruby_referee', spec.fetch('compiler_subset_status')
+    assert_equal 'self_hosting_milestone_2_slice_8_native_parser_dispatch_integration_under_ruby_referee', spec.fetch('compiler_subset_status')
   end
 
   def test_future_work_is_explicitly_excluded

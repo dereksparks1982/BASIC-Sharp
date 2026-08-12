@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.80  
+**Version:** v0.1.81
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -676,4 +676,14 @@ The component classifies the nine accepted compiler block heads `KINDS`, `DEFINE
 This is the first BASIC#-authored compiler component, not full self-hosting and not Ruby retirement. Ruby remains the bootstrap compiler and referee authority. Profiles 1 through 7 and existing creator-facing syntax remain unchanged. The opening `(` on official action words remains the creator-facing visual guide, and written action order remains authoritative.
 
 The Company Bible header version is mandatory release metadata. `tools/company_bible_audit.rb` must reject any future build where the canonical header version does not exactly match `BasicSharp::VERSION`.
+
+## v0.1.81 Self-Hosting Milestone 2 Slice 8 Native Parser Dispatch Integration Rule
+
+BASIC# v0.1.81 moves the accepted BASIC#-authored compiler decision component into the bounded independent parser path. `compiler/small_compiler_subset_native_dispatch.rb` must load and execute `compiler/native/first_bsharp_compiler_component.bsbc` through `SmallCompilerSubsetBSBCLoader` and `SmallCompilerSubsetBSBCVirtualMachine`, and `SmallCompilerSubsetParser` must consult that native result for accepted block-Head dispatch.
+
+The bounded parser must not preserve a second hard-coded Ruby table that silently chooses the accepted Head route when the native artifact rejects a Head or returns a wrong decision. Invalid or unmatched Heads must fail visibly. A sabotage artifact that intentionally returns a wrong route must cause parser failure rather than Ruby fallback. Native dispatch invocation counts must be observable in the parser path.
+
+The v0.1.81 bootstrap is controlled: the accepted v0.1.80 native BSBC artifact may bootstrap generation #1 of the v0.1.81 native artifact; generation #1 must then bootstrap generation #2; the two generations and readable disassemblies must be byte-identical, and generation #2 must match the checked-in artifact.
+
+Ruby remains the bootstrap compiler and referee authority. Production Parser, SemanticResolver, BytecodeEmitter, BytecodeLoader, BytecodeVirtualMachine, and Runtime remain separate referees and must not become hidden fallbacks on the bounded primary path. This is Self-Hosting Milestone 2 Slice 8, not full self-hosting and not Ruby retirement. Profiles 1 through 7 and creator-facing syntax remain unchanged.
 

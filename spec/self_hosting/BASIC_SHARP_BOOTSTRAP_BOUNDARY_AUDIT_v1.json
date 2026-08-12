@@ -1,11 +1,11 @@
 {
   "format": "bsharp.bootstrap_boundary_audit.json",
   "format_version": 1,
-  "target_version": "0.1.80",
+  "target_version": "0.1.81",
   "title": "BASIC# Bootstrap Boundary Audit",
   "status": "bootstrap_boundary_audit_under_ruby_referee",
-  "next_milestone": "v0.1.80 Self-Hosting Milestone 2 Slice 7: First BASIC#-Authored Compiler Component",
-  "purpose": "Audit exactly where Ruby remains bootstrap referee while Self-Hosting Milestone 2 Slice 7 introduces the first bounded compiler-domain decision component authored in BASIC#, compiled to real BSBC by the independent driver, and executed source-free by the independent BSharp VM.",
+  "next_milestone": "v0.1.81 Self-Hosting Milestone 2 Slice 8: BASIC# Native Parser Dispatch Integration",
+  "purpose": "Audit exactly where Ruby remains bootstrap referee while Self-Hosting Milestone 2 Slice 8 routes bounded parser Head dispatch through the accepted BASIC#-authored BSBC compiler component with fail-closed sabotage and fixed-point bootstrap proof.",
   "forbidden_until_after_milestone": [
     "claiming BASIC# is self-hosted",
     "replacing the Ruby bootstrap compiler",
@@ -20,7 +20,7 @@
       "name": "ruby_bootstrap_referee",
       "owner": "Ruby bootstrap",
       "authority": "source_of_truth",
-      "boundary": "Ruby Parser, SemanticResolver, BytecodeEmitter, BytecodeLoader, Runtime, and BytecodeVirtualMachine remain production referee authority. In v0.1.80 they are forbidden from the first BASIC#-authored compiler component primary proof path and may be invoked only on separate parity-referee paths.",
+      "boundary": "Ruby Parser, SemanticResolver, BytecodeEmitter, BytecodeLoader, Runtime, and BytecodeVirtualMachine remain production referee authority. In v0.1.81 they are forbidden from the bounded native parser-dispatch primary proof path and may be invoked only on separate parity-referee paths.",
       "paths": [
         "compiler/parser.rb",
         "compiler/resolver.rb",
@@ -46,10 +46,11 @@
       "name": "basic_sharp_subset_reader_parser",
       "owner": "BSharp Compiler Subset 0",
       "authority": "referee_checked_parser_records",
-      "boundary": "TokenizerReader now produces its primary line/comment records without invoking the production Lexer, while exact Lexer comparison remains a separate referee. SmallCompilerSubsetParser remains the bounded parser path under parity checks.",
+      "boundary": "TokenizerReader produces primary line/comment records independently. SmallCompilerSubsetParser now obtains accepted block-Head route decisions by executing the BASIC#-authored BSBC dispatch component; the production Parser remains a separate referee only.",
       "paths": [
         "compiler/tokenizer_reader.rb",
         "compiler/small_compiler_subset_parser.rb",
+        "compiler/small_compiler_subset_native_dispatch.rb",
         "tools/tokenizer_reader_contract.rb",
         "tools/small_compiler_subset_parser.rb"
       ]
@@ -100,7 +101,7 @@
       "name": "basic_sharp_authored_compiler_component",
       "owner": "BASIC#-authored compiler component",
       "authority": "native_compiler_decision_evidence",
-      "boundary": "The first compiler-domain decision rules live in BASIC# source, compile through SmallCompilerSubsetDriver into checked-in BSBC, and execute source-free through SmallCompilerSubsetBSBCLoader and SmallCompilerSubsetBSBCVirtualMachine. This proves bounded BASIC# authorship inside the compiler domain without claiming full self-hosting or replacing Ruby.",
+      "boundary": "The first compiler-domain decision rules live in BASIC# source, compile through SmallCompilerSubsetDriver into checked-in BSBC, and execute source-free through SmallCompilerSubsetBSBCLoader and SmallCompilerSubsetBSBCVirtualMachine. v0.1.81 preserves this component as the canonical native dispatch authority for the bounded parser path.",
       "paths": [
         "compiler/native/first_bsharp_compiler_component.bsharp",
         "compiler/native/first_bsharp_compiler_component.bsbc",
@@ -109,6 +110,22 @@
         "docs/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v0_1_80.md",
         "tools/first_native_compiler_component.rb",
         "tests/test_first_native_compiler_component.rb"
+      ]
+    },
+    {
+      "name": "basic_sharp_native_parser_dispatch",
+      "owner": "BASIC#-authored parser dispatch",
+      "authority": "active_bounded_parser_dispatch_evidence",
+      "boundary": "SmallCompilerSubsetParser must consult the persisted BASIC# BSBC decision component for accepted Head routing, reject invalid/unmatched or sabotaged decisions without Ruby fallback, expose invocation evidence, and satisfy the v0.1.80 -> v0.1.81 -> v0.1.81 fixed-point bootstrap proof.",
+      "paths": [
+        "compiler/small_compiler_subset_native_dispatch.rb",
+        "compiler/small_compiler_subset_parser.rb",
+        "compiler/small_compiler_subset_pipeline.rb",
+        "compiler/small_compiler_subset_driver.rb",
+        "spec/self_hosting/BASIC_SHARP_NATIVE_PARSER_DISPATCH_INTEGRATION_v1.json",
+        "docs/self_hosting/BASIC_SHARP_NATIVE_PARSER_DISPATCH_INTEGRATION_v0_1_81.md",
+        "tools/native_parser_dispatch_integration.rb",
+        "tests/test_native_parser_dispatch_integration.rb"
       ]
     },
     {
@@ -181,6 +198,11 @@
       "native_compiler_decision_evidence"
     ],
     [
+      "basic_sharp_native_parser_dispatch",
+      "BASIC#-authored parser dispatch",
+      "active_bounded_parser_dispatch_evidence"
+    ],
+    [
       "runtime_smoke_bridge",
       "Verifying runtime smoke lane",
       "deterministic_smoke_evidence"
@@ -200,6 +222,7 @@
     "self_hosting_subset_spec": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json",
     "driver_independence_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json",
     "artifact_round_trip_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_v1.json",
-    "first_native_compiler_component_spec": "spec/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v1.json"
+    "first_native_compiler_component_spec": "spec/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v1.json",
+    "native_parser_dispatch_integration_spec": "spec/self_hosting/BASIC_SHARP_NATIVE_PARSER_DISPATCH_INTEGRATION_v1.json"
   }
 }

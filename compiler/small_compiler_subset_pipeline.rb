@@ -34,6 +34,14 @@ module BasicSharp
       ir_emitter.subset_parser
     end
 
+    def native_dispatcher
+      parser.native_dispatcher
+    end
+
+    def native_dispatch_invocation_count
+      native_dispatcher.invocation_count
+    end
+
     def semantic_document
       ir_emitter.document
     end

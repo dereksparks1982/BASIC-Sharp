@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.semantic_resolver.contract.json",
   "format_version": 1,
-  "target_version": "0.1.80",
+  "target_version": "0.1.81",
   "title": "Small Compiler Subset Semantic Resolver Independence",
   "status": "semantic_resolver_independent_under_ruby_referee",
   "purpose": "Give the BSharp Compiler Subset 0 path its own semantic resolver implementation while preserving the production Ruby SemanticResolver only as a separate referee for deterministic parity.",

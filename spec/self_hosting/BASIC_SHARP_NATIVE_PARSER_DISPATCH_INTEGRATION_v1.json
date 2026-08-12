@@ -1,0 +1,79 @@
+{
+  "format": "bsharp.native_parser_dispatch_integration.contract.json",
+  "format_version": 1,
+  "target_version": "0.1.81",
+  "title": "BASIC# Native Parser Dispatch Integration",
+  "status": "native_parser_dispatch_integration_under_ruby_referee",
+  "purpose": "Make the bounded independent parser consult the checked-in BASIC#-authored BSBC compiler component for every accepted block-head dispatch decision, with no silent Ruby fallback, while Ruby remains bootstrap and referee authority.",
+  "accepted_base": {
+    "version": "0.1.80",
+    "commit": "62b8a3ffc2eb80d785f80e5b6ba61fa210c5a336",
+    "tag": "v0.1.80"
+  },
+  "native_component": {
+    "source_path": "compiler/native/first_bsharp_compiler_component.bsharp",
+    "artifact_path": "compiler/native/first_bsharp_compiler_component.bsbc",
+    "disassembly_path": "compiler/native/first_bsharp_compiler_component.bsbc.txt",
+    "dispatcher_path": "compiler/small_compiler_subset_native_dispatch.rb",
+    "decision_object": "compiler decision",
+    "decision_value": "classification",
+    "expected_heads": [
+      "KINDS",
+      "DEFINE",
+      "START",
+      "WHEN",
+      "IF",
+      "OTHERWISE",
+      "CONTROLS",
+      "HOVER",
+      "CONTEXT"
+    ],
+    "expected_decisions": {
+      "kinds": "parse-kind-section",
+      "define": "parse-definition-section",
+      "start": "parse-startup-section",
+      "when": "parse-event-rule",
+      "if": "parse-condition-rule",
+      "otherwise": "parse-alternate-branch",
+      "controls": "parse-controls-section",
+      "hover": "parse-hover-section",
+      "context": "parse-context-section"
+    },
+    "expected_binary_sha256": "cbebf931b65acc7d8ff75409a08d78624bdd9589b60c9c06cbbf66270a19d297",
+    "expected_disassembly_sha256": "fbd05ee0cbe94fd4a0fa17e4b257afbd2faa6a1df4ebda0dc2fd9b431ae1c20c"
+  },
+  "parser_integration": {
+    "parser_path": "compiler/small_compiler_subset_parser.rb",
+    "pipeline_path": "compiler/small_compiler_subset_pipeline.rb",
+    "driver_path": "compiler/small_compiler_subset_driver.rb",
+    "expected_fixture_dispatch_invocations": 9,
+    "no_silent_fallback": true,
+    "wrong_dispatch_must_fail_visible": true,
+    "invalid_head_must_be_rejected": true
+  },
+  "bootstrap_fixed_point": {
+    "bootstrap_base_version": "0.1.80",
+    "generation_count": 2,
+    "require_byte_identical_generation_1_and_2": true,
+    "require_disassembly_identical_generation_1_and_2": true,
+    "require_checked_in_artifact_matches_fixed_point": true
+  },
+  "required_proofs": [
+    "BASIC# native dispatch artifact loads through SmallCompilerSubsetBSBCLoader",
+    "SmallCompilerSubsetParser requests its accepted block-head route from the BASIC#-authored BSBC artifact",
+    "all nine accepted block heads dispatch to the locked parser decisions",
+    "native dispatch invocation count is observable from parser, pipeline, and driver",
+    "an invalid or unmatched head is rejected instead of guessed by Ruby",
+    "a deliberately wrong native dispatch artifact makes parsing fail visibly instead of falling back to Ruby logic",
+    "production Parser construction is unnecessary on the bounded parser primary path",
+    "production compiler and Runtime constructors remain unnecessary on the integrated independent primary path",
+    "the v0.1.80 bootstrap artifact can compile the v0.1.81 native source, the generated v0.1.81 artifact can compile it again, and both generations are byte-identical",
+    "production parser, production BSharp VM, and Ruby Runtime remain separate parity referees",
+    "Profiles 1 through 7 and creator-facing syntax remain unchanged"
+  ],
+  "documents": {
+    "implementation": "docs/self_hosting/BASIC_SHARP_NATIVE_PARSER_DISPATCH_INTEGRATION_v0_1_81.md",
+    "tool": "tools/native_parser_dispatch_integration.rb",
+    "test": "tests/test_native_parser_dispatch_integration.rb"
+  }
+}

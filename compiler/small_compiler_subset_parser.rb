@@ -2,6 +2,7 @@
 
 require_relative 'parser'
 require_relative 'tokenizer_reader'
+require_relative 'small_compiler_subset_native_dispatch'
 
 module BasicSharp
   class SmallCompilerSubsetParser
@@ -37,11 +38,12 @@ module BasicSharp
     FORMAT = 'bsharp.small_compiler_subset.parser.record'
     STATUS = 'implementation_under_ruby_referee'
 
-    attr_reader :reader, :issues
+    attr_reader :reader, :issues, :native_dispatcher
 
-    def initialize(source)
+    def initialize(source, native_dispatcher: nil)
       @source = source
       @reader = TokenizerReader.new(source)
+      @native_dispatcher = native_dispatcher || SmallCompilerSubsetNativeDispatch.new
       @issues = []
       @statements = nil
       @ruby_referee_program = nil
@@ -145,21 +147,29 @@ module BasicSharp
     end
 
     def parse_head(text)
-      return { starter: text, detail: nil } if %w[KINDS DEFINE START OTHERWISE].include?(text)
+      dispatch = native_dispatcher.dispatch(text)
+      return nil unless dispatch
 
-      if (match = text.match(/\A(WHEN|IF)\s+(.+)\z/))
-        return { starter: match[1], detail: match[2].strip }
-      end
-
-      if (match = text.match(/\A(CONTROLS|HOVER|CONTEXT)\s+for\s+(.+)\z/))
-        return { starter: match[1], detail: match[2].strip }
+      starter = dispatch.head_word
+      case dispatch.decision
+      when 'parse-kind-section', 'parse-definition-section', 'parse-startup-section', 'parse-alternate-branch'
+        return { starter: starter, detail: nil } if text == starter
+      when 'parse-event-rule', 'parse-condition-rule'
+        match = text.match(/\A#{Regexp.escape(starter)}\s+(.+)\z/)
+        return { starter: starter, detail: match[1].strip } if match
+      when 'parse-controls-section', 'parse-hover-section', 'parse-context-section'
+        match = text.match(/\A#{Regexp.escape(starter)}\s+for\s+(.+)\z/)
+        return { starter: starter, detail: match[1].strip } if match
+      else
+        raise SmallCompilerSubsetNativeDispatchError,
+              "BASIC# native parser dispatch returned unknown decision '#{dispatch.decision}' for #{starter}."
       end
 
       nil
     end
 
     def head_line?(text)
-      Parser::BLOCK_HEADS.any? { |head| text == head || text.start_with?("#{head} ") }
+      !native_dispatcher.dispatch(text).nil?
     end
 
     def parse_child(record, text)

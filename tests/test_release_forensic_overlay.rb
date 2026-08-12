@@ -25,8 +25,8 @@ class TestReleaseForensicOverlay < Minitest::Test
   end
 
   def test_overlay_runs_before_mutation
-    assert_equal 'v0.1.79', spec.fetch('required_base_version')
-    assert_equal 'v0.1.80', spec.fetch('required_target_version')
+    assert_equal 'v0.1.80', spec.fetch('required_base_version')
+    assert_equal 'v0.1.81', spec.fetch('required_target_version')
     assert_equal 'pre-mutation forensic overlay', spec.fetch('required_installer_phase')
   end
 

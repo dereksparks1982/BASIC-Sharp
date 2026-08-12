@@ -74,6 +74,14 @@ module BasicSharp
       Digest::SHA256.hexdigest(artifact_bytes.b)
     end
 
+    def native_dispatcher
+      pipeline.native_dispatcher
+    end
+
+    def native_dispatch_invocation_count
+      pipeline.native_dispatch_invocation_count
+    end
+
     def artifact_loader
       ensure_compiled!
       SmallCompilerSubsetBSBCLoader.read(

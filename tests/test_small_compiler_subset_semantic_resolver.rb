@@ -32,7 +32,7 @@ class TestSmallCompilerSubsetSemanticResolver < Minitest::Test
   def test_contract_identity_and_version
     assert_equal 'bsharp.small_compiler_subset.semantic_resolver.contract.json', spec.fetch('format')
     assert_equal 1, spec.fetch('format_version')
-    assert_equal '0.1.80', BasicSharp::VERSION
+    assert_equal '0.1.81', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
     assert_equal 'semantic_resolver_independent_under_ruby_referee', spec.fetch('status')
   end

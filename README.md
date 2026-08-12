@@ -1,26 +1,27 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.80
+# BASIC# Ruby Bootstrap Compiler v0.1.81
 
-BASIC# v0.1.80 adds Self-Hosting Milestone 2 Slice 7: First BASIC#-Authored Compiler Component.
+BASIC# v0.1.81 adds Self-Hosting Milestone 2 Slice 8: Native Parser Dispatch Integration.
 
-v0.1.80 puts the first bounded compiler-domain decision rules in BASIC# itself. The canonical `.bsharp` source is `compiler/native/first_bsharp_compiler_component.bsharp`. It classifies the nine accepted compiler block heads, `KINDS`, `DEFINE`, `START`, `WHEN`, `IF`, `OTHERWISE`, `CONTROLS`, `HOVER`, and `CONTEXT`, into deterministic parser decisions.
+v0.1.81 moves the first BASIC#-authored compiler component from a sealed proof beside the compiler into the bounded independent compilation path itself. `compiler/small_compiler_subset_parser.rb` now asks `compiler/small_compiler_subset_native_dispatch.rb` for each top-level parser route, and that dispatcher loads and executes `compiler/native/first_bsharp_compiler_component.bsbc` through the independent BSharp loader and VM. The nine accepted compiler block heads, `KINDS`, `DEFINE`, `START`, `WHEN`, `IF`, `OTHERWISE`, `CONTROLS`, `HOVER`, and `CONTEXT`, are therefore classified by BASIC# bytecode before the parser continues the selected parse.
 
-The accepted v0.1.79 `SmallCompilerSubsetDriver` compiles that BASIC# compiler component through the independent `SmallCompilerSubsetPipeline` into a real checked-in `.bsbc` BSharp Bytecode artifact. The artifact reloads through `SmallCompilerSubsetBSBCLoader` and executes through `SmallCompilerSubsetBSBCVirtualMachine`. Acceptance requires source-free execution after the source copy used for compilation is removed, byte-identical repeated compilation, and deterministic compiler decisions.
+The canonical BASIC# source remains `compiler/native/first_bsharp_compiler_component.bsharp`, with checked-in `.bsharp`, `.bsbc`, and disassembly evidence. `SmallCompilerSubsetDriver` and `SmallCompilerSubsetPipeline` expose native dispatch activity while `SmallCompilerSubsetBSBCLoader` and `SmallCompilerSubsetBSBCVirtualMachine` remain the independent execution machinery. The production `Lexer`, production `Parser`, production `BytecodeEmitter`, production compiler constructors, and Ruby Runtime remain unavailable on the primary integration proof path. Ruby remains the bootstrap compiler and separate referee authority. This is active bounded self-hosting progress, not full self-hosting, and Ruby is not retired.
 
-The primary native-component proof path must still work while production `Lexer`, production `Parser`, production `SemanticResolver`, production `BytecodeEmitter`, production `BytecodeLoader`, production `BytecodeVirtualMachine`, and production `Runtime` constructors are disabled. Those production components remain separate referee paths. Ruby remains the bootstrap compiler and referee authority. This is Self-Hosting Milestone 2 Slice 7, not full self-hosting and not Ruby retirement.
+The integration is fail-closed. A deliberately wrong native dispatcher must make parsing fail visibly rather than silently falling back to a Ruby head table. Validation also observes the native dispatch invocation count, rejects an invalid or unmatched head, and requires all nine accepted heads to return their locked parser decisions. A controlled bootstrap fence compiles the v0.1.81 native source first with the accepted v0.1.80 artifact, then recompiles with the generated v0.1.81 artifact and requires generation #1 and generation #2 to be byte-identical.
 
-No new creator-facing syntax is introduced in v0.1.80. Profiles 1 through 7 remain unchanged, and the first BASIC#-authored compiler component intentionally stays within accepted Profile 2 text-value meaning. Existing BASIC# statement boundaries, the opening `(` visual guide on official action words, and written action order remain unchanged. Compiler complexity stays inside the compiler rather than being pushed onto the creator.
+No new creator-facing syntax is introduced. Profiles 1 through 7 remain sealed, there is no Profile 8, and the creator still sees the same plain-language BASIC# surface. The self-hosting machinery is changing under the floorboards, not being pushed onto the person making a game.
 
-The Company Bible drift found after v0.1.79 is repaired in this build: the canonical Company Bible header now carries v0.1.80, and `tools/company_bible_audit.rb` machine-checks that its header version exactly matches `BasicSharp::VERSION` so that metadata cannot silently lag again.
+Current release truth remains under Elderedd Softworks LLC and Elderedd Laboratory. The Elderedd identity migration remains active, with the DKLab compatibility layer retained only for compatibility, rollback, migration, and historical path support. BCS means BSharp Creator Services and remains future service work rather than part of this build. The Company Bible header version remains machine-checked against `BasicSharp::VERSION`.
 
-Current release truth: Elderedd identity migration remains active under Elderedd Softworks LLC and Elderedd Laboratory. The DKLab compatibility layer remains for compatibility, rollback, migration, and historical path support only. BCS means BSharp Creator Services and remains a future service layer, not part of this build. The README Current Release Truth Gate remains active.
+Release hardening remains active: Elderedd path direction, UTF-8 source reading, minimal/no-locale Ruby validation, release package preflight, deterministic fixture hash sweep, payload SHA-256 checks, changed-file scope checks, release forensic overlay, pre-mutation forensic overlay, and the sealed validation inventory must report all mismatches together. The whole-language test gauntlet remains at 128,000 event paths, 128,000 platform frames, 384 generated programs, and 3,072 mutations.
 
-Release hardening remains active: Elderedd path direction, UTF-8 source reading, minimal/no-locale Ruby validation, release package preflight, deterministic fixture hash sweep, payload SHA-256 checks, changed-file scope checks, release forensic overlay, pre-mutation forensic overlay, and the sealed validation inventory must report all mismatches together.
-
-The whole-language test gauntlet remains at 128,000 event paths, 128,000 platform frames, 384 generated programs, and 3,072 mutations. v0.1.80 changes only the bounded self-hosting proof lane and canonical Company Bible version gate; creator-facing language meaning, Save, ASK, input behaviour, normal production compiler/runtime routing, and the BSBC binary layout remain protected.
-
-## v0.1.80 active gates
+## v0.1.81 active gates
 
 ```text
+spec/self_hosting/BASIC_SHARP_NATIVE_PARSER_DISPATCH_INTEGRATION_v1.json
+compiler/small_compiler_subset_native_dispatch.rb
+docs/self_hosting/BASIC_SHARP_NATIVE_PARSER_DISPATCH_INTEGRATION_v0_1_81.md
+tools/native_parser_dispatch_integration.rb
+tests/test_native_parser_dispatch_integration.rb
 spec/release/BASIC_SHARP_RELEASE_FORENSIC_OVERLAY_v1.json
 tools/release_forensic_overlay.rb
 tests/test_release_forensic_overlay.rb
@@ -238,8 +239,8 @@ Reference oracle: BasicSharp::Runtime
 Meaning profiles: bsharp.meaning.v1 through bsharp.meaning.v7
 Bytecode profiles: bsharp.bytecode.v1 through bsharp.bytecode.v7
 Self-hosting contract: BSharp Compiler Subset 0
-Current self-hosting milestone: v0.1.80 Self-Hosting Milestone 2 Slice 7 under Ruby referee control
-Current build: v0.1.80 Self-Hosting Milestone 2 Slice 7 First BASIC#-Authored Compiler Component
+Current self-hosting milestone: v0.1.81 Self-Hosting Milestone 2 Slice 8 under Ruby referee control
+Current build: v0.1.81 Self-Hosting Milestone 2 Slice 8 Native Parser Dispatch Integration
 Parent company: Elderedd Softworks LLC
 Laboratory: Elderedd Laboratory
 Internal shorthand: ELDL

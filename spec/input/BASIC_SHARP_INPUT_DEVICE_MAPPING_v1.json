@@ -1,7 +1,7 @@
 {
   "format": "bsharp.input.device_mapping.json",
   "format_version": 1,
-  "target_version": "0.1.80",
+  "target_version": "0.1.81",
   "title": "Plain-English Input Action Mapping Contract",
   "status": "contract_and_runtime_mapping",
   "creator_source_rule": "Creator source declares game actions once. Keyboard, mouse, PS5, Xbox, and generic gamepad inputs map underneath without requiring different BASIC# scripts.",
