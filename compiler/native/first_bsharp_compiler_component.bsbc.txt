@@ -1,0 +1,68 @@
+BSharp Bytecode bsharp.bytecode.v2
+Meaning Profile: bsharp.meaning.v2
+Fingerprint: ab8a7449156f01b1f02a7b189199d8f0fa78e418d26eb26e4ed7ac7a1637d078
+
+KIND 0 person PARENT NONE
+KIND 1 device PARENT NONE
+
+THING 0 player KIND[person]
+THING 1 compiler decision KIND[device]
+THING 2 kinds head KIND[device]
+THING 3 define head KIND[device]
+THING 4 start head KIND[device]
+THING 5 when head KIND[device]
+THING 6 if head KIND[device]
+THING 7 otherwise head KIND[device]
+THING 8 controls head KIND[device]
+THING 9 hover head KIND[device]
+THING 10 context head KIND[device]
+
+START
+    START_TEXT_VALUE THING[compiler decision] classification "unclassified"
+END
+
+WHEN actor=THING[player] action=examine target=THING[kinds head] BLOCK 0
+WHEN actor=THING[player] action=examine target=THING[define head] BLOCK 1
+WHEN actor=THING[player] action=examine target=THING[start head] BLOCK 2
+WHEN actor=THING[player] action=examine target=THING[when head] BLOCK 3
+WHEN actor=THING[player] action=examine target=THING[if head] BLOCK 4
+WHEN actor=THING[player] action=examine target=THING[otherwise head] BLOCK 5
+WHEN actor=THING[player] action=examine target=THING[controls head] BLOCK 6
+WHEN actor=THING[player] action=examine target=THING[hover head] BLOCK 7
+WHEN actor=THING[player] action=examine target=THING[context head] BLOCK 8
+
+BLOCK 0
+    CHANGE_TEXT_VALUE THING[compiler decision] classification "parse-kind-section"
+END
+
+BLOCK 1
+    CHANGE_TEXT_VALUE THING[compiler decision] classification "parse-definition-section"
+END
+
+BLOCK 2
+    CHANGE_TEXT_VALUE THING[compiler decision] classification "parse-startup-section"
+END
+
+BLOCK 3
+    CHANGE_TEXT_VALUE THING[compiler decision] classification "parse-event-rule"
+END
+
+BLOCK 4
+    CHANGE_TEXT_VALUE THING[compiler decision] classification "parse-condition-rule"
+END
+
+BLOCK 5
+    CHANGE_TEXT_VALUE THING[compiler decision] classification "parse-alternate-branch"
+END
+
+BLOCK 6
+    CHANGE_TEXT_VALUE THING[compiler decision] classification "parse-controls-section"
+END
+
+BLOCK 7
+    CHANGE_TEXT_VALUE THING[compiler decision] classification "parse-hover-section"
+END
+
+BLOCK 8
+    CHANGE_TEXT_VALUE THING[compiler decision] classification "parse-context-section"
+END

@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require_relative '../compiler/ast_nodes'
+
 ROOT = File.expand_path('..', __dir__)
 CANONICAL_PATH = 'docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md'
 CANONICAL_FULL_PATH = File.join(ROOT, CANONICAL_PATH)
@@ -182,10 +184,14 @@ files = Dir.glob(File.join(ROOT, 'docs/company_bible/*'), File::FNM_DOTMATCH).re
   [File.join(ROOT, 'docs/company_bible/.'), File.join(ROOT, 'docs/company_bible/..')].include?(path)
 end
 raise "Expected one Company Bible file, found #{files.length}" unless files == [CANONICAL_FULL_PATH]
-puts 'BASIC# Company Bible Audit v0.1.79'
+puts "BASIC# Company Bible Audit v#{BasicSharp::VERSION}"
 puts 'Canonical file count: PASS'
 
 text = File.read(CANONICAL_FULL_PATH, encoding: 'UTF-8')
+header_version = text[/\*\*Version:\*\* v([^\s]+)\s*$/, 1]
+raise 'Canonical Company Bible header version is missing' unless header_version
+raise "Canonical Company Bible header version #{header_version} does not match BASIC# #{BasicSharp::VERSION}" unless header_version == BasicSharp::VERSION
+puts 'Canonical header version: PASS'
 raise 'Canonical Company Bible identity is missing' unless text.start_with?("# BASIC# Company Bible
 ")
 raise 'Canonical path declaration is missing' unless text.include?(CANONICAL_PATH)

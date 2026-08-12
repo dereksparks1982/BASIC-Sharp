@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.77  
+**Version:** v0.1.80  
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -666,3 +666,14 @@ The machine-checked contracts are `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_
 This build introduces no new creator-facing syntax. Existing BASIC# statement boundaries, the opening `(` visual guide on official action words, and written action order remain authoritative. Compiler-internal complexity must remain inside the compiler rather than forcing creators to imitate conventional programming-language syntax.
 
 This is Self-Hosting Milestone 2 Slice 6, not full self-hosting and not Ruby retirement. Profiles 1 through 7 and the existing BSBC binary layout remain unchanged. The accepted release closeout order remains full validation -> accepted snapshot -> local Git commit/tag -> GitHub push/peeled-tag verification.
+
+## v0.1.80 Self-Hosting Milestone 2 Slice 7 First BASIC#-Authored Compiler Component Rule
+
+BASIC# v0.1.80 crosses the first bounded authorship boundary: a real compiler-domain decision component is authored in BASIC# source at `compiler/native/first_bsharp_compiler_component.bsharp`, compiled through the accepted independent `SmallCompilerSubsetDriver`, persisted as BSharp Bytecode, and executed through the independent loader and BSharp VM.
+
+The component classifies the nine accepted compiler block heads `KINDS`, `DEFINE`, `START`, `WHEN`, `IF`, `OTHERWISE`, `CONTROLS`, `HOVER`, and `CONTEXT` into deterministic parser decisions. Its checked-in `.bsbc` artifact must be byte-identical to independently recompiled output and must remain executable after the source copy used for compilation is removed. Production compiler components and the Ruby Runtime remain separate referee paths only.
+
+This is the first BASIC#-authored compiler component, not full self-hosting and not Ruby retirement. Ruby remains the bootstrap compiler and referee authority. Profiles 1 through 7 and existing creator-facing syntax remain unchanged. The opening `(` on official action words remains the creator-facing visual guide, and written action order remains authoritative.
+
+The Company Bible header version is mandatory release metadata. `tools/company_bible_audit.rb` must reject any future build where the canonical header version does not exactly match `BasicSharp::VERSION`.
+

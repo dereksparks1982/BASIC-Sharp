@@ -1,7 +1,7 @@
 {
   "format": "bsharp.self_hosting.subset.json",
   "format_version": 1,
-  "target_version": "0.1.79",
+  "target_version": "0.1.80",
   "title": "Self-Hosting Foundation and Compiler Subset Contract",
   "status": "foundation_contract_only",
   "purpose": "Define the first BASIC# subset allowed for future compiler-writing work while Ruby remains the bootstrap compiler and reference authority.",
@@ -15,7 +15,7 @@
     "bsharp.meaning.v7"
   ],
   "compiler_subset_name": "BSharp Compiler Subset 0",
-  "compiler_subset_status": "self_hosting_milestone_1_under_ruby_referee",
+  "compiler_subset_status": "self_hosting_milestone_2_slice_7_first_native_component_under_ruby_referee",
   "compiler_subset_allows": [
     "file-shaped source text handled by the existing Ruby bootstrap during this build",
     "deterministic token records for future reader work",
@@ -34,7 +34,8 @@
     "independent Subset 0 BSBC byte encoding through SmallCompilerSubsetBSBCEncoder under production BytecodeEmitter referee parity",
     "independent Subset 0 BSBC validation through SmallCompilerSubsetBSBCLoader under production BytecodeLoader referee parity",
     "independent Subset 0 BSBC execution through SmallCompilerSubsetBSBCVirtualMachine under production BytecodeVirtualMachine and Ruby Runtime referee parity",
-    "integrated Subset 0 source-to-world orchestration through SmallCompilerSubsetPipeline while production compiler components and Ruby Runtime remain separate referees"
+    "integrated Subset 0 source-to-world orchestration through SmallCompilerSubsetPipeline while production compiler components and Ruby Runtime remain separate referees",
+    "first BASIC#-authored compiler-domain decision component compiled to real BSBC and executed by the independent BSharp VM under separate production and Ruby referees"
   ],
   "compiler_subset_forbids_until_later_approval": [
     "replacing the Ruby bootstrap compiler",
@@ -113,6 +114,10 @@
     {
       "version_lane": "v0.1.79",
       "goal": "Place an independent compiler driver in front of SmallCompilerSubsetPipeline, persist real BSBC artifacts, reload them through SmallCompilerSubsetBSBCLoader, and execute them through SmallCompilerSubsetBSBCVirtualMachine while production compiler components and Ruby Runtime remain separate referees."
+    },
+    {
+      "version_lane": "v0.1.80",
+      "goal": "Author the first bounded compiler-domain decision component in BASIC#, compile it through SmallCompilerSubsetDriver into real BSBC, and execute it source-free through the independent loader and BSharp VM under separate production and Ruby referee parity."
     }
   ],
   "acceptance_rules": [
@@ -147,7 +152,12 @@
     "The small compiler subset BSBC artifact round-trip tool must pass before v0.1.79 may claim persisted independent compiler-artifact progress.",
     "v0.1.79 primary bounded source-file compilation must route through SmallCompilerSubsetDriver and SmallCompilerSubsetPipeline while production compiler components remain referee-only.",
     "v0.1.79 saved BSBC artifacts must reload through SmallCompilerSubsetBSBCLoader and execute through SmallCompilerSubsetBSBCVirtualMachine with exact in-memory and referee parity.",
-    "v0.1.79 adds no new creator-facing syntax; accepted BASIC# statement boundaries, action-word visual guides, and written action order remain unchanged."
+    "v0.1.79 adds no new creator-facing syntax; accepted BASIC# statement boundaries, action-word visual guides, and written action order remain unchanged.",
+    "The first BASIC#-authored compiler component tool must pass before v0.1.80 may claim Self-Hosting Milestone 2 Slice 7 progress.",
+    "v0.1.80 compiler-domain decision rules must live in compiler/native/first_bsharp_compiler_component.bsharp and compile through SmallCompilerSubsetDriver without production compiler constructors on the primary path.",
+    "v0.1.80 checked-in first native compiler component BSBC must be byte-identical to independently recompiled output and must execute after the source copy is removed.",
+    "v0.1.80 native compiler decisions must cover the nine accepted block heads and match separate production BytecodeEmitter, BSharp VM, and Ruby Runtime referees.",
+    "v0.1.80 adds no new creator-facing syntax; Profiles 1 through 7, the opening action-word visual guide, and written action order remain unchanged."
   ],
   "documents": {
     "contract": "docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FOUNDATION_v0_1_44.md",
@@ -241,7 +251,14 @@
     "small_compiler_subset_driver_independence_test": "tests/test_small_compiler_subset_driver_independence.rb",
     "small_compiler_subset_artifact_round_trip_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_v1.json",
     "small_compiler_subset_artifact_round_trip_tool": "tools/small_compiler_subset_artifact_round_trip.rb",
-    "small_compiler_subset_artifact_round_trip_test": "tests/test_small_compiler_subset_artifact_round_trip.rb"
+    "small_compiler_subset_artifact_round_trip_test": "tests/test_small_compiler_subset_artifact_round_trip.rb",
+    "first_native_compiler_component_spec": "spec/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v1.json",
+    "first_native_compiler_component_source": "compiler/native/first_bsharp_compiler_component.bsharp",
+    "first_native_compiler_component_artifact": "compiler/native/first_bsharp_compiler_component.bsbc",
+    "first_native_compiler_component_disassembly": "compiler/native/first_bsharp_compiler_component.bsbc.txt",
+    "first_native_compiler_component_implementation": "docs/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v0_1_80.md",
+    "first_native_compiler_component_tool": "tools/first_native_compiler_component.rb",
+    "first_native_compiler_component_test": "tests/test_first_native_compiler_component.rb"
   },
   "milestones": [
     {
@@ -290,7 +307,13 @@
       "name": "Self-Hosting Milestone 2 Slice 6: Independent Compiler Driver + BSBC Artifact Round Trip",
       "status": "independent_driver_and_artifact_round_trip_under_ruby_referee",
       "contract": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json"
+    },
+    {
+      "version_lane": "v0.1.80",
+      "name": "Self-Hosting Milestone 2 Slice 7: First BASIC#-Authored Compiler Component",
+      "status": "first_bsharp_authored_compiler_component_under_ruby_referee",
+      "contract": "spec/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v1.json"
     }
   ],
-  "current_milestone_status": "self_hosting_milestone_2_slice_6_under_ruby_referee"
+  "current_milestone_status": "self_hosting_milestone_2_slice_7_first_bsharp_authored_component_under_ruby_referee"
 }

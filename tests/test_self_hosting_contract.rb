@@ -13,14 +13,14 @@ class TestSelfHostingContract < Minitest::Test
   end
 
   def test_spec_targets_the_live_basic_sharp_version
-    assert_equal '0.1.79', BasicSharp::VERSION
+    assert_equal '0.1.80', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
   end
 
   def test_contract_is_foundation_only
     assert_equal 'foundation_contract_only', spec.fetch('status')
     assert_equal 'BSharp Compiler Subset 0', spec.fetch('compiler_subset_name')
-    assert_equal 'self_hosting_milestone_1_under_ruby_referee', spec.fetch('compiler_subset_status')
+    assert_equal 'self_hosting_milestone_2_slice_7_first_native_component_under_ruby_referee', spec.fetch('compiler_subset_status')
   end
 
   def test_future_work_is_explicitly_excluded
@@ -91,6 +91,15 @@ class TestSelfHostingContract < Minitest::Test
     assert_equal 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_v1.json', documents.fetch('small_compiler_subset_artifact_round_trip_spec')
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_artifact_round_trip_tool')))
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_artifact_round_trip_test')))
+    assert_equal 'spec/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v1.json', documents.fetch('first_native_compiler_component_spec')
+    assert_equal 'compiler/native/first_bsharp_compiler_component.bsharp', documents.fetch('first_native_compiler_component_source')
+    assert_equal 'compiler/native/first_bsharp_compiler_component.bsbc', documents.fetch('first_native_compiler_component_artifact')
+    assert File.file?(File.join(ROOT, documents.fetch('first_native_compiler_component_source')))
+    assert File.file?(File.join(ROOT, documents.fetch('first_native_compiler_component_artifact')))
+    assert File.file?(File.join(ROOT, documents.fetch('first_native_compiler_component_disassembly')))
+    assert File.file?(File.join(ROOT, documents.fetch('first_native_compiler_component_implementation')))
+    assert File.file?(File.join(ROOT, documents.fetch('first_native_compiler_component_tool')))
+    assert File.file?(File.join(ROOT, documents.fetch('first_native_compiler_component_test')))
     assert_equal 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json', documents.fetch('small_compiler_subset_bsbc_parity_harness_spec')
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_parity_harness_implementation')))
     assert File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_parity_harness_tool')))
@@ -135,6 +144,7 @@ class TestSelfHostingContract < Minitest::Test
     assert_includes tools, 'tools/small_compiler_subset_pipeline_independence.rb'
     assert_includes tools, 'tools/small_compiler_subset_driver_independence.rb'
     assert_includes tools, 'tools/small_compiler_subset_artifact_round_trip.rb'
+    assert_includes tools, 'tools/first_native_compiler_component.rb'
     assert_includes tools, 'tools/small_compiler_subset_bsbc_parity_harness.rb'
     assert_includes tools, 'tools/self_hosting_fixture_corpus.rb'
     assert_includes tools, 'tools/small_compiler_subset_runtime_smoke.rb'

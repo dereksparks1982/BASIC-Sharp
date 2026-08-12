@@ -2,22 +2,22 @@
 
 ## Current state
 
-- **Accepted base:** v0.1.78 at commit `fac658396e719188b1a980d4d23e34ff81e7e86a`, tag `v0.1.78`.
-- **Candidate:** v0.1.79 Self-Hosting Milestone 2 Slice 6: Independent Compiler Driver + BSBC Artifact Round Trip.
-- **Rollback:** reset to tag `v0.1.78` and remove only v0.1.79 added paths before applying a repaired candidate.
-- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_79_SELF_HOSTING_MILESTONE_2_INDEPENDENT_COMPILER_DRIVER_AND_BSBC_ARTIFACT_ROUND_TRIP_CHANGED_FILES_ONLY.zip`.
+- **Accepted base:** v0.1.79 at commit `fdb8d17e6ea48e524cbe8713026a58902bd5da20`, tag `v0.1.79`.
+- **Candidate:** v0.1.80 Self-Hosting Milestone 2 Slice 7: First BASIC#-Authored Compiler Component.
+- **Rollback:** reset to tag `v0.1.79` and remove only v0.1.80 added paths before applying a repaired candidate.
+- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_80_SELF_HOSTING_MILESTONE_2_FIRST_BASIC_SHARP_AUTHORED_COMPILER_COMPONENT_CHANGED_FILES_ONLY.zip`.
 
-## v0.1.79 purpose
+## v0.1.80 purpose
 
-BSharp Compiler Subset 0 gains `SmallCompilerSubsetDriver` as a bounded source-file compiler boundary in front of the accepted v0.1.78 `SmallCompilerSubsetPipeline`.
+BSharp Compiler Subset 0 crosses the first bounded authorship boundary. `compiler/native/first_bsharp_compiler_component.bsharp` is real BASIC# source that owns compiler-domain decision rules for the nine accepted block heads: `KINDS`, `DEFINE`, `START`, `WHEN`, `IF`, `OTHERWISE`, `CONTROLS`, `HOVER`, and `CONTEXT`.
 
-The primary candidate path accepts BASIC# source text or a `.bsharp` file, routes compilation through the independent integrated pipeline, writes a real `.bsbc` artifact through the independent encoder atomic-write path, reloads that saved artifact through `SmallCompilerSubsetBSBCLoader`, and executes it through `SmallCompilerSubsetBSBCVirtualMachine`.
+The accepted v0.1.79 `SmallCompilerSubsetDriver` compiles that source through the independent pipeline into `compiler/native/first_bsharp_compiler_component.bsbc`. The checked-in artifact must be byte-identical to independently recompiled output, must load through `SmallCompilerSubsetBSBCLoader`, and must execute through `SmallCompilerSubsetBSBCVirtualMachine` after the source copy used for compilation is removed.
 
-The artifact round-trip proof requires the saved bytes and readable disassembly to be deterministic, requires source-free execution after a successful compile, requires failed source compilation to preserve an already accepted artifact, and requires exact in-memory/artifact/referee parity for event results, final world state, BSharp Save, and deterministic replay.
+The primary native-component gate disables production `Lexer`, `Parser`, `SemanticResolver`, `BytecodeEmitter`, `BytecodeLoader`, `BytecodeVirtualMachine`, and `Runtime` constructors while the BASIC# component is compiled and proven. Separate production BytecodeEmitter/BSharp VM and Ruby Runtime paths remain mandatory referees afterward.
 
-Production `Lexer`, `Parser`, `SemanticResolver`, `BytecodeEmitter`, `BytecodeLoader`, `BytecodeVirtualMachine`, and `Runtime` remain separate referees. The driver-independence gate disables their constructors and requires the primary compiler-driver path to continue working. Ruby remains the bootstrap compiler and referee.
+This is the first BASIC#-authored compiler component, not full self-hosting. Ruby remains the bootstrap compiler and referee authority. No new creator-facing syntax is introduced; Profiles 1 through 7, the opening `(` action-word visual guide, and written action order remain unchanged.
 
-No new creator-facing syntax is introduced. Profiles 1 through 7 and the accepted BASIC# statement boundaries, action-word visual guides, written action order, and BSBC binary layout remain unchanged.
+The Company Bible header drift reported after v0.1.79 is repaired in v0.1.80. `tools/company_bible_audit.rb` now rejects a canonical Company Bible header version that does not exactly match `BasicSharp::VERSION`.
 
 ## Self-hosting contract reference ledger
 
@@ -38,6 +38,7 @@ spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_v1.json
+spec/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_EXECUTION_CORPUS_v1.json
@@ -50,13 +51,13 @@ spec/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v1.json
 
 ## Canonical Company Bible
 
-The single canonical Company Bible remains `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md`. Current build, release, validation, rollback, approval, and no-password GitHub closeout rules must remain synchronized there.
+The single canonical Company Bible remains `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md`. Its header version must equal the active BASIC# version.
 
 ## Validation floor
 
-v0.1.79 must run the independent compiler-driver regression, BSBC artifact round-trip regression, integrated pipeline independence regression, README truth regression, VM independence regression, loader independence regression, emitter independence regression, complete normal suite, complete no-locale suite, the entire sealed tool inventory, deterministic fixture sweep, release package preflight, release forensic overlay, whole-language gauntlet contract, and full Trial by Fire.
+v0.1.80 must run the first BASIC#-authored compiler component regression, independent compiler-driver regression, BSBC artifact round-trip regression, integrated pipeline independence regression, README truth regression, Company Bible audit, VM independence regression, loader independence regression, emitter independence regression, complete normal suite, complete no-locale suite, the entire sealed tool inventory, deterministic fixture sweep, release package preflight, release forensic overlay, whole-language gauntlet contract, and full Trial by Fire.
 
-The accepted v0.1.78 floor of 633 runs / 9,786 assertions may not shrink. The new driver and artifact-round-trip tests increase the suite.
+The accepted v0.1.79 suite was 651 runs / 9,930 assertions with zero failures, errors, or skips. The v0.1.80 suite may grow but must not shrink below that accepted floor.
 
 ## Release closeout
 
@@ -64,4 +65,4 @@ After unmistakable `FINAL PASS`, create the accepted snapshot first. Then local 
 
 ## Current continuation point
 
-Apply and validate the v0.1.79 candidate. If any gate fails, preserve the failure as evidence, return to the accepted v0.1.78 rollback point, repair the same version, and rerun the complete validation lane.
+Apply and validate the v0.1.80 candidate. If any gate fails, preserve the failure as evidence, return to accepted v0.1.79 at `fdb8d17e6ea48e524cbe8713026a58902bd5da20`, repair the same version, and rerun the complete validation lane.

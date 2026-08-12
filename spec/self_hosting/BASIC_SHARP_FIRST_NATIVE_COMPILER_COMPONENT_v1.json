@@ -1,0 +1,67 @@
+{
+  "format": "bsharp.first_native_compiler_component.contract.json",
+  "format_version": 1,
+  "target_version": "0.1.80",
+  "title": "First BASIC#-Authored Compiler Component",
+  "status": "first_bsharp_authored_compiler_component_under_ruby_referee",
+  "purpose": "Prove that a bounded compiler-domain decision component can be authored in BASIC#, compiled by the accepted independent compiler driver into real BSBC, loaded without its source, and executed by the independent BSharp VM while Ruby remains bootstrap referee.",
+  "component": {
+    "source_path": "compiler/native/first_bsharp_compiler_component.bsharp",
+    "artifact_path": "compiler/native/first_bsharp_compiler_component.bsbc",
+    "disassembly_path": "compiler/native/first_bsharp_compiler_component.bsbc.txt",
+    "profile": "bsharp.bytecode.v2",
+    "decision_object": "compiler decision",
+    "decision_value": "classification",
+    "input_heads": [
+      "KINDS",
+      "DEFINE",
+      "START",
+      "WHEN",
+      "IF",
+      "OTHERWISE",
+      "CONTROLS",
+      "HOVER",
+      "CONTEXT"
+    ],
+    "expected_decisions": {
+      "kinds": "parse-kind-section",
+      "define": "parse-definition-section",
+      "start": "parse-startup-section",
+      "when": "parse-event-rule",
+      "if": "parse-condition-rule",
+      "otherwise": "parse-alternate-branch",
+      "controls": "parse-controls-section",
+      "hover": "parse-hover-section",
+      "context": "parse-context-section"
+    },
+    "expected_source_sha256": "0500fff8cb14ee41ef53d88b66b7a679bc5b04ce233e2dba99574aa05422661b",
+    "expected_bsharp_ir_sha256": "40134955415269590f67ae1dc52828e29a20d0670067b0e89604cb92224d04d6",
+    "expected_binary_bytes": 1544,
+    "expected_binary_sha256": "cbebf931b65acc7d8ff75409a08d78624bdd9589b60c9c06cbbf66270a19d297",
+    "expected_disassembly_sha256": "fbd05ee0cbe94fd4a0fa17e4b257afbd2faa6a1df4ebda0dc2fd9b431ae1c20c",
+    "expected_fingerprint": "ab8a7449156f01b1f02a7b189199d8f0fa78e418d26eb26e4ed7ac7a1637d078",
+    "expected_decisions_sha256": "dd99d3842f81084e01e7221871932b2aca6c789692a5ed440aabf2735527ab3f",
+    "expected_event_results_sha256": "f258db18fe7009196952b380caeaaa14c35f2b7b4db5da1f63f7239ca0293cc4"
+  },
+  "required_proofs": [
+    "the compiler-domain decision source is BASIC# source, not Ruby source",
+    "SmallCompilerSubsetDriver compiles the component through the independent pipeline",
+    "the checked-in BSBC artifact exactly matches independently compiled bytes",
+    "the artifact remains executable after the compiled source copy is deleted",
+    "the independent BSharp VM classifies every accepted compiler block head deterministically",
+    "repeated compilation produces byte-identical BSBC and readable disassembly",
+    "production compiler constructors are unnecessary on the primary native-component path",
+    "separate production BytecodeEmitter and BSharp VM referees match the native artifact exactly",
+    "separate Ruby Runtime referee semantics match every native decision",
+    "Profiles 1 through 7 and creator-facing syntax remain unchanged"
+  ],
+  "documents": {
+    "source": "compiler/native/first_bsharp_compiler_component.bsharp",
+    "artifact": "compiler/native/first_bsharp_compiler_component.bsbc",
+    "disassembly": "compiler/native/first_bsharp_compiler_component.bsbc.txt",
+    "implementation": "docs/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v0_1_80.md",
+    "tool": "tools/first_native_compiler_component.rb",
+    "test": "tests/test_first_native_compiler_component.rb"
+  },
+  "self_hosting_contract": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json"
+}

@@ -1,13 +1,13 @@
 {
   "format": "bsharp.readme_current_release_truth.json",
   "format_version": 1,
-  "target_version": "0.1.79",
+  "target_version": "0.1.80",
   "status": "readme_current_release_truth_gate",
   "title": "README Current Release Truth Gate",
   "current_release": {
-    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.79",
-    "build_title": "BASIC# v0.1.79 adds Self-Hosting Milestone 2 Slice 6: Independent Compiler Driver + BSBC Artifact Round Trip.",
-    "summary": "v0.1.79 places `SmallCompilerSubsetDriver` in front of the accepted `SmallCompilerSubsetPipeline`.",
+    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.80",
+    "build_title": "BASIC# v0.1.80 adds Self-Hosting Milestone 2 Slice 7: First BASIC#-Authored Compiler Component.",
+    "summary": "v0.1.80 puts the first bounded compiler-domain decision rules in BASIC# itself.",
     "must_mention": [
       "Elderedd identity migration",
       "DKLab compatibility layer",
@@ -15,22 +15,27 @@
       "Elderedd Laboratory",
       "BCS",
       "BSharp Creator Services",
-      "Self-Hosting Milestone 2 Slice 6",
-      "Independent Compiler Driver",
-      "BSBC Artifact Round Trip",
+      "Self-Hosting Milestone 2 Slice 7",
+      "First BASIC#-Authored Compiler Component",
+      "compiler/native/first_bsharp_compiler_component.bsharp",
+      "`.bsharp`",
+      "`.bsbc`",
+      "nine accepted compiler block heads",
       "SmallCompilerSubsetDriver",
       "SmallCompilerSubsetPipeline",
-      "`.bsbc`",
       "SmallCompilerSubsetBSBCLoader",
       "SmallCompilerSubsetBSBCVirtualMachine",
       "production `Lexer`",
       "production `Parser`",
+      "production `BytecodeEmitter`",
       "Ruby remains the bootstrap compiler",
       "referee authority",
       "not full self-hosting",
       "No new creator-facing syntax",
       "Profiles 1 through 7",
-      "Profile 7",
+      "Profile 2",
+      "Company Bible",
+      "header version",
       "Elderedd path direction",
       "UTF-8 source reading",
       "minimal/no-locale Ruby",
@@ -46,7 +51,7 @@
       "128,000",
       "384 generated programs",
       "3,072 mutations",
-      "v0.1.79"
+      "v0.1.80"
     ],
     "forbidden_current_section_phrases": [
       "adds the first small compiler subset IR golden parity harness",
@@ -72,11 +77,13 @@
       "Current self-hosting milestone: v0.1.77 Self-Hosting Milestone 2 Slice 4 under Ruby referee control",
       "Current build: v0.1.77 Self-Hosting Milestone 2 Slice 4 BSharp VM Execution Independence",
       "Current self-hosting milestone: v0.1.78 Self-Hosting Milestone 2 Slice 5 under Ruby referee control",
-      "Current build: v0.1.78 Self-Hosting Milestone 2 Slice 5 Integrated Independent Compiler Pipeline"
+      "Current build: v0.1.78 Self-Hosting Milestone 2 Slice 5 Integrated Independent Compiler Pipeline",
+      "Current self-hosting milestone: v0.1.79 Self-Hosting Milestone 2 Slice 6 under Ruby referee control",
+      "Current build: v0.1.79 Self-Hosting Milestone 2 Slice 6 Independent Compiler Driver + BSBC Artifact Round Trip"
     ],
     "canonical_current_lines": {
-      "self_hosting_milestone": "Current self-hosting milestone: v0.1.79 Self-Hosting Milestone 2 Slice 6 under Ruby referee control",
-      "current_build": "Current build: v0.1.79 Self-Hosting Milestone 2 Slice 6 Independent Compiler Driver + BSBC Artifact Round Trip"
+      "self_hosting_milestone": "Current self-hosting milestone: v0.1.80 Self-Hosting Milestone 2 Slice 7 under Ruby referee control",
+      "current_build": "Current build: v0.1.80 Self-Hosting Milestone 2 Slice 7 First BASIC#-Authored Compiler Component"
     }
   },
   "protected_truths": [

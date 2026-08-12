@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.ir_golden_parity.contract.json",
   "format_version": 1,
-  "target_version": "0.1.79",
+  "target_version": "0.1.80",
   "title": "BSharp IR Golden Parity Harness Under Ruby Referee",
   "status": "ir_golden_parity_under_ruby_referee",
   "purpose": "Lock golden BSharp IR parity digests for the small compiler subset so future BASIC# compiler work must match approved Ruby Parser plus SemanticResolver output before it carries more weight.",
@@ -51,7 +51,7 @@
         "diagnostics": 0,
         "meaning_profile": "bsharp.meaning.v1"
       },
-      "expected_ir_sha256": "d2152f5894ad0f10c2ac1ded5483a5564acbdf7639ff4825b9f1cf165731673d"
+      "expected_ir_sha256": "56314bc7eae9164210ecbd1bf8fb5fc67626e8c055f9db8ad19923843e9bdd30"
     },
     {
       "name": "platform_movement",
@@ -68,7 +68,7 @@
         "diagnostics": 0,
         "meaning_profile": "bsharp.meaning.v4"
       },
-      "expected_ir_sha256": "bc948d1c9ca452ccbd0afc7b7f99cc4ed32b3893373f3473183d5f4773864eed"
+      "expected_ir_sha256": "86c99d7500b4ba8ba75e01c3f0a42d2e204a2361fbbab543b539f49f35db2f60"
     },
     {
       "name": "text_values",
@@ -85,7 +85,7 @@
         "diagnostics": 0,
         "meaning_profile": "bsharp.meaning.v2"
       },
-      "expected_ir_sha256": "e8a10c3dfa79671b22a6e8905648c342313d03a8bf43c51c8183d13437642259"
+      "expected_ir_sha256": "d70edbcd324032e0d77a2cd4186f2cff5aaa61ef001fd3aedba7d926d3a5bb4b"
     }
   ],
   "acceptance_rules": [

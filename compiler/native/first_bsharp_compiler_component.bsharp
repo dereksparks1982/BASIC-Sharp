@@ -1,0 +1,66 @@
+//BASIC# v0.1.80 first BASIC#-authored compiler component./.
+//This bounded classifier turns accepted compiler-head inputs into parser decisions./.
+
+DEFINE
+[
+    @compiler decision is a #device
+    @kinds head is a #device
+    @define head is a #device
+    @start head is a #device
+    @when head is a #device
+    @if head is a #device
+    @otherwise head is a #device
+    @controls head is a #device
+    @hover head is a #device
+    @context head is a #device
+].
+
+START
+[
+    @compiler decision has "unclassified" classification
+].
+
+WHEN PLAYER examines @kinds head
+[
+    |then (change classification of @compiler decision to "parse-kind-section"
+].
+
+WHEN PLAYER examines @define head
+[
+    |then (change classification of @compiler decision to "parse-definition-section"
+].
+
+WHEN PLAYER examines @start head
+[
+    |then (change classification of @compiler decision to "parse-startup-section"
+].
+
+WHEN PLAYER examines @when head
+[
+    |then (change classification of @compiler decision to "parse-event-rule"
+].
+
+WHEN PLAYER examines @if head
+[
+    |then (change classification of @compiler decision to "parse-condition-rule"
+].
+
+WHEN PLAYER examines @otherwise head
+[
+    |then (change classification of @compiler decision to "parse-alternate-branch"
+].
+
+WHEN PLAYER examines @controls head
+[
+    |then (change classification of @compiler decision to "parse-controls-section"
+].
+
+WHEN PLAYER examines @hover head
+[
+    |then (change classification of @compiler decision to "parse-hover-section"
+].
+
+WHEN PLAYER examines @context head
+[
+    |then (change classification of @compiler decision to "parse-context-section"
+].

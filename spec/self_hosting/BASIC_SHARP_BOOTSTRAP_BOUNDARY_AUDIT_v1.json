@@ -1,11 +1,11 @@
 {
   "format": "bsharp.bootstrap_boundary_audit.json",
   "format_version": 1,
-  "target_version": "0.1.79",
+  "target_version": "0.1.80",
   "title": "BASIC# Bootstrap Boundary Audit",
   "status": "bootstrap_boundary_audit_under_ruby_referee",
-  "next_milestone": "v0.1.79 Self-Hosting Milestone 2 Slice 6: Independent Compiler Driver + BSBC Artifact Round Trip",
-  "purpose": "Audit exactly where Ruby remains bootstrap referee while Self-Hosting Milestone 2 Slice 6 places an independent compiler driver in front of the integrated Subset 0 pipeline, persists real BSBC artifacts, reloads them independently, and executes them independently.",
+  "next_milestone": "v0.1.80 Self-Hosting Milestone 2 Slice 7: First BASIC#-Authored Compiler Component",
+  "purpose": "Audit exactly where Ruby remains bootstrap referee while Self-Hosting Milestone 2 Slice 7 introduces the first bounded compiler-domain decision component authored in BASIC#, compiled to real BSBC by the independent driver, and executed source-free by the independent BSharp VM.",
   "forbidden_until_after_milestone": [
     "claiming BASIC# is self-hosted",
     "replacing the Ruby bootstrap compiler",
@@ -20,7 +20,7 @@
       "name": "ruby_bootstrap_referee",
       "owner": "Ruby bootstrap",
       "authority": "source_of_truth",
-      "boundary": "Ruby Parser, SemanticResolver, BytecodeEmitter, BytecodeLoader, Runtime, and BytecodeVirtualMachine remain production referee authority. In v0.1.79 they are forbidden from the independent driver primary path and may be invoked only on separate parity-referee paths.",
+      "boundary": "Ruby Parser, SemanticResolver, BytecodeEmitter, BytecodeLoader, Runtime, and BytecodeVirtualMachine remain production referee authority. In v0.1.80 they are forbidden from the first BASIC#-authored compiler component primary proof path and may be invoked only on separate parity-referee paths.",
       "paths": [
         "compiler/parser.rb",
         "compiler/resolver.rb",
@@ -97,6 +97,21 @@
       ]
     },
     {
+      "name": "basic_sharp_authored_compiler_component",
+      "owner": "BASIC#-authored compiler component",
+      "authority": "native_compiler_decision_evidence",
+      "boundary": "The first compiler-domain decision rules live in BASIC# source, compile through SmallCompilerSubsetDriver into checked-in BSBC, and execute source-free through SmallCompilerSubsetBSBCLoader and SmallCompilerSubsetBSBCVirtualMachine. This proves bounded BASIC# authorship inside the compiler domain without claiming full self-hosting or replacing Ruby.",
+      "paths": [
+        "compiler/native/first_bsharp_compiler_component.bsharp",
+        "compiler/native/first_bsharp_compiler_component.bsbc",
+        "compiler/native/first_bsharp_compiler_component.bsbc.txt",
+        "spec/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v1.json",
+        "docs/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v0_1_80.md",
+        "tools/first_native_compiler_component.rb",
+        "tests/test_first_native_compiler_component.rb"
+      ]
+    },
+    {
       "name": "runtime_smoke_bridge",
       "owner": "Verifying runtime smoke lane",
       "authority": "deterministic_smoke_evidence",
@@ -161,6 +176,11 @@
       "persisted_compiler_artifact_evidence"
     ],
     [
+      "basic_sharp_authored_compiler_component",
+      "BASIC#-authored compiler component",
+      "native_compiler_decision_evidence"
+    ],
+    [
       "runtime_smoke_bridge",
       "Verifying runtime smoke lane",
       "deterministic_smoke_evidence"
@@ -179,6 +199,7 @@
   "documents": {
     "self_hosting_subset_spec": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json",
     "driver_independence_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json",
-    "artifact_round_trip_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_v1.json"
+    "artifact_round_trip_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_v1.json",
+    "first_native_compiler_component_spec": "spec/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v1.json"
   }
 }

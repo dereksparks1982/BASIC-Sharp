@@ -16,7 +16,7 @@ end
 source = File.read(File.join(ROOT, 'samples/plain_english_input_mapping.bsharp'), encoding: 'UTF-8')
 parser = BasicSharp::Parser.new(source)
 document = BasicSharp::SemanticResolver.new(parser.parse, dictionary: parser.dictionary).resolve
-assert_input!(BasicSharp::VERSION == '0.1.79', 'version mismatch')
+assert_input!(BasicSharp::VERSION == '0.1.80', 'version mismatch')
 assert_input!(document.error_count.zero?, 'input mapping sample must resolve without errors')
 
 actions = document.controls.fetch(0).fetch('instructions').select { |entry| entry.fetch('type') == 'input_action' }.map { |entry| entry.fetch('action') }

@@ -37,6 +37,8 @@ SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_DOC_PATH = File.join(ROOT, 'docs/sel
 SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json')
 SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v0_1_79.md')
 SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_v1.json')
+FIRST_NATIVE_COMPILER_COMPONENT_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v1.json')
+FIRST_NATIVE_COMPILER_COMPONENT_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v0_1_80.md')
 SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json')
 SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_1_56.md')
 SELF_HOSTING_FIXTURE_CORPUS_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json')
@@ -77,6 +79,8 @@ REFERENCE_PATHS = [
   'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json',
   'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v0_1_79.md',
   'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_v1.json',
+  'spec/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v1.json',
+  'docs/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v0_1_80.md',
   'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json',
   'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_1_56.md',
   'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json',
@@ -102,7 +106,7 @@ assert_contract!(spec.fetch('format_version') == 1, 'wrong spec format version')
 assert_contract!(spec.fetch('target_version') == BasicSharp::VERSION, 'spec target does not match BasicSharp::VERSION')
 assert_contract!(spec.fetch('status') == 'foundation_contract_only', 'a carried self-hosting foundation must remain a foundation contract')
 assert_contract!(spec.fetch('compiler_subset_name') == 'BSharp Compiler Subset 0', 'subset name changed')
-assert_contract!(spec.fetch('compiler_subset_status') == 'self_hosting_milestone_1_under_ruby_referee', 'subset status changed')
+assert_contract!(spec.fetch('compiler_subset_status') == 'self_hosting_milestone_2_slice_7_first_native_component_under_ruby_referee', 'subset status changed')
 
 profiles = spec.fetch('approved_profiles_available_to_creator_programs')
 assert_contract!(profiles == (1..7).map { |n| "bsharp.meaning.v#{n}" }, 'approved profile list changed')
@@ -159,6 +163,13 @@ assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subs
 assert_contract!(File.file?(SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_SPEC_PATH), 'small compiler subset driver independence spec is missing')
 assert_contract!(File.file?(SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_DOC_PATH), 'small compiler subset driver independence document is missing')
 assert_contract!(File.file?(SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_SPEC_PATH), 'small compiler subset artifact round-trip spec is missing')
+assert_contract!(File.file?(FIRST_NATIVE_COMPILER_COMPONENT_SPEC_PATH), 'first BASIC#-authored compiler component spec is missing')
+assert_contract!(File.file?(FIRST_NATIVE_COMPILER_COMPONENT_DOC_PATH), 'first BASIC#-authored compiler component document is missing')
+assert_contract!(File.file?(File.join(ROOT, documents.fetch('first_native_compiler_component_source'))), 'first BASIC#-authored compiler component source is missing')
+assert_contract!(File.file?(File.join(ROOT, documents.fetch('first_native_compiler_component_artifact'))), 'first BASIC#-authored compiler component artifact is missing')
+assert_contract!(File.file?(File.join(ROOT, documents.fetch('first_native_compiler_component_disassembly'))), 'first BASIC#-authored compiler component disassembly is missing')
+assert_contract!(File.file?(File.join(ROOT, documents.fetch('first_native_compiler_component_tool'))), 'first BASIC#-authored compiler component tool is missing')
+assert_contract!(File.file?(File.join(ROOT, documents.fetch('first_native_compiler_component_test'))), 'first BASIC#-authored compiler component test is missing')
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_driver_file'))), 'small compiler subset driver implementation is missing')
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_driver_independence_tool'))), 'small compiler subset driver independence tool is missing')
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_driver_independence_test'))), 'small compiler subset driver independence test is missing')
@@ -204,6 +215,8 @@ assert_contract!(rules.any? { |entry| entry.include?('SmallCompilerSubsetBSBCVir
 assert_contract!(rules.any? { |entry| entry.include?('SmallCompilerSubsetPipeline') }, 'integrated subset pipeline independence rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('SmallCompilerSubsetDriver') }, 'independent subset compiler driver rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('artifact round-trip') || entry.include?('artifact round trip') || entry.include?('saved BSBC artifacts') }, 'subset artifact round-trip rule missing')
+assert_contract!(rules.any? { |entry| entry.include?('first BASIC#-authored compiler component') }, 'first BASIC#-authored compiler component rule missing')
+assert_contract!(rules.any? { |entry| entry.include?('nine accepted block heads') }, 'native compiler head-coverage rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('BSBC golden parity') }, 'subset BSBC golden parity rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('fixture corpus') }, 'self-hosting fixture corpus rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('runtime smoke') }, 'small compiler subset runtime smoke rule missing')
@@ -238,6 +251,8 @@ pipeline_independence_doc = File.read(SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENC
 driver_independence_doc = File.read(SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_DOC_PATH, encoding: 'UTF-8')
 driver_independence_spec = JSON.parse(File.read(SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_SPEC_PATH, encoding: 'UTF-8'))
 artifact_round_trip_spec = JSON.parse(File.read(SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_SPEC_PATH, encoding: 'UTF-8'))
+first_native_component_spec = JSON.parse(File.read(FIRST_NATIVE_COMPILER_COMPONENT_SPEC_PATH, encoding: 'UTF-8'))
+first_native_component_doc = File.read(FIRST_NATIVE_COMPILER_COMPONENT_DOC_PATH, encoding: 'UTF-8')
 bsbc_parity_doc = File.read(SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_DOC_PATH, encoding: 'UTF-8')
 fixture_corpus_doc = File.read(SELF_HOSTING_FIXTURE_CORPUS_DOC_PATH, encoding: 'UTF-8')
 runtime_smoke_doc = File.read(SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_DOC_PATH, encoding: 'UTF-8')
@@ -281,6 +296,10 @@ assert_contract!(driver_independence_doc.include?('not full self-hosting') || dr
 assert_contract!(driver_independence_doc.include?('no new creator-facing syntax') || driver_independence_doc.include?('No new creator-facing syntax'), 'independent compiler driver document must preserve creator syntax')
 assert_contract!(driver_independence_spec.fetch('target_version') == BasicSharp::VERSION, 'independent compiler driver spec target mismatch')
 assert_contract!(artifact_round_trip_spec.fetch('target_version') == BasicSharp::VERSION, 'artifact round-trip spec target mismatch')
+assert_contract!(first_native_component_spec.fetch('target_version') == BasicSharp::VERSION, 'first native compiler component spec target mismatch')
+assert_contract!(first_native_component_doc.include?('first bounded compiler-domain component'), 'first native compiler component document must describe compiler-domain work')
+assert_contract!(first_native_component_doc.include?('Ruby remains bootstrap compiler and referee authority'), 'first native compiler component document must preserve Ruby authority')
+assert_contract!(first_native_component_doc.include?('No new creator-facing syntax'), 'first native compiler component document must preserve creator syntax')
 assert_contract!(bsbc_parity_doc.include?('BSBC Golden Parity Harness'), 'small compiler subset BSBC parity document must name BSBC Golden Parity Harness')
 assert_contract!(bsbc_parity_doc.include?('No bytecode or BSBC rename'), 'small compiler subset BSBC parity document must preserve bytecode names')
 assert_contract!(fixture_corpus_doc.include?('Self-Hosting Fixture Corpus'), 'fixture corpus document must name Self-Hosting Fixture Corpus')
@@ -319,6 +338,7 @@ puts 'Small compiler subset BSharp VM independence linked: PASS'
 puts 'Small compiler subset integrated pipeline independence linked: PASS'
 puts 'Small compiler subset independent compiler driver linked: PASS'
 puts 'Small compiler subset BSBC artifact round trip linked: PASS'
+puts 'First BASIC#-authored compiler component linked: PASS'
 puts 'Small compiler subset BSBC golden parity harness linked: PASS'
 puts 'Self-hosting fixture corpus linked: PASS'
 puts 'Small compiler subset runtime smoke linked: PASS'

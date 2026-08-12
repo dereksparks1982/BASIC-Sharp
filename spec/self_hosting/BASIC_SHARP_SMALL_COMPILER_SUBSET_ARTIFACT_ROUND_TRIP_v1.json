@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.artifact_round_trip.contract.json",
   "format_version": 1,
-  "target_version": "0.1.79",
+  "target_version": "0.1.80",
   "title": "Small Compiler Subset BSBC Artifact Round Trip",
   "status": "independent_bsbc_artifact_round_trip_under_ruby_referee",
   "purpose": "Prove that a real BSBC artifact emitted by the independent compiler driver can be persisted, reloaded later by the independent loader, executed by the independent BSharp VM, and reproduce the exact in-memory result.",
@@ -25,7 +25,7 @@
     "disassembly_sha256": "7962729478956fec8591d9e170cbb8a6c9706c34771606a6cbeba2280097c144",
     "event_results_sha256": "21980ea9f19eb40defd1b166dddd5a1ed323e30e3fec57849a980cfe8bbb17b0",
     "final_snapshot_sha256": "13c99607b17e2587a2262eb3a66be094d71a22b4778b8ca8093f5fe9fa0dd2d1",
-    "save_document_sha256": "ed5a6bb8da2fa673e6ac6bf9346d6012df382160bed05fbcbbc48ff978258f22"
+    "save_document_sha256": "56b64fd065d2e4fe2f066708e9a3fb9c0b14777e2681b5c8bfff3217305ae4f2"
   },
   "documents": {
     "driver_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json",

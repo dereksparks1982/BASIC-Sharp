@@ -3,50 +3,47 @@
 ## Current accepted base
 
 ```text
-v0.1.78: Self-Hosting Milestone 2 Slice 5 - Integrated Independent Compiler Pipeline
-commit fac658396e719188b1a980d4d23e34ff81e7e86a
-tag v0.1.78
+v0.1.79: Self-Hosting Milestone 2 Slice 6 - Independent Compiler Driver + BSBC Artifact Round Trip
+commit fdb8d17e6ea48e524cbe8713026a58902bd5da20
+tag v0.1.79
 ```
 
-v0.1.78 is the accepted rollback point. It connected the bounded Subset 0 reader, parser, semantic resolver, BSharp IR, independent BSBC encoder, independent BSBC loader, and independent BSharp VM behind one `SmallCompilerSubsetPipeline` source-to-world path and completed native validation, snapshot, local Git closeout, and GitHub peeled-tag verification.
+v0.1.79 is the accepted rollback point. It placed `SmallCompilerSubsetDriver` in front of the integrated independent pipeline, produced real persisted `.bsbc` artifacts, reloaded them through the independent loader, executed them through the independent BSharp VM, and completed native validation, accepted snapshot, local Git closeout, and GitHub peeled-tag verification.
 
 ## Current candidate
 
 ```text
-v0.1.79: Self-Hosting Milestone 2 Slice 6 - Independent Compiler Driver + BSBC Artifact Round Trip
+v0.1.80: Self-Hosting Milestone 2 Slice 7 - First BASIC#-Authored Compiler Component
 ```
 
-v0.1.79 places `SmallCompilerSubsetDriver` in front of the accepted integrated independent pipeline. The bounded primary path accepts BASIC# source text or a `.bsharp` source file, emits a real `.bsbc` artifact through the independent encoder, reloads it through `SmallCompilerSubsetBSBCLoader`, and executes it through `SmallCompilerSubsetBSBCVirtualMachine`.
+v0.1.80 authors the first bounded compiler-domain decision component in BASIC# itself. The canonical source is `compiler/native/first_bsharp_compiler_component.bsharp`. The v0.1.79 independent driver compiles it into a real checked-in `.bsbc` artifact, and the independent loader/VM execute that artifact without requiring the source copy used to create it.
 
 The primary proof lane is:
 
 ```text
-BASIC# source file
+BASIC# compiler-component source
 -> SmallCompilerSubsetDriver
 -> SmallCompilerSubsetPipeline
--> SmallCompilerSubsetBSBCEncoder
--> real .bsbc artifact
+-> real first_bsharp_compiler_component.bsbc
+-> source copy removed
 -> SmallCompilerSubsetBSBCLoader
 -> SmallCompilerSubsetBSBCVirtualMachine
--> world/result
+-> compiler decision
 ```
 
-Acceptance requires the persisted artifact to match the independent in-memory bytes exactly, survive source removal after successful compilation, reload and execute independently, and reproduce exact event-result, final-world, BSharp Save, disassembly, and deterministic hash parity. Production `Lexer`, `Parser`, `SemanticResolver`, `BytecodeEmitter`, `BytecodeLoader`, `BytecodeVirtualMachine`, and `Runtime` remain separate referees only.
+The first native decision kernel classifies all nine accepted block heads: `KINDS`, `DEFINE`, `START`, `WHEN`, `IF`, `OTHERWISE`, `CONTROLS`, `HOVER`, and `CONTEXT`. Acceptance requires deterministic decisions, byte-identical repeated compilation, source-free artifact execution, and exact production BytecodeEmitter, production BSharp VM, and Ruby Runtime referee parity.
 
-Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json`.
-Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_v1.json`.
-Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v0_1_79.md`.
-Reference: `compiler/small_compiler_subset_driver.rb`.
+Reference: `spec/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v1.json`.
+Reference: `docs/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v0_1_80.md`.
+Reference: `compiler/native/first_bsharp_compiler_component.bsharp`.
+Reference: `compiler/native/first_bsharp_compiler_component.bsbc`.
 Reference: `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json`.
 
-Accepted prior-lane contracts remain active:
+Accepted prior-lane contracts remain active, including the independent encoder, loader, BSharp VM, integrated pipeline, compiler driver, and BSBC artifact round-trip gates.
 
-- `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json`
-- `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v1.json`
-- `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v1.json`
-- `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json`
+Ruby remains the bootstrap compiler and referee authority. v0.1.80 is not full self-hosting and does not retire Ruby. Profiles 1 through 7 and creator-facing syntax remain unchanged.
 
-Ruby remains the bootstrap compiler and referee authority. v0.1.79 is not full self-hosting, does not retire Ruby, does not add Profile 8, does not add creator-facing syntax, and does not change the accepted BASIC# statement/action ordering rules or BSBC binary layout.
+The Company Bible header drift found after v0.1.79 is repaired in this build, and the canonical header version is now machine-checked against `BasicSharp::VERSION`.
 
 ## Canonical Company Bible
 
@@ -54,7 +51,7 @@ Ruby remains the bootstrap compiler and referee authority. v0.1.79 is not full s
 docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
 ```
 
-This is the single canonical Company Bible reference for current BASIC# conduct, release, validation, rollback, packaging, GitHub closeout, and Elderedd migration rules.
+This is the single canonical Company Bible reference for current BASIC# conduct, release, validation, rollback, packaging, GitHub closeout, and Elderedd migration rules. Its header version must match the active BASIC# version.
 
 ## Release closeout order
 
@@ -70,7 +67,7 @@ Every BASIC# build must follow the proven release path:
 
 ## Emergency DKLab Retirement and Elderedd Migration
 
-Priority: active. Status: continuing through v0.1.79.
+Priority: active. Status: continuing through v0.1.80.
 
 - Elderedd Softworks LLC is the parent company identity.
 - Elderedd Laboratory is the active lab identity.
@@ -87,23 +84,24 @@ Priority: active. Status: continuing through v0.1.79.
 Current truthful claim:
 
 ```text
-BSharp Compiler Subset 0 has an accepted Self-Hosting Milestone 2 Slice 5 integrated independent pipeline under Ruby referee control, with Slice 6 independent compiler-driver and BSBC artifact-round-trip work as the current v0.1.79 candidate.
-The bounded subset path owns reader, parser, semantic resolver, BSBC encoding, BSBC loading, BSharp VM execution, and integrated source-to-world orchestration.
+BSharp Compiler Subset 0 has an accepted independent compiler driver and real BSBC artifact round trip from v0.1.79.
+v0.1.80 adds the first bounded compiler-domain component authored in BASIC# and executed from BASIC# bytecode under Ruby referee control.
 Ruby remains the bootstrap compiler and production referee.
 BASIC# is not fully self-hosted.
 ```
 
-The v0.1.72 proposal is now further implemented by v0.1.74 semantic resolver independence, v0.1.75 BSBC emitter independence, v0.1.76 BSBC loader independence, v0.1.77 BSharp VM execution independence, and accepted v0.1.78 integrated pipeline independence. v0.1.79 advances the next bounded step by proving a real persisted compiler artifact can be created, reloaded, and executed independently while exact parity remains mandatory.
+The v0.1.72 proposal is now implemented through semantic resolver independence, independent BSBC encoding, independent loading, independent BSharp VM execution, integrated pipeline independence, real artifact round trip, and the first BASIC#-authored compiler decision kernel.
 
 ## Game-making runway
 
-v0.1.73 established four direct creator actions: open, close, lock, and take. v0.1.79 carries them with text, numeric, inheritance, IF/OTHERWISE, multiple-selection, and follow-up-event meaning through the independent pipeline and persisted BSBC artifact round-trip proof so game-making meaning remains connected to compiler-independence progress.
+v0.1.73 established four direct creator actions: open, close, lock, and take. v0.1.80 preserves those game-making semantics unchanged while the compiler implementation underneath them becomes more independent.
 
-## Next direction after v0.1.79
+## Next direction after v0.1.80
 
-1. Continue Self-Hosting Milestone 2 with the next bounded production-compiler dependency removal under Ruby referee parity.
-2. A meaningful creator/game-making capability expansion if Derek chooses that lane.
-3. Repair any proven validation/release defect before new functionality if one is found.
+1. Expand BASIC#-authored compiler logic only where the current language can express real compiler work without inventing programmer-facing syntax.
+2. Keep Ruby as referee until BASIC#-authored components reproduce locked outputs strongly enough to earn further replacement.
+3. A meaningful creator/game-making capability expansion if Derek chooses that lane.
+4. Repair any proven validation/release defect before new functionality if one is found.
 
 No new governance/audit system is planned unless a demonstrated failure requires it.
 
@@ -160,6 +158,13 @@ spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_v1.json
+spec/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json
 spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json

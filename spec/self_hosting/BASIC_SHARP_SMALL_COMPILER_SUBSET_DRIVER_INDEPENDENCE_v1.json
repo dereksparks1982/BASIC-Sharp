@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.driver_independence.contract.json",
   "format_version": 1,
-  "target_version": "0.1.79",
+  "target_version": "0.1.80",
   "title": "Small Compiler Subset Independent Compiler Driver",
   "status": "independent_driver_and_artifact_round_trip_under_ruby_referee",
   "purpose": "Put a bounded compiler-driver boundary in front of the accepted v0.1.78 integrated independent pipeline so BASIC# source files can produce real BSBC artifacts without routing the primary path through production compiler components.",
@@ -37,13 +37,13 @@
     "expected_profile": "bsharp.bytecode.v7",
     "expected_binary_bytes": 1468,
     "expected_source_sha256": "278b1e8bc2ecd4528d1bab8392888c6bc53402954599eafe0783f7eeeb163b09",
-    "expected_bsharp_ir_sha256": "aa9b8f828a20dc7def6b8e751a745808f79dfa314be5f78d2e019606490ddc60",
+    "expected_bsharp_ir_sha256": "bb5179947caeae7c8c87c4142911df86f6118d10d1dd165c0a70dceff2281be9",
     "expected_binary_sha256": "1c937efc077b9fc993dc7fdae9cb94b967f26ae77b8b5db90d8233dc7da298fa",
     "expected_disassembly_sha256": "7962729478956fec8591d9e170cbb8a6c9706c34771606a6cbeba2280097c144",
     "expected_fingerprint": "dad018742b5c6ca5420bdba03af2efedbcd337590a361a0595bf5c0ffc663f2b",
     "expected_event_results_sha256": "21980ea9f19eb40defd1b166dddd5a1ed323e30e3fec57849a980cfe8bbb17b0",
     "expected_final_snapshot_sha256": "13c99607b17e2587a2262eb3a66be094d71a22b4778b8ca8093f5fe9fa0dd2d1",
-    "expected_save_document_sha256": "ed5a6bb8da2fa673e6ac6bf9346d6012df382160bed05fbcbbc48ff978258f22"
+    "expected_save_document_sha256": "56b64fd065d2e4fe2f066708e9a3fb9c0b14777e2681b5c8bfff3217305ae4f2"
   },
   "acceptance_rules": [
     "SmallCompilerSubsetDriver must instantiate SmallCompilerSubsetPipeline on its primary path.",
