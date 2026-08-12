@@ -1,13 +1,13 @@
 {
   "format": "bsharp.readme_current_release_truth.json",
   "format_version": 1,
-  "target_version": "0.1.78",
+  "target_version": "0.1.79",
   "status": "readme_current_release_truth_gate",
   "title": "README Current Release Truth Gate",
   "current_release": {
-    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.78",
-    "build_title": "BASIC# v0.1.78 adds Self-Hosting Milestone 2 Slice 5: Integrated Independent Compiler Pipeline.",
-    "summary": "v0.1.78 connects the bounded Subset 0 reader, parser, semantic resolver, BSharp IR emitter, independent BSBC encoder, independent BSBC loader, and independent BSharp VM behind one `SmallCompilerSubsetPipeline` source-to-world path.",
+    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.79",
+    "build_title": "BASIC# v0.1.79 adds Self-Hosting Milestone 2 Slice 6: Independent Compiler Driver + BSBC Artifact Round Trip.",
+    "summary": "v0.1.79 places `SmallCompilerSubsetDriver` in front of the accepted `SmallCompilerSubsetPipeline`.",
     "must_mention": [
       "Elderedd identity migration",
       "DKLab compatibility layer",
@@ -15,11 +15,16 @@
       "Elderedd Laboratory",
       "BCS",
       "BSharp Creator Services",
-      "Self-Hosting Milestone 2 Slice 5",
-      "Integrated Independent Compiler Pipeline",
+      "Self-Hosting Milestone 2 Slice 6",
+      "Independent Compiler Driver",
+      "BSBC Artifact Round Trip",
+      "SmallCompilerSubsetDriver",
       "SmallCompilerSubsetPipeline",
-      "TokenizerReader",
+      "`.bsbc`",
+      "SmallCompilerSubsetBSBCLoader",
+      "SmallCompilerSubsetBSBCVirtualMachine",
       "production `Lexer`",
+      "production `Parser`",
       "Ruby remains the bootstrap compiler",
       "referee authority",
       "not full self-hosting",
@@ -41,7 +46,7 @@
       "128,000",
       "384 generated programs",
       "3,072 mutations",
-      "v0.1.78"
+      "v0.1.79"
     ],
     "forbidden_current_section_phrases": [
       "adds the first small compiler subset IR golden parity harness",
@@ -65,11 +70,13 @@
       "v0.1.77 gives BSharp Compiler Subset 0 its own `SmallCompilerSubsetBSBCLoader` trust boundary while the production Ruby `BytecodeLoader` remains a separate referee.",
       "BASIC# v0.1.77 adds Self-Hosting Milestone 2 Slice 4: BSharp VM Execution Independence.",
       "Current self-hosting milestone: v0.1.77 Self-Hosting Milestone 2 Slice 4 under Ruby referee control",
-      "Current build: v0.1.77 Self-Hosting Milestone 2 Slice 4 BSharp VM Execution Independence"
+      "Current build: v0.1.77 Self-Hosting Milestone 2 Slice 4 BSharp VM Execution Independence",
+      "Current self-hosting milestone: v0.1.78 Self-Hosting Milestone 2 Slice 5 under Ruby referee control",
+      "Current build: v0.1.78 Self-Hosting Milestone 2 Slice 5 Integrated Independent Compiler Pipeline"
     ],
     "canonical_current_lines": {
-      "self_hosting_milestone": "Current self-hosting milestone: v0.1.78 Self-Hosting Milestone 2 Slice 5 under Ruby referee control",
-      "current_build": "Current build: v0.1.78 Self-Hosting Milestone 2 Slice 5 Integrated Independent Compiler Pipeline"
+      "self_hosting_milestone": "Current self-hosting milestone: v0.1.79 Self-Hosting Milestone 2 Slice 6 under Ruby referee control",
+      "current_build": "Current build: v0.1.79 Self-Hosting Milestone 2 Slice 6 Independent Compiler Driver + BSBC Artifact Round Trip"
     }
   },
   "protected_truths": [

@@ -654,3 +654,15 @@ This build introduces no new creator-facing syntax. Existing BASIC# statement bo
 
 This is Self-Hosting Milestone 2 Slice 5, not full self-hosting and not Ruby retirement. Normal production BASIC# compilation and runtime routing remain unchanged. The accepted release closeout order remains full validation -> accepted snapshot -> local Git commit/tag -> GitHub push/peeled-tag verification.
 
+
+## v0.1.79 Self-Hosting Milestone 2 Slice 6 Independent Compiler Driver + BSBC Artifact Round Trip Rule
+
+BASIC# v0.1.79 advances BSharp Compiler Subset 0 by placing `SmallCompilerSubsetDriver` in front of the accepted v0.1.78 `SmallCompilerSubsetPipeline`. The bounded primary source-file path must route through the independent pipeline and must not hand compilation back to production `Lexer`, `Parser`, `SemanticResolver`, `BytecodeEmitter`, `BytecodeLoader`, `BytecodeVirtualMachine`, or `Runtime` components. Those production Ruby components remain separate referees only.
+
+The driver must produce a real `.bsbc` artifact through the independent encoder's atomic-write path. The saved artifact must reload through `SmallCompilerSubsetBSBCLoader` and execute through `SmallCompilerSubsetBSBCVirtualMachine`. Acceptance requires deterministic BSBC bytes and readable disassembly, exact in-memory and persisted-artifact execution parity, exact production-VM and Ruby-runtime referee parity, source-free execution after successful artifact creation, and preservation of an existing accepted artifact when source compilation fails.
+
+The machine-checked contracts are `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json` and `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_v1.json`. The implementation record is `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v0_1_79.md`. The governing self-hosting boundary remains `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json`.
+
+This build introduces no new creator-facing syntax. Existing BASIC# statement boundaries, the opening `(` visual guide on official action words, and written action order remain authoritative. Compiler-internal complexity must remain inside the compiler rather than forcing creators to imitate conventional programming-language syntax.
+
+This is Self-Hosting Milestone 2 Slice 6, not full self-hosting and not Ruby retirement. Profiles 1 through 7 and the existing BSBC binary layout remain unchanged. The accepted release closeout order remains full validation -> accepted snapshot -> local Git commit/tag -> GitHub push/peeled-tag verification.

@@ -1,0 +1,61 @@
+KINDS
+[
+    #sentinel is a #guard
+].
+
+DEFINE
+[
+    @mara is a #sentinel
+    @henry is a #sentinel
+    @north gate is a #door
+    @iron key is a #key
+    @brass bell is a #device
+].
+
+START
+[
+    PLAYER has 20 health
+    PLAYER has 0 score
+    PLAYER has 0 turns
+    PLAYER has "Ready" motto
+    @mara is calm
+    @henry is calm
+    @north gate is closed
+].
+
+WHEN PLAYER examines a #door
+[
+    |then (open it
+    |then (take @iron key
+    |then (increase turns of PLAYER by 1
+    |then (cause PLAYER attacks @mara
+].
+
+WHEN PLAYER attacks a #guard
+[
+    |then (damage it by 1
+    |then (change it to angry
+    |then (cause it attacks PLAYER
+].
+
+WHEN a #guard attacks PLAYER
+[
+    |then (decrease health of PLAYER by 1
+    |then (increase score of PLAYER by 1
+].
+
+WHEN PLAYER sounds @brass bell
+[
+    |then (damage every #guard by 1
+    |then (increase turns of PLAYER by 1
+].
+
+IF PLAYER has at least 1 score and @north gate is open
+[
+    |then (close @north gate
+    |then (change motto of PLAYER to "Gate settled"
+].
+OTHERWISE
+[
+    |then (lock @north gate
+].

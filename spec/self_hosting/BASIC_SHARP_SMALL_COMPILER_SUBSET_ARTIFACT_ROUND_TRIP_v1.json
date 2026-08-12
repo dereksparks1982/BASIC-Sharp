@@ -1,0 +1,39 @@
+{
+  "format": "bsharp.small_compiler_subset.artifact_round_trip.contract.json",
+  "format_version": 1,
+  "target_version": "0.1.79",
+  "title": "Small Compiler Subset BSBC Artifact Round Trip",
+  "status": "independent_bsbc_artifact_round_trip_under_ruby_referee",
+  "purpose": "Prove that a real BSBC artifact emitted by the independent compiler driver can be persisted, reloaded later by the independent loader, executed by the independent BSharp VM, and reproduce the exact in-memory result.",
+  "fixture_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json",
+  "deterministic_compile_repetitions": 32,
+  "required_proofs": [
+    "saved artifact bytes equal independent in-memory bytes",
+    "repeated artifact compilation is byte-for-byte deterministic",
+    "saved readable disassembly is deterministic",
+    "saved artifact reloads through SmallCompilerSubsetBSBCLoader",
+    "saved artifact executes through SmallCompilerSubsetBSBCVirtualMachine",
+    "artifact execution equals fresh in-memory independent execution",
+    "artifact execution equals production BSharp VM referee execution",
+    "artifact execution equals Ruby Runtime referee semantics",
+    "source file is not required after successful artifact creation",
+    "failed source compilation cannot overwrite an existing accepted artifact",
+    "Profiles 1 through 7 remain unchanged"
+  ],
+  "expected": {
+    "binary_sha256": "1c937efc077b9fc993dc7fdae9cb94b967f26ae77b8b5db90d8233dc7da298fa",
+    "disassembly_sha256": "7962729478956fec8591d9e170cbb8a6c9706c34771606a6cbeba2280097c144",
+    "event_results_sha256": "21980ea9f19eb40defd1b166dddd5a1ed323e30e3fec57849a980cfe8bbb17b0",
+    "final_snapshot_sha256": "13c99607b17e2587a2262eb3a66be094d71a22b4778b8ca8093f5fe9fa0dd2d1",
+    "save_document_sha256": "ed5a6bb8da2fa673e6ac6bf9346d6012df382160bed05fbcbbc48ff978258f22"
+  },
+  "documents": {
+    "driver_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json",
+    "driver": "compiler/small_compiler_subset_driver.rb",
+    "loader": "compiler/small_compiler_subset_bsbc_loader.rb",
+    "virtual_machine": "compiler/small_compiler_subset_bsbc_virtual_machine.rb",
+    "tool": "tools/small_compiler_subset_artifact_round_trip.rb",
+    "test": "tests/test_small_compiler_subset_artifact_round_trip.rb"
+  },
+  "self_hosting_contract": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json"
+}

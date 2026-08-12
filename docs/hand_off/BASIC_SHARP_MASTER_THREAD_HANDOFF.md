@@ -2,18 +2,22 @@
 
 ## Current state
 
-- **Accepted base:** v0.1.77 at commit `5e7d15512322d7aef4237e4cd5d9d605b6966f3d`, tag `v0.1.77`.
-- **Candidate:** v0.1.78 Self-Hosting Milestone 2 Slice 5: Integrated Independent Compiler Pipeline.
-- **Rollback:** reset to tag `v0.1.77` and remove only v0.1.78 added paths before applying a repaired candidate.
-- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_78_SELF_HOSTING_MILESTONE_2_INTEGRATED_INDEPENDENT_COMPILER_PIPELINE_CHANGED_FILES_ONLY.zip`.
+- **Accepted base:** v0.1.78 at commit `fac658396e719188b1a980d4d23e34ff81e7e86a`, tag `v0.1.78`.
+- **Candidate:** v0.1.79 Self-Hosting Milestone 2 Slice 6: Independent Compiler Driver + BSBC Artifact Round Trip.
+- **Rollback:** reset to tag `v0.1.78` and remove only v0.1.79 added paths before applying a repaired candidate.
+- **Package:** `BASIC_Sharp_Ruby_Bootstrap_Compiler_v0_1_79_SELF_HOSTING_MILESTONE_2_INDEPENDENT_COMPILER_DRIVER_AND_BSBC_ARTIFACT_ROUND_TRIP_CHANGED_FILES_ONLY.zip`.
 
-## v0.1.78 purpose
+## v0.1.79 purpose
 
-BSharp Compiler Subset 0 gains `SmallCompilerSubsetPipeline` as one bounded source-to-world orchestration path. It connects `TokenizerReader`, `SmallCompilerSubsetParser`, `SmallCompilerSubsetSemanticResolver`, BSharp IR, `SmallCompilerSubsetBSBCEncoder`, `SmallCompilerSubsetBSBCLoader`, and `SmallCompilerSubsetBSBCVirtualMachine` without using production compiler constructors on the primary path.
+BSharp Compiler Subset 0 gains `SmallCompilerSubsetDriver` as a bounded source-file compiler boundary in front of the accepted v0.1.78 `SmallCompilerSubsetPipeline`.
 
-`TokenizerReader` now owns its primary line/comment record generation. The production `Lexer` remains available only as a separate exact-parity referee. Production `Parser`, `SemanticResolver`, `BytecodeEmitter`, `BytecodeLoader`, `BytecodeVirtualMachine`, and `Runtime` likewise remain separate referees.
+The primary candidate path accepts BASIC# source text or a `.bsharp` file, routes compilation through the independent integrated pipeline, writes a real `.bsbc` artifact through the independent encoder atomic-write path, reloads that saved artifact through `SmallCompilerSubsetBSBCLoader`, and executes it through `SmallCompilerSubsetBSBCVirtualMachine`.
 
-The dedicated Profile 7 pipeline fixture exercises Kind inheritance, creator text, whole-number values, `(open`, `(close`, `(lock`, `(take`, IF/OTHERWISE, multiple selection, exact/Kind selectors, and follow-up events. No new creator-facing syntax is introduced.
+The artifact round-trip proof requires the saved bytes and readable disassembly to be deterministic, requires source-free execution after a successful compile, requires failed source compilation to preserve an already accepted artifact, and requires exact in-memory/artifact/referee parity for event results, final world state, BSharp Save, and deterministic replay.
+
+Production `Lexer`, `Parser`, `SemanticResolver`, `BytecodeEmitter`, `BytecodeLoader`, `BytecodeVirtualMachine`, and `Runtime` remain separate referees. The driver-independence gate disables their constructors and requires the primary compiler-driver path to continue working. Ruby remains the bootstrap compiler and referee.
+
+No new creator-facing syntax is introduced. Profiles 1 through 7 and the accepted BASIC# statement boundaries, action-word visual guides, written action order, and BSBC binary layout remain unchanged.
 
 ## Self-hosting contract reference ledger
 
@@ -32,6 +36,8 @@ spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json
+spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json
 spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_EXECUTION_CORPUS_v1.json
@@ -48,9 +54,9 @@ The single canonical Company Bible remains `docs/company_bible/BASIC_SHARP_COMPA
 
 ## Validation floor
 
-v0.1.78 must run the integrated pipeline independence regression, tokenizer/reader regression, README truth regression, VM independence regression, loader independence regression, emitter independence regression, complete normal suite, complete no-locale suite, the entire sealed tool inventory, deterministic fixture sweep, release package preflight, release forensic overlay, whole-language gauntlet contract, and full Trial by Fire.
+v0.1.79 must run the independent compiler-driver regression, BSBC artifact round-trip regression, integrated pipeline independence regression, README truth regression, VM independence regression, loader independence regression, emitter independence regression, complete normal suite, complete no-locale suite, the entire sealed tool inventory, deterministic fixture sweep, release package preflight, release forensic overlay, whole-language gauntlet contract, and full Trial by Fire.
 
-The accepted v0.1.77 floor of 622 runs / 9,717 assertions may not shrink. The new pipeline-independence tests increase the suite.
+The accepted v0.1.78 floor of 633 runs / 9,786 assertions may not shrink. The new driver and artifact-round-trip tests increase the suite.
 
 ## Release closeout
 
@@ -58,4 +64,4 @@ After unmistakable `FINAL PASS`, create the accepted snapshot first. Then local 
 
 ## Current continuation point
 
-Apply and validate the v0.1.78 candidate. If any gate fails, preserve the failure as evidence, return to the accepted v0.1.77 rollback point, repair the same version, and rerun the complete validation lane.
+Apply and validate the v0.1.79 candidate. If any gate fails, preserve the failure as evidence, return to the accepted v0.1.78 rollback point, repair the same version, and rerun the complete validation lane.

@@ -1,11 +1,11 @@
 {
   "format": "bsharp.bootstrap_boundary_audit.json",
   "format_version": 1,
-  "target_version": "0.1.78",
+  "target_version": "0.1.79",
   "title": "BASIC# Bootstrap Boundary Audit",
   "status": "bootstrap_boundary_audit_under_ruby_referee",
-  "next_milestone": "v0.1.78 Self-Hosting Milestone 2 Slice 5: Integrated Independent Compiler Pipeline",
-  "purpose": "Audit exactly where Ruby remains bootstrap referee while Self-Hosting Milestone 2 Slice 5 connects the bounded Subset 0 reader, parser, semantic resolver, BSharp IR, BSBC encoder, BSBC loader, and BSharp VM into one integrated primary source-to-world pipeline.",
+  "next_milestone": "v0.1.79 Self-Hosting Milestone 2 Slice 6: Independent Compiler Driver + BSBC Artifact Round Trip",
+  "purpose": "Audit exactly where Ruby remains bootstrap referee while Self-Hosting Milestone 2 Slice 6 places an independent compiler driver in front of the integrated Subset 0 pipeline, persists real BSBC artifacts, reloads them independently, and executes them independently.",
   "forbidden_until_after_milestone": [
     "claiming BASIC# is self-hosted",
     "replacing the Ruby bootstrap compiler",
@@ -20,7 +20,7 @@
       "name": "ruby_bootstrap_referee",
       "owner": "Ruby bootstrap",
       "authority": "source_of_truth",
-      "boundary": "Ruby Parser, SemanticResolver, BytecodeEmitter, BytecodeLoader, Runtime, and BytecodeVirtualMachine remain production referee authority. In v0.1.78 they are forbidden from the integrated subset primary path and may be invoked only on separate parity-referee paths.",
+      "boundary": "Ruby Parser, SemanticResolver, BytecodeEmitter, BytecodeLoader, Runtime, and BytecodeVirtualMachine remain production referee authority. In v0.1.79 they are forbidden from the independent driver primary path and may be invoked only on separate parity-referee paths.",
       "paths": [
         "compiler/parser.rb",
         "compiler/resolver.rb",
@@ -58,7 +58,7 @@
       "name": "basic_sharp_subset_outputs",
       "owner": "BSharp Compiler Subset 0",
       "authority": "golden_parity_outputs",
-      "boundary": "Subset semantic resolution and output artifacts produce BSharp IR, independently encoded BSBC, independently validated BSBC models, independently executed BSharp VM results, and one integrated source-to-world pipeline while exact parity keeps production Ruby stages as separate referees.",
+      "boundary": "Subset semantic resolution and output artifacts produce BSharp IR, independently encoded BSBC, independently validated BSBC models, independently executed BSharp VM results, and the accepted integrated source-to-world pipeline while exact parity keeps production Ruby stages as separate referees.",
       "paths": [
         "tools/small_compiler_subset_semantic_resolver.rb",
         "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v1.json",
@@ -79,6 +79,21 @@
         "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json",
         "compiler/small_compiler_subset_pipeline.rb",
         "tools/small_compiler_subset_pipeline_independence.rb"
+      ]
+    },
+    {
+      "name": "basic_sharp_subset_driver_artifact",
+      "owner": "BSharp Compiler Subset 0",
+      "authority": "persisted_compiler_artifact_evidence",
+      "boundary": "SmallCompilerSubsetDriver accepts BASIC# source files, invokes SmallCompilerSubsetPipeline, persists real BSBC through the independent encoder, reloads through SmallCompilerSubsetBSBCLoader, and executes through SmallCompilerSubsetBSBCVirtualMachine. Production compiler and runtime components remain separate referees only.",
+      "paths": [
+        "compiler/small_compiler_subset_driver.rb",
+        "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json",
+        "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_v1.json",
+        "tools/small_compiler_subset_driver_independence.rb",
+        "tools/small_compiler_subset_artifact_round_trip.rb",
+        "tests/test_small_compiler_subset_driver_independence.rb",
+        "tests/test_small_compiler_subset_artifact_round_trip.rb"
       ]
     },
     {
@@ -141,6 +156,11 @@
       "golden_parity_outputs"
     ],
     [
+      "basic_sharp_subset_driver_artifact",
+      "BSharp Compiler Subset 0",
+      "persisted_compiler_artifact_evidence"
+    ],
+    [
       "runtime_smoke_bridge",
       "Verifying runtime smoke lane",
       "deterministic_smoke_evidence"
@@ -157,6 +177,8 @@
     ]
   ],
   "documents": {
-    "self_hosting_subset_spec": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json"
+    "self_hosting_subset_spec": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json",
+    "driver_independence_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json",
+    "artifact_round_trip_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_v1.json"
   }
 }

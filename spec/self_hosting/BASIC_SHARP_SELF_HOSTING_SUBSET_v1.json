@@ -1,7 +1,7 @@
 {
   "format": "bsharp.self_hosting.subset.json",
   "format_version": 1,
-  "target_version": "0.1.78",
+  "target_version": "0.1.79",
   "title": "Self-Hosting Foundation and Compiler Subset Contract",
   "status": "foundation_contract_only",
   "purpose": "Define the first BASIC# subset allowed for future compiler-writing work while Ruby remains the bootstrap compiler and reference authority.",
@@ -109,6 +109,10 @@
     {
       "version_lane": "v0.1.78",
       "goal": "Connect the bounded reader, parser, semantic resolver, BSharp IR, independent BSBC encoder, independent BSBC loader, and independent BSharp VM into one integrated source-to-world compiler pipeline under separate Ruby referee parity."
+    },
+    {
+      "version_lane": "v0.1.79",
+      "goal": "Place an independent compiler driver in front of SmallCompilerSubsetPipeline, persist real BSBC artifacts, reload them through SmallCompilerSubsetBSBCLoader, and execute them through SmallCompilerSubsetBSBCVirtualMachine while production compiler components and Ruby Runtime remain separate referees."
     }
   ],
   "acceptance_rules": [
@@ -138,7 +142,12 @@
     "v0.1.77 bounded subset execution must come from SmallCompilerSubsetBSBCVirtualMachine while production BytecodeVirtualMachine and Ruby Runtime remain referee-only.",
     "The small compiler subset integrated pipeline independence tool must pass before v0.1.78 may claim Self-Hosting Milestone 2 Slice 5 progress.",
     "v0.1.78 primary bounded source-to-world execution must route through SmallCompilerSubsetPipeline and its independent stages while production compiler components and Ruby Runtime remain referee-only.",
-    "v0.1.78 adds no new creator-facing syntax; accepted BASIC# statement and action ordering rules remain unchanged."
+    "v0.1.78 adds no new creator-facing syntax; accepted BASIC# statement and action ordering rules remain unchanged.",
+    "The small compiler subset independent compiler driver tool must pass before v0.1.79 may claim Self-Hosting Milestone 2 Slice 6 progress.",
+    "The small compiler subset BSBC artifact round-trip tool must pass before v0.1.79 may claim persisted independent compiler-artifact progress.",
+    "v0.1.79 primary bounded source-file compilation must route through SmallCompilerSubsetDriver and SmallCompilerSubsetPipeline while production compiler components remain referee-only.",
+    "v0.1.79 saved BSBC artifacts must reload through SmallCompilerSubsetBSBCLoader and execute through SmallCompilerSubsetBSBCVirtualMachine with exact in-memory and referee parity.",
+    "v0.1.79 adds no new creator-facing syntax; accepted BASIC# statement boundaries, action-word visual guides, and written action order remain unchanged."
   ],
   "documents": {
     "contract": "docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FOUNDATION_v0_1_44.md",
@@ -224,7 +233,15 @@
     "small_compiler_subset_pipeline_independence_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v0_1_78.md",
     "small_compiler_subset_pipeline_file": "compiler/small_compiler_subset_pipeline.rb",
     "small_compiler_subset_pipeline_independence_tool": "tools/small_compiler_subset_pipeline_independence.rb",
-    "small_compiler_subset_pipeline_independence_test": "tests/test_small_compiler_subset_pipeline_independence.rb"
+    "small_compiler_subset_pipeline_independence_test": "tests/test_small_compiler_subset_pipeline_independence.rb",
+    "small_compiler_subset_driver_independence_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json",
+    "small_compiler_subset_driver_independence_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v0_1_79.md",
+    "small_compiler_subset_driver_file": "compiler/small_compiler_subset_driver.rb",
+    "small_compiler_subset_driver_independence_tool": "tools/small_compiler_subset_driver_independence.rb",
+    "small_compiler_subset_driver_independence_test": "tests/test_small_compiler_subset_driver_independence.rb",
+    "small_compiler_subset_artifact_round_trip_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_v1.json",
+    "small_compiler_subset_artifact_round_trip_tool": "tools/small_compiler_subset_artifact_round_trip.rb",
+    "small_compiler_subset_artifact_round_trip_test": "tests/test_small_compiler_subset_artifact_round_trip.rb"
   },
   "milestones": [
     {
@@ -261,7 +278,19 @@
       "name": "Self-Hosting Milestone 2 Slice 4: BSharp VM Execution Independence",
       "status": "bsbc_vm_execution_independent_under_ruby_referee",
       "contract": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v1.json"
+    },
+    {
+      "version_lane": "v0.1.78",
+      "name": "Self-Hosting Milestone 2 Slice 5: Integrated Independent Compiler Pipeline",
+      "status": "integrated_independent_pipeline_under_ruby_referee",
+      "contract": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json"
+    },
+    {
+      "version_lane": "v0.1.79",
+      "name": "Self-Hosting Milestone 2 Slice 6: Independent Compiler Driver + BSBC Artifact Round Trip",
+      "status": "independent_driver_and_artifact_round_trip_under_ruby_referee",
+      "contract": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json"
     }
   ],
-  "current_milestone_status": "self_hosting_milestone_2_slice_4_under_ruby_referee"
+  "current_milestone_status": "self_hosting_milestone_2_slice_6_under_ruby_referee"
 }

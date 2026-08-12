@@ -34,6 +34,9 @@ SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_SPEC_PATH = File.join(ROOT, 'spec/sel
 SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v0_1_77.md')
 SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json')
 SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v0_1_78.md')
+SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json')
+SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v0_1_79.md')
+SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_v1.json')
 SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json')
 SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_1_56.md')
 SELF_HOSTING_FIXTURE_CORPUS_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json')
@@ -71,6 +74,9 @@ REFERENCE_PATHS = [
   'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v0_1_77.md',
   'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json',
   'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v0_1_78.md',
+  'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json',
+  'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v0_1_79.md',
+  'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_v1.json',
   'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json',
   'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_1_56.md',
   'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json',
@@ -150,6 +156,14 @@ assert_contract!(File.file?(SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_DOC_PATH
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_pipeline_file'))), 'small compiler subset pipeline implementation is missing')
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_pipeline_independence_tool'))), 'small compiler subset pipeline independence tool is missing')
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_pipeline_independence_test'))), 'small compiler subset pipeline independence test is missing')
+assert_contract!(File.file?(SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_SPEC_PATH), 'small compiler subset driver independence spec is missing')
+assert_contract!(File.file?(SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_DOC_PATH), 'small compiler subset driver independence document is missing')
+assert_contract!(File.file?(SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_SPEC_PATH), 'small compiler subset artifact round-trip spec is missing')
+assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_driver_file'))), 'small compiler subset driver implementation is missing')
+assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_driver_independence_tool'))), 'small compiler subset driver independence tool is missing')
+assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_driver_independence_test'))), 'small compiler subset driver independence test is missing')
+assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_artifact_round_trip_tool'))), 'small compiler subset artifact round-trip tool is missing')
+assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_artifact_round_trip_test'))), 'small compiler subset artifact round-trip test is missing')
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_loader_file'))), 'small compiler subset BSBC loader implementation is missing')
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_loader_independence_tool'))), 'small compiler subset BSBC loader independence tool is missing')
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('small_compiler_subset_bsbc_loader_independence_test'))), 'small compiler subset BSBC loader independence test is missing')
@@ -188,6 +202,8 @@ assert_contract!(rules.any? { |entry| entry.include?('SmallCompilerSubsetBSBCEnc
 assert_contract!(rules.any? { |entry| entry.include?('SmallCompilerSubsetBSBCLoader') }, 'subset BSBC loader independence rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('SmallCompilerSubsetBSBCVirtualMachine') }, 'subset BSharp VM independence rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('SmallCompilerSubsetPipeline') }, 'integrated subset pipeline independence rule missing')
+assert_contract!(rules.any? { |entry| entry.include?('SmallCompilerSubsetDriver') }, 'independent subset compiler driver rule missing')
+assert_contract!(rules.any? { |entry| entry.include?('artifact round-trip') || entry.include?('artifact round trip') || entry.include?('saved BSBC artifacts') }, 'subset artifact round-trip rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('BSBC golden parity') }, 'subset BSBC golden parity rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('fixture corpus') }, 'self-hosting fixture corpus rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('runtime smoke') }, 'small compiler subset runtime smoke rule missing')
@@ -219,6 +235,9 @@ bsbc_emitter_independence_doc = File.read(SMALL_COMPILER_SUBSET_BSBC_EMITTER_IND
 bsbc_loader_independence_doc = File.read(SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_DOC_PATH, encoding: 'UTF-8')
 bsbc_vm_independence_doc = File.read(SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_DOC_PATH, encoding: 'UTF-8')
 pipeline_independence_doc = File.read(SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_DOC_PATH, encoding: 'UTF-8')
+driver_independence_doc = File.read(SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_DOC_PATH, encoding: 'UTF-8')
+driver_independence_spec = JSON.parse(File.read(SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_SPEC_PATH, encoding: 'UTF-8'))
+artifact_round_trip_spec = JSON.parse(File.read(SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_SPEC_PATH, encoding: 'UTF-8'))
 bsbc_parity_doc = File.read(SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_DOC_PATH, encoding: 'UTF-8')
 fixture_corpus_doc = File.read(SELF_HOSTING_FIXTURE_CORPUS_DOC_PATH, encoding: 'UTF-8')
 runtime_smoke_doc = File.read(SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_DOC_PATH, encoding: 'UTF-8')
@@ -257,6 +276,11 @@ assert_contract!(bsbc_vm_independence_doc.include?('not full self-hosting'), 'BS
 assert_contract!(pipeline_independence_doc.include?('SmallCompilerSubsetPipeline'), 'integrated pipeline document must name SmallCompilerSubsetPipeline')
 assert_contract!(pipeline_independence_doc.include?('not full self-hosting'), 'integrated pipeline document must not claim full self-hosting')
 assert_contract!(pipeline_independence_doc.include?('no new creator-facing syntax') || pipeline_independence_doc.include?('No new creator-facing syntax'), 'integrated pipeline document must preserve creator syntax')
+assert_contract!(driver_independence_doc.include?('SmallCompilerSubsetDriver'), 'independent compiler driver document must name SmallCompilerSubsetDriver')
+assert_contract!(driver_independence_doc.include?('not full self-hosting') || driver_independence_doc.include?('not claim full self-hosting'), 'independent compiler driver document must not claim full self-hosting')
+assert_contract!(driver_independence_doc.include?('no new creator-facing syntax') || driver_independence_doc.include?('No new creator-facing syntax'), 'independent compiler driver document must preserve creator syntax')
+assert_contract!(driver_independence_spec.fetch('target_version') == BasicSharp::VERSION, 'independent compiler driver spec target mismatch')
+assert_contract!(artifact_round_trip_spec.fetch('target_version') == BasicSharp::VERSION, 'artifact round-trip spec target mismatch')
 assert_contract!(bsbc_parity_doc.include?('BSBC Golden Parity Harness'), 'small compiler subset BSBC parity document must name BSBC Golden Parity Harness')
 assert_contract!(bsbc_parity_doc.include?('No bytecode or BSBC rename'), 'small compiler subset BSBC parity document must preserve bytecode names')
 assert_contract!(fixture_corpus_doc.include?('Self-Hosting Fixture Corpus'), 'fixture corpus document must name Self-Hosting Fixture Corpus')
@@ -293,6 +317,8 @@ puts 'Small compiler subset BSBC emitter independence linked: PASS'
 puts 'Small compiler subset BSBC loader independence linked: PASS'
 puts 'Small compiler subset BSharp VM independence linked: PASS'
 puts 'Small compiler subset integrated pipeline independence linked: PASS'
+puts 'Small compiler subset independent compiler driver linked: PASS'
+puts 'Small compiler subset BSBC artifact round trip linked: PASS'
 puts 'Small compiler subset BSBC golden parity harness linked: PASS'
 puts 'Self-hosting fixture corpus linked: PASS'
 puts 'Small compiler subset runtime smoke linked: PASS'

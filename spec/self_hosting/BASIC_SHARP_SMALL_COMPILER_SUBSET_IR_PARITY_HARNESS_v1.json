@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.ir_golden_parity.contract.json",
   "format_version": 1,
-  "target_version": "0.1.78",
+  "target_version": "0.1.79",
   "title": "BSharp IR Golden Parity Harness Under Ruby Referee",
   "status": "ir_golden_parity_under_ruby_referee",
   "purpose": "Lock golden BSharp IR parity digests for the small compiler subset so future BASIC# compiler work must match approved Ruby Parser plus SemanticResolver output before it carries more weight.",
@@ -51,7 +51,7 @@
         "diagnostics": 0,
         "meaning_profile": "bsharp.meaning.v1"
       },
-      "expected_ir_sha256": "88afa856f655c444294ed5071b0fb7002b79c8dcea500b912c678aa204b7a097"
+      "expected_ir_sha256": "d2152f5894ad0f10c2ac1ded5483a5564acbdf7639ff4825b9f1cf165731673d"
     },
     {
       "name": "platform_movement",
@@ -68,11 +68,11 @@
         "diagnostics": 0,
         "meaning_profile": "bsharp.meaning.v4"
       },
-      "expected_ir_sha256": "065e4b3df6b35132d183e23bcb9fd6f473120a2435e2530720806b5ee906e487"
+      "expected_ir_sha256": "bc948d1c9ca452ccbd0afc7b7f99cc4ed32b3893373f3473183d5f4773864eed"
     },
     {
       "name": "text_values",
-      "source": "KINDS\n[\n    #gate is a #door\n].\n\nDEFINE\n[\n    @north gate is a #gate\n    @south gate is a #gate\n    @brass bell is a #device\n].\n\nSTART\n[\n    @north gate has \"North  Gate!\" title\n    @south gate has \"South Gate.\" title\n].\n\nWHEN PLAYER sounds @brass bell\n[\n    |then (change title of every #gate to \"OPEN \u2014 RubyVM!\"\n].\n\nIF @north gate has \"OPEN \u2014 RubyVM!\" title\n[\n    |then (damage PLAYER\n].\n",
+      "source": "KINDS\n[\n    #gate is a #door\n].\n\nDEFINE\n[\n    @north gate is a #gate\n    @south gate is a #gate\n    @brass bell is a #device\n].\n\nSTART\n[\n    @north gate has \"North  Gate!\" title\n    @south gate has \"South Gate.\" title\n].\n\nWHEN PLAYER sounds @brass bell\n[\n    |then (change title of every #gate to \"OPEN — RubyVM!\"\n].\n\nIF @north gate has \"OPEN — RubyVM!\" title\n[\n    |then (damage PLAYER\n].\n",
       "expected_counts": {
         "kinds": 1,
         "objects": 4,
@@ -85,7 +85,7 @@
         "diagnostics": 0,
         "meaning_profile": "bsharp.meaning.v2"
       },
-      "expected_ir_sha256": "12b2a6739ddca557805745d9b27480c1a689a7861c693fbbd872f62fe7799437"
+      "expected_ir_sha256": "e8a10c3dfa79671b22a6e8905648c342313d03a8bf43c51c8183d13437642259"
     }
   ],
   "acceptance_rules": [

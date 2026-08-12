@@ -14,9 +14,10 @@ end
 
 record = BasicSharp::BootstrapBoundaryAudit.new(spec, root: ROOT).to_h
 assert_contract!(record.fetch(:all_pass), 'one or more bootstrap boundary checks failed')
-assert_contract!(record.fetch(:stage_count) >= 7, 'not enough boundary stages')
+assert_contract!(record.fetch(:stage_count) >= 8, 'not enough boundary stages')
 assert_contract!(record.fetch(:checks).fetch(:ruby_referee_declared), 'Ruby referee boundary missing')
 assert_contract!(record.fetch(:checks).fetch(:subset_output_declared), 'subset output boundary missing')
+assert_contract!(record.fetch(:checks).fetch(:driver_artifact_declared), 'independent driver/artifact boundary missing')
 assert_contract!(record.fetch(:checks).fetch(:runtime_smoke_declared), 'runtime smoke bridge missing')
 assert_contract!(record.fetch(:checks).fetch(:production_boundary_declared), 'production runtime boundary missing')
 assert_contract!(record.fetch(:checks).fetch(:no_self_hosting_claim), 'self-hosting claim prohibition missing')
@@ -30,7 +31,8 @@ puts "BASIC# Bootstrap Boundary Audit v#{BasicSharp::VERSION}: PASS"
 puts "Boundary stages: #{record.fetch(:stage_count)}"
 puts 'Ruby bootstrap referee remains source of truth: PASS'
 puts 'BASIC# subset participation is fenced: PASS'
+puts 'Independent compiler driver and artifact boundary is fenced: PASS'
 puts 'Runtime smoke bridge is evidence only: PASS'
-puts 'v0.1.78 Slice 5 milestone gate remains guarded: PASS'
+puts 'v0.1.79 Slice 6 milestone gate remains guarded: PASS'
 puts 'Golden fixture expected-field fallbacks absent: PASS'
 puts "Boundary digest: #{record.fetch(:boundary_digest_sha256)}"

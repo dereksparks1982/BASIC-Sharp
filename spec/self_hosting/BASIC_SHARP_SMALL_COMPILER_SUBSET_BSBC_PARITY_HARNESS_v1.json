@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.bsbc_golden_parity.contract.json",
   "format_version": 1,
-  "target_version": "0.1.78",
+  "target_version": "0.1.79",
   "title": "BSharp Bytecode Golden Parity Harness Under Ruby Referee",
   "status": "bsbc_golden_parity_under_ruby_referee",
   "purpose": "Lock golden BSBC bytecode parity for the independent Subset 0 encoder so independently emitted bytes remain byte-for-byte compatible with the production Ruby BytecodeEmitter referee.",
@@ -45,7 +45,7 @@
       "expected_binary_bytes": 1240,
       "expected_binary_sha256": "c09c60886cdb341accc427d07a0ac68350b675b4f4e2d1571e02dac216870ee1",
       "expected_disassembly_sha256": "3034d2b9a76be2b4c67c603642707319f316c243fd110e647604588cd80a20d3",
-      "expected_bsharp_ir_sha256": "88afa856f655c444294ed5071b0fb7002b79c8dcea500b912c678aa204b7a097",
+      "expected_bsharp_ir_sha256": "d2152f5894ad0f10c2ac1ded5483a5564acbdf7639ff4825b9f1cf165731673d",
       "expected_loader_summary": {
         "binary_format": "bsharp.bytecode.bin",
         "binary_format_version": 1,
@@ -74,7 +74,7 @@
       "expected_binary_bytes": 696,
       "expected_binary_sha256": "41bcab1173735b3664db2d28e2ff0076212039cfeadaabb33021aef78fdfe902",
       "expected_disassembly_sha256": "2c8763cfb898e311f17fcd1e3464ee1f946dc74f174e61fdad86b17554963be8",
-      "expected_bsharp_ir_sha256": "065e4b3df6b35132d183e23bcb9fd6f473120a2435e2530720806b5ee906e487",
+      "expected_bsharp_ir_sha256": "bc948d1c9ca452ccbd0afc7b7f99cc4ed32b3893373f3473183d5f4773864eed",
       "expected_loader_summary": {
         "binary_format": "bsharp.bytecode.bin",
         "binary_format_version": 1,
@@ -98,12 +98,12 @@
     },
     {
       "name": "text_values",
-      "source": "KINDS\n[\n    #gate is a #door\n].\n\nDEFINE\n[\n    @north gate is a #gate\n    @south gate is a #gate\n    @brass bell is a #device\n].\n\nSTART\n[\n    @north gate has \"North  Gate!\" title\n    @south gate has \"South Gate.\" title\n].\n\nWHEN PLAYER sounds @brass bell\n[\n    |then (change title of every #gate to \"OPEN \u2014 RubyVM!\"\n].\n\nIF @north gate has \"OPEN \u2014 RubyVM!\" title\n[\n    |then (damage PLAYER\n].\n",
+      "source": "KINDS\n[\n    #gate is a #door\n].\n\nDEFINE\n[\n    @north gate is a #gate\n    @south gate is a #gate\n    @brass bell is a #device\n].\n\nSTART\n[\n    @north gate has \"North  Gate!\" title\n    @south gate has \"South Gate.\" title\n].\n\nWHEN PLAYER sounds @brass bell\n[\n    |then (change title of every #gate to \"OPEN — RubyVM!\"\n].\n\nIF @north gate has \"OPEN — RubyVM!\" title\n[\n    |then (damage PLAYER\n].\n",
       "expected_profile": "bsharp.bytecode.v2",
       "expected_binary_bytes": 732,
       "expected_binary_sha256": "fd0d0315d76aa44c7a143af7c0e6b9a0b61508da1f63f435dab6dfebbbe50403",
       "expected_disassembly_sha256": "0e860ca11f208c906bdcbd83222f8a97c0911f244ce0dc54246e0825bef251d6",
-      "expected_bsharp_ir_sha256": "12b2a6739ddca557805745d9b27480c1a689a7861c693fbbd872f62fe7799437",
+      "expected_bsharp_ir_sha256": "e8a10c3dfa79671b22a6e8905648c342313d03a8bf43c51c8183d13437642259",
       "expected_loader_summary": {
         "binary_format": "bsharp.bytecode.bin",
         "binary_format_version": 1,
@@ -132,7 +132,7 @@
       "expected_binary_bytes": 804,
       "expected_binary_sha256": "80f01cca55e4ae23e93378ac30ca6d4c8bb408be1166055e9dc36d88b5346bee",
       "expected_disassembly_sha256": "2a1ab7ce04d7e096bea36db73ce568e3bb7d610a68a2a0c6f9390ba6d42d1b49",
-      "expected_bsharp_ir_sha256": "a547953017bf63f574ae731fe8c7a277f22bebabfc0d116b1e4f8991d0d73eb2",
+      "expected_bsharp_ir_sha256": "4be667304a65d832f1a6cf25ead355e6672271c04f5317ad1159f21ecb673c4b",
       "expected_loader_summary": {
         "binary_format": "bsharp.bytecode.bin",
         "binary_format_version": 1,

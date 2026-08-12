@@ -21,12 +21,12 @@ class TestBootstrapBoundaryAudit < Minitest::Test
     assert_equal 1, spec.fetch('format_version')
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
     assert_equal 'bootstrap_boundary_audit_under_ruby_referee', spec.fetch('status')
-    assert_equal 'v0.1.78 Self-Hosting Milestone 2 Slice 5: Integrated Independent Compiler Pipeline', spec.fetch('next_milestone')
+    assert_equal 'v0.1.79 Self-Hosting Milestone 2 Slice 6: Independent Compiler Driver + BSBC Artifact Round Trip', spec.fetch('next_milestone')
   end
 
   def test_boundaries_pass_and_every_path_exists
     assert audit.fetch(:all_pass)
-    assert_operator audit.fetch(:stage_count), :>=, 7
+    assert_operator audit.fetch(:stage_count), :>=, 8
     audit.fetch(:stages).each do |stage|
       assert_empty stage.fetch(:missing_paths), stage.fetch(:name)
       assert_operator stage.fetch(:existing_path_count), :>, 0, stage.fetch(:name)

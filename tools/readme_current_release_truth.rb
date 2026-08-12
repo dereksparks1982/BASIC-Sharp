@@ -19,7 +19,7 @@ end
 
 puts "BASIC# README Current Release Truth Gate v#{BasicSharp::VERSION}: PASS"
 puts 'README heading matches active version: PASS'
-puts 'README current section describes Self-Hosting Milestone 2 Slice 5: PASS'
+puts 'README current section describes Self-Hosting Milestone 2 Slice 6: PASS'
 puts 'Canonical current milestone/build lines match across full README: PASS'
 puts 'Stale carried-forward current-release lane text absent: PASS'
 puts 'Ruby authority and not-full-self-hosting guardrails present: PASS'
