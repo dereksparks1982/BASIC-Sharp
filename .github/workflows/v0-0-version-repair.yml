@@ -1,4 +1,4 @@
-name: BASIC# v0.0 numbering repair
+name: BASIC# v0.0 current-state cleanup
 
 on:
   push:
@@ -10,62 +10,81 @@ permissions:
   contents: write
 
 jobs:
-  repair:
+  cleanup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Correct v0.1 numbering to v0.0
+      - name: Update current-state documents
         shell: bash
         run: |
           set -euo pipefail
           python3 <<'PY'
           from pathlib import Path
-          import subprocess, re
+          import json
 
-          workflow = '.github/workflows/v0-0-version-repair.yml'
-          tracked = subprocess.check_output(['git','ls-files'], text=True).splitlines()
+          readme = Path('README.md')
+          text = readme.read_text(encoding='utf-8').replace('## Version Technical History', '## Technical History')
+          readme.write_text(text, encoding='utf-8')
 
-          for old in sorted(tracked, key=len, reverse=True):
-              if old == workflow:
-                  continue
-              p = Path(old)
-              new_name = p.name.replace('v0_1_','v0_0_').replace('V0_1_','V0_0_').replace('v0.1.','v0.0.').replace('V0.1.','V0.0.')
-              if new_name != p.name:
-                  q = p.with_name(new_name)
-                  subprocess.run(['git','mv','--',str(p),str(q)], check=True)
+          roadmap = Path('docs/roadmap/BASIC_SHARP_ROADMAP.md')
+          text = roadmap.read_text(encoding='utf-8')
+          start = text.find('## Current accepted base')
+          end = text.find('## Canonical Company Bible')
+          current = '''## Current accepted base\n\n```text\nv0.0.84: Self-Hosting Milestone 2 Slice 11 - Native Action Routing Integration\naccepted release commit 14dd3e0f9134ed55cdb71bb69b8a2f3c555206c9\ntag v0.0.84\n```\n\nv0.0.84 is the accepted release. It preserves v0.0.81 BASIC#-authored parser dispatch, v0.0.82 BASIC#-authored semantic routing, and v0.0.83 BASIC#-authored symbol resolution, then adds active BASIC#-authored action-routing decisions. Ruby remains the bootstrap compiler and separate referee authority.\n\nThe accepted path is:\n\n```text\nBASIC# source\n-> TokenizerReader\n-> BASIC# native parser dispatch [v0.0.81]\n-> SmallCompilerSubsetParser\n-> BASIC# native semantic routing [v0.0.82]\n-> BASIC# native symbol resolution [v0.0.83]\n-> BASIC# native action routing [v0.0.84]\n-> SmallCompilerSubsetSemanticResolver\n-> BSharp IR\n-> independent BSBC encoder\n-> independent BSBC loader\n-> independent BSharp VM\n```\n\n'''
+          if start >= 0 and end > start:
+              text = text[:start] + current + text[end:]
+          text = text.replace('## Next direction after v0.0.84', '## Next direction for v0.0.85')
+          text = text.replace('use a changed-files ZIP only when Derek explicitly requests that packaging path.', 'use a changed-files ZIP only when that packaging path is explicitly requested.')
+          text = text.replace("Derek's Demon Killer", 'the Demon Killer')
+          roadmap.write_text(text, encoding='utf-8')
 
-          tracked = subprocess.check_output(['git','ls-files'], text=True).splitlines()
-          for name in tracked:
-              if name == workflow:
-                  continue
-              p = Path(name)
-              if not p.is_file():
-                  continue
-              try:
-                  text = p.read_text(encoding='utf-8')
-              except UnicodeDecodeError:
-                  continue
-              new = text.replace('v0.1.','v0.0.').replace('V0.1.','V0.0.').replace('v0_1_','v0_0_').replace('V0_1_','V0_0_')
-              new = re.sub(r'(?<![0-9])0\.1\.(?=[0-9])','0.0.',new)
-              new = re.sub(r'(?<![0-9])0_1_(?=[0-9])','0_0_',new)
-              if new != text:
-                  p.write_text(new, encoding='utf-8')
+          handoff = Path('docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md')
+          text = handoff.read_text(encoding='utf-8')
+          start = text.find('## Current state')
+          end = text.find('## v0.0.84 purpose')
+          current = '''## Current state\n\n- **Accepted release:** v0.0.84 Self-Hosting Milestone 2 Slice 11: Native Action Routing Integration.\n- **Accepted release commit:** `14dd3e0f9134ed55cdb71bb69b8a2f3c555206c9`.\n- **Accepted release tag:** `v0.0.84`.\n- **Branch:** `main`.\n- **Next build:** v0.0.85.\n- **Release state:** v0.0.84 passed acceptance and closeout. The earlier rejected v0.0.84 package remains rejected evidence and is not a baseline.\n\n'''
+          if start >= 0 and end > start:
+              text = text[:start] + current + text[end:]
+          text = text.replace('After Derek sees FINAL PASS:', 'After FINAL PASS is confirmed:')
+          marker = '## Continuation point'
+          pos = text.find(marker)
+          if pos >= 0:
+              text = text[:pos] + '''## Continuation point\n\nv0.0.84 Native Action Routing Integration is accepted and closed. The next build is v0.0.85. Profiles 1 through 7 remain protected; no Profile 8 is implied. Ruby remains bootstrap/referee authority until later boundaries are independently replaced and proven.\n'''
+          handoff.write_text(text, encoding='utf-8')
+
+          validator = Path('compiler/readme_current_release_truth.rb')
+          validator.write_text('''# frozen_string_literal: true\n\nrequire_relative 'ast_nodes'\n\nmodule BasicSharp\n  class ReadmeCurrentReleaseTruth\n    STATUS = 'readme_current_release_truth_gate'\n    attr_reader :readme_text, :spec\n\n    def initialize(readme_text, spec)\n      @readme_text = readme_text\n      @spec = spec\n    end\n\n    def expected_versions\n      (1..84).to_a.reverse.map { |n| format('v0.0.%02d', n) }\n    end\n\n    def missing_history_versions\n      expected_versions.reject { |v| readme_text.include?("### #{v} ") || readme_text.include?("### #{v} —") }\n    end\n\n    def checks\n      {\n        format_matches: spec.fetch('format') == 'bsharp.readme_current_release_truth.json',\n        target_version_matches: spec.fetch('target_version') == BasicSharp::VERSION,\n        heading_matches: readme_text.lines.first.to_s.strip == '# BASIC#',\n        current_version_present: readme_text.include?("The current version is **v#{BasicSharp::VERSION}**."),\n        technical_history_present: readme_text.include?('## Technical History'),\n        complete_history_present: missing_history_versions.empty?,\n        additional_notes_present: readme_text.include?('## Additional Notes'),\n        legal_section_present: readme_text.include?('## License / Legal'),\n        ruby_authority_preserved: readme_text.include?('Ruby'),\n        not_full_self_hosting_declared: readme_text.include?('not yet fully self-hosted')\n      }\n    end\n\n    def all_pass?\n      checks.values.all?\n    end\n\n    def to_h\n      { version: BasicSharp::VERSION, status: STATUS, all_pass: all_pass?, checks: checks, missing_history_versions: missing_history_versions }\n    end\n  end\nend\n''', encoding='utf-8')
+
+          spec = {
+            'format' => 'bsharp.readme_current_release_truth.json',
+            'format_version' => 1,
+            'target_version' => '0.0.84',
+            'status' => 'readme_current_release_truth_gate',
+            'title' => 'README Current Release Truth Gate',
+            'current_release' => {
+              'heading' => 'BASIC#',
+              'version' => 'v0.0.84',
+              'history_first' => 'v0.0.84',
+              'history_last' => 'v0.0.01'
+            }
+          }
+          Path('spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json').write_text(json.dumps(spec, indent=2) + '\n', encoding='utf-8')
+
+          Path('tests/test_readme_current_release_truth.rb').write_text('''# frozen_string_literal: true\n\nrequire 'json'\nrequire 'minitest/autorun'\nrequire_relative '../compiler/readme_current_release_truth'\n\nclass TestReadmeCurrentReleaseTruth < Minitest::Test\n  ROOT = File.expand_path('..', __dir__)\n\n  def test_public_readme_truth\n    spec = JSON.parse(File.read(File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json'), encoding: 'UTF-8'))\n    readme = File.read(File.join(ROOT, 'README.md'), encoding: 'UTF-8')\n    truth = BasicSharp::ReadmeCurrentReleaseTruth.new(readme, spec).to_h\n    assert truth.fetch(:all_pass), truth.inspect\n    assert_empty truth.fetch(:missing_history_versions)\n  end\nend\n''', encoding='utf-8')
           PY
 
-          git add -A
-          git grep --cached -n -I -E 'v0\.1\.[0-9]+|0\.1\.[0-9]+|v0_1_[0-9]+' -- . ':!.github/workflows/v0-0-version-repair.yml' && exit 1 || true
-          git ls-files | grep -E 'v0_1_[0-9]+' && exit 1 || true
+          ruby tests/test_readme_current_release_truth.rb
+          git grep -n -I -E 'v0\.1\.[0-9]+|0\.1\.[0-9]+|v0_1_[0-9]+' -- . ':!.github/workflows/v0-0-version-repair.yml' && exit 1 || true
 
-      - name: Commit repair
+      - name: Commit current-state cleanup
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'BASIC# Repository Repair'
           git config user.email 'basic-sharp@users.noreply.github.com'
-          git add -A
-          git reset -- .github/workflows/v0-0-version-repair.yml
-          git commit -m 'Correct BASIC# version numbering to v0.0 series'
+          git add README.md docs/roadmap/BASIC_SHARP_ROADMAP.md docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md compiler/readme_current_release_truth.rb spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json tests/test_readme_current_release_truth.rb
+          git commit -m 'Synchronize BASIC# v0.0.84 current release truth'
           git push origin HEAD:main
