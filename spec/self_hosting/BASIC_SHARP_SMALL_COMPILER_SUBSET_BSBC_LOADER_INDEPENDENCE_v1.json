@@ -33,7 +33,7 @@
     "expected_binary_bytes": 892,
     "expected_binary_sha256": "56bbc8fc2caa2f6dc65bb669fd428f99645da0a72106c05b3f7a429b093a5479",
     "expected_disassembly_sha256": "29e7ee678c2bab30a6132ea4c2147cf3d6a97cc0796c87772c95f7fde46474d4",
-    "expected_bsharp_ir_sha256": "16fde8b9a3c99720cf150f9b63c79f6f4652b53cb57fc7ff5606a35d8a4731d9",
+    "expected_bsharp_ir_sha256": "e3ae38a20243fc553ba380277128f82eaaa3044deacf6332530409ed5c0744e8",
     "expected_fingerprint": "2d0851f7fa8856fa1d181461626d0d41314b3df683dd57745447818bc032d9e6",
     "expected_loader_summary_sha256": "0e8d33ea69b57f8ae67a585c7aadb32cf1e6d91d1d6ab833129006ce934db6a5",
     "expected_loader_model_sha256": "38a8718d56bb3841beaa890f4437008a1277a8f773cb929ad650b60ac9c7046e",

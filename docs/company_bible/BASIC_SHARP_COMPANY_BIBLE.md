@@ -3,7 +3,7 @@
 **Version:** v0.0.84
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
-**Owner:** Derek  
+**Authority:** Project creator / final decision-maker  
 **Canonical path:** `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md`
 
 > A scripting language made for non-programmers, by non-programmers.
@@ -20,27 +20,27 @@ The Company Bible governs authority, workflow, safety, packaging, validation, co
 
 Demon Killer and Godot-specific lore, gameplay, maps, scenes, doors, controls, art, and engine rules are not active BASIC# company law. Their original records remain recoverable in Git history at accepted BASIC# v0.0.24 commit `28e5b5b`.
 
-## 2. Derek is the final decision-maker
+## 2. Project creator is the final decision-maker
 
-Derek is the owner and final authority for BASIC#, Elderedd Laboratory, and BCS direction.
+the project creator is the owner and final authority for BASIC#, Elderedd Laboratory, and BCS direction.
 
-- Tools advise, report, and validate. They do not overrule Derek.
+- Tools advise, report, and validate. They do not overrule the project creator.
 - No assistant, contributor, convention, outside reviewer, automated score, or fashionable architecture may silently replace an owner decision.
-- An explicit current instruction from Derek governs the approved work. When it changes a permanent rule, the decision must be recorded in this file through the next numbered build.
-- Historical records that use the name Dick refer to Derek. Preserve those records as history, but use **Derek** in all new records.
+- An explicit current instruction from the project creator governs the approved work. When it changes a permanent rule, the decision must be recorded in this file through the next numbered build.
+- Historical records that use the name Dick refer to the project creator. Preserve those records as history, but use **the project creator** in all new records.
 
 ## 3. Required reading order before work
 
 Before proposing or performing a BASIC# build:
 
-1. Acknowledge Derek before beginning lengthy inspection or tool work.
+1. Acknowledge the project creator before beginning lengthy inspection or tool work.
 2. Read this complete Company Bible.
 3. Read the current master handoff and roadmap.
 4. Read the technical contracts, specifications, validation records, and source files relevant to the request.
 5. Verify the accepted Git base and actual project state.
-6. Ask Derek only when the records do not answer the question or an owner-only decision remains.
+6. Ask the project creator only when the records do not answer the question or an owner-only decision remains.
 
-Do not ask Derek to repeat a decision already preserved in current project records. Do not guess around missing facts before checking the records.
+Do not ask the project creator to repeat a decision already preserved in current project records. Do not guess around missing facts before checking the records.
 
 ## 4. Prebuild scope and explicit approval
 
@@ -56,49 +56,49 @@ Before implementation, packaging, file generation, or equivalent build work, sta
 - validation plan;
 - exact package filename.
 
-Implementation begins only after Derek explicitly approves that stated scope with a build or patch command. Approval applies only to that scope. If the work expands, stop and obtain approval for the expanded scope.
+Implementation begins only after the project creator explicitly approves that stated scope with a build or patch command. Approval applies only to that scope. If the work expands, stop and obtain approval for the expanded scope.
 
 Discussion, questions, defect reports, design notes, and future ideas are not build approval by themselves.
 
-When Derek says **stop**, all build, tool, packaging, and implementation work stops immediately. Answer him plainly instead of continuing silent work.
+When the project creator says **stop**, all build, tool, packaging, and implementation work stops immediately. Answer him plainly instead of continuing silent work.
 
 ## 5. Complete the approved scope
 
-Once Derek approves an exact build:
+Once the project creator approves an exact build:
 
-- complete every approved item in that build unless Derek changes the scope;
+- complete every approved item in that build unless the project creator changes the scope;
 - do not silently defer requested items to another version;
 - disclose any limitation, exclusion, or failure before delivery;
 - do not add unrelated work because it seems helpful;
 - finish, validate, package, and hand off the current build before starting another.
 
-When Derek reports that an installed patch did not take, re-carry the missed work in the corrective build, preserve working systems, add a clear verification method when practical, and document the failure and repair. A changelog entry is not proof that a feature actually worked.
+When the project creator reports that an installed patch did not take, re-carry the missed work in the corrective build, preserve working systems, add a clear verification method when practical, and document the failure and repair. A changelog entry is not proof that a feature actually worked.
 
 ## 6. Accepted base and version truth
 
 Every build, patch, hotfix, documentation release, or package uses the **next unused numeric version**.
 
 - Letter suffixes such as `a`, `b`, or `c` are forbidden.
-- Rejected or failed packages are not accepted baselines. A failed candidate keeps its assigned numeric version and is repaired under that same version until it is accepted or Derek explicitly abandons that candidate. Do not skip to the next version merely because a candidate failed validation.
+- Rejected or failed packages are not accepted baselines. A failed candidate keeps its assigned numeric version and is repaired under that same version until it is accepted or the project creator explicitly abandons that candidate. Do not skip to the next version merely because a candidate failed validation.
 - Never build from an approximate reconstruction of the accepted base.
 - Verify the exact accepted commit, tag, branch, clean working tree, and required base-file hashes.
 - A dirty or unexpected base stops installation before mutation.
 - Every active version surface must agree, including compiler/runtime identity, generated artifacts, package name, manifest, README, tests, changelog, patch notes, session log, validation record, handshake, roadmap, and master handoff where applicable.
 - A documentation-only build still advances the version when it changes the active project.
 
-After Derek accepts a build, first create the accepted snapshot required by the release workflow, then review `git status`, stage the accepted changes, commit with the accepted build name, tag the version, and confirm the tree is clean before the next build.
+After the project creator accepts a build, first create the accepted snapshot required by the release workflow, then review `git status`, stage the accepted changes, commit with the accepted build name, tag the version, and confirm the tree is clean before the next build.
 
 ## 7. Packaging rules
 
-The default development-build deliverable is one **self-contained, versioned `.sh` installer** carrying only the declared changed-file payload. This replaces the routine changed-files ZIP workflow when Derek asks for the faster shell-installer path. A changed-files ZIP remains available only when Derek explicitly requests it or when a later archival/release need requires it.
+The default development-build deliverable is one **self-contained, versioned `.sh` installer** carrying only the declared changed-file payload. This replaces the routine changed-files ZIP workflow when the project creator asks for the faster shell-installer path. A changed-files ZIP remains available only when the project creator explicitly requests it or when a later archival/release need requires it.
 
-- Provide one primary download unless Derek explicitly requests otherwise.
+- Provide one primary download unless the project creator explicitly requests otherwise.
 - The self-contained installer must embed project-relative changed-file payloads without adding a duplicate wrapper folder.
 - Do not deliver loose project files.
 - Package records belong in their proper project directories. Approved top-level package control files, such as the manifest and build handshake, remain allowed.
 - Every user-facing installer or archive name includes its numeric version.
-- Do not create a separate loose SHA/checksum file unless Derek asks. Payload and base hashes belong inside the embedded manifest and installer validation.
-- A full-project archive is created only when Derek explicitly requests one.
+- Do not create a separate loose SHA/checksum file unless the project creator asks. Payload and base hashes belong inside the embedded manifest and installer validation.
+- A full-project archive is created only when the project creator explicitly requests one.
 
 Installer scripts are text control files and must contain zero literal NUL bytes. Any manifest-array transport that uses NUL separators must emit escaped `\0` at runtime, not embed binary NUL characters in the installer source. A NUL-bearing installer is malformed and must be rejected rather than worked around.
 
@@ -128,7 +128,7 @@ Git and the validated installer are the primary recovery authorities.
 - A post-mutation failure must restore the exact accepted tag and remove untracked candidate files.
 - Do not place backup copies inside the active project tree.
 - Do not create a routine second backup ZIP for every package.
-- An exceptional separate backup is allowed only when Derek requests it or a concrete recovery risk is explained. It remains versioned, clearly labeled, outside the active project, and separate from the installation package.
+- An exceptional separate backup is allowed only when the project creator requests it or a concrete recovery risk is explained. It remains versioned, clearly labeled, outside the active project, and separate from the installation package.
 - The build handshake and master handoff must name the rollback point.
 
 ## 9. Validation and evidence
@@ -144,11 +144,11 @@ Validation must be:
 - reported honestly, including limitations and failures;
 - repeated owner-side when local tooling cannot reproduce the final environment.
 
-Warnings are treated as failures by default. When a warning or validation exception must remain, stop, explain the exact reason and risk, and obtain Derek's explicit approval. Record the exception in the build documents.
+Warnings are treated as failures by default. When a warning or validation exception must remain, stop, explain the exact reason and risk, and obtain the project creator's explicit approval. Record the exception in the build documents.
 
-Derek may explicitly accept a documented exception. Automated gates advise and protect the candidate, but they do not become an independent owner.
+the project creator may explicitly accept a documented exception. Automated gates advise and protect the candidate, but they do not become an independent owner.
 
-Do not repeat generic environment-limit boilerplate in every delivery. Mention a limitation when it materially affects that build or Derek asks about it.
+Do not repeat generic environment-limit boilerplate in every delivery. Mention a limitation when it materially affects that build or the project creator asks about it.
 
 Failed runs, rejected packages, contaminated packages, and embarrassing mistakes are permanent evidence. Correct them through dated errata, new current-state entries, failure logs, or a new numbered repair. Do not silently scrub history.
 
@@ -182,7 +182,7 @@ A numbered deliverable is documentation-incomplete until the master handoff and 
 
 When a mandatory workflow rule changes, edit this canonical Company Bible in the same build. Do not create another Bible file.
 
-After every completed installation or validation decision, state the next concrete step without waiting for Derek to ask what comes next.
+After every completed installation or validation decision, state the next concrete step without waiting for the project creator to ask what comes next.
 
 ## 11. Engineering principles
 
@@ -266,7 +266,7 @@ Language grammar and runtime behavior belong in specifications and contracts, no
 
 Planning, questions, corrections, confirmations, visual descriptions, maps, cursor discussion, art direction, or object discussion are not permission to generate or edit an image.
 
-Only generate or edit an image when Derek gives a clear direct command to make, create, draw, render, or edit that picture. Project work must not be mistaken for image-generation permission.
+Only generate or edit an image when the project creator gives a clear direct command to make, create, draw, render, or edit that picture. Project work must not be mistaken for image-generation permission.
 
 ## 14. Attribution and outside analysis
 
@@ -312,7 +312,7 @@ When a rule genuinely blocks safe or necessary work:
 2. explain why the work cannot proceed safely under the existing rule;
 3. state the smallest exception requested;
 4. state risks, alternatives, and affected files;
-5. wait for Derek's explicit decision;
+5. wait for the project creator's explicit decision;
 6. document an approved permanent change in this canonical Bible through a numbered build.
 
 Conflict resolutions established by v0.0.25:
@@ -325,8 +325,8 @@ Conflict resolutions established by v0.0.25:
 | Routine extra backup vs. one download | One changed-files package by default; exceptional backup only when justified and separate. |
 | Many handoffs vs. one cumulative handoff | Build handshake plus one active master handoff. |
 | Loose checksum ban vs. package integrity | Hashes remain inside the manifest; no loose checksum file unless requested. |
-| Warnings as failures vs. owner authority | Warnings fail normal validation; Derek may explicitly accept a documented exception. |
-| Old owner-name variants | New records use Derek; historical records remain unchanged. |
+| Warnings as failures vs. owner authority | Warnings fail normal validation; the project creator may explicitly accept a documented exception. |
+| Old owner-name variants | New records use the project creator; historical records remain unchanged. |
 | Game rules inside Company Bible | Demon Killer/Godot rules remain historical and do not govern BASIC#. |
 
 ## 17. v0.0.25 consolidation ledger
@@ -374,7 +374,7 @@ The following 74 former active-folder files were reviewed before consolidation. 
 | `docs/company_bible/DK_Godot_v0_2_38_SEPARATE_BACKUP_DISCRETION_AND_PACKAGE_SEPARATION_ADDENDUM.md` | SUPERSEDED | Git plus installer rollback is primary; only exceptional, explained backups may be separate from the main package. |
 | `docs/company_bible/DK_Godot_v0_2_44_ATTRIBUTION_BEYOND_LEGAL_MINIMUM_ADDENDUM.md` | MERGED | Provenance and good-faith creator attribution were retained. |
 | `docs/company_bible/DK_Godot_v0_2_81_CAMERA_ZOOM_CONTROL_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
-| `docs/company_bible/DK_Godot_v0_2_82_BIBLE_FIRST_THEN_ASK_DEREK_ADDENDUM.md` | MERGED | Read the canonical Bible and current records before asking Derek to repeat documented decisions. |
+| `docs/company_bible/DK_Godot_v0_2_82_BIBLE_FIRST_THEN_ASK_DEREK_ADDENDUM.md` | MERGED | Read the canonical Bible and current records before asking the project creator to repeat documented decisions. |
 | `docs/company_bible/DK_Godot_v0_2_85_NUMERIC_ONLY_VERSIONING_ADDENDUM.md` | MERGED | Next-unused numeric versioning and prohibition of letter suffixes were retained. |
 | `docs/company_bible/DK_Godot_v0_2_88_VERSIONED_DELIVERABLE_ARCHIVE_NAME_ADDENDUM.md` | MERGED | Every user-facing deliverable must identify its numeric version. |
 | `docs/company_bible/DK_Godot_v0_2_90_SEQUENTIAL_BUILD_EXECUTION_ADDENDUM.md` | MERGED | One build at a time was retained. |
@@ -396,7 +396,7 @@ The following 74 former active-folder files were reviewed before consolidation. 
 | `docs/company_bible/DK_Godot_v0_3_45_AUTOMATED_PLAYTEST_PILOT_AND_REPORTING_ADDENDUM.md` | MERGED IN PART | Automated evidence supplements owner testing; Test Pilot specifics were retired. |
 | `docs/company_bible/DK_Godot_v0_3_46_CUMULATIVE_THREAD_HANDOFF_AND_CONTINUITY_LOGGING_ADDENDUM.md` | MERGED | One cumulative master handoff and its completion gate were retained. |
 | `docs/company_bible/DK_Godot_v0_3_47_DEMON_KILLER_VISUAL_STYLE_AND_COMPACT_PANEL_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
-| `docs/company_bible/DK_Godot_v0_3_48_OWNER_CONTRIBUTOR_AND_ATTRIBUTION_CLARITY_ADDENDUM.md` | MERGED | Derek is the canonical owner name; historical names and honest contributor roles remain preserved. |
+| `docs/company_bible/DK_Godot_v0_3_48_OWNER_CONTRIBUTOR_AND_ATTRIBUTION_CLARITY_ADDENDUM.md` | MERGED | the project creator is the canonical owner name; historical names and honest contributor roles remain preserved. |
 | `docs/company_bible/DK_Godot_v0_3_57_BUILD_THE_GAME_WE_WANT_ADDENDUM.md` | MERGED IN PART | Owner vision outranks committee design; Demon Killer product specifics were retired. |
 | `docs/company_bible/DK_Godot_v0_3_69_MIT_INTEGRATION_AND_VISIBLE_UI_RULE_ADDENDUM.md` | MERGED IN PART | Third-party provenance and visible, testable integration were retained; game UI specifics were retired. |
 | `docs/company_bible/DK_Godot_v0_3_73_CANONICAL_HANDOFF_COMPLETION_REPAIR_ADDENDUM.md` | MERGED | One cumulative master handoff and its completion gate were retained. |
@@ -406,7 +406,7 @@ The following 74 former active-folder files were reviewed before consolidation. 
 | `docs/company_bible/DK_Godot_v0_4_21_AUDIT_TRAIL_NO_SCRUB_RULE_ADDENDUM.md` | MERGED | Failures and corrections remain permanent evidence rather than being silently scrubbed. |
 | `docs/company_bible/DK_Godot_v0_4_37_PATCH_MANIFEST_SCHEMA_AND_ENVIRONMENT_LIMITATION_ADDENDUM.md` | MERGED IN PART | Manifest schema verification and honest environment limits were retained using the BASIC# manifest identity. |
 | `docs/company_bible/DK_Godot_v0_4_38_GAIA_STREAMING_CELL_AND_IMAGE_PERMISSION_ADDENDUM.md` | MERGED IN PART | Direct image permission remains mandatory; Gaia and game-world rules were retired from BASIC# authority. |
-| `docs/company_bible/DK_Godot_v0_4_70_POST_BUILD_GIT_AND_NO_HARD_GATE_RULE_ADDENDUM.md` | MERGED | Post-acceptance commit/tag and Derek-over-tools authority were retained; documented exceptions remain owner-controlled. |
+| `docs/company_bible/DK_Godot_v0_4_70_POST_BUILD_GIT_AND_NO_HARD_GATE_RULE_ADDENDUM.md` | MERGED | Post-acceptance commit/tag and the project creator-over-tools authority were retained; documented exceptions remain owner-controlled. |
 | `docs/company_bible/PROJECT_BIBLE_DemonKiller.md` | RETIRED POINTER | Retired Demon Killer pointer file is preserved in Git history and has no BASIC# authority. |
 | `docs/company_bible/PROJECT_BIBLE_DemonKiller.md.meta` | RETIRED METADATA | Obsolete Godot import metadata has no function in the BASIC# documentation tree. |
 
@@ -553,19 +553,19 @@ Priority: Emergency. DKLab / DK LAB is retired as the active BASIC# parent/lab i
 
 The project must work toward retiring and archiving DKLab little by little instead of breaking every path at once. DKLab may appear only as retired history, compatibility bridge wording, rollback support, migration audit evidence, or archived historical text. Active commands, active roadmap language, active GitHub description text, and current build handoff language should use Elderedd terminology.
 
-Never make the BASIC# GitHub repository public unless Derek explicitly commands that exact visibility change. The BASIC# GitHub repository must never be made public unless Derek explicitly commands that exact visibility change. Normal `git push` is allowed because pushing does not change repository visibility.
+Never make the BASIC# GitHub repository public unless the project creator explicitly commands that exact visibility change. The BASIC# GitHub repository must never be made public unless the project creator explicitly commands that exact visibility change. Normal `git push` is allowed because pushing does not change repository visibility.
 
 Every accepted BASIC# build must close out in this order:
 
 1. Apply the changed-files ZIP with the exact terminal command supplied beside the download.
-2. Run full installer/native validation, including the complete test suite and the Trial by Fire lane required by that build. Installer output must keep the visible `PHASE START` / `PHASE PASS` format and show full test-suite dot progress so Derek can see the machine working instead of guessing whether it froze.
+2. Run full installer/native validation, including the complete test suite and the Trial by Fire lane required by that build. Installer output must keep the visible `PHASE START` / `PHASE PASS` format and show full test-suite dot progress so the project creator can see the machine working instead of guessing whether it froze.
 3. Create the accepted snapshot after final PASS and before local Git closeout.
 4. Local Git commit/tag verification.
 5. GitHub push and remote verification.
 6. GitHub description update after the pushed commit/tag are verified.
 7. Final status summary.
 
-Do not substitute SSH-key guessing, GitHub username/password prompts, giant token credential blocks, focused-only validation lanes, or new archive/image steps unless Derek explicitly commands that exact change. Before giving GitHub commands, check the current project record and use the proven BASIC# closeout path in small commands.
+Do not substitute SSH-key guessing, GitHub username/password prompts, giant token credential blocks, focused-only validation lanes, or new archive/image steps unless the project creator explicitly commands that exact change. Before giving GitHub commands, check the current project record and use the proven BASIC# closeout path in small commands.
 
 BCS, BSharp Creator Services, is the future hosted service layer for BASIC#: creator accounts, project sync, updates, documentation, compiler access, publishing tools, future game/world hosting, and eventual Elderedd-controlled server infrastructure. v0.0.63 names and governs BCS only. It does not implement accounts, payments, hosting, servers, network behaviour, licensing, or pricing.
 
@@ -576,7 +576,7 @@ BASIC# v0.0.63 continues the emergency DKLab retirement work without removing th
 
 The v0.0.63 technical lane adds small compiler subset BSBC execution parity under Ruby referee control. This is a proof lane, not full self-hosting. Ruby remains the bootstrap compiler, production parser authority, production resolver authority, runtime authority, and reference referee.
 
-Build conduct remains unchanged: correctness outranks speed, failed candidates are evidence, and no build may be accepted without full validation and Derek-side installation proof.
+Build conduct remains unchanged: correctness outranks speed, failed candidates are evidence, and no build may be accepted without full validation and local installation proof.
 
 ## v0.0.63 UTF-8 Source Reading Conduct Rule
 
@@ -713,4 +713,4 @@ BASIC# v0.0.84 moves accepted official-action family selection out of the Ruby r
 
 v0.0.81 native parser dispatch, v0.0.82 native semantic routing, and v0.0.83 native symbol resolution remain active upstream and independently protected. Ruby remains the bootstrap compiler and separate referee authority. This is Self-Hosting Milestone 2 Slice 11, not full self-hosting and not Ruby retirement. Profiles 1 through 7, creator-facing syntax, and BSBC layout remain unchanged.
 
-The v0.0.84 delivery workflow also records Derek's approved rapid-build rule: routine development builds are delivered as one self-contained versioned `.sh` installer rather than requiring a separate ZIP wrapper. The same manifest, base-hash, rollback, full-validation, snapshot, commit/tag, and GitHub closeout protections remain mandatory. A failed v0.0.84 candidate remains v0.0.84 until repaired and accepted or explicitly abandoned by Derek.
+The v0.0.84 delivery workflow also records the project creator's approved rapid-build rule: routine development builds are delivered as one self-contained versioned `.sh` installer rather than requiring a separate ZIP wrapper. The same manifest, base-hash, rollback, full-validation, snapshot, commit/tag, and GitHub closeout protections remain mandatory. A failed v0.0.84 candidate remains v0.0.84 until repaired and accepted or explicitly abandoned by the project creator.

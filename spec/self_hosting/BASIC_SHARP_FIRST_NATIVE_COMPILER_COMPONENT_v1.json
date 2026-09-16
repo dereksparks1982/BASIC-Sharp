@@ -34,8 +34,8 @@
       "hover": "parse-hover-section",
       "context": "parse-context-section"
     },
-    "expected_source_sha256": "bffd46967271285db8297408ffcd8cdcd79af8e55e7ba13bb79f84840c361703",
-    "expected_bsharp_ir_sha256": "135f192602b176ea66fe1e3025788474db02a249cfcddacf1825555c6e89ba76",
+    "expected_source_sha256": "11c3a3ce2c61930ccb43a200ec15ff2c5b5c4542b3db946ee535437fba867a64",
+    "expected_bsharp_ir_sha256": "f4a061cd801db7b5f3e0fe9e366586758610ebc1feff5b43ff7dcbfeda9182dd",
     "expected_binary_bytes": 1544,
     "expected_binary_sha256": "cbebf931b65acc7d8ff75409a08d78624bdd9589b60c9c06cbbf66270a19d297",
     "expected_disassembly_sha256": "fbd05ee0cbe94fd4a0fa17e4b257afbd2faa6a1df4ebda0dc2fd9b431ae1c20c",

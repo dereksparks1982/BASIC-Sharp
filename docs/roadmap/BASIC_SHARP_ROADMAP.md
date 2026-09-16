@@ -3,22 +3,14 @@
 ## Current accepted base
 
 ```text
-v0.0.83: Self-Hosting Milestone 2 Slice 10 - Native Symbol Resolution Integration
-commit ac8bb906239ed2f199c437d4c3321b18fff1fcab
-tag v0.0.83
-```
-
-v0.0.83 is the accepted rollback point. It preserves v0.0.81 BASIC#-authored parser dispatch and v0.0.82 BASIC#-authored semantic routing, adds active BASIC#-authored symbol decisions, passed native acceptance, and is the only valid base for v0.0.84.
-
-## Current candidate
-
-```text
 v0.0.84: Self-Hosting Milestone 2 Slice 11 - Native Action Routing Integration
+accepted release commit 14dd3e0f9134ed55cdb71bb69b8a2f3c555206c9
+tag v0.0.84
 ```
 
-v0.0.84 preserves the accepted parser, semantic, and symbol stages, then requires the bounded independent semantic resolver to obtain official-action family selection from `compiler/native/first_bsharp_action_router.bsbc` through `compiler/small_compiler_subset_native_action_routing.rb`. Wrong or contradictory native action-family decisions fail closed instead of falling back to a Ruby verb-family choice.
+v0.0.84 is the accepted release. It preserves v0.0.81 BASIC#-authored parser dispatch, v0.0.82 BASIC#-authored semantic routing, and v0.0.83 BASIC#-authored symbol resolution, then adds active BASIC#-authored action-routing decisions. Ruby remains the bootstrap compiler and separate referee authority.
 
-The candidate path is:
+The accepted path is:
 
 ```text
 BASIC# source
@@ -35,8 +27,6 @@ BASIC# source
 -> independent BSharp VM
 ```
 
-Ruby remains bootstrap/referee authority while this bounded action decision moves into BASIC#. Acceptance requires all accepted official actions to route through BASIC# BSBC, observable invocation counts, wrong-family sabotage rejection, preserved upstream native boundaries, exact downstream parity, and a byte-identical generation #1 / generation #2 fixed point.
-
 ## Canonical Company Bible
 
 ```text
@@ -49,7 +39,7 @@ This is the single canonical Company Bible for BASIC# conduct, release, validati
 
 Every accepted BASIC# build follows the same release path:
 
-1. Run the self-contained versioned `.sh` installer supplied with the download; use a changed-files ZIP only when Derek explicitly requests that packaging path.
+1. Run the self-contained versioned `.sh` installer supplied with the download; use a changed-files ZIP only when the project creator explicitly requests that packaging path.
 2. Run installer validation including the complete normal test suite, complete no-locale suite, all sealed tools, required stress lanes, deterministic sweep, forensic/preflight gates, whole-language gauntlet, and full Trial by Fire counts.
 3. Preserve `PHASE START` / `PHASE PASS`, visible Minitest dot progress, run/assertion counts, and one unmistakable `FINAL PASS`.
 4. Create the accepted snapshot after final PASS and before local Git closeout.
@@ -79,7 +69,8 @@ Current truthful claim:
 v0.0.80 proved the first bounded compiler-domain component authored in BASIC#.
 v0.0.81 made BASIC# BSBC control bounded native parser dispatch.
 v0.0.82 made BASIC# BSBC control bounded semantic routing.
-v0.0.83 adds bounded BASIC#-authored symbol-resolution decisions.
+v0.0.83 added bounded BASIC#-authored symbol-resolution decisions.
+v0.0.84 added active BASIC#-authored action routing.
 Ruby remains the bootstrap compiler and separate referee authority.
 BASIC# is not fully self-hosted.
 ```
@@ -90,7 +81,7 @@ The v0.0.72 Milestone 2 proposal is now implemented through semantic resolver in
 
 v0.0.73 established direct creator actions including open, close, lock, and take. v0.0.81 preserves those game-making semantics unchanged while the compiler machinery underneath them becomes more self-directed.
 
-## Next direction after v0.0.84
+## Next direction for v0.0.85
 
 1. Continue transferring real compiler authority from Ruby into BASIC# until the production compiler chain no longer requires Ruby decisions.
 2. Next likely bounded targets are condition interpretation, event interpretation, selector/reference resolution, semantic transformation, IR construction/emission, source reading/token processing, and compiler orchestration.
@@ -110,7 +101,7 @@ No new governance/audit system is planned unless a demonstrated failure requires
 6. Larger 2D Game
 7. Media Player
 
-These are future proof programs, not permission to interrupt the active compiler/runtime lane. Solitaire remains intended as a free noncommercial BASIC# showcase while Derek's Demon Killer card/deck artwork remains separately protected.
+These are future proof programs, not permission to interrupt the active compiler/runtime lane. Solitaire remains intended as a free noncommercial BASIC# showcase while the project creator's Demon Killer card/deck artwork remains separately protected.
 
 ## Release-hardening runway
 

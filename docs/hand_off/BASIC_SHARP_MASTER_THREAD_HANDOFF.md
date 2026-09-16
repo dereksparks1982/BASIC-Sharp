@@ -2,11 +2,12 @@
 
 ## Current state
 
-- **Accepted base:** v0.0.83 at commit `ac8bb906239ed2f199c437d4c3321b18fff1fcab`, annotated tag `v0.0.83`, branch `main`.
-- **Candidate:** v0.0.84 Self-Hosting Milestone 2 Slice 11: Native Action Routing Integration.
-- **Rollback:** restore exact v0.0.83 and remove only v0.0.84 added paths.
-- **Deliverable:** `BUILD_BASIC_SHARP_v0_0_84_SELF_HOSTING_NATIVE_ACTION_ROUTING.sh`.
-- **Rejected candidate evidence:** the first v0.0.84 package failed `tools/company_bible_audit.rb` because its roadmap omitted the canonical Company Bible path. Installer rollback restored v0.0.83. That rejected package is not a baseline; v0.0.84 remains the candidate until accepted or explicitly abandoned by Derek.
+- **Accepted release:** v0.0.84 Self-Hosting Milestone 2 Slice 11: Native Action Routing Integration.
+- **Accepted release commit:** `14dd3e0f9134ed55cdb71bb69b8a2f3c555206c9`.
+- **Accepted release tag:** `v0.0.84`.
+- **Branch:** `main`.
+- **Next build:** v0.0.85.
+- **Release state:** v0.0.84 passed acceptance and closeout. The earlier rejected v0.0.84 package remains rejected evidence and is not a baseline.
 
 ## v0.0.84 purpose
 
@@ -43,7 +44,7 @@ No new creator-facing syntax and no Profile 8. Profiles 1 through 7, BSBC binary
 
 ## Current validation floor
 
-Accepted v0.0.83 floor:
+Accepted v0.0.84 validation floor:
 
 ```text
 86 test files
@@ -57,7 +58,7 @@ Accepted v0.0.83 floor:
 14 protected artifacts
 ```
 
-Current v0.0.84 candidate inventory:
+Accepted v0.0.84 inventory:
 
 ```text
 87 test files
@@ -76,7 +77,7 @@ Complete normal and no-locale suites, every sealed required tool, deterministic 
 4. Capture rollback bytes, install only declared paths, and validate syntax/JSON/whitespace/package scope plus Company Bible/current-reference integrity.
 5. Run native parser dispatch, native semantic routing, native symbol resolution, and native action routing proofs; complete normal/no-locale suites; every sealed required tool; stress lanes; deterministic sweep; preflight; forensic overlay; whole-language gauntlet; and full-count Trial by Fire.
 6. Require one unmistakable `FINAL PASS`.
-7. After Derek sees FINAL PASS: accepted snapshot first, then local commit/annotated tag, then private GitHub SSH push and peeled-tag verification.
+7. After the project creator sees FINAL PASS: accepted snapshot first, then local commit/annotated tag, then GitHub SSH push and peeled-tag verification.
 
 ## Canonical contract reference ledger
 
@@ -113,4 +114,4 @@ spec/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v1.json
 
 ## Continuation point
 
-v0.0.84 Native Action Routing Integration is the active candidate. The first v0.0.84 package was rejected and rolled back; repair remains on v0.0.84. Do not begin v0.0.85 until v0.0.84 has passed Derek-side native acceptance and full closeout.
+v0.0.84 Native Action Routing Integration is accepted and closed. The next build is v0.0.85. Profiles 1 through 7 remain protected; no Profile 8 is implied. Ruby remains bootstrap/referee authority until later boundaries are independently replaced and proven.

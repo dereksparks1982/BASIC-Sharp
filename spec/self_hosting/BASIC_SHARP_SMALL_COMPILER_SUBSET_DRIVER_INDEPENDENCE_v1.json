@@ -37,13 +37,13 @@
     "expected_profile": "bsharp.bytecode.v7",
     "expected_binary_bytes": 1468,
     "expected_source_sha256": "278b1e8bc2ecd4528d1bab8392888c6bc53402954599eafe0783f7eeeb163b09",
-    "expected_bsharp_ir_sha256": "6a46148a3c300142b2d1a047e98cd9b975826873d53537c16fae5d0e744b8a85",
+    "expected_bsharp_ir_sha256": "438676b4a0cec1cee454a3bd86e3578faef7430bb2c753180ccc359cdc9f6dd9",
     "expected_binary_sha256": "1c937efc077b9fc993dc7fdae9cb94b967f26ae77b8b5db90d8233dc7da298fa",
     "expected_disassembly_sha256": "7962729478956fec8591d9e170cbb8a6c9706c34771606a6cbeba2280097c144",
     "expected_fingerprint": "dad018742b5c6ca5420bdba03af2efedbcd337590a361a0595bf5c0ffc663f2b",
     "expected_event_results_sha256": "21980ea9f19eb40defd1b166dddd5a1ed323e30e3fec57849a980cfe8bbb17b0",
     "expected_final_snapshot_sha256": "13c99607b17e2587a2262eb3a66be094d71a22b4778b8ca8093f5fe9fa0dd2d1",
-    "expected_save_document_sha256": "f8be1c406ab0a3e5e4eb6a7d0d042364f4cbfd69577c0f74d88de21dff34ee18"
+    "expected_save_document_sha256": "0b10df904a43a9f9b7055617c409442561bc81c5c08c6bee446e22d3acf70ea9"
   },
   "acceptance_rules": [
     "SmallCompilerSubsetDriver must instantiate SmallCompilerSubsetPipeline on its primary path.",

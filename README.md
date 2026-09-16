@@ -10,7 +10,7 @@ Source files use `.bsharp`. The intermediate representation is BSharp IR / BSIR.
 
 The canonical project rules are recorded in `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md`.
 
-## Version Technical History
+## Technical History
 
 ### v0.0.84 — Native Action Routing Integration
 Moved another bounded compiler decision into BASIC# by routing accepted official action words through the BASIC#-authored native action-routing component. Existing native parser dispatch, semantic routing, and symbol resolution remain upstream. Wrong-family decisions fail closed rather than silently falling back to Ruby.
@@ -162,11 +162,11 @@ Added platform-style movement behavior and BSharp Profile 4.
 ### v0.0.35 — Profile 3 and Direct BSBC Validation Repair
 Completed Profile 3 work and repaired direct BSBC validation.
 
-### v0.0.34 — No Accepted Release Record Found
-The current repository history does not contain an accepted release record for this numbered step. The number is retained so the version history remains complete.
+### v0.0.34 — Rejected Candidate
+This candidate was rejected after runtime-transition validation still carried a stale earlier VM banner/version expectation. It was not accepted as a baseline.
 
-### v0.0.33 — No Accepted Release Record Found
-The current repository history does not contain an accepted release record for this numbered step. The number is retained so the version history remains complete.
+### v0.0.33 — Rejected Candidate
+This candidate was rejected after bytecode-emitter validation called a missing public `BytecodeEmitter#profile` surface. It was not accepted as a baseline.
 
 ### v0.0.32 — Meaning Profile 2 Text Values and BSharp Bytecode Profile 2
 Added creator-facing text values and the second meaning/bytecode profile.
@@ -234,8 +234,8 @@ Added a creator-readable plain-language runtime trace.
 ### v0.0.11 — BASIC Sharp Language Foundation and Historical BASIC Research
 Established the BASIC Sharp language direction and recorded research into historical BASIC-family design ideas.
 
-### v0.0.10 — No Accepted Release Record Found
-The current repository history does not contain an accepted release record for this numbered step. The number is retained so the version history remains complete.
+### v0.0.10 — Runtime Trigger Context
+Added direct named-Thing to Kind trigger matching, preserved selected-Thing trigger context, allowed `that guard`-style context resolution, preserved exact event matching, and added source/BSharp IR/runtime/CLI validation without adding new creator-facing syntax.
 
 ### v0.0.09 — First Runtime Execution
 Added the first runtime execution path for the early language implementation.
@@ -267,6 +267,8 @@ The current repository does not contain an earlier accepted release commit for t
 ## Additional Notes
 
 The version technical history intentionally runs in full from **v0.0.84 through v0.0.01**, newest to oldest. Numbers without a surviving accepted release record are kept in sequence and identified plainly instead of being skipped or given invented implementation details.
+
+The current independent compiler-pipeline contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json`.
 
 ## License / Legal
 

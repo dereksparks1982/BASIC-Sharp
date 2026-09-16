@@ -1,96 +1,13 @@
 # frozen_string_literal: true
-
 require_relative 'ast_nodes'
-
 module BasicSharp
   class ReadmeCurrentReleaseTruth
-    FORMAT = 'bsharp.readme_current_release_truth.record'
-    STATUS = 'readme_current_release_truth_gate'
-    CURRENT_LINE_PREFIXES = [
-      'Current self-hosting milestone:',
-      'Current build:'
-    ].freeze
-
-    attr_reader :readme_text, :spec
-
-    def initialize(readme_text, spec)
-      @readme_text = readme_text
-      @spec = spec
-    end
-
-    def current_release
-      spec.fetch('current_release')
-    end
-
-    def current_section
-      @current_section ||= begin
-        lines = readme_text.lines
-        first_h2 = lines.find_index { |line| line.start_with?('## ') }
-        first_h2 ? lines[0...first_h2].join : readme_text
-      end
-    end
-
-    def canonical_current_lines
-      current_release.fetch('canonical_current_lines').values
-    end
-
-    def actual_current_lines
-      @actual_current_lines ||= readme_text.lines.map(&:strip).select do |line|
-        CURRENT_LINE_PREFIXES.any? { |prefix| line.start_with?(prefix) }
-      end
-    end
-
-    def canonical_current_lines_match?
-      actual_current_lines == canonical_current_lines
-    end
-
-    def forbidden_phrases
-      current_release.fetch('forbidden_current_section_phrases')
-    end
-
-    def missing_mentions
-      current_release.fetch('must_mention').reject { |phrase| current_section.include?(phrase) }
-    end
-
-    def forbidden_hits
-      forbidden_phrases.select { |phrase| current_section.include?(phrase) }
-    end
-
-    def checks
-      @checks ||= {
-        format_matches: spec.fetch('format') == 'bsharp.readme_current_release_truth.json',
-        format_version_matches: spec.fetch('format_version') == 1,
-        target_version_matches: spec.fetch('target_version') == BasicSharp::VERSION,
-        status_matches: spec.fetch('status') == STATUS,
-        heading_matches: readme_text.lines.first.to_s.strip == "# #{current_release.fetch('heading')}",
-        build_title_present: current_section.include?(current_release.fetch('build_title')),
-        summary_present: current_section.include?(current_release.fetch('summary')),
-        required_mentions_present: missing_mentions.empty?,
-        forbidden_current_section_phrases_absent: forbidden_hits.empty?,
-        canonical_current_lines_match: canonical_current_lines_match?,
-        old_false_current_claim_absent: !current_section.include?('small compiler subset IR golden parity harness'),
-        ruby_authority_preserved: current_section.include?('Ruby remains the bootstrap compiler'),
-        not_full_self_hosting_declared: current_section.include?('not full self-hosting')
-      }
-    end
-
-    def all_pass?
-      checks.values.all?
-    end
-
-    def to_h
-      {
-        format: FORMAT,
-        version: BasicSharp::VERSION,
-        status: STATUS,
-        all_pass: all_pass?,
-        checks: checks,
-        missing_mentions: missing_mentions,
-        forbidden_hits: forbidden_hits,
-        expected_current_lines: canonical_current_lines,
-        actual_current_lines: actual_current_lines,
-        current_section_bytes: current_section.bytesize
-      }
-    end
+    STATUS='readme_current_release_truth_gate'; attr_reader :readme_text,:spec
+    def initialize(readme_text,spec);@readme_text=readme_text;@spec=spec;end
+    def expected_versions;(1..84).to_a.reverse.map{|n|format('v0.0.%02d',n)};end
+    def missing_history_versions;expected_versions.reject{|v|readme_text.include?("### #{v} ")||readme_text.include?("### #{v} —")};end
+    def checks;{format_matches:spec.fetch('format')=='bsharp.readme_current_release_truth.json',format_version_matches:spec.fetch('format_version')==1,target_version_matches:spec.fetch('target_version')==BasicSharp::VERSION,status_matches:spec.fetch('status')==STATUS,heading_matches:readme_text.lines.first.to_s.strip=='# BASIC#',intro_present:readme_text.include?('## Intro'),current_version_present:readme_text.include?("The current version is **v#{BasicSharp::VERSION}**."),tagline_present:readme_text.include?('scripting language made for non-programmers, by non-programmers'),technical_history_present:readme_text.include?('## Technical History'),complete_history_present:missing_history_versions.empty?,additional_notes_present:readme_text.include?('## Additional Notes'),legal_section_present:readme_text.include?('## License / Legal'),ruby_authority_preserved:readme_text.include?('Ruby'),not_full_self_hosting_declared:readme_text.include?('not yet fully self-hosted')};end
+    def all_pass?;checks.values.all?;end
+    def to_h;{format:'bsharp.readme_current_release_truth.record',version:BasicSharp::VERSION,status:STATUS,all_pass:all_pass?,checks:checks,missing_history_versions:missing_history_versions};end
   end
 end

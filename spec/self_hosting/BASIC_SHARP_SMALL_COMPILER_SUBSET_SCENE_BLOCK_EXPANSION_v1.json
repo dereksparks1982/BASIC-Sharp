@@ -60,7 +60,7 @@
         "diagnostics": 1,
         "meaning_profile": "bsharp.meaning.v7"
       },
-      "expected_ir_sha256": "c11efee35469a898847e51d08db671d1bf18fb603d4282839b4aacfba8cc3143"
+      "expected_ir_sha256": "1a3eb6d0fcf0dacec3aa21a67790db7c4ce8398e9fcc6b61c78c789a42fe1fda"
     },
     {
       "name": "game_interface_scene_blocks",
@@ -70,9 +70,7 @@
         "HOVER",
         "CONTEXT"
       ],
-      "expected_actions": [
-
-      ],
+      "expected_actions": [],
       "expected_counts": {
         "kinds": 0,
         "objects": 1,
@@ -85,7 +83,7 @@
         "diagnostics": 4,
         "meaning_profile": "bsharp.meaning.v4"
       },
-      "expected_ir_sha256": "7f49b0978c71e2cbf3f199b93dc4c1074b94f4e2113e1aad7f049383264acffc"
+      "expected_ir_sha256": "e716f22674fc5330e55b105332fecc9ee6402d091bea92bd9f89fb798855dcfc"
     }
   ],
   "invalid_fixtures": [
