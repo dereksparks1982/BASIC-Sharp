@@ -1,4 +1,4 @@
-name: Remove temporary repair branch
+name: BASIC# v0.0 numbering repair
 
 on:
   push:
@@ -10,16 +10,231 @@ permissions:
   contents: write
 
 jobs:
-  cleanup:
+  repair:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Delete temporary branch
+
+      - name: Repair version numbering and current release truth
         shell: bash
         run: |
           set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+          import hashlib, json, os, re, subprocess
+
+          ROOT = Path('.')
+          WORKFLOW = Path('.github/workflows/v0-0-version-repair.yml')
+
+          def tracked():
+              return subprocess.check_output(['git','ls-files'], text=True).splitlines()
+
+          def corrected_name(name: str) -> str:
+              return (name.replace('v0_1_', 'v0_0_')
+                          .replace('V0_1_', 'V0_0_')
+                          .replace('v0.1.', 'v0.0.')
+                          .replace('V0.1.', 'V0.0.'))
+
+          # Rename tracked files first, using git mv so the index knows the new names.
+          for old in sorted(tracked(), key=lambda s: (s.count('/'), len(s)), reverse=True):
+              if old == str(WORKFLOW):
+                  continue
+              p = Path(old)
+              new_name = corrected_name(p.name)
+              if new_name != p.name:
+                  new = str(p.with_name(new_name))
+                  if Path(new).exists() and new != old:
+                      raise SystemExit(f'rename collision: {old} -> {new}')
+                  subprocess.run(['git','mv','--',old,new], check=True)
+
+          # Correct version text in all UTF-8 tracked files.
+          for raw in tracked():
+              p = Path(raw)
+              if p == WORKFLOW or not p.is_file():
+                  continue
+              data = p.read_bytes()
+              try:
+                  text = data.decode('utf-8')
+              except UnicodeDecodeError:
+                  continue
+              new = text
+              new = new.replace('v0.1.', 'v0.0.').replace('V0.1.', 'V0.0.')
+              new = new.replace('v0_1_', 'v0_0_').replace('V0_1_', 'V0_0_')
+              new = re.sub(r'(?<![0-9])0\.1\.(?=[0-9])', '0.0.', new)
+              new = re.sub(r'(?<![0-9])0_1_(?=[0-9])', '0_0_', new)
+              # Remove personal-name wording from live project-facing text.
+              new = new.replace('Derek-approved', 'project-approved')
+              new = new.replace('Derek approved', 'project approved')
+              new = new.replace('Derek-side', 'local')
+              new = new.replace("Derek's", "the project creator's")
+              new = new.replace('Derek', 'the project creator')
+              if new != text:
+                  p.write_text(new, encoding='utf-8')
+
+          # README: preserve the requested public structure and current version truth.
+          readme = Path('README.md')
+          if readme.exists():
+              t = readme.read_text(encoding='utf-8')
+              t = t.replace('## Version Technical History', '## Technical History')
+              readme.write_text(t, encoding='utf-8')
+
+          # Roadmap: v0.0.84 is accepted, v0.0.85 is next.
+          roadmap = Path('docs/roadmap/BASIC_SHARP_ROADMAP.md')
+          if roadmap.exists():
+              t = roadmap.read_text(encoding='utf-8')
+              start = t.find('## Current accepted base')
+              end = t.find('## Canonical Company Bible')
+              if start >= 0 and end > start:
+                  current = '''## Current accepted base\n\n```text\nv0.0.84: Self-Hosting Milestone 2 Slice 11 - Native Action Routing Integration\naccepted release commit 14dd3e0f9134ed55cdb71bb69b8a2f3c555206c9\ntag v0.0.84\n```\n\nv0.0.84 is the accepted release. It preserves v0.0.81 BASIC#-authored parser dispatch, v0.0.82 BASIC#-authored semantic routing, and v0.0.83 BASIC#-authored symbol resolution, then adds active BASIC#-authored action-routing decisions. Ruby remains the bootstrap compiler and separate referee authority.\n\nThe accepted path is:\n\n```text\nBASIC# source\n-> TokenizerReader\n-> BASIC# native parser dispatch [v0.0.81]\n-> SmallCompilerSubsetParser\n-> BASIC# native semantic routing [v0.0.82]\n-> BASIC# native symbol resolution [v0.0.83]\n-> BASIC# native action routing [v0.0.84]\n-> SmallCompilerSubsetSemanticResolver\n-> BSharp IR\n-> independent BSBC encoder\n-> independent BSBC loader\n-> independent BSharp VM\n```\n\n'''
+                  t = t[:start] + current + t[end:]
+              t = t.replace('## Next direction after v0.0.84', '## Next direction for v0.0.85')
+              roadmap.write_text(t, encoding='utf-8')
+
+          # Master handoff: close v0.0.84 and point at v0.0.85.
+          handoff = Path('docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md')
+          if handoff.exists():
+              t = handoff.read_text(encoding='utf-8')
+              start = t.find('## Current state')
+              end = t.find('## v0.0.84 purpose')
+              if start >= 0 and end > start:
+                  current = '''## Current state\n\n- **Accepted release:** v0.0.84 Self-Hosting Milestone 2 Slice 11: Native Action Routing Integration.\n- **Accepted release commit:** `14dd3e0f9134ed55cdb71bb69b8a2f3c555206c9`.\n- **Accepted release tag:** `v0.0.84`.\n- **Branch:** `main`.\n- **Next build:** v0.0.85.\n- **Release state:** v0.0.84 passed acceptance and closeout. The earlier rejected v0.0.84 package remains rejected evidence and is not a baseline.\n\n'''
+                  t = t[:start] + current + t[end:]
+              marker = '## Continuation point'
+              i = t.find(marker)
+              if i >= 0:
+                  t = t[:i] + '''## Continuation point\n\nv0.0.84 Native Action Routing Integration is accepted and closed. The next build is v0.0.85. Profiles 1 through 7 remain protected; no Profile 8 is implied. Ruby remains bootstrap/referee authority until later boundaries are independently replaced and proven.\n'''
+              handoff.write_text(t, encoding='utf-8')
+
+          # Replace the obsolete bloated README truth gate with a gate matching the public README contract.
+          validator = Path('compiler/readme_current_release_truth.rb')
+          validator.write_text('''# frozen_string_literal: true\n\nrequire_relative 'ast_nodes'\n\nmodule BasicSharp\n  class ReadmeCurrentReleaseTruth\n    FORMAT = 'bsharp.readme_current_release_truth.record'\n    STATUS = 'readme_current_release_truth_gate'\n\n    attr_reader :readme_text, :spec\n\n    def initialize(readme_text, spec)\n      @readme_text = readme_text\n      @spec = spec\n    end\n\n    def expected_versions\n      (1..84).to_a.reverse.map { |n| format('v0.0.%02d', n) }\n    end\n\n    def intro_section\n      @intro_section ||= begin\n        start = readme_text.index("## Intro")\n        return '' unless start\n        rest = readme_text[(start + "## Intro".length)..]\n        stop = rest.index("\\n## ")\n        stop ? rest[0...stop] : rest\n      end\n    end\n\n    def missing_history_versions\n      expected_versions.reject { |v| readme_text.include?("### #{v} ") || readme_text.include?("### #{v} —") }\n    end\n\n    def checks\n      @checks ||= {\n        format_matches: spec.fetch('format') == 'bsharp.readme_current_release_truth.json',\n        format_version_matches: spec.fetch('format_version') == 1,\n        target_version_matches: spec.fetch('target_version') == BasicSharp::VERSION,\n        status_matches: spec.fetch('status') == STATUS,\n        heading_matches: readme_text.lines.first.to_s.strip == '# BASIC#',\n        intro_present: readme_text.include?('## Intro'),\n        current_version_present: intro_section.include?("The current version is **v#{BasicSharp::VERSION}**."),\n        tagline_present: intro_section.include?('A scripting language made for non-programmers, by non-programmers'),\n        ruby_authority_preserved: intro_section.include?('Ruby'),\n        not_full_self_hosting_declared: intro_section.include?('not yet fully self-hosted'),\n        technical_history_present: readme_text.include?('## Technical History'),\n        complete_history_present: missing_history_versions.empty?,\n        wrong_version_series_absent: readme_text !~ /\\bv0\\.1\\.\\d+\\b/,\n        additional_notes_present: readme_text.include?('## Additional Notes'),\n        legal_section_present: readme_text.include?('## License / Legal')\n      }\n    end\n\n    def all_pass?\n      checks.values.all?\n    end\n\n    def to_h\n      {\n        format: FORMAT,\n        version: BasicSharp::VERSION,\n        status: STATUS,\n        all_pass: all_pass?,\n        checks: checks,\n        missing_history_versions: missing_history_versions\n      }\n    end\n  end\nend\n''', encoding='utf-8')
+
+          spec = Path('spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json')
+          spec.write_text(json.dumps({
+              'format': 'bsharp.readme_current_release_truth.json',
+              'format_version': 1,
+              'target_version': '0.0.84',
+              'status': 'readme_current_release_truth_gate',
+              'title': 'README Current Release Truth Gate',
+              'current_release': {
+                  'heading': 'BASIC#',
+                  'version': 'v0.0.84',
+                  'history_first': 'v0.0.84',
+                  'history_last': 'v0.0.01'
+              },
+              'protected_truths': [
+                  'The root README is the public GitHub landing page.',
+                  'The README must identify v0.0.84 as current.',
+                  'Technical History must contain every numbered version from v0.0.84 through v0.0.01.',
+                  'Historical gaps are identified rather than silently skipped.',
+                  'Ruby remains bootstrap/referee authority; BASIC# is not yet fully self-hosted.'
+              ]
+          }, indent=2) + '\n', encoding='utf-8')
+
+          test = Path('tests/test_readme_current_release_truth.rb')
+          test.write_text('''# frozen_string_literal: true\n\nrequire 'json'\nrequire 'minitest/autorun'\nrequire_relative '../compiler/readme_current_release_truth'\n\nclass TestReadmeCurrentReleaseTruth < Minitest::Test\n  ROOT = File.expand_path('..', __dir__)\n  SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json')\n  README_PATH = File.join(ROOT, 'README.md')\n\n  def spec\n    @spec ||= JSON.parse(File.read(SPEC_PATH, encoding: 'UTF-8'))\n  end\n\n  def readme\n    File.read(README_PATH, encoding: 'UTF-8')\n  end\n\n  def truth\n    @truth ||= BasicSharp::ReadmeCurrentReleaseTruth.new(readme, spec).to_h\n  end\n\n  def test_contract_identity\n    assert_equal 'bsharp.readme_current_release_truth.json', spec.fetch('format')\n    assert_equal 1, spec.fetch('format_version')\n    assert_equal BasicSharp::VERSION, spec.fetch('target_version')\n  end\n\n  def test_public_readme_matches_current_release\n    assert truth.fetch(:all_pass), truth.inspect\n    assert truth.fetch(:checks).fetch(:current_version_present)\n    assert truth.fetch(:checks).fetch(:complete_history_present)\n    assert truth.fetch(:checks).fetch(:wrong_version_series_absent)\n  end\n\n  def test_every_numbered_version_is_present\n    assert_empty truth.fetch(:missing_history_versions)\n  end\n\n  def test_wrong_version_series_is_rejected\n    broken = readme.sub('v0.0.84', 'v0.1.84')\n    record = BasicSharp::ReadmeCurrentReleaseTruth.new(broken, spec).to_h\n    refute record.fetch(:all_pass)\n  end\n\n  def test_trial_by_fire_inventory_runs_readme_truth_gate\n    inventory = JSON.parse(File.read(File.join(ROOT, 'spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_VALIDATION_INVENTORY_v1.json'), encoding: 'UTF-8'))\n    tools = inventory.fetch('required_tools').map { |entry| entry.fetch('path') }\n    assert_includes tools, 'tools/readme_current_release_truth.rb'\n  end\nend\n''', encoding='utf-8')
+
+          # Refresh path-bound hashes after the administrative renumbering.
+          def refresh_records(obj):
+              if isinstance(obj, dict):
+                  path = obj.get('path')
+                  if isinstance(path, str):
+                      p = Path(path)
+                      if p.is_file():
+                          data = p.read_bytes()
+                          if 'bytes' in obj:
+                              obj['bytes'] = len(data)
+                          if 'sha256' in obj:
+                              obj['sha256'] = hashlib.sha256(data).hexdigest()
+                  for v in obj.values():
+                      refresh_records(v)
+              elif isinstance(obj, list):
+                  for v in obj:
+                      refresh_records(v)
+
+          # First normalize every JSON document, then refresh records that explicitly bind to paths.
+          for p in sorted(ROOT.rglob('*.json')):
+              if '.git' in p.parts:
+                  continue
+              try:
+                  obj = json.loads(p.read_text(encoding='utf-8'))
+              except Exception:
+                  continue
+              refresh_records(obj)
+              p.write_text(json.dumps(obj, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+
+          # The two central inventories include hashes of files changed above; refresh them last.
+          for name in [
+              'BASIC_SHARP_PATCH_MANIFEST.json',
+              'spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_VALIDATION_INVENTORY_v1.json'
+          ]:
+              p = Path(name)
+              if p.exists():
+                  obj = json.loads(p.read_text(encoding='utf-8'))
+                  refresh_records(obj)
+                  p.write_text(json.dumps(obj, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          PY
+
+          git add -A
+
+          echo 'Checking for wrong live version references...'
+          if git grep --cached -n -I -E 'v0\.1\.[0-9]+|0\.1\.[0-9]+|v0_1_[0-9]+' -- . ':!.github/workflows/v0-0-version-repair.yml'; then
+            echo 'ERROR: wrong v0.1 version references remain in tracked live files.'
+            exit 1
+          fi
+
+          if git ls-files | grep -E 'v0_1_[0-9]+'; then
+            echo 'ERROR: wrong v0_1 paths remain.'
+            exit 1
+          fi
+
+          ruby -c compiler/readme_current_release_truth.rb >/dev/null
+          ruby -c tests/test_readme_current_release_truth.rb >/dev/null
+          ruby tests/test_readme_current_release_truth.rb
+
+      - name: Commit live-tree repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'BASIC# Repository Repair'
+          git config user.email 'basic-sharp@users.noreply.github.com'
+          git add -A
+          git reset -- .github/workflows/v0-0-version-repair.yml
+          if ! git diff --cached --quiet; then
+            git commit -m 'Correct BASIC# version numbering to v0.0 series'
+            git push origin HEAD:main
+          fi
+
+      - name: Correct release tags and confirm one branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --tags --force
+          while IFS= read -r old; do
+            [ -n "$old" ] || continue
+            new="${old/v0.1./v0.0.}"
+            target="$(git rev-parse "${old}^{}" 2>/dev/null || git rev-parse "$old")"
+            if ! git rev-parse -q --verify "refs/tags/$new" >/dev/null; then
+              git tag -a "$new" "$target" -m "BASIC# $new"
+              git push origin "refs/tags/$new"
+            fi
+            git push origin ":refs/tags/$old"
+          done < <(git tag -l 'v0.1.*' | sort -V)
           git push origin --delete repair-v0-0-version-truth 2>/dev/null || true
-          echo 'Remote branches:'
+          echo 'REMOTE BRANCHES:'
           git ls-remote --heads origin
+
+      - name: Remove one-time workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git checkout -f main
+          git reset --hard origin/main
+          git config user.name 'BASIC# Repository Repair'
+          git config user.email 'basic-sharp@users.noreply.github.com'
+          git rm .github/workflows/v0-0-version-repair.yml
+          git commit -m 'Remove completed one-time version repair workflow'
+          git push origin HEAD:main
