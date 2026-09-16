@@ -533,8 +533,8 @@
     },
     {
       "path": "tools/company_bible_audit.rb",
-      "bytes": 13330,
-      "sha256": "eb98ca60556a8a0d5be5c46dc777cb8219bf8f91f4167629e9100a6c620bd258"
+      "bytes": 13369,
+      "sha256": "566b68f755f16729d8ca80cb05071f7593974cd765cfc12bccd9151233d7e69f"
     },
     {
       "path": "tools/compound_if_stress.rb",
@@ -1395,13 +1395,13 @@
     },
     {
       "path": "docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md",
-      "bytes": 72603,
-      "sha256": "c8484f2fa6a00849f87c0b1d577db0fbe1d6b2bd7e40ccc82d0aac890e2f6a28"
+      "bytes": 72127,
+      "sha256": "e68e7180755db0c54a3f05223b95eae11f030aeb5af4e77d98b376f808a1e344"
     },
     {
       "path": "docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md",
-      "bytes": 6634,
-      "sha256": "f0eb4cb378dc099cefbfd4b84a16d781e2bb82c65ba203dbcbf28a08f4f85e94"
+      "bytes": 6513,
+      "sha256": "0464b554c5f2fbf41050089709f2094fb9f4cc8b355d6fac5ff0e01a20559da8"
     },
     {
       "path": "docs/language/BASIC_SHARP_OBJECT_INTERACTION_ACTIONS_v0_0_73.md",
@@ -1545,8 +1545,8 @@
     },
     {
       "path": "docs/roadmap/BASIC_SHARP_ROADMAP.md",
-      "bytes": 7779,
-      "sha256": "34a4c69c5dd7b6796b65068e8c878ebb7672bc4696afd73f48f3016b5505e672"
+      "bytes": 7772,
+      "sha256": "ddeb68fbbc5c82bc3ed6e455671e2b061a80d8aeddf012d07ea859e0a4608396"
     },
     {
       "path": "docs/runtime_contract_v0_0_48.md",
@@ -2630,8 +2630,8 @@
     },
     {
       "path": "tools/company_bible_audit.rb",
-      "bytes": 13330,
-      "sha256": "eb98ca60556a8a0d5be5c46dc777cb8219bf8f91f4167629e9100a6c620bd258"
+      "bytes": 13369,
+      "sha256": "566b68f755f16729d8ca80cb05071f7593974cd765cfc12bccd9151233d7e69f"
     },
     {
       "path": "tools/deterministic_fixture_hash_sweep.rb",

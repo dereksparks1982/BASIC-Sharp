@@ -32,7 +32,7 @@ BASIC# source
 
 ## Critical acceptance evidence
 
-The v0.0.84 gate must prove all accepted official action words route through BASIC# BSBC, native action invocation counts are observable, wrong-family sabotage fails closed without Ruby family fallback, v0.0.81 parser dispatch/v0.0.82 semantic routing/v0.0.83 symbol resolution remain active upstream, production compiler constructors and Ruby Runtime remain unavailable on the primary proof path, independent source-to-BSIR/BSBC/execution preserves referee parity, and generation #1 / generation #2 action-router output is byte-identical. The repaired candidate must also pass `tools/company_bible_audit.rb` after the rejected v0.0.84 current-reference failure.
+The v0.0.84 gate must prove all accepted official action words route through BASIC# BSBC, native action invocation counts are observable, wrong-family sabotage fails closed without Ruby family fallback, v0.0.81 parser dispatch/v0.0.82 semantic routing/v0.0.83 symbol resolution remain active upstream, production compiler constructors and Ruby Runtime remain unavailable on the primary proof path, independent source-to-BSIR/BSBC/execution preserves referee parity, and generation #1 / generation #2 action-router output is byte-identical. The accepted v0.0.84 release passed `tools/company_bible_audit.rb` after the rejected current-reference failure was repaired.
 
 ## Canonical Company Bible
 
@@ -47,21 +47,12 @@ No new creator-facing syntax and no Profile 8. Profiles 1 through 7, BSBC binary
 Accepted v0.0.84 validation floor:
 
 ```text
-86 test files
-687 runs
-10,134 assertions
+87 test files
+692 runs
+minimum 10,190 assertions
 0 failures
 0 errors
 0 skips
-74 required tools
-370 sealed artifacts
-14 protected artifacts
-```
-
-Accepted v0.0.84 inventory:
-
-```text
-87 test files
 75 required tools
 386 sealed artifacts
 14 protected artifacts
@@ -71,13 +62,13 @@ Complete normal and no-locale suites, every sealed required tool, deterministic 
 
 ## Release workflow
 
-1. Run the single self-contained versioned `.sh` installer against exact accepted v0.0.83.
-2. Verify exact v0.0.83 HEAD/tag/branch/clean tree and all base-file hashes before mutation.
+1. Run the next self-contained versioned `.sh` installer against exact accepted v0.0.84.
+2. Verify exact v0.0.84 HEAD/tag/branch/clean tree and all base-file hashes before mutation.
 3. Materialize the embedded changed-file payload outside the project, verify hashes, and run pre-mutation forensic checks.
 4. Capture rollback bytes, install only declared paths, and validate syntax/JSON/whitespace/package scope plus Company Bible/current-reference integrity.
 5. Run native parser dispatch, native semantic routing, native symbol resolution, and native action routing proofs; complete normal/no-locale suites; every sealed required tool; stress lanes; deterministic sweep; preflight; forensic overlay; whole-language gauntlet; and full-count Trial by Fire.
 6. Require one unmistakable `FINAL PASS`.
-7. After the project creator sees FINAL PASS: accepted snapshot first, then local commit/annotated tag, then GitHub SSH push and peeled-tag verification.
+7. After FINAL PASS is confirmed: accepted snapshot first, then local commit/annotated tag, then GitHub SSH push and peeled-tag verification.
 
 ## Canonical contract reference ledger
 

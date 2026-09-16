@@ -39,7 +39,7 @@ This is the single canonical Company Bible for BASIC# conduct, release, validati
 
 Every accepted BASIC# build follows the same release path:
 
-1. Run the self-contained versioned `.sh` installer supplied with the download; use a changed-files ZIP only when the project creator explicitly requests that packaging path.
+1. Run the self-contained versioned `.sh` installer supplied with the download; use a changed-files ZIP only when that packaging path is explicitly requested.
 2. Run installer validation including the complete normal test suite, complete no-locale suite, all sealed tools, required stress lanes, deterministic sweep, forensic/preflight gates, whole-language gauntlet, and full Trial by Fire counts.
 3. Preserve `PHASE START` / `PHASE PASS`, visible Minitest dot progress, run/assertion counts, and one unmistakable `FINAL PASS`.
 4. Create the accepted snapshot after final PASS and before local Git closeout.
@@ -101,7 +101,7 @@ No new governance/audit system is planned unless a demonstrated failure requires
 6. Larger 2D Game
 7. Media Player
 
-These are future proof programs, not permission to interrupt the active compiler/runtime lane. Solitaire remains intended as a free noncommercial BASIC# showcase while the project creator's Demon Killer card/deck artwork remains separately protected.
+These are future proof programs, not permission to interrupt the active compiler/runtime lane. Solitaire remains intended as a free noncommercial BASIC# showcase while the final decision authority's Demon Killer card/deck artwork remains separately protected.
 
 ## Release-hardening runway
 
