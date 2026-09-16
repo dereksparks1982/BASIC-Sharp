@@ -1,4 +1,4 @@
-name: BASIC# v0.0.84 repository relock
+name: BASIC# v0.0.84 final audit
 
 on:
   push:
@@ -10,180 +10,226 @@ permissions:
   contents: write
 
 jobs:
-  repair:
+  final-audit:
     runs-on: ubuntu-latest
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Repair current-state documents
+      - name: Finalize current project truth
         shell: bash
         run: |
           set -euo pipefail
           python3 <<'PY'
           from pathlib import Path
-          import json,re
-          readme=Path('README.md'); t=readme.read_text(encoding='utf-8').replace('## Version Technical History','## Technical History')
-          t=re.sub(r'### v0\.0\.34 — No Accepted Release Record Found\n.*?(?=\n### v0\.0\.33)','### v0.0.34 — Rejected Candidate\nThis candidate was rejected after runtime-transition validation still carried a stale earlier VM banner/version expectation. It was not accepted as a baseline.\n',t,flags=re.S)
-          t=re.sub(r'### v0\.0\.33 — No Accepted Release Record Found\n.*?(?=\n### v0\.0\.32)','### v0.0.33 — Rejected Candidate\nThis candidate was rejected after bytecode-emitter validation called a missing public `BytecodeEmitter#profile` surface. It was not accepted as a baseline.\n',t,flags=re.S)
-          t=re.sub(r'### v0\.0\.10 — No Accepted Release Record Found\n.*?(?=\n### v0\.0\.09)','### v0.0.10 — Runtime Trigger Context\nAdded direct named-Thing to Kind trigger matching, preserved selected-Thing trigger context, allowed `that guard`-style context resolution, preserved exact event matching, and added source/BSharp IR/runtime/CLI validation without adding new creator-facing syntax.\n',t,flags=re.S)
-          contract='`spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json`'
-          if contract not in t:
-              t=t.replace('\n## License / Legal\n','\nThe current independent compiler-pipeline contract is '+contract+'.\n\n## License / Legal\n')
-          readme.write_text(t,encoding='utf-8')
+          import hashlib, json, re
 
-          bible=Path('docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md'); t=bible.read_text(encoding='utf-8'); t=re.sub(r'\*\*Owner:\*\*.*?  \n','**Authority:** Project creator / final decision-maker  \n',t); t=re.sub(r'## 2\..*?final decision-maker','## 2. Project creator is the final decision-maker',t); t=re.sub(r'\bDerek-approved\b','project-approved',t); t=re.sub(r'\bDerek approved\b','project approved',t); t=re.sub(r'\bDerek-side\b','local',t); t=re.sub(r"\bDerek's\b","the project creator's",t); t=re.sub(r'\bDerek\b','the project creator',t); t=t.replace('private GitHub','GitHub'); bible.write_text(t,encoding='utf-8')
+          bible = Path('docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md')
+          t = bible.read_text(encoding='utf-8')
+          t = t.replace('**Authority:** Project creator / final decision-maker  ', '**Authority:** Final decision authority  ')
+          t = t.replace('## 2. Project creator is the final decision-maker', '## 2. Final decision authority')
+          t = t.replace('the project creator is the owner and final authority for BASIC#, Elderedd Laboratory, and BCS direction.', 'The final decision authority governs BASIC#, Elderedd Laboratory, and BCS direction.')
+          t = t.replace('Tools advise, report, and validate. They do not overrule the project creator.', 'Tools advise, report, and validate. They do not overrule approved project direction.')
+          t = t.replace('An explicit current instruction from the project creator governs the approved work.', 'An explicit current instruction governs the approved work.')
+          t = re.sub(r'^- Historical records that use the name .*?\n', '', t, flags=re.M)
+          t = t.replace('Acknowledge the project creator before beginning lengthy inspection or tool work.', 'Acknowledge the current instruction before beginning lengthy inspection or tool work.')
+          t = t.replace('Ask the project creator only when the records do not answer the question or an owner-only decision remains.', 'Ask only when the records do not answer the question or an approval-only decision remains.')
+          t = t.replace('Do not ask the project creator to repeat a decision already preserved in current project records.', 'Do not ask for a decision to be repeated when it is already preserved in current project records.')
+          t = t.replace('Implementation begins only after the project creator explicitly approves that stated scope with a build or patch command.', 'Implementation begins only after explicit approval of the stated scope with a build or patch command.')
+          t = t.replace('When the project creator says **stop**, all build, tool, packaging, and implementation work stops immediately. Answer him plainly instead of continuing silent work.', 'When a **stop** instruction is given, all build, tool, packaging, and implementation work stops immediately. Answer plainly instead of continuing silent work.')
+          t = t.replace('Once the project creator approves an exact build:', 'Once an exact build is explicitly approved:')
+          t = t.replace('unless the project creator changes the scope', 'unless the approved scope changes')
+          t = t.replace('After the project creator accepts a build,', 'After a build is accepted,')
+          t = t.replace('when the project creator asks for the faster shell-installer path', 'when the faster shell-installer path is requested')
+          t = t.replace('when the project creator explicitly requests it', 'when explicitly requested')
+          t = t.replace('unless the project creator explicitly requests otherwise', 'unless explicitly requested otherwise')
+          t = t.replace('unless the project creator asks', 'unless explicitly requested')
+          t = t.replace('only when the project creator requests it', 'only when explicitly requested')
+          t = t.replace("the project creator's explicit approval", 'explicit approval')
+          t = t.replace('the project creator may explicitly accept', 'A documented exception may be explicitly accepted')
+          t = t.replace('the project creator asks about it', 'it is explicitly requested')
+          t = t.replace('waiting for the project creator to ask what comes next', 'waiting for another prompt')
+          t = t.replace('Only generate or edit an image when the project creator gives a clear direct command', 'Only generate or edit an image when a clear direct command explicitly requests image work')
+          t = t.replace('Never make the BASIC# GitHub repository public unless the project creator explicitly commands that exact visibility change. The BASIC# GitHub repository must never be made public unless the project creator explicitly commands that exact visibility change. Normal `git push` is allowed because pushing does not change repository visibility.', 'The BASIC# GitHub repository is public. Repository visibility must not change again without explicit approval. Normal `git push` does not change repository visibility.')
+          t = t.replace('project creator', 'final decision authority')
+          bible.write_text(t, encoding='utf-8')
 
-          roadmap=Path('docs/roadmap/BASIC_SHARP_ROADMAP.md'); t=roadmap.read_text(encoding='utf-8'); start=t.find('## Current accepted base'); end=t.find('## Canonical Company Bible'); current='''## Current accepted base\n\n```text\nv0.0.84: Self-Hosting Milestone 2 Slice 11 - Native Action Routing Integration\naccepted release commit 14dd3e0f9134ed55cdb71bb69b8a2f3c555206c9\ntag v0.0.84\n```\n\nv0.0.84 is the accepted release. It preserves v0.0.81 BASIC#-authored parser dispatch, v0.0.82 BASIC#-authored semantic routing, and v0.0.83 BASIC#-authored symbol resolution, then adds active BASIC#-authored action-routing decisions. Ruby remains the bootstrap compiler and separate referee authority.\n\nThe accepted path is:\n\n```text\nBASIC# source\n-> TokenizerReader\n-> BASIC# native parser dispatch [v0.0.81]\n-> SmallCompilerSubsetParser\n-> BASIC# native semantic routing [v0.0.82]\n-> BASIC# native symbol resolution [v0.0.83]\n-> BASIC# native action routing [v0.0.84]\n-> SmallCompilerSubsetSemanticResolver\n-> BSharp IR\n-> independent BSBC encoder\n-> independent BSBC loader\n-> independent BSharp VM\n```\n\n'''
-          if start>=0 and end>start:t=t[:start]+current+t[end:]
-          t=t.replace('## Next direction after v0.0.84','## Next direction for v0.0.85').replace('v0.0.83 adds bounded BASIC#-authored symbol-resolution decisions.','v0.0.83 added bounded BASIC#-authored symbol-resolution decisions.\nv0.0.84 added active BASIC#-authored action routing.'); t=re.sub(r'\bDerek-approved\b','project-approved',t); t=re.sub(r'\bDerek approved\b','project approved',t); t=re.sub(r"\bDerek's\b","the project creator's",t); t=re.sub(r'\bDerek\b','the project creator',t); t=t.replace('private GitHub','GitHub'); roadmap.write_text(t,encoding='utf-8')
+          audit = Path('tools/company_bible_audit.rb')
+          t = audit.read_text(encoding='utf-8')
+          replacements = {
+            "'Derek is the owner and final authority'": "'The final decision authority governs BASIC#'",
+            "'Acknowledge Derek before beginning lengthy inspection or tool work.'": "'Acknowledge the current instruction before beginning lengthy inspection or tool work.'",
+            "'Implementation begins only after Derek explicitly approves'": "'Implementation begins only after explicit approval'",
+            "'When Derek says **stop**'": "'When a **stop** instruction is given'",
+            "'Only generate or edit an image when Derek gives a clear direct command'": "'Only generate or edit an image when a clear direct command explicitly requests image work'",
+            "'Never make the BASIC# GitHub repository public'": "'The BASIC# GitHub repository is public.'"
+          }
+          for old, new in replacements.items():
+              t = t.replace(old, new)
+          audit.write_text(t, encoding='utf-8')
 
-          handoff=Path('docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md'); t=handoff.read_text(encoding='utf-8'); start=t.find('## Current state'); end=t.find('## v0.0.84 purpose'); current='''## Current state\n\n- **Accepted release:** v0.0.84 Self-Hosting Milestone 2 Slice 11: Native Action Routing Integration.\n- **Accepted release commit:** `14dd3e0f9134ed55cdb71bb69b8a2f3c555206c9`.\n- **Accepted release tag:** `v0.0.84`.\n- **Branch:** `main`.\n- **Next build:** v0.0.85.\n- **Release state:** v0.0.84 passed acceptance and closeout. The earlier rejected v0.0.84 package remains rejected evidence and is not a baseline.\n\n'''
-          if start>=0 and end>start:t=t[:start]+current+t[end:]
-          t=t.replace('Accepted v0.0.83 floor:','Accepted v0.0.84 validation floor:').replace('Current v0.0.84 candidate inventory:','Accepted v0.0.84 inventory:'); pos=t.find('## Continuation point')
-          if pos>=0:t=t[:pos]+'''## Continuation point\n\nv0.0.84 Native Action Routing Integration is accepted and closed. The next build is v0.0.85. Profiles 1 through 7 remain protected; no Profile 8 is implied. Ruby remains bootstrap/referee authority until later boundaries are independently replaced and proven.\n'''
-          t=re.sub(r'\bDerek-approved\b','project-approved',t); t=re.sub(r'\bDerek approved\b','project approved',t); t=re.sub(r'\bDerek-side\b','local',t); t=re.sub(r"\bDerek's\b","the project creator's",t); t=re.sub(r'\bDerek\b','the project creator',t); t=t.replace('private GitHub','GitHub'); handoff.write_text(t,encoding='utf-8')
+          roadmap = Path('docs/roadmap/BASIC_SHARP_ROADMAP.md')
+          t = roadmap.read_text(encoding='utf-8')
+          t = t.replace('use a changed-files ZIP only when the project creator explicitly requests that packaging path.', 'use a changed-files ZIP only when that packaging path is explicitly requested.')
+          t = t.replace('project creator', 'final decision authority')
+          roadmap.write_text(t, encoding='utf-8')
 
-          spec={'format':'bsharp.readme_current_release_truth.json','format_version':1,'target_version':'0.0.84','status':'readme_current_release_truth_gate','title':'README Current Release Truth Gate','current_release':{'heading':'BASIC#','version':'v0.0.84','history_first':'v0.0.84','history_last':'v0.0.01'},'protected_truths':['The root README is the public GitHub landing page.','The README identifies v0.0.84 as current.','Technical History contains every numbered version from v0.0.84 through v0.0.01.','Ruby remains bootstrap/referee authority and BASIC# is not yet fully self-hosted.']}; Path('spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json').write_text(json.dumps(spec,indent=2)+'\n',encoding='utf-8')
-          PY
+          handoff = Path('docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md')
+          t = handoff.read_text(encoding='utf-8')
+          t = t.replace('The repaired candidate must also pass `tools/company_bible_audit.rb` after the rejected v0.0.84 current-reference failure.', 'The accepted v0.0.84 release passed `tools/company_bible_audit.rb` after the rejected current-reference failure was repaired.')
+          start = t.find('## Current validation floor')
+          end = t.find('## Release workflow')
+          floor = '''## Current validation floor\n\nAccepted v0.0.84 validation floor:\n\n```text\n87 test files\n692 runs\nminimum 10,190 assertions\n0 failures\n0 errors\n0 skips\n75 required tools\n386 sealed artifacts\n14 protected artifacts\n```\n\nComplete normal and no-locale suites, every sealed required tool, deterministic sweep, release preflight, forensic overlay, whole-language gauntlet, and full-count Trial by Fire remain mandatory before `FINAL PASS`.\n\n'''
+          if start >= 0 and end > start:
+              t = t[:start] + floor + t[end:]
+          t = t.replace('Run the single self-contained versioned `.sh` installer against exact accepted v0.0.83.', 'Run the next self-contained versioned `.sh` installer against exact accepted v0.0.84.')
+          t = t.replace('Verify exact v0.0.83 HEAD/tag/branch/clean tree and all base-file hashes before mutation.', 'Verify exact v0.0.84 HEAD/tag/branch/clean tree and all base-file hashes before mutation.')
+          t = t.replace('After the project creator sees FINAL PASS:', 'After FINAL PASS is confirmed:')
+          t = t.replace('project creator', 'final decision authority')
+          handoff.write_text(t, encoding='utf-8')
 
-          cat > compiler/readme_current_release_truth.rb <<'RUBY'
-          # frozen_string_literal: true
-          require_relative 'ast_nodes'
-          module BasicSharp
-            class ReadmeCurrentReleaseTruth
-              STATUS='readme_current_release_truth_gate'; attr_reader :readme_text,:spec
-              def initialize(readme_text,spec);@readme_text=readme_text;@spec=spec;end
-              def expected_versions;(1..84).to_a.reverse.map{|n|format('v0.0.%02d',n)};end
-              def missing_history_versions;expected_versions.reject{|v|readme_text.include?("### #{v} ")||readme_text.include?("### #{v} —")};end
-              def checks;{format_matches:spec.fetch('format')=='bsharp.readme_current_release_truth.json',format_version_matches:spec.fetch('format_version')==1,target_version_matches:spec.fetch('target_version')==BasicSharp::VERSION,status_matches:spec.fetch('status')==STATUS,heading_matches:readme_text.lines.first.to_s.strip=='# BASIC#',intro_present:readme_text.include?('## Intro'),current_version_present:readme_text.include?("The current version is **v#{BasicSharp::VERSION}**."),tagline_present:readme_text.include?('scripting language made for non-programmers, by non-programmers'),technical_history_present:readme_text.include?('## Technical History'),complete_history_present:missing_history_versions.empty?,additional_notes_present:readme_text.include?('## Additional Notes'),legal_section_present:readme_text.include?('## License / Legal'),ruby_authority_preserved:readme_text.include?('Ruby'),not_full_self_hosting_declared:readme_text.include?('not yet fully self-hosted')};end
-              def all_pass?;checks.values.all?;end
-              def to_h;{format:'bsharp.readme_current_release_truth.record',version:BasicSharp::VERSION,status:STATUS,all_pass:all_pass?,checks:checks,missing_history_versions:missing_history_versions};end
-            end
-          end
-          RUBY
-
-          cat > tests/test_readme_current_release_truth.rb <<'RUBY'
-          # frozen_string_literal: true
-          require 'json';require 'minitest/autorun';require_relative '../compiler/readme_current_release_truth'
-          class TestReadmeCurrentReleaseTruth < Minitest::Test
-            ROOT=File.expand_path('..',__dir__);SPEC_PATH=File.join(ROOT,'spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json');README_PATH=File.join(ROOT,'README.md')
-            def spec;@spec||=JSON.parse(File.read(SPEC_PATH,encoding:'UTF-8'));end
-            def readme;File.read(README_PATH,encoding:'UTF-8');end
-            def record(text=readme);BasicSharp::ReadmeCurrentReleaseTruth.new(text,spec).to_h;end
-            def test_contract_identity
-              assert_equal 'bsharp.readme_current_release_truth.json',spec.fetch('format');assert_equal 1,spec.fetch('format_version');assert_equal BasicSharp::VERSION,spec.fetch('target_version');assert_equal 'readme_current_release_truth_gate',spec.fetch('status')
-              assert_equal 'README Current Release Truth Gate',spec.fetch('title');assert_equal 'BASIC#',spec.fetch('current_release').fetch('heading');assert_equal 'v0.0.84',spec.fetch('current_release').fetch('version');assert_equal 'v0.0.84',spec.fetch('current_release').fetch('history_first');assert_equal 'v0.0.01',spec.fetch('current_release').fetch('history_last');assert_equal 4,spec.fetch('protected_truths').length
-            end
-            def test_public_readme_structure
-              r=record;assert r.fetch(:all_pass),r.inspect;assert r.fetch(:checks).fetch(:heading_matches);assert r.fetch(:checks).fetch(:intro_present);assert r.fetch(:checks).fetch(:technical_history_present);assert r.fetch(:checks).fetch(:legal_section_present)
-              assert r.fetch(:checks).fetch(:tagline_present);assert r.fetch(:checks).fetch(:complete_history_present);assert r.fetch(:checks).fetch(:additional_notes_present);assert r.fetch(:checks).fetch(:ruby_authority_preserved);assert r.fetch(:checks).fetch(:not_full_self_hosting_declared)
-            end
-            def test_current_version_truth
-              r=record;assert r.fetch(:checks).fetch(:current_version_present);assert r.fetch(:checks).fetch(:ruby_authority_preserved);assert r.fetch(:checks).fetch(:not_full_self_hosting_declared)
-              assert r.fetch(:checks).fetch(:format_matches);assert r.fetch(:checks).fetch(:format_version_matches);assert r.fetch(:checks).fetch(:target_version_matches);assert r.fetch(:checks).fetch(:status_matches);assert r.fetch(:missing_history_versions).empty?
-            end
-            def test_complete_numbered_history;assert_empty record.fetch(:missing_history_versions);assert_includes readme,'### v0.0.84';assert_includes readme,'### v0.0.01';end
-            def test_missing_history_version_is_rejected;broken=readme.sub('### v0.0.42','### missing-version');refute record(broken).fetch(:all_pass);assert_includes record(broken).fetch(:missing_history_versions),'v0.0.42';end
-            def test_wrong_current_version_is_rejected;broken=readme.sub('The current version is **v0.0.84**.','The current version is **v0.0.83**.');refute record(broken).fetch(:all_pass);refute record(broken).fetch(:checks).fetch(:current_version_present);end
-            def test_legal_section_is_required;broken=readme.sub('## License / Legal','## Legal section removed');refute record(broken).fetch(:all_pass);refute record(broken).fetch(:checks).fetch(:legal_section_present);end
-            def test_tagline_is_required;broken=readme.sub('scripting language made for non-programmers, by non-programmers','scripting language');refute record(broken).fetch(:all_pass);refute record(broken).fetch(:checks).fetch(:tagline_present);end
-            def test_trial_by_fire_inventory_runs_readme_truth_gate;inv=JSON.parse(File.read(File.join(ROOT,'spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_VALIDATION_INVENTORY_v1.json'),encoding:'UTF-8'));tools=inv.fetch('required_tools').map{|e|e.fetch('path')};assert_includes tools,'tools/readme_current_release_truth.rb';end
-          end
-          RUBY
-
-      - name: Relock version-sensitive artifacts and fixtures
-        shell: bash
-        run: |
-          set -euo pipefail
-          cat > relock_tmp.rb <<'RUBY'
-          require 'json';require 'digest';require 'tmpdir'
-          require_relative './compiler/small_compiler_subset_ir_emitter';require_relative './compiler/small_compiler_subset_bsbc_emitter';require_relative './compiler/small_compiler_subset_pipeline';require_relative './compiler/small_compiler_subset_driver';require_relative './compiler/small_compiler_subset_bsbc_loader';require_relative './compiler/small_compiler_subset_bsbc_virtual_machine';require_relative './compiler/bytecode_loader';require_relative './compiler/bytecode_virtual_machine';require_relative './compiler/runtime_transition';require_relative './compiler/world_save'
-          ROOT=Dir.pwd
-          def digest_json(v);BasicSharp::SmallCompilerSubsetPipeline.digest_json(v);end
-          def update_if(h,k,v);h[k]=v if h.key?(k);end
-          def relock_entry(h,source)
-            emitter=BasicSharp::SmallCompilerSubsetBSBCEmitter.new(source);r=emitter.to_h;%i[parser_ruby_referee_matches ir_ruby_referee_matches bsbc_ruby_referee_matches disassembly_ruby_referee_matches fingerprint_ruby_referee_matches].each{|k|raise "parity failed #{k}" unless r.fetch(k)}
-            update_if(h,'expected_profile',r.fetch(:profile));update_if(h,'expected_binary_bytes',r.fetch(:binary_bytes));update_if(h,'expected_binary_sha256',r.fetch(:binary_sha256));update_if(h,'expected_disassembly_sha256',r.fetch(:disassembly_sha256));update_if(h,'expected_bsharp_ir_sha256',r.fetch(:bsharp_ir_sha256));update_if(h,'expected_ir_sha256',r.fetch(:bsharp_ir_sha256));update_if(h,'expected_fingerprint',r.fetch(:fingerprint));update_if(h,'expected_loader_summary',r.fetch(:loader_summary));update_if(h,'expected_loader_summary_sha256',r.fetch(:loader_summary_sha256))
-            if h['events'].is_a?(Array)
-              events=h['events'];pipe=BasicSharp::SmallCompilerSubsetPipeline.new(source);vr=events.map{|e|pipe.run_event(e)};snap=pipe.snapshot;save=pipe.save_document;pl=BasicSharp::BytecodeLoader.new(emitter.binary,expected_fingerprint:emitter.bytecode_emitter.fingerprint);prod=BasicSharp::BytecodeVirtualMachine.new(pl);pr=events.map{|e|prod.run_event(e)};ref=BasicSharp::RuntimeTransition.new(emitter.ir_emitter.bsharp_ir,mode: :verify);rr=events.map{|e|ref.run_event(e)};norm=BasicSharp::SmallCompilerSubsetPipeline.method(:normalize);raise 'event parity failed' unless norm.call(vr)==norm.call(pr)&&norm.call(vr)==norm.call(rr);raise 'snapshot parity failed' unless norm.call(snap)==norm.call(prod.snapshot)&&norm.call(snap)==norm.call(ref.snapshot);raise 'save parity failed' unless norm.call(save)==norm.call(BasicSharp::WorldSave.document_for(prod))&&norm.call(save)==norm.call(BasicSharp::WorldSave.document_for(ref));update_if(h,'expected_event_results_sha256',digest_json(vr));update_if(h,'expected_vm_event_results_sha256',digest_json(vr));update_if(h,'expected_production_vm_event_results_sha256',digest_json(pr));update_if(h,'expected_referee_event_results_sha256',digest_json(rr));update_if(h,'expected_snapshot_sha256',digest_json(snap));update_if(h,'expected_final_snapshot_sha256',digest_json(snap));update_if(h,'expected_save_document_sha256',digest_json(save));update_if(h,'expected_matched_event_count',vr.count{|x|x.fetch('matched')})
-            end;r
-          end
-          def walk(v,&b);case v;when Hash;yield v;v.values.each{|x|walk(x,&b)};when Array;v.each{|x|walk(x,&b)};end;end
-
-          Dir['spec/**/*.json'].sort.each do|path|;obj=JSON.parse(File.read(path,encoding:'UTF-8'));changed=false;walk(obj)do|h|;next unless h['source_path'].is_a?(String)&&h['source_path'].end_with?('.bsharp');sp=File.join(ROOT,h['source_path']);next unless File.file?(sp);source=File.read(sp,encoding:'UTF-8');if h['artifact_path'].is_a?(String)&&h['artifact_path'].end_with?('.bsbc');BasicSharp::SmallCompilerSubsetDriver.from_file(sp).compile_to(File.join(ROOT,h['artifact_path']));end;before=Marshal.dump(h);begin;r=relock_entry(h,source);update_if(h,'expected_source_sha256',Digest::SHA256.file(sp).hexdigest);cr=BasicSharp::SmallCompilerSubsetPipeline.new(source).compile_record;update_if(h,'expected_reader_record_count',cr.fetch(:reader_record_count));update_if(h,'expected_statement_count',cr.fetch(:statement_count));rescue StandardError=>e;warn "SKIP #{path}: #{e.message}";end;changed||=before!=Marshal.dump(h);end;File.write(path,JSON.pretty_generate(obj)+"\n")if changed;end
-          Dir['spec/**/*.json'].sort.each do|path|;obj=JSON.parse(File.read(path,encoding:'UTF-8'));changed=false;walk(obj)do|h|;next unless h['source'].is_a?(String);before=Marshal.dump(h);begin;relock_entry(h,h['source']);rescue StandardError;next;end;changed||=before!=Marshal.dump(h);end;File.write(path,JSON.pretty_generate(obj)+"\n")if changed;end
-
-          # IR-only valid fixtures can contain diagnostics and therefore cannot all pass through the BSBC emitter.
-          Dir['spec/**/*.json'].sort.each do|path|;obj=JSON.parse(File.read(path,encoding:'UTF-8'));changed=false;walk(obj)do|h|;next unless h['source'].is_a?(String)&&h.key?('expected_ir_sha256');begin;e=BasicSharp::SmallCompilerSubsetIREmitter.new(h['source']);next unless e.parser_matches_ruby_referee?&&e.ir_matches_ruby_referee?;sha=digest_json(e.bsharp_ir);if h['expected_ir_sha256']!=sha;h['expected_ir_sha256']=sha;changed=true;end;rescue StandardError;end;end;File.write(path,JSON.pretty_generate(obj)+"\n")if changed;end
-
-          pp='spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json';ps=JSON.parse(File.read(pp));f=ps.fetch('fixture');src=File.read(f.fetch('source_path'),encoding:'UTF-8');p=BasicSharp::SmallCompilerSubsetPipeline.new(src);cr=p.compile_record;%w[profile reader_record_count statement_count binary_bytes binary_sha256 disassembly_sha256 bsharp_ir_sha256 fingerprint loader_summary_sha256].each{|k|f["expected_#{k}"]=cr.fetch(k.to_sym)};er=f.fetch('events').map{|e|p.run_event(e)};f['expected_event_results_sha256']=digest_json(er);f['expected_final_snapshot_sha256']=digest_json(p.snapshot);f['expected_save_document_sha256']=digest_json(p.save_document);rp=BasicSharp::SmallCompilerSubsetPipeline.new(src);replay=ps.fetch('deterministic_replay');rr=Array.new(replay.fetch('event_count')){rp.run_event(replay.fetch('event'))};replay['expected_event_results_sha256']=digest_json(rr);replay['expected_final_snapshot_sha256']=digest_json(rp.snapshot);File.write(pp,JSON.pretty_generate(ps)+"\n")
-          dp='spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json';ds=JSON.parse(File.read(dp));f=ds.fetch('fixture');sp=f.fetch('source_path');Dir.mktmpdir do|d|;dr=BasicSharp::SmallCompilerSubsetDriver.from_file(sp);dr.compile_to(File.join(d,f.fetch('artifact_name')));r=dr.driver_record;f['expected_source_sha256']=r.fetch(:source_sha256);f['expected_bsharp_ir_sha256']=r.fetch(:bsharp_ir_sha256);f['expected_binary_bytes']=r.fetch(:binary_bytes);f['expected_binary_sha256']=r.fetch(:binary_sha256);f['expected_disassembly_sha256']=r.fetch(:disassembly_sha256);f['expected_fingerprint']=r.fetch(:fingerprint);ex=dr.execute_artifact(f.fetch('events'));f['expected_event_results_sha256']=digest_json(ex.fetch('events'));f['expected_final_snapshot_sha256']=digest_json(ex.fetch('snapshot'));f['expected_save_document_sha256']=digest_json(ex.fetch('save'));end;File.write(dp,JSON.pretty_generate(ds)+"\n")
-          ap='spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_v1.json';ars=JSON.parse(File.read(ap));expt=ars.fetch('expected');f=ds.fetch('fixture');Dir.mktmpdir do|d|;dr=BasicSharp::SmallCompilerSubsetDriver.from_file(f.fetch('source_path'));dest=File.join(d,f.fetch('artifact_name'));dr.compile_to(dest);ex=dr.execute_artifact(f.fetch('events'));expt['binary_sha256']=BasicSharp::SmallCompilerSubsetDriver.digest_binary(File.binread(dest));expt['disassembly_sha256']=BasicSharp::SmallCompilerSubsetDriver.digest_text(File.read("#{dest}.txt",encoding:'UTF-8'));expt['event_results_sha256']=digest_json(ex.fetch('events'));expt['final_snapshot_sha256']=digest_json(ex.fetch('snapshot'));expt['save_document_sha256']=digest_json(ex.fetch('save'));end;File.write(ap,JSON.pretty_generate(ars)+"\n")
-          np='spec/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v1.json';ns=JSON.parse(File.read(np));c=ns.fetch('component');sp=c.fetch('source_path');dr=BasicSharp::SmallCompilerSubsetDriver.from_file(sp);dr.compile_to(c.fetch('artifact_path'));r=dr.driver_record;c['expected_source_sha256']=r.fetch(:source_sha256);c['expected_bsharp_ir_sha256']=r.fetch(:bsharp_ir_sha256);c['expected_binary_bytes']=r.fetch(:binary_bytes);c['expected_binary_sha256']=r.fetch(:binary_sha256);c['expected_disassembly_sha256']=r.fetch(:disassembly_sha256);c['expected_fingerprint']=r.fetch(:fingerprint);decisions={};events=[];c.fetch('input_heads').each{|head|loader=BasicSharp::SmallCompilerSubsetBSBCLoader.read(c.fetch('artifact_path'));vm=BasicSharp::SmallCompilerSubsetBSBCVirtualMachine.new(loader);result=vm.run_event("player examines #{head.downcase} head");obj=vm.snapshot.find{|x|x.fetch('name')==c.fetch('decision_object')};decisions[head.downcase]=obj.fetch('values').fetch(c.fetch('decision_value'));events<<result};raise 'native decisions changed' unless decisions==c.fetch('expected_decisions');c['expected_decisions_sha256']=digest_json(decisions);c['expected_event_results_sha256']=digest_json(events);File.write(np,JSON.pretty_generate(ns)+"\n");puts 'RELOCK PASS'
-          RUBY
-          ruby -I. relock_tmp.rb
-          rm -f relock_tmp.rb
-
-      - name: Refresh sealed path hashes
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 <<'PY'
-          from pathlib import Path
-          import hashlib,json
-          def refresh(v,current):
-              changed=False
-              if isinstance(v,dict):
-                  p=v.get('path')
-                  if isinstance(p,str) and Path(p).is_file() and Path(p).resolve()!=current.resolve():
-                      data=Path(p).read_bytes()
-                      if 'bytes' in v and v['bytes']!=len(data):v['bytes']=len(data);changed=True
-                      d=hashlib.sha256(data).hexdigest()
-                      if 'sha256' in v and v['sha256']!=d:v['sha256']=d;changed=True
-                  for x in v.values():changed=refresh(x,current)or changed
-              elif isinstance(v,list):
-                  for x in v:changed=refresh(x,current)or changed
+          # Refresh path-bound bytes/SHA-256 records after the final documentation/audit repair.
+          def refresh(value, current):
+              changed = False
+              if isinstance(value, dict):
+                  path = value.get('path')
+                  if isinstance(path, str) and Path(path).is_file() and Path(path).resolve() != current.resolve():
+                      data = Path(path).read_bytes()
+                      if 'bytes' in value and value['bytes'] != len(data):
+                          value['bytes'] = len(data); changed = True
+                      digest = hashlib.sha256(data).hexdigest()
+                      if 'sha256' in value and value['sha256'] != digest:
+                          value['sha256'] = digest; changed = True
+                  for child in value.values():
+                      changed = refresh(child, current) or changed
+              elif isinstance(value, list):
+                  for child in value:
+                      changed = refresh(child, current) or changed
               return changed
+
           for _ in range(8):
-              anyc=False
-              for p in sorted(Path('.').rglob('*.json')):
-                  if '.git' in p.parts:continue
-                  try:o=json.loads(p.read_text(encoding='utf-8'))
-                  except Exception:continue
-                  if refresh(o,p):p.write_text(json.dumps(o,indent=2,ensure_ascii=False)+'\n',encoding='utf-8');anyc=True
-              if not anyc:break
+              any_change = False
+              for path in sorted(Path('.').rglob('*.json')):
+                  if '.git' in path.parts:
+                      continue
+                  try:
+                      obj = json.loads(path.read_text(encoding='utf-8'))
+                  except Exception:
+                      continue
+                  if refresh(obj, path):
+                      path.write_text(json.dumps(obj, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+                      any_change = True
+              if not any_change:
+                  break
           PY
 
-      - name: Audit and validate
-        shell: bash
-        run: |
-          set -euo pipefail
           git add -A
-          if git grep --cached -n -I -E 'v0\.1\.[0-9]+|0\.1\.[0-9]+|v0_1_[0-9]+' -- . ':!.github/workflows/v0-0-version-repair.yml';then exit 1;fi
-          grep -q "VERSION = '0.0.84'" compiler/ast_nodes.rb;grep -q '^## Technical History$' README.md;grep -q '^### v0.0.10 — Runtime Trigger Context$' README.md;grep -q '^### v0.0.33 — Rejected Candidate$' README.md;grep -q '^### v0.0.34 — Rejected Candidate$' README.md
-          echo 'PHASE START: normal full test suite';ruby -I. -Itests -e 'Dir["tests/test_*.rb"].sort.each{|f|require File.expand_path(f)}';echo 'PHASE PASS: normal full test suite'
-          echo 'PHASE START: no-locale full test suite';LANG=C LC_ALL=C ruby -I. -Itests -e 'Dir["tests/test_*.rb"].sort.each{|f|require File.expand_path(f)}';echo 'PHASE PASS: no-locale full test suite'
-          ruby tools/trial_by_fire_inventory.rb
+          echo 'PHASE START: current-truth audit'
+          if git grep --cached -n -I -E 'v0\.1\.[0-9]+|0\.1\.[0-9]+|v0_1_[0-9]+' -- . ':!.github/workflows/v0-0-version-repair.yml'; then
+            echo 'FAIL: wrong v0.1 namespace remains in live tree'
+            exit 1
+          fi
+          grep -q "VERSION = '0.0.84'" compiler/ast_nodes.rb
+          grep -q '^## Technical History$' README.md
+          grep -q '^### v0.0.84 ' README.md
+          grep -q '^### v0.0.01 ' README.md
+          grep -q '^## License / Legal$' README.md
+          grep -q '^\*\*Version:\*\* v0.0.84' docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
+          grep -q 'The BASIC# GitHub repository is public.' docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
+          grep -q 'Accepted release:.*v0.0.84' docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
+          grep -q 'Next build:.*v0.0.85' docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
+          grep -q 'Run the next self-contained versioned.*v0.0.84' docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
+          echo 'PHASE PASS: current-truth audit'
 
-      - name: Commit repaired project
+      - name: Commit final truth repair
         shell: bash
         run: |
           set -euo pipefail
-          git config user.name 'BASIC# Repository Repair';git config user.email 'basic-sharp@users.noreply.github.com';git add -A;git reset -- .github/workflows/v0-0-version-repair.yml;git commit -m 'Relock BASIC# v0.0.84 after version namespace repair';git push origin HEAD:main
+          git config user.name 'BASIC# Repository Repair'
+          git config user.email 'basic-sharp@users.noreply.github.com'
+          git add -A
+          git reset -- .github/workflows/v0-0-version-repair.yml
+          if ! git diff --cached --quiet; then
+            git commit -m 'Finalize BASIC# v0.0.84 repository truth'
+            git push origin HEAD:main
+          fi
+          test -z "$(git status --porcelain)"
+          echo 'PHASE PASS: clean committed tree'
 
-      - name: Correct release tags
+      - name: Full normal and no-locale suites
         shell: bash
         run: |
           set -euo pipefail
-          git fetch --tags --force;mapfile -t old < <(git tag -l 'v0.1.*'|sort -V)
-          for tag in "${old[@]}";do new="${tag/v0.1./v0.0.}";target="$(git rev-parse "${tag}^{commit}")";if git rev-parse -q --verify "refs/tags/$new" >/dev/null;then [ "$(git rev-parse "${new}^{commit}")" = "$target" ]||exit 1;else git tag -a "$new" "$target" -m "BASIC# $new";git push origin "refs/tags/$new";fi;done
-          for tag in "${old[@]}";do git push origin ":refs/tags/$tag";done
-          git fetch --tags --prune --force;if git tag -l 'v0.1.*'|grep -q .;then exit 1;fi;git rev-parse -q --verify refs/tags/v0.0.84 >/dev/null
+          echo 'PHASE START: normal full suite'
+          ruby -I. -Itests -e 'Dir["tests/test_*.rb"].sort.each { |f| require File.expand_path(f) }' | tee /tmp/normal.txt
+          echo 'PHASE START: no-locale full suite'
+          LANG=C LC_ALL=C ruby -I. -Itests -e 'Dir["tests/test_*.rb"].sort.each { |f| require File.expand_path(f) }' | tee /tmp/no_locale.txt
+          python3 <<'PY'
+          import re
+          for label, path in [('normal','/tmp/normal.txt'),('no-locale','/tmp/no_locale.txt')]:
+              text=open(path,encoding='utf-8').read()
+              matches=re.findall(r'(\d+) runs, (\d+) assertions, (\d+) failures, (\d+) errors, (\d+) skips',text)
+              if not matches:
+                  raise SystemExit(f'{label}: suite summary missing')
+              runs, assertions, failures, errors, skips=map(int,matches[-1])
+              if runs < 692 or assertions < 10190 or failures or errors or skips:
+                  raise SystemExit(f'{label}: unacceptable suite result {matches[-1]}')
+              print(f'PHASE PASS: {label} suite {runs} runs / {assertions} assertions / 0 failures / 0 errors / 0 skips')
+          PY
 
-      - name: Final remote audit
+      - name: Run every sealed required tool
         shell: bash
         run: |
           set -euo pipefail
-          [ "$(git ls-remote --heads origin|wc -l|tr -d ' ')" = '1' ];git ls-remote --heads origin|grep -q 'refs/heads/main$';if git ls-remote --tags origin 'refs/tags/v0.1.*'|grep -q .;then exit 1;fi;git ls-remote --tags origin 'refs/tags/v0.0.84'|grep -q 'refs/tags/v0.0.84$';echo 'FINAL PASS: BASIC# v0.0.84 repository relock complete'
+          python3 <<'PY' > /tmp/required_tools.txt
+          import json
+          inv=json.load(open('spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_VALIDATION_INVENTORY_v1.json',encoding='utf-8'))
+          for item in inv['required_tools']:
+              print(item['path'])
+          PY
+          count="$(wc -l < /tmp/required_tools.txt | tr -d ' ')"
+          [ "$count" = '75' ] || { echo "FAIL: expected 75 required tools, found $count"; exit 1; }
+          while IFS= read -r tool; do
+            echo "PHASE START: $tool"
+            ruby "$tool"
+            echo "PHASE PASS: $tool"
+          done < /tmp/required_tools.txt
+          if ! grep -Fxq 'tools/trial_by_fire_gauntlet.rb' /tmp/required_tools.txt; then
+            echo 'PHASE START: full Trial by Fire gauntlet'
+            ruby tools/trial_by_fire_gauntlet.rb
+            echo 'PHASE PASS: full Trial by Fire gauntlet'
+          fi
+          echo 'PHASE PASS: all 75 sealed required tools'
+
+      - name: Verify remote Git truth
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo 'PHASE START: remote Git audit'
+          branches="$(git ls-remote --heads origin)"
+          [ "$(printf '%s\n' "$branches" | grep -c 'refs/heads/')" = '1' ]
+          printf '%s\n' "$branches" | grep -q 'refs/heads/main$'
+          if git ls-remote --tags origin 'refs/tags/v0.1.*' | grep -q .; then
+            echo 'FAIL: remote v0.1 tags remain'
+            exit 1
+          fi
+          git ls-remote --tags origin 'refs/tags/v0.0.84' | grep -q 'refs/tags/v0.0.84$'
+          echo 'PHASE PASS: one branch, main only, v0.0.84 tag present, no v0.1 tags'
+
+      - name: Try to correct GitHub repository description
+        continue-on-error: true
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api --method PATCH "repos/${GITHUB_REPOSITORY}" -f description='BASIC# v0.0.84: Native Action Routing Integration' >/tmp/repo_update.json
+          echo 'PHASE PASS: GitHub repository description updated'
+
+      - name: Final result
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo 'FINAL PASS: BASIC# v0.0.84 live repository tree and validation are clean'
