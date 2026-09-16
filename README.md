@@ -267,3 +267,17 @@ The current repository does not contain an earlier accepted release commit for t
 ## Additional Notes
 
 The version technical history intentionally runs in full from **v0.0.84 through v0.0.01**, newest to oldest. Numbers without a surviving accepted release record are kept in sequence and identified plainly instead of being skipped or given invented implementation details.
+
+## License / Legal
+
+Copyright © 2026. All rights reserved.
+
+BASIC# is publicly viewable for inspection and development review, but it is **not currently released under an open-source license**. Except for rights necessarily granted under GitHub's platform terms for hosting, viewing, and use of repository features, no permission is granted to copy, modify, distribute, sublicense, sell, commercially exploit, incorporate the project into another product, or distribute derivative works without prior written permission from the copyright holder or a separate written license.
+
+Public availability of this repository does not place BASIC# in the public domain and does not waive copyright or other intellectual-property rights.
+
+No trademark, branding, or endorsement rights are granted in the names **BASIC#**, **BSharp**, **BSharp Bytecode**, **BSharp VM**, or associated project names, logos, or identifiers.
+
+Future releases may use different commercial, community, dual-license, or open-source terms. Those terms will apply only where expressly stated and will not retroactively alter the rights reserved here.
+
+See the root `LICENSE` file for the current legal notice.
