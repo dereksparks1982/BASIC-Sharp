@@ -1,6 +1,6 @@
 # BASIC# Documentation Map
 
-**Version:** v0.1.84
+**Version:** v0.0.84
 **Status:** Canonical navigation guide  
 **Purpose:** Give Derek, future assistants, contributors, and reviewers a front door into the BASIC# documentation stack.
 
@@ -45,7 +45,7 @@ These records govern the current march toward BASIC# understanding a sealed subs
 
 These records protect the working engine while self-hosting grows.
 
-- `docs/runtime_contract_v0_1_*.md`
+- `docs/runtime_contract_v0_0_*.md`
 - `spec/runtime_v*/`
 - `spec/bytecode*/`
 - bytecode tools under `tools/bytecode_*.rb`
@@ -70,7 +70,7 @@ These records explain what changed, why, and how the package was handed off.
 - `docs/session_logs/`
 - `docs/changed_files/`
 - `docs/audit/` for permanent rejected-build and repair evidence
-- `BUILD_HANDSHAKE_v0_1_*.md`
+- `BUILD_HANDSHAKE_v0_0_*.md`
 
 ## 8. Reading Order for a Build
 
@@ -87,21 +87,21 @@ Before proposing or building a BASIC# patch, read in this order:
 
 This map is not a replacement for the Company Bible, roadmap, specifications, validation inventory, or handoff. It is the front door that tells a reader which room to enter first.
 
-## v0.1.63 records
+## v0.0.63 records
 
-- `BUILD_HANDSHAKE_v0_1_63.md`
-- `docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_63.md`
-- `docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_63.md`
-- `docs/validation/BASIC_SHARP_VALIDATION_v0_1_63.md`
-- `docs/session_logs/BASIC_SHARP_v0_1_63_SESSION_LOG.md`
-- `docs/runtime_contract_v0_1_63.md`
-- `docs/testing/BASIC_SHARP_UTF8_SOURCE_READING_CONTRACT_v0_1_63.md`
+- `BUILD_HANDSHAKE_v0_0_63.md`
+- `docs/changelog/BASIC_SHARP_CHANGELOG_v0_0_63.md`
+- `docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_0_63.md`
+- `docs/validation/BASIC_SHARP_VALIDATION_v0_0_63.md`
+- `docs/session_logs/BASIC_SHARP_v0_0_63_SESSION_LOG.md`
+- `docs/runtime_contract_v0_0_63.md`
+- `docs/testing/BASIC_SHARP_UTF8_SOURCE_READING_CONTRACT_v0_0_63.md`
 - `spec/governance/BASIC_SHARP_UTF8_SOURCE_READING_CONTRACT_v1.json`
 - `spec/governance/BASIC_SHARP_ELDEREDD_PATH_BRIDGE_CONTRACT_v1.json`
 - `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json`
-- `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v0_1_63.md`
+- `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v0_0_63.md`
 
-v0.1.63 hardens UTF-8 source reading, keeps Elderedd as the active identity direction, keeps DKLab as retired compatibility/history, consolidates the roadmap, and adds small compiler subset BSBC execution parity under Ruby referee control.
+v0.0.63 hardens UTF-8 source reading, keeps Elderedd as the active identity direction, keeps DKLab as retired compatibility/history, consolidates the roadmap, and adds small compiler subset BSBC execution parity under Ruby referee control.
 
 ## Active governance contracts
 
@@ -111,18 +111,18 @@ v0.1.63 hardens UTF-8 source reading, keeps Elderedd as the active identity dire
 - README truth: `spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json`
 - Validation inventory: `spec/trial_by_fire/BASIC_SHARP_TRIAL_BY_FIRE_VALIDATION_INVENTORY_v1.json`
 
-## v0.1.63 Rejected Candidate Evidence
+## v0.0.63 Rejected Candidate Evidence
 
-- `docs/audit/BASIC_SHARP_v0_1_63_REJECTED_CANDIDATE_AUDIT.md` — records the rejected v0.1.63 stale Text Value save fixture candidate and repair requirement.
+- `docs/audit/BASIC_SHARP_v0_0_63_REJECTED_CANDIDATE_AUDIT.md` — records the rejected v0.0.63 stale Text Value save fixture candidate and repair requirement.
 
-## v0.1.84 records
+## v0.0.84 records
 
-- `BUILD_HANDSHAKE_v0_1_84.md`
-- `docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_84.md`
-- `docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_84.md`
-- `docs/validation/BASIC_SHARP_VALIDATION_v0_1_84.md`
-- `docs/session_logs/BASIC_SHARP_v0_1_84_SESSION_LOG.md`
-- `docs/self_hosting/BASIC_SHARP_NATIVE_ACTION_ROUTING_INTEGRATION_v0_1_84.md`
+- `BUILD_HANDSHAKE_v0_0_84.md`
+- `docs/changelog/BASIC_SHARP_CHANGELOG_v0_0_84.md`
+- `docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_0_84.md`
+- `docs/validation/BASIC_SHARP_VALIDATION_v0_0_84.md`
+- `docs/session_logs/BASIC_SHARP_v0_0_84_SESSION_LOG.md`
+- `docs/self_hosting/BASIC_SHARP_NATIVE_ACTION_ROUTING_INTEGRATION_v0_0_84.md`
 - `spec/self_hosting/BASIC_SHARP_NATIVE_ACTION_ROUTING_INTEGRATION_v1.json`
 
-v0.1.84 moves official-action family routing into BASIC#-authored BSBC while preserving the v0.1.81-v0.1.83 native compiler boundaries upstream.
+v0.0.84 moves official-action family routing into BASIC#-authored BSBC while preserving the v0.0.81-v0.0.83 native compiler boundaries upstream.

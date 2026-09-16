@@ -6,14 +6,14 @@ require_relative '../compiler/small_compiler_subset_ir_parity_harness'
 
 ROOT = File.expand_path('..', __dir__)
 SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json')
-DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_51.md')
+DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_0_51.md')
 REFERENCE_PATHS = [
   'README.md',
   'docs/roadmap/BASIC_SHARP_ROADMAP.md',
   'docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md',
   'docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md',
   'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json',
-  'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v0_1_50.md'
+  'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v0_0_50.md'
 ].freeze
 
 spec = JSON.parse(File.read(SPEC_PATH, encoding: 'UTF-8'))

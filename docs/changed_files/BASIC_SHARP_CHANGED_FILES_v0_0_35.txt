@@ -1,0 +1,10 @@
+BASIC# v0.0.35 changed-files record
+
+Accepted base: v0.0.32, commit 3566b02, tag v0.0.32
+Target: v0.0.35
+Modified: 107
+Added: 76
+Deleted: 0
+Total project paths: 183
+
+The exact sorted modified and added path arrays, byte counts, and SHA-256 hashes are authoritative in BASIC_SHARP_PATCH_MANIFEST.json. The package installer is a separate package utility and is not installed into the project.

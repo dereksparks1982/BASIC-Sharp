@@ -1,7 +1,7 @@
 {
   "format": "bsharp.bytecode.emitter.fixtures.json",
   "format_version": 1,
-  "created_by_basic_sharp": "0.1.27",
+  "created_by_basic_sharp": "0.0.27",
   "bytecode_profile": "bsharp.bytecode.v1",
   "meaning_profile": "bsharp.meaning.v1",
   "fingerprint_algorithm": "sha256-bsir-meaning-v1",

@@ -2,26 +2,26 @@
 
 ## Current state
 
-- **Accepted base:** v0.1.83 at commit `ac8bb906239ed2f199c437d4c3321b18fff1fcab`, annotated tag `v0.1.83`, branch `main`.
-- **Candidate:** v0.1.84 Self-Hosting Milestone 2 Slice 11: Native Action Routing Integration.
-- **Rollback:** restore exact v0.1.83 and remove only v0.1.84 added paths.
-- **Deliverable:** `BUILD_BASIC_SHARP_v0_1_84_SELF_HOSTING_NATIVE_ACTION_ROUTING.sh`.
-- **Rejected candidate evidence:** the first v0.1.84 package failed `tools/company_bible_audit.rb` because its roadmap omitted the canonical Company Bible path. Installer rollback restored v0.1.83. That rejected package is not a baseline; v0.1.84 remains the candidate until accepted or explicitly abandoned by Derek.
+- **Accepted base:** v0.0.83 at commit `ac8bb906239ed2f199c437d4c3321b18fff1fcab`, annotated tag `v0.0.83`, branch `main`.
+- **Candidate:** v0.0.84 Self-Hosting Milestone 2 Slice 11: Native Action Routing Integration.
+- **Rollback:** restore exact v0.0.83 and remove only v0.0.84 added paths.
+- **Deliverable:** `BUILD_BASIC_SHARP_v0_0_84_SELF_HOSTING_NATIVE_ACTION_ROUTING.sh`.
+- **Rejected candidate evidence:** the first v0.0.84 package failed `tools/company_bible_audit.rb` because its roadmap omitted the canonical Company Bible path. Installer rollback restored v0.0.83. That rejected package is not a baseline; v0.0.84 remains the candidate until accepted or explicitly abandoned by Derek.
 
-## v0.1.84 purpose
+## v0.0.84 purpose
 
-v0.1.81 put BASIC# bytecode into active parser dispatch. v0.1.82 added active BASIC# semantic-family routing. v0.1.83 added active BASIC# symbol-resolution decisions. v0.1.84 preserves all three and adds a fourth authority boundary: `compiler/small_compiler_subset_native_action_routing.rb` executes `compiler/native/first_bsharp_action_router.bsbc`, and the independent semantic resolver must obey the BASIC# action-family decision or fail visibly.
+v0.0.81 put BASIC# bytecode into active parser dispatch. v0.0.82 added active BASIC# semantic-family routing. v0.0.83 added active BASIC# symbol-resolution decisions. v0.0.84 preserves all three and adds a fourth authority boundary: `compiler/small_compiler_subset_native_action_routing.rb` executes `compiler/native/first_bsharp_action_router.bsbc`, and the independent semantic resolver must obey the BASIC# action-family decision or fail visibly.
 
 Primary bounded path:
 
 ```text
 BASIC# source
 -> TokenizerReader
--> v0.1.81 BASIC# native parser dispatch
+-> v0.0.81 BASIC# native parser dispatch
 -> SmallCompilerSubsetParser
--> v0.1.82 BASIC# native semantic routing
--> v0.1.83 BASIC# native symbol resolution
--> v0.1.84 BASIC# native action routing
+-> v0.0.82 BASIC# native semantic routing
+-> v0.0.83 BASIC# native symbol resolution
+-> v0.0.84 BASIC# native action routing
 -> SmallCompilerSubsetSemanticResolver
 -> BSharp IR
 -> independent BSBC encoder
@@ -31,7 +31,7 @@ BASIC# source
 
 ## Critical acceptance evidence
 
-The v0.1.84 gate must prove all accepted official action words route through BASIC# BSBC, native action invocation counts are observable, wrong-family sabotage fails closed without Ruby family fallback, v0.1.81 parser dispatch/v0.1.82 semantic routing/v0.1.83 symbol resolution remain active upstream, production compiler constructors and Ruby Runtime remain unavailable on the primary proof path, independent source-to-BSIR/BSBC/execution preserves referee parity, and generation #1 / generation #2 action-router output is byte-identical. The repaired candidate must also pass `tools/company_bible_audit.rb` after the rejected v0.1.84 current-reference failure.
+The v0.0.84 gate must prove all accepted official action words route through BASIC# BSBC, native action invocation counts are observable, wrong-family sabotage fails closed without Ruby family fallback, v0.0.81 parser dispatch/v0.0.82 semantic routing/v0.0.83 symbol resolution remain active upstream, production compiler constructors and Ruby Runtime remain unavailable on the primary proof path, independent source-to-BSIR/BSBC/execution preserves referee parity, and generation #1 / generation #2 action-router output is byte-identical. The repaired candidate must also pass `tools/company_bible_audit.rb` after the rejected v0.0.84 current-reference failure.
 
 ## Canonical Company Bible
 
@@ -43,7 +43,7 @@ No new creator-facing syntax and no Profile 8. Profiles 1 through 7, BSBC binary
 
 ## Current validation floor
 
-Accepted v0.1.83 floor:
+Accepted v0.0.83 floor:
 
 ```text
 86 test files
@@ -57,7 +57,7 @@ Accepted v0.1.83 floor:
 14 protected artifacts
 ```
 
-Current v0.1.84 candidate inventory:
+Current v0.0.84 candidate inventory:
 
 ```text
 87 test files
@@ -70,8 +70,8 @@ Complete normal and no-locale suites, every sealed required tool, deterministic 
 
 ## Release workflow
 
-1. Run the single self-contained versioned `.sh` installer against exact accepted v0.1.83.
-2. Verify exact v0.1.83 HEAD/tag/branch/clean tree and all base-file hashes before mutation.
+1. Run the single self-contained versioned `.sh` installer against exact accepted v0.0.83.
+2. Verify exact v0.0.83 HEAD/tag/branch/clean tree and all base-file hashes before mutation.
 3. Materialize the embedded changed-file payload outside the project, verify hashes, and run pre-mutation forensic checks.
 4. Capture rollback bytes, install only declared paths, and validate syntax/JSON/whitespace/package scope plus Company Bible/current-reference integrity.
 5. Run native parser dispatch, native semantic routing, native symbol resolution, and native action routing proofs; complete normal/no-locale suites; every sealed required tool; stress lanes; deterministic sweep; preflight; forensic overlay; whole-language gauntlet; and full-count Trial by Fire.
@@ -113,4 +113,4 @@ spec/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v1.json
 
 ## Continuation point
 
-v0.1.84 Native Action Routing Integration is the active candidate. The first v0.1.84 package was rejected and rolled back; repair remains on v0.1.84. Do not begin v0.1.85 until v0.1.84 has passed Derek-side native acceptance and full closeout.
+v0.0.84 Native Action Routing Integration is the active candidate. The first v0.0.84 package was rejected and rolled back; repair remains on v0.0.84. Do not begin v0.0.85 until v0.0.84 has passed Derek-side native acceptance and full closeout.

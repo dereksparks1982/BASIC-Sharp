@@ -16,7 +16,7 @@ class TestMeaningConformance < Minitest::Test
     assert_equal 'bsharp.meaning.conformance.json', manifest.fetch('format')
     assert_equal 1, manifest.fetch('format_version')
     assert_equal 'bsharp.meaning.v1', manifest.fetch('profile')
-    assert_equal '0.1.24', manifest.fetch('language_version')
+    assert_equal '0.0.24', manifest.fetch('language_version')
     assert_equal 13, manifest.fetch('cases').length
   end
 

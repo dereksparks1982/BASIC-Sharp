@@ -1,10 +1,10 @@
 {
   "format": "bsharp.bootstrap_boundary_audit.json",
   "format_version": 1,
-  "target_version": "0.1.84",
+  "target_version": "0.0.84",
   "title": "BASIC# Bootstrap Boundary Audit",
   "status": "bootstrap_boundary_audit_under_ruby_referee",
-  "next_milestone": "v0.1.84 Self-Hosting Milestone 2 Slice 11: BASIC# Native Action Routing Integration",
+  "next_milestone": "v0.0.84 Self-Hosting Milestone 2 Slice 11: BASIC# Native Action Routing Integration",
   "purpose": "Audit exactly where Ruby remains bootstrap referee while Self-Hosting Milestone 2 Slice 11 preserves native parser dispatch, semantic routing, and symbol resolution, then requires bounded action-family routing to pass through a BASIC#-authored BSBC action component with fail-closed sabotage and fixed-point proof.",
   "forbidden_until_after_milestone": [
     "claiming BASIC# is self-hosted",
@@ -20,7 +20,7 @@
       "name": "ruby_bootstrap_referee",
       "owner": "Ruby bootstrap",
       "authority": "source_of_truth",
-      "boundary": "Ruby Parser, SemanticResolver, BytecodeEmitter, BytecodeLoader, Runtime, and BytecodeVirtualMachine remain production referee authority. In v0.1.83 they are forbidden from the bounded native parser-dispatch, semantic-routing, and symbol-resolution primary proof paths and may be invoked only on separate parity-referee paths.",
+      "boundary": "Ruby Parser, SemanticResolver, BytecodeEmitter, BytecodeLoader, Runtime, and BytecodeVirtualMachine remain production referee authority. In v0.0.83 they are forbidden from the bounded native parser-dispatch, semantic-routing, and symbol-resolution primary proof paths and may be invoked only on separate parity-referee paths.",
       "paths": [
         "compiler/parser.rb",
         "compiler/resolver.rb",
@@ -108,13 +108,13 @@
       "name": "basic_sharp_authored_compiler_component",
       "owner": "BASIC#-authored compiler component",
       "authority": "native_compiler_decision_evidence",
-      "boundary": "The first compiler-domain decision rules live in BASIC# source, compile through SmallCompilerSubsetDriver into checked-in BSBC, and execute source-free through SmallCompilerSubsetBSBCLoader and SmallCompilerSubsetBSBCVirtualMachine. v0.1.81 preserves this component as the canonical native dispatch authority for the bounded parser path.",
+      "boundary": "The first compiler-domain decision rules live in BASIC# source, compile through SmallCompilerSubsetDriver into checked-in BSBC, and execute source-free through SmallCompilerSubsetBSBCLoader and SmallCompilerSubsetBSBCVirtualMachine. v0.0.81 preserves this component as the canonical native dispatch authority for the bounded parser path.",
       "paths": [
         "compiler/native/first_bsharp_compiler_component.bsharp",
         "compiler/native/first_bsharp_compiler_component.bsbc",
         "compiler/native/first_bsharp_compiler_component.bsbc.txt",
         "spec/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v1.json",
-        "docs/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v0_1_80.md",
+        "docs/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v0_0_80.md",
         "tools/first_native_compiler_component.rb",
         "tests/test_first_native_compiler_component.rb"
       ]
@@ -123,14 +123,14 @@
       "name": "basic_sharp_native_parser_dispatch",
       "owner": "BASIC#-authored parser dispatch",
       "authority": "active_bounded_parser_dispatch_evidence",
-      "boundary": "SmallCompilerSubsetParser must consult the persisted BASIC# BSBC decision component for accepted Head routing, reject invalid/unmatched or sabotaged decisions without Ruby fallback, expose invocation evidence, and satisfy the v0.1.80 -> v0.1.81 -> v0.1.81 fixed-point bootstrap proof.",
+      "boundary": "SmallCompilerSubsetParser must consult the persisted BASIC# BSBC decision component for accepted Head routing, reject invalid/unmatched or sabotaged decisions without Ruby fallback, expose invocation evidence, and satisfy the v0.0.80 -> v0.0.81 -> v0.0.81 fixed-point bootstrap proof.",
       "paths": [
         "compiler/small_compiler_subset_native_dispatch.rb",
         "compiler/small_compiler_subset_parser.rb",
         "compiler/small_compiler_subset_pipeline.rb",
         "compiler/small_compiler_subset_driver.rb",
         "spec/self_hosting/BASIC_SHARP_NATIVE_PARSER_DISPATCH_INTEGRATION_v1.json",
-        "docs/self_hosting/BASIC_SHARP_NATIVE_PARSER_DISPATCH_INTEGRATION_v0_1_81.md",
+        "docs/self_hosting/BASIC_SHARP_NATIVE_PARSER_DISPATCH_INTEGRATION_v0_0_81.md",
         "tools/native_parser_dispatch_integration.rb",
         "tests/test_native_parser_dispatch_integration.rb"
       ]
@@ -139,7 +139,7 @@
       "name": "basic_sharp_native_semantic_routing",
       "owner": "BASIC#-authored semantic routing",
       "authority": "active_bounded_semantic_routing_evidence",
-      "boundary": "SmallCompilerSubsetSemanticResolver must request every accepted semantic-family route from the persisted BASIC# BSBC semantic component, reject wrong or unknown decisions without Ruby fallback, expose invocation evidence, preserve v0.1.81 native parser dispatch upstream, and satisfy the v0.1.81 -> v0.1.82 -> v0.1.82 fixed-point proof.",
+      "boundary": "SmallCompilerSubsetSemanticResolver must request every accepted semantic-family route from the persisted BASIC# BSBC semantic component, reject wrong or unknown decisions without Ruby fallback, expose invocation evidence, preserve v0.0.81 native parser dispatch upstream, and satisfy the v0.0.81 -> v0.0.82 -> v0.0.82 fixed-point proof.",
       "paths": [
         "compiler/native/first_bsharp_semantic_router.bsharp",
         "compiler/native/first_bsharp_semantic_router.bsbc",
@@ -150,7 +150,7 @@
         "compiler/small_compiler_subset_pipeline.rb",
         "compiler/small_compiler_subset_driver.rb",
         "spec/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v1.json",
-        "docs/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v0_1_82.md",
+        "docs/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v0_0_82.md",
         "tools/native_semantic_routing_integration.rb",
         "tests/test_native_semantic_routing_integration.rb"
       ]
@@ -159,7 +159,7 @@
       "name": "basic_sharp_native_symbol_resolution",
       "owner": "BASIC#-authored symbol resolution",
       "authority": "active_bounded_symbol_resolution_evidence",
-      "boundary": "SmallCompilerSubsetSymbolTableContract and SmallCompilerSubsetSemanticResolver may expose neutral lookup observations, but bounded known/unknown, unique/duplicate, Kind-link, PLAYER, action, and value decisions must come from the persisted BASIC# BSBC symbol component. Contradictory or sabotaged native decisions must fail visibly without a Ruby decision fallback, v0.1.81 parser dispatch and v0.1.82 semantic routing remain active upstream, and the v0.1.82 -> v0.1.83 -> v0.1.83 fixed-point proof must hold.",
+      "boundary": "SmallCompilerSubsetSymbolTableContract and SmallCompilerSubsetSemanticResolver may expose neutral lookup observations, but bounded known/unknown, unique/duplicate, Kind-link, PLAYER, action, and value decisions must come from the persisted BASIC# BSBC symbol component. Contradictory or sabotaged native decisions must fail visibly without a Ruby decision fallback, v0.0.81 parser dispatch and v0.0.82 semantic routing remain active upstream, and the v0.0.82 -> v0.0.83 -> v0.0.83 fixed-point proof must hold.",
       "paths": [
         "compiler/native/first_bsharp_symbol_resolver.bsharp",
         "compiler/native/first_bsharp_symbol_resolver.bsbc",
@@ -171,7 +171,7 @@
         "compiler/small_compiler_subset_pipeline.rb",
         "compiler/small_compiler_subset_driver.rb",
         "spec/self_hosting/BASIC_SHARP_NATIVE_SYMBOL_RESOLUTION_INTEGRATION_v1.json",
-        "docs/self_hosting/BASIC_SHARP_NATIVE_SYMBOL_RESOLUTION_INTEGRATION_v0_1_83.md",
+        "docs/self_hosting/BASIC_SHARP_NATIVE_SYMBOL_RESOLUTION_INTEGRATION_v0_0_83.md",
         "tools/native_symbol_resolution_integration.rb",
         "tests/test_native_symbol_resolution_integration.rb"
       ]

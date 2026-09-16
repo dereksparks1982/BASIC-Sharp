@@ -2,7 +2,7 @@
 
 ## Relationship to Profile 1
 
-`bsharp.meaning.v2` extends every accepted rule of `bsharp.meaning.v1`. The only new creator-facing meaning in v0.1.32 is exact text values. Profile 1 remains valid and is selected when a program contains no Profile 2 meaning.
+`bsharp.meaning.v2` extends every accepted rule of `bsharp.meaning.v1`. The only new creator-facing meaning in v0.0.32 is exact text values. Profile 1 remains valid and is selected when a program contains no Profile 2 meaning.
 
 ## Text value domain
 

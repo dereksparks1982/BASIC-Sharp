@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.pipeline_independence.contract.json",
   "format_version": 1,
-  "target_version": "0.1.84",
+  "target_version": "0.0.84",
   "title": "Small Compiler Subset Integrated Independent Compiler Pipeline",
   "status": "integrated_independent_pipeline_under_ruby_referee",
   "purpose": "Connect the already bounded Subset 0 reader, parser, semantic resolver, BSharp IR, BSBC encoder, BSBC loader, and BSharp VM into one primary source-to-world compiler path while production Ruby components remain separate referees.",
@@ -11,7 +11,7 @@
       "making TokenizerReader produce its primary reader records without invoking the production Lexer while retaining Lexer comparison as a referee",
       "routing the primary pipeline only through SmallCompilerSubsetParser, SmallCompilerSubsetSemanticResolver, SmallCompilerSubsetBSBCEncoder, SmallCompilerSubsetBSBCLoader, and SmallCompilerSubsetBSBCVirtualMachine",
       "requiring exact BSharp IR, BSBC bytes, loader summary, event results, final world, and BSharp Save parity against separate production and Ruby referees",
-      "proving deterministic compile and execution replay across the dedicated v0.1.78 fixture",
+      "proving deterministic compile and execution replay across the dedicated v0.0.78 fixture",
       "preserving Profiles 1 through 7 and all accepted creator-facing syntax"
     ],
     "forbidden_until_later_approval": [
@@ -72,7 +72,7 @@
   ],
   "documents": {
     "spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json",
-    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v0_1_78.md",
+    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v0_0_78.md",
     "pipeline": "compiler/small_compiler_subset_pipeline.rb",
     "reader": "compiler/tokenizer_reader.rb",
     "parser": "compiler/small_compiler_subset_parser.rb",

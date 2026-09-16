@@ -1,7 +1,7 @@
 {
   "format": "bsharp.self_hosting.subset.json",
   "format_version": 1,
-  "target_version": "0.1.84",
+  "target_version": "0.0.84",
   "title": "Self-Hosting Foundation and Compiler Subset Contract",
   "status": "foundation_contract_only",
   "purpose": "Define the first BASIC# subset allowed for future compiler-writing work while Ruby remains the bootstrap compiler and reference authority.",
@@ -60,35 +60,35 @@
   ],
   "self_hosting_sequence": [
     {
-      "version_lane": "v0.1.44",
-      "goal": "Record the rejected v0.1.43 package, then freeze this foundation contract and validation gate."
+      "version_lane": "v0.0.44",
+      "goal": "Record the rejected v0.0.43 package, then freeze this foundation contract and validation gate."
     },
     {
-      "version_lane": "v0.1.47",
+      "version_lane": "v0.0.47",
       "goal": "Build a BASIC# tokenizer/reader contract and fixture set before implementation."
     },
     {
-      "version_lane": "v0.1.48",
+      "version_lane": "v0.0.48",
       "goal": "Implement tokenizer/reader pieces with Ruby as referee and compare deterministic records."
     },
     {
-      "version_lane": "v0.1.49",
+      "version_lane": "v0.0.49",
       "goal": "Parse a small approved compiler subset into deterministic records under Ruby Parser referee."
     },
     {
-      "version_lane": "v0.1.50",
+      "version_lane": "v0.0.50",
       "goal": "Emit BSharp IR from small compiler subset records under Ruby Parser plus SemanticResolver referee."
     },
     {
-      "version_lane": "v0.1.51",
+      "version_lane": "v0.0.51",
       "goal": "Lock golden IR parity for the small compiler subset."
     },
     {
-      "version_lane": "v0.1.52",
+      "version_lane": "v0.0.52",
       "goal": "Lock plain-English error records for invalid small compiler subset examples."
     },
     {
-      "version_lane": "v0.1.63",
+      "version_lane": "v0.0.63",
       "goal": "Expand the small compiler subset across larger scene/block fixtures under Ruby referee."
     },
     {
@@ -96,53 +96,53 @@
       "goal": "Emit BSBC from BASIC# compiler code and require byte-for-byte parity before replacing Ruby."
     },
     {
-      "version_lane": "v0.1.74",
+      "version_lane": "v0.0.74",
       "goal": "Give BSharp Compiler Subset 0 its own semantic resolver implementation and require exact BSharp IR parity against the production Ruby SemanticResolver referee."
     },
     {
-      "version_lane": "v0.1.75",
+      "version_lane": "v0.0.75",
       "goal": "Give BSharp Compiler Subset 0 its own BSBC encoder and require exact byte-for-byte parity against the production Ruby BytecodeEmitter referee."
     },
     {
-      "version_lane": "v0.1.76",
+      "version_lane": "v0.0.76",
       "goal": "Give BSharp Compiler Subset 0 its own BSBC loader trust boundary and require exact valid-model plus malformed-artifact rejection parity against the production Ruby BytecodeLoader referee."
     },
     {
-      "version_lane": "v0.1.77",
+      "version_lane": "v0.0.77",
       "goal": "Give BSharp Compiler Subset 0 its own BSBC execution engine and require exact production-VM and Ruby-runtime parity across Profiles 1 through 7."
     },
     {
-      "version_lane": "v0.1.78",
+      "version_lane": "v0.0.78",
       "goal": "Connect the bounded reader, parser, semantic resolver, BSharp IR, independent BSBC encoder, independent BSBC loader, and independent BSharp VM into one integrated source-to-world compiler pipeline under separate Ruby referee parity."
     },
     {
-      "version_lane": "v0.1.79",
+      "version_lane": "v0.0.79",
       "goal": "Place an independent compiler driver in front of SmallCompilerSubsetPipeline, persist real BSBC artifacts, reload them through SmallCompilerSubsetBSBCLoader, and execute them through SmallCompilerSubsetBSBCVirtualMachine while production compiler components and Ruby Runtime remain separate referees."
     },
     {
-      "version_lane": "v0.1.80",
+      "version_lane": "v0.0.80",
       "goal": "Author the first bounded compiler-domain decision component in BASIC#, compile it through SmallCompilerSubsetDriver into real BSBC, and execute it source-free through the independent loader and BSharp VM under separate production and Ruby referee parity."
     },
     {
-      "version_lane": "v0.1.81",
+      "version_lane": "v0.0.81",
       "goal": "Route bounded parser block-Head dispatch through the accepted BASIC#-authored BSBC compiler component, require visible no-fallback sabotage failure, observable invocation counts, and a byte-identical two-generation bootstrap fixed point."
     },
     {
-      "version_lane": "v0.1.82",
-      "goal": "Route bounded semantic-family decisions through a BASIC#-authored BSBC semantic component, preserve v0.1.81 native parser dispatch upstream, require wrong-route fail-closed sabotage, observable invocation counts, and a byte-identical two-generation bootstrap fixed point."
+      "version_lane": "v0.0.82",
+      "goal": "Route bounded semantic-family decisions through a BASIC#-authored BSBC semantic component, preserve v0.0.81 native parser dispatch upstream, require wrong-route fail-closed sabotage, observable invocation counts, and a byte-identical two-generation bootstrap fixed point."
     },
     {
-      "version_lane": "v0.1.83",
-      "goal": "Route bounded Kind, Thing, PLAYER, action, value, duplicate, unknown, and Kind-link symbol decisions through a BASIC#-authored BSBC symbol component, preserve v0.1.81 parser dispatch and v0.1.82 semantic routing upstream, require fail-closed sabotage, observable invocation counts, exact referee parity, and a byte-identical two-generation fixed point."
+      "version_lane": "v0.0.83",
+      "goal": "Route bounded Kind, Thing, PLAYER, action, value, duplicate, unknown, and Kind-link symbol decisions through a BASIC#-authored BSBC symbol component, preserve v0.0.81 parser dispatch and v0.0.82 semantic routing upstream, require fail-closed sabotage, observable invocation counts, exact referee parity, and a byte-identical two-generation fixed point."
     },
     {
-      "version_lane": "v0.1.84",
-      "goal": "Route every accepted official action word through a BASIC#-authored BSBC action-family classifier, preserve v0.1.81-v0.1.83 native stages, require fail-closed wrong-family sabotage, observable invocation counts, exact referee parity, and a byte-identical fixed point."
+      "version_lane": "v0.0.84",
+      "goal": "Route every accepted official action word through a BASIC#-authored BSBC action-family classifier, preserve v0.0.81-v0.0.83 native stages, require fail-closed wrong-family sabotage, observable invocation counts, exact referee parity, and a byte-identical fixed point."
     }
   ],
   "acceptance_rules": [
     "All existing Profiles 1-7 validation remains mandatory.",
-    "Ruby remains the bootstrap and reference oracle in v0.1.63.",
+    "Ruby remains the bootstrap and reference oracle in v0.0.63.",
     "The self-hosting contract tool must pass before package acceptance.",
     "No future build may call BASIC# self-hosted until the BASIC# compiler reproduces approved outputs under locked validation.",
     "The small compiler subset parser tool must pass before package acceptance.",
@@ -155,89 +155,89 @@
     "The small compiler subset BSBC golden parity harness must pass before wider self-hosting bytecode claims can advance.",
     "The self-hosting fixture corpus tool must pass before wider self-hosting subset claims can advance.",
     "The small compiler subset runtime smoke lane must run under Ruby referee control and must not change production runtime behaviour.",
-    "The bootstrap boundary audit must pass before v0.1.63 may claim Self-Hosting Milestone 1 readiness.",
+    "The bootstrap boundary audit must pass before v0.0.63 may claim Self-Hosting Milestone 1 readiness.",
     "The README Current Release Truth Gate must pass so the public GitHub README matches the active build.",
-    "The Self-Hosting Milestone 1 gate must pass before v0.1.63 may be accepted.",
-    "v0.1.63 may claim only BSharp Compiler Subset 0 Self-Hosting Milestone 1 under Ruby referee control, not full self-hosting.",
-    "The small compiler subset semantic resolver independence tool must pass before v0.1.74 may claim Self-Hosting Milestone 2 Slice 1 progress.",
-    "v0.1.75 BSBC bytes for the bounded subset must come from SmallCompilerSubsetBSBCEncoder while production BytecodeEmitter remains referee-only",
-    "The small compiler subset BSBC loader independence tool must pass before v0.1.76 may claim Self-Hosting Milestone 2 Slice 3 progress.",
-    "v0.1.76 bounded subset BSBC validation must come from SmallCompilerSubsetBSBCLoader while production BytecodeLoader remains referee-only.",
-    "The small compiler subset BSharp VM independence tool must pass before v0.1.77 may claim Self-Hosting Milestone 2 Slice 4 progress.",
-    "v0.1.77 bounded subset execution must come from SmallCompilerSubsetBSBCVirtualMachine while production BytecodeVirtualMachine and Ruby Runtime remain referee-only.",
-    "The small compiler subset integrated pipeline independence tool must pass before v0.1.78 may claim Self-Hosting Milestone 2 Slice 5 progress.",
-    "v0.1.78 primary bounded source-to-world execution must route through SmallCompilerSubsetPipeline and its independent stages while production compiler components and Ruby Runtime remain referee-only.",
-    "v0.1.78 adds no new creator-facing syntax; accepted BASIC# statement and action ordering rules remain unchanged.",
-    "The small compiler subset independent compiler driver tool must pass before v0.1.79 may claim Self-Hosting Milestone 2 Slice 6 progress.",
-    "The small compiler subset BSBC artifact round-trip tool must pass before v0.1.79 may claim persisted independent compiler-artifact progress.",
-    "v0.1.79 primary bounded source-file compilation must route through SmallCompilerSubsetDriver and SmallCompilerSubsetPipeline while production compiler components remain referee-only.",
-    "v0.1.79 saved BSBC artifacts must reload through SmallCompilerSubsetBSBCLoader and execute through SmallCompilerSubsetBSBCVirtualMachine with exact in-memory and referee parity.",
-    "v0.1.79 adds no new creator-facing syntax; accepted BASIC# statement boundaries, action-word visual guides, and written action order remain unchanged.",
-    "The first BASIC#-authored compiler component tool must pass before v0.1.80 may claim Self-Hosting Milestone 2 Slice 7 progress.",
-    "v0.1.80 compiler-domain decision rules must live in compiler/native/first_bsharp_compiler_component.bsharp and compile through SmallCompilerSubsetDriver without production compiler constructors on the primary path.",
-    "v0.1.80 checked-in first native compiler component BSBC must be byte-identical to independently recompiled output and must execute after the source copy is removed.",
-    "v0.1.80 native compiler decisions must cover the nine accepted block heads and match separate production BytecodeEmitter, BSharp VM, and Ruby Runtime referees.",
-    "v0.1.80 adds no new creator-facing syntax; Profiles 1 through 7, the opening action-word visual guide, and written action order remain unchanged.",
-    "The native parser dispatch integration tool must pass before v0.1.81 may claim Self-Hosting Milestone 2 Slice 8 progress.",
-    "v0.1.81 bounded parser block-Head routing must come from the BASIC#-authored BSBC component; invalid or sabotaged dispatch must fail visibly without a Ruby fallback table.",
-    "The native semantic routing integration tool must pass before v0.1.82 may claim Self-Hosting Milestone 2 Slice 9 progress.",
-    "v0.1.82 bounded semantic-family routing must come from compiler/native/first_bsharp_semantic_router.bsbc; wrong, unknown, or unmatched semantic routing must fail visibly without a Ruby fallback table.",
-    "v0.1.82 must preserve v0.1.81 native parser dispatch upstream and exact production SemanticResolver plus Ruby referee parity downstream.",
-    "The native symbol resolution integration tool must pass before v0.1.83 may claim Self-Hosting Milestone 2 Slice 10 progress.",
-    "v0.1.83 bounded symbol decisions must come from compiler/native/first_bsharp_symbol_resolver.bsbc after neutral lookup observation; contradictory known/unknown, duplicate, Kind-link, action, value, or PLAYER decisions must fail visibly without a Ruby decision fallback.",
-    "v0.1.83 must preserve v0.1.81 native parser dispatch and v0.1.82 native semantic routing upstream plus exact BSharp IR, BSBC, production-referee, and Ruby-referee parity downstream.",
-    "The native action routing integration tool must pass before v0.1.84 may claim Self-Hosting Milestone 2 Slice 11 progress.",
-    "v0.1.84 bounded action-family decisions must come from compiler/native/first_bsharp_action_router.bsbc; contradictory family routing must fail visibly without a Ruby verb-family fallback table.",
-    "v0.1.84 must preserve v0.1.81 native parser dispatch, v0.1.82 native semantic routing, and v0.1.83 native symbol resolution upstream plus exact BSharp IR, BSBC, production-referee, and Ruby-referee parity downstream."
+    "The Self-Hosting Milestone 1 gate must pass before v0.0.63 may be accepted.",
+    "v0.0.63 may claim only BSharp Compiler Subset 0 Self-Hosting Milestone 1 under Ruby referee control, not full self-hosting.",
+    "The small compiler subset semantic resolver independence tool must pass before v0.0.74 may claim Self-Hosting Milestone 2 Slice 1 progress.",
+    "v0.0.75 BSBC bytes for the bounded subset must come from SmallCompilerSubsetBSBCEncoder while production BytecodeEmitter remains referee-only",
+    "The small compiler subset BSBC loader independence tool must pass before v0.0.76 may claim Self-Hosting Milestone 2 Slice 3 progress.",
+    "v0.0.76 bounded subset BSBC validation must come from SmallCompilerSubsetBSBCLoader while production BytecodeLoader remains referee-only.",
+    "The small compiler subset BSharp VM independence tool must pass before v0.0.77 may claim Self-Hosting Milestone 2 Slice 4 progress.",
+    "v0.0.77 bounded subset execution must come from SmallCompilerSubsetBSBCVirtualMachine while production BytecodeVirtualMachine and Ruby Runtime remain referee-only.",
+    "The small compiler subset integrated pipeline independence tool must pass before v0.0.78 may claim Self-Hosting Milestone 2 Slice 5 progress.",
+    "v0.0.78 primary bounded source-to-world execution must route through SmallCompilerSubsetPipeline and its independent stages while production compiler components and Ruby Runtime remain referee-only.",
+    "v0.0.78 adds no new creator-facing syntax; accepted BASIC# statement and action ordering rules remain unchanged.",
+    "The small compiler subset independent compiler driver tool must pass before v0.0.79 may claim Self-Hosting Milestone 2 Slice 6 progress.",
+    "The small compiler subset BSBC artifact round-trip tool must pass before v0.0.79 may claim persisted independent compiler-artifact progress.",
+    "v0.0.79 primary bounded source-file compilation must route through SmallCompilerSubsetDriver and SmallCompilerSubsetPipeline while production compiler components remain referee-only.",
+    "v0.0.79 saved BSBC artifacts must reload through SmallCompilerSubsetBSBCLoader and execute through SmallCompilerSubsetBSBCVirtualMachine with exact in-memory and referee parity.",
+    "v0.0.79 adds no new creator-facing syntax; accepted BASIC# statement boundaries, action-word visual guides, and written action order remain unchanged.",
+    "The first BASIC#-authored compiler component tool must pass before v0.0.80 may claim Self-Hosting Milestone 2 Slice 7 progress.",
+    "v0.0.80 compiler-domain decision rules must live in compiler/native/first_bsharp_compiler_component.bsharp and compile through SmallCompilerSubsetDriver without production compiler constructors on the primary path.",
+    "v0.0.80 checked-in first native compiler component BSBC must be byte-identical to independently recompiled output and must execute after the source copy is removed.",
+    "v0.0.80 native compiler decisions must cover the nine accepted block heads and match separate production BytecodeEmitter, BSharp VM, and Ruby Runtime referees.",
+    "v0.0.80 adds no new creator-facing syntax; Profiles 1 through 7, the opening action-word visual guide, and written action order remain unchanged.",
+    "The native parser dispatch integration tool must pass before v0.0.81 may claim Self-Hosting Milestone 2 Slice 8 progress.",
+    "v0.0.81 bounded parser block-Head routing must come from the BASIC#-authored BSBC component; invalid or sabotaged dispatch must fail visibly without a Ruby fallback table.",
+    "The native semantic routing integration tool must pass before v0.0.82 may claim Self-Hosting Milestone 2 Slice 9 progress.",
+    "v0.0.82 bounded semantic-family routing must come from compiler/native/first_bsharp_semantic_router.bsbc; wrong, unknown, or unmatched semantic routing must fail visibly without a Ruby fallback table.",
+    "v0.0.82 must preserve v0.0.81 native parser dispatch upstream and exact production SemanticResolver plus Ruby referee parity downstream.",
+    "The native symbol resolution integration tool must pass before v0.0.83 may claim Self-Hosting Milestone 2 Slice 10 progress.",
+    "v0.0.83 bounded symbol decisions must come from compiler/native/first_bsharp_symbol_resolver.bsbc after neutral lookup observation; contradictory known/unknown, duplicate, Kind-link, action, value, or PLAYER decisions must fail visibly without a Ruby decision fallback.",
+    "v0.0.83 must preserve v0.0.81 native parser dispatch and v0.0.82 native semantic routing upstream plus exact BSharp IR, BSBC, production-referee, and Ruby-referee parity downstream.",
+    "The native action routing integration tool must pass before v0.0.84 may claim Self-Hosting Milestone 2 Slice 11 progress.",
+    "v0.0.84 bounded action-family decisions must come from compiler/native/first_bsharp_action_router.bsbc; contradictory family routing must fail visibly without a Ruby verb-family fallback table.",
+    "v0.0.84 must preserve v0.0.81 native parser dispatch, v0.0.82 native semantic routing, and v0.0.83 native symbol resolution upstream plus exact BSharp IR, BSBC, production-referee, and Ruby-referee parity downstream."
   ],
   "documents": {
-    "contract": "docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FOUNDATION_v0_1_44.md",
+    "contract": "docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FOUNDATION_v0_0_44.md",
     "spec": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json",
     "tool": "tools/self_hosting_contract.rb",
     "test": "tests/test_self_hosting_contract.rb",
-    "tokenizer_reader_contract": "docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md",
+    "tokenizer_reader_contract": "docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_0_47.md",
     "tokenizer_reader_spec": "spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json",
     "tokenizer_reader_tool": "tools/tokenizer_reader_contract.rb",
     "tokenizer_reader_test": "tests/test_tokenizer_reader_contract.rb",
-    "tokenizer_reader_implementation": "docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_IMPLEMENTATION_v0_1_48.md",
+    "tokenizer_reader_implementation": "docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_IMPLEMENTATION_v0_0_48.md",
     "small_compiler_subset_parser_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json",
-    "small_compiler_subset_parser_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v0_1_49.md",
+    "small_compiler_subset_parser_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v0_0_49.md",
     "small_compiler_subset_parser_tool": "tools/small_compiler_subset_parser.rb",
     "small_compiler_subset_parser_test": "tests/test_small_compiler_subset_parser.rb",
     "small_compiler_subset_ir_emitter_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json",
-    "small_compiler_subset_ir_emitter_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v0_1_50.md",
+    "small_compiler_subset_ir_emitter_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v0_0_50.md",
     "small_compiler_subset_ir_emitter_tool": "tools/small_compiler_subset_ir_emitter.rb",
     "small_compiler_subset_ir_emitter_test": "tests/test_small_compiler_subset_ir_emitter.rb",
     "small_compiler_subset_ir_parity_harness_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json",
-    "small_compiler_subset_ir_parity_harness_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_51.md",
+    "small_compiler_subset_ir_parity_harness_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_0_51.md",
     "small_compiler_subset_error_contract_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json",
-    "small_compiler_subset_error_contract_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_1_52.md",
+    "small_compiler_subset_error_contract_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_0_52.md",
     "small_compiler_subset_scene_block_expansion_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json",
-    "small_compiler_subset_scene_block_expansion_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_1_53.md",
+    "small_compiler_subset_scene_block_expansion_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_0_53.md",
     "small_compiler_subset_symbol_table_contract_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v1.json",
-    "small_compiler_subset_symbol_table_contract_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_1_54.md",
+    "small_compiler_subset_symbol_table_contract_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_0_54.md",
     "small_compiler_subset_symbol_table_contract_tool": "tools/small_compiler_subset_symbol_table_contract.rb",
     "small_compiler_subset_symbol_table_contract_test": "tests/test_small_compiler_subset_symbol_table_contract.rb",
     "small_compiler_subset_bsbc_emitter_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json",
-    "small_compiler_subset_bsbc_emitter_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v0_1_55.md",
+    "small_compiler_subset_bsbc_emitter_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v0_0_55.md",
     "small_compiler_subset_bsbc_emitter_tool": "tools/small_compiler_subset_bsbc_emitter.rb",
     "small_compiler_subset_bsbc_emitter_test": "tests/test_small_compiler_subset_bsbc_emitter.rb",
     "small_compiler_subset_bsbc_parity_harness_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json",
-    "small_compiler_subset_bsbc_parity_harness_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_1_56.md",
+    "small_compiler_subset_bsbc_parity_harness_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_0_56.md",
     "small_compiler_subset_bsbc_parity_harness_tool": "tools/small_compiler_subset_bsbc_parity_harness.rb",
     "small_compiler_subset_bsbc_parity_harness_test": "tests/test_small_compiler_subset_bsbc_parity_harness.rb",
     "self_hosting_fixture_corpus_spec": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json",
-    "self_hosting_fixture_corpus_implementation": "docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v0_1_57.md",
+    "self_hosting_fixture_corpus_implementation": "docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v0_0_57.md",
     "self_hosting_fixture_corpus_file": "compiler/self_hosting_fixture_corpus.rb",
     "self_hosting_fixture_corpus_tool": "tools/self_hosting_fixture_corpus.rb",
     "self_hosting_fixture_corpus_test": "tests/test_self_hosting_fixture_corpus.rb",
     "small_compiler_subset_runtime_smoke_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v1.json",
-    "small_compiler_subset_runtime_smoke_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v0_1_58.md",
+    "small_compiler_subset_runtime_smoke_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v0_0_58.md",
     "small_compiler_subset_runtime_smoke_file": "compiler/small_compiler_subset_runtime_smoke.rb",
     "small_compiler_subset_runtime_smoke_tool": "tools/small_compiler_subset_runtime_smoke.rb",
     "small_compiler_subset_runtime_smoke_test": "tests/test_small_compiler_subset_runtime_smoke.rb",
     "bootstrap_boundary_audit_spec": "spec/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v1.json",
-    "bootstrap_boundary_audit_implementation": "docs/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v0_1_59.md",
+    "bootstrap_boundary_audit_implementation": "docs/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v0_0_59.md",
     "bootstrap_boundary_audit_file": "compiler/bootstrap_boundary_audit.rb",
     "bootstrap_boundary_audit_tool": "tools/bootstrap_boundary_audit.rb",
     "bootstrap_boundary_audit_test": "tests/test_bootstrap_boundary_audit.rb",
@@ -249,34 +249,34 @@
     "self_hosting_milestone_1_file": "compiler/self_hosting_milestone_1.rb",
     "self_hosting_milestone_1_tool": "tools/self_hosting_milestone_1.rb",
     "self_hosting_milestone_1_test": "tests/test_self_hosting_milestone_1.rb",
-    "self_hosting_milestone_1_doc": "docs/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v0_1_61.md",
+    "self_hosting_milestone_1_doc": "docs/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v0_0_61.md",
     "small_compiler_subset_semantic_resolver_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v1.json",
-    "small_compiler_subset_semantic_resolver_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v0_1_74.md",
+    "small_compiler_subset_semantic_resolver_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v0_0_74.md",
     "small_compiler_subset_semantic_resolver_file": "compiler/small_compiler_subset_semantic_resolver.rb",
     "small_compiler_subset_semantic_resolver_tool": "tools/small_compiler_subset_semantic_resolver.rb",
     "small_compiler_subset_semantic_resolver_test": "tests/test_small_compiler_subset_semantic_resolver.rb",
     "small_compiler_subset_bsbc_emitter_independence_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json",
-    "small_compiler_subset_bsbc_emitter_independence_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v0_1_75.md",
+    "small_compiler_subset_bsbc_emitter_independence_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v0_0_75.md",
     "small_compiler_subset_bsbc_encoder_file": "compiler/small_compiler_subset_bsbc_encoder.rb",
     "small_compiler_subset_bsbc_emitter_independence_tool": "tools/small_compiler_subset_bsbc_emitter_independence.rb",
     "small_compiler_subset_bsbc_emitter_independence_test": "tests/test_small_compiler_subset_bsbc_emitter_independence.rb",
     "small_compiler_subset_bsbc_loader_independence_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v1.json",
-    "small_compiler_subset_bsbc_loader_independence_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v0_1_76.md",
+    "small_compiler_subset_bsbc_loader_independence_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v0_0_76.md",
     "small_compiler_subset_bsbc_loader_file": "compiler/small_compiler_subset_bsbc_loader.rb",
     "small_compiler_subset_bsbc_loader_independence_tool": "tools/small_compiler_subset_bsbc_loader_independence.rb",
     "small_compiler_subset_bsbc_loader_independence_test": "tests/test_small_compiler_subset_bsbc_loader_independence.rb",
     "small_compiler_subset_bsbc_vm_independence_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v1.json",
-    "small_compiler_subset_bsbc_vm_independence_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v0_1_77.md",
+    "small_compiler_subset_bsbc_vm_independence_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v0_0_77.md",
     "small_compiler_subset_bsbc_virtual_machine_file": "compiler/small_compiler_subset_bsbc_virtual_machine.rb",
     "small_compiler_subset_bsbc_vm_independence_tool": "tools/small_compiler_subset_bsbc_vm_independence.rb",
     "small_compiler_subset_bsbc_vm_independence_test": "tests/test_small_compiler_subset_bsbc_vm_independence.rb",
     "small_compiler_subset_pipeline_independence_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json",
-    "small_compiler_subset_pipeline_independence_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v0_1_78.md",
+    "small_compiler_subset_pipeline_independence_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v0_0_78.md",
     "small_compiler_subset_pipeline_file": "compiler/small_compiler_subset_pipeline.rb",
     "small_compiler_subset_pipeline_independence_tool": "tools/small_compiler_subset_pipeline_independence.rb",
     "small_compiler_subset_pipeline_independence_test": "tests/test_small_compiler_subset_pipeline_independence.rb",
     "small_compiler_subset_driver_independence_spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json",
-    "small_compiler_subset_driver_independence_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v0_1_79.md",
+    "small_compiler_subset_driver_independence_implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v0_0_79.md",
     "small_compiler_subset_driver_file": "compiler/small_compiler_subset_driver.rb",
     "small_compiler_subset_driver_independence_tool": "tools/small_compiler_subset_driver_independence.rb",
     "small_compiler_subset_driver_independence_test": "tests/test_small_compiler_subset_driver_independence.rb",
@@ -287,16 +287,16 @@
     "first_native_compiler_component_source": "compiler/native/first_bsharp_compiler_component.bsharp",
     "first_native_compiler_component_artifact": "compiler/native/first_bsharp_compiler_component.bsbc",
     "first_native_compiler_component_disassembly": "compiler/native/first_bsharp_compiler_component.bsbc.txt",
-    "first_native_compiler_component_implementation": "docs/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v0_1_80.md",
+    "first_native_compiler_component_implementation": "docs/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v0_0_80.md",
     "first_native_compiler_component_tool": "tools/first_native_compiler_component.rb",
     "first_native_compiler_component_test": "tests/test_first_native_compiler_component.rb",
     "native_parser_dispatch_file": "compiler/small_compiler_subset_native_dispatch.rb",
     "native_parser_dispatch_integration_spec": "spec/self_hosting/BASIC_SHARP_NATIVE_PARSER_DISPATCH_INTEGRATION_v1.json",
-    "native_parser_dispatch_integration_implementation": "docs/self_hosting/BASIC_SHARP_NATIVE_PARSER_DISPATCH_INTEGRATION_v0_1_81.md",
+    "native_parser_dispatch_integration_implementation": "docs/self_hosting/BASIC_SHARP_NATIVE_PARSER_DISPATCH_INTEGRATION_v0_0_81.md",
     "native_parser_dispatch_integration_tool": "tools/native_parser_dispatch_integration.rb",
     "native_parser_dispatch_integration_test": "tests/test_native_parser_dispatch_integration.rb",
     "native_semantic_routing_spec": "spec/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v1.json",
-    "native_semantic_routing_implementation": "docs/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v0_1_82.md",
+    "native_semantic_routing_implementation": "docs/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v0_0_82.md",
     "native_semantic_routing_tool": "tools/native_semantic_routing_integration.rb",
     "native_semantic_routing_test": "tests/test_native_semantic_routing_integration.rb",
     "native_symbol_resolution_spec": "spec/self_hosting/BASIC_SHARP_NATIVE_SYMBOL_RESOLUTION_INTEGRATION_v1.json",
@@ -304,7 +304,7 @@
     "native_symbol_resolution_artifact": "compiler/native/first_bsharp_symbol_resolver.bsbc",
     "native_symbol_resolution_disassembly": "compiler/native/first_bsharp_symbol_resolver.bsbc.txt",
     "native_symbol_resolution_file": "compiler/small_compiler_subset_native_symbol_resolution.rb",
-    "native_symbol_resolution_implementation": "docs/self_hosting/BASIC_SHARP_NATIVE_SYMBOL_RESOLUTION_INTEGRATION_v0_1_83.md",
+    "native_symbol_resolution_implementation": "docs/self_hosting/BASIC_SHARP_NATIVE_SYMBOL_RESOLUTION_INTEGRATION_v0_0_83.md",
     "native_symbol_resolution_tool": "tools/native_symbol_resolution_integration.rb",
     "native_symbol_resolution_test": "tests/test_native_symbol_resolution_integration.rb",
     "native_action_routing_spec": "spec/self_hosting/BASIC_SHARP_NATIVE_ACTION_ROUTING_INTEGRATION_v1.json",
@@ -312,84 +312,84 @@
     "native_action_routing_artifact": "compiler/native/first_bsharp_action_router.bsbc",
     "native_action_routing_disassembly": "compiler/native/first_bsharp_action_router.bsbc.txt",
     "native_action_routing_file": "compiler/small_compiler_subset_native_action_routing.rb",
-    "native_action_routing_implementation": "docs/self_hosting/BASIC_SHARP_NATIVE_ACTION_ROUTING_INTEGRATION_v0_1_84.md",
+    "native_action_routing_implementation": "docs/self_hosting/BASIC_SHARP_NATIVE_ACTION_ROUTING_INTEGRATION_v0_0_84.md",
     "native_action_routing_tool": "tools/native_action_routing_integration.rb",
     "native_action_routing_test": "tests/test_native_action_routing_integration.rb"
   },
   "milestones": [
     {
-      "version_lane": "v0.1.52",
+      "version_lane": "v0.0.52",
       "name": "Small compiler subset plain-English error contract",
       "status": "plain_english_error_contract_under_ruby_referee"
     },
     {
-      "version_lane": "v0.1.63",
+      "version_lane": "v0.0.63",
       "name": "Small Compiler Subset Scene/Block Expansion",
       "status": "scene_block_expansion_under_ruby_referee",
       "contract": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json"
     },
     {
-      "version_lane": "v0.1.74",
+      "version_lane": "v0.0.74",
       "name": "Self-Hosting Milestone 2 Slice 1: Semantic Resolver Independence",
       "status": "semantic_resolver_independent_under_ruby_referee",
       "contract": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v1.json"
     },
     {
-      "version_lane": "v0.1.75",
+      "version_lane": "v0.0.75",
       "name": "Self-Hosting Milestone 2 Slice 2: BSBC Emitter Independence",
       "status": "bsbc_emitter_independent_under_ruby_referee",
       "contract": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json"
     },
     {
-      "version_lane": "v0.1.76",
+      "version_lane": "v0.0.76",
       "name": "Self-Hosting Milestone 2 Slice 3: BSBC Loader Independence",
       "status": "bsbc_loader_independent_under_ruby_referee",
       "contract": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v1.json"
     },
     {
-      "version_lane": "v0.1.77",
+      "version_lane": "v0.0.77",
       "name": "Self-Hosting Milestone 2 Slice 4: BSharp VM Execution Independence",
       "status": "bsbc_vm_execution_independent_under_ruby_referee",
       "contract": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v1.json"
     },
     {
-      "version_lane": "v0.1.78",
+      "version_lane": "v0.0.78",
       "name": "Self-Hosting Milestone 2 Slice 5: Integrated Independent Compiler Pipeline",
       "status": "integrated_independent_pipeline_under_ruby_referee",
       "contract": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json"
     },
     {
-      "version_lane": "v0.1.79",
+      "version_lane": "v0.0.79",
       "name": "Self-Hosting Milestone 2 Slice 6: Independent Compiler Driver + BSBC Artifact Round Trip",
       "status": "independent_driver_and_artifact_round_trip_under_ruby_referee",
       "contract": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json"
     },
     {
-      "version_lane": "v0.1.80",
+      "version_lane": "v0.0.80",
       "name": "Self-Hosting Milestone 2 Slice 7: First BASIC#-Authored Compiler Component",
       "status": "first_bsharp_authored_compiler_component_under_ruby_referee",
       "contract": "spec/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v1.json"
     },
     {
-      "version_lane": "v0.1.81",
+      "version_lane": "v0.0.81",
       "name": "Self-Hosting Milestone 2 Slice 8: BASIC# Native Parser Dispatch Integration",
       "status": "native_parser_dispatch_integration_under_ruby_referee",
       "contract": "spec/self_hosting/BASIC_SHARP_NATIVE_PARSER_DISPATCH_INTEGRATION_v1.json"
     },
     {
-      "version_lane": "v0.1.82",
+      "version_lane": "v0.0.82",
       "name": "Self-Hosting Milestone 2 Slice 9: BASIC# Native Semantic Routing Integration",
       "status": "native_semantic_routing_integration_under_ruby_referee",
       "contract": "spec/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v1.json"
     },
     {
-      "version_lane": "v0.1.83",
+      "version_lane": "v0.0.83",
       "name": "Self-Hosting Milestone 2 Slice 10: BASIC# Native Symbol Resolution Integration",
       "status": "native_symbol_resolution_integration_under_ruby_referee",
       "contract": "spec/self_hosting/BASIC_SHARP_NATIVE_SYMBOL_RESOLUTION_INTEGRATION_v1.json"
     },
     {
-      "version_lane": "v0.1.84",
+      "version_lane": "v0.0.84",
       "name": "Self-Hosting Milestone 2 Slice 11: BASIC# Native Action Routing Integration",
       "status": "native_action_routing_integration_under_ruby_referee",
       "contract": "spec/self_hosting/BASIC_SHARP_NATIVE_ACTION_ROUTING_INTEGRATION_v1.json"

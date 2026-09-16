@@ -41,6 +41,6 @@ puts 'Native parser dispatch integration boundary is fenced: PASS'
 puts 'Native semantic routing integration boundary is fenced: PASS'
 puts 'Native symbol resolution integration boundary is fenced: PASS'
 puts 'Runtime smoke bridge is evidence only: PASS'
-puts 'v0.1.84 Slice 11 milestone gate remains guarded: PASS'
+puts 'v0.0.84 Slice 11 milestone gate remains guarded: PASS'
 puts 'Golden fixture expected-field fallbacks absent: PASS'
 puts "Boundary digest: #{record.fetch(:boundary_digest_sha256)}"

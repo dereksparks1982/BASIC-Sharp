@@ -1,4 +1,4 @@
-//BASIC# v0.1.83 first BASIC#-authored symbol resolution component./.
+//BASIC# v0.0.83 first BASIC#-authored symbol resolution component./.
 //This bounded component turns neutral compiler symbol observations into resolution decisions./.
 
 DEFINE

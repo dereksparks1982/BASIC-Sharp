@@ -1,7 +1,7 @@
 {
   "format": "bsharp.tokenizer_reader.contract.json",
   "format_version": 1,
-  "target_version": "0.1.84",
+  "target_version": "0.0.84",
   "title": "BASIC# Tokenizer and Reader Implementation Under Ruby Referee",
   "status": "implementation_under_ruby_referee",
   "purpose": "Begin the first BASIC# tokenizer/reader implementation while keeping the Ruby bootstrap lexer as the reference referee.",
@@ -181,8 +181,8 @@
     "compiler/tokenizer_reader.rb primary reader records must remain available when the Ruby Lexer constructor is disabled; Lexer comparison remains a separate referee path."
   ],
   "documents": {
-    "contract": "docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md",
-    "implementation": "docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_IMPLEMENTATION_v0_1_48.md",
+    "contract": "docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_0_47.md",
+    "implementation": "docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_IMPLEMENTATION_v0_0_48.md",
     "spec": "spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json",
     "implementation_file": "compiler/tokenizer_reader.rb",
     "tool": "tools/tokenizer_reader_contract.rb",

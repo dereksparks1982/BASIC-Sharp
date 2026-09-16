@@ -1,0 +1,9 @@
+BASIC# v0.0.33 changed files
+
+Modified paths: 104
+Added paths: 60
+Deleted paths: 0
+Total changed project paths: 164
+
+The authoritative path list and hashes are BASIC_SHARP_PATCH_MANIFEST.json.
+Package-only utility: APPLY_BASIC_SHARP_v0_0_33.sh

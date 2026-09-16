@@ -94,9 +94,9 @@ Explore reachable states, rule chains, failure paths, cycles, and impossible out
 
 Only after reliability is proven, consider exposing Oracle reasoning through BSharp ASK, an editor, or another approved creator-facing tool. This stage would require its own syntax, interface, compatibility, and migration decisions.
 
-## 7. Relationship to v0.1.42 Trial by Fire
+## 7. Relationship to v0.0.42 Trial by Fire
 
-The approved v0.1.42 Trial-by-Fire gauntlet could create useful foundations for a later Oracle:
+The approved v0.0.42 Trial-by-Fire gauntlet could create useful foundations for a later Oracle:
 
 - specification-derived golden traces;
 - independent expected results;
@@ -106,7 +106,7 @@ The approved v0.1.42 Trial-by-Fire gauntlet could create useful foundations for 
 - compiler, reference-runtime, and VM disagreement detection;
 - permanent regression capsules.
 
-However, **v0.1.42 does not implement the Semantic Oracle unless Derek approves a revised exact scope**. Stress testing and parity are foundations; they are not yet an independent reasoning authority.
+However, **v0.0.42 does not implement the Semantic Oracle unless Derek approves a revised exact scope**. Stress testing and parity are foundations; they are not yet an independent reasoning authority.
 
 ## 8. The unaware simulated world
 
@@ -159,7 +159,7 @@ This record does not approve:
 
 - Oracle as a language or product rename;
 - new BASIC# syntax, Heads, official words, or Meaning Profile;
-- an Oracle implementation in v0.1.42;
+- an Oracle implementation in v0.0.42;
 - replacing the Stable Meaning Specifications;
 - replacing Derek as final authority;
 - treating the existing compiler, VM, or reference runtime as infallible;

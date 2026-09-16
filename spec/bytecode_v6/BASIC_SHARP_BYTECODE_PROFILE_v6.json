@@ -740,14 +740,14 @@
     "text and whole-number value type conflict"
   ],
   "future_boundaries": {
-    "v0_1_27_includes": [
+    "v0_0_27_includes": [
       "bytecode emitter",
       "generated BSBC sample files",
       "deterministic diagnostic disassembly",
       "source and BSIR byte parity",
       "atomic output"
     ],
-    "v0_1_27_excludes": [
+    "v0_0_27_excludes": [
       "arbitrary BSBC loader",
       "virtual machine",
       "bytecode execution",
@@ -755,7 +755,7 @@
       "optimization",
       "compression"
     ],
-    "v0_1_28_includes": [
+    "v0_0_28_includes": [
       "arbitrary BSBC loader",
       "complete structural and cross-reference validation",
       "trusted deeply frozen in-memory model",
@@ -764,7 +764,7 @@
       "41 malformed-bytecode fixture cases",
       "complete truncation sweep"
     ],
-    "v0_1_28_excludes": [
+    "v0_0_28_excludes": [
       "virtual machine",
       "bytecode execution",
       "Ruby runtime replacement",
@@ -773,7 +773,7 @@
       "optimization",
       "compression"
     ],
-    "v0_1_29_includes": [
+    "v0_0_29_includes": [
       "first BSharp Virtual Machine",
       "direct Profile 1 bytecode execution",
       "START world creation",
@@ -784,7 +784,7 @@
       "reference-runtime parity fixtures",
       "runtime-independence proof"
     ],
-    "v0_1_29_excludes": [
+    "v0_0_29_excludes": [
       "BSharp Save through the VM",
       "ASK against a VM world",
       "source and BSIR runtime replacement",
@@ -796,14 +796,14 @@
       "binary layout changes",
       "new BASIC# language features"
     ],
-    "v0_1_38_includes": [
+    "v0_0_38_includes": [
       "BSharp Bytecode Profile 6",
       "ALL_CONDITIONS and ANY_CONDITIONS records",
       "direct VM execution of compound IF conditions",
       "Save format 6 and ASK parity",
       "Profile 1 through Profile 5 byte preservation"
     ],
-    "v0_1_38_excludes": [
+    "v0_0_38_excludes": [
       "mixed and/or expressions",
       "parenthesized or nested condition groups",
       "general not",
@@ -813,7 +813,7 @@
     ]
   },
   "emission": {
-    "status": "implemented by BASIC# v0.1.38",
+    "status": "implemented by BASIC# v0.0.38",
     "source_inputs": [
       ".bsharp",
       ".bsir.json"
@@ -837,7 +837,7 @@
     "atomic_output": "Binary and disassembly are replaced together; a failed emission leaves no partial pair."
   },
   "loading": {
-    "status": "implemented by BASIC# v0.1.38",
+    "status": "implemented by BASIC# v0.0.38",
     "source_inputs": [
       ".bsbc"
     ],
@@ -847,12 +847,12 @@
     "summary": "validated identity, profiles, fingerprint, section counts, block counts, and instruction counts",
     "disassembly": "diagnostic disassembly is reconstructed from validated binary records and must match committed .bsbc.txt output",
     "meaning_comparison": "--against accepts matching .bsharp or .bsir.json and compares sha256-bsir-meaning-v6 exactly",
-    "execution_boundary": "loader remains non-executing; it validates and exposes a trusted model that BSharp Virtual Machine v0.1.29 executes separately",
+    "execution_boundary": "loader remains non-executing; it validates and exposes a trusted model that BSharp Virtual Machine v0.0.29 executes separately",
     "malformed_fixture_count": "41 deterministic in-memory corruption cases; no loose corrupted binaries",
     "string_roles": "identifier entries remain canonical lowercase semantic names; literal entries preserve exact single-line UTF-8 and are validated independently"
   },
   "execution": {
-    "status": "preferred by BASIC# v0.1.38",
+    "status": "preferred by BASIC# v0.0.38",
     "input_boundary": "successfully validated deeply frozen BytecodeLoader model",
     "direct_bytecode_interpretation": true,
     "reconstructs_bsir": false,
@@ -898,8 +898,8 @@
     "follow_up_limit": 1024,
     "world_isolation": "each VM owns an independent mutable world; loaded program stays frozen",
     "reporting": "canonical reconstructed wording from semantic bytecode records",
-    "save_support": "implemented by BASIC# v0.1.30 through deterministic BSharp Save write, validated restore, no START replay, preserved IF active state, and atomic failure recovery",
-    "ask_support": "implemented by BASIC# v0.1.30 through read-only BSharp ASK over VM Things, Kinds, events, IF rules, world summaries, and save summaries",
+    "save_support": "implemented by BASIC# v0.0.30 through deterministic BSharp Save write, validated restore, no START replay, preserved IF active state, and atomic failure recovery",
+    "ask_support": "implemented by BASIC# v0.0.30 through read-only BSharp ASK over VM Things, Kinds, events, IF rules, world summaries, and save summaries",
     "runtime_parity": "source, saved BSIR, and validated BSBC preserve identical Profile 6 compound IF clauses, connectors, reactive transitions, ASK, Save, and engine-neutral declarations",
     "hardening": "repeated deterministic execution, save/restore/replay cycles, isolated VM worlds, malformed-save recovery, IF-loop protection, and 1,024-event protection",
     "preferred_path_boundary": "BSharp VM is the preferred Profile 1, Profile 2, Profile 3, Profile 4, Profile 5, and Profile 6 runtime; the reference Ruby runtime remains a protected verification oracle.",

@@ -21,7 +21,7 @@ class TestNativeActionRoutingIntegration < Minitest::Test
   end
 
   def test_contract_and_artifact
-    assert_equal '0.1.84', BasicSharp::VERSION
+    assert_equal '0.0.84', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, SPEC.fetch('target_version')
     assert_equal COMPONENT.fetch('expected_binary_sha256'), Digest::SHA256.file(ARTIFACT_PATH).hexdigest
   end

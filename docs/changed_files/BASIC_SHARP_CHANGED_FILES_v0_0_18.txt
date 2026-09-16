@@ -1,0 +1,37 @@
+BASIC# v0.0.18 Multiple Selected Things and Deterministic Set Actions
+Required base: v0.0.17, commit 78fa0c3, tag v0.0.17
+
+ADDED
+BUILD_HANDSHAKE_v0_0_18.md
+docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_0_18.txt
+docs/changelog/BASIC_SHARP_CHANGELOG_v0_0_18.md
+docs/hand_off/BASIC_SHARP_v0_0_18_NEW_THREAD_HANDOFF.md
+docs/ir/BSIR_MEANING_CONTRACT_v0_0_18.md
+docs/parser_contract_v0_0_18.md
+docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_0_18.md
+docs/runtime_contract_v0_0_18.md
+docs/session_logs/BASIC_SHARP_v0_0_18_SESSION_LOG.md
+docs/testing/BASIC_SHARP_MULTIPLE_SELECTION_STRESS_TEST_v0_0_18.md
+docs/validation/BASIC_SHARP_VALIDATION_v0_0_18.md
+samples/every_guard.bsharp
+samples/every_guard.bsir.json
+tests/fixtures/first_room_v0_0_17.bsir.json
+tests/test_multiple_selection.rb
+tools/multiple_selection_stress.rb
+
+MODIFIED
+BASIC_SHARP_PATCH_MANIFEST.json
+README.md
+compiler/ast_nodes.rb
+compiler/resolver.rb
+compiler/runtime.rb
+docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
+docs/roadmap/BASIC_SHARP_ROADMAP.md
+samples/first_room.bsir.json
+tests/test_cli_output.rb
+tests/test_identity_migration.rb
+tests/test_ir_output.rb
+tests/test_kind_family_hardening.rb
+
+DELETED
+None

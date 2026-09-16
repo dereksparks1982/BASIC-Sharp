@@ -1,30 +1,30 @@
 {
   "format": "BASIC_SHARP_CHANGED_FILES_PATCH",
   "format_version": 1,
-  "package_name": "BUILD_BASIC_SHARP_v0_1_84_SELF_HOSTING_NATIVE_ACTION_ROUTING.sh",
-  "installer_name": "BUILD_BASIC_SHARP_v0_1_84_SELF_HOSTING_NATIVE_ACTION_ROUTING.sh",
-  "base_version": "v0.1.83",
+  "package_name": "BUILD_BASIC_SHARP_v0_0_84_SELF_HOSTING_NATIVE_ACTION_ROUTING.sh",
+  "installer_name": "BUILD_BASIC_SHARP_v0_0_84_SELF_HOSTING_NATIVE_ACTION_ROUTING.sh",
+  "base_version": "v0.0.83",
   "base_commit": "ac8bb906239ed2f199c437d4c3321b18fff1fcab",
-  "base_tag": "v0.1.83",
-  "target_version": "v0.1.84",
+  "base_tag": "v0.0.83",
+  "target_version": "v0.0.84",
   "expected_branch": "main",
   "direct_project_root_payload": true,
   "changed_files_only": true,
   "scope": {
     "title": "Self-Hosting Milestone 2 Slice 11: Native Action Routing Integration",
-    "summary": "Routes accepted official action-word family decisions through a BASIC#-authored BSBC action component while preserving v0.1.81 parser dispatch, v0.1.82 semantic routing, and v0.1.83 symbol resolution upstream; repairs the rejected v0.1.84 Company Bible/current-reference defect and all version-sensitive fixtures; and uses Derek-approved self-contained shell delivery while Ruby remains bootstrap/referee authority.",
+    "summary": "Routes accepted official action-word family decisions through a BASIC#-authored BSBC action component while preserving v0.0.81 parser dispatch, v0.0.82 semantic routing, and v0.0.83 symbol resolution upstream; repairs the rejected v0.0.84 Company Bible/current-reference defect and all version-sensitive fixtures; and uses Derek-approved self-contained shell delivery while Ruby remains bootstrap/referee authority.",
     "self_hosting_milestone_2_slice_11": true,
     "native_action_routing_integration": true,
     "native_action_bridge": "compiler/small_compiler_subset_native_action_routing.rb",
     "native_action_source": "compiler/native/first_bsharp_action_router.bsharp",
     "native_action_artifact": "compiler/native/first_bsharp_action_router.bsbc",
-    "preserve_v0_1_81_native_parser_dispatch": true,
-    "preserve_v0_1_82_native_semantic_routing": true,
-    "preserve_v0_1_83_native_symbol_resolution": true,
+    "preserve_v0_0_81_native_parser_dispatch": true,
+    "preserve_v0_0_82_native_semantic_routing": true,
+    "preserve_v0_0_83_native_symbol_resolution": true,
     "wrong_family_sabotage_fail_closed": true,
     "native_action_invocation_proof": true,
     "two_generation_fixed_point": true,
-    "rejected_v0_1_84_company_bible_reference_failure_repaired": true,
+    "rejected_v0_0_84_company_bible_reference_failure_repaired": true,
     "complete_version_sensitive_fixture_family_repaired": true,
     "self_contained_shell_delivery": true,
     "failed_candidate_keeps_same_version_until_acceptance_or_explicit_abandonment": true,
@@ -39,19 +39,19 @@
   "changed_path_count_including_manifest": 117,
   "deleted_path_count": 0,
   "added_paths": [
-    "BUILD_HANDSHAKE_v0_1_84.md",
+    "BUILD_HANDSHAKE_v0_0_84.md",
     "compiler/native/first_bsharp_action_router.bsbc",
     "compiler/native/first_bsharp_action_router.bsbc.txt",
     "compiler/native/first_bsharp_action_router.bsharp",
     "compiler/small_compiler_subset_native_action_routing.rb",
-    "docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_84.txt",
-    "docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_84.md",
-    "docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_84.md",
-    "docs/runtime_contract_v0_1_84.md",
-    "docs/self_hosting/BASIC_SHARP_NATIVE_ACTION_ROUTING_INTEGRATION_v0_1_84.md",
-    "docs/session_logs/BASIC_SHARP_v0_1_84_SESSION_LOG.md",
-    "docs/trial_by_fire/BASIC_SHARP_WHOLE_LANGUAGE_TEST_GAUNTLET_v0_1_84.md",
-    "docs/validation/BASIC_SHARP_VALIDATION_v0_1_84.md",
+    "docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_0_84.txt",
+    "docs/changelog/BASIC_SHARP_CHANGELOG_v0_0_84.md",
+    "docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_0_84.md",
+    "docs/runtime_contract_v0_0_84.md",
+    "docs/self_hosting/BASIC_SHARP_NATIVE_ACTION_ROUTING_INTEGRATION_v0_0_84.md",
+    "docs/session_logs/BASIC_SHARP_v0_0_84_SESSION_LOG.md",
+    "docs/trial_by_fire/BASIC_SHARP_WHOLE_LANGUAGE_TEST_GAUNTLET_v0_0_84.md",
+    "docs/validation/BASIC_SHARP_VALIDATION_v0_0_84.md",
     "spec/self_hosting/BASIC_SHARP_NATIVE_ACTION_ROUTING_INTEGRATION_v1.json",
     "tests/test_native_action_routing_integration.rb",
     "tools/native_action_routing_integration.rb"
@@ -164,7 +164,7 @@
   ],
   "files": [
     {
-      "path": "BUILD_HANDSHAKE_v0_1_84.md",
+      "path": "BUILD_HANDSHAKE_v0_0_84.md",
       "bytes": 1034,
       "sha256": "aa029599c66118fa2c02f79141977d6ea53b7532c1446f777de12e6fd088af21"
     },
@@ -229,12 +229,12 @@
       "sha256": "4f92f0422e9e1657123d7fcacf0f5004e4bf89d7ffea9352e7974d9ce2b02862"
     },
     {
-      "path": "docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_1_84.txt",
+      "path": "docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_0_84.txt",
       "bytes": 7350,
       "sha256": "52f0a59879b696e34cc4cf1aa1aaf0fedcdb0a777895c1e9f79f47ad8799a8a8"
     },
     {
-      "path": "docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_84.md",
+      "path": "docs/changelog/BASIC_SHARP_CHANGELOG_v0_0_84.md",
       "bytes": 953,
       "sha256": "8b0836268370afd6ffe7a2af1ba76003e0c2f7a1868799343bfcc67234db6e0d"
     },
@@ -249,7 +249,7 @@
       "sha256": "01958fa52133b863094b9a46843c6b432e42d6f5259a78ee0d6aec2ff9805361"
     },
     {
-      "path": "docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_84.md",
+      "path": "docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_0_84.md",
       "bytes": 532,
       "sha256": "a6b18e273fe0b98cf6abfa02458e084786c02eca9a4e797728928f40c604722f"
     },
@@ -259,27 +259,27 @@
       "sha256": "ae220861487c6a253be766666cb63f75efbbc3fca5c7c7839ac852d345bbc828"
     },
     {
-      "path": "docs/runtime_contract_v0_1_84.md",
+      "path": "docs/runtime_contract_v0_0_84.md",
       "bytes": 449,
       "sha256": "92315484f961924d2ccd81f8c5e94bc6f4c4676391f83effaf493b0e91ddd7d2"
     },
     {
-      "path": "docs/self_hosting/BASIC_SHARP_NATIVE_ACTION_ROUTING_INTEGRATION_v0_1_84.md",
+      "path": "docs/self_hosting/BASIC_SHARP_NATIVE_ACTION_ROUTING_INTEGRATION_v0_0_84.md",
       "bytes": 436,
       "sha256": "fbb0cd8a906411c16d7db88eb1b45dc51c9edc8f62225e8bfd7aa224e5b90454"
     },
     {
-      "path": "docs/session_logs/BASIC_SHARP_v0_1_84_SESSION_LOG.md",
+      "path": "docs/session_logs/BASIC_SHARP_v0_0_84_SESSION_LOG.md",
       "bytes": 1854,
       "sha256": "f6ac12adc3eb15ebac7693636dd7cb5091dfe8dc1ad4eeeb0431ee5a0e9d5f6f"
     },
     {
-      "path": "docs/trial_by_fire/BASIC_SHARP_WHOLE_LANGUAGE_TEST_GAUNTLET_v0_1_84.md",
+      "path": "docs/trial_by_fire/BASIC_SHARP_WHOLE_LANGUAGE_TEST_GAUNTLET_v0_0_84.md",
       "bytes": 494,
       "sha256": "86739b01eb1dd6c237a81df84ad734b7da740604aa4a91d10605e507f9697a20"
     },
     {
-      "path": "docs/validation/BASIC_SHARP_VALIDATION_v0_1_84.md",
+      "path": "docs/validation/BASIC_SHARP_VALIDATION_v0_0_84.md",
       "bytes": 2335,
       "sha256": "0168f7e44e4a85dd246e9b2936a28060ba2281a1d8978768b8ec703135930d8d"
     },

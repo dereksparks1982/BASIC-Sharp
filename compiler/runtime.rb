@@ -13,7 +13,7 @@ module BasicSharp
   class Runtime
     RETIRED_DKIR_MESSAGE = [
       'This file uses the retired DKIR format.',
-      'BASIC# v0.1.20 uses BSharp IR.',
+      'BASIC# v0.0.20 uses BSharp IR.',
       'Recompile the original .bsharp source to create a new BSIR file.'
     ].join("\n").freeze
 

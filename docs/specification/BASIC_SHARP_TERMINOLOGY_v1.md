@@ -27,7 +27,7 @@ This record fixes the words used when discussing BSharp Meaning Profile 1.
 | BSharp Save | Deterministic settled-world state in `.bsave.json`. |
 | BSharp ASK | Read-only deterministic inspection answers. |
 | Meaning Profile | An implementation-neutral set of stable semantics and conformance fixtures. |
-| Profile 1 | `bsharp.meaning.v1`, established by BASIC# v0.1.24. |
+| Profile 1 | `bsharp.meaning.v1`, established by BASIC# v0.0.24. |
 | Bootstrap implementation | The current Ruby compiler and runtime used to grow BASIC#. |
 | Conformance case | Source plus implementation-neutral expected observations proving one meaning area. |
 

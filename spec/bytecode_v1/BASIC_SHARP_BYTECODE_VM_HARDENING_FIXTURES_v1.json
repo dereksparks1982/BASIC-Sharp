@@ -1,7 +1,7 @@
 {
   "format": "bsharp.bytecode.vm.hardening.fixtures.json",
   "format_version": 1,
-  "implemented_by_basic_sharp": "0.1.30",
+  "implemented_by_basic_sharp": "0.0.30",
   "meaning_profile": "bsharp.meaning.v1",
   "bytecode_profile": "bsharp.bytecode.v1",
   "three_path_program": "samples/first_room.bsharp",

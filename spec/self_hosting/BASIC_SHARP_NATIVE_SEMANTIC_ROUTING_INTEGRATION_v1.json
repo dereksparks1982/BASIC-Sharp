@@ -1,14 +1,14 @@
 {
   "format": "bsharp.native_semantic_routing_integration.contract.json",
   "format_version": 1,
-  "target_version": "0.1.84",
+  "target_version": "0.0.84",
   "title": "BASIC# Native Semantic Routing Integration",
   "status": "native_semantic_routing_integration_under_ruby_referee",
   "purpose": "Make the bounded independent semantic resolver consult checked-in BASIC#-authored BSBC for every accepted semantic-family routing decision, with no silent Ruby fallback, while Ruby remains bootstrap and referee authority.",
   "accepted_base": {
-    "version": "0.1.81",
+    "version": "0.0.81",
     "commit": "1805102260cff3d42bd1a7a1229c06b4a9300bb9",
-    "tag": "v0.1.81"
+    "tag": "v0.0.81"
   },
   "native_component": {
     "source_path": "compiler/native/first_bsharp_semantic_router.bsharp",
@@ -51,7 +51,7 @@
     "unknown_route_must_be_rejected": true
   },
   "bootstrap_fixed_point": {
-    "bootstrap_base_version": "0.1.81",
+    "bootstrap_base_version": "0.0.81",
     "generation_count": 2,
     "generation_1_binary_sha256": "37abfc70d0c9db631e1701d6d6569cbdc3187a7c35ed7181050d397b9856f602",
     "generation_1_disassembly_sha256": "458d6b34e8308b285017a853393368bf174702cd9c3a164c55ab21a2c2e5e48c",
@@ -60,7 +60,7 @@
     "require_checked_in_artifact_matches_fixed_point": true
   },
   "documents": {
-    "implementation": "docs/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v0_1_82.md",
+    "implementation": "docs/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v0_0_82.md",
     "tool": "tools/native_semantic_routing_integration.rb",
     "test": "tests/test_native_semantic_routing_integration.rb"
   },

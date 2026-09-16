@@ -80,7 +80,7 @@ begin
       program.event_rules.length + program.if_rules.length + program.controls.length +
       program.hover_declarations.length + program.context_declarations.length
   end
-  assert_route!(driver.native_dispatch_invocation_count.positive?, 'v0.1.81 native parser dispatch is not active')
+  assert_route!(driver.native_dispatch_invocation_count.positive?, 'v0.0.81 native parser dispatch is not active')
   assert_route!(driver.native_semantic_invocation_count == expected_calls, 'primary path did not route every semantic entry natively')
   assert_route!(!driver.pipeline.binary.empty?, 'independent source -> BSBC produced no bytes')
   driver.execute_in_memory(['player sounds brass bell'])
@@ -129,7 +129,7 @@ Dir.mktmpdir('basic-sharp-v082-native-semantic') do |directory|
 
   generation_2 = File.join(directory, 'generation_2.bsbc')
   BasicSharp::SmallCompilerSubsetNativeSemanticRouting.with_artifact_path(ARTIFACT_PATH) do
-    BasicSharp::SmallCompilerSubsetDriver.new(source, source_label: '(v0.1.82 semantic generation 2)').compile_to(generation_2)
+    BasicSharp::SmallCompilerSubsetDriver.new(source, source_label: '(v0.0.82 semantic generation 2)').compile_to(generation_2)
   end
   assert_route!(File.binread(generation_2) == File.binread(ARTIFACT_PATH), 'bootstrap generation #2 differs from generation #1')
   assert_route!(File.binread("#{generation_2}.txt") == File.binread(DISASSEMBLY_PATH), 'bootstrap disassembly generation #2 differs from generation #1')
@@ -149,7 +149,7 @@ puts 'Native semantic invocation count observed: PASS'
 puts 'No hidden Ruby routing fallback: PASS'
 puts 'Unknown semantic route rejected: PASS'
 puts 'Wrong-route sabotage rejected without Ruby fallback: PASS'
-puts 'v0.1.81 native parser dispatch remains active: PASS'
+puts 'v0.0.81 native parser dispatch remains active: PASS'
 puts 'Production Parser unavailable on primary path: PASS'
 puts 'Production SemanticResolver unavailable on primary path: PASS'
 puts 'Production compiler constructors unavailable on primary path: PASS'

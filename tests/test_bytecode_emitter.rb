@@ -218,7 +218,7 @@ class TestBytecodeEmitter < Minitest::Test
     fixture = JSON.parse(File.read(path, encoding: 'UTF-8'))
     assert_equal 'bsharp.bytecode.emitter.fixtures.json', fixture.fetch('format')
     assert_equal 1, fixture.fetch('format_version')
-    assert_equal '0.1.27', fixture.fetch('created_by_basic_sharp')
+    assert_equal '0.0.27', fixture.fetch('created_by_basic_sharp')
     assert_equal 6, fixture.fetch('sample_count')
     assert_equal 12, fixture.fetch('valid_meaning_case_count')
     assert fixture.dig('invalid_meaning_case', 'must_reject_without_output')

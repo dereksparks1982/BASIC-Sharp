@@ -2,7 +2,7 @@
   "format": "bsharp.meaning.conformance.json",
   "format_version": 1,
   "profile": "bsharp.meaning.v1",
-  "language_version": "0.1.24",
+  "language_version": "0.0.24",
   "case_count": 13,
   "meaning_keys": [
     "kinds",

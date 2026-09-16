@@ -115,7 +115,7 @@ class TestNativeSymbolResolutionIntegration < Minitest::Test
     Dir.mktmpdir('basic-sharp-v083-symbol-fixed-point') do |directory|
       generation_2 = File.join(directory, 'generation_2.bsbc')
       BasicSharp::SmallCompilerSubsetNativeSymbolResolution.with_artifact_path(ARTIFACT_PATH) do
-        BasicSharp::SmallCompilerSubsetDriver.new(source, source_label: '(v0.1.84 symbol generation 2)').compile_to(generation_2)
+        BasicSharp::SmallCompilerSubsetDriver.new(source, source_label: '(v0.0.84 symbol generation 2)').compile_to(generation_2)
       end
       assert_equal File.binread(ARTIFACT_PATH), File.binread(generation_2)
       assert_equal File.binread(DISASSEMBLY_PATH), File.binread("#{generation_2}.txt")

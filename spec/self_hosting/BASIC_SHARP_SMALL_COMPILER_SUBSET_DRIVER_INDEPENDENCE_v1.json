@@ -1,10 +1,10 @@
 {
   "format": "bsharp.small_compiler_subset.driver_independence.contract.json",
   "format_version": 1,
-  "target_version": "0.1.84",
+  "target_version": "0.0.84",
   "title": "Small Compiler Subset Independent Compiler Driver",
   "status": "independent_driver_and_artifact_round_trip_under_ruby_referee",
-  "purpose": "Put a bounded compiler-driver boundary in front of the accepted v0.1.78 integrated independent pipeline so BASIC# source files can produce real BSBC artifacts without routing the primary path through production compiler components.",
+  "purpose": "Put a bounded compiler-driver boundary in front of the accepted v0.0.78 integrated independent pipeline so BASIC# source files can produce real BSBC artifacts without routing the primary path through production compiler components.",
   "scope": {
     "allowed": [
       "adding compiler/small_compiler_subset_driver.rb as the bounded source-file to BSBC driver",
@@ -56,7 +56,7 @@
   ],
   "documents": {
     "spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json",
-    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v0_1_79.md",
+    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v0_0_79.md",
     "driver": "compiler/small_compiler_subset_driver.rb",
     "pipeline": "compiler/small_compiler_subset_pipeline.rb",
     "tool": "tools/small_compiler_subset_driver_independence.rb",

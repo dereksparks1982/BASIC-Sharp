@@ -1,7 +1,7 @@
 {
   "format": "bsharp.native_symbol_resolution_integration.contract.json",
   "format_version": 1,
-  "target_version": "0.1.84",
+  "target_version": "0.0.84",
   "status": "self_hosting_milestone_2_slice_10_native_symbol_resolution_integration_under_ruby_referee",
   "purpose": "Require bounded BASIC#-authored BSBC symbol decisions inside the independent compiler while neutral Ruby lookup observations remain fenced bootstrap inputs and production compiler/runtime components remain referees only.",
   "native_component": {
@@ -35,8 +35,8 @@
     "No caller may replace a missing, wrong, or unmatched native decision with a Ruby fallback answer."
   ],
   "required_primary_path_proofs": [
-    "v0.1.81 native parser dispatch remains active",
-    "v0.1.82 native semantic routing remains active",
+    "v0.0.81 native parser dispatch remains active",
+    "v0.0.82 native semantic routing remains active",
     "native symbol decisions are observed during independent source to BSIR and BSBC compilation",
     "production Parser is unavailable on the primary proof path",
     "production SemanticResolver is unavailable on the primary proof path",
@@ -52,8 +52,8 @@
     "unrecognized native symbol probe fails visibly"
   ],
   "bootstrap_fixed_point": {
-    "generation_1": "accepted v0.1.82 independent compiler plus target v0.1.83 version bytes compiles the BASIC# symbol component",
-    "generation_2": "v0.1.83 independent compiler using generation #1 symbol artifact recompiles the same BASIC# source",
+    "generation_1": "accepted v0.0.82 independent compiler plus target v0.0.83 version bytes compiles the BASIC# symbol component",
+    "generation_2": "v0.0.83 independent compiler using generation #1 symbol artifact recompiles the same BASIC# source",
     "requirement": "generation #1 and generation #2 BSBC plus readable disassembly are byte-identical and match the checked-in artifacts"
   },
   "creator_surface": "unchanged",

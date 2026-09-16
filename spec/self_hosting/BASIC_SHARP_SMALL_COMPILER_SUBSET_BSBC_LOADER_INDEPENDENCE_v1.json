@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.bsbc_loader_independence.contract.json",
   "format_version": 1,
-  "target_version": "0.1.84",
+  "target_version": "0.0.84",
   "title": "Small Compiler Subset BSBC Loader Independence",
   "status": "bsbc_loader_independent_under_ruby_referee",
   "purpose": "Give BSharp Compiler Subset 0 its own BSBC trust-boundary loader while preserving the production Ruby BytecodeLoader only as a separate referee for exact valid-model and malformed-artifact parity.",
@@ -70,12 +70,12 @@
     "Valid independent-loader models, summaries, fingerprints, and disassembly must match the production referee exactly.",
     "Every sealed malformed mutation must be rejected by both loaders with the same creator-facing error message.",
     "A BSharp VM execution lane must run from a model validated by the independent subset loader.",
-    "The v0.1.76 dedicated fixture must mix inheritance, text, numbers, object interaction, IF/OTHERWISE, and selector families.",
+    "The v0.0.76 dedicated fixture must mix inheritance, text, numbers, object interaction, IF/OTHERWISE, and selector families.",
     "No Profile 8, binary-format change, full self-hosting claim, or Ruby retirement is allowed."
   ],
   "documents": {
     "spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v1.json",
-    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v0_1_76.md",
+    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v0_0_76.md",
     "loader": "compiler/small_compiler_subset_bsbc_loader.rb",
     "encoder": "compiler/small_compiler_subset_bsbc_encoder.rb",
     "ruby_referee": "compiler/bytecode_loader.rb",

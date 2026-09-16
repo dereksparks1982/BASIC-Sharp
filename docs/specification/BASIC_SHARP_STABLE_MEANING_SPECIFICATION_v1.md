@@ -6,7 +6,7 @@ This is the normative meaning specification for **BSharp Meaning Profile 1**.
 
 ```text
 Profile identifier: bsharp.meaning.v1
-Established by: BASIC# v0.1.24
+Established by: BASIC# v0.0.24
 Conformance manifest: spec/meaning_v1/BASIC_SHARP_MEANING_PROFILE_v1.json
 ```
 

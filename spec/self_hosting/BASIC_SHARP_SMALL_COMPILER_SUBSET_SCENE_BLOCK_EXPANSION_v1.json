@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.scene_block_expansion.contract.json",
   "format_version": 1,
-  "target_version": "0.1.84",
+  "target_version": "0.0.84",
   "title": "Small Compiler Subset Scene/Block Expansion",
   "status": "scene_block_expansion_under_ruby_referee",
   "purpose": "Expand the sealed small compiler subset fixture lane across larger scene and block shapes while Ruby remains the production parser, resolver, compiler path, and referee.",
@@ -131,7 +131,7 @@
     "implementation": "compiler/small_compiler_subset_scene_block_expansion.rb",
     "tool": "tools/small_compiler_subset_scene_block_expansion.rb",
     "test": "tests/test_small_compiler_subset_scene_block_expansion.rb",
-    "documentation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_1_53.md",
+    "documentation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_0_53.md",
     "parser": "compiler/small_compiler_subset_parser.rb",
     "ir_emitter": "compiler/small_compiler_subset_ir_emitter.rb",
     "ir_parity_harness": "compiler/small_compiler_subset_ir_parity_harness.rb",

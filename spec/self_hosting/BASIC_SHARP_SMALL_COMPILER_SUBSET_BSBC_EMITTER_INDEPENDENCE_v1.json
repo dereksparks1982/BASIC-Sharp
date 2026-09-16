@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.bsbc_emitter_independence.contract.json",
   "format_version": 1,
-  "target_version": "0.1.84",
+  "target_version": "0.0.84",
   "title": "Small Compiler Subset BSBC Emitter Independence",
   "status": "bsbc_emitter_independent_under_ruby_referee",
   "purpose": "Give BSharp Compiler Subset 0 its own BSBC byte encoder while preserving the production Ruby BytecodeEmitter only as a separate referee for exact binary parity.",
@@ -55,12 +55,12 @@
     "Independent bytes must match production referee bytes exactly for all sealed subset BSBC fixtures.",
     "The existing BytecodeLoader must accept the independently emitted bytes.",
     "The BSharp Virtual Machine must execute the independently emitted bytes with Ruby referee parity.",
-    "The v0.1.75 dedicated fixture must combine object interaction with numeric and IF/OTHERWISE meaning.",
+    "The v0.0.75 dedicated fixture must combine object interaction with numeric and IF/OTHERWISE meaning.",
     "No Profile 8, binary-format change, full self-hosting claim, or Ruby retirement is allowed."
   ],
   "documents": {
     "spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json",
-    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v0_1_75.md",
+    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v0_0_75.md",
     "encoder": "compiler/small_compiler_subset_bsbc_encoder.rb",
     "orchestrator": "compiler/small_compiler_subset_bsbc_emitter.rb",
     "ruby_referee": "compiler/bytecode_emitter.rb",

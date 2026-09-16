@@ -299,19 +299,19 @@ module BasicSharp
 
     def validate_loading!(loading, profile_name: PROFILE)
       expected_status = if profile_name == PROFILE_7
-                          'implemented by BASIC# v0.1.39'
+                          'implemented by BASIC# v0.0.39'
                         elsif profile_name == PROFILE_6
-                          'implemented by BASIC# v0.1.38'
+                          'implemented by BASIC# v0.0.38'
                         elsif profile_name == PROFILE_5
-                          'implemented by BASIC# v0.1.37'
+                          'implemented by BASIC# v0.0.37'
                         elsif profile_name == PROFILE_4
-                          'implemented by BASIC# v0.1.36'
+                          'implemented by BASIC# v0.0.36'
                         elsif profile_name == PROFILE_3
-                          'implemented by BASIC# v0.1.35'
+                          'implemented by BASIC# v0.0.35'
                         elsif profile_name == PROFILE_2
-                          'implemented by BASIC# v0.1.32'
+                          'implemented by BASIC# v0.0.32'
                         else
-                          'implemented by BASIC# v0.1.28'
+                          'implemented by BASIC# v0.0.28'
                         end
       unless loading['status'] == expected_status
         raise BytecodeContractError, 'Bytecode loader implementation status is inconsistent.'
@@ -332,19 +332,19 @@ module BasicSharp
 
     def validate_execution!(execution, profile_name: PROFILE)
       expected_status = if profile_name == PROFILE_7
-                          'preferred by BASIC# v0.1.39'
+                          'preferred by BASIC# v0.0.39'
                         elsif profile_name == PROFILE_6
-                          'preferred by BASIC# v0.1.38'
+                          'preferred by BASIC# v0.0.38'
                         elsif profile_name == PROFILE_5
-                          'preferred by BASIC# v0.1.37'
+                          'preferred by BASIC# v0.0.37'
                         elsif profile_name == PROFILE_4
-                          'preferred by BASIC# v0.1.36'
+                          'preferred by BASIC# v0.0.36'
                         elsif profile_name == PROFILE_3
-                          'preferred by BASIC# v0.1.35'
+                          'preferred by BASIC# v0.0.35'
                         elsif profile_name == PROFILE_2
-                          'preferred by BASIC# v0.1.32'
+                          'preferred by BASIC# v0.0.32'
                         else
-                          'preferred by BASIC# v0.1.31'
+                          'preferred by BASIC# v0.0.31'
                         end
       unless execution['status'] == expected_status
         raise BytecodeContractError, 'BSharp VM implementation status is inconsistent.'

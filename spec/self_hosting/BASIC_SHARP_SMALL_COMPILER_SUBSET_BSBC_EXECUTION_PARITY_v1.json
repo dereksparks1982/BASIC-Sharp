@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.bsbc_execution_parity.json",
   "format_version": 1,
-  "target_version": "0.1.84",
+  "target_version": "0.0.84",
   "title": "BASIC# Small Compiler Subset BSBC Execution Parity Corpus Expansion",
   "status": "bsbc_execution_parity_under_ruby_referee",
   "purpose": "Prove the bounded Subset 0 lane executes source through independent reader, parser, semantic resolver, BSBC encoder, BSBC loader, and BSharp VM while production BytecodeVirtualMachine and Ruby Runtime remain separate exact referees.",
@@ -48,13 +48,13 @@
     "The subset BSBC loader must prove exact trusted-model parity against the production BytecodeLoader referee.",
     "The production BytecodeVirtualMachine must remain a separate referee and must not be called from the independent VM implementation.",
     "Every accepted fixture must match both the production VM referee and Ruby referee runtime event results, final snapshot, and save document.",
-    "The v0.1.77 dedicated fixture must execute independently loaded Profile 7 BSBC through the independent subset VM.",
+    "The v0.0.77 dedicated fixture must execute independently loaded Profile 7 BSBC through the independent subset VM.",
     "The DKLab compatibility bridge must remain present and protected in this build.",
     "No Profile 8, syntax, production runtime behaviour, bytecode rename, BCS implementation, Project Oracle, Demon Killer, or bridge removal work is allowed."
   ],
   "documents": {
     "spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v1.json",
-    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v0_1_63.md",
+    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EXECUTION_PARITY_v0_0_63.md",
     "implementation_file": "compiler/small_compiler_subset_bsbc_execution_parity.rb",
     "tool": "tools/small_compiler_subset_bsbc_execution_parity.rb",
     "test": "tests/test_small_compiler_subset_bsbc_execution_parity.rb",
@@ -171,7 +171,7 @@
     {
       "name": "trial_by_fire_cross_profile",
       "category": "cross_profile_regression",
-      "source": "//BASIC# v0.1.46 whole-language proving ground for accepted Profiles 1 through 7./.\n\nKINDS\n[\n    #sentinel is a #guard\n    #captain is a #sentinel\n].\n\nDEFINE\n[\n    @mara is a #captain\n    @henry is a #sentinel\n    @north gate is a #door\n    @brass bell is a #device\n    @iron key is a #key\n].\n\nSTART\n[\n    PLAYER has 0 score\n    PLAYER has 12 health\n    PLAYER has 0 victories\n    PLAYER has 0 setbacks\n    PLAYER has \"Ready for the trial.\" motto\n    @mara is calm\n    @henry is calm\n    @north gate is closed\n    @north gate has \"A heavy gate built to take a beating.\" description\n    @iron key is on the #door\n].\n\nCONTROLS for PLAYER\n[\n    A moves PLAYER left at 6 speed\n    D moves PLAYER right at 6 speed\n    SPACE makes PLAYER jump at 10 speed\n].\n\nHOVER for #door\n[\n    name\n    kind\n    state\n    description\n].\n\nCONTEXT for #door\n[\n    \"Open\" when it is closed (change it to open\n    \"Close\" when it is open (change it to closed\n    \"Examine\" (cause PLAYER examines it\n].\n\nWHEN PLAYER attacks a #guard\n[\n    |then (damage it by 1\n    |then (change it to angry\n    |then (cause it attacks PLAYER\n].\n\nWHEN a #guard attacks PLAYER\n[\n    |then (decrease health of PLAYER by 1\n].\n\nWHEN PLAYER sounds @brass bell\n[\n    |then (damage every #guard by 1\n    |then (increase score of PLAYER by 1\n].\n\nWHEN PLAYER takes @iron key\n[\n    |then (carry @iron key\n].\n\nWHEN PLAYER opens @north gate\n[\n    |then (change @north gate to open\n    |then (change motto of PLAYER to \"The gate is open.\"\n].\n\nWHEN PLAYER closes @north gate\n[\n    |then (change @north gate to closed\n    |then (change motto of PLAYER to \"The gate is closed.\"\n].\n\nIF PLAYER has at least 2 score and @north gate is open\n[\n    |then (increase victories of PLAYER by 1\n].\nOTHERWISE\n[\n    |then (increase setbacks of PLAYER by 1\n].\n\nIF PLAYER has less than 1 health or @mara is dead\n[\n    |then (change PLAYER to dead\n].\n",
+      "source": "//BASIC# v0.0.46 whole-language proving ground for accepted Profiles 1 through 7./.\n\nKINDS\n[\n    #sentinel is a #guard\n    #captain is a #sentinel\n].\n\nDEFINE\n[\n    @mara is a #captain\n    @henry is a #sentinel\n    @north gate is a #door\n    @brass bell is a #device\n    @iron key is a #key\n].\n\nSTART\n[\n    PLAYER has 0 score\n    PLAYER has 12 health\n    PLAYER has 0 victories\n    PLAYER has 0 setbacks\n    PLAYER has \"Ready for the trial.\" motto\n    @mara is calm\n    @henry is calm\n    @north gate is closed\n    @north gate has \"A heavy gate built to take a beating.\" description\n    @iron key is on the #door\n].\n\nCONTROLS for PLAYER\n[\n    A moves PLAYER left at 6 speed\n    D moves PLAYER right at 6 speed\n    SPACE makes PLAYER jump at 10 speed\n].\n\nHOVER for #door\n[\n    name\n    kind\n    state\n    description\n].\n\nCONTEXT for #door\n[\n    \"Open\" when it is closed (change it to open\n    \"Close\" when it is open (change it to closed\n    \"Examine\" (cause PLAYER examines it\n].\n\nWHEN PLAYER attacks a #guard\n[\n    |then (damage it by 1\n    |then (change it to angry\n    |then (cause it attacks PLAYER\n].\n\nWHEN a #guard attacks PLAYER\n[\n    |then (decrease health of PLAYER by 1\n].\n\nWHEN PLAYER sounds @brass bell\n[\n    |then (damage every #guard by 1\n    |then (increase score of PLAYER by 1\n].\n\nWHEN PLAYER takes @iron key\n[\n    |then (carry @iron key\n].\n\nWHEN PLAYER opens @north gate\n[\n    |then (change @north gate to open\n    |then (change motto of PLAYER to \"The gate is open.\"\n].\n\nWHEN PLAYER closes @north gate\n[\n    |then (change @north gate to closed\n    |then (change motto of PLAYER to \"The gate is closed.\"\n].\n\nIF PLAYER has at least 2 score and @north gate is open\n[\n    |then (increase victories of PLAYER by 1\n].\nOTHERWISE\n[\n    |then (increase setbacks of PLAYER by 1\n].\n\nIF PLAYER has less than 1 health or @mara is dead\n[\n    |then (change PLAYER to dead\n].\n",
       "events": [
         "player attacks mara",
         "henry attacks player",
@@ -443,7 +443,7 @@
       "expected_matched_event_count": 2
     }
   ],
-  "v0_1_72_execution_corpus_expansion": {
+  "v0_0_72_execution_corpus_expansion": {
     "fixture_count": 17,
     "new_fixture_names": [
       "multi_scene_toggle_and_score",
@@ -459,7 +459,7 @@
     "ruby_referee_required": true,
     "dk_lab_bridge_removed": false
   },
-  "v0_1_74_semantic_resolver_independence": {
+  "v0_0_74_semantic_resolver_independence": {
     "fixture": "v074_object_interaction_semantic_resolver",
     "semantic_resolver_contract": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v1.json",
     "required_actions": [
@@ -475,7 +475,7 @@
       "carry"
     ]
   },
-  "v0_1_75_bsbc_emitter_independence": {
+  "v0_0_75_bsbc_emitter_independence": {
     "fixture": "v075_independent_bsbc_object_branch",
     "independence_contract": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json",
     "required_features": [
@@ -489,7 +489,7 @@
     ],
     "required_profile": "bsharp.bytecode.v7"
   },
-  "v0_1_77_bsbc_vm_execution_independence": {
+  "v0_0_77_bsbc_vm_execution_independence": {
     "fixture": "v077_independent_bsbc_vm_execution",
     "category": "v077_independent_bsbc_vm",
     "purpose": "Prove independently loaded Profile 7 BSBC executes through SmallCompilerSubsetBSBCVirtualMachine with exact production-VM and Ruby-runtime parity across inheritance, object interaction, text, numbers, IF/OTHERWISE, multiple selection, and follow-up events."

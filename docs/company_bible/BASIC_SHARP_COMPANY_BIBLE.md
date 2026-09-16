@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.84
+**Version:** v0.0.84
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -18,7 +18,7 @@ Future mandatory workflow changes must edit this same file in a numbered BASIC# 
 
 The Company Bible governs authority, workflow, safety, packaging, validation, continuity, identity, and project conduct. It does not replace technical specifications, language contracts, the roadmap, changelogs, validation reports, or the cumulative handoff. Those records keep their distinct jobs.
 
-Demon Killer and Godot-specific lore, gameplay, maps, scenes, doors, controls, art, and engine rules are not active BASIC# company law. Their original records remain recoverable in Git history at accepted BASIC# v0.1.24 commit `28e5b5b`.
+Demon Killer and Godot-specific lore, gameplay, maps, scenes, doors, controls, art, and engine rules are not active BASIC# company law. Their original records remain recoverable in Git history at accepted BASIC# v0.0.24 commit `28e5b5b`.
 
 ## 2. Derek is the final decision-maker
 
@@ -255,10 +255,10 @@ Protected rules:
 - Profile 2 creator-facing text uses straight double quotes, one-line valid UTF-8, and exact case, punctuation, and spaces. Identifier normalization must never alter literal text. Interpolation, concatenation, escape sequences, and multiline text require later approval.
 - **BSharp Bytecode** and **BSBC** are the protected names for compact execution artifacts governed by `bsharp.bytecode.v1` through `bsharp.bytecode.v7`. The accepted Ruby bootstrap may emit deterministic `.bsbc` files, completely validate them into deeply frozen trusted models, reconstruct `.bsbc.txt` diagnostic disassembly, and execute all accepted profiles through the **BSharp Virtual Machine**. The BSharp VM interprets the validated bytecode model directly and must not reconstruct BSIR or call the reference Ruby runtime. Profile 2 adds typed text instructions and role-aware literal strings without weakening Profile 1 identifier validation. Profile 3 adds deterministic controls, hover information, context interaction, and the `CTRL`, `HOVR`, and `CTXT` sections. Profile 4 adds plain-English left/right platform movement, grounded jumping, built-in gravity, frame timing, collision response, and engine-neutral collision-movement commands. Profile 5 adds atomic whole-number increase/decrease actions and exact threshold comparisons. Profile 6 adds ordered plain-English `and` or `or` IF clauses whose complete result owns false-to-true waking and rearming, without changing Profile 1 through Profile 5 meaning. Profile 7 adds an optional `OTHERWISE` action block: the current branch runs once at START, IF runs on false-to-true, OTHERWISE runs on true-to-false, and unchanged truth remains quiet. The protected creator-facing pair is **IF / OTHERWISE**; `ELSE` is not an alias.
 - The **BSharp VM is the preferred runtime** for `.bsharp`, `.bsir.json`, and `.bsbc`. Source and saved BSIR enter it through deterministic BSBC emission and complete validation in memory. `BasicSharp::Runtime` remains a protected reference oracle available only through explicit diagnostic use and conformance testing. Shadow parity verification must stop on disagreement rather than silently choosing one engine's result.
-- Self-hosting must be earned in stages. The first compiler-writing subset is governed by `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json` and `docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FOUNDATION_v0_1_44.md`; Ruby remains the bootstrap and reference authority until a BASIC# compiler can reproduce approved outputs under locked validation.
-- The input-device meaning layer is governed by `spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json` and `docs/language/BASIC_SHARP_PLAIN_ENGLISH_MOVEMENT_AND_INPUT_v0_1_46.md`. Keyboard, mouse/keyboard, PS5, Xbox, and generic gamepad events map beneath existing creator-facing `CONTROLS for PLAYER` declarations. This is not permission for new syntax, controller remapping UI, platform-specific drivers, engine bridge work, haptics, graphics, or Profile 8.
-- The tokenizer/reader self-hosting lane is governed by `spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json`, `docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md`, `docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_IMPLEMENTATION_v0_1_48.md`, and `compiler/tokenizer_reader.rb`. It freezes deterministic reader records, comment handling, current Head words, and first future-facing token records while Ruby remains the reader referee and the existing Ruby parser remains production authority. This is not permission to replace `compiler/lexer.rb`, replace `compiler/parser.rb`, route production parsing through the new implementation, claim BASIC# is self-hosted, add Profile 8, add syntax, or change runtime behavior.
-- The long-term strategic doctrine is governed by `docs/strategy/BASIC_SHARP_UNIVERSAL_STANDARD_AND_AI_TOOLING_DOCTRINE_v0_1_47.md`. BASIC# / BSharp aims toward a universal creator-facing programming standard for websites, apps, games, tools, automation, and business systems. Compatibility comes before replacement: BASIC# should export to existing standards such as HTML, CSS, JavaScript, and later WebAssembly before any BASIC#/BSharp-native browser is considered. Performance is a first-class goal, but claims must be earned through validated backends rather than hype. This doctrine does not authorize licensing work, funding claims, OpenAI outreach, browser work, or implementation beyond the approved build scope.
+- Self-hosting must be earned in stages. The first compiler-writing subset is governed by `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json` and `docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FOUNDATION_v0_0_44.md`; Ruby remains the bootstrap and reference authority until a BASIC# compiler can reproduce approved outputs under locked validation.
+- The input-device meaning layer is governed by `spec/input/BASIC_SHARP_INPUT_DEVICE_MAPPING_v1.json` and `docs/language/BASIC_SHARP_PLAIN_ENGLISH_MOVEMENT_AND_INPUT_v0_0_46.md`. Keyboard, mouse/keyboard, PS5, Xbox, and generic gamepad events map beneath existing creator-facing `CONTROLS for PLAYER` declarations. This is not permission for new syntax, controller remapping UI, platform-specific drivers, engine bridge work, haptics, graphics, or Profile 8.
+- The tokenizer/reader self-hosting lane is governed by `spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json`, `docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_0_47.md`, `docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_IMPLEMENTATION_v0_0_48.md`, and `compiler/tokenizer_reader.rb`. It freezes deterministic reader records, comment handling, current Head words, and first future-facing token records while Ruby remains the reader referee and the existing Ruby parser remains production authority. This is not permission to replace `compiler/lexer.rb`, replace `compiler/parser.rb`, route production parsing through the new implementation, claim BASIC# is self-hosted, add Profile 8, add syntax, or change runtime behavior.
+- The long-term strategic doctrine is governed by `docs/strategy/BASIC_SHARP_UNIVERSAL_STANDARD_AND_AI_TOOLING_DOCTRINE_v0_0_47.md`. BASIC# / BSharp aims toward a universal creator-facing programming standard for websites, apps, games, tools, automation, and business systems. Compatibility comes before replacement: BASIC# should export to existing standards such as HTML, CSS, JavaScript, and later WebAssembly before any BASIC#/BSharp-native browser is considered. Performance is a first-class goal, but claims must be earned through validated backends rather than hype. This doctrine does not authorize licensing work, funding claims, OpenAI outreach, browser work, or implementation beyond the approved build scope.
 
 Language grammar and runtime behavior belong in specifications and contracts, not duplicated as mutable Company Bible prose.
 
@@ -315,7 +315,7 @@ When a rule genuinely blocks safe or necessary work:
 5. wait for Derek's explicit decision;
 6. document an approved permanent change in this canonical Bible through a numbered build.
 
-Conflict resolutions established by v0.1.25:
+Conflict resolutions established by v0.0.25:
 
 | Former conflict | Canonical resolution |
 |---|---|
@@ -329,30 +329,30 @@ Conflict resolutions established by v0.1.25:
 | Old owner-name variants | New records use Derek; historical records remain unchanged. |
 | Game rules inside Company Bible | Demon Killer/Godot rules remain historical and do not govern BASIC#. |
 
-## 17. v0.1.25 consolidation ledger
+## 17. v0.0.25 consolidation ledger
 
 The following 74 former active-folder files were reviewed before consolidation. Their original bytes remain in Git history at commit `28e5b5b`.
 
 | Former path | Disposition | Consolidation result |
 |---|---|---|
-| `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE_CARRYOVER_v0_1_14.md` | MERGED | BASIC# authority, identity, explicit approval, packaging, validation, and Git workflow were carried into the canonical document. |
-| `docs/company_bible/COMPANY_BIBLE_ADDENDUM_v0.1.87_No_Loose_Files.md` | MERGED | No-loose-files and direct project-relative packaging rules were retained. |
-| `docs/company_bible/COMPANY_BIBLE_ADDENDUM_v0.1.88_NES_Overworld_Cell_Build_Safety.md` | MERGED IN PART | Surgical preservation of working systems was retained; NES map-cell and Main-scene instructions are Demon Killer history. |
+| `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE_CARRYOVER_v0_0_14.md` | MERGED | BASIC# authority, identity, explicit approval, packaging, validation, and Git workflow were carried into the canonical document. |
+| `docs/company_bible/COMPANY_BIBLE_ADDENDUM_v0.0.87_No_Loose_Files.md` | MERGED | No-loose-files and direct project-relative packaging rules were retained. |
+| `docs/company_bible/COMPANY_BIBLE_ADDENDUM_v0.0.88_NES_Overworld_Cell_Build_Safety.md` | MERGED IN PART | Surgical preservation of working systems was retained; NES map-cell and Main-scene instructions are Demon Killer history. |
 | `docs/company_bible/COMPANY_BIBLE_DemonKiller.md` | MERGED IN PART | Company-wide workflow principles were retained; Demon Killer lore, controls, maps, scenes, art, gameplay, and Godot rules were retired from BASIC# authority. |
 | `docs/company_bible/COMPANY_BIBLE_DemonKiller.md.meta` | RETIRED METADATA | Obsolete Godot import metadata has no function in the BASIC# documentation tree. |
 | `docs/company_bible/DK_Godot_Company_Bible_Carryover_Note.md` | MERGED IN PART | Documentation, changed-files packaging, preservation, and explicit build authority were retained; Godot carryover wording was retired. |
-| `docs/company_bible/DK_Godot_v0_1_13_Documentation_Record_Note.md` | MERGED IN PART | Thorough reconstructable history was retained; the game-engine journey remains historical project material. |
-| `docs/company_bible/DK_Godot_v0_1_16_Immediate_Patch_Inclusion_Rule.md` | SUPERSEDED | Replaced by exact prebuild scope, explicit approval, and complete execution of the approved scope without silent deferral. |
-| `docs/company_bible/DK_Godot_v0_1_17_Documentation_Discipline_Addendum.md` | MERGED | Same-build documentation discipline was retained. |
-| `docs/company_bible/DK_Godot_v0_1_18_Immediate_Request_Completion_Reinforcement.md` | MERGED | Once exact scope is approved, the approved work must be completed or limitations disclosed before delivery. |
-| `docs/company_bible/DK_Godot_v0_1_18_No_Image_Unless_Explicit_Rule.md` | MERGED IN PART | Direct image permission remains mandatory; Gaia and game-world rules were retired from BASIC# authority. |
-| `docs/company_bible/DK_Godot_v0_1_19_FailedPatchRetry_Documentation_Rule.md` | MERGED | Failed or unapplied work must be re-carried, verified, and documented rather than assumed successful. |
-| `docs/company_bible/DK_Godot_v0_1_20_Failed_Visual_Patch_Retry_Rule.md` | MERGED | Failed or unapplied work must be re-carried, verified, and documented rather than assumed successful. |
-| `docs/company_bible/DK_Godot_v0_1_82_RESTORE_OLD_CELLS_KEEP_NEWMAP_VISIBLE_NO_MAP_REPLACEMENT_RULE.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
-| `docs/company_bible/DK_Godot_v0_1_89_MAIN_INSURANCE_POLICY_ADDENDUM.md` | MERGED IN PART | Risk explanation and rollback planning were retained; Main.tscn-specific backup instructions were retired. |
-| `docs/company_bible/DK_Godot_v0_1_90_VERSIONING_AND_MAIN_SAFETY_ADDENDUM.md` | MERGED IN PART | Numeric version progression and rollback discipline were retained; Main.tscn rules were retired. |
-| `docs/company_bible/DK_Godot_v0_1_91_DOOR_NAMING_AND_MAIN_UID_SAFETY_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
-| `docs/company_bible/DK_Godot_v0_1_92_PROJECT_IDENTITY_RULE_ADDENDUM.md` | MERGED IN PART | Complete active version identity was retained; Godot-specific surfaces and historical version-territory rules were retired. |
+| `docs/company_bible/DK_Godot_v0_0_13_Documentation_Record_Note.md` | MERGED IN PART | Thorough reconstructable history was retained; the game-engine journey remains historical project material. |
+| `docs/company_bible/DK_Godot_v0_0_16_Immediate_Patch_Inclusion_Rule.md` | SUPERSEDED | Replaced by exact prebuild scope, explicit approval, and complete execution of the approved scope without silent deferral. |
+| `docs/company_bible/DK_Godot_v0_0_17_Documentation_Discipline_Addendum.md` | MERGED | Same-build documentation discipline was retained. |
+| `docs/company_bible/DK_Godot_v0_0_18_Immediate_Request_Completion_Reinforcement.md` | MERGED | Once exact scope is approved, the approved work must be completed or limitations disclosed before delivery. |
+| `docs/company_bible/DK_Godot_v0_0_18_No_Image_Unless_Explicit_Rule.md` | MERGED IN PART | Direct image permission remains mandatory; Gaia and game-world rules were retired from BASIC# authority. |
+| `docs/company_bible/DK_Godot_v0_0_19_FailedPatchRetry_Documentation_Rule.md` | MERGED | Failed or unapplied work must be re-carried, verified, and documented rather than assumed successful. |
+| `docs/company_bible/DK_Godot_v0_0_20_Failed_Visual_Patch_Retry_Rule.md` | MERGED | Failed or unapplied work must be re-carried, verified, and documented rather than assumed successful. |
+| `docs/company_bible/DK_Godot_v0_0_82_RESTORE_OLD_CELLS_KEEP_NEWMAP_VISIBLE_NO_MAP_REPLACEMENT_RULE.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_0_89_MAIN_INSURANCE_POLICY_ADDENDUM.md` | MERGED IN PART | Risk explanation and rollback planning were retained; Main.tscn-specific backup instructions were retired. |
+| `docs/company_bible/DK_Godot_v0_0_90_VERSIONING_AND_MAIN_SAFETY_ADDENDUM.md` | MERGED IN PART | Numeric version progression and rollback discipline were retained; Main.tscn rules were retired. |
+| `docs/company_bible/DK_Godot_v0_0_91_DOOR_NAMING_AND_MAIN_UID_SAFETY_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
+| `docs/company_bible/DK_Godot_v0_0_92_PROJECT_IDENTITY_RULE_ADDENDUM.md` | MERGED IN PART | Complete active version identity was retained; Godot-specific surfaces and historical version-territory rules were retired. |
 | `docs/company_bible/DK_Godot_v0_2_01_VERSION_DISPLAY_AND_BACKUP_TITLE_RULE_ADDENDUM.md` | MERGED IN PART | Complete active version identity was retained; Godot-specific surfaces and historical version-territory rules were retired. |
 | `docs/company_bible/DK_Godot_v0_2_02_ZERO_TWO_TERRITORY_AND_VERSION_HABIT_ADDENDUM.md` | MERGED IN PART | Complete active version identity was retained; Godot-specific surfaces and historical version-territory rules were retired. |
 | `docs/company_bible/DK_Godot_v0_2_04_DOOR_TEMPLATE_CREATE_FIX_ADDENDUM.md` | RETIRED PROJECT-SPECIFIC | Demon Killer/Godot scene, map, door, control, visual, or world behavior is not active BASIC# company law. |
@@ -430,18 +430,18 @@ ruby tools/company_bible_audit.rb
 
 A future package fails Bible integrity when it creates a second file in this folder, revives a retired addendum as active authority, omits mandatory sections, or points current records at a superseded Bible path.
 
-- The small compiler subset parser lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v0_1_49.md`, and `compiler/small_compiler_subset_parser.rb`. It parses deterministic subset records from TokenizerReader output and compares them against the Ruby Parser referee. It is not the production parser authority and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, web export, browser work, engine bridge, or Ruby retirement.
-- The small compiler subset IR emitter lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v0_1_50.md`, and `compiler/small_compiler_subset_ir_emitter.rb`. It emits BSharp IR from small compiler subset parser records and compares that output against the Ruby Parser plus SemanticResolver referee. It is not the production compiler path and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
+- The small compiler subset parser lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v0_0_49.md`, and `compiler/small_compiler_subset_parser.rb`. It parses deterministic subset records from TokenizerReader output and compares them against the Ruby Parser referee. It is not the production parser authority and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, web export, browser work, engine bridge, or Ruby retirement.
+- The small compiler subset IR emitter lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v0_0_50.md`, and `compiler/small_compiler_subset_ir_emitter.rb`. It emits BSharp IR from small compiler subset parser records and compares that output against the Ruby Parser plus SemanticResolver referee. It is not the production compiler path and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
 
 
-### v0.1.51 Small Compiler Subset IR Golden Parity Harness
+### v0.0.51 Small Compiler Subset IR Golden Parity Harness
 
-- The small compiler subset IR golden parity harness lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_51.md`, and `compiler/small_compiler_subset_ir_parity_harness.rb`. It locks deterministic BSharp IR SHA256 digests for sealed small compiler subset fixtures and compares them against the Ruby Parser plus SemanticResolver referee. It is not the production compiler path and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
+- The small compiler subset IR golden parity harness lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_0_51.md`, and `compiler/small_compiler_subset_ir_parity_harness.rb`. It locks deterministic BSharp IR SHA256 digests for sealed small compiler subset fixtures and compares them against the Ruby Parser plus SemanticResolver referee. It is not the production compiler path and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
 
 
-### v0.1.63 Small Compiler Subset Error Contract
+### v0.0.63 Small Compiler Subset Error Contract
 
-- The small compiler subset plain-English error contract lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_1_52.md`, and `compiler/small_compiler_subset_error_contract.rb`. It locks stable error IDs, line numbers, severities, creator-facing explanations, and source diagnostics for invalid small compiler subset examples. It is not the production compiler path and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
+- The small compiler subset plain-English error contract lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_0_52.md`, and `compiler/small_compiler_subset_error_contract.rb`. It locks stable error IDs, line numbers, severities, creator-facing explanations, and source diagnostics for invalid small compiler subset examples. It is not the production compiler path and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
 
 
 ## 20. Five Point Paradigm
@@ -477,9 +477,9 @@ The map is the front door to the documentation library. It does not replace the 
 The documentation stack should remain a navigable library, not an unindexed dragon hoard. New major documentation areas must either be listed in the map or intentionally explained elsewhere in the same accepted build.
 
 
-### v0.1.63 Small Compiler Subset Scene/Block Expansion
+### v0.0.63 Small Compiler Subset Scene/Block Expansion
 
-- The small compiler subset scene/block expansion lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_1_53.md`, and `compiler/small_compiler_subset_scene_block_expansion.rb`.
+- The small compiler subset scene/block expansion lane is governed by `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SCENE_BLOCK_EXPANSION_v0_0_53.md`, and `compiler/small_compiler_subset_scene_block_expansion.rb`.
 - It expands the sealed subset to larger ordered scene/block fixtures while Ruby remains the production parser, resolver, compiler path, and referee.
 - It is not the production compiler path and does not permit self-hosting claims, Profile 8, new syntax, runtime changes, BSharp Bytecode changes, web export, browser work, engine bridge, or Ruby retirement.
 
@@ -489,65 +489,65 @@ Symbol table contract spec: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET
 
 ByteTide decision record: the name was considered as a creator-facing metaphor for bytecode flow, then passed on for now. Official system terms remain bytecode and BSBC.
 
-Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_1_54.md`.
+Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_0_54.md`.
 
 
-## v0.1.63 Symbol Table Contract and ByteTide Decision
+## v0.0.63 Symbol Table Contract and ByteTide Decision
 
-The v0.1.63 lane adds `compiler/small_compiler_subset_symbol_table_contract.rb`, `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v1.json`, and `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_1_54.md`.
+The v0.0.63 lane adds `compiler/small_compiler_subset_symbol_table_contract.rb`, `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v1.json`, and `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SYMBOL_TABLE_CONTRACT_v0_0_54.md`.
 
 ByteTide decision record: ByteTide was considered as a creator-facing metaphor for bytecode flow, then passed on. BASIC# keeps bytecode and BSBC as official system terms. This is a documentation decision only, not a rename.
 
 
-### v0.1.63 small compiler subset BSBC emission
+### v0.0.63 small compiler subset BSBC emission
 
-BASIC# v0.1.63 adds the first small compiler subset lane that emits real BSBC bytecode under Ruby referee control. It proves source -> BSharp IR -> BSBC bytes -> bytecode loader for sealed fixtures without replacing Ruby and without claiming BASIC# is self-hosted.
+BASIC# v0.0.63 adds the first small compiler subset lane that emits real BSBC bytecode under Ruby referee control. It proves source -> BSharp IR -> BSBC bytes -> bytecode loader for sealed fixtures without replacing Ruby and without claiming BASIC# is self-hosted.
 
 Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v1.json`.
-Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v0_1_55.md`.
+Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_v0_0_55.md`.
 
 Reference: `compiler/small_compiler_subset_bsbc_emitter.rb`.
 
 
-### v0.1.63 small compiler subset BSBC golden parity
+### v0.0.63 small compiler subset BSBC golden parity
 
-BASIC# v0.1.63 adds the BSBC Golden Parity Harness under Ruby referee control. It locks approved subset source -> BSharp IR -> BSBC bytes -> bytecode loader summaries against sealed golden expectations without replacing Ruby and without claiming BASIC# is self-hosted.
+BASIC# v0.0.63 adds the BSBC Golden Parity Harness under Ruby referee control. It locks approved subset source -> BSharp IR -> BSBC bytes -> bytecode loader summaries against sealed golden expectations without replacing Ruby and without claiming BASIC# is self-hosted.
 
 Reference: `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json`.
-Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_1_56.md`.
+Reference: `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_0_56.md`.
 
 Reference: `compiler/small_compiler_subset_bsbc_parity_harness.rb`.
 
 
-## v0.1.63 Self-Hosting Fixture Corpus
+## v0.0.63 Self-Hosting Fixture Corpus
 
 - Spec: `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json`
-- Doc: `docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v0_1_57.md`
+- Doc: `docs/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v0_0_57.md`
 - Implementation: `compiler/self_hosting_fixture_corpus.rb`
 - Tool: `tools/self_hosting_fixture_corpus.rb`
 - Test: `tests/test_self_hosting_fixture_corpus.rb`
 - DKLab is retired as the active identity. Elderedd Softworks LLC is the parent company identity, Elderedd Laboratory is the active laboratory, and DKLab may remain only as compatibility bridge, rollback support, migration history, or archival evidence.
-## v0.1.63 Small Compiler Subset Runtime Smoke Rule
+## v0.0.63 Small Compiler Subset Runtime Smoke Rule
 
-`spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v0_1_58.md`, and `compiler/small_compiler_subset_runtime_smoke.rb` are protected self-hosting artifacts. The runtime smoke lane proves selected subset fixtures can enter the verifying runtime, run deterministic smoke events, snapshot, and save under Ruby referee control. It must not claim BASIC# is self-hosted, must not replace Ruby, must not add Profile 8, and must not change production runtime behaviour.
-
-
-
-## v0.1.63 Bootstrap Boundary Audit Rule
-
-`spec/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v1.json`, `docs/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v0_1_59.md`, and `compiler/bootstrap_boundary_audit.rb` are protected self-hosting boundary artifacts. The bootstrap boundary audit records where Ruby remains source of truth, where BASIC# subset artifacts may participate, where runtime smoke evidence is allowed, and which v0.1.63 milestone claims remain forbidden. It must not claim BASIC# is self-hosted, must not replace Ruby, must not add Profile 8, must not rename bytecode or BSBC, and must not change production runtime behaviour.
+`spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v1.json`, `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v0_0_58.md`, and `compiler/small_compiler_subset_runtime_smoke.rb` are protected self-hosting artifacts. The runtime smoke lane proves selected subset fixtures can enter the verifying runtime, run deterministic smoke events, snapshot, and save under Ruby referee control. It must not claim BASIC# is self-hosted, must not replace Ruby, must not add Profile 8, and must not change production runtime behaviour.
 
 
-## v0.1.63 Self-Hosting Milestone 1 Rule
 
-`spec/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v1.json`, `compiler/self_hosting_milestone_1.rb`, and `tools/self_hosting_milestone_1.rb` define the only accepted v0.1.63 self-hosting claim: BSharp Compiler Subset 0 reached Self-Hosting Milestone 1 under Ruby referee control. This is not full self-hosting. This does not mean full self-hosting, does not retire Ruby, does not add Profile 8, does not change production runtime behaviour, and does not rename bytecode or BSBC. Ruby remains the bootstrap compiler and referee.
+## v0.0.63 Bootstrap Boundary Audit Rule
 
-## v0.1.63 README Current Release Truth Rule
+`spec/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v1.json`, `docs/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v0_0_59.md`, and `compiler/bootstrap_boundary_audit.rb` are protected self-hosting boundary artifacts. The bootstrap boundary audit records where Ruby remains source of truth, where BASIC# subset artifacts may participate, where runtime smoke evidence is allowed, and which v0.0.63 milestone claims remain forbidden. It must not claim BASIC# is self-hosted, must not replace Ruby, must not add Profile 8, must not rename bytecode or BSBC, and must not change production runtime behaviour.
+
+
+## v0.0.63 Self-Hosting Milestone 1 Rule
+
+`spec/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v1.json`, `compiler/self_hosting_milestone_1.rb`, and `tools/self_hosting_milestone_1.rb` define the only accepted v0.0.63 self-hosting claim: BSharp Compiler Subset 0 reached Self-Hosting Milestone 1 under Ruby referee control. This is not full self-hosting. This does not mean full self-hosting, does not retire Ruby, does not add Profile 8, does not change production runtime behaviour, and does not rename bytecode or BSBC. Ruby remains the bootstrap compiler and referee.
+
+## v0.0.63 README Current Release Truth Rule
 
 `spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json`, `compiler/readme_current_release_truth.rb`, and `tools/readme_current_release_truth.rb` protect the GitHub-facing root README. This is the README Current Release Truth Gate. The README current-release section must match the active build title and must not carry stale current-release text from older lanes.
 
 
-## v0.1.63 Emergency Elderedd Migration Rule
+## v0.0.63 Emergency Elderedd Migration Rule
 
 Priority: Emergency. DKLab / DK LAB is retired as the active BASIC# parent/lab identity. Elderedd Softworks LLC is the parent company identity. Elderedd Laboratory is the research and build laboratory. ELDL is internal shorthand only. BCS means BSharp Creator Services.
 
@@ -567,109 +567,109 @@ Every accepted BASIC# build must close out in this order:
 
 Do not substitute SSH-key guessing, GitHub username/password prompts, giant token credential blocks, focused-only validation lanes, or new archive/image steps unless Derek explicitly commands that exact change. Before giving GitHub commands, check the current project record and use the proven BASIC# closeout path in small commands.
 
-BCS, BSharp Creator Services, is the future hosted service layer for BASIC#: creator accounts, project sync, updates, documentation, compiler access, publishing tools, future game/world hosting, and eventual Elderedd-controlled server infrastructure. v0.1.63 names and governs BCS only. It does not implement accounts, payments, hosting, servers, network behaviour, licensing, or pricing.
+BCS, BSharp Creator Services, is the future hosted service layer for BASIC#: creator accounts, project sync, updates, documentation, compiler access, publishing tools, future game/world hosting, and eventual Elderedd-controlled server infrastructure. v0.0.63 names and governs BCS only. It does not implement accounts, payments, hosting, servers, network behaviour, licensing, or pricing.
 
 
-## v0.1.63 conduct and migration clarification
+## v0.0.63 conduct and migration clarification
 
-BASIC# v0.1.63 continues the emergency DKLab retirement work without removing the DKLab compatibility bridge. The active identity is Elderedd Softworks LLC and Elderedd Laboratory. DKLab is retired and may appear only as compatibility, rollback, migration, or archival history until a later accepted build proves the bridge can be removed safely.
+BASIC# v0.0.63 continues the emergency DKLab retirement work without removing the DKLab compatibility bridge. The active identity is Elderedd Softworks LLC and Elderedd Laboratory. DKLab is retired and may appear only as compatibility, rollback, migration, or archival history until a later accepted build proves the bridge can be removed safely.
 
-The v0.1.63 technical lane adds small compiler subset BSBC execution parity under Ruby referee control. This is a proof lane, not full self-hosting. Ruby remains the bootstrap compiler, production parser authority, production resolver authority, runtime authority, and reference referee.
+The v0.0.63 technical lane adds small compiler subset BSBC execution parity under Ruby referee control. This is a proof lane, not full self-hosting. Ruby remains the bootstrap compiler, production parser authority, production resolver authority, runtime authority, and reference referee.
 
 Build conduct remains unchanged: correctness outranks speed, failed candidates are evidence, and no build may be accepted without full validation and Derek-side installation proof.
 
-## v0.1.63 UTF-8 Source Reading Conduct Rule
+## v0.0.63 UTF-8 Source Reading Conduct Rule
 
 BASIC# source files, BSharp IR JSON, BSharp Save JSON, and text fixtures must be read explicitly as UTF-8 wherever the project controls file reads. A minimal/no-locale Ruby environment must not crash with `Encoding::CompatibilityError` when creator text contains non-ASCII characters such as an em dash or curly quote diagnostics.
 
 This hardening does not change creator syntax, parser meaning, runtime meaning, bytecode format, or Ruby referee authority. It is a foundation repair so future self-hosting work does not inherit a locale-dependent source-reading trap.
 
-## v0.1.66 Release Gate Hardening Rule
+## v0.0.66 Release Gate Hardening Rule
 
-BASIC# v0.1.66 adds the release package preflight and deterministic fixture hash sweep gates.
+BASIC# v0.0.66 adds the release package preflight and deterministic fixture hash sweep gates.
 
 Before release package acceptance the final package payload must be audited against its manifest records, changed-file scope, validation inventory, sealed artifact bytes, deterministic fixture hashes, and package identity. A repair must sweep the full version-sensitive fixture family together rather than repairing only the first failed gate.
 
 This rule does not remove the DKLab compatibility bridge, does not claim BASIC# is fully self-hosted, and does not weaken any existing validator.
 
 
-## v0.1.72 Self-Hosting Milestone 2 Proposal and Roadmap Truth Rule
+## v0.0.72 Self-Hosting Milestone 2 Proposal and Roadmap Truth Rule
 
-BASIC# v0.1.72 repairs the active roadmap and master handoff so current project records identify v0.1.71 as the accepted base and v0.1.72 as the current proposal build. This build records the Self-Hosting Milestone 2 proposal only. It does not implement Milestone 2, does not claim full self-hosting, does not retire Ruby, does not add Profile 8, and does not change production runtime behaviour.
+BASIC# v0.0.72 repairs the active roadmap and master handoff so current project records identify v0.0.71 as the accepted base and v0.0.72 as the current proposal build. This build records the Self-Hosting Milestone 2 proposal only. It does not implement Milestone 2, does not claim full self-hosting, does not retire Ruby, does not add Profile 8, and does not change production runtime behaviour.
 
-After v0.1.72, future work must either move self-hosting or game-making forward, or fix a proven validation/release defect. New governance exists only when it repairs a demonstrated failure.
+After v0.0.72, future work must either move self-hosting or game-making forward, or fix a proven validation/release defect. New governance exists only when it repairs a demonstrated failure.
 
 
-## v0.1.73 Plain-English Object Interaction Rule
+## v0.0.73 Plain-English Object Interaction Rule
 
-BASIC# v0.1.73 moves game-making forward by making the already-recognized official words `(open`, `(close`, `(lock`, and `(take` executable through the accepted production resolver and preferred runtime pipeline. They canonicalize onto the existing state-change and carry primitives so the feature does not require Profile 8 or a new bytecode format.
+BASIC# v0.0.73 moves game-making forward by making the already-recognized official words `(open`, `(close`, `(lock`, and `(take` executable through the accepted production resolver and preferred runtime pipeline. They canonicalize onto the existing state-change and carry primitives so the feature does not require Profile 8 or a new bytecode format.
 
 The accepted selector rules remain authoritative. Exact `@object`, established `it`, and `every #Kind` selectors may be used where the current language already permits them. Retired selector forms remain retired. Future object-action expansion requires a separately approved build and end-to-end validation.
 
-This build preserves the v0.1.72 Self-Hosting Milestone 2 Proposal as the next self-hosting planning record. It does not claim full self-hosting and does not retire Ruby.
+This build preserves the v0.0.72 Self-Hosting Milestone 2 Proposal as the next self-hosting planning record. It does not claim full self-hosting and does not retire Ruby.
 
-## v0.1.74 Self-Hosting Milestone 2 Slice 1 Semantic Resolver Independence Rule
+## v0.0.74 Self-Hosting Milestone 2 Slice 1 Semantic Resolver Independence Rule
 
-BASIC# v0.1.74 advances BSharp Compiler Subset 0 by giving the subset path its own `SmallCompilerSubsetSemanticResolver`. The primary subset IR path must use `compiler/small_compiler_subset_semantic_resolver.rb`; the production `SemanticResolver` remains separate and referee-only for exact parity comparison.
+BASIC# v0.0.74 advances BSharp Compiler Subset 0 by giving the subset path its own `SmallCompilerSubsetSemanticResolver`. The primary subset IR path must use `compiler/small_compiler_subset_semantic_resolver.rb`; the production `SemanticResolver` remains separate and referee-only for exact parity comparison.
 
 The independent resolver file must not call `SemanticResolver.new` and must not require `compiler/resolver.rb`. Normal production BASIC# compilation remains on the accepted production compiler path. Ruby remains the bootstrap compiler and referee authority. This is Self-Hosting Milestone 2 Slice 1, not full self-hosting and not Ruby retirement.
 
-The machine-checked contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v1.json`. The v0.1.74 execution corpus must include the accepted v0.1.73 open, close, lock, and take object interactions through the independent resolver, BSBC, loader, BSharp VM, and referee parity path.
+The machine-checked contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v1.json`. The v0.0.74 execution corpus must include the accepted v0.0.73 open, close, lock, and take object interactions through the independent resolver, BSBC, loader, BSharp VM, and referee parity path.
 
 The accepted release closeout order remains full validation -> accepted snapshot -> local Git commit/tag -> GitHub push/remote verification.
 
-## v0.1.76 Self-Hosting Milestone 2 Slice 3 BSBC Loader Independence Rule
+## v0.0.76 Self-Hosting Milestone 2 Slice 3 BSBC Loader Independence Rule
 
 The accepted Slice 2 encoder-independence contract remains `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_EMITTER_INDEPENDENCE_v1.json` and remains mandatory beneath this loader-independence slice.
 
-BASIC# v0.1.76 advances BSharp Compiler Subset 0 by giving the bounded subset path its own `SmallCompilerSubsetBSBCLoader`. Primary subset BSBC validation in the self-hosting proof lane must come from `compiler/small_compiler_subset_bsbc_loader.rb`. The independent loader must not require `compiler/bytecode_loader.rb`, instantiate or call `BytecodeLoader.new`, or inherit from `BytecodeLoader`.
+BASIC# v0.0.76 advances BSharp Compiler Subset 0 by giving the bounded subset path its own `SmallCompilerSubsetBSBCLoader`. Primary subset BSBC validation in the self-hosting proof lane must come from `compiler/small_compiler_subset_bsbc_loader.rb`. The independent loader must not require `compiler/bytecode_loader.rb`, instantiate or call `BytecodeLoader.new`, or inherit from `BytecodeLoader`.
 
 The production Ruby `BytecodeLoader` remains a separate referee. Valid artifacts must produce exact trusted-model, summary, fingerprint, and disassembly parity. Malformed artifacts in the sealed mutation campaign must be rejected by both loaders with the same deterministic message. The BSharp VM execution lane must prove that a model validated by the subset loader can execute with Ruby-runtime parity.
 
-The machine-checked contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v1.json`. The implementation record is `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v0_1_76.md`. The dedicated v0.1.76 fixture combines Kind inheritance, creator text, whole-number values, open, close, lock, take, IF/OTHERWISE, and exact/Kind selectors through independently emitted and independently loaded Profile 7 BSBC.
+The machine-checked contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v1.json`. The implementation record is `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_LOADER_INDEPENDENCE_v0_0_76.md`. The dedicated v0.0.76 fixture combines Kind inheritance, creator text, whole-number values, open, close, lock, take, IF/OTHERWISE, and exact/Kind selectors through independently emitted and independently loaded Profile 7 BSBC.
 
 This is Self-Hosting Milestone 2 Slice 3, not full self-hosting and not Ruby retirement. Normal production BASIC# compilation and production bytecode loading remain unchanged.
 
-## v0.1.77 Self-Hosting Milestone 2 Slice 4 BSharp VM Execution Independence Rule
+## v0.0.77 Self-Hosting Milestone 2 Slice 4 BSharp VM Execution Independence Rule
 
-BASIC# v0.1.77 advances BSharp Compiler Subset 0 by giving the bounded subset path its own `SmallCompilerSubsetBSBCVirtualMachine`. Primary bounded subset execution in the self-hosting proof lane must come from `compiler/small_compiler_subset_bsbc_virtual_machine.rb` after independent BSBC validation by `SmallCompilerSubsetBSBCLoader`.
+BASIC# v0.0.77 advances BSharp Compiler Subset 0 by giving the bounded subset path its own `SmallCompilerSubsetBSBCVirtualMachine`. Primary bounded subset execution in the self-hosting proof lane must come from `compiler/small_compiler_subset_bsbc_virtual_machine.rb` after independent BSBC validation by `SmallCompilerSubsetBSBCLoader`.
 
 The independent VM must not require `compiler/bytecode_virtual_machine.rb`, instantiate or call `BytecodeVirtualMachine.new`, or inherit from `BytecodeVirtualMachine`. The production `BytecodeVirtualMachine` remains a separate execution referee and `BasicSharp::Runtime` remains the Ruby meaning referee.
 
 Acceptance requires exact production-VM parity for event results, final world state, BSharp Save documents, event ordering, selector binding, object interaction, whole-number and text mutation, IF/OTHERWISE settlement, follow-up events, and loop protection. Ruby runtime semantic parity remains mandatory. High-volume deterministic parity must run at 1,024 events and the 1,024 follow-up-event safety boundary must remain exact.
 
-The machine-checked contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v1.json`. The implementation record is `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v0_1_77.md`. The dedicated v0.1.77 fixture combines Kind inheritance, creator text, whole-number values, open, close, lock, take, IF/OTHERWISE, multiple selection, exact/Kind selectors, and follow-up events through independently emitted, independently loaded, and independently executed Profile 7 BSBC.
+The machine-checked contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v1.json`. The implementation record is `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v0_0_77.md`. The dedicated v0.0.77 fixture combines Kind inheritance, creator text, whole-number values, open, close, lock, take, IF/OTHERWISE, multiple selection, exact/Kind selectors, and follow-up events through independently emitted, independently loaded, and independently executed Profile 7 BSBC.
 
 This is Self-Hosting Milestone 2 Slice 4, not full self-hosting and not Ruby retirement. Normal production BASIC# compilation, loading, and runtime routing remain unchanged.
 
-## v0.1.78 Self-Hosting Milestone 2 Slice 5 Integrated Independent Compiler Pipeline Rule
+## v0.0.78 Self-Hosting Milestone 2 Slice 5 Integrated Independent Compiler Pipeline Rule
 
-BASIC# v0.1.78 advances BSharp Compiler Subset 0 by connecting the bounded reader, parser, semantic resolver, BSharp IR, independent BSBC encoder, independent BSBC loader, and independent BSharp VM behind one `SmallCompilerSubsetPipeline` primary source-to-world path.
+BASIC# v0.0.78 advances BSharp Compiler Subset 0 by connecting the bounded reader, parser, semantic resolver, BSharp IR, independent BSBC encoder, independent BSBC loader, and independent BSharp VM behind one `SmallCompilerSubsetPipeline` primary source-to-world path.
 
 The primary integrated path must not invoke production `Lexer`, `Parser`, `SemanticResolver`, `BytecodeEmitter`, `BytecodeLoader`, `BytecodeVirtualMachine`, or `Runtime` constructors. Those production Ruby components remain separate referee paths only. `TokenizerReader` must produce its primary line/comment records independently while preserving exact Lexer referee parity.
 
-The machine-checked contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json`. The implementation record is `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v0_1_78.md`.
+The machine-checked contract is `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v1.json`. The implementation record is `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PIPELINE_INDEPENDENCE_v0_0_78.md`.
 
 This build introduces no new creator-facing syntax. Existing BASIC# statement boundaries, official action-word visual guides such as `(open`, `(close`, `(lock`, and `(take`, and written action order remain unchanged. Compiler-internal complexity must not be pushed onto creators merely to imitate conventional programming-language syntax.
 
 This is Self-Hosting Milestone 2 Slice 5, not full self-hosting and not Ruby retirement. Normal production BASIC# compilation and runtime routing remain unchanged. The accepted release closeout order remains full validation -> accepted snapshot -> local Git commit/tag -> GitHub push/peeled-tag verification.
 
 
-## v0.1.79 Self-Hosting Milestone 2 Slice 6 Independent Compiler Driver + BSBC Artifact Round Trip Rule
+## v0.0.79 Self-Hosting Milestone 2 Slice 6 Independent Compiler Driver + BSBC Artifact Round Trip Rule
 
-BASIC# v0.1.79 advances BSharp Compiler Subset 0 by placing `SmallCompilerSubsetDriver` in front of the accepted v0.1.78 `SmallCompilerSubsetPipeline`. The bounded primary source-file path must route through the independent pipeline and must not hand compilation back to production `Lexer`, `Parser`, `SemanticResolver`, `BytecodeEmitter`, `BytecodeLoader`, `BytecodeVirtualMachine`, or `Runtime` components. Those production Ruby components remain separate referees only.
+BASIC# v0.0.79 advances BSharp Compiler Subset 0 by placing `SmallCompilerSubsetDriver` in front of the accepted v0.0.78 `SmallCompilerSubsetPipeline`. The bounded primary source-file path must route through the independent pipeline and must not hand compilation back to production `Lexer`, `Parser`, `SemanticResolver`, `BytecodeEmitter`, `BytecodeLoader`, `BytecodeVirtualMachine`, or `Runtime` components. Those production Ruby components remain separate referees only.
 
 The driver must produce a real `.bsbc` artifact through the independent encoder's atomic-write path. The saved artifact must reload through `SmallCompilerSubsetBSBCLoader` and execute through `SmallCompilerSubsetBSBCVirtualMachine`. Acceptance requires deterministic BSBC bytes and readable disassembly, exact in-memory and persisted-artifact execution parity, exact production-VM and Ruby-runtime referee parity, source-free execution after successful artifact creation, and preservation of an existing accepted artifact when source compilation fails.
 
-The machine-checked contracts are `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json` and `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_v1.json`. The implementation record is `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v0_1_79.md`. The governing self-hosting boundary remains `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json`.
+The machine-checked contracts are `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v1.json` and `spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ARTIFACT_ROUND_TRIP_v1.json`. The implementation record is `docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_DRIVER_INDEPENDENCE_v0_0_79.md`. The governing self-hosting boundary remains `spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json`.
 
 This build introduces no new creator-facing syntax. Existing BASIC# statement boundaries, the opening `(` visual guide on official action words, and written action order remain authoritative. Compiler-internal complexity must remain inside the compiler rather than forcing creators to imitate conventional programming-language syntax.
 
 This is Self-Hosting Milestone 2 Slice 6, not full self-hosting and not Ruby retirement. Profiles 1 through 7 and the existing BSBC binary layout remain unchanged. The accepted release closeout order remains full validation -> accepted snapshot -> local Git commit/tag -> GitHub push/peeled-tag verification.
 
-## v0.1.80 Self-Hosting Milestone 2 Slice 7 First BASIC#-Authored Compiler Component Rule
+## v0.0.80 Self-Hosting Milestone 2 Slice 7 First BASIC#-Authored Compiler Component Rule
 
-BASIC# v0.1.80 crosses the first bounded authorship boundary: a real compiler-domain decision component is authored in BASIC# source at `compiler/native/first_bsharp_compiler_component.bsharp`, compiled through the accepted independent `SmallCompilerSubsetDriver`, persisted as BSharp Bytecode, and executed through the independent loader and BSharp VM.
+BASIC# v0.0.80 crosses the first bounded authorship boundary: a real compiler-domain decision component is authored in BASIC# source at `compiler/native/first_bsharp_compiler_component.bsharp`, compiled through the accepted independent `SmallCompilerSubsetDriver`, persisted as BSharp Bytecode, and executed through the independent loader and BSharp VM.
 
 The component classifies the nine accepted compiler block heads `KINDS`, `DEFINE`, `START`, `WHEN`, `IF`, `OTHERWISE`, `CONTROLS`, `HOVER`, and `CONTEXT` into deterministic parser decisions. Its checked-in `.bsbc` artifact must be byte-identical to independently recompiled output and must remain executable after the source copy used for compilation is removed. Production compiler components and the Ruby Runtime remain separate referee paths only.
 
@@ -677,40 +677,40 @@ This is the first BASIC#-authored compiler component, not full self-hosting and 
 
 The Company Bible header version is mandatory release metadata. `tools/company_bible_audit.rb` must reject any future build where the canonical header version does not exactly match `BasicSharp::VERSION`.
 
-## v0.1.81 Self-Hosting Milestone 2 Slice 8 Native Parser Dispatch Integration Rule
+## v0.0.81 Self-Hosting Milestone 2 Slice 8 Native Parser Dispatch Integration Rule
 
-BASIC# v0.1.81 moves the accepted BASIC#-authored compiler decision component into the bounded independent parser path. `compiler/small_compiler_subset_native_dispatch.rb` must load and execute `compiler/native/first_bsharp_compiler_component.bsbc` through `SmallCompilerSubsetBSBCLoader` and `SmallCompilerSubsetBSBCVirtualMachine`, and `SmallCompilerSubsetParser` must consult that native result for accepted block-Head dispatch.
+BASIC# v0.0.81 moves the accepted BASIC#-authored compiler decision component into the bounded independent parser path. `compiler/small_compiler_subset_native_dispatch.rb` must load and execute `compiler/native/first_bsharp_compiler_component.bsbc` through `SmallCompilerSubsetBSBCLoader` and `SmallCompilerSubsetBSBCVirtualMachine`, and `SmallCompilerSubsetParser` must consult that native result for accepted block-Head dispatch.
 
 The bounded parser must not preserve a second hard-coded Ruby table that silently chooses the accepted Head route when the native artifact rejects a Head or returns a wrong decision. Invalid or unmatched Heads must fail visibly. A sabotage artifact that intentionally returns a wrong route must cause parser failure rather than Ruby fallback. Native dispatch invocation counts must be observable in the parser path.
 
-The v0.1.81 bootstrap is controlled: the accepted v0.1.80 native BSBC artifact may bootstrap generation #1 of the v0.1.81 native artifact; generation #1 must then bootstrap generation #2; the two generations and readable disassemblies must be byte-identical, and generation #2 must match the checked-in artifact.
+The v0.0.81 bootstrap is controlled: the accepted v0.0.80 native BSBC artifact may bootstrap generation #1 of the v0.0.81 native artifact; generation #1 must then bootstrap generation #2; the two generations and readable disassemblies must be byte-identical, and generation #2 must match the checked-in artifact.
 
 Ruby remains the bootstrap compiler and referee authority. Production Parser, SemanticResolver, BytecodeEmitter, BytecodeLoader, BytecodeVirtualMachine, and Runtime remain separate referees and must not become hidden fallbacks on the bounded primary path. This is Self-Hosting Milestone 2 Slice 8, not full self-hosting and not Ruby retirement. Profiles 1 through 7 and creator-facing syntax remain unchanged.
 
-## v0.1.82 Self-Hosting Milestone 2 Slice 9 Native Semantic Routing Integration Rule
+## v0.0.82 Self-Hosting Milestone 2 Slice 9 Native Semantic Routing Integration Rule
 
-BASIC# v0.1.82 moves BASIC#-authored compiler authority one layer deeper by requiring `SmallCompilerSubsetSemanticResolver` to request accepted semantic-family routing decisions from the persisted BASIC# component `compiler/native/first_bsharp_semantic_router.bsbc` through `compiler/small_compiler_subset_native_semantic_routing.rb`. The accepted semantic families are Kind definitions, Thing definitions, starting facts, WHEN event rules, IF/OTHERWISE rules, CONTROLS declarations, HOVER declarations, and CONTEXT declarations.
+BASIC# v0.0.82 moves BASIC#-authored compiler authority one layer deeper by requiring `SmallCompilerSubsetSemanticResolver` to request accepted semantic-family routing decisions from the persisted BASIC# component `compiler/native/first_bsharp_semantic_router.bsbc` through `compiler/small_compiler_subset_native_semantic_routing.rb`. The accepted semantic families are Kind definitions, Thing definitions, starting facts, WHEN event rules, IF/OTHERWISE rules, CONTROLS declarations, HOVER declarations, and CONTEXT declarations.
 
-The semantic route is fail-closed. A wrong or unknown BASIC# semantic decision must fail visibly and must never be repaired by a hidden Ruby answer table. Validation must observe native semantic invocation counts, preserve the v0.1.81 native parser dispatch upstream, disable production Parser, production SemanticResolver, production compiler constructors, and Ruby Runtime on the primary proof path, preserve production and Ruby referee parity, and require a byte-identical generation #1 / generation #2 bootstrap fixed point.
+The semantic route is fail-closed. A wrong or unknown BASIC# semantic decision must fail visibly and must never be repaired by a hidden Ruby answer table. Validation must observe native semantic invocation counts, preserve the v0.0.81 native parser dispatch upstream, disable production Parser, production SemanticResolver, production compiler constructors, and Ruby Runtime on the primary proof path, preserve production and Ruby referee parity, and require a byte-identical generation #1 / generation #2 bootstrap fixed point.
 
-Canonical evidence: `spec/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v1.json`, `docs/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v0_1_82.md`, `tools/native_semantic_routing_integration.rb`, and `tests/test_native_semantic_routing_integration.rb`. Ruby remains bootstrap compiler and referee authority. This is bounded self-hosting progress, not full self-hosting. No Profile 8 or new creator-facing syntax is introduced.
+Canonical evidence: `spec/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v1.json`, `docs/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v0_0_82.md`, `tools/native_semantic_routing_integration.rb`, and `tests/test_native_semantic_routing_integration.rb`. Ruby remains bootstrap compiler and referee authority. This is bounded self-hosting progress, not full self-hosting. No Profile 8 or new creator-facing syntax is introduced.
 
-## v0.1.83 Self-Hosting Milestone 2 Slice 10 Native Symbol Resolution Integration Rule
+## v0.0.83 Self-Hosting Milestone 2 Slice 10 Native Symbol Resolution Integration Rule
 
 - The bounded independent compiler must route approved symbol-resolution decisions through the checked-in BASIC#-authored `compiler/native/first_bsharp_symbol_resolver.bsbc` artifact.
 - Ruby bootstrap plumbing may supply neutral lookup observations such as dictionary membership, duplicate observation, or structural Kind-link facts, but it may not supply a hidden final known/unknown, unique/duplicate, Kind-link, PLAYER, action, or value decision when the native symbol component is under proof.
 - Contradictory or sabotaged native symbol decisions must fail visibly. No Ruby fallback decision table is permitted.
-- v0.1.81 native parser dispatch and v0.1.82 native semantic routing must remain active and independently validated upstream.
-- The checked-in symbol artifact must satisfy the controlled v0.1.82 -> v0.1.83 generation #1 -> v0.1.83 generation #2 byte-identical fixed-point proof.
+- v0.0.81 native parser dispatch and v0.0.82 native semantic routing must remain active and independently validated upstream.
+- The checked-in symbol artifact must satisfy the controlled v0.0.82 -> v0.0.83 generation #1 -> v0.0.83 generation #2 byte-identical fixed-point proof.
 - Production Parser, SemanticResolver, compiler constructors, and Ruby Runtime remain separate referee authority and unavailable on the bounded primary proof path.
 - This slice adds no new creator-facing syntax, no Profile 8, and no full-self-hosting claim.
 
 
 
-## v0.1.84 Self-Hosting Milestone 2 Slice 11 Native Action Routing Integration Rule
+## v0.0.84 Self-Hosting Milestone 2 Slice 11 Native Action Routing Integration Rule
 
-BASIC# v0.1.84 moves accepted official-action family selection out of the Ruby resolver decision table and into `compiler/native/first_bsharp_action_router.bsbc`, executed through `compiler/small_compiler_subset_native_action_routing.rb`. The bounded resolver may normalize an action word and perform the selected implementation, but the family choice for damage, change, number change, caused events, object interaction, and generic actions must come from BASIC# BSBC. Contradictory native action decisions must fail visibly without Ruby family fallback.
+BASIC# v0.0.84 moves accepted official-action family selection out of the Ruby resolver decision table and into `compiler/native/first_bsharp_action_router.bsbc`, executed through `compiler/small_compiler_subset_native_action_routing.rb`. The bounded resolver may normalize an action word and perform the selected implementation, but the family choice for damage, change, number change, caused events, object interaction, and generic actions must come from BASIC# BSBC. Contradictory native action decisions must fail visibly without Ruby family fallback.
 
-v0.1.81 native parser dispatch, v0.1.82 native semantic routing, and v0.1.83 native symbol resolution remain active upstream and independently protected. Ruby remains the bootstrap compiler and separate referee authority. This is Self-Hosting Milestone 2 Slice 11, not full self-hosting and not Ruby retirement. Profiles 1 through 7, creator-facing syntax, and BSBC layout remain unchanged.
+v0.0.81 native parser dispatch, v0.0.82 native semantic routing, and v0.0.83 native symbol resolution remain active upstream and independently protected. Ruby remains the bootstrap compiler and separate referee authority. This is Self-Hosting Milestone 2 Slice 11, not full self-hosting and not Ruby retirement. Profiles 1 through 7, creator-facing syntax, and BSBC layout remain unchanged.
 
-The v0.1.84 delivery workflow also records Derek's approved rapid-build rule: routine development builds are delivered as one self-contained versioned `.sh` installer rather than requiring a separate ZIP wrapper. The same manifest, base-hash, rollback, full-validation, snapshot, commit/tag, and GitHub closeout protections remain mandatory. A failed v0.1.84 candidate remains v0.1.84 until repaired and accepted or explicitly abandoned by Derek.
+The v0.0.84 delivery workflow also records Derek's approved rapid-build rule: routine development builds are delivered as one self-contained versioned `.sh` installer rather than requiring a separate ZIP wrapper. The same manifest, base-hash, rollback, full-validation, snapshot, commit/tag, and GitHub closeout protections remain mandatory. A failed v0.0.84 candidate remains v0.0.84 until repaired and accepted or explicitly abandoned by Derek.

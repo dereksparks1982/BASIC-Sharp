@@ -39,7 +39,7 @@ module BasicSharp
         native_symbol_resolution_declared: stage_named?('basic_sharp_native_symbol_resolution'),
         runtime_smoke_declared: stage_named?('runtime_smoke_bridge'),
         production_boundary_declared: stage_named?('production_runtime_boundary'),
-        milestone_guard_declared: spec.fetch('next_milestone') == 'v0.1.84 Self-Hosting Milestone 2 Slice 11: BASIC# Native Action Routing Integration',
+        milestone_guard_declared: spec.fetch('next_milestone') == 'v0.0.84 Self-Hosting Milestone 2 Slice 11: BASIC# Native Action Routing Integration',
         no_self_hosting_claim: forbidden.include?('claiming BASIC# is self-hosted'),
         ruby_replacement_forbidden: forbidden.include?('replacing the Ruby bootstrap compiler'),
         profile_8_forbidden: forbidden.include?('adding Profile 8'),

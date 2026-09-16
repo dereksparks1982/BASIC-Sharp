@@ -8,7 +8,7 @@ require_relative '../compiler/small_compiler_subset_semantic_resolver'
 ROOT = File.expand_path('..', __dir__)
 SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v1.json')
 IR_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_EMITTER_v1.json')
-DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v0_1_74.md')
+DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_SEMANTIC_RESOLVER_v0_0_74.md')
 IMPLEMENTATION_PATH = File.join(ROOT, 'compiler/small_compiler_subset_semantic_resolver.rb')
 EMITTER_PATH = File.join(ROOT, 'compiler/small_compiler_subset_ir_emitter.rb')
 
@@ -89,5 +89,5 @@ puts "Fixtures: #{spec.fetch('fixtures').length}"
 puts 'Subset resolver builds its own semantic result: PASS'
 puts 'Production resolver used only as referee: PASS'
 puts 'Exact IR parity: PASS'
-puts 'v0.1.73 object interaction parity: PASS'
+puts 'v0.0.73 object interaction parity: PASS'
 puts 'SMALL COMPILER SUBSET SEMANTIC RESOLVER: PASS'

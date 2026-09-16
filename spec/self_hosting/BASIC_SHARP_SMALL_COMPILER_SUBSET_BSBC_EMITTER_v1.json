@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.bsbc_emitter.json",
   "format_version": 1,
-  "target_version": "0.1.84",
+  "target_version": "0.0.84",
   "status": "bsbc_emission_independent_under_ruby_referee",
   "purpose": "Lock the small compiler subset path that emits real BSharp Bytecode through the independent Subset 0 encoder while the production Ruby BytecodeEmitter remains a separate referee.",
   "self_hosting_spec": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json",

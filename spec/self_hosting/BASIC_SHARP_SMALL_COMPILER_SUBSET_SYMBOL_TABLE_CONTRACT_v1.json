@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.symbol_table_contract.json",
   "format_version": 1,
-  "target_version": "0.1.84",
+  "target_version": "0.0.84",
   "status": "native_symbol_resolution_integration_under_ruby_referee",
   "purpose": "Lock deterministic name tracking for the small compiler subset while bounded symbol decisions require the BASIC#-authored native symbol component and Ruby remains the referee.",
   "valid_fixtures": [

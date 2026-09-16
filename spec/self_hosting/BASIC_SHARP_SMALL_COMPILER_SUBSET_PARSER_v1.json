@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.parser.contract.json",
   "format_version": 1,
-  "target_version": "0.1.84",
+  "target_version": "0.0.84",
   "title": "Small Compiler Subset Parser Under Ruby Referee",
   "status": "implementation_under_ruby_referee",
   "purpose": "Parse a tiny approved BASIC# compiler subset from tokenizer/reader records while the existing Ruby Parser remains the production authority and referee.",
@@ -83,7 +83,7 @@
   ],
   "documents": {
     "spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v1.json",
-    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v0_1_49.md",
+    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_PARSER_v0_0_49.md",
     "implementation_file": "compiler/small_compiler_subset_parser.rb",
     "tool": "tools/small_compiler_subset_parser.rb",
     "test": "tests/test_small_compiler_subset_parser.rb",

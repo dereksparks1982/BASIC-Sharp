@@ -184,12 +184,12 @@ class TestKindFamilyHardening < Minitest::Test
     root = File.expand_path('..', __dir__)
 
     {
-      '0.1.13' => File.join(root, 'tests/fixtures/first_room_v0_1_13.bsir.json'),
-      '0.1.15' => File.join(root, 'tests/fixtures/first_room_v0_1_15.bsir.json'),
-      '0.1.16' => File.join(root, 'tests/fixtures/first_room_v0_1_16.bsir.json'),
-      '0.1.17' => File.join(root, 'tests/fixtures/first_room_v0_1_17.bsir.json'),
-      '0.1.18' => File.join(root, 'tests/fixtures/first_room_v0_1_18.bsir.json'),
-      '0.1.19' => File.join(root, 'tests/fixtures/first_room_v0_1_19.bsir.json')
+      '0.0.13' => File.join(root, 'tests/fixtures/first_room_v0_0_13.bsir.json'),
+      '0.0.15' => File.join(root, 'tests/fixtures/first_room_v0_0_15.bsir.json'),
+      '0.0.16' => File.join(root, 'tests/fixtures/first_room_v0_0_16.bsir.json'),
+      '0.0.17' => File.join(root, 'tests/fixtures/first_room_v0_0_17.bsir.json'),
+      '0.0.18' => File.join(root, 'tests/fixtures/first_room_v0_0_18.bsir.json'),
+      '0.0.19' => File.join(root, 'tests/fixtures/first_room_v0_0_19.bsir.json')
     }.each do |version, path|
       document = JSON.parse(File.read(path, encoding: 'UTF-8'))
       assert_equal version, document.fetch('version')

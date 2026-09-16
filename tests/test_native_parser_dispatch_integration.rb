@@ -62,7 +62,7 @@ class TestNativeParserDispatchIntegration < Minitest::Test
   def test_contract_identity_and_live_version
     assert_equal 'bsharp.native_parser_dispatch_integration.contract.json', spec.fetch('format')
     assert_equal 1, spec.fetch('format_version')
-    assert_equal '0.1.84', BasicSharp::VERSION
+    assert_equal '0.0.84', BasicSharp::VERSION
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
     assert_equal 'native_parser_dispatch_integration_under_ruby_referee', spec.fetch('status')
   end

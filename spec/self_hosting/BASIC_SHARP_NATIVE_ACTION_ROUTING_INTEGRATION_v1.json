@@ -1,7 +1,7 @@
 {
   "format": "bsharp.native_action_routing_integration.contract.json",
   "format_version": 1,
-  "target_version": "0.1.84",
+  "target_version": "0.0.84",
   "status": "native_action_routing_integration_under_ruby_referee",
   "title": "Self-Hosting Milestone 2 Slice 11: Native Action Routing Integration",
   "native_component": {
@@ -37,7 +37,7 @@
     "Every accepted official action word is routed by BASIC#-authored BSBC before the bounded semantic resolver selects an action-family implementation.",
     "Ruby may normalize the verb and provide plumbing but must not maintain a second verb-to-action-family answer table.",
     "Contradictory native action decisions fail visibly rather than falling back to Ruby.",
-    "v0.1.81 parser dispatch, v0.1.82 semantic routing, and v0.1.83 symbol resolution remain active upstream.",
+    "v0.0.81 parser dispatch, v0.0.82 semantic routing, and v0.0.83 symbol resolution remain active upstream.",
     "Ruby remains bootstrap/referee authority; this is not full self-hosting.",
     "No Profile 8 and no creator-facing syntax change."
   ]

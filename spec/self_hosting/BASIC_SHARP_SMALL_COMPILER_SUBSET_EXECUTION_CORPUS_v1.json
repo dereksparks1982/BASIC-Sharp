@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.execution_corpus.json",
   "format_version": 1,
-  "target_version": "0.1.84",
+  "target_version": "0.0.84",
   "title": "BASIC# Small Compiler Subset Execution Corpus",
   "status": "execution_corpus_expanded_under_ruby_referee",
   "purpose": "Treat the BSBC execution parity fixtures as a growing corpus, require broader coverage than a single smoke path, and prove every fixture still runs through the bounded independent source-to-VM lane while matching the production VM and Ruby referee runtime.",
@@ -29,22 +29,22 @@
     "skipping release package preflight",
     "single-goblin repair"
   ],
-  "v0_1_74_semantic_resolver_expansion": {
+  "v0_0_74_semantic_resolver_expansion": {
     "fixture": "v074_object_interaction_semantic_resolver",
     "category": "v074_object_interaction_semantic_resolver",
-    "purpose": "Prove v0.1.73 open close lock and take actions survive the independent subset semantic resolver through BSBC and BSharp VM execution parity."
+    "purpose": "Prove v0.0.73 open close lock and take actions survive the independent subset semantic resolver through BSBC and BSharp VM execution parity."
   },
-  "v0_1_75_bsbc_emitter_independence": {
+  "v0_0_75_bsbc_emitter_independence": {
     "fixture": "v075_independent_bsbc_object_branch",
     "category": "v075_independent_bsbc_emitter",
     "purpose": "Prove the Subset 0 encoder independently emits mixed Profile 7 object interaction, number change, IF, and OTHERWISE bytecode before loader and VM parity."
   },
-  "v0_1_76_bsbc_loader_independence": {
+  "v0_0_76_bsbc_loader_independence": {
     "fixture": "v076_independent_bsbc_loader_mixed",
     "category": "v076_independent_bsbc_loader",
     "purpose": "Prove the full bounded compiler lane reaches BSharp VM execution through independently validated Profile 7 BSBC while matching the production BytecodeLoader and Ruby runtime referees."
   },
-  "v0_1_77_bsbc_vm_execution_independence": {
+  "v0_0_77_bsbc_vm_execution_independence": {
     "fixture": "v077_independent_bsbc_vm_execution",
     "category": "v077_independent_bsbc_vm",
     "purpose": "Prove the bounded path independently executes Profile 7 BSBC through SmallCompilerSubsetBSBCVirtualMachine while matching the production VM and Ruby runtime referees."

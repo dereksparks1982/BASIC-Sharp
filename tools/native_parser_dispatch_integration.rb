@@ -148,10 +148,10 @@ Dir.mktmpdir('basic-sharp-v081-native-dispatch') do |directory|
   generation_2 = File.join(directory, 'generation_2.bsbc')
 
   BasicSharp::SmallCompilerSubsetNativeDispatch.with_artifact_path(BOOTSTRAP_ARTIFACT) do
-    BasicSharp::SmallCompilerSubsetDriver.new(source, source_label: '(v0.1.81 bootstrap generation 1)').compile_to(generation_1)
+    BasicSharp::SmallCompilerSubsetDriver.new(source, source_label: '(v0.0.81 bootstrap generation 1)').compile_to(generation_1)
   end
   BasicSharp::SmallCompilerSubsetNativeDispatch.with_artifact_path(generation_1) do
-    BasicSharp::SmallCompilerSubsetDriver.new(source, source_label: '(v0.1.81 bootstrap generation 2)').compile_to(generation_2)
+    BasicSharp::SmallCompilerSubsetDriver.new(source, source_label: '(v0.0.81 bootstrap generation 2)').compile_to(generation_2)
   end
 
   assert_dispatch!(File.binread(generation_1) == File.binread(generation_2), 'bootstrap generation #2 differs from generation #1')

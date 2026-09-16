@@ -1,0 +1,46 @@
+BASIC# v0.0.26 Changed Files
+
+Required base: v0.0.25, commit dadd813, tag v0.0.25
+Target: v0.0.26 BSharp Bytecode Architecture and Instruction Contract 1
+
+ADDED
+BUILD_HANDSHAKE_v0_0_26.md
+compiler/bytecode_contract.rb
+tools/bytecode_contract.rb
+tests/test_bytecode_contract.rb
+spec/bytecode_v1/BASIC_SHARP_BYTECODE_PROFILE_v1.json
+docs/bytecode/BASIC_SHARP_BYTECODE_ARCHITECTURE_v0_0_26.md
+docs/bytecode/BASIC_SHARP_BYTECODE_FORMAT_AND_INSTRUCTION_CONTRACT_v0_0_26.md
+docs/bytecode/BASIC_SHARP_BYTECODE_COMPATIBILITY_POLICY_v0_0_26.md
+docs/changed_files/BASIC_SHARP_CHANGED_FILES_v0_0_26.txt
+docs/changelog/BASIC_SHARP_CHANGELOG_v0_0_26.md
+docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_0_26.md
+docs/session_logs/BASIC_SHARP_v0_0_26_SESSION_LOG.md
+docs/testing/BASIC_SHARP_BYTECODE_CONTRACT_TEST_v0_0_26.md
+docs/validation/BASIC_SHARP_VALIDATION_v0_0_26.md
+
+MODIFIED
+BASIC_SHARP_PATCH_MANIFEST.json
+README.md
+compiler/ast_nodes.rb
+docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
+docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
+docs/roadmap/BASIC_SHARP_ROADMAP.md
+samples/ask_demo.bsave.json
+samples/ask_demo.bsir.json
+samples/every_guard.bsir.json
+samples/first_room.bsir.json
+samples/follow_up_events.bsir.json
+samples/values_and_amounts.bsir.json
+samples/world_save_demo.bsave.json
+samples/world_save_demo.bsir.json
+tests/test_ask.rb
+tests/test_bsir_identity_migration.rb
+tests/test_cli_output.rb
+tests/test_identity_migration.rb
+tests/test_ir_output.rb
+tests/test_world_save.rb
+tools/company_bible_audit.rb
+
+DELETED
+None

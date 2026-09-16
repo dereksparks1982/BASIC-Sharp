@@ -9,16 +9,16 @@ require_relative '../compiler/tokenizer_reader'
 
 ROOT = File.expand_path('..', __dir__)
 SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v1.json')
-CONTRACT_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md')
-IMPLEMENTATION_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_IMPLEMENTATION_v0_1_48.md')
+CONTRACT_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_0_47.md')
+IMPLEMENTATION_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_IMPLEMENTATION_v0_0_48.md')
 REFERENCE_PATHS = [
   'README.md',
   'docs/roadmap/BASIC_SHARP_ROADMAP.md',
   'docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md',
   'docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md',
-  'docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_1_47.md',
-  'docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_IMPLEMENTATION_v0_1_48.md',
-  'docs/strategy/BASIC_SHARP_UNIVERSAL_STANDARD_AND_AI_TOOLING_DOCTRINE_v0_1_47.md'
+  'docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_CONTRACT_v0_0_47.md',
+  'docs/self_hosting/BASIC_SHARP_TOKENIZER_READER_IMPLEMENTATION_v0_0_48.md',
+  'docs/strategy/BASIC_SHARP_UNIVERSAL_STANDARD_AND_AI_TOOLING_DOCTRINE_v0_0_47.md'
 ].freeze
 
 spec = JSON.parse(File.read(SPEC_PATH, encoding: 'UTF-8'))
@@ -96,7 +96,7 @@ implementation_doc = File.read(IMPLEMENTATION_DOC_PATH, encoding: 'UTF-8')
   assert_contract!(implementation_doc.include?(line), "implementation document missing #{line}")
 end
 
-strategy = File.read(File.join(ROOT, 'docs/strategy/BASIC_SHARP_UNIVERSAL_STANDARD_AND_AI_TOOLING_DOCTRINE_v0_1_47.md'), encoding: 'UTF-8')
+strategy = File.read(File.join(ROOT, 'docs/strategy/BASIC_SHARP_UNIVERSAL_STANDARD_AND_AI_TOOLING_DOCTRINE_v0_0_47.md'), encoding: 'UTF-8')
 ['Compatibility before conquest.', 'Validation before replacement.', 'Performance before hype.', 'Creator clarity before programmer tradition.'].each do |line|
   assert_contract!(strategy.include?(line), "universal doctrine missing #{line}")
 end

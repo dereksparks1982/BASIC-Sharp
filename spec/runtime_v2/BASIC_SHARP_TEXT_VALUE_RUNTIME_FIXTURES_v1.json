@@ -27,5 +27,5 @@
     "save_document_sha256": "ca6be8faf3db0d0f3062e71f4e65b4ab41ff8f0dfde05841573102e7f53b46d2",
     "restored_snapshot_sha256": "d6cec44d81b271b501d3ca9a6d14983d54e28061dd7a999a9e978d6e5234d5e0"
   },
-  "target_version": "0.1.84"
+  "target_version": "0.0.84"
 }

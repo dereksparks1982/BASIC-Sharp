@@ -1,7 +1,7 @@
 {
   "format": "bsharp.bytecode.loader.fixtures.json",
   "format_version": 1,
-  "created_by_basic_sharp": "0.1.28",
+  "created_by_basic_sharp": "0.0.28",
   "bytecode_profile": "bsharp.bytecode.v1",
   "source_artifact": "samples/first_room.bsbc",
   "valid_samples": [

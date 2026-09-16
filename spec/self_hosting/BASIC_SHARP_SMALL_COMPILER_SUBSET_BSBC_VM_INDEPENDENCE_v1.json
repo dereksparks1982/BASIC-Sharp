@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.bsbc_vm_independence.contract.json",
   "format_version": 1,
-  "target_version": "0.1.84",
+  "target_version": "0.0.84",
   "title": "Small Compiler Subset BSharp VM Execution Independence",
   "status": "bsbc_vm_execution_independent_under_ruby_referee",
   "purpose": "Give BSharp Compiler Subset 0 its own bounded BSBC execution engine for Profiles 1 through 7 while preserving the production BytecodeVirtualMachine and BasicSharp::Runtime only as separate referees for exact execution meaning.",
@@ -12,7 +12,7 @@
       "using compiler/bytecode_virtual_machine.rb only on a separate production-VM referee path",
       "using BasicSharp::Runtime as the Ruby meaning referee",
       "requiring exact START, event matching, Kind inheritance, selector, action ordering, object interaction, value mutation, IF/OTHERWISE, follow-up event, loop-protection, final-world, and Save parity",
-      "running high-volume deterministic event parity on the dedicated v0.1.77 fixture",
+      "running high-volume deterministic event parity on the dedicated v0.0.77 fixture",
       "proving Profile 1 through Profile 7 execution without changing bytecode layout or creator-facing meaning"
     ],
     "forbidden_until_later_approval": [
@@ -73,7 +73,7 @@
   ],
   "documents": {
     "spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v1.json",
-    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v0_1_77.md",
+    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_VM_INDEPENDENCE_v0_0_77.md",
     "virtual_machine": "compiler/small_compiler_subset_bsbc_virtual_machine.rb",
     "loader": "compiler/small_compiler_subset_bsbc_loader.rb",
     "production_vm_referee": "compiler/bytecode_virtual_machine.rb",

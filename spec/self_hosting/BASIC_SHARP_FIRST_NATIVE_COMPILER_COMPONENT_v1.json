@@ -1,7 +1,7 @@
 {
   "format": "bsharp.first_native_compiler_component.contract.json",
   "format_version": 1,
-  "target_version": "0.1.84",
+  "target_version": "0.0.84",
   "title": "First BASIC#-Authored Compiler Component",
   "status": "first_bsharp_authored_compiler_component_under_ruby_referee",
   "purpose": "Prove that a bounded compiler-domain decision component can be authored in BASIC#, compiled by the accepted independent compiler driver into real BSBC, loaded without its source, and executed by the independent BSharp VM while Ruby remains bootstrap referee.",
@@ -59,7 +59,7 @@
     "source": "compiler/native/first_bsharp_compiler_component.bsharp",
     "artifact": "compiler/native/first_bsharp_compiler_component.bsbc",
     "disassembly": "compiler/native/first_bsharp_compiler_component.bsbc.txt",
-    "implementation": "docs/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v0_1_80.md",
+    "implementation": "docs/self_hosting/BASIC_SHARP_FIRST_NATIVE_COMPILER_COMPONENT_v0_0_80.md",
     "tool": "tools/first_native_compiler_component.rb",
     "test": "tests/test_first_native_compiler_component.rb"
   },

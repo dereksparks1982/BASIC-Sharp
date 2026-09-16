@@ -3,31 +3,31 @@
 ## Current accepted base
 
 ```text
-v0.1.83: Self-Hosting Milestone 2 Slice 10 - Native Symbol Resolution Integration
+v0.0.83: Self-Hosting Milestone 2 Slice 10 - Native Symbol Resolution Integration
 commit ac8bb906239ed2f199c437d4c3321b18fff1fcab
-tag v0.1.83
+tag v0.0.83
 ```
 
-v0.1.83 is the accepted rollback point. It preserves v0.1.81 BASIC#-authored parser dispatch and v0.1.82 BASIC#-authored semantic routing, adds active BASIC#-authored symbol decisions, passed native acceptance, and is the only valid base for v0.1.84.
+v0.0.83 is the accepted rollback point. It preserves v0.0.81 BASIC#-authored parser dispatch and v0.0.82 BASIC#-authored semantic routing, adds active BASIC#-authored symbol decisions, passed native acceptance, and is the only valid base for v0.0.84.
 
 ## Current candidate
 
 ```text
-v0.1.84: Self-Hosting Milestone 2 Slice 11 - Native Action Routing Integration
+v0.0.84: Self-Hosting Milestone 2 Slice 11 - Native Action Routing Integration
 ```
 
-v0.1.84 preserves the accepted parser, semantic, and symbol stages, then requires the bounded independent semantic resolver to obtain official-action family selection from `compiler/native/first_bsharp_action_router.bsbc` through `compiler/small_compiler_subset_native_action_routing.rb`. Wrong or contradictory native action-family decisions fail closed instead of falling back to a Ruby verb-family choice.
+v0.0.84 preserves the accepted parser, semantic, and symbol stages, then requires the bounded independent semantic resolver to obtain official-action family selection from `compiler/native/first_bsharp_action_router.bsbc` through `compiler/small_compiler_subset_native_action_routing.rb`. Wrong or contradictory native action-family decisions fail closed instead of falling back to a Ruby verb-family choice.
 
 The candidate path is:
 
 ```text
 BASIC# source
 -> TokenizerReader
--> BASIC# native parser dispatch [v0.1.81]
+-> BASIC# native parser dispatch [v0.0.81]
 -> SmallCompilerSubsetParser
--> BASIC# native semantic routing [v0.1.82]
--> BASIC# native symbol resolution [v0.1.83]
--> BASIC# native action routing [v0.1.84]
+-> BASIC# native semantic routing [v0.0.82]
+-> BASIC# native symbol resolution [v0.0.83]
+-> BASIC# native action routing [v0.0.84]
 -> SmallCompilerSubsetSemanticResolver
 -> BSharp IR
 -> independent BSBC encoder
@@ -76,21 +76,21 @@ Priority: active.
 Current truthful claim:
 
 ```text
-v0.1.80 proved the first bounded compiler-domain component authored in BASIC#.
-v0.1.81 made BASIC# BSBC control bounded native parser dispatch.
-v0.1.82 made BASIC# BSBC control bounded semantic routing.
-v0.1.83 adds bounded BASIC#-authored symbol-resolution decisions.
+v0.0.80 proved the first bounded compiler-domain component authored in BASIC#.
+v0.0.81 made BASIC# BSBC control bounded native parser dispatch.
+v0.0.82 made BASIC# BSBC control bounded semantic routing.
+v0.0.83 adds bounded BASIC#-authored symbol-resolution decisions.
 Ruby remains the bootstrap compiler and separate referee authority.
 BASIC# is not fully self-hosted.
 ```
 
-The v0.1.72 Milestone 2 proposal is now implemented through semantic resolver independence, independent BSBC encoding, independent loading, independent BSharp VM execution, integrated pipeline independence, real artifact round trip, the first BASIC#-authored compiler decision kernel, and active native parser dispatch integration.
+The v0.0.72 Milestone 2 proposal is now implemented through semantic resolver independence, independent BSBC encoding, independent loading, independent BSharp VM execution, integrated pipeline independence, real artifact round trip, the first BASIC#-authored compiler decision kernel, and active native parser dispatch integration.
 
 ## Game-making runway
 
-v0.1.73 established direct creator actions including open, close, lock, and take. v0.1.81 preserves those game-making semantics unchanged while the compiler machinery underneath them becomes more self-directed.
+v0.0.73 established direct creator actions including open, close, lock, and take. v0.0.81 preserves those game-making semantics unchanged while the compiler machinery underneath them becomes more self-directed.
 
-## Next direction after v0.1.84
+## Next direction after v0.0.84
 
 1. Continue transferring real compiler authority from Ruby into BASIC# until the production compiler chain no longer requires Ruby decisions.
 2. Next likely bounded targets are condition interpretation, event interpretation, selector/reference resolution, semantic transformation, IR construction/emission, source reading/token processing, and compiler orchestration.
@@ -166,5 +166,5 @@ spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_RUNTIME_SMOKE_v1.json
 spec/self_hosting/BASIC_SHARP_BOOTSTRAP_BOUNDARY_AUDIT_v1.json
 spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json
 spec/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_1_v1.json
-docs/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_2_PROPOSAL_v0_1_72.md
+docs/self_hosting/BASIC_SHARP_SELF_HOSTING_MILESTONE_2_PROPOSAL_v0_0_72.md
 ```

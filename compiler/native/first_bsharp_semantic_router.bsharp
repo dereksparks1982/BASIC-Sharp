@@ -1,4 +1,4 @@
-//BASIC# v0.1.83 first BASIC#-authored semantic routing component./.
+//BASIC# v0.0.83 first BASIC#-authored semantic routing component./.
 //This bounded classifier turns accepted compiler semantic inputs into resolver decisions./.
 
 DEFINE

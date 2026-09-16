@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.bsbc_golden_parity.contract.json",
   "format_version": 1,
-  "target_version": "0.1.84",
+  "target_version": "0.0.84",
   "title": "BSharp Bytecode Golden Parity Harness Under Ruby Referee",
   "status": "bsbc_golden_parity_under_ruby_referee",
   "purpose": "Lock golden BSBC bytecode parity for the independent Subset 0 encoder so independently emitted bytes remain byte-for-byte compatible with the production Ruby BytecodeEmitter referee.",
@@ -166,7 +166,7 @@
   ],
   "documents": {
     "spec": "spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json",
-    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_1_56.md",
+    "implementation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_0_56.md",
     "implementation_file": "compiler/small_compiler_subset_bsbc_parity_harness.rb",
     "tool": "tools/small_compiler_subset_bsbc_parity_harness.rb",
     "test": "tests/test_small_compiler_subset_bsbc_parity_harness.rb",

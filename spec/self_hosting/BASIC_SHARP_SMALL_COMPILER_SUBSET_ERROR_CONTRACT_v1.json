@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.error_contract.json",
   "format_version": 1,
-  "target_version": "0.1.84",
+  "target_version": "0.0.84",
   "title": "Small Compiler Subset Plain-English Error Contract",
   "status": "plain_english_error_contract_under_ruby_referee",
   "purpose": "Lock stable, plain-English, creator-facing error records for invalid small compiler subset examples before the self-hosting bridge carries more compiler weight.",
@@ -10,7 +10,7 @@
       "adding a non-production small compiler subset error contract",
       "canonicalizing existing parser and emitter diagnostics into stable error IDs",
       "locking plain-English messages for invalid small compiler subset examples",
-      "preserving valid small compiler subset IR golden parity from v0.1.51"
+      "preserving valid small compiler subset IR golden parity from v0.0.51"
     ],
     "forbidden_until_later_approval": [
       "adding Profile 8",
@@ -133,7 +133,7 @@
     "implementation": "compiler/small_compiler_subset_error_contract.rb",
     "tool": "tools/small_compiler_subset_error_contract.rb",
     "test": "tests/test_small_compiler_subset_error_contract.rb",
-    "documentation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_1_52.md",
+    "documentation": "docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_0_52.md",
     "parser": "compiler/small_compiler_subset_parser.rb",
     "ir_emitter": "compiler/small_compiler_subset_ir_emitter.rb",
     "ir_parity_harness": "compiler/small_compiler_subset_ir_parity_harness.rb"

@@ -6,14 +6,14 @@ require_relative '../compiler/small_compiler_subset_error_contract'
 
 ROOT = File.expand_path('..', __dir__)
 SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v1.json')
-DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_1_52.md')
+DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_ERROR_CONTRACT_v0_0_52.md')
 REFERENCE_PATHS = [
   'README.md',
   'docs/roadmap/BASIC_SHARP_ROADMAP.md',
   'docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md',
   'docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md',
   'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_SUBSET_v1.json',
-  'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_1_51.md'
+  'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_IR_PARITY_HARNESS_v0_0_51.md'
 ].freeze
 
 def assert_contract!(condition, message)

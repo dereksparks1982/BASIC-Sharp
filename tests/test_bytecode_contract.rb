@@ -110,14 +110,14 @@ class TestBytecodeContract < Minitest::Test
       assert_includes rules, rule
     end
     assert_equal rules.length, rules.uniq.length
-    assert_includes profile.dig('future_boundaries', 'v0_1_28_excludes'), 'bytecode execution'
+    assert_includes profile.dig('future_boundaries', 'v0_0_28_excludes'), 'bytecode execution'
     assert_equal ['.bsharp', '.bsir.json'], profile.dig('emission', 'source_inputs')
     assert_equal ['bsharp.bytecode.v1', 'bsharp.meaning.v1', 'sha256-bsir-meaning-v1'], profile.dig('emission', 'mandatory_string_prefix')
   end
 
   def test_loader_contract_is_complete_and_non_executing
     loading = profile.fetch('loading')
-    assert_equal 'implemented by BASIC# v0.1.28', loading.fetch('status')
+    assert_equal 'implemented by BASIC# v0.0.28', loading.fetch('status')
     assert_equal ['.bsbc'], loading.fetch('source_inputs')
     assert_includes loading.fetch('validation'), 'complete structural validation'
     assert_includes loading.fetch('trusted_model'), 'deeply frozen'
@@ -130,7 +130,7 @@ class TestBytecodeContract < Minitest::Test
 
   def test_vm_execution_contract_is_direct_and_profile_complete
     execution = profile.fetch('execution')
-    assert_equal 'preferred by BASIC# v0.1.31', execution.fetch('status')
+    assert_equal 'preferred by BASIC# v0.0.31', execution.fetch('status')
     assert_equal 'successfully validated deeply frozen BytecodeLoader model', execution.fetch('input_boundary')
     assert_equal true, execution.fetch('direct_bytecode_interpretation')
     assert_equal false, execution.fetch('reconstructs_bsir')
@@ -142,7 +142,7 @@ class TestBytecodeContract < Minitest::Test
     assert_includes execution.fetch('shadow_parity_verification'), '--verify-runtime-parity'
     assert_includes execution.fetch('action_instructions'), 'CAUSE_EVENT'
     assert_includes execution.fetch('condition_instructions'), 'VALUE_EQUALS'
-    assert_includes profile.dig('future_boundaries', 'v0_1_29_excludes'), 'BSharp Save through the VM'
+    assert_includes profile.dig('future_boundaries', 'v0_0_29_excludes'), 'BSharp Save through the VM'
   end
 
   def test_canonical_contract_is_deterministic_across_hash_order
