@@ -4,13 +4,13 @@
 
 BASIC# is a scripting language made for non-programmers, by non-programmers. It favors readable intent, full words, plain-English structure, and creator clarity over terse programmer-first syntax.
 
-The current public version is **v0.0.84**. The active compiler is still bootstrapped and independently checked with Ruby while BASIC# progressively takes over bounded compiler responsibilities through its own BSharp IR, BSharp Bytecode (`.bsbc`), and BSharp VM path. BASIC# is not yet fully self-hosted, and no creator-facing syntax change is implied by the current self-hosting work.
+The current version is **v0.0.84**. The compiler is still bootstrapped and independently checked with Ruby while BASIC# progressively takes over bounded compiler responsibilities through its own BSharp IR, BSharp Bytecode (`.bsbc`), and BSharp VM path. BASIC# is not yet fully self-hosted, and no creator-facing syntax change is implied by the current self-hosting work.
 
 Source files use `.bsharp`. The intermediate representation is BSharp IR / BSIR. Bytecode is BSharp Bytecode / BSBC. Runtime inspection uses BSharp ASK, saves use BSharp Save, and the preferred runtime is the BSharp VM.
 
 The canonical project rules are recorded in `docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md`.
 
-## Technical History
+## Version Technical History
 
 ### v0.0.84 — Native Action Routing Integration
 Moved another bounded compiler decision into BASIC# by routing accepted official action words through the BASIC#-authored native action-routing component. Existing native parser dispatch, semantic routing, and symbol resolution remain upstream. Wrong-family decisions fail closed rather than silently falling back to Ruby.
@@ -84,8 +84,8 @@ Established the current project identity while retaining the legacy workspace pa
 ### v0.0.61 — Self-Hosting Milestone 1 Repair
 Repaired the first self-hosting milestone record and its acceptance truth.
 
-### v0.0.60 — Historical Number Reserved in Sequence
-No accepted release commit under this number is present in the current Git history. The number remains listed so the README preserves the complete version-by-version sequence.
+### v0.0.60 — No Accepted Release Record Found
+The current repository history does not contain an accepted release record for this numbered step. The number is retained so the version history remains complete.
 
 ### v0.0.59 — Bootstrap Boundary Audit
 Added a formal bootstrap-boundary audit to distinguish self-hosted subset authority from Ruby bootstrap/referee authority.
@@ -129,23 +129,23 @@ Defined the tokenizer/reader boundary for the self-hosting runway.
 ### v0.0.46 — Plain-English Movement and Input Contract
 Defined the creator-facing contract for plain-English movement and input.
 
-### v0.0.45 — Historical Number Reserved in Sequence
-No accepted release commit under this number is present in the current Git history. The number remains listed so the README preserves the complete version-by-version sequence.
+### v0.0.45 — No Accepted Release Record Found
+The current repository history does not contain an accepted release record for this numbered step. The number is retained so the version history remains complete.
 
 ### v0.0.44 — Self-Hosting Foundation and Rejected-Package Repair Record
 Established the self-hosting foundation and preserved the repair record for an earlier rejected package rather than treating failed work as an accepted baseline.
 
-### v0.0.43 — Historical Number Reserved in Sequence
-No accepted release commit under this number is present in the current Git history. The number remains listed so the README preserves the complete version-by-version sequence.
+### v0.0.43 — No Accepted Release Record Found
+The current repository history does not contain an accepted release record for this numbered step. The number is retained so the version history remains complete.
 
 ### v0.0.42 — Trial by Fire Complete Fixture Repair
 Completed a fixture-family repair uncovered by Trial by Fire validation.
 
-### v0.0.41 — Historical Number Reserved in Sequence
-No accepted release commit under this number is present in the current Git history. The number remains listed so the README preserves the complete version-by-version sequence.
+### v0.0.41 — No Accepted Release Record Found
+The current repository history does not contain an accepted release record for this numbered step. The number is retained so the version history remains complete.
 
-### v0.0.40 — Historical Number Reserved in Sequence
-No accepted release commit under this number is present in the current Git history. The number remains listed so the README preserves the complete version-by-version sequence.
+### v0.0.40 — No Accepted Release Record Found
+The current repository history does not contain an accepted release record for this numbered step. The number is retained so the version history remains complete.
 
 ### v0.0.39 — Plain-English OTHERWISE Branches and BSharp Profile 7
 Added creator-facing `OTHERWISE` branching and BSharp meaning/bytecode Profile 7.
@@ -162,11 +162,11 @@ Added platform-style movement behavior and BSharp Profile 4.
 ### v0.0.35 — Profile 3 and Direct BSBC Validation Repair
 Completed Profile 3 work and repaired direct BSBC validation.
 
-### v0.0.34 — Historical Number Reserved in Sequence
-No accepted release commit under this number is present in the current Git history. The number remains listed so the README preserves the complete version-by-version sequence.
+### v0.0.34 — No Accepted Release Record Found
+The current repository history does not contain an accepted release record for this numbered step. The number is retained so the version history remains complete.
 
-### v0.0.33 — Historical Number Reserved in Sequence
-No accepted release commit under this number is present in the current Git history. The number remains listed so the README preserves the complete version-by-version sequence.
+### v0.0.33 — No Accepted Release Record Found
+The current repository history does not contain an accepted release record for this numbered step. The number is retained so the version history remains complete.
 
 ### v0.0.32 — Meaning Profile 2 Text Values and BSharp Bytecode Profile 2
 Added creator-facing text values and the second meaning/bytecode profile.
@@ -234,8 +234,8 @@ Added a creator-readable plain-language runtime trace.
 ### v0.0.11 — BASIC Sharp Language Foundation and Historical BASIC Research
 Established the BASIC Sharp language direction and recorded research into historical BASIC-family design ideas.
 
-### v0.0.10 — Historical Number Reserved in Sequence
-No accepted release commit under this number is present in the current Git history. The number remains listed so the README preserves the complete version-by-version sequence.
+### v0.0.10 — No Accepted Release Record Found
+The current repository history does not contain an accepted release record for this numbered step. The number is retained so the version history remains complete.
 
 ### v0.0.09 — First Runtime Execution
 Added the first runtime execution path for the early language implementation.
@@ -259,13 +259,11 @@ Added the first semantic resolver and structured intermediate-representation out
 Created the first standalone bootstrap compiler prototype with lexer, parser, AST structures, dictionary support, diagnostics, sample source, and parser validation.
 
 ### v0.0.02 — Decision Ledger and Core Dictionary
-The pre-compiler design stage recorded the language decision ledger and core dictionary that became the required base for the first bootstrap compiler prototype.
+The earliest compiler record identifies this as the documentation-only decision-ledger and core-dictionary base required by the first bootstrap compiler prototype.
 
-### v0.0.01 — Initial Language Foundation
-The opening design stage established the project as a standalone plain-language scripting-language effort and set the compiler-first direction that later became BASIC#.
+### v0.0.01 — Initial Project Stage
+The current repository does not contain an earlier accepted release commit for this numbered step. It is retained as the first version number in the complete history rather than being omitted or assigned invented technical changes.
 
 ## Additional Notes
 
-The technical history above is intentionally complete from **v0.0.84 through v0.0.01**. Where the current Git history contains no accepted release commit for a numbered step, the number is retained and identified rather than silently omitted or filled with invented implementation details.
-
-BASIC# remains under active self-hosting development. Ruby remains the bootstrap compiler and independent referee until each replacement boundary is proven through parity, sabotage, deterministic artifact, and full release validation. Profiles 1 through 7 remain protected, and no Profile 8 is implied by the current work.
+The version technical history intentionally runs in full from **v0.0.84 through v0.0.01**, newest to oldest. Numbers without a surviving accepted release record are kept in sequence and identified plainly instead of being skipped or given invented implementation details.
