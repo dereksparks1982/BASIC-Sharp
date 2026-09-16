@@ -1,6 +1,9 @@
-# BASIC# Ruby Bootstrap Compiler v0.1.83
+# BASIC# Ruby Bootstrap Compiler v0.1.84
 
-BASIC# v0.1.83 adds Self-Hosting Milestone 2 Slice 10: Native Symbol Resolution Integration.
+BASIC# v0.1.84 adds Self-Hosting Milestone 2 Slice 11: Native Action Routing Integration.
+
+
+v0.1.84 moves another bounded compiler decision out of Ruby: accepted official action words are now classified into damage, change, number-change, cause, object-interaction, or generic resolver families by checked-in BASIC# BSBC through `compiler/small_compiler_subset_native_action_routing.rb` and `compiler/native/first_bsharp_action_router.bsharp`. v0.1.81 parser dispatch, v0.1.82 semantic routing, and v0.1.83 symbol resolution remain active upstream. This preserves Self-Hosting Milestone 2 Slice 10 Native Symbol Resolution Integration as the accepted upstream symbol boundary. Contradictory native action routing fails closed rather than falling back to a Ruby verb-family table. Ruby remains the bootstrap compiler and separate referee authority; this is active bounded self-hosting progress, not full self-hosting.
 
 v0.1.83 moves BASIC#-authored compiler authority into bounded symbol resolution by requiring checked-in BASIC# BSBC decisions for Kind, Thing, PLAYER, action, value, duplicate, unknown, and Kind-link observations while v0.1.81 native parser dispatch and v0.1.82 native semantic routing remain active upstream. Self-Hosting Milestone 2 Slice 8 remains the accepted Native Parser Dispatch Integration, and Self-Hosting Milestone 2 Slice 9 remains the accepted Native Semantic Routing Integration.
 
@@ -17,6 +20,19 @@ No new creator-facing syntax is introduced. Profiles 1 through 7 remain sealed, 
 Current release truth remains under Elderedd Softworks LLC and Elderedd Laboratory. The Elderedd identity migration remains active, with the DKLab compatibility layer retained only for compatibility, rollback, migration, and historical path support. BCS means BSharp Creator Services and remains future service work rather than part of this build. The Company Bible header version remains machine-checked against `BasicSharp::VERSION`.
 
 Release hardening remains active: Elderedd path direction, UTF-8 source reading, minimal/no-locale Ruby validation, release package preflight, deterministic fixture hash sweep, payload SHA-256 checks, changed-file scope checks, release forensic overlay, pre-mutation forensic overlay, and the sealed validation inventory must report all mismatches together. The whole-language test gauntlet remains at 128,000 event paths, 128,000 platform frames, 384 generated programs, and 3,072 mutations.
+
+## v0.1.84 active gates
+
+```text
+spec/self_hosting/BASIC_SHARP_NATIVE_ACTION_ROUTING_INTEGRATION_v1.json
+compiler/small_compiler_subset_native_action_routing.rb
+compiler/native/first_bsharp_action_router.bsharp
+compiler/native/first_bsharp_action_router.bsbc
+compiler/native/first_bsharp_action_router.bsbc.txt
+docs/self_hosting/BASIC_SHARP_NATIVE_ACTION_ROUTING_INTEGRATION_v0_1_84.md
+tools/native_action_routing_integration.rb
+tests/test_native_action_routing_integration.rb
+```
 
 ## v0.1.83 active gates
 
@@ -259,8 +275,8 @@ Reference oracle: BasicSharp::Runtime
 Meaning profiles: bsharp.meaning.v1 through bsharp.meaning.v7
 Bytecode profiles: bsharp.bytecode.v1 through bsharp.bytecode.v7
 Self-hosting contract: BSharp Compiler Subset 0
-Current self-hosting milestone: v0.1.83 Self-Hosting Milestone 2 Slice 10 under Ruby referee control
-Current build: v0.1.83 Self-Hosting Milestone 2 Slice 10 Native Symbol Resolution Integration
+Current self-hosting milestone: v0.1.84 Self-Hosting Milestone 2 Slice 11 under Ruby referee control
+Current build: v0.1.84 Self-Hosting Milestone 2 Slice 11 Native Action Routing Integration
 Parent company: Elderedd Softworks LLC
 Laboratory: Elderedd Laboratory
 Internal shorthand: ELDL
@@ -270,7 +286,7 @@ Canonical future path: ~/Elderedd/Projects/BASIC#
 Legacy compatibility path: ~/DKLab/Projects/BASIC#
 UTF-8 source reading: hardened and validated under minimal/no-locale Ruby
 Release hardening: forensic overlay, package preflight, and deterministic fixture sweep active
-Version: 0.1.80
+Version: 0.1.84
 ```
 
 ## v0.1.72 release hardening note

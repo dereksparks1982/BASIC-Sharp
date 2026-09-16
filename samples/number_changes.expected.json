@@ -4,9 +4,7 @@
       "event": "player takes gold coin",
       "matched": true,
       "matched_when": "player takes gold coin",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(increase score of player by 10"
       ],
@@ -23,9 +21,7 @@
           }
         }
       ],
-      "selections": [
-
-      ],
+      "selections": [],
       "if_rules": [
         {
           "condition": "player has more than 0 score",
@@ -36,20 +32,13 @@
               "change": "player is now alive"
             }
           ],
-          "selections": [
-
-          ]
+          "selections": []
         }
       ],
-      "context": {
-      },
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
@@ -58,8 +47,7 @@
           "states": [
             "alive"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 10,
@@ -70,11 +58,8 @@
           "name": "gold coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -83,11 +68,8 @@
           "name": "spikes",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -96,11 +78,8 @@
           "name": "bow",
           "kind": "weapon",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "ammo": 3,
             "damage": 0
@@ -112,9 +91,7 @@
       "event": "player takes gold coin",
       "matched": true,
       "matched_when": "player takes gold coin",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(increase score of player by 10"
       ],
@@ -131,21 +108,12 @@
           }
         }
       ],
-      "selections": [
-
-      ],
-      "if_rules": [
-
-      ],
-      "context": {
-      },
+      "selections": [],
+      "if_rules": [],
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
@@ -154,8 +122,7 @@
           "states": [
             "alive"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 10,
@@ -166,11 +133,8 @@
           "name": "gold coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -179,11 +143,8 @@
           "name": "spikes",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -192,11 +153,8 @@
           "name": "bow",
           "kind": "weapon",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "ammo": 3,
             "damage": 0
@@ -208,9 +166,7 @@
       "event": "player takes gold coin",
       "matched": true,
       "matched_when": "player takes gold coin",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(increase score of player by 10"
       ],
@@ -227,21 +183,12 @@
           }
         }
       ],
-      "selections": [
-
-      ],
-      "if_rules": [
-
-      ],
-      "context": {
-      },
+      "selections": [],
+      "if_rules": [],
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
@@ -250,8 +197,7 @@
           "states": [
             "alive"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 10,
@@ -262,11 +208,8 @@
           "name": "gold coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -275,11 +218,8 @@
           "name": "spikes",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -288,11 +228,8 @@
           "name": "bow",
           "kind": "weapon",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "ammo": 3,
             "damage": 0
@@ -304,9 +241,7 @@
       "event": "player takes gold coin",
       "matched": true,
       "matched_when": "player takes gold coin",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(increase score of player by 10"
       ],
@@ -323,21 +258,12 @@
           }
         }
       ],
-      "selections": [
-
-      ],
-      "if_rules": [
-
-      ],
-      "context": {
-      },
+      "selections": [],
+      "if_rules": [],
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
@@ -346,8 +272,7 @@
           "states": [
             "alive"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 10,
@@ -358,11 +283,8 @@
           "name": "gold coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -371,11 +293,8 @@
           "name": "spikes",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -384,11 +303,8 @@
           "name": "bow",
           "kind": "weapon",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "ammo": 3,
             "damage": 0
@@ -400,9 +316,7 @@
       "event": "player takes gold coin",
       "matched": true,
       "matched_when": "player takes gold coin",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(increase score of player by 10"
       ],
@@ -419,21 +333,12 @@
           }
         }
       ],
-      "selections": [
-
-      ],
-      "if_rules": [
-
-      ],
-      "context": {
-      },
+      "selections": [],
+      "if_rules": [],
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
@@ -442,8 +347,7 @@
           "states": [
             "alive"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 10,
@@ -454,11 +358,8 @@
           "name": "gold coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -467,11 +368,8 @@
           "name": "spikes",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -480,11 +378,8 @@
           "name": "bow",
           "kind": "weapon",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "ammo": 3,
             "damage": 0
@@ -496,9 +391,7 @@
       "event": "player takes gold coin",
       "matched": true,
       "matched_when": "player takes gold coin",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(increase score of player by 10"
       ],
@@ -515,21 +408,12 @@
           }
         }
       ],
-      "selections": [
-
-      ],
-      "if_rules": [
-
-      ],
-      "context": {
-      },
+      "selections": [],
+      "if_rules": [],
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
@@ -538,8 +422,7 @@
           "states": [
             "alive"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 10,
@@ -550,11 +433,8 @@
           "name": "gold coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -563,11 +443,8 @@
           "name": "spikes",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -576,11 +453,8 @@
           "name": "bow",
           "kind": "weapon",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "ammo": 3,
             "damage": 0
@@ -592,9 +466,7 @@
       "event": "player takes gold coin",
       "matched": true,
       "matched_when": "player takes gold coin",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(increase score of player by 10"
       ],
@@ -611,21 +483,12 @@
           }
         }
       ],
-      "selections": [
-
-      ],
-      "if_rules": [
-
-      ],
-      "context": {
-      },
+      "selections": [],
+      "if_rules": [],
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
@@ -634,8 +497,7 @@
           "states": [
             "alive"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 10,
@@ -646,11 +508,8 @@
           "name": "gold coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -659,11 +518,8 @@
           "name": "spikes",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -672,11 +528,8 @@
           "name": "bow",
           "kind": "weapon",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "ammo": 3,
             "damage": 0
@@ -688,9 +541,7 @@
       "event": "player takes gold coin",
       "matched": true,
       "matched_when": "player takes gold coin",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(increase score of player by 10"
       ],
@@ -707,21 +558,12 @@
           }
         }
       ],
-      "selections": [
-
-      ],
-      "if_rules": [
-
-      ],
-      "context": {
-      },
+      "selections": [],
+      "if_rules": [],
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
@@ -730,8 +572,7 @@
           "states": [
             "alive"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 10,
@@ -742,11 +583,8 @@
           "name": "gold coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -755,11 +593,8 @@
           "name": "spikes",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -768,11 +603,8 @@
           "name": "bow",
           "kind": "weapon",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "ammo": 3,
             "damage": 0
@@ -784,9 +616,7 @@
       "event": "player takes gold coin",
       "matched": true,
       "matched_when": "player takes gold coin",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(increase score of player by 10"
       ],
@@ -803,21 +633,12 @@
           }
         }
       ],
-      "selections": [
-
-      ],
-      "if_rules": [
-
-      ],
-      "context": {
-      },
+      "selections": [],
+      "if_rules": [],
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
@@ -826,8 +647,7 @@
           "states": [
             "alive"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 10,
@@ -838,11 +658,8 @@
           "name": "gold coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -851,11 +668,8 @@
           "name": "spikes",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -864,11 +678,8 @@
           "name": "bow",
           "kind": "weapon",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "ammo": 3,
             "damage": 0
@@ -880,9 +691,7 @@
       "event": "player takes gold coin",
       "matched": true,
       "matched_when": "player takes gold coin",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(increase score of player by 10"
       ],
@@ -899,9 +708,7 @@
           }
         }
       ],
-      "selections": [
-
-      ],
+      "selections": [],
       "if_rules": [
         {
           "condition": "player has at least 100 score",
@@ -912,20 +719,13 @@
               "change": "player is now friendly"
             }
           ],
-          "selections": [
-
-          ]
+          "selections": []
         }
       ],
-      "context": {
-      },
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
@@ -935,8 +735,7 @@
             "alive",
             "friendly"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 10,
@@ -947,11 +746,8 @@
           "name": "gold coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -960,11 +756,8 @@
           "name": "spikes",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -973,11 +766,8 @@
           "name": "bow",
           "kind": "weapon",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "ammo": 3,
             "damage": 0
@@ -989,9 +779,7 @@
       "event": "player attacks spikes",
       "matched": true,
       "matched_when": "player attacks spikes",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(decrease health of player by 3"
       ],
@@ -1008,21 +796,12 @@
           }
         }
       ],
-      "selections": [
-
-      ],
-      "if_rules": [
-
-      ],
-      "context": {
-      },
+      "selections": [],
+      "if_rules": [],
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
@@ -1032,8 +811,7 @@
             "alive",
             "friendly"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 7,
@@ -1044,11 +822,8 @@
           "name": "gold coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -1057,11 +832,8 @@
           "name": "spikes",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -1070,11 +842,8 @@
           "name": "bow",
           "kind": "weapon",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "ammo": 3,
             "damage": 0
@@ -1086,9 +855,7 @@
       "event": "player attacks spikes",
       "matched": true,
       "matched_when": "player attacks spikes",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(decrease health of player by 3"
       ],
@@ -1105,21 +872,12 @@
           }
         }
       ],
-      "selections": [
-
-      ],
-      "if_rules": [
-
-      ],
-      "context": {
-      },
+      "selections": [],
+      "if_rules": [],
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
@@ -1129,8 +887,7 @@
             "alive",
             "friendly"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 4,
@@ -1141,11 +898,8 @@
           "name": "gold coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -1154,11 +908,8 @@
           "name": "spikes",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -1167,11 +918,8 @@
           "name": "bow",
           "kind": "weapon",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "ammo": 3,
             "damage": 0
@@ -1183,9 +931,7 @@
       "event": "player attacks spikes",
       "matched": true,
       "matched_when": "player attacks spikes",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(decrease health of player by 3"
       ],
@@ -1202,21 +948,12 @@
           }
         }
       ],
-      "selections": [
-
-      ],
-      "if_rules": [
-
-      ],
-      "context": {
-      },
+      "selections": [],
+      "if_rules": [],
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
@@ -1226,8 +963,7 @@
             "alive",
             "friendly"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 1,
@@ -1238,11 +974,8 @@
           "name": "gold coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -1251,11 +984,8 @@
           "name": "spikes",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -1264,11 +994,8 @@
           "name": "bow",
           "kind": "weapon",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "ammo": 3,
             "damage": 0
@@ -1280,9 +1007,7 @@
       "event": "player attacks bow",
       "matched": true,
       "matched_when": "player attacks bow",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(decrease ammo of bow by 1"
       ],
@@ -1299,21 +1024,12 @@
           }
         }
       ],
-      "selections": [
-
-      ],
-      "if_rules": [
-
-      ],
-      "context": {
-      },
+      "selections": [],
+      "if_rules": [],
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
@@ -1323,8 +1039,7 @@
             "alive",
             "friendly"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 1,
@@ -1335,11 +1050,8 @@
           "name": "gold coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -1348,11 +1060,8 @@
           "name": "spikes",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -1361,11 +1070,8 @@
           "name": "bow",
           "kind": "weapon",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "ammo": 2,
             "damage": 0
@@ -1377,9 +1083,7 @@
       "event": "player attacks bow",
       "matched": true,
       "matched_when": "player attacks bow",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(decrease ammo of bow by 1"
       ],
@@ -1396,21 +1100,12 @@
           }
         }
       ],
-      "selections": [
-
-      ],
-      "if_rules": [
-
-      ],
-      "context": {
-      },
+      "selections": [],
+      "if_rules": [],
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
@@ -1420,8 +1115,7 @@
             "alive",
             "friendly"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 1,
@@ -1432,11 +1126,8 @@
           "name": "gold coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -1445,11 +1136,8 @@
           "name": "spikes",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -1458,11 +1146,8 @@
           "name": "bow",
           "kind": "weapon",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "ammo": 1,
             "damage": 0
@@ -1474,9 +1159,7 @@
       "event": "player attacks bow",
       "matched": true,
       "matched_when": "player attacks bow",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(decrease ammo of bow by 1"
       ],
@@ -1493,9 +1176,7 @@
           }
         }
       ],
-      "selections": [
-
-      ],
+      "selections": [],
       "if_rules": [
         {
           "condition": "bow has at most 0 ammo",
@@ -1506,20 +1187,13 @@
               "change": "bow is now off"
             }
           ],
-          "selections": [
-
-          ]
+          "selections": []
         }
       ],
-      "context": {
-      },
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
@@ -1529,8 +1203,7 @@
             "alive",
             "friendly"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0,
             "health": 1,
@@ -1541,11 +1214,8 @@
           "name": "gold coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -1554,11 +1224,8 @@
           "name": "spikes",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -1570,8 +1237,7 @@
           "states": [
             "off"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "ammo": 0,
             "damage": 0
@@ -1645,8 +1311,7 @@
         "alive",
         "friendly"
       ],
-      "relations": {
-      },
+      "relations": {},
       "values": {
         "damage": 0,
         "health": 1,
@@ -1657,11 +1322,8 @@
       "name": "gold coin",
       "kind": "thing",
       "builtin": false,
-      "states": [
-
-      ],
-      "relations": {
-      },
+      "states": [],
+      "relations": {},
       "values": {
         "damage": 0
       }
@@ -1670,11 +1332,8 @@
       "name": "spikes",
       "kind": "thing",
       "builtin": false,
-      "states": [
-
-      ],
-      "relations": {
-      },
+      "states": [],
+      "relations": {},
       "values": {
         "damage": 0
       }
@@ -1686,8 +1345,7 @@
       "states": [
         "off"
       ],
-      "relations": {
-      },
+      "relations": {},
       "values": {
         "ammo": 0,
         "damage": 0
@@ -1697,7 +1355,7 @@
   "save": {
     "format": "bsharp.save.json",
     "format_version": 5,
-    "created_by_basic_sharp": "0.1.83",
+    "created_by_basic_sharp": "0.1.84",
     "program_fingerprint": {
       "algorithm": "sha256-bsir-meaning-v5",
       "value": "6bb19a8e6b6a4f3b6d75e69df454a068dc407131898dbb806d81359e0aa0fe0a"
@@ -1713,8 +1371,7 @@
             "alive",
             "friendly"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": {
               "type": "whole_number",
@@ -1734,11 +1391,8 @@
           "name": "gold coin",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": {
               "type": "whole_number",
@@ -1750,11 +1404,8 @@
           "name": "spikes",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": {
               "type": "whole_number",
@@ -1769,8 +1420,7 @@
           "states": [
             "off"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "ammo": {
               "type": "whole_number",

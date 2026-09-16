@@ -21,16 +21,16 @@ class TestReleasePackagePreflight < Minitest::Test
 
   def test_manifest_requirements_are_current_versioned
     assert_equal 'BASIC_SHARP_PATCH_MANIFEST.json', spec.fetch('required_manifest')
-    assert_equal 'APPLY_BASIC_SHARP_v0_1_83.sh', spec.fetch('required_installer')
-    assert_equal 'v0.1.82', spec.fetch('required_base_version')
-    assert_equal 'v0.1.83', spec.fetch('required_target_version')
+    assert_equal 'BUILD_BASIC_SHARP_v0_1_84_SELF_HOSTING_NATIVE_ACTION_ROUTING.sh', spec.fetch('required_installer')
+    assert_equal 'v0.1.83', spec.fetch('required_base_version')
+    assert_equal 'v0.1.84', spec.fetch('required_target_version')
   end
 
   def test_forbids_unproven_package_handoff
     forbidden = spec.fetch('forbidden')
     assert_includes forbidden, 'accepting a release package whose final extracted payload has not been audited'
     assert_includes forbidden, 'repairing only the first failed deterministic fixture hash'
-    assert_includes forbidden, 'removing the DKLab compatibility bridge in v0.1.83'
+    assert_includes forbidden, 'removing the DKLab compatibility bridge in v0.1.84'
     assert_includes forbidden, 'skipping the pre-mutation forensic overlay'
   end
 

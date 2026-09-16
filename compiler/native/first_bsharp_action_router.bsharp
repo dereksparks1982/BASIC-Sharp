@@ -1,0 +1,132 @@
+//BASIC# v0.1.84 first BASIC#-authored action routing component./.
+//This bounded classifier chooses the resolver family for every accepted official action word./.
+
+DEFINE
+[
+    @action decision is a #device
+    @take action is a #device
+    @drop action is a #device
+    @carry action is a #device
+    @open action is a #device
+    @close action is a #device
+    @lock action is a #device
+    @unlock action is a #device
+    @attack action is a #device
+    @damage action is a #device
+    @change action is a #device
+    @increase action is a #device
+    @decrease action is a #device
+    @speak action is a #device
+    @give action is a #device
+    @eat action is a #device
+    @wear action is a #device
+    @remove action is a #device
+    @sound action is a #device
+    @examine action is a #device
+    @cause action is a #device
+].
+
+START
+[
+    @action decision has "unclassified" classification
+].
+
+WHEN PLAYER examines @damage action
+[
+    |then (change classification of @action decision to "resolve-damage-action"
+].
+
+WHEN PLAYER examines @change action
+[
+    |then (change classification of @action decision to "resolve-change-action"
+].
+
+WHEN PLAYER examines @increase action
+[
+    |then (change classification of @action decision to "resolve-number-change-action"
+].
+
+WHEN PLAYER examines @decrease action
+[
+    |then (change classification of @action decision to "resolve-number-change-action"
+].
+
+WHEN PLAYER examines @cause action
+[
+    |then (change classification of @action decision to "resolve-cause-action"
+].
+
+WHEN PLAYER examines @open action
+[
+    |then (change classification of @action decision to "resolve-object-interaction-action"
+].
+
+WHEN PLAYER examines @close action
+[
+    |then (change classification of @action decision to "resolve-object-interaction-action"
+].
+
+WHEN PLAYER examines @lock action
+[
+    |then (change classification of @action decision to "resolve-object-interaction-action"
+].
+
+WHEN PLAYER examines @take action
+[
+    |then (change classification of @action decision to "resolve-object-interaction-action"
+].
+
+WHEN PLAYER examines @drop action
+[
+    |then (change classification of @action decision to "resolve-generic-action"
+].
+
+WHEN PLAYER examines @carry action
+[
+    |then (change classification of @action decision to "resolve-generic-action"
+].
+
+WHEN PLAYER examines @unlock action
+[
+    |then (change classification of @action decision to "resolve-generic-action"
+].
+
+WHEN PLAYER examines @attack action
+[
+    |then (change classification of @action decision to "resolve-generic-action"
+].
+
+WHEN PLAYER examines @speak action
+[
+    |then (change classification of @action decision to "resolve-generic-action"
+].
+
+WHEN PLAYER examines @give action
+[
+    |then (change classification of @action decision to "resolve-generic-action"
+].
+
+WHEN PLAYER examines @eat action
+[
+    |then (change classification of @action decision to "resolve-generic-action"
+].
+
+WHEN PLAYER examines @wear action
+[
+    |then (change classification of @action decision to "resolve-generic-action"
+].
+
+WHEN PLAYER examines @remove action
+[
+    |then (change classification of @action decision to "resolve-generic-action"
+].
+
+WHEN PLAYER examines @sound action
+[
+    |then (change classification of @action decision to "resolve-generic-action"
+].
+
+WHEN PLAYER examines @examine action
+[
+    |then (change classification of @action decision to "resolve-generic-action"
+].

@@ -49,6 +49,16 @@ module BasicSharp
       native_semantic_router.invocation_count
     end
 
+
+    def native_action_router
+      document
+      semantic_resolver.native_action_router
+    end
+
+    def native_action_invocation_count
+      native_action_router.invocation_count
+    end
+
     def bsharp_ir
       document.to_h
     end

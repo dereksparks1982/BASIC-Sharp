@@ -1,0 +1,134 @@
+BSharp Bytecode bsharp.bytecode.v2
+Meaning Profile: bsharp.meaning.v2
+Fingerprint: d03fc3db91ac53c7d47bcfa143f327f34dedcea472b7edd9c5f6468a508fee54
+
+KIND 0 person PARENT NONE
+KIND 1 device PARENT NONE
+
+THING 0 player KIND[person]
+THING 1 action decision KIND[device]
+THING 2 take action KIND[device]
+THING 3 drop action KIND[device]
+THING 4 carry action KIND[device]
+THING 5 open action KIND[device]
+THING 6 close action KIND[device]
+THING 7 lock action KIND[device]
+THING 8 unlock action KIND[device]
+THING 9 attack action KIND[device]
+THING 10 damage action KIND[device]
+THING 11 change action KIND[device]
+THING 12 increase action KIND[device]
+THING 13 decrease action KIND[device]
+THING 14 speak action KIND[device]
+THING 15 give action KIND[device]
+THING 16 eat action KIND[device]
+THING 17 wear action KIND[device]
+THING 18 remove action KIND[device]
+THING 19 sound action KIND[device]
+THING 20 examine action KIND[device]
+THING 21 cause action KIND[device]
+
+START
+    START_TEXT_VALUE THING[action decision] classification "unclassified"
+END
+
+WHEN actor=THING[player] action=examine target=THING[damage action] BLOCK 0
+WHEN actor=THING[player] action=examine target=THING[change action] BLOCK 1
+WHEN actor=THING[player] action=examine target=THING[increase action] BLOCK 2
+WHEN actor=THING[player] action=examine target=THING[decrease action] BLOCK 3
+WHEN actor=THING[player] action=examine target=THING[cause action] BLOCK 4
+WHEN actor=THING[player] action=examine target=THING[open action] BLOCK 5
+WHEN actor=THING[player] action=examine target=THING[close action] BLOCK 6
+WHEN actor=THING[player] action=examine target=THING[lock action] BLOCK 7
+WHEN actor=THING[player] action=examine target=THING[take action] BLOCK 8
+WHEN actor=THING[player] action=examine target=THING[drop action] BLOCK 9
+WHEN actor=THING[player] action=examine target=THING[carry action] BLOCK 10
+WHEN actor=THING[player] action=examine target=THING[unlock action] BLOCK 11
+WHEN actor=THING[player] action=examine target=THING[attack action] BLOCK 12
+WHEN actor=THING[player] action=examine target=THING[speak action] BLOCK 13
+WHEN actor=THING[player] action=examine target=THING[give action] BLOCK 14
+WHEN actor=THING[player] action=examine target=THING[eat action] BLOCK 15
+WHEN actor=THING[player] action=examine target=THING[wear action] BLOCK 16
+WHEN actor=THING[player] action=examine target=THING[remove action] BLOCK 17
+WHEN actor=THING[player] action=examine target=THING[sound action] BLOCK 18
+WHEN actor=THING[player] action=examine target=THING[examine action] BLOCK 19
+
+BLOCK 0
+    CHANGE_TEXT_VALUE THING[action decision] classification "resolve-damage-action"
+END
+
+BLOCK 1
+    CHANGE_TEXT_VALUE THING[action decision] classification "resolve-change-action"
+END
+
+BLOCK 2
+    CHANGE_TEXT_VALUE THING[action decision] classification "resolve-number-change-action"
+END
+
+BLOCK 3
+    CHANGE_TEXT_VALUE THING[action decision] classification "resolve-number-change-action"
+END
+
+BLOCK 4
+    CHANGE_TEXT_VALUE THING[action decision] classification "resolve-cause-action"
+END
+
+BLOCK 5
+    CHANGE_TEXT_VALUE THING[action decision] classification "resolve-object-interaction-action"
+END
+
+BLOCK 6
+    CHANGE_TEXT_VALUE THING[action decision] classification "resolve-object-interaction-action"
+END
+
+BLOCK 7
+    CHANGE_TEXT_VALUE THING[action decision] classification "resolve-object-interaction-action"
+END
+
+BLOCK 8
+    CHANGE_TEXT_VALUE THING[action decision] classification "resolve-object-interaction-action"
+END
+
+BLOCK 9
+    CHANGE_TEXT_VALUE THING[action decision] classification "resolve-generic-action"
+END
+
+BLOCK 10
+    CHANGE_TEXT_VALUE THING[action decision] classification "resolve-generic-action"
+END
+
+BLOCK 11
+    CHANGE_TEXT_VALUE THING[action decision] classification "resolve-generic-action"
+END
+
+BLOCK 12
+    CHANGE_TEXT_VALUE THING[action decision] classification "resolve-generic-action"
+END
+
+BLOCK 13
+    CHANGE_TEXT_VALUE THING[action decision] classification "resolve-generic-action"
+END
+
+BLOCK 14
+    CHANGE_TEXT_VALUE THING[action decision] classification "resolve-generic-action"
+END
+
+BLOCK 15
+    CHANGE_TEXT_VALUE THING[action decision] classification "resolve-generic-action"
+END
+
+BLOCK 16
+    CHANGE_TEXT_VALUE THING[action decision] classification "resolve-generic-action"
+END
+
+BLOCK 17
+    CHANGE_TEXT_VALUE THING[action decision] classification "resolve-generic-action"
+END
+
+BLOCK 18
+    CHANGE_TEXT_VALUE THING[action decision] classification "resolve-generic-action"
+END
+
+BLOCK 19
+    CHANGE_TEXT_VALUE THING[action decision] classification "resolve-generic-action"
+END

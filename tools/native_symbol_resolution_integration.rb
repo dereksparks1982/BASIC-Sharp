@@ -99,7 +99,7 @@ Dir.mktmpdir('basic-sharp-v083-native-symbol') do |directory|
 
   generation_2 = File.join(directory, 'generation_2.bsbc')
   BasicSharp::SmallCompilerSubsetNativeSymbolResolution.with_artifact_path(ARTIFACT_PATH) do
-    BasicSharp::SmallCompilerSubsetDriver.new(source, source_label: '(v0.1.83 symbol generation 2)').compile_to(generation_2)
+    BasicSharp::SmallCompilerSubsetDriver.new(source, source_label: '(v0.1.84 symbol generation 2)').compile_to(generation_2)
   end
   assert_symbol!(File.binread(generation_2) == File.binread(ARTIFACT_PATH), 'bootstrap generation #2 differs from generation #1')
   assert_symbol!(File.binread("#{generation_2}.txt") == File.binread(DISASSEMBLY_PATH), 'bootstrap disassembly generation #2 differs from generation #1')

@@ -58,6 +58,15 @@ module BasicSharp
       native_symbol_resolver.invocation_count
     end
 
+
+    def native_action_router
+      ir_emitter.native_action_router
+    end
+
+    def native_action_invocation_count
+      native_action_router.invocation_count
+    end
+
     def semantic_document
       ir_emitter.document
     end

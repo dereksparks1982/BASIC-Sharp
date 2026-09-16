@@ -3,20 +3,20 @@
 ## Current accepted base
 
 ```text
-v0.1.82: Self-Hosting Milestone 2 Slice 9 - Native Semantic Routing Integration
-commit e5181842eba869da1d561359b84ff7e6b34ddddd
-tag v0.1.82
+v0.1.83: Self-Hosting Milestone 2 Slice 10 - Native Symbol Resolution Integration
+commit ac8bb906239ed2f199c437d4c3321b18fff1fcab
+tag v0.1.83
 ```
 
-v0.1.82 is the accepted rollback point. It preserved v0.1.81 BASIC#-authored parser dispatch, added active BASIC#-authored semantic routing for all eight accepted semantic families, failed closed under semantic sabotage, proved a two-generation fixed point, and completed native Trial by Fire, snapshot, annotated tag, SSH push, and peeled-tag verification.
+v0.1.83 is the accepted rollback point. It preserves v0.1.81 BASIC#-authored parser dispatch and v0.1.82 BASIC#-authored semantic routing, adds active BASIC#-authored symbol decisions, passed native acceptance, and is the only valid base for v0.1.84.
 
 ## Current candidate
 
 ```text
-v0.1.83: Self-Hosting Milestone 2 Slice 10 - Native Symbol Resolution Integration
+v0.1.84: Self-Hosting Milestone 2 Slice 11 - Native Action Routing Integration
 ```
 
-v0.1.83 preserves the accepted native parser and semantic stages, then makes the bounded symbol-table and semantic path request final known/unknown, unique/duplicate, Kind-link, PLAYER, action, and value decisions from `compiler/native/first_bsharp_symbol_resolver.bsbc` through `compiler/small_compiler_subset_native_symbol_resolution.rb`.
+v0.1.84 preserves the accepted parser, semantic, and symbol stages, then requires the bounded independent semantic resolver to obtain official-action family selection from `compiler/native/first_bsharp_action_router.bsbc` through `compiler/small_compiler_subset_native_action_routing.rb`. Wrong or contradictory native action-family decisions fail closed instead of falling back to a Ruby verb-family choice.
 
 The candidate path is:
 
@@ -27,6 +27,7 @@ BASIC# source
 -> SmallCompilerSubsetParser
 -> BASIC# native semantic routing [v0.1.82]
 -> BASIC# native symbol resolution [v0.1.83]
+-> BASIC# native action routing [v0.1.84]
 -> SmallCompilerSubsetSemanticResolver
 -> BSharp IR
 -> independent BSBC encoder
@@ -34,7 +35,7 @@ BASIC# source
 -> independent BSharp VM
 ```
 
-Ruby bootstrap plumbing may expose neutral lookup observations, but the final bounded symbol decision must come from BASIC# BSBC and contradictory native decisions fail closed. Acceptance requires false-known, false-unknown, duplicate, and bad Kind-link sabotage rejection, observable symbol invocation counts, preserved upstream native stages, disabled production constructors on the primary proof path, exact BSharp IR/BSBC/runtime referee parity, and a v0.1.82-to-v0.1.83 two-generation byte-identical fixed point.
+Ruby remains bootstrap/referee authority while this bounded action decision moves into BASIC#. Acceptance requires all accepted official actions to route through BASIC# BSBC, observable invocation counts, wrong-family sabotage rejection, preserved upstream native boundaries, exact downstream parity, and a byte-identical generation #1 / generation #2 fixed point.
 
 ## Canonical Company Bible
 
@@ -48,7 +49,7 @@ This is the single canonical Company Bible for BASIC# conduct, release, validati
 
 Every accepted BASIC# build follows the same release path:
 
-1. Apply the changed-files ZIP with the exact terminal command supplied with the download.
+1. Run the self-contained versioned `.sh` installer supplied with the download; use a changed-files ZIP only when Derek explicitly requests that packaging path.
 2. Run installer validation including the complete normal test suite, complete no-locale suite, all sealed tools, required stress lanes, deterministic sweep, forensic/preflight gates, whole-language gauntlet, and full Trial by Fire counts.
 3. Preserve `PHASE START` / `PHASE PASS`, visible Minitest dot progress, run/assertion counts, and one unmistakable `FINAL PASS`.
 4. Create the accepted snapshot after final PASS and before local Git closeout.
@@ -89,12 +90,13 @@ The v0.1.72 Milestone 2 proposal is now implemented through semantic resolver in
 
 v0.1.73 established direct creator actions including open, close, lock, and take. v0.1.81 preserves those game-making semantics unchanged while the compiler machinery underneath them becomes more self-directed.
 
-## Next direction after v0.1.83
+## Next direction after v0.1.84
 
-1. Expand BASIC#-authored compiler ownership only where accepted BASIC# can express real compiler work without contaminating creator-facing syntax.
-2. Keep Ruby as referee until BASIC#-authored components reproduce locked outputs strongly enough to earn further replacement.
-3. Continue meaningful creator/game-making capability expansion when that lane is selected.
-4. Repair any proven validation or release defect before new functionality.
+1. Continue transferring real compiler authority from Ruby into BASIC# until the production compiler chain no longer requires Ruby decisions.
+2. Next likely bounded targets are condition interpretation, event interpretation, selector/reference resolution, semantic transformation, IR construction/emission, source reading/token processing, and compiler orchestration.
+3. Keep Ruby as separate bootstrap/referee authority until each replacement boundary earns removal through locked parity and sabotage validation.
+4. Do not contaminate creator-facing BASIC# syntax merely to imitate conventional programming languages.
+5. Repair any proven validation or release defect inside the current candidate before beginning a later version.
 
 No new governance/audit system is planned unless a demonstrated failure requires it.
 

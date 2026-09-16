@@ -6,6 +6,7 @@ require_relative 'dictionary'
 require_relative 'basic_sharp_ir'
 require_relative 'text_literal'
 require_relative 'small_compiler_subset_native_semantic_routing'
+require_relative 'small_compiler_subset_native_action_routing'
 require_relative 'small_compiler_subset_native_symbol_resolution'
 
 module BasicSharp
@@ -14,9 +15,9 @@ module BasicSharp
     MAX_WHOLE_NUMBER = 2_147_483_647
     VALUE_NAME_PATTERN = /\A[a-z][a-z0-9]*\z/
 
-    attr_reader :program, :dictionary, :diagnostics, :native_semantic_router, :native_symbol_resolver
+    attr_reader :program, :dictionary, :diagnostics, :native_semantic_router, :native_symbol_resolver, :native_action_router
 
-    def initialize(program, dictionary:, native_semantic_router: nil, native_symbol_resolver: nil)
+    def initialize(program, dictionary:, native_semantic_router: nil, native_symbol_resolver: nil, native_action_router: nil)
       @program = program
       @dictionary = dictionary
       @diagnostics = DiagnosticBag.new
@@ -24,6 +25,7 @@ module BasicSharp
       @value_types = { 'damage' => 'whole_number' }
       @native_semantic_router = native_semantic_router || SmallCompilerSubsetNativeSemanticRouting.new
       @native_symbol_resolver = native_symbol_resolver || SmallCompilerSubsetNativeSymbolResolution.new
+      @native_action_router = native_action_router || SmallCompilerSubsetNativeActionRouting.new
       @seen_objects = { 'player' => true }
     end
 
@@ -483,23 +485,45 @@ module BasicSharp
       action_known = native_symbol_resolver.known_action?(dictionary.known_action?(action.verb))
       diagnostics.error(action.line_number, "unknown official word '(#{action.verb}'") unless action_known
 
-      return resolve_damage_action(action, verb, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed) if verb == 'damage'
-      return resolve_change_action(action, verb, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed) if verb == 'change'
-      return resolve_number_change_action(action, verb, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed) if %w[increase decrease].include?(verb)
-      return resolve_cause_action(
-        action,
-        bound_kinds: bound_kinds,
-        established_objects: established_objects,
-        context_it_allowed: context_it_allowed
-      ) if verb == 'cause'
-      return resolve_object_interaction_action(
-        action,
-        verb,
-        bound_kinds: bound_kinds,
-        established_objects: established_objects,
-        context_it_allowed: context_it_allowed
-      ) if %w[open close lock take].include?(verb)
+      route = native_action_router.route(action)
+      unless route
+        raise SmallCompilerSubsetNativeActionRoutingError,
+              "BASIC# native action routing did not recognize official word '(#{verb}'." if action_known
+        return resolve_generic_action(action, verb, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed)
+      end
 
+      case route.decision
+      when 'resolve-damage-action'
+        require_action_route!(verb, ['damage'], route.decision)
+        return resolve_damage_action(action, verb, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed)
+      when 'resolve-change-action'
+        require_action_route!(verb, ['change'], route.decision)
+        return resolve_change_action(action, verb, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed)
+      when 'resolve-number-change-action'
+        require_action_route!(verb, %w[increase decrease], route.decision)
+        return resolve_number_change_action(action, verb, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed)
+      when 'resolve-cause-action'
+        require_action_route!(verb, ['cause'], route.decision)
+        return resolve_cause_action(action, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed)
+      when 'resolve-object-interaction-action'
+        require_action_route!(verb, %w[open close lock take], route.decision)
+        return resolve_object_interaction_action(action, verb, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed)
+      when 'resolve-generic-action'
+        return resolve_generic_action(action, verb, bound_kinds: bound_kinds, established_objects: established_objects, context_it_allowed: context_it_allowed)
+      else
+        raise SmallCompilerSubsetNativeActionRoutingError,
+              "BASIC# native action routing returned unknown decision '#{route.decision}'."
+      end
+    end
+
+    def require_action_route!(verb, allowed_verbs, decision)
+      return if allowed_verbs.include?(verb)
+
+      raise SmallCompilerSubsetNativeActionRoutingError,
+            "BASIC# native action routing returned #{decision} for '#{verb}', but that route does not accept it."
+    end
+
+    def resolve_generic_action(action, verb, bound_kinds:, established_objects:, context_it_allowed:)
       resolved = {
         'line_number' => action.line_number,
         'action' => verb,

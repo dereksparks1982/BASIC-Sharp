@@ -1,7 +1,7 @@
 {
   "format": "bsharp.native_symbol_resolution_integration.contract.json",
   "format_version": 1,
-  "target_version": "0.1.83",
+  "target_version": "0.1.84",
   "status": "self_hosting_milestone_2_slice_10_native_symbol_resolution_integration_under_ruby_referee",
   "purpose": "Require bounded BASIC#-authored BSBC symbol decisions inside the independent compiler while neutral Ruby lookup observations remain fenced bootstrap inputs and production compiler/runtime components remain referees only.",
   "native_component": {

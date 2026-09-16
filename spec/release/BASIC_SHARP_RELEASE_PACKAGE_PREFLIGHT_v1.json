@@ -1,15 +1,15 @@
 {
   "format": "bsharp.release_package_preflight.json",
   "format_version": 1,
-  "target_version": "0.1.83",
+  "target_version": "0.1.84",
   "status": "active_release_gate",
   "title": "BASIC# Release Package Preflight",
-  "purpose": "Verify the active changed-files manifest, installed tree bytes, release identity, validation inventory inclusion, and no-locale CLI capture repair before a candidate release package enters acceptance testing.",
+  "purpose": "Verify the active self-contained changed-files shell build manifest, installed tree bytes, release identity, validation inventory inclusion, and required hardening before candidate acceptance.",
   "required_manifest": "BASIC_SHARP_PATCH_MANIFEST.json",
-  "required_installer": "APPLY_BASIC_SHARP_v0_1_83.sh",
-  "required_base_version": "v0.1.82",
-  "required_target_version": "v0.1.83",
-  "required_package_suffix": "SELF_HOSTING_MILESTONE_2_NATIVE_SYMBOL_RESOLUTION_INTEGRATION_CHANGED_FILES_ONLY.zip",
+  "required_installer": "BUILD_BASIC_SHARP_v0_1_84_SELF_HOSTING_NATIVE_ACTION_ROUTING.sh",
+  "required_base_version": "v0.1.83",
+  "required_target_version": "v0.1.84",
+  "required_package_suffix": "SELF_HOSTING_NATIVE_ACTION_ROUTING.sh",
   "required_tools": [
     "tools/deterministic_fixture_hash_sweep.rb",
     "tools/input_device_contract.rb",
@@ -30,13 +30,14 @@
     "tools/first_native_compiler_component.rb",
     "tools/native_parser_dispatch_integration.rb",
     "tools/native_semantic_routing_integration.rb",
-    "tools/native_symbol_resolution_integration.rb"
+    "tools/native_symbol_resolution_integration.rb",
+    "tools/native_action_routing_integration.rb"
   ],
   "forbidden": [
     "accepting a release package whose final extracted payload has not been audited",
     "changing sealed validation inventory after package records are generated",
     "claiming BASIC# is fully self-hosted",
-    "removing the DKLab compatibility bridge in v0.1.83",
+    "removing the DKLab compatibility bridge in v0.1.84",
     "repairing only the first failed deterministic fixture hash",
     "skipping the pre-mutation forensic overlay"
   ]

@@ -21,7 +21,7 @@ class TestBootstrapBoundaryAudit < Minitest::Test
     assert_equal 1, spec.fetch('format_version')
     assert_equal BasicSharp::VERSION, spec.fetch('target_version')
     assert_equal 'bootstrap_boundary_audit_under_ruby_referee', spec.fetch('status')
-    assert_equal 'v0.1.83 Self-Hosting Milestone 2 Slice 10: BASIC# Native Symbol Resolution Integration', spec.fetch('next_milestone')
+    assert_equal 'v0.1.84 Self-Hosting Milestone 2 Slice 11: BASIC# Native Action Routing Integration', spec.fetch('next_milestone')
   end
 
   def test_boundaries_pass_and_every_path_exists

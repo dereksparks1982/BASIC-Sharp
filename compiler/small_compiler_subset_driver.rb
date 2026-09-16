@@ -98,6 +98,15 @@ module BasicSharp
       pipeline.native_symbol_invocation_count
     end
 
+
+    def native_action_router
+      pipeline.native_action_router
+    end
+
+    def native_action_invocation_count
+      pipeline.native_action_invocation_count
+    end
+
     def artifact_loader
       ensure_compiled!
       SmallCompilerSubsetBSBCLoader.read(

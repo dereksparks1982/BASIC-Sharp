@@ -1,7 +1,7 @@
 {
   "format": "bsharp.small_compiler_subset.execution_corpus.json",
   "format_version": 1,
-  "target_version": "0.1.83",
+  "target_version": "0.1.84",
   "title": "BASIC# Small Compiler Subset Execution Corpus",
   "status": "execution_corpus_expanded_under_ruby_referee",
   "purpose": "Treat the BSBC execution parity fixtures as a growing corpus, require broader coverage than a single smoke path, and prove every fixture still runs through the bounded independent source-to-VM lane while matching the production VM and Ruby referee runtime.",

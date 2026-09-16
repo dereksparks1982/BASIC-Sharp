@@ -1,7 +1,7 @@
 {
   "format": "bsharp.native_parser_dispatch_integration.contract.json",
   "format_version": 1,
-  "target_version": "0.1.83",
+  "target_version": "0.1.84",
   "title": "BASIC# Native Parser Dispatch Integration",
   "status": "native_parser_dispatch_integration_under_ruby_referee",
   "purpose": "Make the bounded independent parser consult the checked-in BASIC#-authored BSBC compiler component for every accepted block-head dispatch decision, with no silent Ruby fallback, while Ruby remains bootstrap and referee authority.",

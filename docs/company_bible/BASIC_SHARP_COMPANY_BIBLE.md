@@ -1,6 +1,6 @@
 # BASIC# Company Bible
 
-**Version:** v0.1.83
+**Version:** v0.1.84
 **Status:** Mandatory and canonical  
 **Project:** BASIC#  
 **Owner:** Derek  
@@ -79,7 +79,7 @@ When Derek reports that an installed patch did not take, re-carry the missed wor
 Every build, patch, hotfix, documentation release, or package uses the **next unused numeric version**.
 
 - Letter suffixes such as `a`, `b`, or `c` are forbidden.
-- Rejected or failed packages are not accepted baselines and their version numbers are not reused.
+- Rejected or failed packages are not accepted baselines. A failed candidate keeps its assigned numeric version and is repaired under that same version until it is accepted or Derek explicitly abandons that candidate. Do not skip to the next version merely because a candidate failed validation.
 - Never build from an approximate reconstruction of the accepted base.
 - Verify the exact accepted commit, tag, branch, clean working tree, and required base-file hashes.
 - A dirty or unexpected base stops installation before mutation.
@@ -90,19 +90,19 @@ After Derek accepts a build, first create the accepted snapshot required by the 
 
 ## 7. Packaging rules
 
-The default deliverable is one **changed-files-only ZIP**.
+The default development-build deliverable is one **self-contained, versioned `.sh` installer** carrying only the declared changed-file payload. This replaces the routine changed-files ZIP workflow when Derek asks for the faster shell-installer path. A changed-files ZIP remains available only when Derek explicitly requests it or when a later archival/release need requires it.
 
 - Provide one primary download unless Derek explicitly requests otherwise.
-- Preserve project-relative paths directly at archive root. Do not add a duplicate wrapper folder.
+- The self-contained installer must embed project-relative changed-file payloads without adding a duplicate wrapper folder.
 - Do not deliver loose project files.
-- Package records belong in their proper project directories, not scattered at ZIP root. Approved top-level package control files, such as the manifest, installer, and build handshake, are allowed.
-- Every user-facing archive name includes its numeric version.
-- Do not create a separate loose SHA/checksum file unless Derek asks. Package and base hashes belong inside the manifest and installer validation.
+- Package records belong in their proper project directories. Approved top-level package control files, such as the manifest and build handshake, remain allowed.
+- Every user-facing installer or archive name includes its numeric version.
+- Do not create a separate loose SHA/checksum file unless Derek asks. Payload and base hashes belong inside the embedded manifest and installer validation.
 - A full-project archive is created only when Derek explicitly requests one.
 
-Installer scripts are text control files and must contain zero literal NUL bytes. Any manifest-array transport that uses NUL separators must emit escaped `\0` at runtime, not embed binary NUL characters in the installer source. A NUL-bearing installer is a malformed package and must be rejected rather than worked around.
+Installer scripts are text control files and must contain zero literal NUL bytes. Any manifest-array transport that uses NUL separators must emit escaped `\0` at runtime, not embed binary NUL characters in the installer source. A NUL-bearing installer is malformed and must be rejected rather than worked around.
 
-Every installable BASIC# changed-files package must carry `BASIC_SHARP_PATCH_MANIFEST.json` using:
+Every installable BASIC# changed-files build, whether delivered as a self-contained `.sh` or an explicitly requested ZIP, must install `BASIC_SHARP_PATCH_MANIFEST.json` using:
 
 ```text
 format = BASIC_SHARP_CHANGED_FILES_PATCH
@@ -705,3 +705,12 @@ Canonical evidence: `spec/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEG
 - Production Parser, SemanticResolver, compiler constructors, and Ruby Runtime remain separate referee authority and unavailable on the bounded primary proof path.
 - This slice adds no new creator-facing syntax, no Profile 8, and no full-self-hosting claim.
 
+
+
+## v0.1.84 Self-Hosting Milestone 2 Slice 11 Native Action Routing Integration Rule
+
+BASIC# v0.1.84 moves accepted official-action family selection out of the Ruby resolver decision table and into `compiler/native/first_bsharp_action_router.bsbc`, executed through `compiler/small_compiler_subset_native_action_routing.rb`. The bounded resolver may normalize an action word and perform the selected implementation, but the family choice for damage, change, number change, caused events, object interaction, and generic actions must come from BASIC# BSBC. Contradictory native action decisions must fail visibly without Ruby family fallback.
+
+v0.1.81 native parser dispatch, v0.1.82 native semantic routing, and v0.1.83 native symbol resolution remain active upstream and independently protected. Ruby remains the bootstrap compiler and separate referee authority. This is Self-Hosting Milestone 2 Slice 11, not full self-hosting and not Ruby retirement. Profiles 1 through 7, creator-facing syntax, and BSBC layout remain unchanged.
+
+The v0.1.84 delivery workflow also records Derek's approved rapid-build rule: routine development builds are delivered as one self-contained versioned `.sh` installer rather than requiring a separate ZIP wrapper. The same manifest, base-hash, rollback, full-validation, snapshot, commit/tag, and GitHub closeout protections remain mandatory. A failed v0.1.84 candidate remains v0.1.84 until repaired and accepted or explicitly abandoned by Derek.

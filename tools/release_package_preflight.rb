@@ -27,7 +27,7 @@ assert_preflight!(spec.fetch('status') == 'active_release_gate', 'wrong status')
 assert_preflight!(manifest.fetch('format') == 'BASIC_SHARP_CHANGED_FILES_PATCH', 'manifest identity mismatch')
 assert_preflight!(manifest.fetch('target_version') == spec.fetch('required_target_version'), 'manifest target mismatch')
 assert_preflight!(manifest.fetch('base_version') == spec.fetch('required_base_version'), 'manifest base mismatch')
-assert_preflight!(manifest.fetch('package_name').include?('v0_1_83'), 'package filename is not v0.1.83')
+assert_preflight!(manifest.fetch('package_name').include?('v0_1_84'), 'build filename is not v0.1.84')
 assert_preflight!(manifest.fetch('package_name').end_with?(spec.fetch('required_package_suffix')), 'package suffix mismatch')
 assert_preflight!(manifest.fetch('installer_name') == spec.fetch('required_installer'), 'installer name mismatch')
 assert_preflight!(manifest.fetch('deletions') == [], 'deletions are not allowed in this build')
@@ -55,7 +55,7 @@ end
 assert_preflight!(spec.fetch('forbidden').include?('repairing only the first failed deterministic fixture hash'), 'anti-single-fix rule missing')
 
 puts "BASIC# Release Package Preflight v#{BasicSharp::VERSION}: PASS"
-puts 'Manifest identity, version, package name, and counts: PASS'
+puts 'Manifest identity, version, build name, and counts: PASS'
 puts 'Installed Git scope matches manifest: PASS'
 puts 'Payload byte counts and SHA-256 records match active tree: PASS'
 puts 'Release hardening tools are in the validation inventory: PASS'

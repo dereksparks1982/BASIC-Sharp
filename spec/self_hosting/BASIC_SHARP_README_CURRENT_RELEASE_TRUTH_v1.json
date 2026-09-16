@@ -1,13 +1,13 @@
 {
   "format": "bsharp.readme_current_release_truth.json",
   "format_version": 1,
-  "target_version": "0.1.83",
+  "target_version": "0.1.84",
   "status": "readme_current_release_truth_gate",
   "title": "README Current Release Truth Gate",
   "current_release": {
-    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.83",
-    "build_title": "BASIC# v0.1.83 adds Self-Hosting Milestone 2 Slice 10: Native Symbol Resolution Integration.",
-    "summary": "v0.1.83 moves BASIC#-authored compiler authority into bounded symbol resolution by requiring checked-in BASIC# BSBC decisions for Kind, Thing, PLAYER, action, value, duplicate, unknown, and Kind-link observations while v0.1.81 native parser dispatch and v0.1.82 native semantic routing remain active upstream.",
+    "heading": "BASIC# Ruby Bootstrap Compiler v0.1.84",
+    "build_title": "BASIC# v0.1.84 adds Self-Hosting Milestone 2 Slice 11: Native Action Routing Integration.",
+    "summary": "v0.1.84 moves another bounded compiler decision out of Ruby:",
     "must_mention": [
       "Elderedd identity migration",
       "DKLab compatibility layer",
@@ -82,7 +82,14 @@
       "wrong-unknown-symbol sabotage",
       "duplicate-symbol sabotage",
       "wrong-Kind-link sabotage",
-      "v0.1.83"
+      "v0.1.83",
+      "Self-Hosting Milestone 2 Slice 11",
+      "Native Action Routing Integration",
+      "compiler/small_compiler_subset_native_action_routing.rb",
+      "compiler/native/first_bsharp_action_router.bsharp",
+      "action routing",
+      "Ruby verb-family table",
+      "v0.1.84"
     ],
     "forbidden_current_section_phrases": [
       "adds the first small compiler subset IR golden parity harness",
@@ -120,8 +127,8 @@
       "BASIC# v0.1.82 adds Self-Hosting Milestone 2 Slice 9: Native Semantic Routing Integration."
     ],
     "canonical_current_lines": {
-      "self_hosting_milestone": "Current self-hosting milestone: v0.1.83 Self-Hosting Milestone 2 Slice 10 under Ruby referee control",
-      "current_build": "Current build: v0.1.83 Self-Hosting Milestone 2 Slice 10 Native Symbol Resolution Integration"
+      "self_hosting_milestone": "Current self-hosting milestone: v0.1.84 Self-Hosting Milestone 2 Slice 11 under Ruby referee control",
+      "current_build": "Current build: v0.1.84 Self-Hosting Milestone 2 Slice 11 Native Action Routing Integration"
     },
     "required_mentions": []
   },

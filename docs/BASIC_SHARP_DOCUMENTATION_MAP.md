@@ -1,6 +1,6 @@
 # BASIC# Documentation Map
 
-**Version:** v0.1.63  
+**Version:** v0.1.84
 **Status:** Canonical navigation guide  
 **Purpose:** Give Derek, future assistants, contributors, and reviewers a front door into the BASIC# documentation stack.
 
@@ -114,3 +114,15 @@ v0.1.63 hardens UTF-8 source reading, keeps Elderedd as the active identity dire
 ## v0.1.63 Rejected Candidate Evidence
 
 - `docs/audit/BASIC_SHARP_v0_1_63_REJECTED_CANDIDATE_AUDIT.md` — records the rejected v0.1.63 stale Text Value save fixture candidate and repair requirement.
+
+## v0.1.84 records
+
+- `BUILD_HANDSHAKE_v0_1_84.md`
+- `docs/changelog/BASIC_SHARP_CHANGELOG_v0_1_84.md`
+- `docs/patch_notes/BASIC_SHARP_PATCH_NOTES_v0_1_84.md`
+- `docs/validation/BASIC_SHARP_VALIDATION_v0_1_84.md`
+- `docs/session_logs/BASIC_SHARP_v0_1_84_SESSION_LOG.md`
+- `docs/self_hosting/BASIC_SHARP_NATIVE_ACTION_ROUTING_INTEGRATION_v0_1_84.md`
+- `spec/self_hosting/BASIC_SHARP_NATIVE_ACTION_ROUTING_INTEGRATION_v1.json`
+
+v0.1.84 moves official-action family routing into BASIC#-authored BSBC while preserving the v0.1.81-v0.1.83 native compiler boundaries upstream.

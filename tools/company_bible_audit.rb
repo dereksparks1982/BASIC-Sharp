@@ -97,7 +97,7 @@ MANDATORY_TEXT = [
   'Implementation begins only after Derek explicitly approves',
   'When Derek says **stop**',
   'next unused numeric version',
-  'changed-files-only ZIP',
+  'self-contained, versioned `.sh` installer',
   'BASIC_SHARP_CHANGED_FILES_PATCH',
   'Git and the validated installer are the primary recovery authorities.',
   'Warnings are treated as failures by default.',

@@ -4,9 +4,7 @@
       "event": "player attacks switch",
       "matched": true,
       "matched_when": "player attacks switch",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(change lamp to on"
       ],
@@ -16,9 +14,7 @@
           "change": "lamp is now on"
         }
       ],
-      "selections": [
-
-      ],
+      "selections": [],
       "if_rules": [
         {
           "condition": "lamp is on",
@@ -37,30 +33,20 @@
               }
             }
           ],
-          "selections": [
-
-          ]
+          "selections": []
         }
       ],
-      "context": {
-      },
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
           "kind": "person",
           "builtin": true,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0,
             "ifruns": 1,
@@ -74,8 +60,7 @@
           "states": [
             "on"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -84,11 +69,8 @@
           "name": "switch",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -99,9 +81,7 @@
       "event": "player attacks switch",
       "matched": true,
       "matched_when": "player attacks switch",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(change lamp to on"
       ],
@@ -111,31 +91,19 @@
           "change": "lamp is now on"
         }
       ],
-      "selections": [
-
-      ],
-      "if_rules": [
-
-      ],
-      "context": {
-      },
+      "selections": [],
+      "if_rules": [],
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
           "kind": "person",
           "builtin": true,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0,
             "ifruns": 1,
@@ -149,8 +117,7 @@
           "states": [
             "on"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -159,11 +126,8 @@
           "name": "switch",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -174,9 +138,7 @@
       "event": "player speaks switch",
       "matched": true,
       "matched_when": "player speaks switch",
-      "understood": [
-
-      ],
+      "understood": [],
       "ran": [
         "(change lamp to off"
       ],
@@ -186,9 +148,7 @@
           "change": "lamp is now off"
         }
       ],
-      "selections": [
-
-      ],
+      "selections": [],
       "if_rules": [
         {
           "condition": "lamp is on",
@@ -207,30 +167,20 @@
               }
             }
           ],
-          "selections": [
-
-          ]
+          "selections": []
         }
       ],
-      "context": {
-      },
+      "context": {},
       "error": null,
-      "follow_up_events": [
-
-      ],
-      "event_trail": [
-
-      ],
+      "follow_up_events": [],
+      "event_trail": [],
       "state": [
         {
           "name": "player",
           "kind": "person",
           "builtin": true,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0,
             "ifruns": 1,
@@ -244,8 +194,7 @@
           "states": [
             "off"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -254,11 +203,8 @@
           "name": "switch",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": 0
           }
@@ -285,9 +231,7 @@
       "type": "if_rules_true",
       "ok": true,
       "answer": {
-        "rules": [
-
-        ],
+        "rules": [],
         "true_count": 0,
         "total_count": 1
       }
@@ -332,11 +276,8 @@
       "name": "player",
       "kind": "person",
       "builtin": true,
-      "states": [
-
-      ],
-      "relations": {
-      },
+      "states": [],
+      "relations": {},
       "values": {
         "damage": 0,
         "ifruns": 1,
@@ -350,8 +291,7 @@
       "states": [
         "off"
       ],
-      "relations": {
-      },
+      "relations": {},
       "values": {
         "damage": 0
       }
@@ -360,11 +300,8 @@
       "name": "switch",
       "kind": "thing",
       "builtin": false,
-      "states": [
-
-      ],
-      "relations": {
-      },
+      "states": [],
+      "relations": {},
       "values": {
         "damage": 0
       }
@@ -373,7 +310,7 @@
   "save": {
     "format": "bsharp.save.json",
     "format_version": 7,
-    "created_by_basic_sharp": "0.1.83",
+    "created_by_basic_sharp": "0.1.84",
     "program_fingerprint": {
       "algorithm": "sha256-bsir-meaning-v7",
       "value": "861e881e55e4942f5bafde63c99b7c6582d9029635517116b675849fb06d48bf"
@@ -385,11 +322,8 @@
           "name": "player",
           "kind": "person",
           "builtin": true,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": {
               "type": "whole_number",
@@ -412,8 +346,7 @@
           "states": [
             "off"
           ],
-          "relations": {
-          },
+          "relations": {},
           "values": {
             "damage": {
               "type": "whole_number",
@@ -425,11 +358,8 @@
           "name": "switch",
           "kind": "thing",
           "builtin": false,
-          "states": [
-
-          ],
-          "relations": {
-          },
+          "states": [],
+          "relations": {},
           "values": {
             "damage": {
               "type": "whole_number",

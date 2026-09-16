@@ -43,6 +43,8 @@ NATIVE_PARSER_DISPATCH_INTEGRATION_SPEC_PATH = File.join(ROOT, 'spec/self_hostin
 NATIVE_PARSER_DISPATCH_INTEGRATION_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_NATIVE_PARSER_DISPATCH_INTEGRATION_v0_1_81.md')
 NATIVE_SEMANTIC_ROUTING_INTEGRATION_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v1.json')
 NATIVE_SEMANTIC_ROUTING_INTEGRATION_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_NATIVE_SEMANTIC_ROUTING_INTEGRATION_v0_1_82.md')
+NATIVE_ACTION_ROUTING_INTEGRATION_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_NATIVE_ACTION_ROUTING_INTEGRATION_v1.json')
+NATIVE_ACTION_ROUTING_INTEGRATION_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_NATIVE_ACTION_ROUTING_INTEGRATION_v0_1_84.md')
 SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v1.json')
 SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_DOC_PATH = File.join(ROOT, 'docs/self_hosting/BASIC_SHARP_SMALL_COMPILER_SUBSET_BSBC_PARITY_HARNESS_v0_1_56.md')
 SELF_HOSTING_FIXTURE_CORPUS_SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json')
@@ -112,7 +114,7 @@ assert_contract!(spec.fetch('format_version') == 1, 'wrong spec format version')
 assert_contract!(spec.fetch('target_version') == BasicSharp::VERSION, 'spec target does not match BasicSharp::VERSION')
 assert_contract!(spec.fetch('status') == 'foundation_contract_only', 'a carried self-hosting foundation must remain a foundation contract')
 assert_contract!(spec.fetch('compiler_subset_name') == 'BSharp Compiler Subset 0', 'subset name changed')
-assert_contract!(spec.fetch('compiler_subset_status') == 'self_hosting_milestone_2_slice_10_native_symbol_resolution_integration_under_ruby_referee', 'subset status changed')
+assert_contract!(spec.fetch('compiler_subset_status') == 'self_hosting_milestone_2_slice_11_native_action_routing_integration_under_ruby_referee', 'subset status changed')
 
 profiles = spec.fetch('approved_profiles_available_to_creator_programs')
 assert_contract!(profiles == (1..7).map { |n| "bsharp.meaning.v#{n}" }, 'approved profile list changed')
@@ -181,6 +183,12 @@ assert_contract!(documents.fetch('native_symbol_resolution_spec') == 'spec/self_
 %w[native_symbol_resolution_source native_symbol_resolution_artifact native_symbol_resolution_disassembly native_symbol_resolution_file native_symbol_resolution_implementation native_symbol_resolution_tool native_symbol_resolution_test].each do |key|
   assert_contract!(File.file?(File.join(ROOT, documents.fetch(key))), "#{key} is missing")
 end
+assert_contract!(documents.fetch('native_action_routing_spec') == 'spec/self_hosting/BASIC_SHARP_NATIVE_ACTION_ROUTING_INTEGRATION_v1.json', 'native action routing spec path is wrong')
+%w[native_action_routing_source native_action_routing_artifact native_action_routing_disassembly native_action_routing_file native_action_routing_implementation native_action_routing_tool native_action_routing_test].each do |key|
+  assert_contract!(File.file?(File.join(ROOT, documents.fetch(key))), "#{key} is missing")
+end
+assert_contract!(File.file?(NATIVE_ACTION_ROUTING_INTEGRATION_SPEC_PATH), 'native action routing integration spec is missing')
+assert_contract!(File.file?(NATIVE_ACTION_ROUTING_INTEGRATION_DOC_PATH), 'native action routing integration document is missing')
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('native_parser_dispatch_file'))), 'native parser dispatch implementation is missing')
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('native_parser_dispatch_integration_tool'))), 'native parser dispatch integration tool is missing')
 assert_contract!(File.file?(File.join(ROOT, documents.fetch('native_parser_dispatch_integration_test'))), 'native parser dispatch integration test is missing')
@@ -237,6 +245,8 @@ assert_contract!(rules.any? { |entry| entry.include?('artifact round-trip') || e
 assert_contract!(rules.any? { |entry| entry.include?('first BASIC#-authored compiler component') }, 'first BASIC#-authored compiler component rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('nine accepted block heads') }, 'native compiler head-coverage rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('native parser dispatch integration tool') }, 'native parser dispatch integration rule missing')
+assert_contract!(rules.any? { |entry| entry.include?('native action routing integration tool') }, 'native action routing integration rule missing')
+assert_contract!(rules.any? { |entry| entry.include?('Ruby verb-family fallback table') }, 'native action routing fail-closed rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('without a Ruby fallback table') }, 'native dispatch fail-closed rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('BSBC golden parity') }, 'subset BSBC golden parity rule missing')
 assert_contract!(rules.any? { |entry| entry.include?('fixture corpus') }, 'self-hosting fixture corpus rule missing')
@@ -363,6 +373,7 @@ puts 'First BASIC#-authored compiler component linked: PASS'
 puts 'Native parser dispatch integration linked: PASS'
 puts 'Native semantic routing integration linked: PASS'
 puts 'Native symbol resolution integration linked: PASS'
+puts 'Native action routing integration linked: PASS'
 puts 'Small compiler subset BSBC golden parity harness linked: PASS'
 puts 'Self-hosting fixture corpus linked: PASS'
 puts 'Small compiler subset runtime smoke linked: PASS'

@@ -1,0 +1,44 @@
+{
+  "format": "bsharp.native_action_routing_integration.contract.json",
+  "format_version": 1,
+  "target_version": "0.1.84",
+  "status": "native_action_routing_integration_under_ruby_referee",
+  "title": "Self-Hosting Milestone 2 Slice 11: Native Action Routing Integration",
+  "native_component": {
+    "source_path": "compiler/native/first_bsharp_action_router.bsharp",
+    "artifact_path": "compiler/native/first_bsharp_action_router.bsbc",
+    "disassembly_path": "compiler/native/first_bsharp_action_router.bsbc.txt",
+    "expected_binary_sha256": "fc00ef2504fb4aa1d53568d741971468fb3d2ab5968b46057531500ad4ed0ebf",
+    "expected_disassembly_sha256": "3a741ceab5f7c35e7a62e804564b464e30f70c56f757bb9adf67ed598e3dec3b"
+  },
+  "expected_routes": {
+    "damage": "resolve-damage-action",
+    "change": "resolve-change-action",
+    "increase": "resolve-number-change-action",
+    "decrease": "resolve-number-change-action",
+    "cause": "resolve-cause-action",
+    "open": "resolve-object-interaction-action",
+    "close": "resolve-object-interaction-action",
+    "lock": "resolve-object-interaction-action",
+    "take": "resolve-object-interaction-action",
+    "drop": "resolve-generic-action",
+    "carry": "resolve-generic-action",
+    "unlock": "resolve-generic-action",
+    "attack": "resolve-generic-action",
+    "speak": "resolve-generic-action",
+    "give": "resolve-generic-action",
+    "eat": "resolve-generic-action",
+    "wear": "resolve-generic-action",
+    "remove": "resolve-generic-action",
+    "sound": "resolve-generic-action",
+    "examine": "resolve-generic-action"
+  },
+  "protected_truths": [
+    "Every accepted official action word is routed by BASIC#-authored BSBC before the bounded semantic resolver selects an action-family implementation.",
+    "Ruby may normalize the verb and provide plumbing but must not maintain a second verb-to-action-family answer table.",
+    "Contradictory native action decisions fail visibly rather than falling back to Ruby.",
+    "v0.1.81 parser dispatch, v0.1.82 semantic routing, and v0.1.83 symbol resolution remain active upstream.",
+    "Ruby remains bootstrap/referee authority; this is not full self-hosting.",
+    "No Profile 8 and no creator-facing syntax change."
+  ]
+}
