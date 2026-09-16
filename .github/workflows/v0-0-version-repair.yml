@@ -1,4 +1,4 @@
-name: BASIC# v0.0 current-state cleanup
+name: BASIC# v0.0 final repository repair
 
 on:
   push:
@@ -10,25 +10,86 @@ permissions:
   contents: write
 
 jobs:
-  cleanup:
+  repair:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Update current-state documents
+      - name: Repair live project truth
         shell: bash
         run: |
           set -euo pipefail
           python3 <<'PY'
           from pathlib import Path
-          import json
+          import hashlib, json, re, subprocess
 
+          ROOT = Path('.')
+          WORKFLOW = Path('.github/workflows/v0-0-version-repair.yml')
+
+          def tracked_files():
+              return [Path(x) for x in subprocess.check_output(['git','ls-files'], text=True).splitlines()]
+
+          # Normalize remaining live text without touching the one-time workflow itself.
+          for p in tracked_files():
+              if p == WORKFLOW or not p.is_file():
+                  continue
+              try:
+                  text = p.read_text(encoding='utf-8')
+              except UnicodeDecodeError:
+                  continue
+              new = text
+              new = new.replace('v0.1.', 'v0.0.').replace('V0.1.', 'V0.0.')
+              new = new.replace('v0_1_', 'v0_0_').replace('V0_1_', 'V0_0_')
+              new = re.sub(r'(?<![0-9])0\.1\.(?=[0-9])', '0.0.', new)
+              new = re.sub(r'(?<![0-9])0_1_(?=[0-9])', '0_0_', new)
+              new = new.replace('private GitHub', 'GitHub')
+              new = new.replace('Derek-approved', 'project-approved')
+              new = new.replace('Derek approved', 'project approved')
+              new = new.replace('Derek-side', 'local')
+              new = new.replace("Derek's", "the project creator's")
+              new = re.sub(r'\bDerek\b', 'the project creator', new)
+              if new != text:
+                  p.write_text(new, encoding='utf-8')
+
+          # Public README structure and corrected historical details.
           readme = Path('README.md')
-          text = readme.read_text(encoding='utf-8').replace('## Version Technical History', '## Technical History')
+          text = readme.read_text(encoding='utf-8')
+          text = text.replace('## Version Technical History', '## Technical History')
+          text = re.sub(
+              r'### v0\.0\.34 — No Accepted Release Record Found\n.*?(?=\n### v0\.0\.33)',
+              '### v0.0.34 — Rejected Candidate\nThis candidate was rejected after the runtime-transition validation still carried a stale earlier VM banner/version expectation. It was not accepted as a baseline.\n',
+              text,
+              flags=re.S,
+          )
+          text = re.sub(
+              r'### v0\.0\.33 — No Accepted Release Record Found\n.*?(?=\n### v0\.0\.32)',
+              '### v0.0.33 — Rejected Candidate\nThis candidate was rejected after the bytecode-emitter validation called a missing public `BytecodeEmitter#profile` surface. It was not accepted as a baseline.\n',
+              text,
+              flags=re.S,
+          )
+          text = re.sub(
+              r'### v0\.0\.10 — No Accepted Release Record Found\n.*?(?=\n### v0\.0\.09)',
+              '### v0.0.10 — Runtime Trigger Context\nAdded direct named-Thing to Kind trigger matching, preserved selected-Thing trigger context, allowed `that guard`-style context resolution, preserved exact event matching, and added source/BSharp IR/runtime/CLI validation without adding new creator-facing syntax.\n',
+              text,
+              flags=re.S,
+          )
           readme.write_text(text, encoding='utf-8')
 
+          # Company Bible: keep role authority without personal-name fields.
+          bible = Path('docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md')
+          text = bible.read_text(encoding='utf-8')
+          text = text.replace('**Owner:** the project creator  ', '**Authority:** Project creator / final decision-maker  ')
+          text = text.replace('## 2. the project creator is the final decision-maker', '## 2. Project creator is the final decision-maker')
+          text = text.replace('the project creator is the owner and final authority', 'The project creator is the owner and final authority')
+          text = re.sub(r'^- Historical records that use the name .*?\n', '', text, flags=re.M)
+          text = text.replace('Acknowledge the project creator before beginning lengthy inspection or tool work.', 'Acknowledge the current instruction before beginning lengthy inspection or tool work.')
+          text = text.replace('Ask the project creator only when the records do not answer the question or an owner-only decision remains.', 'Ask only when the records do not answer the question or an owner-only decision remains.')
+          text = text.replace('Do not ask the project creator to repeat a decision already preserved in current project records.', 'Do not ask for a decision to be repeated when it is already preserved in current project records.')
+          bible.write_text(text, encoding='utf-8')
+
+          # Roadmap: accepted v0.0.84, next build v0.0.85.
           roadmap = Path('docs/roadmap/BASIC_SHARP_ROADMAP.md')
           text = roadmap.read_text(encoding='utf-8')
           start = text.find('## Current accepted base')
@@ -37,10 +98,12 @@ jobs:
           if start >= 0 and end > start:
               text = text[:start] + current + text[end:]
           text = text.replace('## Next direction after v0.0.84', '## Next direction for v0.0.85')
-          text = text.replace('use a changed-files ZIP only when Derek explicitly requests that packaging path.', 'use a changed-files ZIP only when that packaging path is explicitly requested.')
-          text = text.replace("Derek's Demon Killer", 'the Demon Killer')
+          text = text.replace('v0.0.83 adds bounded BASIC#-authored symbol-resolution decisions.', 'v0.0.83 added bounded BASIC#-authored symbol-resolution decisions.')
+          if 'v0.0.84 added active BASIC#-authored action routing.' not in text:
+              text = text.replace('v0.0.83 added bounded BASIC#-authored symbol-resolution decisions.\n', 'v0.0.83 added bounded BASIC#-authored symbol-resolution decisions.\nv0.0.84 added active BASIC#-authored action routing.\n')
           roadmap.write_text(text, encoding='utf-8')
 
+          # Master handoff: close v0.0.84 and point to v0.0.85.
           handoff = Path('docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md')
           text = handoff.read_text(encoding='utf-8')
           start = text.find('## Current state')
@@ -48,43 +111,195 @@ jobs:
           current = '''## Current state\n\n- **Accepted release:** v0.0.84 Self-Hosting Milestone 2 Slice 11: Native Action Routing Integration.\n- **Accepted release commit:** `14dd3e0f9134ed55cdb71bb69b8a2f3c555206c9`.\n- **Accepted release tag:** `v0.0.84`.\n- **Branch:** `main`.\n- **Next build:** v0.0.85.\n- **Release state:** v0.0.84 passed acceptance and closeout. The earlier rejected v0.0.84 package remains rejected evidence and is not a baseline.\n\n'''
           if start >= 0 and end > start:
               text = text[:start] + current + text[end:]
-          text = text.replace('After Derek sees FINAL PASS:', 'After FINAL PASS is confirmed:')
+          text = text.replace('Accepted v0.0.83 floor:', 'Accepted v0.0.84 validation floor:')
+          text = text.replace('Current v0.0.84 candidate inventory:', 'Accepted v0.0.84 inventory:')
           marker = '## Continuation point'
           pos = text.find(marker)
           if pos >= 0:
               text = text[:pos] + '''## Continuation point\n\nv0.0.84 Native Action Routing Integration is accepted and closed. The next build is v0.0.85. Profiles 1 through 7 remain protected; no Profile 8 is implied. Ruby remains bootstrap/referee authority until later boundaries are independently replaced and proven.\n'''
           handoff.write_text(text, encoding='utf-8')
 
-          validator = Path('compiler/readme_current_release_truth.rb')
-          validator.write_text('''# frozen_string_literal: true\n\nrequire_relative 'ast_nodes'\n\nmodule BasicSharp\n  class ReadmeCurrentReleaseTruth\n    STATUS = 'readme_current_release_truth_gate'\n    attr_reader :readme_text, :spec\n\n    def initialize(readme_text, spec)\n      @readme_text = readme_text\n      @spec = spec\n    end\n\n    def expected_versions\n      (1..84).to_a.reverse.map { |n| format('v0.0.%02d', n) }\n    end\n\n    def missing_history_versions\n      expected_versions.reject { |v| readme_text.include?("### #{v} ") || readme_text.include?("### #{v} —") }\n    end\n\n    def checks\n      {\n        format_matches: spec.fetch('format') == 'bsharp.readme_current_release_truth.json',\n        target_version_matches: spec.fetch('target_version') == BasicSharp::VERSION,\n        heading_matches: readme_text.lines.first.to_s.strip == '# BASIC#',\n        current_version_present: readme_text.include?("The current version is **v#{BasicSharp::VERSION}**."),\n        technical_history_present: readme_text.include?('## Technical History'),\n        complete_history_present: missing_history_versions.empty?,\n        additional_notes_present: readme_text.include?('## Additional Notes'),\n        legal_section_present: readme_text.include?('## License / Legal'),\n        ruby_authority_preserved: readme_text.include?('Ruby'),\n        not_full_self_hosting_declared: readme_text.include?('not yet fully self-hosted')\n      }\n    end\n\n    def all_pass?\n      checks.values.all?\n    end\n\n    def to_h\n      { version: BasicSharp::VERSION, status: STATUS, all_pass: all_pass?, checks: checks, missing_history_versions: missing_history_versions }\n    end\n  end\nend\n''', encoding='utf-8')
+          # README truth gate now validates the requested public README instead of a giant release dump.
+          Path('compiler/readme_current_release_truth.rb').write_text('''# frozen_string_literal: true\n\nrequire_relative 'ast_nodes'\n\nmodule BasicSharp\n  class ReadmeCurrentReleaseTruth\n    STATUS = 'readme_current_release_truth_gate'\n\n    attr_reader :readme_text, :spec\n\n    def initialize(readme_text, spec)\n      @readme_text = readme_text\n      @spec = spec\n    end\n\n    def expected_versions\n      (1..84).to_a.reverse.map { |number| format('v0.0.%02d', number) }\n    end\n\n    def missing_history_versions\n      expected_versions.reject { |version| readme_text.include?("### #{version} ") || readme_text.include?("### #{version} —") }\n    end\n\n    def checks\n      {\n        format_matches: spec.fetch('format') == 'bsharp.readme_current_release_truth.json',\n        format_version_matches: spec.fetch('format_version') == 1,\n        target_version_matches: spec.fetch('target_version') == BasicSharp::VERSION,\n        status_matches: spec.fetch('status') == STATUS,\n        heading_matches: readme_text.lines.first.to_s.strip == '# BASIC#',\n        intro_present: readme_text.include?('## Intro'),\n        current_version_present: readme_text.include?("The current version is **v#{BasicSharp::VERSION}**."),\n        tagline_present: readme_text.include?('A scripting language made for non-programmers, by non-programmers'),\n        technical_history_present: readme_text.include?('## Technical History'),\n        complete_history_present: missing_history_versions.empty?,\n        additional_notes_present: readme_text.include?('## Additional Notes'),\n        legal_section_present: readme_text.include?('## License / Legal'),\n        ruby_authority_preserved: readme_text.include?('Ruby'),\n        not_full_self_hosting_declared: readme_text.include?('not yet fully self-hosted')\n      }\n    end\n\n    def all_pass?\n      checks.values.all?\n    end\n\n    def to_h\n      {\n        version: BasicSharp::VERSION,\n        status: STATUS,\n        all_pass: all_pass?,\n        checks: checks,\n        missing_history_versions: missing_history_versions\n      }\n    end\n  end\nend\n''', encoding='utf-8')
 
-          spec = {
-            'format' => 'bsharp.readme_current_release_truth.json',
-            'format_version' => 1,
-            'target_version' => '0.0.84',
-            'status' => 'readme_current_release_truth_gate',
-            'title' => 'README Current Release Truth Gate',
-            'current_release' => {
-              'heading' => 'BASIC#',
-              'version' => 'v0.0.84',
-              'history_first' => 'v0.0.84',
-              'history_last' => 'v0.0.01'
-            }
+          readme_spec = {
+              'format': 'bsharp.readme_current_release_truth.json',
+              'format_version': 1,
+              'target_version': '0.0.84',
+              'status': 'readme_current_release_truth_gate',
+              'title': 'README Current Release Truth Gate',
+              'current_release': {
+                  'heading': 'BASIC#',
+                  'version': 'v0.0.84',
+                  'history_first': 'v0.0.84',
+                  'history_last': 'v0.0.01'
+              },
+              'protected_truths': [
+                  'The root README is the public GitHub landing page.',
+                  'The README identifies v0.0.84 as current.',
+                  'Technical History contains every numbered version from v0.0.84 through v0.0.01.',
+                  'Ruby remains bootstrap/referee authority and BASIC# is not yet fully self-hosted.'
+              ]
           }
-          Path('spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json').write_text(json.dumps(spec, indent=2) + '\n', encoding='utf-8')
+          Path('spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json').write_text(json.dumps(readme_spec, indent=2) + '\n', encoding='utf-8')
 
-          Path('tests/test_readme_current_release_truth.rb').write_text('''# frozen_string_literal: true\n\nrequire 'json'\nrequire 'minitest/autorun'\nrequire_relative '../compiler/readme_current_release_truth'\n\nclass TestReadmeCurrentReleaseTruth < Minitest::Test\n  ROOT = File.expand_path('..', __dir__)\n\n  def test_public_readme_truth\n    spec = JSON.parse(File.read(File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json'), encoding: 'UTF-8'))\n    readme = File.read(File.join(ROOT, 'README.md'), encoding: 'UTF-8')\n    truth = BasicSharp::ReadmeCurrentReleaseTruth.new(readme, spec).to_h\n    assert truth.fetch(:all_pass), truth.inspect\n    assert_empty truth.fetch(:missing_history_versions)\n  end\nend\n''', encoding='utf-8')
+          Path('tests/test_readme_current_release_truth.rb').write_text('''# frozen_string_literal: true\n\nrequire 'json'\nrequire 'minitest/autorun'\nrequire_relative '../compiler/readme_current_release_truth'\n\nclass TestReadmeCurrentReleaseTruth < Minitest::Test\n  ROOT = File.expand_path('..', __dir__)\n  SPEC_PATH = File.join(ROOT, 'spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json')\n  README_PATH = File.join(ROOT, 'README.md')\n\n  def truth_for(text = File.read(README_PATH, encoding: 'UTF-8'))\n    spec = JSON.parse(File.read(SPEC_PATH, encoding: 'UTF-8'))\n    BasicSharp::ReadmeCurrentReleaseTruth.new(text, spec).to_h\n  end\n\n  def test_public_readme_truth\n    truth = truth_for\n    assert truth.fetch(:all_pass), truth.inspect\n    assert_empty truth.fetch(:missing_history_versions)\n  end\n\n  def test_missing_version_is_rejected\n    text = File.read(README_PATH, encoding: 'UTF-8').sub('### v0.0.42', '### missing-version')\n    refute truth_for(text).fetch(:all_pass)\n  end\nend\n''', encoding='utf-8')
+
+          # Refresh bytes/SHA-256 records in JSON contracts after the administrative repair.
+          def refresh(value, current_json):
+              changed = False
+              if isinstance(value, dict):
+                  path = value.get('path')
+                  if isinstance(path, str):
+                      p = Path(path)
+                      if p.is_file() and p.resolve() != current_json.resolve():
+                          data = p.read_bytes()
+                          if 'bytes' in value and value['bytes'] != len(data):
+                              value['bytes'] = len(data)
+                              changed = True
+                          digest = hashlib.sha256(data).hexdigest()
+                          if 'sha256' in value and value['sha256'] != digest:
+                              value['sha256'] = digest
+                              changed = True
+                  for child in value.values():
+                      if refresh(child, current_json):
+                          changed = True
+              elif isinstance(value, list):
+                  for child in value:
+                      if refresh(child, current_json):
+                          changed = True
+              return changed
+
+          for _ in range(4):
+              any_changed = False
+              for p in sorted(ROOT.rglob('*.json')):
+                  if '.git' in p.parts:
+                      continue
+                  try:
+                      obj = json.loads(p.read_text(encoding='utf-8'))
+                  except Exception:
+                      continue
+                  if refresh(obj, p):
+                      p.write_text(json.dumps(obj, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+                      any_changed = True
+              if not any_changed:
+                  break
           PY
 
-          ruby tests/test_readme_current_release_truth.rb
-          git grep -n -I -E 'v0\.1\.[0-9]+|0\.1\.[0-9]+|v0_1_[0-9]+' -- . ':!.github/workflows/v0-0-version-repair.yml' && exit 1 || true
+          git add -A
 
-      - name: Commit current-state cleanup
+          echo 'PHASE START: live truth audit'
+          if git grep --cached -n -I -E 'v0\.1\.[0-9]+|0\.1\.[0-9]+|v0_1_[0-9]+' -- . ':!.github/workflows/v0-0-version-repair.yml'; then
+            echo 'FAIL: wrong v0.1 version references remain'
+            exit 1
+          fi
+          if git ls-files | grep -E 'v0_1_[0-9]+'; then
+            echo 'FAIL: wrong v0_1 filenames remain'
+            exit 1
+          fi
+          if git grep --cached -n -I -E '\bDerek\b' -- . ':!.github/workflows/v0-0-version-repair.yml'; then
+            echo 'FAIL: personal-name references remain in live tracked text'
+            exit 1
+          fi
+          grep -q "VERSION = '0.0.84'" compiler/ast_nodes.rb
+          grep -q '^## Technical History$' README.md
+          grep -q '^### v0.0.84 ' README.md
+          grep -q '^### v0.0.01 ' README.md
+          grep -q '^## License / Legal$' README.md
+          grep -q '^\*\*Version:\*\* v0.0.84' docs/company_bible/BASIC_SHARP_COMPANY_BIBLE.md
+          grep -q 'Accepted release:.*v0.0.84' docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
+          grep -q 'Next build:.*v0.0.85' docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md
+          echo 'PHASE PASS: live truth audit'
+
+      - name: Validate repaired project
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo 'PHASE START: JSON validation'
+          python3 - <<'PY'
+          import json, pathlib
+          for p in pathlib.Path('.').rglob('*.json'):
+              if '.git' not in p.parts:
+                  json.loads(p.read_text(encoding='utf-8'))
+          print('PHASE PASS: JSON validation')
+          PY
+
+          echo 'PHASE START: Ruby syntax'
+          while IFS= read -r -d '' file; do ruby -c "$file" >/dev/null; done < <(find compiler tests tools -name '*.rb' -print0)
+          echo 'PHASE PASS: Ruby syntax'
+
+          echo 'PHASE START: README truth gate'
+          ruby tests/test_readme_current_release_truth.rb
+          echo 'PHASE PASS: README truth gate'
+
+          echo 'PHASE START: normal full test suite'
+          ruby -I. -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require File.expand_path(file) }'
+          echo 'PHASE PASS: normal full test suite'
+
+          echo 'PHASE START: no-locale full test suite'
+          LANG=C LC_ALL=C ruby -I. -Itests -e 'Dir["tests/test_*.rb"].sort.each { |file| require File.expand_path(file) }'
+          echo 'PHASE PASS: no-locale full test suite'
+
+          echo 'PHASE START: validation inventory'
+          ruby tools/trial_by_fire_inventory.rb
+          echo 'PHASE PASS: validation inventory'
+
+      - name: Commit repaired live tree
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'BASIC# Repository Repair'
           git config user.email 'basic-sharp@users.noreply.github.com'
-          git add README.md docs/roadmap/BASIC_SHARP_ROADMAP.md docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md compiler/readme_current_release_truth.rb spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json tests/test_readme_current_release_truth.rb
-          git commit -m 'Synchronize BASIC# v0.0.84 current release truth'
-          git push origin HEAD:main
+          git add -A
+          git reset -- .github/workflows/v0-0-version-repair.yml
+          if git diff --cached --quiet; then
+            echo 'No live-tree changes required.'
+          else
+            git commit -m 'Synchronize BASIC# v0.0.84 repository truth'
+            git push origin HEAD:main
+          fi
+
+      - name: Correct version tags
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --tags --force
+          mapfile -t old_tags < <(git tag -l 'v0.1.*' | sort -V)
+          for old in "${old_tags[@]}"; do
+            [ -n "$old" ] || continue
+            new="${old/v0.1./v0.0.}"
+            target="$(git rev-parse "${old}^{commit}")"
+            if git rev-parse -q --verify "refs/tags/$new" >/dev/null; then
+              existing="$(git rev-parse "${new}^{commit}")"
+              [ "$existing" = "$target" ] || { echo "FAIL: tag target conflict $new"; exit 1; }
+            else
+              git tag -a "$new" "$target" -m "BASIC# $new"
+              git push origin "refs/tags/$new"
+            fi
+          done
+          for old in "${old_tags[@]}"; do
+            [ -n "$old" ] || continue
+            git push origin ":refs/tags/$old"
+          done
+          git fetch --tags --prune --force
+          if git tag -l 'v0.1.*' | grep -q .; then
+            echo 'FAIL: wrong v0.1 tags remain'
+            exit 1
+          fi
+          git rev-parse -q --verify 'refs/tags/v0.0.84' >/dev/null
+          echo 'PHASE PASS: corrected version tags'
+
+      - name: Final remote audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main --tags --force
+          branch_count="$(git ls-remote --heads origin | wc -l | tr -d ' ')"
+          [ "$branch_count" = '1' ] || { echo "FAIL: expected only main branch, found $branch_count"; git ls-remote --heads origin; exit 1; }
+          git ls-remote --heads origin | grep -q 'refs/heads/main$'
+          if git ls-remote --tags origin 'refs/tags/v0.1.*' | grep -q .; then
+            echo 'FAIL: remote v0.1 tags remain'
+            exit 1
+          fi
+          git ls-remote --tags origin 'refs/tags/v0.0.84' | grep -q 'refs/tags/v0.0.84$'
+          echo 'FINAL PASS: BASIC# v0.0.84 repository truth repaired and verified'
