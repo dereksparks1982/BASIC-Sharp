@@ -1,0 +1,190 @@
+name: BASIC# v0.0 version truth repair
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/v0-0-version-repair.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Correct live-tree version truth
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+          import os, re
+
+          root = Path('.')
+          workflow = Path('.github/workflows/v0-0-version-repair.yml')
+
+          # Correct version text in every tracked file. The BASIC# build line is
+          # v0.0.xx; v0.1.xx / v0_1_xx was an accidental repository-wide error.
+          for raw in os.popen('git ls-files').read().splitlines():
+              p = Path(raw)
+              if p == workflow or not p.is_file():
+                  continue
+              data = p.read_bytes()
+              new = data
+              new = new.replace(b'v0.1.', b'v0.0.')
+              new = new.replace(b'V0.1.', b'V0.0.')
+              new = new.replace(b'v0_1_', b'v0_0_')
+              new = new.replace(b'V0_1_', b'V0_0_')
+              new = re.sub(rb'(?<![0-9])0\.1\.(?=[0-9])', b'0.0.', new)
+              new = re.sub(rb'(?<![0-9])0_1_(?=[0-9])', b'0_0_', new)
+              if new != data:
+                  p.write_bytes(new)
+
+          # Remove personal-name wording from live project-facing text while
+          # preserving the underlying technical record.
+          replacements = {
+              b'Derek-approved': b'project-approved',
+              b'Derek approved': b'project approved',
+              b'Derek-side': b'local',
+              b"Derek's": b"the project creator's",
+              b'Derek': b'the project creator',
+          }
+          for raw in os.popen('git ls-files').read().splitlines():
+              p = Path(raw)
+              if p == workflow or not p.is_file():
+                  continue
+              data = p.read_bytes()
+              new = data
+              for a, b in replacements.items():
+                  new = new.replace(a, b)
+              if new != data:
+                  p.write_bytes(new)
+
+          # Rename all tracked paths carrying the wrong underscored version line.
+          paths = [Path(x) for x in os.popen('git ls-files').read().splitlines()]
+          for p in sorted(paths, key=lambda x: len(x.parts), reverse=True):
+              if p == workflow or not p.exists():
+                  continue
+              new_name = p.name.replace('v0_1_', 'v0_0_').replace('V0_1_', 'V0_0_')
+              new_name = new_name.replace('v0.1.', 'v0.0.').replace('V0.1.', 'V0.0.')
+              if new_name != p.name:
+                  q = p.with_name(new_name)
+                  q.parent.mkdir(parents=True, exist_ok=True)
+                  if q.exists() and q != p:
+                      raise SystemExit(f'rename collision: {p} -> {q}')
+                  p.rename(q)
+
+          # Current-state documents must describe accepted v0.0.84, not the
+          # pre-acceptance v0.0.83/v0.0.84 candidate state.
+          roadmap = Path('docs/roadmap/BASIC_SHARP_ROADMAP.md')
+          if roadmap.exists():
+              t = roadmap.read_text()
+              start = t.find('## Current accepted base')
+              end = t.find('## Canonical Company Bible')
+              if start >= 0 and end > start:
+                  current = '''## Current accepted base\n\n```text\nv0.0.84: Self-Hosting Milestone 2 Slice 11 - Native Action Routing Integration\naccepted release commit 14dd3e0f9134ed55cdb71bb69b8a2f3c555206c9\ntag v0.0.84\n```\n\nv0.0.84 is the accepted release. It preserves v0.0.81 BASIC#-authored parser dispatch, v0.0.82 BASIC#-authored semantic routing, and v0.0.83 BASIC#-authored symbol resolution, then adds active BASIC#-authored action-routing decisions. Ruby remains the bootstrap compiler and separate referee authority.\n\nThe accepted path is:\n\n```text\nBASIC# source\n-> TokenizerReader\n-> BASIC# native parser dispatch [v0.0.81]\n-> SmallCompilerSubsetParser\n-> BASIC# native semantic routing [v0.0.82]\n-> BASIC# native symbol resolution [v0.0.83]\n-> BASIC# native action routing [v0.0.84]\n-> SmallCompilerSubsetSemanticResolver\n-> BSharp IR\n-> independent BSBC encoder\n-> independent BSBC loader\n-> independent BSharp VM\n```\n\n'''
+                  t = t[:start] + current + t[end:]
+              t = t.replace('## Next direction after v0.0.84', '## Next direction for v0.0.85')
+              roadmap.write_text(t)
+
+          handoff = Path('docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md')
+          if handoff.exists():
+              t = handoff.read_text()
+              start = t.find('## Current state')
+              end = t.find('## v0.0.84 purpose')
+              if start >= 0 and end > start:
+                  current = '''## Current state\n\n- **Accepted release:** v0.0.84 Self-Hosting Milestone 2 Slice 11: Native Action Routing Integration.\n- **Accepted release commit:** `14dd3e0f9134ed55cdb71bb69b8a2f3c555206c9`.\n- **Accepted release tag:** `v0.0.84`.\n- **Branch:** `main`.\n- **Next build:** v0.0.85.\n- **Release state:** v0.0.84 passed acceptance and closeout. The earlier rejected v0.0.84 package remains rejected evidence and is not a baseline.\n\n'''
+                  t = t[:start] + current + t[end:]
+              # Replace stale continuation section with accepted-state continuation.
+              marker = '## Continuation point'
+              i = t.find(marker)
+              if i >= 0:
+                  t = t[:i] + '''## Continuation point\n\nv0.0.84 Native Action Routing Integration is accepted and closed. The next build is v0.0.85. Do not alter Profiles 1 through 7 or claim full self-hosting; Ruby remains bootstrap/referee authority until later boundaries are independently replaced and proven.\n'''
+              handoff.write_text(t)
+
+          # Keep the public README legal section and history intact; only assert
+          # the actual current version if a stale current-version phrase remains.
+          readme = Path('README.md')
+          if readme.exists():
+              t = readme.read_text()
+              t = t.replace('current accepted release is **v0.0.83', 'current accepted release is **v0.0.84')
+              readme.write_text(t)
+          PY
+
+          # Confirm the wrong live version line is gone outside immutable .git data.
+          if git grep -n -I -E 'v0\.1\.[0-9]+|0\.1\.[0-9]+|v0_1_[0-9]+' -- . ':!.github/workflows/v0-0-version-repair.yml'; then
+            echo 'ERROR: wrong v0.1 version references remain in tracked live files.'
+            exit 1
+          fi
+
+          # Confirm old wrong handshake/path names are gone.
+          if git ls-files | grep -E 'v0_1_[0-9]+'; then
+            echo 'ERROR: wrong v0_1 paths remain.'
+            exit 1
+          fi
+
+      - name: Validate text, Ruby syntax, and JSON
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, pathlib
+          for p in pathlib.Path('.').rglob('*.json'):
+              if '.git' not in p.parts:
+                  json.loads(p.read_text())
+          print('JSON PASS')
+          PY
+          while IFS= read -r -d '' f; do ruby -c "$f" >/dev/null; done < <(find . -path ./.git -prune -o -name '*.rb' -print0)
+          echo 'RUBY SYNTAX PASS'
+
+      - name: Commit corrected live tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'BASIC# Repository Repair'
+          git config user.email 'basic-sharp@users.noreply.github.com'
+          git add -A
+          git reset -- .github/workflows/v0-0-version-repair.yml
+          if git diff --cached --quiet; then
+            echo 'No live-tree changes required.'
+          else
+            git commit -m 'Correct BASIC# build numbering to v0.0 series'
+            git push origin HEAD:main
+          fi
+
+      - name: Correct release tags and remove temporary branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --tags --force
+          while IFS= read -r old; do
+            [ -n "$old" ] || continue
+            new="${old/v0.1./v0.0.}"
+            target="$(git rev-parse "${old}^{}" 2>/dev/null || git rev-parse "$old")"
+            if ! git rev-parse -q --verify "refs/tags/$new" >/dev/null; then
+              git tag -a "$new" "$target" -m "BASIC# $new"
+              git push origin "refs/tags/$new"
+            fi
+            git push origin ":refs/tags/$old"
+          done < <(git tag -l 'v0.1.*' | sort -V)
+          git push origin --delete repair-v0-0-version-truth 2>/dev/null || true
+
+      - name: Final audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main --tags --force
+          git checkout -f main
+          git reset --hard origin/main
+          echo 'MAIN:' "$(git rev-parse HEAD)"
+          echo 'BRANCHES:'
+          git ls-remote --heads origin
+          echo 'TAGS v0.0:'
+          git ls-remote --tags origin 'refs/tags/v0.0.*' | tail -n 20
+          echo 'WRONG VERSION REFERENCES:'
+          git grep -n -I -E 'v0\.1\.[0-9]+|0\.1\.[0-9]+|v0_1_[0-9]+' -- . ':!.github/workflows/v0-0-version-repair.yml' || true
