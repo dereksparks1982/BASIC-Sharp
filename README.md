@@ -1,5 +1,12 @@
 # BASIC#
 
+## DK Softworks · House of Culture
+
+**DK Softworks** is the studio and project identity. **DK** draws on the Russian abbreviation **ДК** for **Дом культуры** (*Dom kultury*), meaning **“House of Culture.”** Traditionally, a *dom kultury* is a community center for the arts, creativity, performance, and learning.
+
+This identifies the present project or its stewardship; it does not change existing licenses, copyright holders, original creators, or historical credits.
+
+
 ## Intro
 
 BASIC# is a scripting language made for non-programmers, by non-programmers. It favors readable intent, full words, plain-English structure, and creator clarity over terse programmer-first syntax.
