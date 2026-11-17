@@ -1,0 +1,20 @@
+// BASIC# native compound IF connector decision source, candidate only./.
+// No change to the protected @, #, (, |then, [ and ]. creator grammar./.
+DEFINE
+[
+    @condition decision is a #device
+    @and connector is a #device
+    @or connector is a #device
+].
+START
+[
+    @condition decision has "unclassified" classification
+].
+WHEN PLAYER examines @and connector
+[
+    |then (change classification of @condition decision to "combine-all"
+].
+WHEN PLAYER examines @or connector
+[
+    |then (change classification of @condition decision to "combine-any"
+].

@@ -1,5 +1,10 @@
 # BASIC# Roadmap
 
+## Ruby-removal development branch (unaccepted)
+
+New source-only, Ruby-independent BASIC# to BSharp IR compiler work is staged on development/ruby-free-compiler. No compilation, testing, or acceptance has occurred. See docs/self_hosting/BASIC_SHARP_RUBY_REMOVAL_DEVELOPMENT.md.
+
+
 ## Current accepted base
 
 ```text

@@ -1,5 +1,10 @@
 # BASIC#
 
+## Ruby-removal development branch (unaccepted)
+
+New source-only, Ruby-independent BASIC# to BSharp IR compiler work is staged on development/ruby-free-compiler. No compilation, testing, or acceptance has occurred. See docs/self_hosting/BASIC_SHARP_RUBY_REMOVAL_DEVELOPMENT.md.
+
+
 ## DK Softworks · House of Culture
 
 **DK Softworks** is the studio and project identity. **DK** draws on the Russian abbreviation **ДК** for **Дом культуры** (*Dom kultury*), meaning **“House of Culture.”** Traditionally, a *dom kultury* is a community center for the arts, creativity, performance, and learning.
