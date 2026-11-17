@@ -108,37 +108,71 @@ export function blocks(source) {
   return result;
 }
 function contextFor(kinds, objects) { return {kinds, objects}; }
-function reference(input, context, line) {
+function kindCandidates(kind, context) {
+  return [...context.objects.values()].filter(item => {
+    let current = item.kind;
+    const visited = new Set();
+    while (current && !visited.has(current)) {
+      if (current === kind) return true;
+      visited.add(current);
+      current = context.kinds.get(current) || null;
+    }
+    return false;
+  });
+}
+// "it" is resolved from the current WHEN, never guessed from the global world.
+// Bare #Kind and a/an #Kind are meaningful event matchers, not action selectors.
+function reference(input, context, line, binding = null, usage = null) {
   const shown = input.trim(), key = norm(shown);
   if (shown === 'PLAYER') return {type:'object',text:'player',name:'player',object_kind:'person'};
   if (key === 'player') fail(line, 'The built-in player must be written as PLAYER.');
+  if (key === 'it') {
+    if (!binding) fail(line, '"it" needs a WHEN event to establish what it means. Use @Thing.');
+    if (binding.objects.length === 1) {
+      const selected = context.objects.get(binding.objects[0]);
+      return {type:'object',text:'it',name:selected.name,object_kind:selected.kind};
+    }
+    if (binding.objects.length === 0 && binding.kinds.length === 1) {
+      return {type:'previous',text:'it',selector:'it',kind_name:binding.kinds[0]};
+    }
+    fail(line, '"it" is ambiguous here. Name an @Thing or establish exactly one event target.');
+  }
   if (shown.startsWith('@')) {
     const name = norm(shown.slice(1)), item = context.objects.get(name);
     if (!item) fail(line, 'Unknown Thing @' + name + '. Declare it in DEFINE.');
     return {type:'object',text:name,name,object_kind:item.kind};
   }
-  // A unique definite Kind reference is resolved deterministically at compile time.
+  const kindMatcher = /^(?:(a|an)\s+)?#(.+)$/iu.exec(shown);
+  if (kindMatcher) {
+    if (usage !== 'event') fail(line,'A #Kind needs an event binding before it can select a Thing. Use @Thing or "it" inside WHEN.');
+    const kind=norm(kindMatcher[2]);
+    if (!context.kinds.has(kind)) fail(line,'Unknown Kind #'+kind+'.');
+    return {type:kindMatcher[1]?'kind_one':'kind',text:(kindMatcher[1]?'a ':'')+kind,
+      selector:kindMatcher[1]?'a':undefined,kind_name:kind,
+      candidates:kindCandidates(kind,context).map(item=>item.name)};
+  }
   const definite = /^the\s+#(.+)$/iu.exec(shown);
   if (definite) {
     const kind = norm(definite[1]);
     if (!context.kinds.has(kind)) fail(line, 'Unknown Kind #' + kind + '.');
-    const match = [...context.objects.values()].filter(object => {
-      let current = object.kind, visited = new Set();
-      while (current && !visited.has(current)) {
-        if (current === kind) return true;
-        visited.add(current);
-        current = context.kinds.get(current) || null;
-      }
-      return false;
-    });
-    if (match.length !== 1) fail(line, 'the #' + kind + ' must identify exactly one Thing; found ' + match.length + '. Use @name instead.');
-    return {type:'object',text:'the '+kind,name:match[0].name,
-      object_kind:match[0].kind,matched_by_kind:true};
+    const matching = kindCandidates(kind,context);
+    if (matching.length !== 1) {
+      fail(line, 'the #' + kind + ' must identify exactly one Thing; found ' + matching.length + '. Use @name instead.');
+    }
+    return {type:'object',text:'the '+kind,name:matching[0].name,
+      object_kind:matching[0].kind,matched_by_kind:true};
   }
-  if (/^(?:every|an?|that)\s+#/iu.test(shown) || shown.startsWith('#') || key === 'it') {
-    fail(line, 'This compiler does not yet support ' + shown + ' here. Use a defined @Thing or a unique the #Kind.');
+  if (/^(?:every|that)\s+#/iu.test(shown)) {
+    fail(line, 'The selector "' + shown + '" is not supported in this portable compiler. Use @Thing or "it" after WHEN.');
   }
   fail(line, 'Unknown reference "' + shown + '". Use @Thing, PLAYER, or a unique the #Kind.');
+}
+function bindingForEvent(evt) {
+  const refs=[evt.actor,evt.target].filter(Boolean);
+  return {
+    objects:[...new Set(refs.filter(r=>r.type==='object'&&r.name!=='player').map(r=>r.name))],
+    kinds:[...new Set(refs.filter(r=>r.type==='kind'||r.type==='kind_one').map(r=>r.kind_name))]
+  };
 }
 const semanticRaw = s => s.replace(/@(?=[a-z])/giu, '').replace(/#(?=[a-z])/giu, '').replace(/\bPLAYER\b/gu, 'player').trim();
 function state(input, line) {
@@ -204,7 +238,7 @@ export function parseCondition(input, contextOrObjects, line) {
     ? {raw:parsed.map(item => item.raw).join(' '+connectors[0]+' '),connector:connectors[0],clauses:parsed}
     : parsed[0];
 }
-function action(text, context, line) {
+function action(text, context, line, binding = null) {
   const match = /^\|then\s+\(([a-z]+)\s+(.+)$/iu.exec(text);
   if (!match) fail(line, 'Every action needs |then ( followed by an official action word.');
   const word = norm(match[1]), rest = match[2].trim();
@@ -215,31 +249,31 @@ function action(text, context, line) {
       const value_name = valueName(change[1],line);
       if (value_name === 'damage') fail(line, 'Damage cannot store text.');
       return {line_number:line,action:'change',value_name,
-        target:reference(change[2],context,line),to_text:textLiteral(change[3],line)};
+        target:reference(change[2],context,line,binding),to_text:textLiteral(change[3],line)};
     }
     change = /^([a-z][a-z0-9]*)\s+of\s+(.+?)\s+to\s+(\d+)$/iu.exec(rest);
     if (change) {
       return {line_number:line,action:'change',value_name:valueName(change[1],line),
-        target:reference(change[2],context,line),to_amount:number(change[3],line)};
+        target:reference(change[2],context,line,binding),to_amount:number(change[3],line)};
     }
     change = /^(.+?)\s+to\s+([a-z][a-z0-9 -]*)$/iu.exec(rest);
     if (!change) fail(line, 'Use (change @Thing to state, or (change title of @Thing to "text".');
-    return {line_number:line,action:'change',target:reference(change[1],context,line),to:state(change[2],line)};
+    return {line_number:line,action:'change',target:reference(change[1],context,line,binding),to:state(change[2],line)};
   }
   if (word === 'increase' || word === 'decrease') {
     const change = /^([a-z][a-z0-9]*)\s+of\s+(.+?)\s+by\s+(\d+)$/iu.exec(rest);
     if (!change) fail(line, 'Use ('+word+' score of PLAYER by 1.');
     return {line_number:line,action:word,value_name:valueName(change[1],line),
-      target:reference(change[2],context,line),amount:number(change[3],line,1)};
+      target:reference(change[2],context,line,binding),amount:number(change[3],line,1)};
   }
   if (word === 'damage') {
     const damage = /^(.+?)(?:\s+by\s+(\d+))?$/iu.exec(rest);
     if (!damage) fail(line, 'Use (damage @Thing by 3.');
-    return {line_number:line,action:'damage',target:reference(damage[1],context,line),
+    return {line_number:line,action:'damage',target:reference(damage[1],context,line,binding),
       amount:damage[2] ? number(damage[2],line,1) : 1};
   }
   if (word === 'cause') fail(line, '(cause is a valid BASIC# word, but caused-event expansion is not yet in this portable subset.');
-  const target = reference(rest,context,line);
+  const target = reference(rest,context,line,binding);
   // Mirror established plain-English object interaction lowering.
   if (word === 'take') return {line_number:line,action:'carry',target};
   const transitions = {open:'open',close:'closed',lock:'locked'};
@@ -249,10 +283,18 @@ function action(text, context, line) {
   return {line_number:line,action:word,target};
 }
 function event(input, context, line) {
-  const match = /^(.+?)\s+([a-z]+)\s+(.+)$/iu.exec(input);
-  if (!match || !EVENT.has(norm(match[2]))) fail(line, 'WHEN needs a recognized event, such as WHEN PLAYER attacks @guard.');
-  return {raw:semanticRaw(input),actor:reference(match[1],context,line),
-    action:EVENT.get(norm(match[2])),target:reference(match[3],context,line)};
+  const words=input.trim().split(/\s+/u);
+  let verbIndex=-1;
+  for(let i=1;i<words.length;i++) {
+    if(EVENT.has(norm(words[i]))) {verbIndex=i;break;}
+  }
+  if(verbIndex<0) fail(line,'WHEN needs a known event word, such as WHEN PLAYER attacks a #creature.');
+  const actorText=words.slice(0,verbIndex).join(' '),targetText=words.slice(verbIndex+1).join(' ');
+  if(!targetText) fail(line,'This portable event subset requires a target after the event word.');
+  return {raw:semanticRaw(input),
+    actor:reference(actorText,context,line,null,'event'),
+    action:EVENT.get(norm(words[verbIndex])),
+    target:reference(targetText,context,line,null,'event')};
 }
 function eachCondition(condition, visit) {
   if (condition.connector) condition.clauses.forEach(clause => eachCondition(clause,visit));
@@ -332,9 +374,11 @@ export function compile(source, {version = '0.0.84'} = {}) {
       previous = null; continue;
     }
     if (block.head === 'WHEN') {
-      const then = block.body.map(row => action(row.text,context,row.line));
+      const when=event(block.detail,context,block.line);
+      const binding=bindingForEvent(when);
+      const then=block.body.map(row=>action(row.text,context,row.line,binding));
       if (!then.length) fail(block.line,'WHEN needs at least one |then action.');
-      ir.events.push({line_number:block.line,when:event(block.detail,context,block.line),then});
+      ir.events.push({line_number:block.line,when,then});
       previous = null; continue;
     }
     if (block.head === 'IF') {

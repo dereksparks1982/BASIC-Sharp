@@ -48,3 +48,12 @@ plain-English object-interaction lowering. The console gained examples for
 these features. None of the additions were compiled, executed or validated;
 they do not turn the sandbox into a real BSBC VM. See
 `docs/self_hosting/BASIC_SHARP_PORTABLE_CONDITION_VALUES_v0_0_85.md`.
+
+## Event bindings (unaccepted source-only candidate)
+
+The console can now interpret an entered event such as PLAYER attacks @goblin,
+match a named or Kind-pattern WHEN rule, and bind "it" to the selected Thing.
+The nearest Kind match wins, with exact named rules preferred. Event buttons
+show concrete Things and do not duplicate shadowed entries. This remains an
+untested browser subset, not the accepted BSharp VM. Details:
+BASIC_SHARP_PORTABLE_EVENT_BINDINGS_v0_0_85.md.

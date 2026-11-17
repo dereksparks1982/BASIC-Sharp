@@ -2,6 +2,15 @@ import {compile} from '../compiler/portable/bsharp_compiler.mjs';
 import {BSharpSandbox} from '../compiler/portable/bsharp_sandbox.mjs';
 
 const examples = {
+  creatures: [
+    'KINDS', '[', '    #monster is a #creature', '].', '',
+    'DEFINE', '[', '    @goblin is a #monster', '    @wolf is a #creature', '].', '',
+    'START', '[', '    @goblin is alive', '    @wolf is alive', '].', '',
+    'WHEN PLAYER attacks a #creature', '[',
+    '    |then (damage it by 2', '    |then (change it to dead', '].', '',
+    'WHEN PLAYER speaks @goblin', '[',
+    '    |then (change it to alive', '].', ''
+  ].join('\n'),
   lamp: [
     'DEFINE', '[', '    @lamp is a #device', '    @switch is a #device', '].', '',
     'START', '[', '    @lamp is off', '    PLAYER has 0 points', '].', '',
@@ -124,7 +133,7 @@ function updateEvents() {
     button.type = 'button';
     button.addEventListener('click', () => {
       try {
-        sandbox.runEvent(entry.index);
+        sandbox.runEvent(entry.index,entry);
         appendTrace();
         updateWorld();
         setStatus('Event executed', 'ok');
@@ -135,6 +144,7 @@ function updateEvents() {
         sandbox = null;
         get('reset').disabled = true;
         get('view-ir').disabled = true;
+        get('run-event').disabled = true;
         updateEvents();
       }
     });
@@ -146,6 +156,7 @@ function execute() {
   sandbox = null; compiled = null; lastLogIndex = 0;
   get('reset').disabled = true;
   get('view-ir').disabled = true;
+  get('run-event').disabled = true;
   irBox.hidden = true;
   get('view-ir').textContent = 'Show BSharp IR';
   log.textContent = '';
@@ -154,6 +165,7 @@ function execute() {
     sandbox = new BSharpSandbox(compiled);
     get('reset').disabled = false;
     get('view-ir').disabled = false;
+    get('run-event').disabled = false;
     irBox.textContent = JSON.stringify(compiled, null, 2);
     appendTrace();
     updateEvents();
@@ -167,6 +179,29 @@ function execute() {
   }
 }
 get('execute').addEventListener('click', execute);
+function runTypedEvent() {
+  if (!sandbox) return;
+  const value=get('event-input').value.trim();
+  if (!value) {
+    setStatus('Enter an event', 'error');
+    return;
+  }
+  try {
+    sandbox.runEventText(value);
+    appendTrace();
+    updateWorld();
+    setStatus('Event executed', 'ok');
+  } catch (error) {
+    appendTrace();
+    log.textContent += '\nERROR: ' + (error.message || String(error));
+    setStatus('Event not executed', 'error');
+    // Keep the current world inspectable. Reset remains available if a rule failed.
+  }
+}
+get('run-event').addEventListener('click', runTypedEvent);
+get('event-input').addEventListener('keydown', event => {
+  if(event.key==='Enter') {event.preventDefault();runTypedEvent();}
+});
 get('reset').addEventListener('click', () => {
   if (!sandbox) return;
   try {

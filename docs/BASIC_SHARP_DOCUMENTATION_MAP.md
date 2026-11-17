@@ -140,3 +140,9 @@ v0.0.84 moves official-action family routing into BASIC#-authored BSBC while pre
 - `docs/self_hosting/BASIC_SHARP_PORTABLE_CONDITION_VALUES_v0_0_85.md` records the Ruby-independent condition and value interpretation slice, exclusions, and regression scope.
 
 Neither record is release acceptance evidence.
+
+## Portable event interpretation (v0.0.85 source-only candidate)
+
+- docs/self_hosting/BASIC_SHARP_PORTABLE_EVENT_BINDINGS_v0_0_85.md
+  documents typed event matching, Kind inheritance, event-bound "it",
+  rule precedence, regression definitions and exclusions.

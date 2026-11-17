@@ -74,3 +74,69 @@ test('direct object-interaction actions change canonical world state',()=>{
  assert.equal(sim.snapshot().find(x=>x.name==='key').relations['carried by'],'player');
  assert.deepEqual(sim.snapshot().find(x=>x.name==='door').states,['open']);
 });
+
+
+test('one WHEN Kind rule applies to inherited and direct member Things',()=>{
+ const source=[
+  'KINDS','[',' #monster is a #creature','].',
+  'DEFINE','[',' @goblin is a #monster',' @wolf is a #creature',' @door is a #door','].',
+  'WHEN PLAYER attacks a #creature','[',' |then (damage it by 2','].'
+ ].join('\n');
+ const sim=new BSharpSandbox(compile(source));
+ const opts=sim.eventOptions();
+ assert(opts.some(x=>x.target==='goblin'));
+ assert(opts.some(x=>x.target==='wolf'));
+ assert(!opts.some(x=>x.target==='door'));
+ sim.runEventText('PLAYER attacks @goblin');
+ sim.runEventText('PLAYER attacks @wolf');
+ const world=sim.snapshot();
+ assert.equal(world.find(x=>x.name==='goblin').values.damage,2);
+ assert.equal(world.find(x=>x.name==='wolf').values.damage,2);
+ assert.equal(world.find(x=>x.name==='door').values.damage,0);
+});
+test('typed event selects exact rule ahead of generic #Kind rule',()=>{
+ const source=[
+  'DEFINE','[',' @goblin is a #creature',' @wolf is a #creature','].',
+  'WHEN PLAYER attacks a #creature','[',' |then (damage it by 2','].',
+  'WHEN PLAYER attacks @goblin','[',' |then (damage @goblin by 5','].'
+ ].join('\n');
+ const sim=new BSharpSandbox(compile(source));
+ sim.runEventText('PLAYER attacks @goblin');
+ sim.runEventText('PLAYER attacks @wolf');
+ assert.equal(sim.snapshot().find(x=>x.name==='goblin').values.damage,5);
+ assert.equal(sim.snapshot().find(x=>x.name==='wolf').values.damage,2);
+});
+test('typed event fails closed for unmatched Kind and unknown Things',()=>{
+ const source=[
+  'DEFINE','[',' @goblin is a #creature',' @door is a #door','].',
+  'WHEN PLAYER attacks a #creature','[',' |then (damage it','].'
+ ].join('\n');
+ const sim=new BSharpSandbox(compile(source));
+ assert.throws(()=>sim.runEventText('PLAYER attacks @door'),SandboxError);
+ assert.throws(()=>sim.runEventText('PLAYER attacks @dragon'),SandboxError);
+ assert.equal(sim.snapshot().find(x=>x.name==='goblin').values.damage,0);
+});
+test('named-object it resolves to its established WHEN object',()=>{
+ const source=[
+  'DEFINE','[',' @goblin is a #creature','].',
+  'WHEN PLAYER speaks @goblin','[',' |then (damage it by 3','].'
+ ].join('\n');
+ const sim=new BSharpSandbox(compile(source));
+ sim.runEventText('PLAYER speaks @goblin');
+ assert.equal(sim.snapshot().find(x=>x.name==='goblin').values.damage,3);
+});
+
+
+test('event chooser shows one action when a specific WHEN overrides a Kind rule',()=>{
+ const src=[
+  'DEFINE','[',' @goblin is a #creature',' @wolf is a #creature','].',
+  'WHEN PLAYER attacks a #creature','[',' |then (damage it by 2','].',
+  'WHEN PLAYER attacks @goblin','[',' |then (damage @goblin by 5','].'
+ ].join('\n');
+ const sim=new BSharpSandbox(compile(src));
+ const selected=sim.eventOptions().filter(x=>x.actor==='player'&&x.target==='goblin');
+ assert.equal(selected.length,1);
+ assert.equal(selected[0].index,1);
+ sim.runEvent(selected[0].index,selected[0]);
+ assert.equal(sim.snapshot().find(x=>x.name==='goblin').values.damage,5);
+});

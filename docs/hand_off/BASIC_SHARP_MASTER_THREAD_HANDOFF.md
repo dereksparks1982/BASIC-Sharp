@@ -1,5 +1,24 @@
 # BASIC# Master Thread Handoff
 
+## v0.0.85 candidate: event interpretation and bound references (source only)
+
+The GitHub Pages BASIC# console now includes typed event input and dynamic
+event buttons. One WHEN PLAYER attacks a #creature rule can select different
+named creatures, including inherited Kinds, with "it" bound to the Thing
+selected by the event. Specific WHEN PLAYER attacks @goblin rules take
+precedence over general Kind patterns; the chooser removes duplicate
+shadowed entries. Unbound or ambiguous "it" references fail at source parse.
+
+Changes cover the portable compiler, browser sandbox, Live Console, regression
+definitions, documentation and protected inventory. The production Ruby
+compiler and BSharp VM remain untouched. This is not complete selector parity
+or self-hosting.
+
+UNACCEPTED CANDIDATE. No compilation, test execution or GitHub Actions.
+Next: remaining selectors and caused events, then independent BSBC execution.
+Full details: docs/self_hosting/BASIC_SHARP_PORTABLE_EVENT_BINDINGS_v0_0_85.md.
+
+
 ## v0.0.85 candidate: portable condition and value interpretation (source-only)
 
 The JavaScript source-to-BSIR compiler and browser sandbox now contain a

@@ -20,10 +20,23 @@ const supportedActions = new Set(['change', 'damage', 'increase', 'decrease', 'c
 const clone = value => JSON.parse(JSON.stringify(value));
 const display = ref => ref && ref.name ? ref.name : 'unknown';
 
-function checkReference(ref, known, where) {
-  if (!ref || ref.type !== 'object' || !known.has(ref.name)) {
-    invalid(where + ' uses an unsupported selector or unknown Thing. This console currently accepts @named Things and PLAYER.');
-  }
+const eventWords = new Map([
+  ['attacks','attack'],['attack','attack'],['takes','take'],['take','take'],
+  ['opens','open'],['open','open'],['closes','close'],['close','close'],
+  ['locks','lock'],['lock','lock'],['unlocks','unlock'],['unlock','unlock'],
+  ['examines','examine'],['examine','examine'],['speaks','speak'],['speak','speak'],
+  ['sounds','sound'],['sound','sound'],['drops','drop'],['drop','drop'],
+  ['carries','carry'],['carry','carry'],['damages','damage'],['damage','damage'],
+  ['changes','change'],['change','change'],['gives','give'],['give','give'],
+  ['eats','eat'],['eat','eat'],['wears','wear'],['wear','wear'],
+  ['removes','remove'],['remove','remove']
+]);
+const normalizeEventName = text => String(text).trim().replace(/@(?=[a-z])/giu,'').replace(/\s+/gu,' ').toLowerCase();
+function checkReference(ref, known, where, kindNames = null, binding = null) {
+  if (ref && ref.type === 'object' && known.has(ref.name)) return;
+  if (ref && ['kind','kind_one'].includes(ref.type) && kindNames?.has(ref.kind_name) && where.startsWith('WHEN')) return;
+  if (ref && ref.type === 'previous' && binding?.has(ref.kind_name)) return;
+  invalid(where + ' contains an unknown or unsupported selector. Use @Thing, PLAYER, or an established WHEN Kind reference.');
 }
 function checkCondition(value, known) {
   if (!value || typeof value !== 'object') invalid('A BASIC# IF has no valid condition.');
@@ -48,9 +61,9 @@ function checkCondition(value, known) {
     if (typeof value.value.name !== 'string') invalid('Invalid state name.');
   } else invalid('Unsupported IF comparison in this browser sandbox.');
 }
-function checkAction(action, known) {
+function checkAction(action, known, binding = null) {
   if (!action || !supportedActions.has(action.action)) invalid('Action (' + (action && action.action || 'unknown') + ' is not implemented in this browser sandbox.');
-  checkReference(action.target, known, 'Action');
+  checkReference(action.target, known, 'Action', null, binding);
   if (action.action === 'change') {
     if (action.value_name) {
       if (!/^[a-z][a-z0-9]*$/u.test(action.value_name)) invalid('A changed value needs a valid name.');
@@ -93,12 +106,16 @@ function validate(ir) {
       if (!fact.value || fact.value.kind !== 'state' || !fact.value.name) invalid('Unsupported START state.');
     } else invalid('Unsupported START relation.');
   }
+  const kindNames = new Set(['thing','place','actor','person','creature','door','container',
+    'supporter','key','weapon','food','clothing','device','guard','table']);
+  for (const kind of ir.kinds || []) kindNames.add(kind.name);
   for (const evt of ir.events) {
     if (!evt.when) invalid('Invalid WHEN event.');
-    checkReference(evt.when.actor, known, 'WHEN actor');
-    checkReference(evt.when.target, known, 'WHEN target');
+    checkReference(evt.when.actor, known, 'WHEN actor', kindNames);
+    checkReference(evt.when.target, known, 'WHEN target', kindNames);
     if (!evt.when.action || !Array.isArray(evt.then) || !evt.then.length) invalid('WHEN must have an event and at least one action.');
-    evt.then.forEach(action => checkAction(action, known));
+    const binding=new Set([evt.when.actor,evt.when.target].filter(ref => ref && ['kind','kind_one'].includes(ref.type)).map(ref=>ref.kind_name));
+    evt.then.forEach(action => checkAction(action, known, binding));
   }
   for (const rule of ir.if_rules) {
     checkCondition(rule.if, known);
@@ -115,6 +132,7 @@ export class BSharpSandbox {
   constructor(ir) {
     validate(ir);
     this.ir = clone(ir);
+    this.kindParents = new Map((ir.kinds || []).map(kind => [kind.name,kind.parent]));
     this.objects = new Map();
     this.trace = [];
     this.active = [];
@@ -152,10 +170,85 @@ export class BSharpSandbox {
       values: {...thing.values}
     }));
   }
+  kindDistance(actual, expected) {
+    let current=actual,depth=0;
+    const visited=new Set();
+    while(current && !visited.has(current)) {
+      if(current===expected) return depth;
+      visited.add(current);
+      current=this.kindParents.get(current) || null;
+      depth++;
+    }
+    return null;
+  }
+  eventReferenceDistance(reference, name) {
+    const thing=this.objects.get(name);
+    if(!thing) return null;
+    if(reference.type==='object') return reference.name===name ? 0 : null;
+    if(['kind','kind_one'].includes(reference.type)) return this.kindDistance(thing.kind,reference.kind_name);
+    return null;
+  }
+  eventCandidates(reference) {
+    if(reference.type==='object') return [reference.name];
+    return [...this.objects.values()].filter(thing => this.eventReferenceDistance(reference,thing.name)!==null).map(thing=>thing.name);
+  }
+  bestRule(invocation) {
+    let best=null,bestScore=Infinity,bestSelectors=Infinity;
+    for(let index=0;index<this.ir.events.length;index++) {
+      const rule=this.ir.events[index];
+      const score=this.matchRule(rule,invocation);
+      if(score===null) continue;
+      // Equal Kind distance must still prefer a named Thing over a #Kind matcher.
+      const selectors=[rule.when.actor,rule.when.target].filter(ref=>ref.type!=='object').length;
+      if(score<bestScore || (score===bestScore && selectors<bestSelectors)) {
+        best=index;bestScore=score;bestSelectors=selectors;
+      }
+    }
+    return best;
+  }
   eventOptions() {
-    return this.ir.events.map((rule, index) => ({
-      index, label: display(rule.when.actor) + ' ' + rule.when.action + ' ' + display(rule.when.target)
-    }));
+    const options=[],seen=new Set();
+    const shownVerb={attack:'attacks',take:'takes',open:'opens',close:'closes',
+      lock:'locks',unlock:'unlocks',speak:'speaks',examine:'examines',
+      sound:'sounds',carry:'carries',drop:'drops',damage:'damages',
+      change:'changes',give:'gives',eat:'eats',wear:'wears',remove:'removes'};
+    for(let index=0;index<this.ir.events.length;index++) {
+      const rule=this.ir.events[index];
+      for(const actor of this.eventCandidates(rule.when.actor)) {
+        for(const target of this.eventCandidates(rule.when.target)) {
+          const invocation={actor,target,action:rule.when.action};
+          const key=actor+'|'+rule.when.action+'|'+target;
+          if(seen.has(key)||this.bestRule(invocation)!==index) continue;
+          seen.add(key);
+          options.push({index,actor,target,
+            label:actor+' '+(shownVerb[rule.when.action]||rule.when.action)+' '+target});
+          if(options.length>=120) return options;
+        }
+      }
+    }
+    return options;
+  }
+  parseEventText(text) {
+    const words=normalizeEventName(text).split(' ');
+    for(let i=1;i<words.length-1;i++) {
+      const verb=eventWords.get(words[i]);
+      if(!verb) continue;
+      const actor=words.slice(0,i).join(' '),target=words.slice(i+1).join(' ');
+      if(this.objects.has(actor)&&this.objects.has(target)) return {actor,target,action:verb};
+    }
+    invalid('Event must look like PLAYER attacks @goblin, using Things defined in DEFINE.');
+  }
+  matchRule(rule, invocation) {
+    if(rule.when.action!==invocation.action) return null;
+    const actorDistance=this.eventReferenceDistance(rule.when.actor,invocation.actor);
+    const targetDistance=this.eventReferenceDistance(rule.when.target,invocation.target);
+    return actorDistance===null||targetDistance===null ? null : actorDistance+targetDistance;
+  }
+  runEventText(text) {
+    const invocation=this.parseEventText(text);
+    const best=this.bestRule(invocation);
+    if(best===null) invalid('No WHEN rule matched "'+text.trim()+'".');
+    return this.runEvent(best,invocation);
   }
   setState(thing, newState) {
     if (opposite[newState]) thing.states.delete(opposite[newState]);
@@ -185,8 +278,12 @@ export class BSharpSandbox {
     }
     invalid('The requested IF comparison is not implemented.');
   }
-  apply(action) {
-    const thing = this.objects.get(action.target.name), word = action.action;
+  apply(action, context = null) {
+    const name=action.target.type==='previous'
+      ? context?.bindings?.[action.target.kind_name]
+      : action.target.name;
+    const thing=this.objects.get(name),word=action.action;
+    if(!thing) invalid('No selected Thing for the '+action.target.kind_name+' reference.');
     if (word === 'change') {
       if (action.value_name) {
         const value = Object.hasOwn(action,'to_text') ? action.to_text : action.to_amount;
@@ -215,9 +312,9 @@ export class BSharpSandbox {
       return;
     }
     if (word === 'carry') {
-      thing.relations['carried by'] = 'player';
+      thing.relations['carried by'] = context?.actor || 'player';
       delete thing.relations.in; delete thing.relations.on;
-      this.trace.push('(carry ' + thing.name + ' → carried by player');
+      this.trace.push('(carry ' + thing.name + ' → carried by ' + (context?.actor || 'player'));
       return;
     }
     if (word === 'unlock') {
@@ -254,13 +351,28 @@ export class BSharpSandbox {
       }
     }
   }
-  runEvent(index) {
+  runEvent(index, invocation = null) {
     if (!Number.isInteger(index) || index < 0 || index >= this.ir.events.length) invalid('Choose a listed WHEN event.');
-    const rule = this.ir.events[index];
-    const name = display(rule.when.actor) + ' ' + rule.when.action + ' ' + display(rule.when.target);
-    this.trace.push('EVENT: ' + name);
-    for (const action of rule.then) this.apply(action);
+    const rule=this.ir.events[index];
+    const actor=invocation?.actor || (rule.when.actor.type==='object' ? rule.when.actor.name : null);
+    const target=invocation?.target || (rule.when.target.type==='object' ? rule.when.target.name : null);
+    if(!actor || !target) invalid('A kind-based WHEN needs a selected actor and target.');
+    const resolved={actor,target,action:rule.when.action};
+    if(this.matchRule(rule,resolved)===null) invalid('Selected Thing does not match this WHEN rule.');
+    const bindings={};
+    for(const [ref,name] of [[rule.when.actor,actor],[rule.when.target,target]]) {
+      if(['kind','kind_one'].includes(ref.type)) {
+        if(bindings[ref.kind_name] && bindings[ref.kind_name]!==name) {
+          invalid('The same #Kind was selected more than once in one event. Use named Things to disambiguate.');
+        }
+        bindings[ref.kind_name]=name;
+      }
+    }
+    this.trace.push('EVENT: '+actor+' '+rule.when.action+' '+target);
+    const context={actor,bindings};
+    for(const action of rule.then) this.apply(action,context);
     this.settle('event');
     return this.snapshot();
   }
+
 }

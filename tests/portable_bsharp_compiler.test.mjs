@@ -59,3 +59,47 @@ test('value names cannot change between text and whole-number types',()=>{
  const program='DEFINE\n[\n @gate is a #door\n].\nSTART\n[\n @gate has "Gate" title\n].\nIF @gate has 12 title\n[\n |then (damage PLAYER\n].';
  assert.throws(()=>compile(program),BSharpError);
 });
+
+
+test('WHEN accepts a #Kind and binds it to exactly one event-selected Thing',()=>{
+ const source=[
+  'KINDS','[',' #monster is a #creature','].',
+  'DEFINE','[',' @goblin is a #monster',' @wolf is a #creature','].',
+  'WHEN PLAYER attacks a #creature','[',' |then (damage it by 2','].'
+ ].join('\n');
+ const ir=compile(source);
+ assert.equal(ir.events[0].when.target.type,'kind_one');
+ assert.equal(ir.events[0].when.target.kind_name,'creature');
+ assert.equal(ir.events[0].then[0].target.type,'previous');
+ assert.equal(ir.events[0].then[0].target.kind_name,'creature');
+});
+test('WHEN names a single Thing and lets it refer back to that object',()=>{
+ const source=[
+  'DEFINE','[',' @goblin is a #creature','].',
+  'WHEN PLAYER speaks @goblin','[',' |then (damage it','].'
+ ].join('\n');
+ const ir=compile(source);
+ assert.equal(ir.events[0].then[0].target.type,'object');
+ assert.equal(ir.events[0].then[0].target.name,'goblin');
+});
+test('it outside an established event is rejected with no implicit global selection',()=>{
+ const source=[
+  'DEFINE','[',' @goblin is a #creature','].',
+  'IF @goblin is alive','[',' |then (damage it','].'
+ ].join('\n');
+ assert.throws(()=>compile(source),BSharpError);
+});
+test('it cannot guess between two specifically named event objects',()=>{
+ const source=[
+  'DEFINE','[',' @goblin is a #creature',' @wolf is a #creature','].',
+  'WHEN @goblin attacks @wolf','[',' |then (damage it','].'
+ ].join('\n');
+ assert.throws(()=>compile(source),BSharpError);
+});
+test('WHEN pattern rejects unsupported all-Kind selection without rewriting syntax',()=>{
+ const source=[
+  'DEFINE','[',' @goblin is a #creature','].',
+  'WHEN PLAYER attacks every #creature','[',' |then (damage @goblin','].'
+ ].join('\n');
+ assert.throws(()=>compile(source),BSharpError);
+});

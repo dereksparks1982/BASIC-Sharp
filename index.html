@@ -30,6 +30,7 @@
               <option value="door">Door and key</option>
               <option value="thresholds">Score and IF thresholds</option>
               <option value="titles">Text values and Kind references</option>
+              <option value="creatures">Creatures and event binding</option>
             </select>
           </label>
         </div>
@@ -46,6 +47,13 @@
         <div class="panel-heading">
           <div><span class="eyebrow">02 · INTERACT</span><h2 id="output-title">Execution</h2></div>
           <span id="status" class="status idle" role="status" aria-live="polite">Not started</span>
+        </div>
+        <div class="event-command">
+          <label for="event-input">Enter an event</label>
+          <div class="event-command-row">
+            <input id="event-input" type="text" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="PLAYER attacks @goblin" aria-label="Event to execute">
+            <button id="run-event" class="button" type="button" disabled>Run event</button>
+          </div>
         </div>
         <div class="events-head"><h3>Available events</h3><small>Click an event to trigger its WHEN rule</small></div>
         <div id="events" class="events"><span class="placeholder">Execute a program to see its events.</span></div>
