@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="BASIC# browser console: write and run a supported subset of BASIC# without Ruby.">
+  <title>BASIC# | Live Console</title>
+  <link rel="stylesheet" href="./site/console.css">
+  <script type="module" src="./site/console.js"></script>
+</head>
+<body>
+  <header class="top">
+    <div class="branding">
+      <span class="logo">B#</span>
+      <div><strong>BASIC#</strong><small>DK Softworks · Live Console</small></div>
+    </div>
+    <div class="header-right"><span class="badge">Browser sandbox · v0.0.85 development</span><a href="./README.md">Project README ↗</a></div>
+  </header>
+  <main class="shell">
+    <div class="notice" role="note"><strong>Live, limited execution.</strong> This runs a supported BASIC# subset in your browser. It is not the full BASIC# compiler, BSBC bytecode, or BSharp VM. Unsupported features stop with an explanation.</div>
+    <div class="layout">
+      <section class="panel editor-panel" aria-labelledby="editor-title">
+        <div class="panel-heading">
+          <div><span class="eyebrow">01 · WRITE</span><h1 id="editor-title">Your BASIC# program</h1></div>
+          <label class="select-label" for="examples">Example
+            <select id="examples">
+              <option value="lamp">Lamp and switch</option>
+              <option value="guard">Guard and damage</option>
+              <option value="door">Door and key</option>
+            </select>
+          </label>
+        </div>
+        <label class="sr-only" for="source">BASIC# source code</label>
+        <textarea id="source" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-describedby="editor-help"></textarea>
+        <div class="actionbar">
+          <button id="execute" class="button primary" type="button">▶ Execute</button>
+          <button id="reset" class="button" type="button" disabled>↻ Reset world</button>
+          <button id="restore" class="button subtle" type="button">Restore example</button>
+          <span class="hint" id="editor-help">Ctrl+Enter to execute</span>
+        </div>
+      </section>
+      <section class="panel results-panel" aria-labelledby="output-title">
+        <div class="panel-heading">
+          <div><span class="eyebrow">02 · INTERACT</span><h2 id="output-title">Execution</h2></div>
+          <span id="status" class="status idle" role="status" aria-live="polite">Not started</span>
+        </div>
+        <div class="events-head"><h3>Available events</h3><small>Click an event to trigger its WHEN rule</small></div>
+        <div id="events" class="events"><span class="placeholder">Execute a program to see its events.</span></div>
+        <div class="events-head"><h3>Event log</h3><button id="clear-log" class="text-button" type="button">Clear log</button></div>
+        <pre id="log" class="log" tabindex="0" aria-live="polite">No program has been executed yet.</pre>
+      </section>
+    </div>
+    <section class="panel world-panel" aria-labelledby="world-title">
+      <div class="panel-heading">
+        <div><span class="eyebrow">03 · INSPECT</span><h2 id="world-title">World state</h2></div>
+        <button id="view-ir" type="button" class="button subtle" disabled>Show BSharp IR</button>
+      </div>
+      <div id="world" class="world" aria-live="polite"><p class="placeholder">Your Things and their values appear here after Execute.</p></div>
+      <pre id="ir" class="ir" hidden></pre>
+    </section>
+    <footer>Runs locally in your browser · No account · No server execution · No Ruby · No JavaScript eval</footer>
+  </main>
+</body>
+</html>

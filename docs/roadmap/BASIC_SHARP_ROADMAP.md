@@ -1,8 +1,8 @@
 # BASIC# Roadmap
 
-## Ruby-removal development branch (unaccepted)
+## v0.0.85 Live Console development candidate (source only, unaccepted)
 
-New source-only, Ruby-independent BASIC# to BSharp IR compiler work is staged on development/ruby-free-compiler. No compilation, testing, or acceptance has occurred. See docs/self_hosting/BASIC_SHARP_RUBY_REMOVAL_DEVELOPMENT.md.
+GitHub Pages-ready root `index.html` now supplies a BASIC# code editor, Execute, reactive WHEN event controls, world-state inspector and event trace using `compiler/portable/bsharp_sandbox.mjs`. The browser runs a bounded interpreter of the experimental JS compiler's BSIR output. **This is not the accepted BSBC VM, not a complete Ruby compiler replacement, and has not been tested.** No downloads, compilation, GitHub Actions, or release acceptance occurred. Details: `docs/self_hosting/BASIC_SHARP_LIVE_CONSOLE_v0_0_85.md`.
 
 
 ## Current accepted base
