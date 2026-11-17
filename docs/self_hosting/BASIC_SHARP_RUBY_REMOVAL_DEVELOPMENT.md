@@ -26,3 +26,12 @@ self-hosted compiler orchestration, and a validated production cutover.
 Do not claim self-hosting or Ruby retirement. The accepted local v0.1.84
 release remain protected; GitHub main contains subsequent unaccepted source-only development. The previous local
 v0.1.85 installer failure and rollback are not accepted-release evidence.
+
+## Subsequent source-only progress
+
+The v0.0.85 candidate on `main` now includes number-threshold condition
+interpretation, quoted text values and value changes, unique `the #Kind`
+references, and canonical lowering of take/open/close/lock. The browser
+sandbox has matching bounded semantics. The Ruby production compiler is
+unchanged, and complete parity/BSBC execution remains outstanding. See
+`docs/self_hosting/BASIC_SHARP_PORTABLE_CONDITION_VALUES_v0_0_85.md`.

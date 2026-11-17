@@ -22,6 +22,31 @@ const examples = {
     'IF @guard is dead', '[',
     '    |then (increase victories of PLAYER by 1', '].', ''
   ].join('\n'),
+  thresholds: [
+    'DEFINE', '[', '    @boss is a #creature', '    @bridge is a #thing', '    @coin is a #thing', '].', '',
+    'START', '[', '    PLAYER has 0 score', '    PLAYER has 0 victories',
+    '    @boss is alive', '    @bridge is whole', '].', '',
+    'WHEN PLAYER takes @coin', '[', '    |then (increase score of PLAYER by 50', '].', '',
+    'WHEN PLAYER attacks @boss', '[', '    |then (change @boss to dead', '].', '',
+    'WHEN PLAYER speaks @boss', '[', '    |then (change @boss to alive', '].', '',
+    'IF PLAYER has at least 100 score and @boss is dead', '[',
+    '    |then (increase victories of PLAYER by 1', '].', '',
+    'IF PLAYER has less than 25 score or @bridge is broken', '[',
+    '    |then (damage PLAYER', '].', ''
+  ].join('\n'),
+  titles: [
+    'KINDS', '[', '    #gate is a #door', '].', '',
+    'DEFINE', '[', '    @north gate is a #gate', '    @brass bell is a #device', '].', '',
+    'START', '[', '    @north gate has "North Gate" title', '    @north gate is closed', '].', '',
+    'WHEN PLAYER sounds @brass bell', '[',
+    '    |then (change title of @north gate to "Welcome, traveller!"',
+    '    |then (open the #gate', '].', '',
+    'WHEN PLAYER closes @north gate', '[',
+    '    |then (change title of @north gate to "North Gate"',
+    '    |then (close @north gate', '].', '',
+    'IF @north gate has "Welcome, traveller!" title', '[',
+    '    |then (damage PLAYER', '].', ''
+  ].join('\n'),
   door: [
     'DEFINE', '[', '    @door is a #door', '    @key is a #key', '].', '',
     'START', '[', '    @door is locked', '].', '',

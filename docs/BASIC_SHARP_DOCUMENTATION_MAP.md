@@ -133,3 +133,10 @@ v0.0.63 hardens UTF-8 source reading, keeps Elderedd as the active identity dire
 - `spec/self_hosting/BASIC_SHARP_NATIVE_ACTION_ROUTING_INTEGRATION_v1.json`
 
 v0.0.84 moves official-action family routing into BASIC#-authored BSBC while preserving the v0.0.81-v0.0.83 native compiler boundaries upstream.
+
+## v0.0.85 portable compiler development
+
+- `docs/self_hosting/BASIC_SHARP_LIVE_CONSOLE_v0_0_85.md` describes the browser console, its limited sandbox, and deployment assumptions.
+- `docs/self_hosting/BASIC_SHARP_PORTABLE_CONDITION_VALUES_v0_0_85.md` records the Ruby-independent condition and value interpretation slice, exclusions, and regression scope.
+
+Neither record is release acceptance evidence.

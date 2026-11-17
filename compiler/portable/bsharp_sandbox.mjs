@@ -35,7 +35,15 @@ function checkCondition(value, known) {
   }
   checkReference(value.subject, known, 'IF');
   if (value.relation === 'has') {
-    if (!Number.isSafeInteger(value.amount) || value.amount < 0 || !/^[a-z][a-z0-9]*$/u.test(value.value_name || '')) invalid('Unsupported IF number comparison.');
+    if (!/^[a-z][a-z0-9]*$/u.test(value.value_name || '')) invalid('An IF comparison needs a valid value name.');
+    if (Object.hasOwn(value,'text_value')) {
+      if (typeof value.text_value !== 'string' || value.comparison) invalid('Text comparison must use equality.');
+    } else {
+      if (!Number.isSafeInteger(value.amount) || value.amount < 0 || value.amount > 2147483647) invalid('Invalid whole-number comparison.');
+      if (!['equals','at_least','more_than','at_most','less_than'].includes(value.comparison || 'equals')) {
+        invalid('Unsupported number comparison.');
+      }
+    }
   } else if ((value.relation === 'is' || value.relation === 'isnt') && value.value && value.value.kind === 'state') {
     if (typeof value.value.name !== 'string') invalid('Invalid state name.');
   } else invalid('Unsupported IF comparison in this browser sandbox.');
@@ -44,7 +52,16 @@ function checkAction(action, known) {
   if (!action || !supportedActions.has(action.action)) invalid('Action (' + (action && action.action || 'unknown') + ' is not implemented in this browser sandbox.');
   checkReference(action.target, known, 'Action');
   if (action.action === 'change') {
-    if (action.value_name || !action.to || action.to.kind !== 'state' || !action.to.name) invalid('This sandbox supports (change Thing to state, not value changes yet.');
+    if (action.value_name) {
+      if (!/^[a-z][a-z0-9]*$/u.test(action.value_name)) invalid('A changed value needs a valid name.');
+      if (Object.hasOwn(action,'to_text')) {
+        if (typeof action.to_text !== 'string' || action.value_name === 'damage') invalid('Damage cannot store text.');
+      } else if (!Number.isSafeInteger(action.to_amount) || action.to_amount < 0 || action.to_amount > 2147483647) {
+        invalid('Changed whole-number values must be within supported range.');
+      }
+    } else if (!action.to || action.to.kind !== 'state' || !action.to.name) {
+      invalid('Use (change @Thing to state or (change title of @Thing to "text".');
+    }
   }
   if (['increase', 'decrease', 'damage'].includes(action.action)) {
     if (!Number.isSafeInteger(action.amount) || action.amount < 1 || action.amount > 2147483647) invalid('Action amounts must be positive whole numbers.');
@@ -66,7 +83,12 @@ function validate(ir) {
   for (const fact of ir.facts) {
     checkReference(fact.subject, known, 'START');
     if (fact.relation === 'has') {
-      if (!Number.isSafeInteger(fact.amount) || fact.amount < 0 || !fact.value_name) invalid('Unsupported START value.');
+      if (!/^[a-z][a-z0-9]*$/u.test(fact.value_name || '')) invalid('Unsupported START value name.');
+      if (Object.hasOwn(fact,'text_value')) {
+        if (typeof fact.text_value !== 'string' || fact.value_name === 'damage') invalid('Invalid START text value.');
+      } else if (!Number.isSafeInteger(fact.amount) || fact.amount < 0 || fact.amount > 2147483647) {
+        invalid('Invalid START whole-number value.');
+      }
     } else if (fact.relation === 'is') {
       if (!fact.value || fact.value.kind !== 'state' || !fact.value.name) invalid('Unsupported START state.');
     } else invalid('Unsupported START relation.');
@@ -111,8 +133,9 @@ export class BSharpSandbox {
     for (const fact of this.ir.facts) {
       const thing = this.objects.get(fact.subject.name);
       if (fact.relation === 'has') {
-        thing.values[fact.value_name] = fact.amount;
-        this.trace.push('START: ' + thing.name + ' has ' + fact.amount + ' ' + fact.value_name);
+        const value = Object.hasOwn(fact,'text_value') ? fact.text_value : fact.amount;
+        thing.values[fact.value_name] = value;
+        this.trace.push('START: ' + thing.name + ' has ' + JSON.stringify(value) + ' ' + fact.value_name);
       } else {
         this.setState(thing, fact.value.name);
         this.trace.push('START: ' + thing.name + ' is ' + fact.value.name);
@@ -147,12 +170,30 @@ export class BSharpSandbox {
     const thing = this.objects.get(rule.subject.name);
     if (rule.relation === 'is') return thing.states.has(rule.value.name);
     if (rule.relation === 'isnt') return !thing.states.has(rule.value.name);
-    if (rule.relation === 'has') return thing.values[rule.value_name] === rule.amount;
+    if (rule.relation === 'has') {
+      const current = thing.values[rule.value_name];
+      if (Object.hasOwn(rule,'text_value')) return current === rule.text_value;
+      if (!Number.isSafeInteger(current)) return false;
+      switch (rule.comparison || 'equals') {
+        case 'equals': return current === rule.amount;
+        case 'at_least': return current >= rule.amount;
+        case 'more_than': return current > rule.amount;
+        case 'at_most': return current <= rule.amount;
+        case 'less_than': return current < rule.amount;
+        default: invalid('Unknown IF number comparison.');
+      }
+    }
     invalid('The requested IF comparison is not implemented.');
   }
   apply(action) {
     const thing = this.objects.get(action.target.name), word = action.action;
     if (word === 'change') {
+      if (action.value_name) {
+        const value = Object.hasOwn(action,'to_text') ? action.to_text : action.to_amount;
+        thing.values[action.value_name] = value;
+        this.trace.push('(change ' + action.value_name + ' of ' + thing.name + ' to ' + JSON.stringify(value) + ' → updated');
+        return;
+      }
       this.setState(thing, action.to.name);
       this.trace.push('(change ' + thing.name + ' to ' + action.to.name + ' → ' + thing.name + ' is now ' + action.to.name);
       return;

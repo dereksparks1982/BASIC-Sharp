@@ -39,3 +39,12 @@ Failed previous v0.1.85 local installer attempts remain acknowledged history.
 Next: strengthen the JavaScript compiler's semantic parity and add a
 Ruby-independent BSBC emitter and VM, then bring the full language to the
 interactive console. Creator syntax and profiles 1 through 7 are protected.
+
+## Condition/value interpretation extension (same unaccepted candidate)
+
+The browser sandbox gained numeric threshold IF comparisons, exact quoted text
+value storage/comparisons/changes, one-object definite Kind references, and
+plain-English object-interaction lowering. The console gained examples for
+these features. None of the additions were compiled, executed or validated;
+they do not turn the sandbox into a real BSBC VM. See
+`docs/self_hosting/BASIC_SHARP_PORTABLE_CONDITION_VALUES_v0_0_85.md`.

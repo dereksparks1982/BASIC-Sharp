@@ -51,3 +51,26 @@ test('unsupported actions never silently simulate', () => {
   ].join('\n');
   assert.throws(() => new BSharpSandbox(compile(source)), SandboxError);
 });
+
+test('numeric comparisons and compound IFs execute in the browser sandbox',()=>{
+ const src='DEFINE\n[\n @boss is a #creature\n].\nSTART\n[\n PLAYER has 90 score\n PLAYER has 0 victories\n @boss is dead\n].\nWHEN PLAYER attacks @boss\n[\n |then (increase score of PLAYER by 10\n].\nIF PLAYER has at least 100 score and @boss is dead\n[\n |then (increase victories of PLAYER by 1\n].';
+ const sim=new BSharpSandbox(compile(src));
+ assert.equal(sim.snapshot().find(x=>x.name==='player').values.victories,0);
+ sim.runEvent(0);
+ assert.equal(sim.snapshot().find(x=>x.name==='player').values.victories,1);
+});
+test('text values compare with exact characters and update on WHEN',()=>{
+ const src='DEFINE\n[\n @door is a #door\n].\nSTART\n[\n @door has "Closed" title\n].\nWHEN PLAYER opens @door\n[\n |then (change title of @door to "Open"\n].\nIF @door has "Open" title\n[\n |then (change @door to open\n].';
+ const sim=new BSharpSandbox(compile(src));
+ sim.runEvent(0);
+ const door=sim.snapshot().find(x=>x.name==='door');
+ assert.equal(door.values.title,'Open');
+ assert.deepEqual(door.states,['open']);
+});
+test('direct object-interaction actions change canonical world state',()=>{
+ const src='DEFINE\n[\n @door is a #door\n @key is a #key\n].\nSTART\n[\n @door is closed\n].\nWHEN PLAYER takes @key\n[\n |then (take @key\n |then (open @door\n].';
+ const sim=new BSharpSandbox(compile(src));
+ sim.runEvent(0);
+ assert.equal(sim.snapshot().find(x=>x.name==='key').relations['carried by'],'player');
+ assert.deepEqual(sim.snapshot().find(x=>x.name==='door').states,['open']);
+});

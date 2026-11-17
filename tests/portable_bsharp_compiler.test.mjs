@@ -29,3 +29,33 @@ test('OTHERWISE maps to meaning Profile 7',()=>{
 test('unsupported controls do not pretend to compile',()=>{
  assert.throws(()=>compile('CONTROLS for PLAYER\n[\n W moves PLAYER north\n].'),BSharpError);
 });
+
+test('IF threshold comparisons preserve all four accepted comparison words',()=>{
+ const program='DEFINE\n[\n @boss is a #creature\n].\nSTART\n[\n PLAYER has 2 health\n].\nIF PLAYER has at least 2 health\n[\n |then (damage @boss\n].\nIF PLAYER has more than 1 health\n[\n |then (damage @boss\n].\nIF PLAYER has at most 2 health\n[\n |then (damage @boss\n].\nIF PLAYER has less than 3 health\n[\n |then (damage @boss\n].';
+ const ir=compile(program);
+ assert.deepEqual(ir.if_rules.map(rule=>rule.if.comparison),['at_least','more_than','at_most','less_than']);
+ assert.equal(ir.meaning_profile,'bsharp.meaning.v5');
+});
+test('Text values keep exact casing, spaces, and punctuation',()=>{
+ const program='KINDS\n[\n #gate is a #door\n].\nDEFINE\n[\n @north gate is a #gate\n].\nSTART\n[\n @north gate has "North  Gate!" title\n].\nIF @north gate has "North  Gate!" title\n[\n |then (change title of the #gate to "OPEN — Welcome!"\n].';
+ const ir=compile(program);
+ assert.equal(ir.facts[0].text_value,'North  Gate!');
+ assert.equal(ir.if_rules[0].if.text_value,'North  Gate!');
+ assert.equal(ir.if_rules[0].then[0].to_text,'OPEN — Welcome!');
+ assert.equal(ir.if_rules[0].then[0].target.name,'north gate');
+ assert.equal(ir.meaning_profile,'bsharp.meaning.v2');
+});
+test('plain-English actions lower to established canonical BSharp IR actions',()=>{
+ const program='DEFINE\n[\n @door is a #door\n @key is a #key\n].\nWHEN PLAYER takes @key\n[\n |then (take @key\n |then (open @door\n |then (close @door\n |then (lock @door\n].';
+ const actions=compile(program).events[0].then;
+ assert.deepEqual(actions.map(a=>a.action),['carry','change','change','change']);
+ assert.deepEqual(actions.slice(1).map(a=>a.to.name),['open','closed','locked']);
+});
+test('ambiguous definite Kind references fail instead of selecting arbitrarily',()=>{
+ const program='DEFINE\n[\n @east gate is a #door\n @west gate is a #door\n].\nWHEN PLAYER attacks @east gate\n[\n |then (open the #door\n].';
+ assert.throws(()=>compile(program),BSharpError);
+});
+test('value names cannot change between text and whole-number types',()=>{
+ const program='DEFINE\n[\n @gate is a #door\n].\nSTART\n[\n @gate has "Gate" title\n].\nIF @gate has 12 title\n[\n |then (damage PLAYER\n].';
+ assert.throws(()=>compile(program),BSharpError);
+});

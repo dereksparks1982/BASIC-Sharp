@@ -1,5 +1,32 @@
 # BASIC# Master Thread Handoff
 
+## v0.0.85 candidate: portable condition and value interpretation (source-only)
+
+The JavaScript source-to-BSIR compiler and browser sandbox now contain a
+bounded implementation of more existing BASIC# meaning: the four whole-number
+comparisons (**at least**, **more than**, **at most**, **less than**), quoted
+text values with exact case and spacing, text and number assignment actions,
+unique **the #Kind** resolution using Kind ancestry, and native-lowered
+**take/open/close/lock** actions. Built-in Kind names and official action words
+have been aligned more closely with the accepted CoreDictionary. The compiler
+now selects meaning profiles 1, 2, 5, 6, and 7 according to actual features
+instead of treating every numeric START fact as a Profile 5 feature.
+
+The GitHub Pages console includes two examples demonstrating threshold rules
+and text/Kind references, plus unexecuted regression definitions. Changes are
+confined to the experimental portable compiler, browser sandbox, console,
+and development docs. The existing Ruby production compiler, BSBC loader,
+virtual machine, creator syntax, and accepted version/tag remain unchanged.
+
+**This is not an accepted v0.0.85 release and not a complete Ruby replacement.**
+No compilation, runtime testing, GitHub Actions or local installation was
+performed. Missing work includes other selector forms, caused events,
+movement/controls/hover/context, full parity, real independent BSBC emission,
+and native VM execution in the browser. The next engineering boundary is
+continuing semantic parity then implementing the independent BSBC path.
+See docs/self_hosting/BASIC_SHARP_PORTABLE_CONDITION_VALUES_v0_0_85.md.
+
+
 ## v0.0.85 source-only README and root cleanup (not accepted)
 
 At the owner's direction, the public `README.md` has been rewritten to describe BASIC# and link to the live console at `https://dereksparks1982.github.io/BASIC-Sharp/`. The complete historical `## Technical History` and its additional notes were moved into `docs/history/BASIC_SHARP_TECHNICAL_HISTORY.md`; the associated README history gate and tests now check the documented archive rather than requiring the entire technical history in the root README.
