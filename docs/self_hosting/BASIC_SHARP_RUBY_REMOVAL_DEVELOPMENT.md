@@ -51,3 +51,12 @@ BSBC Profile 1 binary layout from resolved BSharp IR. It does not run or
 replace the Ruby production path. Web Crypto SHA-256 supports the required
 semantic fingerprint. Profiles 2-7 are intentionally blocked.
 See docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_EMITTER_v0_0_85.md.
+
+## Portable BSBC structural loader (source-only)
+
+A separate JavaScript Profile 1 BSBC loader now checks the container,
+indexes, instructions, selectors and block boundaries. The Live Console
+inspector round-trips freshly emitted bytes through that loader. It is
+not yet a VM and is not a verified replacement for the Ruby production
+compiler/loader. See
+docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_LOADER_v0_0_85.md.

@@ -158,3 +158,9 @@ Neither record is release acceptance evidence.
 - docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_EMITTER_v0_0_85.md
   describes the authentic Profile 1 binary format implementation, the
   browser inspector, contract checks, limitations and next steps.
+
+## Ruby-independent BSBC structural loader (Profile 1 candidate)
+
+- docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_LOADER_v0_0_85.md
+  records the loader's strict structural checks, browser integration,
+  expected fingerprint verification, exclusions and future tests.

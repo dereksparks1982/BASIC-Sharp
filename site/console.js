@@ -1,6 +1,7 @@
 import {compile} from '../compiler/portable/bsharp_compiler.mjs';
 import {BSharpSandbox} from '../compiler/portable/bsharp_sandbox.mjs';
 import {encodeProfile1, hexView} from '../compiler/portable/bsharp_bsbc_encoder.mjs';
+import {loadProfile1} from '../compiler/portable/bsharp_bsbc_loader.mjs';
 
 const examples = {
   alarm: [
@@ -278,19 +279,30 @@ get('view-bsbc').addEventListener('click', async () => {
   try {
     const artifact = await encodeProfile1(snapshot);
     if(compiled!==snapshot) return;
-    const table = artifact.sections.map(section =>
+    // Inspect only bytes that survive an independent, complete Profile 1 parse.
+    // A matching fingerprint does not itself make unknown binary code executable.
+    const loaded = loadProfile1(artifact.bytes,{expectedFingerprint:artifact.fingerprint});
+    if(compiled!==snapshot) return;
+    const table = loaded.sections.map(section =>
       section.id.padEnd(4)+'  offset '+String(section.offset).padStart(6)+
       '  bytes '+String(section.length).padStart(6)+
       '  records '+section.count
     ).join('\n');
-    bsbcBox.textContent = 'BSharp Bytecode · '+artifact.profile+
-      '\nFingerprint: '+artifact.fingerprint+
-      '\nTotal bytes: '+artifact.bytes.length+
-      '\nStrings: '+artifact.stringCount+' · Code blocks: '+artifact.codeBlocks+
-      '\n\nSECTIONS\n'+table+'\n\nBINARY HEX (first 4096 bytes)\n'+hexView(artifact.bytes);
+    bsbcBox.textContent = 'BSharp Bytecode · '+loaded.profile+
+      '\nValidation: '+loaded.validation+
+      '\nFingerprint matched source: yes'+
+      '\nFingerprint: '+loaded.fingerprint+
+      '\nTotal bytes: '+loaded.byteLength+
+      '\nStrings: '+loaded.strings.length+
+      ' · Kinds: '+loaded.kinds.length+
+      ' · Things: '+loaded.things.length+
+      ' · Code blocks: '+loaded.blocks.length+
+      ' · Instructions: '+loaded.instructionCount+
+      '\n\nSECTIONS\n'+table+
+      '\n\nBINARY HEX (first 4096 bytes)\n'+hexView(artifact.bytes);
   } catch(error) {
     if(compiled!==snapshot) return;
-    bsbcBox.textContent = 'BSBC not available for this program:\n'+error.message+
-      '\n\nThis independent emitter currently supports Profile 1 only.';
+    bsbcBox.textContent = 'BSBC emission or validation stopped:\n'+error.message+
+      '\n\nOnly the independent Profile 1 emitter/loader are implemented. No bytes were executed.';
   }
 });

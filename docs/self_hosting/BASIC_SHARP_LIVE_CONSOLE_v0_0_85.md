@@ -74,3 +74,12 @@ and a bounded binary hex preview, and explains when a program uses a higher
 profile. The binary is NOT executed or downloaded and the emitter has
 not been compiled or tested. See
 docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_EMITTER_v0_0_85.md.
+
+## Strict Profile 1 BSBC inspection (unaccepted candidate)
+
+The Inspect BSBC control now reads emitted BSBC bytes through
+compiler/portable/bsharp_bsbc_loader.mjs and refuses malformed sections
+or instructions before displaying their contents. It validates against
+the expected source fingerprint. This is inspection only: BASIC# console
+execution still uses its limited BSIR interpreter, not the BSBC VM.
+No tests were run. See BASIC_SHARP_PORTABLE_BSBC_LOADER_v0_0_85.md.

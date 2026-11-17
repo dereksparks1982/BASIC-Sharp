@@ -1,5 +1,34 @@
 # BASIC# Roadmap
 
+## v0.0.85 source-only candidate: independent BSBC Profile 1 loader
+
+The Ruby-independent browser toolchain now contains a Profile 1 binary
+loader source. It accepts Uint8Array BSBC bytes and checks the established
+32-byte header and 8-section directory, offsets/overlaps/alignment/zero
+padding, UTF-8 string table uniqueness and first-use ordering, metadata
+counts, Kind/Thing indexes, START instructions, WHEN and IF records,
+CODE block boundaries, official selector contexts, opcodes, operand counts,
+whole-number limits, and canonical ordering. It rejects Profiles 2-7
+instead of attempting partial parsing.
+
+The loader can compare the BSBC META fingerprint with a trusted expected
+program fingerprint. The binary fingerprint field alone does not
+authenticate bytes. The Live Console BSBC inspector now validates newly
+emitted Profile 1 bytes through the independent loader before displaying
+the header, sections and hex preview. **It never executes BSBC.**
+
+New unexecuted malformed-binary regression definitions cover header,
+sections, UTF-8, indexes, opcodes, selectors and block boundaries.
+Technical details:
+docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_LOADER_v0_0_85.md.
+
+This remains unaccepted and untested source-only v0.0.85 development.
+No compilation, automated tests, GitHub Actions, downloads, local
+installers or new branches. The accepted v0.0.84 compiler and VM remain
+unchanged. Next: a bytecode-driven browser VM and extended profile
+contracts, followed by owner-authorized parity validation.
+
+
 ## v0.0.85 candidate: independent BSBC Profile 1 binary emission
 
 The GitHub-only portable toolchain now includes a source implementation
