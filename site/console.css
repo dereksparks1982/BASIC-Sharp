@@ -46,3 +46,7 @@ footer{text-align:center;padding:30px 8px 6px;color:#8a838e;font-size:.77rem}
 .event-command-row input{min-width:0;flex:1;background:#101116;border:1px solid #55414c;color:#f2edef;border-radius:8px;padding:10px 12px;font:13px/1.4 "DejaVu Sans Mono",Consolas,monospace}
 .event-command-row input:focus{outline:2px solid #9d4357;outline-offset:0}
 @media(max-width:540px){.event-command-row{flex-direction:column}}
+
+/* Inspection tools keep the code/editor space usable on narrow screens. */
+.inspection-buttons{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+@media(max-width:540px){.inspection-buttons{width:100%}}

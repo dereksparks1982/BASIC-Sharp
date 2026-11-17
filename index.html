@@ -65,10 +65,11 @@
     <section class="panel world-panel" aria-labelledby="world-title">
       <div class="panel-heading">
         <div><span class="eyebrow">03 · INSPECT</span><h2 id="world-title">World state</h2></div>
-        <button id="view-ir" type="button" class="button subtle" disabled>Show BSharp IR</button>
+        <div class="inspection-buttons"><button id="view-ir" type="button" class="button subtle" disabled>Show BSharp IR</button><button id="view-bsbc" type="button" class="button subtle" disabled>Inspect BSBC</button></div>
       </div>
       <div id="world" class="world" aria-live="polite"><p class="placeholder">Your Things and their values appear here after Execute.</p></div>
       <pre id="ir" class="ir" hidden></pre>
+      <pre id="bsbc" class="ir" hidden aria-label="BSharp Bytecode binary inspection"></pre>
     </section>
     <footer>Runs locally in your browser · No account · No server execution · No Ruby · No JavaScript eval</footer>
   </main>

@@ -65,3 +65,12 @@ bounded 64-follow-up limit in the browser sandbox. A new alarm/guards example
 demonstrates one event causing another. See
 BASIC_SHARP_PORTABLE_CAUSED_EVENTS_v0_0_85.md. The console is still an
 experimental BSIR interpreter, not the BSBC VM, and no tests were run.
+
+## BSBC inspection source-only extension
+
+The browser console now offers an Inspect BSBC button that calls the
+independent Profile 1 emitter, displays the section directory, fingerprint
+and a bounded binary hex preview, and explains when a program uses a higher
+profile. The binary is NOT executed or downloaded and the emitter has
+not been compiled or tested. See
+docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_EMITTER_v0_0_85.md.

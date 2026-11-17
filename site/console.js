@@ -1,5 +1,6 @@
 import {compile} from '../compiler/portable/bsharp_compiler.mjs';
 import {BSharpSandbox} from '../compiler/portable/bsharp_sandbox.mjs';
+import {encodeProfile1, hexView} from '../compiler/portable/bsharp_bsbc_encoder.mjs';
 
 const examples = {
   alarm: [
@@ -83,7 +84,7 @@ const examples = {
 };
 const get = id => document.getElementById(id);
 const editor = get('source'), select = get('examples'), log = get('log'), events = get('events');
-const status = get('status'), world = get('world'), irBox = get('ir');
+const status = get('status'), world = get('world'), irBox = get('ir'), bsbcBox = get('bsbc');
 let sandbox = null, compiled = null, lastLogIndex = 0;
 const storageKey = 'bsharp.console.source.v1';
 
@@ -158,6 +159,7 @@ function updateEvents() {
         sandbox = null;
         get('reset').disabled = true;
         get('view-ir').disabled = true;
+        get('view-bsbc').disabled = true;
         get('run-event').disabled = true;
         updateEvents();
       }
@@ -170,8 +172,12 @@ function execute() {
   sandbox = null; compiled = null; lastLogIndex = 0;
   get('reset').disabled = true;
   get('view-ir').disabled = true;
+  get('view-bsbc').disabled = true;
   get('run-event').disabled = true;
   irBox.hidden = true;
+  bsbcBox.hidden = true;
+  bsbcBox.textContent = '';
+  get('view-bsbc').textContent = 'Inspect BSBC';
   get('view-ir').textContent = 'Show BSharp IR';
   log.textContent = '';
   try {
@@ -179,6 +185,7 @@ function execute() {
     sandbox = new BSharpSandbox(compiled);
     get('reset').disabled = false;
     get('view-ir').disabled = false;
+    get('view-bsbc').disabled = false;
     get('run-event').disabled = false;
     irBox.textContent = JSON.stringify(compiled, null, 2);
     appendTrace();
@@ -256,3 +263,34 @@ get('view-ir').addEventListener('click', () => {
   get('view-ir').textContent = irBox.hidden ? 'Show BSharp IR' : 'Hide BSharp IR';
 });
 try {editor.value = localStorage.getItem(storageKey) || examples.lamp;} catch (_) {editor.value = examples.lamp;}
+
+get('view-bsbc').addEventListener('click', async () => {
+  if(!compiled) return;
+  if(!bsbcBox.hidden) {
+    bsbcBox.hidden = true;
+    get('view-bsbc').textContent = 'Inspect BSBC';
+    return;
+  }
+  bsbcBox.hidden = false;
+  get('view-bsbc').textContent = 'Hide BSBC';
+  bsbcBox.textContent = 'Preparing Profile 1 BSBC bytes for inspection...';
+  const snapshot = compiled;
+  try {
+    const artifact = await encodeProfile1(snapshot);
+    if(compiled!==snapshot) return;
+    const table = artifact.sections.map(section =>
+      section.id.padEnd(4)+'  offset '+String(section.offset).padStart(6)+
+      '  bytes '+String(section.length).padStart(6)+
+      '  records '+section.count
+    ).join('\n');
+    bsbcBox.textContent = 'BSharp Bytecode · '+artifact.profile+
+      '\nFingerprint: '+artifact.fingerprint+
+      '\nTotal bytes: '+artifact.bytes.length+
+      '\nStrings: '+artifact.stringCount+' · Code blocks: '+artifact.codeBlocks+
+      '\n\nSECTIONS\n'+table+'\n\nBINARY HEX (first 4096 bytes)\n'+hexView(artifact.bytes);
+  } catch(error) {
+    if(compiled!==snapshot) return;
+    bsbcBox.textContent = 'BSBC not available for this program:\n'+error.message+
+      '\n\nThis independent emitter currently supports Profile 1 only.';
+  }
+});

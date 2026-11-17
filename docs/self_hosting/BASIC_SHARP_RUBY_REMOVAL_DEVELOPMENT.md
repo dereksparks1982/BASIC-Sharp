@@ -43,3 +43,11 @@ existing every #Kind action selector and queued (cause event interpretation.
 This remains a bounded JavaScript BSIR interpreter, not binary BSBC execution,
 and cannot replace the accepted production Ruby compiler. See
 docs/self_hosting/BASIC_SHARP_PORTABLE_CAUSED_EVENTS_v0_0_85.md.
+
+## Portable BSBC binary emitter (Profile 1 only, unaccepted)
+
+A new Ruby-independent JavaScript encoder constructs the specified real
+BSBC Profile 1 binary layout from resolved BSharp IR. It does not run or
+replace the Ruby production path. Web Crypto SHA-256 supports the required
+semantic fingerprint. Profiles 2-7 are intentionally blocked.
+See docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_EMITTER_v0_0_85.md.

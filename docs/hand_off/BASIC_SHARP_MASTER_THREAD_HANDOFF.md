@@ -1,5 +1,37 @@
 # BASIC# Master Thread Handoff
 
+## v0.0.85 candidate: independent BSBC Profile 1 binary emission
+
+The GitHub-only portable toolchain now includes a source implementation
+of the official BSharp Bytecode Profile 1 emitter. It serializes the
+established eight-section BSBC binary container, including the 32-byte
+header, 16-byte section-directory entries, deterministic UTF-8 strings,
+Kind ancestry, Thing definitions, START instructions, event patterns,
+IF conditions, CODE block records and the semantic SHA-256 fingerprint.
+This is a true binary encoder source path without invoking Ruby, not an
+alternate JSON bytecode format. Profiles 2 through 7 fail closed until
+their separate contracts are implemented.
+
+The Live Console gained an Inspect BSBC panel for the generated header,
+section directory and limited hex preview. It does not download any
+files, execute the generated binary or replace the accepted BSBC VM.
+Unexecuted regression definitions document the intended contract checks.
+
+Changes: compiler/portable/bsharp_bsbc_encoder.mjs, browser console
+and styling, tests/portable_bsharp_bsbc_encoder.test.mjs, documentation,
+and the protected documentation hash inventory.
+
+This is **unaccepted, uncompiled and untested** source-only v0.0.85 work
+on GitHub main. The accepted v0.0.84 release, production Ruby compiler,
+Ruby BSBC emitter/loader and BSharp VM are unchanged; no Actions or
+local installer/downloads were used. See
+docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_EMITTER_v0_0_85.md.
+
+Next: independent BSBC structural loader and eventually bytecode-driven
+browser execution, then extend profiles 2-7 and establish full parity
+when the owner authorizes validation.
+
+
 ## v0.0.85 source-only candidate: mass action selection and caused-event chains
 
 The portable compiler now recognizes the established action-only

@@ -1045,8 +1045,8 @@
     },
     {
       "path": "docs/BASIC_SHARP_DOCUMENTATION_MAP.md",
-      "bytes": 7253,
-      "sha256": "ee2338d1041aba40ce757f0f5121d6160cdd2688dcae5e168c11b4871cbd173a"
+      "bytes": 7513,
+      "sha256": "1a169ca14fcd07ba4aad7019264e6a9e2a0f5fa254b2c01d9e93801275772689"
     },
     {
       "path": "docs/audit/BASIC_SHARP_v0_0_60_REJECTED_BUILD_AUDIT.md",
@@ -1285,8 +1285,8 @@
     },
     {
       "path": "docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md",
-      "bytes": 12183,
-      "sha256": "462f413686d60dcbba1fcef8eb6a67076cda79e4178614c693a06910d02e20e7"
+      "bytes": 13835,
+      "sha256": "03813d3a9a53bdf65afbaad8d57f2c9ad92042bd99efe55713ffb09cebe77a5c"
     },
     {
       "path": "docs/language/BASIC_SHARP_OBJECT_INTERACTION_ACTIONS_v0_0_73.md",
@@ -1430,8 +1430,8 @@
     },
     {
       "path": "docs/roadmap/BASIC_SHARP_ROADMAP.md",
-      "bytes": 13164,
-      "sha256": "2e1ad2238fe04295be01fc2b8aa99ed7baa6dfaf1444a6789f7c46e48830b718"
+      "bytes": 14816,
+      "sha256": "fc8a25816a7c2023b68db0b8f233160f0e7cad7b6a0dad7c8cc4d632abd1af5c"
     },
     {
       "path": "docs/runtime_contract_v0_0_48.md",

@@ -152,3 +152,9 @@ Neither record is release acceptance evidence.
 - docs/self_hosting/BASIC_SHARP_PORTABLE_CAUSED_EVENTS_v0_0_85.md
   describes action-set selection, queued follow-up events, cycle bounds,
   browser examples and source-only regression checks.
+
+## Ruby-independent BSBC emitter (Profile 1, unaccepted)
+
+- docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_EMITTER_v0_0_85.md
+  describes the authentic Profile 1 binary format implementation, the
+  browser inspector, contract checks, limitations and next steps.
