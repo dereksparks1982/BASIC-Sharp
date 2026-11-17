@@ -103,3 +103,52 @@ test('WHEN pattern rejects unsupported all-Kind selection without rewriting synt
  ].join('\n');
  assert.throws(()=>compile(source),BSharpError);
 });
+
+
+test('every #Kind is a deterministic BSIR action selector, not an IF or event selector',()=>{
+  const source=[
+    'KINDS','[',' #soldier is a #guard','].',
+    'DEFINE','[',' @alice is a #soldier',' @bob is a #guard','].',
+    'WHEN PLAYER attacks @alice','[',' |then (change every #guard to angry','].'
+  ].join('\n');
+  const result=compile(source);
+  const target=result.events[0].then[0].target;
+  assert.equal(target.type,'kind_set');
+  assert.equal(target.kind_name,'guard');
+  assert.deepEqual(target.candidates,['alice','bob']);
+});
+test('cause emits nested BSIR event data with selected it binding',()=>{
+  const source=[
+    'DEFINE','[',' @goblin is a #creature','].',
+    'WHEN PLAYER attacks a #creature','[',
+    ' |then (cause it attacks PLAYER','].'
+  ].join('\n');
+  const action=compile(source).events[0].then[0];
+  assert.equal(action.action,'cause');
+  assert.equal(action.event.actor.type,'previous');
+  assert.equal(action.event.actor.kind_name,'creature');
+  assert.equal(action.event.target.name,'player');
+  assert.equal(action.event.action,'attack');
+});
+test('cause cannot invent an unbound a #Kind target or use every #Kind as an event actor',()=>{
+  const s=[
+    'DEFINE','[',' @goblin is a #creature',' @door is a #door','].',
+    'WHEN PLAYER attacks @door','[',
+    ' |then (cause every #creature attacks @goblin','].'
+  ].join('\n');
+  assert.throws(()=>compile(s),BSharpError);
+});
+test('every #Kind is not allowed as a START or IF subject',()=>{
+  const s=[
+    'DEFINE','[',' @goblin is a #creature','].',
+    'IF every #creature is alive','[',' |then (damage @goblin','].'
+  ].join('\n');
+  assert.throws(()=>compile(s),BSharpError);
+});
+test('a chain cannot bypass referenced Thing name validation',()=>{
+  const s=[
+    'DEFINE','[',' @goblin is a #creature','].',
+    'WHEN PLAYER attacks @goblin','[',' |then (cause @unknown attacks PLAYER','].'
+  ].join('\n');
+  assert.throws(()=>compile(s),BSharpError);
+});

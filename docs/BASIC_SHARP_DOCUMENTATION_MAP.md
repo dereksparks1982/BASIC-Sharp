@@ -146,3 +146,9 @@ Neither record is release acceptance evidence.
 - docs/self_hosting/BASIC_SHARP_PORTABLE_EVENT_BINDINGS_v0_0_85.md
   documents typed event matching, Kind inheritance, event-bound "it",
   rule precedence, regression definitions and exclusions.
+
+## Portable caused events and every #Kind (v0.0.85 candidate)
+
+- docs/self_hosting/BASIC_SHARP_PORTABLE_CAUSED_EVENTS_v0_0_85.md
+  describes action-set selection, queued follow-up events, cycle bounds,
+  browser examples and source-only regression checks.

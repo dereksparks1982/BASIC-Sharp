@@ -8,6 +8,34 @@
 
 > A scripting language made for non-programmers, by non-programmers.
 
+
+## Current owner-approved development workflow (November 17, 2026)
+
+The final decision authority has explicitly changed the day-to-day development
+workflow for the current BASIC# source-only phase. These instructions supersede
+the older installer/package/branch defaults below until the owner changes them:
+
+- Work directly in GitHub repository dereksparks1982/BASIC-Sharp on main.
+  Do not create temporary, development, patch or release branches.
+- Do not prepare downloads, local installer or SSH files for owner execution.
+  Source changes are made and committed through the connected GitHub tools.
+- No compilation, test execution, GitHub Actions, or owner-side terminal
+  commands during this phase unless the owner explicitly authorizes them.
+  Unexecuted regression definitions may accompany source changes; no test
+  PASS or release acceptance may be claimed on their strength.
+- Keep the public README an approachable BASIC# introduction. Keep the
+  complete technical history and extended build documentation inside docs.
+  Obsolete handshake records were removed from the active root tree at the
+  owner's direction; their previous bytes remain recoverable through Git.
+- Do not repeat the Live Console URL in each routine build report.
+- Keep the accepted release and tag distinct from unaccepted candidate commits.
+  Until actual validation is authorized and complete, source-only commits
+  are development work, not accepted numbered releases.
+
+An owner instruction to stop ends all work immediately. A subsequent explicit
+"build" instruction authorizes the next bounded source-only roadmap slice on
+main without first requesting local compilation or installer permission.
+
 ## 1. Sole authority and scope
 
 This file is the **one active Company Bible for BASIC#**. It replaces the former collection of standalone Company Bible files, addendums, carryover notes, reinforcement notes, project-bible pointers, and Godot metadata.

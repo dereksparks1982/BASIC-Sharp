@@ -140,3 +140,68 @@ test('event chooser shows one action when a specific WHEN overrides a Kind rule'
  sim.runEvent(selected[0].index,selected[0]);
  assert.equal(sim.snapshot().find(x=>x.name==='goblin').values.damage,5);
 });
+
+
+test('every #Kind updates direct and inherited Things in deterministic order',()=>{
+  const source=[
+    'KINDS','[',' #soldier is a #guard','].',
+    'DEFINE','[',' @first is a #soldier',' @second is a #guard',' @gate is a #door','].',
+    'START','[',' @first is calm',' @second is calm','].',
+    'WHEN PLAYER attacks @gate','[',' |then (change every #guard to angry','].'
+  ].join('\n');
+  const sim=new BSharpSandbox(compile(source));
+  sim.runEventText('PLAYER attacks @gate');
+  const world=sim.snapshot();
+  assert.deepEqual(world.find(x=>x.name==='first').states,['angry']);
+  assert.deepEqual(world.find(x=>x.name==='second').states,['angry']);
+  assert(!world.find(x=>x.name==='gate').states.includes('angry'));
+});
+test('caused events execute FIFO after the initiating event actions',()=>{
+  const source=[
+    'DEFINE','[',' @bell is a #device',' @guard is a #guard',' @gate is a #door','].',
+    'START','[',' @gate is locked','].',
+    'WHEN PLAYER sounds @bell','[',
+    ' |then (cause @guard opens @gate',
+    ' |then (change @gate to closed','].',
+    'WHEN @guard opens @gate','[',
+    ' |then (open @gate',' |then (cause @guard attacks PLAYER','].',
+    'WHEN @guard attacks PLAYER','[',' |then (damage PLAYER by 3','].'
+  ].join('\n');
+  const sim=new BSharpSandbox(compile(source));
+  sim.runEventText('PLAYER sounds @bell');
+  const world=sim.snapshot();
+  assert.deepEqual(world.find(x=>x.name==='gate').states,['open']);
+  assert.equal(world.find(x=>x.name==='player').values.damage,3);
+  assert.deepEqual(sim.trace.filter(x=>x.startsWith('EVENT:')).map(x=>x.split('EVENT: ')[1]),[
+    'player sound bell','guard open gate','guard attack player'
+  ]);
+});
+test('a cause event uses the selected it from a #Kind WHEN rule',()=>{
+  const source=[
+    'DEFINE','[',' @goblin is a #creature',' @wolf is a #creature','].',
+    'WHEN PLAYER attacks a #creature','[',' |then (cause it attacks PLAYER','].',
+    'WHEN a #creature attacks PLAYER','[',' |then (damage PLAYER by 2','].'
+  ].join('\n');
+  const sim=new BSharpSandbox(compile(source));
+  sim.runEventText('PLAYER attacks @wolf');
+  assert.equal(sim.snapshot().find(x=>x.name==='player').values.damage,2);
+  assert(sim.trace.some(x=>x.includes('wolf attack player')));
+});
+test('unmatched caused events have no side effects and are logged',()=>{
+  const source=[
+    'DEFINE','[',' @bell is a #device',' @gate is a #door','].',
+    'WHEN PLAYER sounds @bell','[',' |then (cause PLAYER opens @gate','].'
+  ].join('\n');
+  const sim=new BSharpSandbox(compile(source));
+  sim.runEventText('PLAYER sounds @bell');
+  assert(sim.trace.some(x=>x.startsWith('FOLLOW-UP: no WHEN rule')));
+  assert.equal(sim.snapshot().find(x=>x.name==='gate').states.length,0);
+});
+test('cyclic cause chains halt at a deterministic upper bound',()=>{
+  const source=[
+    'DEFINE','[',' @bell is a #device','].',
+    'WHEN PLAYER sounds @bell','[',' |then (cause PLAYER sounds @bell','].'
+  ].join('\n');
+  const sim=new BSharpSandbox(compile(source));
+  assert.throws(()=>sim.runEventText('PLAYER sounds @bell'), /limit \(64\) reached/);
+});

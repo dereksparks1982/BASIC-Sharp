@@ -2,6 +2,20 @@ import {compile} from '../compiler/portable/bsharp_compiler.mjs';
 import {BSharpSandbox} from '../compiler/portable/bsharp_sandbox.mjs';
 
 const examples = {
+  alarm: [
+    'DEFINE', '[', '    @bell is a #device', '    @gate is a #door',
+    '    @guard one is a #guard', '    @guard two is a #guard', '].', '',
+    'START', '[', '    @gate is locked',
+    '    @guard one is calm', '    @guard two is calm', '].', '',
+    'WHEN PLAYER sounds @bell', '[',
+    '    |then (change every #guard to angry',
+    '    |then (cause @guard one opens @gate', '].', '',
+    'WHEN @guard one opens @gate', '[',
+    '    |then (open @gate',
+    '    |then (cause @guard two attacks PLAYER', '].', '',
+    'WHEN @guard two attacks PLAYER', '[',
+    '    |then (damage PLAYER by 3', '].', ''
+  ].join('\n'),
   creatures: [
     'KINDS', '[', '    #monster is a #creature', '].', '',
     'DEFINE', '[', '    @goblin is a #monster', '    @wolf is a #creature', '].', '',

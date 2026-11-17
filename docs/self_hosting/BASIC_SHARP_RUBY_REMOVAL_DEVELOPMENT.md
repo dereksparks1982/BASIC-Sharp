@@ -35,3 +35,11 @@ references, and canonical lowering of take/open/close/lock. The browser
 sandbox has matching bounded semantics. The Ruby production compiler is
 unchanged, and complete parity/BSBC execution remains outstanding. See
 `docs/self_hosting/BASIC_SHARP_PORTABLE_CONDITION_VALUES_v0_0_85.md`.
+
+## More source-only progress toward Ruby removal
+
+The portable compiler/browser sandbox development lane now includes the
+existing every #Kind action selector and queued (cause event interpretation.
+This remains a bounded JavaScript BSIR interpreter, not binary BSBC execution,
+and cannot replace the accepted production Ruby compiler. See
+docs/self_hosting/BASIC_SHARP_PORTABLE_CAUSED_EVENTS_v0_0_85.md.

@@ -1,5 +1,25 @@
 # BASIC# Master Thread Handoff
 
+## v0.0.85 source-only candidate: mass action selection and caused-event chains
+
+The portable compiler now recognizes the established action-only
+"every #Kind" selector and emits a kind_set reference with deterministic
+defined candidates. The browser sandbox applies supported actions to each
+matching Thing and includes inherited Kind relationships. The compiler also
+emits structured (cause events with named or event-bound "it" references.
+
+The sandbox stages caused events FIFO after the initiating actions and IF
+settlement, dispatches matching WHEN rules, and stops runaway event cycles at
+64 follow-ups. No-match events are logged without inventing side effects.
+The Live Console includes an alarm/guards example and additional unexecuted
+regression definitions for set selection, caused events, and cyclic chains.
+
+This is not real independent BSBC generation, full Ruby removal, or release
+acceptance. The production compiler remains unchanged and no compilation,
+test execution, GitHub Actions or local installer was performed. Details:
+docs/self_hosting/BASIC_SHARP_PORTABLE_CAUSED_EVENTS_v0_0_85.md.
+
+
 ## v0.0.85 candidate: event interpretation and bound references (source only)
 
 The GitHub Pages BASIC# console now includes typed event input and dynamic

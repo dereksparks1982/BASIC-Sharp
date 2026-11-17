@@ -162,8 +162,16 @@ function reference(input, context, line, binding = null, usage = null) {
     return {type:'object',text:'the '+kind,name:matching[0].name,
       object_kind:matching[0].kind,matched_by_kind:true};
   }
-  if (/^(?:every|that)\s+#/iu.test(shown)) {
-    fail(line, 'The selector "' + shown + '" is not supported in this portable compiler. Use @Thing or "it" after WHEN.');
+  const all = /^every\s+#(.+)$/iu.exec(shown);
+  if (all) {
+    if (usage !== 'action') fail(line, 'every #Kind selects action targets only, not WHEN or IF subjects.');
+    const kind = norm(all[1]);
+    if (!context.kinds.has(kind)) fail(line, 'Unknown Kind #' + kind + '.');
+    return {type:'kind_set',text:'every '+kind,selector:'every',
+      kind_name:kind,candidates:kindCandidates(kind,context).map(item=>item.name)};
+  }
+  if (/^that\s+#/iu.test(shown)) {
+    fail(line, 'The retired "that #Kind" selector is not supported. Use it after one Kind is selected.');
   }
   fail(line, 'Unknown reference "' + shown + '". Use @Thing, PLAYER, or a unique the #Kind.');
 }
@@ -249,31 +257,39 @@ function action(text, context, line, binding = null) {
       const value_name = valueName(change[1],line);
       if (value_name === 'damage') fail(line, 'Damage cannot store text.');
       return {line_number:line,action:'change',value_name,
-        target:reference(change[2],context,line,binding),to_text:textLiteral(change[3],line)};
+        target:reference(change[2],context,line,binding,'action'),to_text:textLiteral(change[3],line)};
     }
     change = /^([a-z][a-z0-9]*)\s+of\s+(.+?)\s+to\s+(\d+)$/iu.exec(rest);
     if (change) {
       return {line_number:line,action:'change',value_name:valueName(change[1],line),
-        target:reference(change[2],context,line,binding),to_amount:number(change[3],line)};
+        target:reference(change[2],context,line,binding,'action'),to_amount:number(change[3],line)};
     }
     change = /^(.+?)\s+to\s+([a-z][a-z0-9 -]*)$/iu.exec(rest);
     if (!change) fail(line, 'Use (change @Thing to state, or (change title of @Thing to "text".');
-    return {line_number:line,action:'change',target:reference(change[1],context,line,binding),to:state(change[2],line)};
+    return {line_number:line,action:'change',target:reference(change[1],context,line,binding,'action'),to:state(change[2],line)};
   }
   if (word === 'increase' || word === 'decrease') {
     const change = /^([a-z][a-z0-9]*)\s+of\s+(.+?)\s+by\s+(\d+)$/iu.exec(rest);
     if (!change) fail(line, 'Use ('+word+' score of PLAYER by 1.');
     return {line_number:line,action:word,value_name:valueName(change[1],line),
-      target:reference(change[2],context,line,binding),amount:number(change[3],line,1)};
+      target:reference(change[2],context,line,binding,'action'),amount:number(change[3],line,1)};
   }
   if (word === 'damage') {
     const damage = /^(.+?)(?:\s+by\s+(\d+))?$/iu.exec(rest);
     if (!damage) fail(line, 'Use (damage @Thing by 3.');
-    return {line_number:line,action:'damage',target:reference(damage[1],context,line,binding),
+    return {line_number:line,action:'damage',target:reference(damage[1],context,line,binding,'action'),
       amount:damage[2] ? number(damage[2],line,1) : 1};
   }
-  if (word === 'cause') fail(line, '(cause is a valid BASIC# word, but caused-event expansion is not yet in this portable subset.');
-  const target = reference(rest,context,line,binding);
+  if (word === 'cause') {
+    const caused=event(rest,context,line,binding,'cause');
+    for(const ref of [caused.actor,caused.target]) {
+      if(!['object','previous'].includes(ref.type)) {
+        fail(line, '(cause requires named or event-bound Things, never an unbound #Kind.');
+      }
+    }
+    return {line_number:line,action:'cause',event:caused};
+  }
+  const target = reference(rest,context,line,binding,'action');
   // Mirror established plain-English object interaction lowering.
   if (word === 'take') return {line_number:line,action:'carry',target};
   const transitions = {open:'open',close:'closed',lock:'locked'};
@@ -282,7 +298,7 @@ function action(text, context, line, binding = null) {
   }
   return {line_number:line,action:word,target};
 }
-function event(input, context, line) {
+function event(input, context, line, binding = null, usage = 'event') {
   const words=input.trim().split(/\s+/u);
   let verbIndex=-1;
   for(let i=1;i<words.length;i++) {
@@ -292,9 +308,9 @@ function event(input, context, line) {
   const actorText=words.slice(0,verbIndex).join(' '),targetText=words.slice(verbIndex+1).join(' ');
   if(!targetText) fail(line,'This portable event subset requires a target after the event word.');
   return {raw:semanticRaw(input),
-    actor:reference(actorText,context,line,null,'event'),
+    actor:reference(actorText,context,line,binding,usage),
     action:EVENT.get(norm(words[verbIndex])),
-    target:reference(targetText,context,line,null,'event')};
+    target:reference(targetText,context,line,binding,usage)};
 }
 function eachCondition(condition, visit) {
   if (condition.connector) condition.clauses.forEach(clause => eachCondition(clause,visit));

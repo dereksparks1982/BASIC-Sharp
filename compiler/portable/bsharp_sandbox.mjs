@@ -16,7 +16,7 @@ const opposite = Object.freeze({
   hidden: 'visible', carried: 'dropped', dropped: 'carried',
   broken: 'whole', whole: 'broken', on: 'off', off: 'on'
 });
-const supportedActions = new Set(['change', 'damage', 'increase', 'decrease', 'carry', 'unlock']);
+const supportedActions = new Set(['change', 'damage', 'increase', 'decrease', 'carry', 'unlock', 'cause']);
 const clone = value => JSON.parse(JSON.stringify(value));
 const display = ref => ref && ref.name ? ref.name : 'unknown';
 
@@ -35,6 +35,7 @@ const normalizeEventName = text => String(text).trim().replace(/@(?=[a-z])/giu,'
 function checkReference(ref, known, where, kindNames = null, binding = null) {
   if (ref && ref.type === 'object' && known.has(ref.name)) return;
   if (ref && ['kind','kind_one'].includes(ref.type) && kindNames?.has(ref.kind_name) && where.startsWith('WHEN')) return;
+  if (ref && ref.type === 'kind_set' && kindNames?.has(ref.kind_name) && where === 'Action') return;
   if (ref && ref.type === 'previous' && binding?.has(ref.kind_name)) return;
   invalid(where + ' contains an unknown or unsupported selector. Use @Thing, PLAYER, or an established WHEN Kind reference.');
 }
@@ -61,9 +62,17 @@ function checkCondition(value, known) {
     if (typeof value.value.name !== 'string') invalid('Invalid state name.');
   } else invalid('Unsupported IF comparison in this browser sandbox.');
 }
-function checkAction(action, known, binding = null) {
+function checkAction(action, known, kindNames = null, binding = null) {
   if (!action || !supportedActions.has(action.action)) invalid('Action (' + (action && action.action || 'unknown') + ' is not implemented in this browser sandbox.');
-  checkReference(action.target, known, 'Action', null, binding);
+  if (action.action === 'cause') {
+    if (!action.event || typeof action.event.action !== 'string') invalid('(cause requires a valid event.');
+    for (const ref of [action.event.actor,action.event.target]) {
+      if (!ref || !['object','previous'].includes(ref.type)) invalid('Caused events must name one Thing or use an established event binding.');
+      checkReference(ref,known,'Caused event',kindNames,binding);
+    }
+    return;
+  }
+  checkReference(action.target, known, 'Action', kindNames, binding);
   if (action.action === 'change') {
     if (action.value_name) {
       if (!/^[a-z][a-z0-9]*$/u.test(action.value_name)) invalid('A changed value needs a valid name.');
@@ -115,15 +124,15 @@ function validate(ir) {
     checkReference(evt.when.target, known, 'WHEN target', kindNames);
     if (!evt.when.action || !Array.isArray(evt.then) || !evt.then.length) invalid('WHEN must have an event and at least one action.');
     const binding=new Set([evt.when.actor,evt.when.target].filter(ref => ref && ['kind','kind_one'].includes(ref.type)).map(ref=>ref.kind_name));
-    evt.then.forEach(action => checkAction(action, known, binding));
+    evt.then.forEach(action => checkAction(action, known, kindNames, binding));
   }
   for (const rule of ir.if_rules) {
     checkCondition(rule.if, known);
     if (!Array.isArray(rule.then) || !rule.then.length) invalid('IF needs at least one action.');
-    rule.then.forEach(action => checkAction(action, known));
+    rule.then.forEach(action => checkAction(action, known, kindNames));
     if (Object.hasOwn(rule, 'otherwise')) {
       if (!Array.isArray(rule.otherwise) || !rule.otherwise.length) invalid('OTHERWISE needs at least one action.');
-      rule.otherwise.forEach(action => checkAction(action, known));
+      rule.otherwise.forEach(action => checkAction(action, known, kindNames));
     }
   }
 }
@@ -147,6 +156,8 @@ export class BSharpSandbox {
       });
     }
     this.trace = [];
+    this.followUps = [];
+    this.draining = false;
     this.active = this.ir.if_rules.map(rule => Object.hasOwn(rule, 'otherwise') ? null : false);
     for (const fact of this.ir.facts) {
       const thing = this.objects.get(fact.subject.name);
@@ -161,6 +172,7 @@ export class BSharpSandbox {
     }
     this.trace.push('START finished.');
     this.settle('START');
+    this.drainFollowUps();
     return this.snapshot();
   }
   snapshot() {
@@ -278,7 +290,34 @@ export class BSharpSandbox {
     }
     invalid('The requested IF comparison is not implemented.');
   }
+  resolveActionName(ref, context = null) {
+    const name = ref.type === 'previous' ? context?.bindings?.[ref.kind_name] : ref.name;
+    if (!name || !this.objects.has(name)) invalid('An event reference did not select a defined Thing.');
+    return name;
+  }
+  stageFollowUp(action, context) {
+    const actor=this.resolveActionName(action.event.actor,context);
+    const target=this.resolveActionName(action.event.target,context);
+    const entry={actor,target,action:action.event.action};
+    this.followUps.push(entry);
+    this.trace.push('(cause '+actor+' '+entry.action+' '+target+' → queued follow-up event');
+  }
   apply(action, context = null) {
+    if(action.action === 'cause') {
+      this.stageFollowUp(action,context);
+      return;
+    }
+    if(action.target.type === 'kind_set') {
+      const targets=[...this.objects.values()].filter(obj=>this.kindDistance(obj.kind,action.target.kind_name)!==null);
+      if(targets.length===0) {
+        this.trace.push('every #'+action.target.kind_name+' found no Things');
+      }
+      if(targets.length>512) invalid('An every #Kind action selected too many Things for this browser sandbox.');
+      for(const obj of targets) {
+        this.apply({...action,target:{type:'object',name:obj.name}},context);
+      }
+      return;
+    }
     const name=action.target.type==='previous'
       ? context?.bindings?.[action.target.kind_name]
       : action.target.name;
@@ -351,7 +390,7 @@ export class BSharpSandbox {
       }
     }
   }
-  runEvent(index, invocation = null) {
+  processEvent(index, invocation = null) {
     if (!Number.isInteger(index) || index < 0 || index >= this.ir.events.length) invalid('Choose a listed WHEN event.');
     const rule=this.ir.events[index];
     const actor=invocation?.actor || (rule.when.actor.type==='object' ? rule.when.actor.name : null);
@@ -372,6 +411,31 @@ export class BSharpSandbox {
     const context={actor,bindings};
     for(const action of rule.then) this.apply(action,context);
     this.settle('event');
+  }
+  drainFollowUps() {
+    if(this.draining) return;
+    this.draining=true;
+    let count=0;
+    try {
+      while(this.followUps.length) {
+        if(++count>64) invalid('Follow-up event limit (64) reached. Execution stopped to prevent an endless event chain.');
+        const next=this.followUps.shift();
+        const rule=this.bestRule(next);
+        if(rule===null) {
+          this.trace.push('FOLLOW-UP: no WHEN rule for '+next.actor+' '+next.action+' '+next.target);
+          continue;
+        }
+        this.processEvent(rule,next);
+      }
+    } finally {
+      this.draining=false;
+      this.followUps=[];
+    }
+  }
+  runEvent(index, invocation = null) {
+    if (!this.draining) this.followUps=[];
+    this.processEvent(index,invocation);
+    this.drainFollowUps();
     return this.snapshot();
   }
 

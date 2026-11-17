@@ -57,3 +57,11 @@ The nearest Kind match wins, with exact named rules preferred. Event buttons
 show concrete Things and do not duplicate shadowed entries. This remains an
 untested browser subset, not the accepted BSharp VM. Details:
 BASIC_SHARP_PORTABLE_EVENT_BINDINGS_v0_0_85.md.
+
+## Mass selection and caused events (unaccepted source-only candidate)
+
+Added action-only every #Kind selection, FIFO (cause event staging, and a
+bounded 64-follow-up limit in the browser sandbox. A new alarm/guards example
+demonstrates one event causing another. See
+BASIC_SHARP_PORTABLE_CAUSED_EVENTS_v0_0_85.md. The console is still an
+experimental BSIR interpreter, not the BSBC VM, and no tests were run.
