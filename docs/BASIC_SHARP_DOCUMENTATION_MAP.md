@@ -164,3 +164,9 @@ Neither record is release acceptance evidence.
 - docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_LOADER_v0_0_85.md
   records the loader's strict structural checks, browser integration,
   expected fingerprint verification, exclusions and future tests.
+
+## Independent Profile 1 BSBC virtual machine
+
+- docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_VM_v0_0_85.md
+  records validated-binary VM input, supported instructions, reactive
+  events, console integration, limits and unexecuted regression tests.

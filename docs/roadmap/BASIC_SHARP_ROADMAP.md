@@ -1,5 +1,31 @@
 # BASIC# Roadmap
 
+## v0.0.85 candidate: independent BSBC Profile 1 bytecode VM
+
+The portable source-only path now includes compiler/portable/bsharp_bsbc_vm.mjs.
+Unlike the earlier browser interpreter, this VM receives BSBC binary bytes,
+validates them through the strict Profile 1 loader, and executes the decoded
+START, WHEN, IF and CODE instructions without recreating BSIR or invoking
+Ruby. It supports states, relation and number initialization, state and number
+changes, damage, carrying, unlocking, event-bound and every-Kind selection,
+nearest-Kind matching, reactive IF rules and bounded FIFO caused events.
+
+The Live Console source now exposes an explicit Execute BSBC button alongside
+the earlier Execute IR button. Profile 1 programs follow independent
+compiler -> BSBC encoder -> strict BSBC loader -> bytecode VM steps. Higher
+profiles fail with an explanation instead of silently falling back to IR.
+Reset, typed events, event buttons and world state use the selected engine.
+
+Source-only regression definitions have been added for bytecode VM behavior
+and rejection paths, but NO compilation or tests were run. The production
+Ruby compiler/VM, accepted v0.0.84 release and language syntax are unchanged.
+No new branches, downloads, SSH, local installers or GitHub Actions occurred.
+
+Full details: docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_VM_v0_0_85.md.
+Next: independent Profile 2-7 coverage and Ruby parity, then validation
+when the owner authorizes testing.
+
+
 ## v0.0.85 source-only candidate: independent BSBC Profile 1 loader
 
 The Ruby-independent browser toolchain now contains a Profile 1 binary

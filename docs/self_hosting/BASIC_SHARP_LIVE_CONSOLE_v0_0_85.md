@@ -83,3 +83,12 @@ or instructions before displaying their contents. It validates against
 the expected source fingerprint. This is inspection only: BASIC# console
 execution still uses its limited BSIR interpreter, not the BSBC VM.
 No tests were run. See BASIC_SHARP_PORTABLE_BSBC_LOADER_v0_0_85.md.
+
+## Profile 1 BSBC bytecode execution (unaccepted development)
+
+The console source offers two distinct modes: Execute (the IR sandbox) and
+Execute BSBC (actual Profile 1 bytecode VM). The binary path first emits
+real BSBC, validates its structure and expected meaning fingerprint, and
+executes the decoded bytecode's START, WHEN, IF and CODE records. The
+binary VM is experimental, not tested, and higher profiles are rejected.
+See BASIC_SHARP_PORTABLE_BSBC_VM_v0_0_85.md.

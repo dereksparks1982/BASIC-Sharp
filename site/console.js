@@ -2,6 +2,7 @@ import {compile} from '../compiler/portable/bsharp_compiler.mjs';
 import {BSharpSandbox} from '../compiler/portable/bsharp_sandbox.mjs';
 import {encodeProfile1, hexView} from '../compiler/portable/bsharp_bsbc_encoder.mjs';
 import {loadProfile1} from '../compiler/portable/bsharp_bsbc_loader.mjs';
+import {BSharpBytecodeVM} from '../compiler/portable/bsharp_bsbc_vm.mjs';
 
 const examples = {
   alarm: [
@@ -86,7 +87,7 @@ const examples = {
 const get = id => document.getElementById(id);
 const editor = get('source'), select = get('examples'), log = get('log'), events = get('events');
 const status = get('status'), world = get('world'), irBox = get('ir'), bsbcBox = get('bsbc');
-let sandbox = null, compiled = null, lastLogIndex = 0;
+let sandbox = null, compiled = null, lastLogIndex = 0, runSerial = 0, activeEngine = null;
 const storageKey = 'bsharp.console.source.v1';
 
 function remember() {
@@ -168,39 +169,59 @@ function updateEvents() {
     events.append(button);
   }
 }
-function execute() {
+async function execute(mode = 'ir') {
+  const serial=++runSerial,source=editor.value;
   remember();
-  sandbox = null; compiled = null; lastLogIndex = 0;
-  get('reset').disabled = true;
-  get('view-ir').disabled = true;
-  get('view-bsbc').disabled = true;
-  get('run-event').disabled = true;
-  irBox.hidden = true;
-  bsbcBox.hidden = true;
-  bsbcBox.textContent = '';
-  get('view-bsbc').textContent = 'Inspect BSBC';
-  get('view-ir').textContent = 'Show BSharp IR';
-  log.textContent = '';
+  sandbox=null;compiled=null;activeEngine=null;lastLogIndex=0;
+  for(const id of ['reset','view-ir','view-bsbc','run-event','execute','execute-bsbc'])
+    get(id).disabled=true;
+  irBox.hidden=true;
+  bsbcBox.hidden=true;
+  bsbcBox.textContent='';
+  get('view-bsbc').textContent='Inspect BSBC';
+  get('view-ir').textContent='Show BSharp IR';
+  log.textContent='';
+  setStatus(mode==='bsbc' ? 'Preparing BSBC execution…' : 'Reading BASIC#…','idle');
   try {
-    compiled = compile(editor.value);
-    sandbox = new BSharpSandbox(compiled);
-    get('reset').disabled = false;
-    get('view-ir').disabled = false;
-    get('view-bsbc').disabled = false;
-    get('run-event').disabled = false;
-    irBox.textContent = JSON.stringify(compiled, null, 2);
-    appendTrace();
-    updateEvents();
-    updateWorld();
-    setStatus('Program executed', 'ok');
-  } catch (error) {
-    log.textContent = 'ERROR: ' + (error.message || String(error));
-    updateEvents();
-    updateWorld();
-    setStatus('Compilation or execution stopped', 'error');
+    const ir=compile(source);
+    let vm;
+    if(mode==='bsbc') {
+      const artifact=await encodeProfile1(ir);
+      // Constructor is a strict loader boundary: it takes binary, not IR.
+      vm=new BSharpBytecodeVM(artifact.bytes,{expectedFingerprint:artifact.fingerprint});
+    } else {
+      vm=new BSharpSandbox(ir);
+    }
+    if(serial!==runSerial||editor.value!==source) {
+      if(serial===runSerial) {
+        log.textContent='Source changed during execution preparation. Press Execute again.';
+        setStatus('Source changed', 'idle');
+      }
+      return;
+    }
+    compiled=ir;
+    sandbox=vm;
+    activeEngine=mode;
+    for(const id of ['reset','view-ir','view-bsbc','run-event'])get(id).disabled=false;
+    irBox.textContent=JSON.stringify(compiled,null,2);
+    appendTrace();updateEvents();updateWorld();
+    setStatus(mode==='bsbc' ? 'BSBC Profile 1 VM running' : 'Browser IR sandbox running','ok');
+  } catch(error) {
+    if(serial!==runSerial)return;
+    sandbox=null;compiled=null;activeEngine=null;
+    log.textContent='ERROR: '+(error.message||String(error))+
+      (mode==='bsbc' ? '\n\nThe bytecode VM supports only Profile 1. No fallback occurred.' : '');
+    updateEvents();updateWorld();
+    setStatus('Compilation or execution stopped','error');
+  } finally {
+    if(serial===runSerial) {
+      get('execute').disabled=false;
+      get('execute-bsbc').disabled=false;
+    }
   }
 }
-get('execute').addEventListener('click', execute);
+get('execute').addEventListener('click',()=>{void execute('ir');});
+get('execute-bsbc').addEventListener('click',()=>{void execute('bsbc');});
 function runTypedEvent() {
   if (!sandbox) return;
   const value=get('event-input').value.trim();
@@ -232,11 +253,14 @@ get('reset').addEventListener('click', () => {
     log.textContent = '';
     appendTrace();
     updateWorld();
-    setStatus('World reset', 'ok');
+    setStatus(activeEngine==='bsbc' ? 'BSBC world reset' : 'World reset', 'ok');
   } catch(error) {
     log.textContent += '\nERROR: ' + error.message;
     setStatus('Reset stopped', 'error');
     sandbox = null;
+    get('reset').disabled = true;
+    get('run-event').disabled = true;
+    activeEngine = null;
     updateEvents();
   }
 });
@@ -254,7 +278,7 @@ editor.addEventListener('input', remember);
 editor.addEventListener('keydown', event => {
   if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
     event.preventDefault();
-    execute();
+    void execute('ir');
   }
 });
 get('clear-log').addEventListener('click', () => {log.textContent = ''; if (sandbox) lastLogIndex = sandbox.trace.length;});

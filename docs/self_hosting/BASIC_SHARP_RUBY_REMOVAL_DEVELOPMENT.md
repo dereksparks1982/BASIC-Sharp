@@ -60,3 +60,11 @@ inspector round-trips freshly emitted bytes through that loader. It is
 not yet a VM and is not a verified replacement for the Ruby production
 compiler/loader. See
 docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_LOADER_v0_0_85.md.
+
+## Independent BSBC Profile 1 VM candidate
+
+The portable JavaScript path now contains a binary-input VM after its
+Profile 1 emitter and loader. This is an actual independent execution
+component, not a complete Ruby replacement. It remains untested and
+does not implement Profiles 2-7. See
+docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_VM_v0_0_85.md.
