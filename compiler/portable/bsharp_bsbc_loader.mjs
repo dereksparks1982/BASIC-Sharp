@@ -1,14 +1,16 @@
-// BASIC# Ruby-independent BSBC Profiles 1 and 2 structural loader.
+// BASIC# Ruby-independent BSBC Profiles 1-3 structural loader.
 // Source-only v0.0.85 candidate. Parses and validates but NEVER executes code.
-// Profiles 3-7 fail closed until their distinct contracts are implemented.
+// Profiles 4-7 fail closed. Profile 3 game declarations are strictly checked.
 export class BSBCLoadError extends Error {
   constructor(message) { super('BSBC rejected: '+message);this.name='BSBCLoadError'; }
 }
 const reject=message=>{throw new BSBCLoadError(message);};
-const ORDER=['STRS','META','KIND','THNG','STRT','EVNT','IFRL','CODE'];
+const BASE_ORDER=['STRS','META','KIND','THNG','STRT','EVNT','IFRL','CODE'];
+const GAME_ORDER=['STRS','META','KIND','THNG','STRT','EVNT','IFRL','CTRL','HOVR','CTXT','CODE'];
 const NONE=0xffffffff,MAX=2147483647,MAX_BYTES=64*1024*1024;
 const IDENTITIES={1:['bsharp.bytecode.v1','bsharp.meaning.v1','sha256-bsir-meaning-v1'],
-  2:['bsharp.bytecode.v2','bsharp.meaning.v2','sha256-bsir-meaning-v2']};
+  2:['bsharp.bytecode.v2','bsharp.meaning.v2','sha256-bsir-meaning-v2'],
+  3:['bsharp.bytecode.v3','bsharp.meaning.v3','sha256-bsir-meaning-v3']};
 const CODE={
   0x10:['START_STATE',3,'start'],
   0x11:['START_RELATION',3,'start'],
@@ -63,14 +65,18 @@ function loadWithProfile(input,{expectedFingerprint=null,requiredProfile=null}={
   if(ascii(bytes,0,4)!=='BSBC')reject('wrong four-byte BSBC magic.');
   if(u16(4)!==1)reject('unsupported binary format version.');
   const version=u16(6);
-  if(!IDENTITIES[version])reject('only BSBC Profiles 1 and 2 are currently supported.');
+  if(!IDENTITIES[version])reject('only BSBC Profiles 1-3 are currently supported.');
   if(requiredProfile!==null&&version!==requiredProfile)reject('expected BSBC Profile '+requiredProfile+', received '+version+'.');
   const ID=IDENTITIES[version];
-  if(u32(8)!==32||u32(12)!==8||u32(16)!==32||u32(20)!==16)reject('invalid header or section directory layout.');
+  const ORDER=version===3?GAME_ORDER:BASE_ORDER;
+  const directoryEnd=32+16*ORDER.length;
+  if(bytes.length<directoryEnd)reject('header or section directory is truncated.');
+  if(u32(8)!==32||u32(12)!==ORDER.length||u32(16)!==32||u32(20)!==16)
+    reject('invalid header or section directory layout.');
   if(u32(24)!==bytes.length)reject('declared file size disagrees with bytes.');
   if(u32(28)!==0)reject('nonzero reserved header field.');
   const directory=[],regions=new Map();
-  let lastEnd=160;
+  let lastEnd=directoryEnd;
   for(let i=0;i<ORDER.length;i++) {
     const at=32+i*16,id=ascii(bytes,at,4);
     if(id!==ORDER[i])reject('section order, identity or duplicate is invalid at #'+(i+1)+'.');
@@ -258,6 +264,123 @@ function loadWithProfile(input,{expectedFingerprint=null,requiredProfile=null}={
     blocks.push({id,offset,length,instructions});
   }
   if(previous!==code.length)reject('CODE has trailing unexplained data.');
+  // Profile 3 sections contain canonical UTF-8 JSON arrays, not executable JS.
+  // Reject unexpected shapes, unsupported input actions and dangling refs.
+  const game={controls:[],hover_declarations:[],context_declarations:[]};
+  if(version===3){
+    function gameSection(id,key){
+      const area=region(id),raw=stringFrom(area.offset,area.length,id+' game JSON');
+      let parsed;
+      try{parsed=JSON.parse(raw);}catch(_){reject(id+' contains invalid JSON.');}
+      if(!Array.isArray(parsed)||parsed.length!==area.count)reject(id+' JSON count does not match the directory.');
+      function canonical(v){
+        if(Array.isArray(v))return v.map(canonical);
+        if(v&&typeof v==='object'){
+          const obj={};
+          for(const field of Object.keys(v).sort()) {
+            if(field==='line_number'||field==='raw')reject(id+' carries source-only metadata.');
+            if(field==='__proto__'||field==='constructor'||field==='prototype')reject(id+' contains forbidden object keys.');
+            obj[field]=canonical(v[field]);
+          }
+          return obj;
+        }
+        return v;
+      }
+      if(JSON.stringify(canonical(parsed))!==raw)reject(id+' JSON keys or byte order are not canonical.');
+      game[key]=parsed;
+    }
+    gameSection('CTRL','controls');
+    gameSection('HOVR','hover_declarations');
+    gameSection('CTXT','context_declarations');
+    if(!(game.controls.length||game.hover_declarations.length||game.context_declarations.length)){
+      reject('Profile 3 requires at least one game declaration.');
+    }
+    const kindByName=new Map(kinds.map((k,i)=>[k.name,i]));
+    const thingByName=new Set(things.map(t=>t.name));
+    const stateNames=new Set(['open','closed','locked','unlocked','alive','dead','calm','angry',
+      'friendly','hostile','visible','hidden','carried','dropped','broken','whole','on','off']);
+    const own=(v,k)=>Object.prototype.hasOwnProperty.call(v,k);
+    function kindOrThing(ref,where){
+      if(!ref||typeof ref!=='object'||Array.isArray(ref))reject(where+' has no valid subject.');
+      if(ref.type==='object'&&thingByName.has(ref.name))return;
+      if(ref.type==='kind_declaration'&&kindByName.has(ref.kind_name))return;
+      reject(where+' must refer to an existing @Thing or #Kind.');
+    }
+    function actionRef(ref,where){
+      if(ref?.type==='context_it')return;
+      if(ref?.type==='object'&&thingByName.has(ref.name))return;
+      reject(where+' must name a Thing or use context it.');
+    }
+    function validateAction(act,where){
+      if(!act||typeof act!=='object')reject(where+' has no action.');
+      if(act.action==='cause'){
+        if(!act.event||!eventWords.has(act.event.action))reject(where+' has an unknown caused event.');
+        actionRef(act.event.actor,where);actionRef(act.event.target,where);
+        return;
+      }
+      if(!['change','damage','carry','unlock'].includes(act.action))reject(where+' uses an unsupported context action.');
+      actionRef(act.target,where);
+      if(act.action==='change'){
+        if(act.value_name){
+          if(!/^[a-z][a-z0-9]*$/u.test(act.value_name)||act.value_name==='damage'&&own(act,'to_text'))
+            reject(where+' has an invalid changed value name.');
+          if(own(act,'to_text')){
+            if(typeof act.to_text!=='string'||/[\r\n\\"]|#\{/u.test(act.to_text))
+              reject(where+' has an unsupported text literal.');
+          } else if(!Number.isInteger(act.to_amount)||act.to_amount<0||act.to_amount>MAX)
+            reject(where+' has an invalid number assignment.');
+        }else if(act.to?.kind!=='state'||!stateNames.has(act.to.name)){
+          reject(where+' has an invalid state assignment.');
+        }
+      }
+      if(act.action==='damage'&&(!Number.isInteger(act.amount)||act.amount<1||act.amount>MAX))
+        reject(where+' has an invalid damage amount.');
+    }
+    const eventWords=new Set(['attack','take','open','close','lock','unlock','examine',
+      'speak','sound','drop','carry','damage','change','give','eat','wear','remove']);
+    for(const decl of game.controls){
+      if(decl?.subject?.type!=='object'||decl.subject.name!=='player')reject('CTRL supports PLAYER only in this VM.');
+      if(!Array.isArray(decl.instructions)||decl.instructions.length===0)reject('CTRL instructions are missing.');
+      const keys=new Set(),directions=new Set(),special=new Set();
+      for(const instr of decl.instructions){
+        if(instr?.type==='key_move'){
+          if(typeof instr.key!=='string'||!/^[A-Z]$/u.test(instr.key)||
+             !['north','south','west','east'].includes(instr.direction)||
+             keys.has(instr.key)||directions.has(instr.direction))reject('CTRL key binding is invalid or duplicated.');
+          keys.add(instr.key);directions.add(instr.direction);
+        } else if(['face_pointer','right_mouse_move'].includes(instr?.type)) {
+          if(special.has(instr.type))reject('Duplicate CTRL pointer instruction.');
+          special.add(instr.type);
+        } else reject('CTRL contains an unsupported input or movement declaration.');
+      }
+    }
+    for(const decl of game.hover_declarations){
+      kindOrThing(decl?.subject,'HOVR');
+      if(!Array.isArray(decl.fields)||!decl.fields.length)reject('HOVR has no fields.');
+      const seen=new Set();
+      for(const field of decl.fields){
+        if(!['name','kind','state','description'].includes(field?.name)||seen.has(field.name))
+          reject('HOVR has an invalid or duplicate field.');
+        seen.add(field.name);
+      }
+    }
+    for(const decl of game.context_declarations){
+      kindOrThing(decl?.subject,'CTXT');
+      if(!Array.isArray(decl.entries)||!decl.entries.length)reject('CTXT contains no choices.');
+      const labels=new Set();
+      for(const entry of decl.entries){
+        if(typeof entry?.label!=='string'||/[\r\n\\"]|#\{/u.test(entry.label)||
+           labels.has(entry.label))reject('CTXT has an invalid or duplicate choice label.');
+        labels.add(entry.label);
+        if(entry.condition!==null&&entry.condition!==undefined){
+          if(entry.condition?.subject?.type!=='context_it'||!['is','isnt'].includes(entry.condition.relation)||
+             entry.condition.value?.kind!=='state'||!stateNames.has(entry.condition.value.name))
+            reject('CTXT condition must be an established it is/isnt state.');
+        }
+        validateAction(entry.action,'CTXT '+entry.label);
+      }
+    }
+  }
   const used=[],roles=Array.from({length:strings.length},()=>new Set());
   function mark(i,role='identifier') {
     stringIndex(i);roles[i].add(role);
@@ -334,7 +457,7 @@ function loadWithProfile(input,{expectedFingerprint=null,requiredProfile=null}={
     format:'bsharp.bytecode.bin',
     profile:ID[0],meaningProfile:ID[1],fingerprintAlgorithm:ID[2],fingerprint,
     byteLength:bytes.length,sections:directory,strings,kinds,things,
-    startRecords:starts,events,ifRules,blocks,
+    startRecords:starts,events,ifRules,blocks,...game,
     instructionCount:blocks.reduce((sum,b)=>sum+b.instructions.length,0),
     validation:'Profile '+version+' structural parse complete; binary not executed'
   };
@@ -344,4 +467,5 @@ function loadWithProfile(input,{expectedFingerprint=null,requiredProfile=null}={
 // The named Profile APIs are strict and never accept a different header version.
 export function loadProfile1(bytes, options={}) {return loadWithProfile(bytes,{...options,requiredProfile:1});}
 export function loadProfile2(bytes, options={}) {return loadWithProfile(bytes,{...options,requiredProfile:2});}
+export function loadProfile3(bytes, options={}) {return loadWithProfile(bytes,{...options,requiredProfile:3});}
 export function loadBSBC(bytes, options={}) {return loadWithProfile(bytes,options);}

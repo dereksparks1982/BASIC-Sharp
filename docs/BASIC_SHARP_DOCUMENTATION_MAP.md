@@ -177,3 +177,10 @@ Neither record is release acceptance evidence.
   documents exact text-value bytecode, profile-aware loaders, VM logic,
   failure boundaries, browser wiring, future regression cases and the
   distinction from the accepted Ruby implementation.
+
+## Profile 3 game controls and interactions (unaccepted)
+
+- docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_PROFILE3_v0_0_85.md
+  documents the new canonical game-data bytecode sections, safe
+  interaction APIs, bounded control declarations, excluded movement,
+  Live Console panel, test definitions and remaining parity work.

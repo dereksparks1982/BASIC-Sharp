@@ -1,5 +1,5 @@
-// BASIC# portable BSBC Profile 1 and Profile 2 execution engine.
-// Unaccepted v0.0.85 candidate: executes validated Profile 1/2 bytecode only.
+// BASIC# portable BSBC Profiles 1-3 execution engine.
+// Unaccepted v0.0.85 source-only candidate: bounded Profile 3 interactions.
 // No Ruby, eval, network requests, arbitrary JavaScript execution or BSIR fallback.
 // This class deliberately takes binary bytes, not an unvalidated model.
 import {loadBSBC} from './bsharp_bsbc_loader.mjs';
@@ -48,6 +48,143 @@ export class BSharpBytecodeVM {
     this.thingIndexes = new Map(this.program.things.map((thing,index)=>[thing.name,index]));
     this.kindIndexes = new Map(this.program.kinds.map((kind,index)=>[kind.name,index]));
     this.reset();
+  }
+  // Profile 3 declarations live in validated canonical BSBC JSON sections.
+  // The browser provides an engine-neutral control event bridge, not physics.
+  controlBindings() {
+    return this.program.controls.flatMap(decl=>decl.instructions.map(instr=>({...instr})));
+  }
+  keyCommand(key) {
+    if(this.program.profile!=='bsharp.bytecode.v3')fail('Game controls require Profile 3.');
+    const named=String(key).toUpperCase();
+    const instruction=this.controlBindings().find(x=>x.type==='key_move'&&x.key===named);
+    if(!instruction)fail('No declared direction control for key '+named+'.');
+    const command={type:'move_intent',actor:'player',direction:instruction.direction,key:named};
+    this.trace.push('CONTROL: '+named+' → '+instruction.direction+' (host-neutral intent only)');
+    return command; // host adapter may consume; VM does not fake a map or movement
+  }
+  declarationMatches(subject,thing) {
+    if(subject?.type==='object')return subject.name===thing.name;
+    if(subject?.type==='kind_declaration'){
+      const kind=this.kindIndexes.get(subject.kind_name);
+      return kind!==undefined&&this.kindDistance(thing.kindIndex,kind)!==null;
+    }
+    return false;
+  }
+  declarations(key,thing) {
+    const all=this.program[key]||[];
+    return all.filter(decl=>this.declarationMatches(decl.subject,thing))
+      .map((decl,i)=>{
+        const kind=decl.subject.type==='kind_declaration'
+          ?this.kindIndexes.get(decl.subject.kind_name):null;
+        const distance=kind===null?-1:this.kindDistance(thing.kindIndex,kind);
+        return {decl,index:i,rank:distance===-1?10000:1000-distance};
+      })
+      .sort((a,b)=>a.rank-b.rank||a.index-b.index)
+      .map(row=>row.decl);
+  }
+  thingByName(name) {
+    const normalized=normalize(name),index=this.thingIndexes.get(normalized);
+    if(index===undefined)fail('Unknown Thing @'+normalized+'.');
+    return this.thing(index);
+  }
+  hoverFor(name) {
+    const thing=this.thingByName(name),fields=new Map();
+    for(const decl of this.declarations('hover_declarations',thing))for(const field of decl.fields){
+      let value;
+      switch(field.name){
+        case 'name':value=thing.name;break;
+        case 'kind':value=this.program.kinds[thing.kindIndex].name;break;
+        case 'state':value=[...thing.states].sort().join(', ');break;
+        case 'description':
+          value=thing.values.description;
+          if(value===undefined)fail('@'+thing.name+' does not have description information.');
+          break;
+        default:fail('Unsupported hover information.');
+      }
+      fields.set(field.name,{field:field.name,value:String(value)});
+    }
+    return [...fields.values()];
+  }
+  contextFor(name) {
+    const thing=this.thingByName(name),shown=new Map();
+    for(const declaration of this.declarations('context_declarations',thing)) {
+      for(const entry of declaration.entries) {
+        const condition=entry.condition;
+        if(condition){
+          const present=thing.states.has(condition.value.name);
+          if(condition.relation==='is'&&!present)continue;
+          if(condition.relation==='isnt'&&present)continue;
+        }
+        shown.set(entry.label,{label:entry.label,action:entry.action});
+      }
+    }
+    return [...shown.values()];
+  }
+  contextThing(ref,current) {
+    if(ref?.type==='context_it')return current;
+    if(ref?.type==='object')return this.thingByName(ref.name);
+    fail('Context action has no bound Thing.');
+  }
+  contextAction(action,thing) {
+    if(action.action==='cause') {
+      const event=action.event;
+      const actor=this.contextThing(event.actor,thing),target=this.contextThing(event.target,thing);
+      const item={actor:actor.name,target:target.name,action:event.action};
+      this.followUps.push(item);
+      this.trace.push('CONTEXT (cause '+actor.name+' '+event.action+' '+target.name+' → queued');
+      return;
+    }
+    const target=this.contextThing(action.target,thing);
+    if(action.action==='change') {
+      if(action.value_name) {
+        const current=target.values[action.value_name];
+        const next=Object.hasOwn(action,'to_text')?action.to_text:action.to_amount;
+        if(typeof current!==typeof next)fail('Context value '+action.value_name+' has no established matching type.');
+        if(action.value_name==='damage'&&typeof next==='string')fail('Damage cannot hold text.');
+        target.values[action.value_name]=next;
+        this.trace.push('CONTEXT change '+action.value_name+' of '+target.name+' to '+JSON.stringify(next));
+      }else{
+        const state=action.to.name;
+        const opposite={
+          open:'closed',closed:'open',locked:'unlocked',unlocked:'locked',
+          alive:'dead',dead:'alive',calm:'angry',angry:'calm',on:'off',off:'on',
+          visible:'hidden',hidden:'visible',broken:'whole',whole:'broken'
+        }[state]||null;
+        this.setState(target,state,opposite);
+        this.trace.push('CONTEXT change '+target.name+' to '+state);
+      }
+      return;
+    }
+    if(action.action==='damage') {
+      ensureWhole(target.values.damage+action.amount,'Context damage');
+      target.values.damage+=action.amount;
+      this.trace.push('CONTEXT damage '+target.name+' by '+action.amount);
+      return;
+    }
+    if(action.action==='carry') {
+      delete target.relations.on;delete target.relations.in;
+      target.relations['carried by']='player';
+      this.trace.push('CONTEXT carry '+target.name);return;
+    }
+    if(action.action==='unlock') {
+      this.setState(target,'unlocked','locked');
+      this.trace.push('CONTEXT unlock '+target.name);return;
+    }
+    fail('Unsupported Profile 3 context action '+action.action+'.');
+  }
+  executeContext(name,label) {
+    if(this.program.profile!=='bsharp.bytecode.v3')fail('Context interactions require Profile 3.');
+    const thing=this.thingByName(name);
+    const menu=this.contextFor(name),item=menu.find(entry=>entry.label===label);
+    if(!item)fail('@'+thing.name+' does not currently offer "'+label+'".');
+    this.stepCount=0;this.followUps=[];
+    try {
+      this.contextAction(item.action,thing);
+      this.settle('CONTEXT');
+      this.drainFollowUps();
+    }catch(error){this.followUps=[];throw error;}
+    return this.snapshot();
   }
   string(index) {
     return this.program.strings[index];

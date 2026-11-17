@@ -18,7 +18,7 @@
     <div class="header-right"><span class="badge">Browser sandbox · v0.0.85 development</span><a href="https://github.com/dereksparks1982/BASIC-Sharp#readme">Project README ↗</a></div>
   </header>
   <main class="shell">
-    <div class="notice" role="note"><strong>Experimental BASIC# execution.</strong> Choose the browser IR sandbox or the independent <strong>BSBC Profiles 1 and 2</strong> bytecode virtual machine. Both support limited language subsets. The BSBC engine executes validated bytecode for supported instructions, including exact quoted text values, not the full BASIC# language. Unsupported programs stop with an explanation; no silent fallback to another engine.</div>
+    <div class="notice" role="note"><strong>Experimental BASIC# execution.</strong> Choose the browser IR sandbox or the independent <strong>BSBC Profiles 1-3</strong> bytecode virtual machine. Both support limited language subsets. The BSBC engine executes validated bytecode for supported instructions, including exact text and bounded game interactions, not a complete game engine. Unsupported programs stop with an explanation; no silent fallback to another engine.</div>
     <div class="layout">
       <section class="panel editor-panel" aria-labelledby="editor-title">
         <div class="panel-heading">
@@ -32,6 +32,7 @@
               <option value="titles">Text values and Kind references</option>
               <option value="creatures">Creatures and event binding</option>
               <option value="alarm">Alarm and chained events</option>
+              <option value="interactions">Profile 3: Door interactions</option>
             </select>
           </label>
         </div>
@@ -39,7 +40,7 @@
         <textarea id="source" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-describedby="editor-help"></textarea>
         <div class="actionbar">
           <button id="execute" class="button primary" type="button">▶ Execute</button>
-          <button id="execute-bsbc" class="button" type="button" title="Build and execute supported BASIC# Profiles 1 or 2 bytecode in the browser">▶ Execute BSBC</button>
+          <button id="execute-bsbc" class="button" type="button" title="Build and execute supported BASIC# Profiles 1-3 bytecode in the browser">▶ Execute BSBC</button>
           <button id="reset" class="button" type="button" disabled>↻ Reset world</button>
           <button id="restore" class="button subtle" type="button">Restore example</button>
           <span class="hint" id="editor-help">Ctrl+Enter: IR sandbox · Execute BSBC: bytecode VM</span>
@@ -59,6 +60,15 @@
         </div>
         <div class="events-head"><h3>Available events</h3><small>Click an event to trigger its WHEN rule</small></div>
         <div id="events" class="events"><span class="placeholder">Execute a program to see its events.</span></div>
+        <section id="game-panel" class="game-panel" hidden aria-label="Profile 3 game interactions">
+          <h3>Profile 3 · Game interactions</h3>
+          <p class="muted">Inspect objects, execute context actions, or emit host-neutral keyboard movement intents. No world rendering or simulated movement.</p>
+          <label for="thing-select">Thing</label>
+          <select id="thing-select"></select>
+          <div class="game-group"><strong>Hover information</strong><div id="hover-info" class="game-details"></div></div>
+          <div class="game-group"><strong>Context actions</strong><div id="context-choices" class="game-choices"></div></div>
+          <div class="game-group"><strong>Declared keyboard input</strong><div id="control-keys" class="game-choices"></div></div>
+        </section>
         <div class="events-head"><h3>Event log</h3><button id="clear-log" class="text-button" type="button">Clear log</button></div>
         <pre id="log" class="log" tabindex="0" aria-live="polite">No program has been executed yet.</pre>
       </section>

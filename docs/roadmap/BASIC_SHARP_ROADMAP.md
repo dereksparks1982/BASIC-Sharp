@@ -1,5 +1,41 @@
 # BASIC# Roadmap
 
+## v0.0.85 candidate: portable BSBC Profile 3 control and interaction semantics
+
+The source-only independent BASIC# path now has a bounded Profile 3
+implementation covering official CONTROLS for PLAYER (W/S/A/D-style
+top-down direction declarations, pointer facing and right-mouse-held
+movement declarations), HOVER for #Kind/@Thing, and CONTEXT for
+#Kind/@Thing with state-filtered actions using "it" references.
+
+The portable compiler writes Profile 3 semantic IR; the independent
+binary emitter uses the official 11-section BSBC v3 format with CTRL,
+HOVR and CTXT canonical UTF-8 JSON sections; the strict loader checks
+the section identities, counts, canonical bytes and known Thing/Kind
+references and refuses unsupported/malformed game commands. The meaning
+fingerprint includes game declarations as defined by WorldSave.
+
+The bytecode VM now exposes inherited hover information, context-menu
+choices, state changes and caused events from validated BSBC Profile 3
+sections. Keyboard declarations produce host-neutral movement intents,
+NOT actual movement or physics. The Live Console includes a door
+interaction example and an interface for inspecting context actions,
+hover fields and declared key intents. Existing BSBC Profiles 1 and 2
+remain version-distinct. Unsupported Profile 4-7 semantics are refused.
+
+Status: UNACCEPTED source-only candidate. No compilation, automated
+tests, GitHub Actions, browser validation, downloads or SSH. The
+production Ruby compiler/VM and accepted v0.0.84 tag remain unchanged.
+Future regression definitions are in
+tests/portable_bsharp_bsbc_profile3.test.mjs and have NOT been executed.
+The complete implementation boundary is documented at
+docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_PROFILE3_v0_0_85.md.
+
+Next: close Profile 3 parity gaps, host-input dispatch and richer
+controls under existing contracts; then work toward Profile 4
+movement bytecode without changing creator-facing syntax.
+
+
 ## v0.0.85 candidate: independent BSBC Profile 2 exact-text execution
 
 The Ruby-independent browser-native BSBC emitter, strict binary loader, and

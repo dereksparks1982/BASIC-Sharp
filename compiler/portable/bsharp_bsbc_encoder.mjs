@@ -1,11 +1,13 @@
-// BASIC# portable BSBC Profile 1 + Profile 2 binary emitter (development candidate).
+// BASIC# portable BSBC Profiles 1-3 binary emitter (source-only candidate).
 // Produces the established BSBC container, not an alternative JSON format.
 // Independent of Ruby. No code is executed: this module only serializes resolved IR.
-// Profiles 3-7 MUST be rejected until their full contracts are implemented.
-const ORDER = ['STRS','META','KIND','THNG','STRT','EVNT','IFRL','CODE'];
+// Profiles 4-7 are explicitly unsupported by this independent emitter.
+const BASE_ORDER = ['STRS','META','KIND','THNG','STRT','EVNT','IFRL','CODE'];
+const GAME_ORDER = ['STRS','META','KIND','THNG','STRT','EVNT','IFRL','CTRL','HOVR','CTXT','CODE'];
 const NONE = 0xffffffff, MAX = 2147483647;
 const PROFILES = Object.freeze({1:['bsharp.bytecode.v1','bsharp.meaning.v1','sha256-bsir-meaning-v1'],
-  2:['bsharp.bytecode.v2','bsharp.meaning.v2','sha256-bsir-meaning-v2']});
+  2:['bsharp.bytecode.v2','bsharp.meaning.v2','sha256-bsir-meaning-v2'],
+  3:['bsharp.bytecode.v3','bsharp.meaning.v3','sha256-bsir-meaning-v3']});
 const MAGIC = [66,83,66,67];
 const SELECTOR = Object.freeze({object:1,kind_one:2,kind:2,previous:3,kind_set:4});
 const OPPOSITE = Object.freeze({
@@ -73,7 +75,11 @@ export async function meaningFingerprint(ir) {
   // line-number-free JSON for kinds, objects, facts, events, if_rules.
   if(!globalThis.crypto?.subtle?.digest)no('BSharp fingerprint requires a secure browser with Web Crypto SHA-256.');
   const source={};
-  for(const key of ['kinds','objects','facts','events','if_rules'])source[key]=records(ir[key]);
+  const keys=['kinds','objects','facts','events','if_rules'];
+  if(['bsharp.meaning.v3','bsharp.meaning.v4','bsharp.meaning.v5','bsharp.meaning.v6','bsharp.meaning.v7'].includes(ir?.meaning_profile)) {
+    keys.push('controls','hover_declarations','context_declarations');
+  }
+  for(const key of keys)source[key]=records(ir[key]);
   const digest=await globalThis.crypto.subtle.digest('SHA-256',bytesForText(JSON.stringify(meaningCanonical(source))));
   return new Uint8Array(digest);
 }
@@ -84,9 +90,71 @@ function textLiteral(value,where) {
   }
   return value; // preserve exact creator-facing spaces, punctuation and capitalization
 }
+function canonicalGame(value) {
+  if(Array.isArray(value))return value.map(canonicalGame);
+  if(value&&typeof value==='object') {
+    const item={};
+    for(const key of Object.keys(value).filter(k=>k!=='line_number'&&k!=='raw').sort()){
+      item[key]=canonicalGame(value[key]);
+    }
+    return item;
+  }
+  return value;
+}
+function assertGame(ir) {
+  const kinds=new Set(['thing','place','actor','person','creature','door','container',
+    'supporter','key','weapon','food','clothing','device','guard','table',
+    ...records(ir.kinds).map(k=>k.name)]);
+  const things=new Set(records(ir.objects).map(t=>t.name));
+  const subject=(ref,place)=>{
+    if(ref?.type==='kind_declaration'&&kinds.has(ref.kind_name))return;
+    if(ref?.type==='object'&&things.has(ref.name))return;
+    no(place+' must target one defined @Thing or a known #Kind.');
+  };
+  for(const control of records(ir.controls)){
+    if(control.subject?.type!=='object'||control.subject.name!=='player')
+      no('Portable Profile 3 CONTROLS currently supports PLAYER only.');
+    if(!Array.isArray(control.instructions)||!control.instructions.length)no('Empty CONTROLS.');
+    for(const entry of control.instructions){
+      if(entry.type==='key_move') {
+        if(!/^[A-Z]$/u.test(entry.key)||!['north','south','west','east'].includes(entry.direction))
+          no('Invalid keyboard movement declaration.');
+      } else if(!['face_pointer','right_mouse_move'].includes(entry.type)) {
+        no('Unsupported Profile 3 control instruction '+entry.type+'.');
+      }
+    }
+  }
+  for(const decl of records(ir.hover_declarations)){
+    subject(decl.subject,'HOVER');
+    if(!Array.isArray(decl.fields)||!decl.fields.length)no('Empty HOVER.');
+    for(const field of decl.fields)if(!['name','kind','state','description'].includes(field.name))
+      no('Unsupported HOVER field '+field.name+'.');
+  }
+  for(const decl of records(ir.context_declarations)){
+    subject(decl.subject,'CONTEXT');
+    if(!Array.isArray(decl.entries)||!decl.entries.length)no('Empty CONTEXT.');
+    for(const entry of decl.entries) {
+      textLiteral(entry.label,'CONTEXT label');
+      if(entry.condition){
+        if(entry.condition.subject?.type!=='context_it'||
+           !['is','isnt'].includes(entry.condition.relation)||
+           entry.condition.value?.kind!=='state')no('Unsupported CONTEXT condition.');
+      }
+      const action=entry.action;
+      if(!action||!['change','damage','carry','unlock','cause'].includes(action.action))
+        no('Unsupported CONTEXT action.');
+      if(action.action==='cause') {
+        if(!action.event||!['object','context_it'].includes(action.event.actor?.type)||
+           !['object','context_it'].includes(action.event.target?.type))
+          no('Invalid CONTEXT caused event.');
+      } else if(!['object','context_it'].includes(action.target?.type))
+        no('CONTEXT action must select one Thing or context it.');
+    }
+  }
+}
 function assertProfile(ir,version) {
   const expected = PROFILES[version];
-  if(!expected)no('This independent emitter implements BSBC Profiles 1 and 2 only.');
+  if(!expected)no('This independent emitter implements BSBC Profiles 1-3 only.');
   if(!ir||ir.format!=='bsir.debug.json')no('BSBC expects resolved BSharp IR.');
   const declared=ir.meaning_profile||'bsharp.meaning.v1';
   if(declared!==expected[1]) {
@@ -94,8 +162,12 @@ function assertProfile(ir,version) {
   }
   if(records(ir.diagnostics).some(x=>x.severity==='error'||x.severity==='warning'))
     no('BSBC will not encode IR containing errors or warnings.');
-  for(const name of ['controls','hover_declarations','context_declarations']) {
-    if(records(ir[name]).length)no(name+' needs a higher bytecode profile.');
+  const hasGame=['controls','hover_declarations','context_declarations']
+    .some(name=>records(ir[name]).length>0);
+  if(version<3&&hasGame)no('Game declarations require BSBC Profile 3.');
+  if(version===3) {
+    if(!hasGame)no('BSBC Profile 3 requires a control, hover or context declaration.');
+    assertGame(ir);
   }
   const actions=[...records(ir.events).flatMap(x=>records(x.then)),
     ...records(ir.if_rules).flatMap(x=>[...records(x.then),...records(x.otherwise)])];
@@ -185,6 +257,11 @@ async function encodeWithProfile(ir, version) {
     for(const action of records(event.then))includeAction(action);
   }
   for(const rule of irIfs)for(const action of records(rule.then))includeAction(action);
+  if(version===3){
+    for(const decl of [...records(ir.hover_declarations),...records(ir.context_declarations)]){
+      includeRef(decl.subject);
+    }
+  }
   const kindRows=allKinds.map((name,index)=>{
     const parent=customParents.get(name);
     return [intern(name),parent?requireIndex(kindIds,parent,'parent Kind'):NONE,index];
@@ -302,18 +379,28 @@ async function encodeWithProfile(ir, version) {
     return join(pack32(bytes.length),bytes,pad(4+bytes.length));
   }));
   const meta=join(pack32(0,1,2),fingerprint,pack32(allKinds.length,irObjects.length,starts.length,events.length,ifRows.length,blocks.length));
+  const controls=version===3?canonicalGame(records(ir.controls)):[];
+  const hover=version===3?canonicalGame(records(ir.hover_declarations)):[];
+  const context=version===3?canonicalGame(records(ir.context_declarations)):[];
   const sections={
     STRS:stringsSection,META:meta,
     KIND:join(...kindRows.map(row=>pack32(...row))),
     THNG:join(...thingRows.map(row=>pack32(...row))),
     STRT:join(...starts),
     EVNT:join(...events.map(row=>pack32(...row))),
-    IFRL:join(...ifRows),CODE:code
+    IFRL:join(...ifRows),CODE:code,
+    ...(version===3?{
+      CTRL:bytesForText(JSON.stringify(controls)),
+      HOVR:bytesForText(JSON.stringify(hover)),
+      CTXT:bytesForText(JSON.stringify(context))
+    }:{})
   };
   const counts={
     STRS:strings.length,META:1,KIND:allKinds.length,THNG:irObjects.length,
-    STRT:starts.length,EVNT:events.length,IFRL:ifRows.length,CODE:blocks.length
+    STRT:starts.length,EVNT:events.length,IFRL:ifRows.length,CODE:blocks.length,
+    CTRL:controls.length,HOVR:hover.length,CTXT:context.length
   };
+  const ORDER=version===3?GAME_ORDER:BASE_ORDER;
   let at=32+ORDER.length*16;
   const sectionDirectory=[],payload=[];
   for(const id of ORDER){
@@ -325,7 +412,7 @@ async function encodeWithProfile(ir, version) {
   const directory=join(...sectionDirectory.map(row=>join(bytesForText(row.id),pack32(row.offset,row.length,row.count))));
   const header=join(Uint8Array.from(MAGIC),pack16(1),pack16(version),pack32(32,ORDER.length,32,16,at,0));
   const bytes=join(header,directory,...payload);
-  if(header.length!==32||directory.length!==128||bytes.length!==at)no('BSBC header or section size mismatch.');
+  if(header.length!==32||directory.length!==16*ORDER.length||bytes.length!==at)no('BSBC header or section size mismatch.');
   return {bytes,profile:PROFILE,meaningProfile:MEANING,
     fingerprint:[...fingerprint].map(byte=>byte.toString(16).padStart(2,'0')).join(''),
     sections:sectionDirectory,stringCount:strings.length,
@@ -334,11 +421,13 @@ async function encodeWithProfile(ir, version) {
 // Explicit APIs preserve Profile 1 callers and reject unsupported profiles.
 export async function encodeProfile1(ir) { return encodeWithProfile(ir,1); }
 export async function encodeProfile2(ir) { return encodeWithProfile(ir,2); }
+export async function encodeProfile3(ir) { return encodeWithProfile(ir,3); }
 export async function encodeBSBC(ir) {
   const profile=ir?.meaning_profile||'bsharp.meaning.v1';
   if(profile==='bsharp.meaning.v1')return encodeWithProfile(ir,1);
   if(profile==='bsharp.meaning.v2')return encodeWithProfile(ir,2);
-  no('The independent BSBC path currently supports meaning Profiles 1 and 2. Requested '+profile+'.');
+  if(profile==='bsharp.meaning.v3')return encodeWithProfile(ir,3);
+  no('The independent BSBC path currently supports meaning Profiles 1-3. Requested '+profile+'.');
 }
 export function hexView(bytes,limit=4096) {
   if(!(bytes instanceof Uint8Array))throw new TypeError('Expected BSBC binary bytes.');

@@ -5,6 +5,21 @@ import {loadBSBC} from '../compiler/portable/bsharp_bsbc_loader.mjs';
 import {BSharpBytecodeVM} from '../compiler/portable/bsharp_bsbc_vm.mjs';
 
 const examples = {
+  interactions: [
+    'KINDS','[','    #gate is a #door','].','',
+    'DEFINE','[','    @north gate is a #gate','].','',
+    'START','[','    @north gate is closed',
+    '    @north gate has "Heavy oak gate." description','].','',
+    'CONTROLS for PLAYER','[','    W moves PLAYER north',
+    '    S moves PLAYER south','    A moves PLAYER west','    D moves PLAYER east',
+    '    PLAYER faces mouse pointer','].','',
+    'HOVER for #door','[','    name','    kind','    state','    description','].','',
+    'CONTEXT for #door','[',
+    '    "Open" when it is closed (change it to open',
+    '    "Close" when it is open (change it to closed',
+    '    "Examine" (cause PLAYER examines it','].','',
+    'WHEN PLAYER examines @north gate','[','    |then (change @north gate to open','].'
+  ].join('\n'),
   alarm: [
     'DEFINE', '[', '    @bell is a #device', '    @gate is a #door',
     '    @guard one is a #guard', '    @guard two is a #guard', '].', '',
@@ -117,6 +132,7 @@ function updateWorld() {
   world.replaceChildren();
   if (!sandbox) {
     world.append(createText('p', 'Execute a program to inspect its world.', 'placeholder'));
+    updateGamePanel();
     return;
   }
   for (const item of sandbox.snapshot()) {
@@ -134,7 +150,65 @@ function updateWorld() {
     card.append(details);
     world.append(card);
   }
+  updateGamePanel();
 }
+function updateGamePanel() {
+  const panel=get('game-panel'),things=get('thing-select'),
+    hover=get('hover-info'),choices=get('context-choices'),keys=get('control-keys');
+  const enabled=activeEngine==='bsbc'&&sandbox?.program?.profile==='bsharp.bytecode.v3';
+  panel.hidden=!enabled;
+  if(!enabled)return;
+  const selected=things.value;
+  const candidates=sandbox.snapshot().filter(item=>!item.builtin);
+  things.replaceChildren();
+  for(const item of candidates) {
+    const option=createText('option',item.name);
+    option.value=item.name;
+    things.append(option);
+  }
+  if(candidates.some(item=>item.name===selected))things.value=selected;
+  const target=things.value;
+  hover.replaceChildren();choices.replaceChildren();keys.replaceChildren();
+  if(!target) {
+    hover.append(createText('span','No user-defined Thing.','placeholder'));
+    choices.append(createText('span','No context actions.','placeholder'));
+  } else {
+    try {
+      const info=sandbox.hoverFor(target);
+      if(info.length===0)hover.append(createText('span','No HOVER declaration applies.','placeholder'));
+      for(const field of info)hover.append(createText('span',field.field+': '+field.value,'game-value'));
+    }catch(error) {hover.append(createText('span',error.message,'placeholder'));}
+    const visible=sandbox.contextFor(target);
+    if(!visible.length)choices.append(createText('span','No available context actions.','placeholder'));
+    for(const entry of visible) {
+      const button=createText('button',entry.label,'event');button.type='button';
+      button.addEventListener('click',()=>{
+        try {
+          sandbox.executeContext(target,entry.label);
+          appendTrace();updateWorld();setStatus('Context action executed','ok');
+        }catch(error){
+          appendTrace();log.textContent+='\nERROR: '+error.message;
+          setStatus('Context action stopped','error');
+        }
+      });
+      choices.append(button);
+    }
+  }
+  const bindings=sandbox.controlBindings().filter(entry=>entry.type==='key_move');
+  if(bindings.length===0)keys.append(createText('span','No keyboard movement declared.','placeholder'));
+  for(const entry of bindings){
+    const button=createText('button',entry.key+' · '+entry.direction,'event');
+    button.type='button';
+    button.addEventListener('click',()=>{
+      try{
+        const intent=sandbox.keyCommand(entry.key);
+        appendTrace();setStatus('Host intent: '+intent.direction+' (not moved)','idle');
+      }catch(error){log.textContent+='\nERROR: '+error.message;setStatus('Control rejected','error');}
+    });
+    keys.append(button);
+  }
+}
+get('thing-select').addEventListener('change',updateGamePanel);
 function updateEvents() {
   events.replaceChildren();
   if (!sandbox) {
@@ -210,7 +284,7 @@ async function execute(mode = 'ir') {
     if(serial!==runSerial)return;
     sandbox=null;compiled=null;activeEngine=null;
     log.textContent='ERROR: '+(error.message||String(error))+
-      (mode==='bsbc' ? '\n\nThe bytecode VM supports Profiles 1 and 2 only. No fallback occurred.' : '');
+      (mode==='bsbc' ? '\n\nThe bytecode VM supports Profiles 1-3 only. No fallback occurred.' : '');
     updateEvents();updateWorld();
     setStatus('Compilation or execution stopped','error');
   } finally {
@@ -327,6 +401,6 @@ get('view-bsbc').addEventListener('click', async () => {
   } catch(error) {
     if(compiled!==snapshot) return;
     bsbcBox.textContent = 'BSBC emission or validation stopped:\n'+error.message+
-      '\n\nOnly the independent Profile 1/2 emitter and loader are implemented. No bytes were executed.';
+      '\n\nOnly the independent Profile 1-3 emitter and loader are implemented. No bytes were executed.';
   }
 });

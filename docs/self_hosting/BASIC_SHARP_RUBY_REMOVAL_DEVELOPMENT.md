@@ -77,3 +77,12 @@ path. The accepted production Ruby pipeline remains the only verified
 reference. No source compilation, runtime testing or binary-parity
 verification occurred. See
 docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_PROFILE2_v0_0_85.md.
+
+## Portable BSBC Profile 3 candidate: interactions
+
+The independent compiler, encoder, strict loader, and bytecode VM
+now contain source for selected Profile 3 game-control, hover and
+context semantics. The official CTRL/HOVR/CTXT sections are used.
+Host-neutral movement intentions are not real movement execution,
+and all source remains untested. Full Ruby removal remains unproven.
+See docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_PROFILE3_v0_0_85.md.

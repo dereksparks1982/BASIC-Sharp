@@ -127,6 +127,7 @@ function reference(input, context, line, binding = null, usage = null) {
   if (shown === 'PLAYER') return {type:'object',text:'player',name:'player',object_kind:'person'};
   if (key === 'player') fail(line, 'The built-in player must be written as PLAYER.');
   if (key === 'it') {
+    if (binding?.context === true) return {type:'context_it',text:'it'};
     if (!binding) fail(line, '"it" needs a WHEN event to establish what it means. Use @Thing.');
     if (binding.objects.length === 1) {
       const selected = context.objects.get(binding.objects[0]);
@@ -312,6 +313,80 @@ function event(input, context, line, binding = null, usage = 'event') {
     action:EVENT.get(norm(words[verbIndex])),
     target:reference(targetText,context,line,binding,usage)};
 }
+// Only the established Profile 3 input and interaction spelling is accepted.
+// This first browser slice does not pretend to implement platform physics.
+function declarationSubject(detail, context, line) {
+  const m=/^for\s+([@#][a-z][a-z0-9 ]*)$/iu.exec(detail);
+  if(!m)fail(line,'HOVER or CONTEXT needs for #Kind or for @Thing.');
+  const ref=m[1].trim();
+  if(ref.startsWith('#')) {
+    const kind=norm(ref.slice(1));
+    if(!context.kinds.has(kind))fail(line,'Unknown declaration Kind #'+kind+'.');
+    return {type:'kind_declaration',text:'#'+kind,kind_name:kind};
+  }
+  return reference(ref,context,line);
+}
+function controlDeclaration(block,context) {
+  if(norm(block.detail)!=='for player'||!block.detail.endsWith('PLAYER')) {
+    fail(block.line,'This portable CONTROLS subset supports for PLAYER only.');
+  }
+  if(block.body.length===0)fail(block.line,'CONTROLS needs at least one instruction.');
+  const instructions=[],keys=new Set(),directions=new Set();
+  for(const row of block.body) {
+    const key=/^([A-Za-z])\s+moves\s+PLAYER\s+(north|south|west|east)$/iu.exec(row.text);
+    if(key) {
+      const letter=key[1].toUpperCase(),direction=norm(key[2]);
+      if(keys.has(letter)||directions.has(direction))fail(row.line,'Repeated key or movement direction in CONTROLS.');
+      keys.add(letter);directions.add(direction);
+      instructions.push({type:'key_move',key:letter,direction,line_number:row.line});continue;
+    }
+    if(row.text==='PLAYER faces mouse pointer') {
+      if(instructions.some(x=>x.type==='face_pointer'))fail(row.line,'Duplicate pointer-facing rule.');
+      instructions.push({type:'face_pointer',line_number:row.line});continue;
+    }
+    if(row.text==='holding right mouse moves PLAYER toward mouse pointer') {
+      if(instructions.some(x=>x.type==='right_mouse_move'))fail(row.line,'Duplicate right-mouse movement rule.');
+      instructions.push({type:'right_mouse_move',line_number:row.line});continue;
+    }
+    fail(row.line,'This Profile 3 subset handles keyboard direction, pointer facing, and right-mouse movement declarations only.');
+  }
+  return {line_number:block.line,
+    subject:reference('PLAYER',context,block.line),instructions};
+}
+function hoverDeclaration(block,context) {
+  const subject=declarationSubject(block.detail,context,block.line);
+  if(block.body.length===0)fail(block.line,'HOVER needs at least one information field.');
+  const allowed=new Set(['name','kind','state','description']);
+  const seen=new Set(),fields=[];
+  for(const row of block.body) {
+    const field=norm(row.text);
+    if(!allowed.has(field))fail(row.line,'Unknown HOVER information "'+row.text+'".');
+    if(seen.has(field))fail(row.line,'Duplicate HOVER field '+field+'.');
+    seen.add(field);fields.push({name:field,line_number:row.line});
+  }
+  return {line_number:block.line,subject,fields};
+}
+function contextDeclaration(block,context) {
+  const subject=declarationSubject(block.detail,context,block.line);
+  if(block.body.length===0)fail(block.line,'CONTEXT needs at least one menu action.');
+  const entries=[],seen=new Set(),binding={context:true};
+  for(const row of block.body) {
+    const match=/^("[^"]*")(?:\s+when\s+(it\s+(?:is|isnt)\s+[a-z][a-z0-9 -]*))?\s+\(([a-z]+)\s+(.+)$/iu.exec(row.text);
+    if(!match)fail(row.line,'CONTEXT needs "Label" [when it is state] (action it ...');
+    const label=textLiteral(match[1],row.line);
+    if(seen.has(label))fail(row.line,'Duplicate CONTEXT label "'+label+'".');
+    seen.add(label);
+    let condition=null;
+    if(match[2]) {
+      const c=/^it\s+(is|isnt)\s+(.+)$/iu.exec(match[2]);
+      if(!c)fail(row.line,'CONTEXT conditions must use it is state or it isnt state.');
+      condition={subject:{type:'context_it',text:'it'},relation:norm(c[1]),value:state(c[2],row.line)};
+    }
+    const resolved=action('|then ('+match[3]+' '+match[4],context,row.line,binding);
+    entries.push({line_number:row.line,label,condition,action:resolved});
+  }
+  return {line_number:block.line,subject,entries};
+}
 function eachCondition(condition, visit) {
   if (condition.connector) condition.clauses.forEach(clause => eachCondition(clause,visit));
   else visit(condition);
@@ -327,6 +402,7 @@ function profileFor(ir) {
     textCondition ||= Object.hasOwn(condition,'text_value');
   });
   if (comparison || actions.some(a => a.action === 'increase' || a.action === 'decrease')) return 5;
+  if (ir.controls.length||ir.hover_declarations.length||ir.context_declarations.length) return 3;
   if (textCondition || ir.facts.some(f => Object.hasOwn(f,'text_value')) ||
       actions.some(a => Object.hasOwn(a,'to_text'))) return 2;
   return 1;
@@ -404,6 +480,15 @@ export function compile(source, {version = '0.0.84'} = {}) {
       previous = {line_number:block.line,if:condition,then};
       ir.if_rules.push(previous); continue;
     }
+    if (block.head === 'CONTROLS') {
+      ir.controls.push(controlDeclaration(block,context));previous=null;continue;
+    }
+    if (block.head === 'HOVER') {
+      ir.hover_declarations.push(hoverDeclaration(block,context));previous=null;continue;
+    }
+    if (block.head === 'CONTEXT') {
+      ir.context_declarations.push(contextDeclaration(block,context));previous=null;continue;
+    }
     if (block.head === 'OTHERWISE') {
       if (!previous) fail(block.line,'OTHERWISE must directly follow one IF and occur only once.');
       const otherwise = block.body.map(row => action(row.text,context,row.line));
@@ -413,6 +498,16 @@ export function compile(source, {version = '0.0.84'} = {}) {
       previous = null; continue;
     }
     fail(block.line,block.head+' is protected BASIC# syntax but is not yet supported in this independent compiler.');
+  }
+  for(const declaration of ir.context_declarations)for(const entry of declaration.entries){
+    const act=entry.action;
+    if(act.value_name) {
+      const kind=Object.hasOwn(act,'to_text')?'text':'number';
+      // A matching value name elsewhere in the document must keep its type.
+      const established=ir.facts.filter(x=>x.relation==='has'&&x.value_name===act.value_name);
+      if(established.some(x=>(Object.hasOwn(x,'text_value')?'text':'number')!==kind))
+        fail(entry.line_number,'CONTEXT action conflicts with the established value type.');
+    }
   }
   validateValueTypes(ir);
   const profile = profileFor(ir);

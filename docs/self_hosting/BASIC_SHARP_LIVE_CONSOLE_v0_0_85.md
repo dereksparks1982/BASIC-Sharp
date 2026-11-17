@@ -101,3 +101,13 @@ values through the encoder, strict loader, and independent bytecode VM:
 START text, text change and text IF equality. Later profiles still error.
 The browser and parity checks have NOT been run. Details:
 BASIC_SHARP_PORTABLE_BSBC_PROFILE2_v0_0_85.md.
+
+## Profile 3 game declarations and interaction panel (source-only)
+
+The console's independent BSBC mode now recognizes a limited set of
+CONTROLS, HOVER and CONTEXT grammar and binary sections. A Profile 3
+example provides a door's hover information, Open/Close/Examine
+context actions, and keyboard movement intent buttons. No rendered
+world or character movement is implied. The original IR interpreter
+does not implement Profile 3 and will fail explicitly. No browser
+testing has occurred. See BASIC_SHARP_PORTABLE_BSBC_PROFILE3_v0_0_85.md.

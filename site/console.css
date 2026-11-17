@@ -50,3 +50,15 @@ footer{text-align:center;padding:30px 8px 6px;color:#8a838e;font-size:.77rem}
 /* Inspection tools keep the code/editor space usable on narrow screens. */
 .inspection-buttons{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
 @media(max-width:540px){.inspection-buttons{width:100%}}
+
+/* Profile 3 live interaction controls */
+.game-panel{padding:14px 20px 19px;border-top:1px solid #39323b;border-bottom:1px solid #39323b}
+.game-panel h3{font-size:.93rem;margin:2px 0 8px}
+.game-panel .muted{font-size:.78rem;color:#aba0ac;line-height:1.5;margin:0 0 12px}
+.game-panel label{font-size:.77rem;margin-right:8px}
+.game-panel select{max-width:100%;min-width:180px}
+.game-group{margin-top:14px}
+.game-group strong{display:block;font-size:.8rem;margin-bottom:8px}
+.game-details{display:flex;flex-direction:column;gap:5px;font-size:.78rem;color:#dccfd7;overflow-wrap:anywhere}
+.game-choices{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.game-choices .event{padding:8px 11px}
