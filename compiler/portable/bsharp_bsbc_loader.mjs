@@ -1,29 +1,33 @@
-// BASIC# Ruby-independent BSBC Profile 1 structural loader.
+// BASIC# Ruby-independent BSBC Profiles 1 and 2 structural loader.
 // Source-only v0.0.85 candidate. Parses and validates but NEVER executes code.
-// Higher profiles fail closed until all their distinct contracts are implemented.
+// Profiles 3-7 fail closed until their distinct contracts are implemented.
 export class BSBCLoadError extends Error {
   constructor(message) { super('BSBC rejected: '+message);this.name='BSBCLoadError'; }
 }
 const reject=message=>{throw new BSBCLoadError(message);};
 const ORDER=['STRS','META','KIND','THNG','STRT','EVNT','IFRL','CODE'];
 const NONE=0xffffffff,MAX=2147483647,MAX_BYTES=64*1024*1024;
-const ID=['bsharp.bytecode.v1','bsharp.meaning.v1','sha256-bsir-meaning-v1'];
+const IDENTITIES={1:['bsharp.bytecode.v1','bsharp.meaning.v1','sha256-bsir-meaning-v1'],
+  2:['bsharp.bytecode.v2','bsharp.meaning.v2','sha256-bsir-meaning-v2']};
 const CODE={
   0x10:['START_STATE',3,'start'],
   0x11:['START_RELATION',3,'start'],
   0x12:['START_VALUE',3,'start'],
+  0x13:['START_TEXT_VALUE',3,'start'],
   0x20:['DAMAGE',3,'action'],
   0x21:['CHANGE_STATE',4,'action'],
   0x22:['CHANGE_VALUE',4,'action'],
   0x23:['CARRY',2,'action'],
   0x24:['UNLOCK',2,'action'],
-  0x25:['CAUSE_EVENT',5,'action']
+  0x25:['CAUSE_EVENT',5,'action'],
+  0x26:['CHANGE_TEXT_VALUE',4,'action']
 };
 const CONDITION={
   0x30:['STATE_IS',2],
   0x31:['STATE_ISNT',2],
   0x32:['RELATION_EXISTS',3],
-  0x33:['VALUE_EQUALS',3]
+  0x33:['VALUE_EQUALS',3],
+  0x34:['TEXT_VALUE_EQUALS',3]
 };
 const SELECTOR={
   1:'EXACT_THING',2:'ONE_KIND',3:'BOUND_THAT_KIND',4:'EVERY_KIND',255:'NO_REFERENCE'
@@ -50,7 +54,7 @@ function ensure(bytes,offset,size,where,end=bytes.length) {
      end>bytes.length||offset>end||size>end-offset)reject('truncated '+where+'.');
 }
 const whole=(v,label,min=0)=>{if(!Number.isInteger(v)||v<min||v>MAX)reject(label+' exceeds permitted whole-number range.');};
-export function loadProfile1(input,{expectedFingerprint=null}={}) {
+function loadWithProfile(input,{expectedFingerprint=null,requiredProfile=null}={}) {
   const bytes=asUint8Array(input),dv=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
   const u32=(offset)=>{ensure(bytes,offset,4,'u32');return dv.getUint32(offset,true);};
   const u16=(offset)=>{ensure(bytes,offset,2,'u16');return dv.getUint16(offset,true);};
@@ -58,7 +62,10 @@ export function loadProfile1(input,{expectedFingerprint=null}={}) {
   if(bytes.length<160)reject('header or section directory is truncated.');
   if(ascii(bytes,0,4)!=='BSBC')reject('wrong four-byte BSBC magic.');
   if(u16(4)!==1)reject('unsupported binary format version.');
-  if(u16(6)!==1)reject('only BSBC Profile 1 is currently supported.');
+  const version=u16(6);
+  if(!IDENTITIES[version])reject('only BSBC Profiles 1 and 2 are currently supported.');
+  if(requiredProfile!==null&&version!==requiredProfile)reject('expected BSBC Profile '+requiredProfile+', received '+version+'.');
+  const ID=IDENTITIES[version];
   if(u32(8)!==32||u32(12)!==8||u32(16)!==32||u32(20)!==16)reject('invalid header or section directory layout.');
   if(u32(24)!==bytes.length)reject('declared file size disagrees with bytes.');
   if(u32(28)!==0)reject('nonzero reserved header field.');
@@ -154,6 +161,9 @@ export function loadProfile1(input,{expectedFingerprint=null}={}) {
     if(reserved!==0)reject('nonzero '+context+' reserved instruction field.');
     const table=context==='condition'?CONDITION:CODE,def=table[opcode];
     if(!def||def[1]!==count)reject('unknown '+context+' opcode or wrong operand count: '+opcode+'.');
+    if(version===1 && ['START_TEXT_VALUE','CHANGE_TEXT_VALUE','TEXT_VALUE_EQUALS'].includes(def[0])) {
+      reject('Profile 2 text instruction '+def[0]+' cannot occur in Profile 1 bytecode.');
+    }
     if(context!=='condition' && def[2]!==context)reject('opcode '+def[0]+' is not allowed in '+context+'.');
     const finish=offset+4+count*4;
     checked(offset,4+count*4,context+' record',end);
@@ -168,6 +178,10 @@ export function loadProfile1(input,{expectedFingerprint=null}={}) {
       case 'START_STATE':stringIndex(a[1]);optionalString(a[2]);break;
       case 'START_RELATION':stringIndex(a[1]);thingIndex(a[2]);break;
       case 'START_VALUE':stringIndex(a[1]);whole(a[2],'START_VALUE');break;
+      case 'START_TEXT_VALUE':
+        stringIndex(a[1]);stringIndex(a[2]);
+        if(strings[a[1]]==='damage')reject('damage cannot be a text value.');
+        break;
       default:reject('invalid START opcode.');
     }
   }
@@ -175,6 +189,7 @@ export function loadProfile1(input,{expectedFingerprint=null}={}) {
     const a=r.operands;thingIndex(a[0]);stringIndex(a[1]);
     if(r.name==='RELATION_EXISTS')thingIndex(a[2]);
     if(r.name==='VALUE_EQUALS')whole(a[2],'VALUE_EQUALS');
+    if(r.name==='TEXT_VALUE_EQUALS')stringIndex(a[2]);
   }
   function validateAction(r) {
     const a=r.operands;
@@ -185,6 +200,10 @@ export function loadProfile1(input,{expectedFingerprint=null}={}) {
     if(r.name==='DAMAGE')whole(a[2],'DAMAGE',1);
     if(r.name==='CHANGE_STATE'){stringIndex(a[2]);optionalString(a[3]);}
     if(r.name==='CHANGE_VALUE'){stringIndex(a[2]);whole(a[3],'CHANGE_VALUE');}
+    if(r.name==='CHANGE_TEXT_VALUE'){
+      stringIndex(a[2]);stringIndex(a[3]);
+      if(strings[a[2]]==='damage')reject('damage cannot store text.');
+    }
   }
   const starts=[],start=region('STRT');
   cursor=start.offset;
@@ -253,33 +272,76 @@ export function loadProfile1(input,{expectedFingerprint=null}={}) {
     switch(r.name) {
       case 'START_STATE':mark(a[1]);optionalMark(a[2]);break;
       case 'START_RELATION':case 'START_VALUE':mark(a[1]);break;
+      case 'START_TEXT_VALUE':mark(a[1]);mark(a[2],'literal');break;
       case 'CHANGE_STATE':mark(a[2]);optionalMark(a[3]);break;
       case 'CHANGE_VALUE':mark(a[2]);break;
+      case 'CHANGE_TEXT_VALUE':mark(a[2]);mark(a[3],'literal');break;
       case 'CAUSE_EVENT':mark(a[2]);break;
     }
   }
   for(const r of starts)markInstruction(r);
   for(const e of events)mark(e.actionStringIndex);
-  for(const r of ifRules)mark(r.condition.operands[1]);
+  for(const r of ifRules) {
+    mark(r.condition.operands[1]);
+    if(r.condition.name==='TEXT_VALUE_EQUALS')mark(r.condition.operands[2],'literal');
+  }
   for(const b of blocks)for(const r of b.instructions)markInstruction(r);
   if(used.length!==strings.length||used.some((i,n)=>i!==n))reject('STRS contains unused entries or noncanonical first-use order.');
   for(let i=0;i<strings.length;i++){
     if(roles[i].has('identifier')&&strings[i]!==normalized(strings[i]))reject('noncanonical identifier string at STRS #'+i+'.');
   }
-  // Profile 1 value contracts: whole numbers only, with no duplicate STARTs.
-  const startAssignments=new Set(),types=new Map([['damage','number']]);
-  for(const r of starts)if(r.name==='START_VALUE'){
-    const key=r.operands[0]+':'+r.operands[1];
-    if(startAssignments.has(key))reject('duplicate starting number assignment.');
-    startAssignments.add(key);types.set(strings[r.operands[1]],'number');
+  // Exact creator text remains case-sensitive; do not normalize literal roles.
+  for(let i=0;i<strings.length;i++) {
+    const literal=roles[i].has('literal');
+    if(literal && (strings[i].includes('\n')||strings[i].includes('\r')||
+       strings[i].includes('\\')||strings[i].includes('#{')||strings[i].includes('"'))) {
+      reject('invalid Profile 2 creator text literal at STRS #'+i+'.');
+    }
   }
+  // Match the Ruby loader's global value-name type contract, not merely
+  // the individual Thing's value. One name cannot be text and a number.
+  const schemas=new Map([['damage','number']]),assigned=new Set();
+  function rememberType(valueIndex,type,where) {
+    const name=strings[valueIndex];
+    if(!/^[a-z][a-z0-9]*$/u.test(name))reject('invalid value name at '+where+'.');
+    if(schemas.has(name)&&schemas.get(name)!==type) {
+      reject(where+' uses '+name+' as '+type+' but the established type is '+schemas.get(name)+'.');
+    }
+    schemas.set(name,type);
+  }
+  for(const r of starts)if(r.name==='START_VALUE'||r.name==='START_TEXT_VALUE') {
+    const a=r.operands,key=a[0]+':'+a[1];
+    if(assigned.has(key))reject('duplicate starting value assignment.');
+    assigned.add(key);
+    rememberType(a[1],r.name==='START_TEXT_VALUE'?'text':'number',r.name);
+  }
+  for(const rule of ifRules) {
+    const r=rule.condition;
+    if(r.name==='VALUE_EQUALS'||r.name==='TEXT_VALUE_EQUALS') {
+      rememberType(r.operands[1],r.name==='TEXT_VALUE_EQUALS'?'text':'number',r.name);
+    }
+  }
+  for(const block of blocks)for(const r of block.instructions) {
+    if(r.name==='CHANGE_VALUE'||r.name==='CHANGE_TEXT_VALUE') {
+      rememberType(r.operands[2],r.name==='CHANGE_TEXT_VALUE'?'text':'number',r.name);
+    }
+  }
+  const usesText=starts.some(r=>r.name==='START_TEXT_VALUE')||
+    ifRules.some(r=>r.condition.name==='TEXT_VALUE_EQUALS')||
+    blocks.some(block=>block.instructions.some(r=>r.name==='CHANGE_TEXT_VALUE'));
+  if(version===2&&!usesText)reject('BSBC Profile 2 requires at least one creator-facing text value.');
   const result={
     format:'bsharp.bytecode.bin',
     profile:ID[0],meaningProfile:ID[1],fingerprintAlgorithm:ID[2],fingerprint,
     byteLength:bytes.length,sections:directory,strings,kinds,things,
     startRecords:starts,events,ifRules,blocks,
     instructionCount:blocks.reduce((sum,b)=>sum+b.instructions.length,0),
-    validation:'Profile 1 structural parse complete; binary not executed'
+    validation:'Profile '+version+' structural parse complete; binary not executed'
   };
   return result;
 }
+
+// The named Profile APIs are strict and never accept a different header version.
+export function loadProfile1(bytes, options={}) {return loadWithProfile(bytes,{...options,requiredProfile:1});}
+export function loadProfile2(bytes, options={}) {return loadWithProfile(bytes,{...options,requiredProfile:2});}
+export function loadBSBC(bytes, options={}) {return loadWithProfile(bytes,options);}

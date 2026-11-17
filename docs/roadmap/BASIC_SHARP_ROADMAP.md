@@ -1,5 +1,34 @@
 # BASIC# Roadmap
 
+## v0.0.85 candidate: independent BSBC Profile 2 exact-text execution
+
+The Ruby-independent browser-native BSBC emitter, strict binary loader, and
+bytecode VM now contain source for Profile 2. The original Profile 1 code
+path remains independently callable and version-strict. The Profile 2
+contract adds START_TEXT_VALUE (0x13), CHANGE_TEXT_VALUE (0x26), and
+TEXT_VALUE_EQUALS (0x34), the original Profile 2 identity strings and
+header version, literal-vs-identifier string roles, and text/number value
+type checks. Creator-facing quoted text retains exact capitalization,
+spacing, punctuation and UTF-8 while unsupported escapes/interpolation
+are rejected rather than rewritten.
+
+The Live Console's Execute BSBC and Inspect BSBC paths now automatically
+select Profile 1 or 2 from the meaning profile; unsupported Profiles 3-7
+fail visibly without a fallback to the IR sandbox. Future regression source
+tests cover Profile 2 round-trip records, exact text, reactive IF, Kind-set
+updates, bytecode rejection and Profile 1 regression boundaries.
+
+This is **untested, uncompiled, unaccepted source-only development**.
+The accepted v0.0.84 production compiler and Ruby VM remain unchanged,
+and the experimental path does not establish complete bytecode parity
+or full removal of Ruby. No tests, GitHub Actions, installer, downloads,
+SSH or branches beyond main were used.
+
+Technical record: docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_PROFILE2_v0_0_85.md.
+Next: Profile 2 semantic and binary-parity audit, then Profile 3
+game-input bytecode with strict versioned compatibility.
+
+
 ## v0.0.85 candidate: independent BSBC Profile 1 bytecode VM
 
 The portable source-only path now includes compiler/portable/bsharp_bsbc_vm.mjs.

@@ -18,7 +18,7 @@
     <div class="header-right"><span class="badge">Browser sandbox · v0.0.85 development</span><a href="https://github.com/dereksparks1982/BASIC-Sharp#readme">Project README ↗</a></div>
   </header>
   <main class="shell">
-    <div class="notice" role="note"><strong>Experimental BASIC# execution.</strong> Choose the browser IR sandbox or the independent <strong>BSBC Profile 1</strong> bytecode virtual machine. Both support limited language subsets. The BSBC engine executes actual validated bytecode, not the full BASIC# language. Unsupported programs stop with an explanation; no silent fallback to another engine.</div>
+    <div class="notice" role="note"><strong>Experimental BASIC# execution.</strong> Choose the browser IR sandbox or the independent <strong>BSBC Profiles 1 and 2</strong> bytecode virtual machine. Both support limited language subsets. The BSBC engine executes validated bytecode for supported instructions, including exact quoted text values, not the full BASIC# language. Unsupported programs stop with an explanation; no silent fallback to another engine.</div>
     <div class="layout">
       <section class="panel editor-panel" aria-labelledby="editor-title">
         <div class="panel-heading">
@@ -39,7 +39,7 @@
         <textarea id="source" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-describedby="editor-help"></textarea>
         <div class="actionbar">
           <button id="execute" class="button primary" type="button">▶ Execute</button>
-          <button id="execute-bsbc" class="button" type="button" title="Build and execute the supported BASIC# Profile 1 bytecode in the browser">▶ Execute BSBC</button>
+          <button id="execute-bsbc" class="button" type="button" title="Build and execute supported BASIC# Profiles 1 or 2 bytecode in the browser">▶ Execute BSBC</button>
           <button id="reset" class="button" type="button" disabled>↻ Reset world</button>
           <button id="restore" class="button subtle" type="button">Restore example</button>
           <span class="hint" id="editor-help">Ctrl+Enter: IR sandbox · Execute BSBC: bytecode VM</span>

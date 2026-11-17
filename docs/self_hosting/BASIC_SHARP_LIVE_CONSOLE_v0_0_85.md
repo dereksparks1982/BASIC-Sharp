@@ -92,3 +92,12 @@ real BSBC, validates its structure and expected meaning fingerprint, and
 executes the decoded bytecode's START, WHEN, IF and CODE records. The
 binary VM is experimental, not tested, and higher profiles are rejected.
 See BASIC_SHARP_PORTABLE_BSBC_VM_v0_0_85.md.
+
+## Independent Profile 2 BSBC support (unaccepted source candidate)
+
+The Execute BSBC and Inspect BSBC controls now select the real Profile 1 or
+Profile 2 binary format from source meaning. Profile 2 carries exact text
+values through the encoder, strict loader, and independent bytecode VM:
+START text, text change and text IF equality. Later profiles still error.
+The browser and parity checks have NOT been run. Details:
+BASIC_SHARP_PORTABLE_BSBC_PROFILE2_v0_0_85.md.

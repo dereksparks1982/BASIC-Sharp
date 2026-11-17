@@ -68,3 +68,12 @@ Profile 1 emitter and loader. This is an actual independent execution
 component, not a complete Ruby replacement. It remains untested and
 does not implement Profiles 2-7. See
 docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_VM_v0_0_85.md.
+
+## Profile 2: Ruby-independent text bytecode candidate
+
+The separate JS compiler path now contains BSBC Profile 2 text-value
+emission, binary loading and VM execution in addition to its Profile 1
+path. The accepted production Ruby pipeline remains the only verified
+reference. No source compilation, runtime testing or binary-parity
+verification occurred. See
+docs/self_hosting/BASIC_SHARP_PORTABLE_BSBC_PROFILE2_v0_0_85.md.

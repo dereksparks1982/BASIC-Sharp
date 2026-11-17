@@ -1,8 +1,8 @@
-// BASIC# portable BSBC Profile 1 execution engine.
-// Unaccepted v0.0.85 candidate: executes validated Profile 1 bytecode only.
+// BASIC# portable BSBC Profile 1 and Profile 2 execution engine.
+// Unaccepted v0.0.85 candidate: executes validated Profile 1/2 bytecode only.
 // No Ruby, eval, network requests, arbitrary JavaScript execution or BSIR fallback.
 // This class deliberately takes binary bytes, not an unvalidated model.
-import {loadProfile1} from './bsharp_bsbc_loader.mjs';
+import {loadBSBC} from './bsharp_bsbc_loader.mjs';
 
 export class BSBCVMError extends Error {
   constructor(message) { super(message); this.name = 'BSBCVMError'; }
@@ -42,9 +42,9 @@ function asName(value) {
 }
 
 export class BSharpBytecodeVM {
-  // Construct only from binary; loadProfile1 validates all sections/operands.
+  // Construct only from binary; loadBSBC validates all sections/operands.
   constructor(bytes, {expectedFingerprint=null}={}) {
-    this.program = loadProfile1(bytes,{expectedFingerprint});
+    this.program = loadBSBC(bytes,{expectedFingerprint});
     this.thingIndexes = new Map(this.program.things.map((thing,index)=>[thing.name,index]));
     this.kindIndexes = new Map(this.program.kinds.map((kind,index)=>[kind.name,index]));
     this.reset();
@@ -99,10 +99,17 @@ export class BSharpBytecodeVM {
           target.values[this.string(o[1])]=o[2];
           this.trace.push('START: '+target.name+' has '+o[2]+' '+this.string(o[1]));
           break;
+        case 'START_TEXT_VALUE': {
+          const name=this.string(o[1]),text=this.string(o[2]);
+          if(name==='damage')fail('Damage must remain a whole-number value.');
+          target.values[name]=text;
+          this.trace.push('START: '+target.name+' has '+JSON.stringify(text)+' '+name);
+          break;
+        }
         default:fail('Unsupported START opcode '+record.name+'.');
       }
     }
-    this.trace.push('START finished using BSBC Profile 1.');
+    this.trace.push('START finished using '+this.program.profile+'.');
     this.settle('START');
     this.drainFollowUps();
     return this.snapshot();
@@ -278,11 +285,15 @@ export class BSharpBytecodeVM {
         if(current>MAX-op[2])fail(this.thing(index).name+' damage would exceed '+MAX+'.');
       }
     }
-    if(instruction.name==='CHANGE_VALUE') {
+    if(instruction.name==='CHANGE_VALUE'||instruction.name==='CHANGE_TEXT_VALUE') {
       const value=this.string(op[2]);
+      const expectedType=instruction.name==='CHANGE_TEXT_VALUE'?'string':'number';
       for(const index of targets) {
         const thing=this.thing(index),current=thing.values[value];
-        if(!Number.isSafeInteger(current))fail(thing.name+' has no established whole-number '+value+' value.');
+        if(typeof current!==expectedType||
+          (expectedType==='number'&&!Number.isSafeInteger(current))) {
+          fail(thing.name+' has no established '+(expectedType==='string'?'text':'whole-number')+' '+value+' value.');
+        }
       }
     }
   }
@@ -335,6 +346,13 @@ export class BSharpBytecodeVM {
         this.trace.push('(change '+value+' of '+thing.name+' to '+next);
         return;
       }
+      case 'CHANGE_TEXT_VALUE': {
+        const value=this.string(o[2]),next=this.string(o[3]);
+        if(value==='damage')fail('Damage cannot store text.');
+        thing.values[value]=next;
+        this.trace.push('(change '+value+' of '+thing.name+' to '+JSON.stringify(next));
+        return;
+      }
       case 'CARRY': {
         delete thing.relations.on;delete thing.relations.in;
         thing.relations['carried by']=actorIndex===null?'player':this.thing(actorIndex).name;
@@ -356,6 +374,7 @@ export class BSharpBytecodeVM {
       case 'STATE_ISNT':return !thing.states.has(this.string(o[1]));
       case 'RELATION_EXISTS':return thing.relations[this.string(o[1])]===this.thing(o[2]).name;
       case 'VALUE_EQUALS':return thing.values[this.string(o[1])]===o[2];
+      case 'TEXT_VALUE_EQUALS':return thing.values[this.string(o[1])]===this.string(o[2]);
       default:fail('Unsupported BSBC condition '+condition.name+'.');
     }
   }

@@ -1,7 +1,7 @@
 import {compile} from '../compiler/portable/bsharp_compiler.mjs';
 import {BSharpSandbox} from '../compiler/portable/bsharp_sandbox.mjs';
-import {encodeProfile1, hexView} from '../compiler/portable/bsharp_bsbc_encoder.mjs';
-import {loadProfile1} from '../compiler/portable/bsharp_bsbc_loader.mjs';
+import {encodeBSBC, hexView} from '../compiler/portable/bsharp_bsbc_encoder.mjs';
+import {loadBSBC} from '../compiler/portable/bsharp_bsbc_loader.mjs';
 import {BSharpBytecodeVM} from '../compiler/portable/bsharp_bsbc_vm.mjs';
 
 const examples = {
@@ -186,7 +186,7 @@ async function execute(mode = 'ir') {
     const ir=compile(source);
     let vm;
     if(mode==='bsbc') {
-      const artifact=await encodeProfile1(ir);
+      const artifact=await encodeBSBC(ir);
       // Constructor is a strict loader boundary: it takes binary, not IR.
       vm=new BSharpBytecodeVM(artifact.bytes,{expectedFingerprint:artifact.fingerprint});
     } else {
@@ -205,12 +205,12 @@ async function execute(mode = 'ir') {
     for(const id of ['reset','view-ir','view-bsbc','run-event'])get(id).disabled=false;
     irBox.textContent=JSON.stringify(compiled,null,2);
     appendTrace();updateEvents();updateWorld();
-    setStatus(mode==='bsbc' ? 'BSBC Profile 1 VM running' : 'Browser IR sandbox running','ok');
+    setStatus(mode==='bsbc' ? vm.program.profile+' VM running' : 'Browser IR sandbox running','ok');
   } catch(error) {
     if(serial!==runSerial)return;
     sandbox=null;compiled=null;activeEngine=null;
     log.textContent='ERROR: '+(error.message||String(error))+
-      (mode==='bsbc' ? '\n\nThe bytecode VM supports only Profile 1. No fallback occurred.' : '');
+      (mode==='bsbc' ? '\n\nThe bytecode VM supports Profiles 1 and 2 only. No fallback occurred.' : '');
     updateEvents();updateWorld();
     setStatus('Compilation or execution stopped','error');
   } finally {
@@ -298,14 +298,14 @@ get('view-bsbc').addEventListener('click', async () => {
   }
   bsbcBox.hidden = false;
   get('view-bsbc').textContent = 'Hide BSBC';
-  bsbcBox.textContent = 'Preparing Profile 1 BSBC bytes for inspection...';
+  bsbcBox.textContent = 'Preparing BSBC bytes for inspection...';
   const snapshot = compiled;
   try {
-    const artifact = await encodeProfile1(snapshot);
+    const artifact = await encodeBSBC(snapshot);
     if(compiled!==snapshot) return;
-    // Inspect only bytes that survive an independent, complete Profile 1 parse.
+    // Inspect only bytes that survive the independent strict binary parser.
     // A matching fingerprint does not itself make unknown binary code executable.
-    const loaded = loadProfile1(artifact.bytes,{expectedFingerprint:artifact.fingerprint});
+    const loaded = loadBSBC(artifact.bytes,{expectedFingerprint:artifact.fingerprint});
     if(compiled!==snapshot) return;
     const table = loaded.sections.map(section =>
       section.id.padEnd(4)+'  offset '+String(section.offset).padStart(6)+
@@ -327,6 +327,6 @@ get('view-bsbc').addEventListener('click', async () => {
   } catch(error) {
     if(compiled!==snapshot) return;
     bsbcBox.textContent = 'BSBC emission or validation stopped:\n'+error.message+
-      '\n\nOnly the independent Profile 1 emitter/loader are implemented. No bytes were executed.';
+      '\n\nOnly the independent Profile 1/2 emitter and loader are implemented. No bytes were executed.';
   }
 });

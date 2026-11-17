@@ -1,12 +1,11 @@
-// BASIC# portable BSBC Profile 1 binary emitter (development candidate).
+// BASIC# portable BSBC Profile 1 + Profile 2 binary emitter (development candidate).
 // Produces the established BSBC container, not an alternative JSON format.
 // Independent of Ruby. No code is executed: this module only serializes resolved IR.
-// Profiles 2-7 MUST be rejected until their full contracts are implemented.
+// Profiles 3-7 MUST be rejected until their full contracts are implemented.
 const ORDER = ['STRS','META','KIND','THNG','STRT','EVNT','IFRL','CODE'];
 const NONE = 0xffffffff, MAX = 2147483647;
-const PROFILE = 'bsharp.bytecode.v1';
-const MEANING = 'bsharp.meaning.v1';
-const FINGERPRINT = 'sha256-bsir-meaning-v1';
+const PROFILES = Object.freeze({1:['bsharp.bytecode.v1','bsharp.meaning.v1','sha256-bsir-meaning-v1'],
+  2:['bsharp.bytecode.v2','bsharp.meaning.v2','sha256-bsir-meaning-v2']});
 const MAGIC = [66,83,66,67];
 const SELECTOR = Object.freeze({object:1,kind_one:2,kind:2,previous:3,kind_set:4});
 const OPPOSITE = Object.freeze({
@@ -16,10 +15,10 @@ const OPPOSITE = Object.freeze({
   carried:'dropped',dropped:'carried',broken:'whole',whole:'broken',on:'off',off:'on'
 });
 const OP = Object.freeze({
-  START_STATE:0x10,START_RELATION:0x11,START_VALUE:0x12,
+  START_STATE:0x10,START_RELATION:0x11,START_VALUE:0x12,START_TEXT_VALUE:0x13,
   DAMAGE:0x20,CHANGE_STATE:0x21,CHANGE_VALUE:0x22,CARRY:0x23,
-  UNLOCK:0x24,CAUSE_EVENT:0x25,STATE_IS:0x30,STATE_ISNT:0x31,
-  RELATION_EXISTS:0x32,VALUE_EQUALS:0x33
+  UNLOCK:0x24,CAUSE_EVENT:0x25,CHANGE_TEXT_VALUE:0x26,STATE_IS:0x30,STATE_ISNT:0x31,
+  RELATION_EXISTS:0x32,VALUE_EQUALS:0x33,TEXT_VALUE_EQUALS:0x34
 });
 const textEncoder = new TextEncoder();
 const norm = value => String(value ?? '').trim().toLowerCase().replace(/\s+/gu,' ');
@@ -78,32 +77,75 @@ export async function meaningFingerprint(ir) {
   const digest=await globalThis.crypto.subtle.digest('SHA-256',bytesForText(JSON.stringify(meaningCanonical(source))));
   return new Uint8Array(digest);
 }
-function assertProfile1(ir) {
-  if(!ir||ir.format!=='bsir.debug.json')no('BSBC expects resolved BSharp IR.');
-  if(ir.meaning_profile && ir.meaning_profile!==MEANING) {
-    no('This first portable BSBC emitter supports Profile 1 only. '+ir.meaning_profile+' requires a later encoder.');
+function textLiteral(value,where) {
+  if(typeof value!=='string'||value.includes('\n')||value.includes('\r')||
+     value.includes('\\')||value.includes('#{')||value.includes('"')) {
+    no(where+' contains an unsupported text escape, quote, interpolation or newline.');
   }
-  if(records(ir.diagnostics).some(x=>x.severity==='error'||x.severity==='warning'))no('BSBC will not encode IR containing errors or warnings.');
+  return value; // preserve exact creator-facing spaces, punctuation and capitalization
+}
+function assertProfile(ir,version) {
+  const expected = PROFILES[version];
+  if(!expected)no('This independent emitter implements BSBC Profiles 1 and 2 only.');
+  if(!ir||ir.format!=='bsir.debug.json')no('BSBC expects resolved BSharp IR.');
+  const declared=ir.meaning_profile||'bsharp.meaning.v1';
+  if(declared!==expected[1]) {
+    no('BSBC Profile '+version+' requires '+expected[1]+', not '+declared+'.');
+  }
+  if(records(ir.diagnostics).some(x=>x.severity==='error'||x.severity==='warning'))
+    no('BSBC will not encode IR containing errors or warnings.');
   for(const name of ['controls','hover_declarations','context_declarations']) {
     if(records(ir[name]).length)no(name+' needs a higher bytecode profile.');
   }
-  for(const fact of records(ir.facts))if(has(fact,'text_value'))no('Text values require BSBC Profile 2.');
+  const actions=[...records(ir.events).flatMap(x=>records(x.then)),
+    ...records(ir.if_rules).flatMap(x=>[...records(x.then),...records(x.otherwise)])];
+  const conditions=records(ir.if_rules).map(x=>x.if);
+  const usesText=records(ir.facts).some(x=>has(x,'text_value'))||
+    conditions.some(x=>has(x||{},'text_value'))||
+    actions.some(x=>has(x,'to_text'));
+  if(version===1&&usesText)no('Text values require BSBC Profile 2.');
+  if(version===2&&!usesText)no('BSBC Profile 2 requires a creator-facing text value.');
   for(const rule of records(ir.if_rules)) {
     if(has(rule,'otherwise'))no('OTHERWISE requires BSBC Profile 7.');
     if(rule.if?.connector)no('Compound IF requires BSBC Profile 6.');
-    if(has(rule.if||{},'text_value'))no('Text IF requires BSBC Profile 2.');
-    if(rule.if?.comparison && rule.if.comparison!=='equals')no('Threshold IF requires BSBC Profile 5.');
+    if(rule.if?.comparison && rule.if.comparison!=='equals')
+      no('Threshold IF requires BSBC Profile 5.');
   }
-  for(const action of [...records(ir.events).flatMap(x=>records(x.then)),
-    ...records(ir.if_rules).flatMap(x=>records(x.then))]) {
-    if(['increase','decrease'].includes(action.action))no('Numeric changes require BSBC Profile 5.');
-    if(has(action,'to_text'))no('Text changes require BSBC Profile 2.');
+  for(const action of actions) {
+    if(['increase','decrease'].includes(action.action))
+      no('Numeric changes require BSBC Profile 5.');
+  }
+  // Independent Profile 2 typed-value validation for IR clients, separate
+  // from creator-source checks in the portable front end.
+  const kinds=new Map([['damage','number']]);
+  const remember=(name,kind)=>{
+    if(typeof name!=='string'||!/^[a-z][a-z0-9]*$/u.test(name))no('Invalid value name in BSIR.');
+    if(kinds.has(name)&&kinds.get(name)!==kind)no('BSBC value '+name+' mixes text and whole-number types.');
+    kinds.set(name,kind);
+  };
+  const starts=new Set();
+  for(const fact of records(ir.facts))if(fact.relation==='has') {
+    const key=String(fact.subject?.name)+':'+String(fact.value_name);
+    if(starts.has(key))no('Duplicate START assignment of '+fact.value_name+'.');
+    starts.add(key);
+    const isText=has(fact,'text_value');
+    remember(fact.value_name,isText?'text':'number');
+    if(isText)textLiteral(fact.text_value,'START text value');
+  }
+  for(const cond of conditions)if(cond?.relation==='has') {
+    remember(cond.value_name,has(cond,'text_value')?'text':'number');
+    if(has(cond,'text_value'))textLiteral(cond.text_value,'IF text value');
+  }
+  for(const action of actions)if(action.value_name) {
+    remember(action.value_name,has(action,'to_text')?'text':'number');
+    if(has(action,'to_text'))textLiteral(action.to_text,'Changed text value');
   }
 }
 // Builds all binary sections with the same semantic traversal and first-use
 // string interning rules as SmallCompilerSubsetBSBCEncoder (Ruby referee).
-export async function encodeProfile1(ir) {
-  assertProfile1(ir);
+async function encodeWithProfile(ir, version) {
+  assertProfile(ir,version);
+  const [PROFILE,MEANING,FINGERPRINT]=PROFILES[version];
   const fingerprint=await meaningFingerprint(ir);
   if(fingerprint.length!==32)no('BSBC fingerprint must be exactly 32 bytes.');
   const strings=[],indexes=new Map();
@@ -180,7 +222,9 @@ export async function encodeProfile1(ir) {
         return rec(OP.START_STATE,[owner,intern(value),OPPOSITE[value]?intern(OPPOSITE[value]):NONE]);
       }
       case 'has':
-        if(has(fact,'text_value'))no('Text values require Profile 2.');
+        if(has(fact,'text_value')) {
+          return rec(OP.START_TEXT_VALUE,[owner,intern(norm(fact.value_name)),intern(textLiteral(fact.text_value,'START text value'))]);
+        }
         return rec(OP.START_VALUE,[owner,intern(norm(fact.value_name)),whole(fact.amount,'START value')]);
       default:
         if(!fact.target)no('Relation START requires a resolved target.');
@@ -202,7 +246,10 @@ export async function encodeProfile1(ir) {
         [owner,intern(stateName(condition.value,'IF'))]);
     }
     if(condition.relation==='has') {
-      if(has(condition,'text_value'))no('Text IF requires Profile 2.');
+      if(has(condition,'text_value')) {
+        return rec(OP.TEXT_VALUE_EQUALS,[owner,intern(norm(condition.value_name)),
+          intern(textLiteral(condition.text_value,'IF text value'))]);
+      }
       if(condition.comparison && condition.comparison!=='equals')no('Threshold IF requires Profile 5.');
       return rec(OP.VALUE_EQUALS,[owner,intern(norm(condition.value_name)),whole(condition.amount,'IF value')]);
     }
@@ -224,7 +271,10 @@ export async function encodeProfile1(ir) {
       case 'damage':return rec(OP.DAMAGE,[sel,ref,whole(action.amount ?? 1,'Damage',1)]);
       case 'change': {
         if(action.value_name) {
-          if(has(action,'to_text'))no('Text changes require Profile 2.');
+          if(has(action,'to_text')) {
+            return rec(OP.CHANGE_TEXT_VALUE,[sel,ref,intern(norm(action.value_name)),
+              intern(textLiteral(action.to_text,'Changed text value'))]);
+          }
           return rec(OP.CHANGE_VALUE,[sel,ref,intern(norm(action.value_name)),whole(action.to_amount,'Value assignment')]);
         }
         const value=stateName(action.to,'Change action');
@@ -273,13 +323,22 @@ export async function encodeProfile1(ir) {
     payload.push(data);at+=data.length;
   }
   const directory=join(...sectionDirectory.map(row=>join(bytesForText(row.id),pack32(row.offset,row.length,row.count))));
-  const header=join(Uint8Array.from(MAGIC),pack16(1),pack16(1),pack32(32,ORDER.length,32,16,at,0));
+  const header=join(Uint8Array.from(MAGIC),pack16(1),pack16(version),pack32(32,ORDER.length,32,16,at,0));
   const bytes=join(header,directory,...payload);
   if(header.length!==32||directory.length!==128||bytes.length!==at)no('BSBC header or section size mismatch.');
   return {bytes,profile:PROFILE,meaningProfile:MEANING,
     fingerprint:[...fingerprint].map(byte=>byte.toString(16).padStart(2,'0')).join(''),
     sections:sectionDirectory,stringCount:strings.length,
     codeBlocks:blocks.length};
+}
+// Explicit APIs preserve Profile 1 callers and reject unsupported profiles.
+export async function encodeProfile1(ir) { return encodeWithProfile(ir,1); }
+export async function encodeProfile2(ir) { return encodeWithProfile(ir,2); }
+export async function encodeBSBC(ir) {
+  const profile=ir?.meaning_profile||'bsharp.meaning.v1';
+  if(profile==='bsharp.meaning.v1')return encodeWithProfile(ir,1);
+  if(profile==='bsharp.meaning.v2')return encodeWithProfile(ir,2);
+  no('The independent BSBC path currently supports meaning Profiles 1 and 2. Requested '+profile+'.');
 }
 export function hexView(bytes,limit=4096) {
   if(!(bytes instanceof Uint8Array))throw new TypeError('Expected BSBC binary bytes.');
