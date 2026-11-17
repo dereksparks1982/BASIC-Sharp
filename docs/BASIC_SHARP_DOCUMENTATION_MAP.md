@@ -1,5 +1,12 @@
 # BASIC# Documentation Map
 
+## Public README and Technical History
+
+- `README.md` now introduces BASIC# and links to the GitHub Pages console.
+- `docs/history/BASIC_SHARP_TECHNICAL_HISTORY.md` preserves the complete numbered technical history formerly embedded in the README.
+- Obsolete root-level `BUILD_HANDSHAKE_v0_0_*.md` files (v0.0.03 through v0.0.83) were removed from the active tree at the owner's direction. Their originals remain in Git history. The current accepted v0.0.84 handshake stays in the root.
+
+
 **Version:** v0.0.84
 **Status:** Canonical navigation guide  
 **Purpose:** Give Derek, future assistants, contributors, and reviewers a front door into the BASIC# documentation stack.

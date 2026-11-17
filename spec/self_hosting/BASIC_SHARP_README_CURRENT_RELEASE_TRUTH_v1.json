@@ -8,12 +8,13 @@
     "heading": "BASIC#",
     "version": "v0.0.84",
     "history_first": "v0.0.84",
-    "history_last": "v0.0.01"
+    "history_last": "v0.0.01",
+    "history_file": "docs/history/BASIC_SHARP_TECHNICAL_HISTORY.md"
   },
   "protected_truths": [
-    "The root README is the public GitHub landing page.",
-    "The README identifies v0.0.84 as current.",
-    "Technical History contains every numbered version from v0.0.84 through v0.0.01.",
+    "The root README introduces BASIC# and links to its live console.",
+    "The README identifies v0.0.84 as the accepted release.",
+    "The complete technical history from v0.0.84 through v0.0.01 is preserved under docs/history.",
     "Ruby remains bootstrap/referee authority and BASIC# is not yet fully self-hosted."
   ]
 }

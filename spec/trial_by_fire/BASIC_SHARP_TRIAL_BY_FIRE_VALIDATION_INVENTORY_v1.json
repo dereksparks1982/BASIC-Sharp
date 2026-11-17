@@ -276,8 +276,8 @@
     },
     {
       "path": "tests/test_readme_current_release_truth.rb",
-      "bytes": 3767,
-      "sha256": "51ed84307af7e7d1fabd6e0858839b11dcb899931e981b807d6b58800be67748"
+      "bytes": 3573,
+      "sha256": "320ff59ef758343790bfab7afbaf93ace9156b9524df5188413ef230ae204edc"
     },
     {
       "path": "tests/test_release_forensic_overlay.rb",
@@ -678,8 +678,8 @@
     },
     {
       "path": "tools/readme_current_release_truth.rb",
-      "bytes": 1017,
-      "sha256": "795f60d9be0dddbf008d09b24753472622e9bb030d0405ece8a5da5893a4aa88"
+      "bytes": 1046,
+      "sha256": "7d33ff4a2349078741ad794c4bdaa26939777ee768d8483d026a043a65cdf9a8"
     },
     {
       "path": "tools/release_forensic_overlay.rb",
@@ -849,129 +849,14 @@
   ],
   "sealed_artifacts": [
     {
-      "path": "BUILD_HANDSHAKE_v0_0_48.md",
-      "bytes": 1372,
-      "sha256": "2e8822b56e5361cec6336637e08edc35663fbaa3773bb43f5c589590fca2e87d"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_49.md",
-      "bytes": 887,
-      "sha256": "56f431f5dcbf5ca13adc4a28211319bb5f3015788cd5907bf9b97c4268d89c32"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_50.md",
-      "bytes": 1185,
-      "sha256": "86d03f1a9fb2aed3fa53fd28a526113ae62afbc6e974e39f053d7d1a4ba92cd2"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_52.md",
-      "bytes": 1556,
-      "sha256": "dc7e170ded345e19cc88516a9baf82229b9e91e836e4a69c765e299de82b1581"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_53.md",
-      "bytes": 794,
-      "sha256": "eb3cc83940711956d01f3ab25b9f4ea33f03b03e79bef6c4e03f9d9a089c9b1b"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_54.md",
-      "bytes": 624,
-      "sha256": "f3e5d3f5da21620d4030e96b2eb55a417209cc0c7c2bfd3680d360c22af0bbef"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_55.md",
-      "bytes": 615,
-      "sha256": "1ed55cc96136a7b614e594828cb919ca72ae0778b42c1507784e4eee1414e6a9"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_56.md",
-      "bytes": 624,
-      "sha256": "54bc3f9fa62df31e23c62ff72a39f4763954bef6f78acae8643e9c431d76d3a8"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_57.md",
-      "bytes": 518,
-      "sha256": "394a1ffe809434fd150215b491d8b2d6cf8003eb3f8e1dd04911576c3345a03a"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_58.md",
-      "bytes": 508,
-      "sha256": "6cdd8a1db664b91b624796f404a1d31b5856a90710be28b398fab42171f089e4"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_61.md",
-      "bytes": 912,
-      "sha256": "2564db5e55503ff26e5bf16d803229da2d42920bd9b0abee80091f2e7d73f962"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_63.md",
-      "bytes": 2345,
-      "sha256": "5efc280d6a1fe7c73fb1a0d8b0b8e1ce4fcf296bc59d7e7bf8a52dcfa2fab43e"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_72.md",
-      "bytes": 1269,
-      "sha256": "60590eafb650cea226bc040e725ac7797000a8c56a081e19a52ecb7010e5b4f0"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_74.md",
-      "bytes": 1921,
-      "sha256": "d8099c2a6b6e7e19a281b2a21fe3d5062bf9e947f7dce2dc883532e24eb62630"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_75.md",
-      "bytes": 2069,
-      "sha256": "14b445b73e436870ebbcc1bc07b6a913256531789ca4a0beb7d5746ad1d4daf0"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_76.md",
-      "bytes": 2505,
-      "sha256": "6d4eba7b542f15c5adf963b24c3e7139a2297502ac11f0db28a58545d4f50ca3"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_77.md",
-      "bytes": 2581,
-      "sha256": "3cabd733979cf478acff76e907ddef2a0e7e80665bd37a81ba6743bc12484f47"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_78.md",
-      "bytes": 1512,
-      "sha256": "8ca62ca67e7f3a36dd659cec251f906dea8a828e6b84f63a0bc865bed6b8d18e"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_79.md",
-      "bytes": 2346,
-      "sha256": "1d2c6a6a69d27ccb631f13fdb8952a30dfbde4aab15a2f36a069686590563a15"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_80.md",
-      "bytes": 2881,
-      "sha256": "b05db56c8c6b968def9661a3f102b726c1c74eca05ed1230e206aa801ded3ced"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_81.md",
-      "bytes": 4252,
-      "sha256": "048968d3adeb193f2de7a910e3495ff814aae33d586c349a144e602c47a71392"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_82.md",
-      "bytes": 2052,
-      "sha256": "d095a92efc322673898a8baac65bcb5a1716944a3a327878baf9d22e78175613"
-    },
-    {
-      "path": "BUILD_HANDSHAKE_v0_0_83.md",
-      "bytes": 1068,
-      "sha256": "045f9eec75eeb75832a345dede6268871802313eed1fd0ddc171332a7e266619"
-    },
-    {
       "path": "BUILD_HANDSHAKE_v0_0_84.md",
       "bytes": 1034,
       "sha256": "e3a7f04a2c35d15c35a2dcb5360a542a67362f5855a12e4266ff298aebf40185"
     },
     {
       "path": "README.md",
-      "bytes": 15994,
-      "sha256": "bf7937649d031d22fcf7bba22c3d307a57e701f9e9ad479d67cc3a093c55e632"
+      "bytes": 2403,
+      "sha256": "955e9fb6c8965cf074f6a54afb39f0222b7f88c474ead9b671c187fabd3898e6"
     },
     {
       "path": "compiler/ast_nodes.rb",
@@ -1050,8 +935,8 @@
     },
     {
       "path": "compiler/readme_current_release_truth.rb",
-      "bytes": 1717,
-      "sha256": "c2a5ae5e5c33d232d28036eea114bf6b3a78c7597537a0b1c6fc4c93b8c37ed5"
+      "bytes": 2429,
+      "sha256": "d981ad03dd4ebc389815c937173bb64c81f0ed57dbead70ad9ba54fb8058cc8e"
     },
     {
       "path": "compiler/self_hosting_fixture_corpus.rb",
@@ -1160,8 +1045,8 @@
     },
     {
       "path": "docs/BASIC_SHARP_DOCUMENTATION_MAP.md",
-      "bytes": 5840,
-      "sha256": "780de4122856bc5096b302a1073433570e7edbc4095774911aa64196f27bedd8"
+      "bytes": 6329,
+      "sha256": "c00aaeb28fad2c15319a36d8e1ec3c8c956522e76aae129f257d4e757a2bf789"
     },
     {
       "path": "docs/audit/BASIC_SHARP_v0_0_60_REJECTED_BUILD_AUDIT.md",
@@ -1400,8 +1285,8 @@
     },
     {
       "path": "docs/hand_off/BASIC_SHARP_MASTER_THREAD_HANDOFF.md",
-      "bytes": 6513,
-      "sha256": "0464b554c5f2fbf41050089709f2094fb9f4cc8b355d6fac5ff0e01a20559da8"
+      "bytes": 8403,
+      "sha256": "548ad701876f09c3ae5666d3925602e4cd5861a7e7d9d8d4d963967867e51e48"
     },
     {
       "path": "docs/language/BASIC_SHARP_OBJECT_INTERACTION_ACTIONS_v0_0_73.md",
@@ -1545,8 +1430,8 @@
     },
     {
       "path": "docs/roadmap/BASIC_SHARP_ROADMAP.md",
-      "bytes": 7772,
-      "sha256": "ddeb68fbbc5c82bc3ed6e455671e2b061a80d8aeddf012d07ea859e0a4608396"
+      "bytes": 9384,
+      "sha256": "94bc6faddc33fddec58dfc1b14c3152ee709d3025716ea8a630df1209583ba18"
     },
     {
       "path": "docs/runtime_contract_v0_0_48.md",
@@ -2275,8 +2160,8 @@
     },
     {
       "path": "spec/self_hosting/BASIC_SHARP_README_CURRENT_RELEASE_TRUTH_v1.json",
-      "bytes": 661,
-      "sha256": "9ae8622a6e6d3ce053382acbc271d9ee9545c63afdc34702a1fcda0955303948"
+      "bytes": 770,
+      "sha256": "33d321a396b20749458cf11d8c35ea9e38b705d541248157d366e2ff2376cd59"
     },
     {
       "path": "spec/self_hosting/BASIC_SHARP_SELF_HOSTING_FIXTURE_CORPUS_v1.json",
@@ -2495,8 +2380,8 @@
     },
     {
       "path": "tests/test_readme_current_release_truth.rb",
-      "bytes": 3767,
-      "sha256": "51ed84307af7e7d1fabd6e0858839b11dcb899931e981b807d6b58800be67748"
+      "bytes": 3573,
+      "sha256": "320ff59ef758343790bfab7afbaf93ace9156b9524df5188413ef230ae204edc"
     },
     {
       "path": "tests/test_release_package_preflight.rb",
@@ -2680,8 +2565,8 @@
     },
     {
       "path": "tools/readme_current_release_truth.rb",
-      "bytes": 1017,
-      "sha256": "795f60d9be0dddbf008d09b24753472622e9bb030d0405ece8a5da5893a4aa88"
+      "bytes": 1046,
+      "sha256": "7d33ff4a2349078741ad794c4bdaa26939777ee768d8483d026a043a65cdf9a8"
     },
     {
       "path": "tools/release_package_preflight.rb",

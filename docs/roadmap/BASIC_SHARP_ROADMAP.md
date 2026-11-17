@@ -1,5 +1,12 @@
 # BASIC# Roadmap
 
+## v0.0.85 source-only README and root cleanup (not accepted)
+
+At the owner's direction, the public `README.md` has been rewritten to describe BASIC# and link to the live console at `https://dereksparks1982.github.io/BASIC-Sharp/`. The complete historical `## Technical History` and its additional notes were moved into `docs/history/BASIC_SHARP_TECHNICAL_HISTORY.md`; the associated README history gate and tests now check the documented archive rather than requiring the entire technical history in the root README.
+
+Seventy-six outdated `BUILD_HANDSHAKE_v0_0_03.md` through `BUILD_HANDSHAKE_v0_0_83.md` files are retired from the root working tree. The current accepted `BUILD_HANDSHAKE_v0_0_84.md` remains. Deleted historical content remains available through Git history. The sealed inventory has the removed handshake paths eliminated and changed-file byte counts and hashes refreshed. No compilation, automated tests, installer, or GitHub Actions were run; this does not represent v0.0.85 acceptance.
+
+
 ## v0.0.85 Live Console development candidate (source only, unaccepted)
 
 GitHub Pages-ready root `index.html` now supplies a BASIC# code editor, Execute, reactive WHEN event controls, world-state inspector and event trace using `compiler/portable/bsharp_sandbox.mjs`. The browser runs a bounded interpreter of the experimental JS compiler's BSIR output. **This is not the accepted BSBC VM, not a complete Ruby compiler replacement, and has not been tested.** No downloads, compilation, GitHub Actions, or release acceptance occurred. Details: `docs/self_hosting/BASIC_SHARP_LIVE_CONSOLE_v0_0_85.md`.
